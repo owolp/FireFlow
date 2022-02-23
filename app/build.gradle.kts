@@ -21,6 +21,8 @@ plugins {
 }
 
 android {
+    val signingConfigDebug = "debug"
+
     compileSdk = 32
 
     defaultConfig {
@@ -29,14 +31,39 @@ android {
         targetSdk = 32
         versionCode = 1
         versionName = "1.0"
+    }
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    signingConfigs {
+        getByName(signingConfigDebug) {
+            storeFile = project.rootProject.file("config/keystore/debug.keystore")
+            keyAlias = "androiddebugkey"
+            keyPassword = "android"
+            storePassword = "android"
+        }
     }
 
     buildTypes {
+        getByName("debug") {
+            isDebuggable = true
+            isMinifyEnabled = false
+        }
+
         getByName("release") {
             isMinifyEnabled = true
-            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android.txt"),
+                "${project.rootProject.file("config/proguard/proguard-rules.pro")}"
+            )
+        }
+    }
+
+    flavorDimensions.add("default")
+
+    productFlavors {
+        create("dev") {
+            signingConfig = signingConfigs.getByName(signingConfigDebug)
+            applicationIdSuffix = ".dev"
+            versionNameSuffix = "-d"
         }
     }
 
@@ -48,13 +75,17 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    sourceSets {
+        map { it.java.srcDir("src/${it.name}/kotlin") }
+    }
 }
 
 dependencies {
-
     implementation(Dependencies.AndroidX.AppCompat.APP_COMPAT)
     implementation(Dependencies.AndroidX.Core.CORE_KTX)
     implementation(Dependencies.AndroidX.ConstraintLayout.CONSTRAINTLAYOUT)
     implementation(Dependencies.Google.Android.Material.MATERIAL)
+
     testImplementation(Dependencies.JUnit.J_UNIT)
 }
