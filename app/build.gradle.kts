@@ -21,12 +21,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
 }
 
-val secretsPropertiesFile: File = project.rootProject.file("secrets.properties")
-val secretProperties = Properties()
-
-if (secretsPropertiesFile.exists()) {
-    secretProperties.load(secretsPropertiesFile.inputStream())
-}
+val secretProperties = getSecretProperties()
 
 android {
     val signingConfigDebug = "debug"
@@ -122,4 +117,15 @@ dependencies {
     implementation(Dependencies.Google.Android.Material.MATERIAL)
 
     testImplementation(Dependencies.JUnit.J_UNIT)
+}
+
+fun getSecretProperties(): Properties {
+    val secretProperties = Properties()
+
+    val secretsPropertiesFile: File = project.rootProject.file("secrets.properties")
+    if (secretsPropertiesFile.exists()) {
+        secretProperties.load(secretsPropertiesFile.inputStream())
+    }
+
+    return secretProperties
 }
