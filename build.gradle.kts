@@ -15,6 +15,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+plugins.apply(plugin.BuildPlugins.GRADLE_VERSION_PLUGIN)
+plugins.apply(plugin.BuildPlugins.KTLINT)
+
 buildscript {
 
     repositories {
@@ -33,8 +36,6 @@ allprojects {
         google()
         mavenCentral()
     }
-
-    plugins.apply(plugin.BuildPlugins.KTLINT)
 }
 
 tasks.register("clean", Delete::class) {
