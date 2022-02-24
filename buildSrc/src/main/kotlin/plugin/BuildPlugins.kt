@@ -15,28 +15,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-buildscript {
+package plugin
 
-    repositories {
-        google()
-        mavenCentral()
-    }
-
-    dependencies {
-        classpath(Dependencies.Android.Tools.Build.GRADLE)
-        classpath(Dependencies.Jetbrains.Kotlin.KOTLIN_GRADLE_PLUGIN)
-    }
-}
-
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-    }
-
-    plugins.apply(plugin.BuildPlugins.KTLINT)
-}
-
-tasks.register("clean", Delete::class) {
-    delete(rootProject.buildDir)
+object BuildPlugins {
+    const val KTLINT = "plugin.ktlint"
 }
