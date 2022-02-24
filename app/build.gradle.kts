@@ -14,14 +14,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import java.util.*
+
+import java.util.Properties
 
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
 }
 
-val secretProperties = getSecretProperties()
+val secretProperties = retrieveSecretProperties()
 
 android {
     val signingConfigDebug = "debug"
@@ -111,15 +112,15 @@ android {
 }
 
 dependencies {
-    implementation(Dependencies.AndroidX.AppCompat.APP_COMPAT)
-    implementation(Dependencies.AndroidX.Core.CORE_KTX)
-    implementation(Dependencies.AndroidX.ConstraintLayout.CONSTRAINTLAYOUT)
-    implementation(Dependencies.Google.Android.Material.MATERIAL)
+    implementation(dependency.Dependencies.AndroidX.AppCompat.APP_COMPAT)
+    implementation(dependency.Dependencies.AndroidX.Core.CORE_KTX)
+    implementation(dependency.Dependencies.AndroidX.ConstraintLayout.CONSTRAINTLAYOUT)
+    implementation(dependency.Dependencies.Google.Android.Material.MATERIAL)
 
-    testImplementation(Dependencies.JUnit.J_UNIT)
+    testImplementation(dependency.Dependencies.JUnit.J_UNIT)
 }
 
-fun getSecretProperties(): Properties {
+fun retrieveSecretProperties(): Properties {
     val secretProperties = Properties()
 
     val secretsPropertiesFile: File = project.rootProject.file("secrets.properties")

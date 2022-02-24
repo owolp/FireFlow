@@ -15,6 +15,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+package dependency
+
 object Dependencies {
 
     object Android {
@@ -55,5 +57,11 @@ object Dependencies {
 
     object JUnit {
         const val J_UNIT = "junit:junit:4.13.2"
+    }
+
+    object Pinterest {
+        object Ktlint {
+            const val KTLINT = "com.pinterest:ktlint:0.44.0"
+        }
     }
 }

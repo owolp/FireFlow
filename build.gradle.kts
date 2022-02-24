@@ -23,8 +23,8 @@ buildscript {
     }
 
     dependencies {
-        classpath(Dependencies.Android.Tools.Build.GRADLE)
-        classpath(Dependencies.Jetbrains.Kotlin.KOTLIN_GRADLE_PLUGIN)
+        classpath(dependency.Dependencies.Android.Tools.Build.GRADLE)
+        classpath(dependency.Dependencies.Jetbrains.Kotlin.KOTLIN_GRADLE_PLUGIN)
     }
 }
 
@@ -33,6 +33,8 @@ allprojects {
         google()
         mavenCentral()
     }
+
+    plugins.apply(plugin.BuildPlugins.KTLINT)
 }
 
 tasks.register("clean", Delete::class) {
