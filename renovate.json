@@ -1,0 +1,35 @@
+{
+    "extends": [
+        "config:base"
+    ],
+    "packageRules": [
+        {
+            "updateTypes": [
+                "major",
+                "minor",
+                "patch"
+            ],
+            "labels": [
+                "DEPENDENCY-UPDATE"
+            ]
+        }
+    ],
+    "timezone": "Europe/Sofia",
+    "schedule": [
+        "after 10am and before 5:00pm every weekday"
+    ],
+    "assignees": [
+        "owolp"
+    ],
+    "regexManagers": [
+        {
+            "description": "Detect template under buildSrc",
+            "fileMatch": [
+                "(^|/)buildSrc/.*"
+            ],
+            "matchStrings": [
+                "datasource=(?<datasource>.*?) depName=(?<depName>.*?)\n([a-z A-Z]*)Version = \"(?<currentValue>.*?)\"\n"
+            ]
+        }
+    ]
+}
