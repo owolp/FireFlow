@@ -18,6 +18,7 @@
 package plugin
 
 object BuildPlugins {
-    const val KTLINT = "plugin.ktlint"
     const val GRADLE_VERSION_PLUGIN = "plugin.gradle-versions-plugin"
+    const val GIT_HOOKS = "plugin.git-hooks"
+    const val KTLINT = "plugin.ktlint"
 }

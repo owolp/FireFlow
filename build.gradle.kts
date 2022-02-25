@@ -16,6 +16,7 @@
  */
 
 plugins.apply(plugin.BuildPlugins.GRADLE_VERSION_PLUGIN)
+plugins.apply(plugin.BuildPlugins.GIT_HOOKS)
 plugins.apply(plugin.BuildPlugins.KTLINT)
 
 buildscript {

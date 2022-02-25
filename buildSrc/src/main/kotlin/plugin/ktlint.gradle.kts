@@ -37,7 +37,8 @@ val ktlintCheck by tasks.creating(JavaExec::class) {
     mainClass.set("com.pinterest.ktlint.Main")
     args = listOf(
         "--reporter=plain",
-        "--reporter=html?group_by_file,output=${project.rootDir}/lint/reports/ktlint/ktlint-check-report.html",
+        "--reporter=html?group_by_file," +
+            "output=${project.rootDir}/reports/ktlint/ktlint-check-report.html",
         "--android",
         "src/**/*.kt",
         "*.kts",
