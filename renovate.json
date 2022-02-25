@@ -16,7 +16,7 @@
     ],
     "timezone": "Europe/Sofia",
     "schedule": [
-        "after 10am and before 5:00pm evert weekday"
+        "after 10am and before 5:00pm every weekday"
     ],
     "assignees": [
         "owolp"
