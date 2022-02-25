@@ -16,20 +16,9 @@
     ],
     "timezone": "Europe/Sofia",
     "schedule": [
-        "after 10am and before 5:00pm every weekday"
+        "after 10am and before 5:00pm every monday"
     ],
     "assignees": [
         "owolp"
-    ],
-    "regexManagers": [
-        {
-            "description": "Detect template under buildSrc",
-            "fileMatch": [
-                "(^|/)buildSrc/.*"
-            ],
-            "matchStrings": [
-                "datasource=(?<datasource>.*?) depName=(?<depName>.*?)\n([a-z A-Z]*)Version = \"(?<currentValue>.*?)\"\n"
-            ]
-        }
     ]
 }
