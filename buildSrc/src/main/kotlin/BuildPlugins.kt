@@ -15,8 +15,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package plugin
-
 object BuildPlugins {
     const val GRADLE_VERSION_PLUGIN = "plugin.gradle-versions-plugin"
     const val GIT_HOOKS = "plugin.git-hooks"

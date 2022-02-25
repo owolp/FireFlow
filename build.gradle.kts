@@ -15,9 +15,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins.apply(plugin.BuildPlugins.GRADLE_VERSION_PLUGIN)
-plugins.apply(plugin.BuildPlugins.GIT_HOOKS)
-plugins.apply(plugin.BuildPlugins.KTLINT)
+plugins.apply(BuildPlugins.GRADLE_VERSION_PLUGIN)
+plugins.apply(BuildPlugins.GIT_HOOKS)
+plugins.apply(BuildPlugins.KTLINT)
 
 buildscript {
 
@@ -27,8 +27,8 @@ buildscript {
     }
 
     dependencies {
-        classpath(dependency.Dependencies.Android.Tools.Build.GRADLE)
-        classpath(dependency.Dependencies.Jetbrains.Kotlin.KOTLIN_GRADLE_PLUGIN)
+        classpath(Dependencies.Android.Tools.Build.GRADLE)
+        classpath(Dependencies.Jetbrains.Kotlin.KOTLIN_GRADLE_PLUGIN)
     }
 }
 
