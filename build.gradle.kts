@@ -27,8 +27,8 @@ buildscript {
     }
 
     dependencies {
-        classpath(Dependencies.Android.Tools.Build.GRADLE)
-        classpath(Dependencies.Jetbrains.Kotlin.KOTLIN_GRADLE_PLUGIN)
+        classpath(libs.android.build.gradle)
+        classpath(libs.jetbrains.kotlin.gradle)
     }
 }
 

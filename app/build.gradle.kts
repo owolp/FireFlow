@@ -112,12 +112,12 @@ android {
 }
 
 dependencies {
-    implementation(Dependencies.AndroidX.AppCompat.APP_COMPAT)
-    implementation(Dependencies.AndroidX.Core.CORE_KTX)
-    implementation(Dependencies.AndroidX.ConstraintLayout.CONSTRAINTLAYOUT)
-    implementation(Dependencies.Google.Android.Material.MATERIAL)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.core)
+    implementation(libs.androidx.costraintlayout)
+    implementation(libs.google.material)
 
-    testImplementation(Dependencies.JUnit.J_UNIT)
+    testImplementation(libs.junit)
 }
 
 fun retrieveSecretProperties(): Properties {

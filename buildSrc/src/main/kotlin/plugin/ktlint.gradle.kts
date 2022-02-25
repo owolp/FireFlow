@@ -20,7 +20,7 @@ package plugin
 val ktlint by configurations.creating
 
 dependencies {
-    ktlint(Dependencies.Pinterest.Ktlint.KTLINT) {
+    ktlint("com.pinterest:ktlint:0.44.0") {
         attributes {
             attribute(Bundling.BUNDLING_ATTRIBUTE, objects.named(Bundling.EXTERNAL))
         }
