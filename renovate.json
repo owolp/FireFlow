@@ -1,5 +1,24 @@
 {
-  "extends": [
-    "config:base"
-  ]
+    "extends": [
+        "config:base"
+    ],
+    "packageRules": [
+        {
+            "updateTypes": [
+                "major",
+                "minor",
+                "patch"
+            ],
+            "labels": [
+                "DEPENDENCY-UPDATE"
+            ]
+        }
+    ],
+    "timezone": "Europe/Sofia",
+    "schedule": [
+        "after 10am and before 5:00pm evert weekday"
+    ],
+    "assignees": [
+        "owolp"
+    ]
 }
