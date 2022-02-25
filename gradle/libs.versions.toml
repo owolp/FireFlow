@@ -1,6 +1,6 @@
 [versions]
 ktlint = "0.42.1"
-kotlin = "1.5.30"
+kotlin = "1.6.10"
 
 [libraries]
 
