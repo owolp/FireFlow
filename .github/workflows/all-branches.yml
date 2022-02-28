@@ -1,0 +1,77 @@
+name: All Branches
+
+on:
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7
+
+      - name: Install Dependencies
+        run: gem install bundler && bundle install
+
+      - name: Run Fastlane Ktlint Lane
+        run: fastlane ktlint
+
+  unit_test:
+    name: Unit Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7
+
+      - name: Install Dependencies
+        run: gem install bundler && bundle install
+
+      - name: Run Fastlane Debug Release Unit Tests Lane
+        run: fastlane dev_debug_unit_tests
+
+  assemble_dev:
+    name: Assemble Dev
+    needs:
+      - lint
+      - unit_test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7
+
+      - name: Install Dependencies
+        run: gem install bundler && bundle install
+
+      - name: Run Fastlane Assemble Dev Release Lane
+        run: fastlane assemble_dev_release
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v2
+        with:
+          name: dev_app_apk
+          path: "*/build/outputs/apk/*/release/*.apk"
+
+      - name: Upload Mappings
+        uses: actions/upload-artifact@v2
+        with:
+          name: dev_app_mapping
+          path: "*/build/outputs/mapping/*/mapping.txt"
