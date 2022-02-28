@@ -72,10 +72,10 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: dev_app_apk
-          path: $PATH_APK
+          path: env.$PATH_APK
 
       - name: Upload Mappings
         uses: actions/upload-artifact@v2
         with:
           name: dev_app_mappings
-          path: $PATH_MAPPINGS
+          path: env.$PATH_MAPPINGS
