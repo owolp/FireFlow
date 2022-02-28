@@ -48,9 +48,9 @@ jobs:
 
   assemble_dev:
     name: Assemble Dev
-    needs:
-      - lint
-      - unit_test
+#    needs:
+#      - lint
+#      - unit_test
     runs-on: ubuntu-latest
 
     steps:
