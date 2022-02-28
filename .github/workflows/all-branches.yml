@@ -1,4 +1,4 @@
-name: Default Branch
+name: All Branches
 
 on:
   pull_request:
