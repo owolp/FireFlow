@@ -1,0 +1,161 @@
+name: Release Branch
+
+on:
+  push:
+    branches:
+      - 'release'
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7
+
+      - name: Install Dependencies
+        run: gem install bundler && bundle install
+
+      - name: Run Fastlane Ktlint Lane
+        run: fastlane ktlint
+
+  unit_test:
+    name: Unit Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7
+
+      - name: Install Dependencies
+        run: gem install bundler && bundle install
+
+      - name: Run Fastlane Debug Release Unit Tests Lane
+        run: fastlane dev_debug_unit_tests
+
+  assemble_dev:
+    name: Assemble Dev
+    needs:
+      - lint
+      - unit_test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7
+
+      - name: Install Dependencies
+        run: gem install bundler && bundle install
+
+      - name: Run Fastlane Assemble Dev Release Lane
+        run: fastlane assemble_dev_release
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v2
+        with:
+          name: dev_app_apk
+          path: "*/build/outputs/apk/*/release/*.apk"
+
+      - name: Upload Mappings
+        uses: actions/upload-artifact@v2
+        with:
+          name: dev_app_mappings
+          path: "*/build/outputs/mapping/*/mapping.txt"
+
+  assemble_firebase:
+    name: Assemble Firebase
+    needs:
+      - lint
+      - unit_test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7
+
+      - name: Install Dependencies
+        run: gem install bundler && bundle install
+
+      - name: Restore Firebase Secrets
+        run: |
+          echo "firebase_signing_key_alias=${{ secrets.FIREBASE_SIGNING_KEY_ALIAS }}" >> secrets.properties
+          echo "firebase_signing_key_password=${{ secrets.FIREBASE_SIGNING_KEY_PASSWORD }}" >> secrets.properties
+          echo "firebase_signing_keystore_password=${{ secrets.FIREBASE_SIGNING_KEYSTORE_PASSWORD }}" >> secrets.properties
+          echo "${{ secrets.FIREBASE_KEYSTORE }}" > firebase.keystore.asc
+          gpg --batch --decrypt --output "config/keystore/firebase.keystore" --passphrase "${{ secrets.FIREBASE_SIGNING_KEYSTORE_GPG }}" --yes "firebase.keystore.asc"
+
+      - name: Run Fastlane Assemble Firebase Release Lane
+        run: fastlane assemble_firebase_release
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v2
+        with:
+          name: firebase_app_apk
+          path: "*/build/outputs/apk/*/release/*.apk"
+
+      - name: Upload Mappings
+        uses: actions/upload-artifact@v2
+        with:
+          name: firebase_app_mappings
+          path: "*/build/outputs/mapping/*/mapping.txt"
+
+  assemble_play:
+    name: Assemble PLay
+    needs:
+      - lint
+      - unit_test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7
+
+      - name: Install Dependencies
+        run: gem install bundler && bundle install
+
+      - name: Restore Play Secrets
+        run: |
+          echo "play_signing_key_alias=${{ secrets.PLAY_SIGNING_KEY_ALIAS }}" >> secrets.properties
+          echo "play_signing_key_password=${{ secrets.PLAY_SIGNING_KEY_PASSWORD }}" >> secrets.properties
+          echo "play_signing_keystore_password=${{ secrets.PLAY_SIGNING_KEYSTORE_PASSWORD }}" >> secrets.properties
+          echo "${{ secrets.PLAY_KEYSTORE }}" > play.keystore.asc
+          gpg --batch --decrypt --output "config/keystore/play.keystore" --passphrase "${{ secrets.PLAY_SIGNING_KEYSTORE_GPG }}" --yes "play.keystore.asc"
+
+      - name: Run Fastlane Assemble Plat Release Lane
+        run: fastlane assemble_play_release
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v2
+        with:
+          name: play_app_apk
+          path: "*/build/outputs/apk/*/release/*.apk"
+
+      - name: Upload Mappings
+        uses: actions/upload-artifact@v2
+        with:
+          name: play_app_mappings
+          path: "*/build/outputs/mapping/*/mapping.txt"
