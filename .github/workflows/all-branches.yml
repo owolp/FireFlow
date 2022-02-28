@@ -5,6 +5,10 @@ on:
     branches:
       - '*'
 
+env:
+  PATH_APK: "*/build/outputs/apk/*/release/*.apk"
+  PATH_MAPPINGS: "*/build/outputs/mapping/*"
+
 jobs:
   lint:
     name: Lint
@@ -67,5 +71,11 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v2
         with:
-          name: dev_app
-          path: app/build/outputs/apk/dev/release/app-dev-release.apk
+          name: dev_app_apk
+          path: "$PATH_APK"
+
+      - name: Upload Mappings
+        uses: actions/upload-artifact@v2
+        with:
+          name: dev_app_mappings
+          path: "$PATH_MAPPINGS"
