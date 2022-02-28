@@ -10,41 +10,41 @@ env:
   PATH_MAPPINGS: "*/build/outputs/mapping/*"
 
 jobs:
-  lint:
-    name: Lint
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v2
-
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 2.7
-
-      - name: Install Dependencies
-        run: gem install bundler && bundle install
-
-      - name: Run Fastlane Ktlint Lane
-        run: fastlane ktlint
-
-  unit_test:
-    name: Unit Test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v2
-
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 2.7
-
-      - name: Install Dependencies
-        run: gem install bundler && bundle install
-
-      - name: Run Fastlane Debug Release Unit Tests Lane
-        run: fastlane dev_debug_unit_tests
+#  lint:
+#    name: Lint
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout Repo
+#        uses: actions/checkout@v2
+#
+#      - name: Set up Ruby
+#        uses: ruby/setup-ruby@v1
+#        with:
+#          ruby-version: 2.7
+#
+#      - name: Install Dependencies
+#        run: gem install bundler && bundle install
+#
+#      - name: Run Fastlane Ktlint Lane
+#        run: fastlane ktlint
+#
+#  unit_test:
+#    name: Unit Test
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout Repo
+#        uses: actions/checkout@v2
+#
+#      - name: Set up Ruby
+#        uses: ruby/setup-ruby@v1
+#        with:
+#          ruby-version: 2.7
+#
+#      - name: Install Dependencies
+#        run: gem install bundler && bundle install
+#
+#      - name: Run Fastlane Debug Release Unit Tests Lane
+#        run: fastlane dev_debug_unit_tests
 
   assemble_dev:
     name: Assemble Dev
@@ -72,10 +72,10 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: dev_app_apk
-          path: "$PATH_APK"
+          path: $PATH_APK
 
       - name: Upload Mappings
         uses: actions/upload-artifact@v2
         with:
           name: dev_app_mappings
-          path: "$PATH_MAPPINGS"
+          path: $PATH_MAPPINGS
