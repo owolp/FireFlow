@@ -119,7 +119,7 @@ jobs:
           path: "*/build/outputs/mapping/*/mapping.txt"
 
   assemble_play:
-    name: Assemble PLay
+    name: Assemble Play
     needs:
       - lint
       - unit_test

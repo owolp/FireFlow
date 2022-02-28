@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - 'develop'
-  pull_request:
-    branches:
-      - '*'
 
 jobs:
   lint:
@@ -122,7 +119,7 @@ jobs:
           path: "*/build/outputs/mapping/*/mapping.txt"
 
   assemble_play:
-    name: Assemble PLay
+    name: Assemble Play
     needs:
       - lint
       - unit_test
@@ -150,15 +147,3 @@ jobs:
 
       - name: Run Fastlane Assemble Plat Release Lane
         run: fastlane assemble_play_release
-
-      - name: Upload APK
-        uses: actions/upload-artifact@v2
-        with:
-          name: play_app_apk
-          path: "*/build/outputs/apk/*/release/*.apk"
-
-      - name: Upload Mappings
-        uses: actions/upload-artifact@v2
-        with:
-          name: play_app_mappings
-          path: "*/build/outputs/mapping/*/mapping.txt"
