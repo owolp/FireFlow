@@ -1,4 +1,4 @@
-name: Feature Branch
+name: Default Branch
 
 on:
   pull_request:
