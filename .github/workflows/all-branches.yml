@@ -72,10 +72,10 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: dev_app_apk
-          path: env.$PATH_APK
+          path: "*/build/outputs/apk/*/release/*.apk"
 
       - name: Upload Mappings
         uses: actions/upload-artifact@v2
         with:
           name: dev_app_mappings
-          path: env.$PATH_MAPPINGS
+          path: "*/build/outputs/mapping/*"
