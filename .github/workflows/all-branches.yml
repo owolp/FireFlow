@@ -7,7 +7,7 @@ on:
 
 env:
   PATH_APK: "*/build/outputs/apk/*/release/*.apk"
-  PATH_MAPPINGS: "*/build/outputs/mapping/*"
+  PATH_MAPPING: "*/build/outputs/mapping/*/mapping.txt"
 
 jobs:
 #  lint:
@@ -72,10 +72,10 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: dev_app_apk
-          path: "*/build/outputs/apk/*/release/*.apk"
+          path: "${PATH_APK}"
 
       - name: Upload Mappings
         uses: actions/upload-artifact@v2
         with:
-          name: dev_app_mappings
-          path: "*/build/outputs/mapping/*"
+          name: dev_app_mapping
+          path: "${PATH_MAPPING}"
