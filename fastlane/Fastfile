@@ -1,0 +1,57 @@
+opt_out_usage
+
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https: //docs.fastlane.tools
+  #
+# For a list of all available actions, check out
+#
+# https: //docs.fastlane.tools/actions
+  #
+# For a list of all available plugins, check out
+#
+# https: //docs.fastlane.tools/plugins/available-plugins
+  #
+
+# Uncomment the line if you want fastlane to automatically update itself
+update_fastlane
+
+default_platform(:android)
+
+platform :android do
+  desc "Assemble Dev Release"
+  lane :assemble_dev_release do
+    build_android_app(
+      task: "assemble",
+      flavor: "dev",
+      build_type: "release"
+    )
+  end
+
+  desc "Assemble Firebase Release"
+  lane :assemble_firebase_release do
+    build_android_app(
+      task: "assemble",
+      flavor: "firebase",
+      build_type: "release"
+    )
+  end
+
+  desc "Assemble Play Release"
+  lane :assemble_play_release do
+    build_android_app(
+      task: "assemble",
+      flavor: "play",
+      build_type: "release"
+    )
+  end
+
+  desc "Runs Ktlint"
+  lane :ktlint do
+    gradle(task: "ktlintCheck")
+  end
+
+  desc "Runs Dev unit tests"
+  lane :dev_debug_unit_tests do
+    gradle(task: "testDevDebugUnitTest")
+  end
+end
