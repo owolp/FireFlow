@@ -19,12 +19,12 @@ package plugin
 
 import org.gradle.internal.os.OperatingSystem
 
-val GROUP = "git hooks"
+val group = "git hooks"
 
 tasks {
     register<Copy>("copyGitHooks") {
         description = "Copies the git hooks from scripts/git-hooks to the .git folder."
-        group = GROUP
+        group = group
         from("${project.rootDir}/config/git/script/") {
             include("**/*.sh")
             rename("(.*).sh", "$1")
@@ -34,7 +34,7 @@ tasks {
 
     register<Exec>("installGitHooks") {
         description = "Installs the pre-commit git hooks from scripts/git-hooks."
-        group = GROUP
+        group = group
         workingDir(rootDir)
         commandLine("chmod")
         args("-R", "+x", ".git/hooks/")
@@ -49,7 +49,7 @@ tasks {
 
     register<Delete>("deleteGitHooks") {
         description = "Delete the pre-commit git hooks."
-        group = GROUP
+        group = group
         delete(fileTree(".git/hooks/"))
     }
 

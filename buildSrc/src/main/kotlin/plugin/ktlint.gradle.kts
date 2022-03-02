@@ -30,6 +30,7 @@ dependencies {
 val inputFiles = project.fileTree(mapOf("dir" to "src", "include" to "**/*.kt"))
 
 val ktlintCheck by tasks.creating(JavaExec::class) {
+    description = "Runs Ktlint on the whole project at once."
     inputs.files(inputFiles)
 
     description = "Check Kotlin code style."
@@ -47,6 +48,7 @@ val ktlintCheck by tasks.creating(JavaExec::class) {
 }
 
 val ktlintFormat by tasks.creating(JavaExec::class) {
+    description = "Formats whole project."
     inputs.files(inputFiles)
 
     description = "Fix Kotlin code style deviations."

@@ -15,6 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+plugins.apply(BuildPlugins.DETEKT)
 plugins.apply(BuildPlugins.GRADLE_VERSION_PLUGIN)
 plugins.apply(BuildPlugins.GIT_HOOKS)
 plugins.apply(BuildPlugins.KTLINT)
