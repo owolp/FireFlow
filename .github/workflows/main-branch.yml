@@ -97,12 +97,6 @@ jobs:
           name: dev_app_apk
           path: "*/build/outputs/apk/*/release/*.apk"
 
-      - name: Upload Mappings
-        uses: actions/upload-artifact@v2
-        with:
-          name: dev_app_mappings
-          path: "*/build/outputs/mapping/*/mapping.txt"
-
   assemble_firebase:
     name: Assemble Firebase
     needs:
@@ -139,12 +133,6 @@ jobs:
         with:
           name: firebase_app_apk
           path: "*/build/outputs/apk/*/release/*.apk"
-
-      - name: Upload Mappings
-        uses: actions/upload-artifact@v2
-        with:
-          name: firebase_app_mappings
-          path: "*/build/outputs/mapping/*/mapping.txt"
 
   assemble_play:
     name: Assemble Play

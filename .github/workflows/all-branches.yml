@@ -93,3 +93,6 @@ jobs:
 
       - name: Upload APK
         uses: actions/upload-artifact@v2
+        with:
+          name: dev_app_apk
+          path: "*/build/outputs/apk/*/release/*.apk"
