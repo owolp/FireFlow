@@ -96,9 +96,3 @@ jobs:
         with:
           name: dev_app_apk
           path: "*/build/outputs/apk/*/release/*.apk"
-
-      - name: Upload Mappings
-        uses: actions/upload-artifact@v2
-        with:
-          name: dev_app_mapping
-          path: "*/build/outputs/mapping/*/mapping.txt"
