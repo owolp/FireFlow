@@ -80,6 +80,14 @@ jobs:
       - name: Install Dependencies
         run: gem install bundler && bundle install
 
+      - name: Restore Dev Secrets
+        run: |
+          echo "dev_signing_key_alias=${{ secrets.DEV_SIGNING_KEY_ALIAS }}" >> secrets.properties
+          echo "dev_signing_key_password=${{ secrets.DEV_SIGNING_KEY_PASSWORD }}" >> secrets.properties
+          echo "dev_signing_keystore_password=${{ secrets.DEV_SIGNING_KEYSTORE_PASSWORD }}" >> secrets.properties
+          echo "${{ secrets.DEV_KEYSTORE }}" > dev.keystore.asc
+          gpg --batch --decrypt --output "config/keystore/dev.keystore" --passphrase "${{ secrets.DEV_SIGNING_KEYSTORE_GPG }}" --yes "dev.keystore.asc"
+
       - name: Run Fastlane Assemble Dev Release Lane
         run: fastlane assemble_dev_release
 

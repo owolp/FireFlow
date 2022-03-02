@@ -26,6 +26,7 @@ val secretProperties = retrieveSecretProperties()
 
 android {
     val signingConfigDebug = "debug"
+    val signingConfigDev = "dev"
     val signingConfigFirebase = "firebase"
     val signingConfigPlay = "play"
 
@@ -45,6 +46,13 @@ android {
             keyAlias = "androiddebugkey"
             keyPassword = "android"
             storePassword = "android"
+        }
+
+        create(signingConfigDev) {
+            storeFile = project.rootProject.file("config/keystore/dev.keystore")
+            keyAlias = "${secretProperties["dev_signing_key_alias"]}"
+            keyPassword = "${secretProperties["dev_signing_key_password"]}"
+            storePassword = "${secretProperties["dev_signing_keystore_password"]}"
         }
 
         create(signingConfigFirebase) {
@@ -81,7 +89,7 @@ android {
 
     productFlavors {
         create("dev") {
-            signingConfig = signingConfigs.getByName(signingConfigDebug)
+            signingConfig = signingConfigs.getByName(signingConfigDev)
             applicationIdSuffix = ".dev"
             versionNameSuffix = "-d"
         }
