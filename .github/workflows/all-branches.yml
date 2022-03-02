@@ -91,14 +91,30 @@ jobs:
       - name: Run Fastlane Assemble Dev Release Lane
         run: fastlane assemble_dev_release
 
-      - name: Upload APK
-        uses: actions/upload-artifact@v2
-        with:
-          name: dev_app_apk
-          path: "*/build/outputs/apk/*/release/*.apk"
+  distribution_dev:
+    name: Firebase App Distribution
+    needs:
+      - assemble_dev
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
 
-      - name: Upload Mappings
-        uses: actions/upload-artifact@v2
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
         with:
-          name: dev_app_mapping
-          path: "*/build/outputs/mapping/*/mapping.txt"
+          ruby-version: 2.7
+
+      - name: Install Dependencies
+        run: gem install bundler && bundle install
+
+      - name: Restore Dev Secrets
+        run: |
+          echo "dev_signing_key_alias=${{ secrets.DEV_SIGNING_KEY_ALIAS }}" >> secrets.properties
+          echo "dev_signing_key_password=${{ secrets.DEV_SIGNING_KEY_PASSWORD }}" >> secrets.properties
+          echo "dev_signing_keystore_password=${{ secrets.DEV_SIGNING_KEYSTORE_PASSWORD }}" >> secrets.properties
+          echo "${{ secrets.DEV_KEYSTORE }}" > dev.keystore.asc
+          gpg --batch --decrypt --output "config/keystore/dev.keystore" --passphrase "${{ secrets.DEV_SIGNING_KEYSTORE_GPG }}" --yes "dev.keystore.asc"
+
+      - name: Publish Dev version to Firebase App Distribution
+        run: fastlane distributeDev

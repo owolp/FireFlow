@@ -97,12 +97,6 @@ jobs:
           name: dev_app_apk
           path: "*/build/outputs/apk/*/release/*.apk"
 
-      - name: Upload Mappings
-        uses: actions/upload-artifact@v2
-        with:
-          name: dev_app_mappings
-          path: "*/build/outputs/mapping/*/mapping.txt"
-
   assemble_firebase:
     name: Assemble Firebase
     needs:
@@ -139,12 +133,6 @@ jobs:
         with:
           name: firebase_app_apk
           path: "*/build/outputs/apk/*/release/*.apk"
-
-      - name: Upload Mappings
-        uses: actions/upload-artifact@v2
-        with:
-          name: firebase_app_mappings
-          path: "*/build/outputs/mapping/*/mapping.txt"
 
   assemble_play:
     name: Assemble Play
@@ -183,8 +171,30 @@ jobs:
           name: play_app_apk
           path: "*/build/outputs/apk/*/release/*.apk"
 
-      - name: Upload Mappings
-        uses: actions/upload-artifact@v2
+  distribution_firebase:
+    name: Firebase App Distribution
+    needs:
+      - assemble_firebase
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
         with:
-          name: play_app_mappings
-          path: "*/build/outputs/mapping/*/mapping.txt"
+          ruby-version: 2.7
+
+      - name: Install Dependencies
+        run: gem install bundler && bundle install
+
+      - name: Restore Firebase Secrets
+        run: |
+          echo "firebase_signing_key_alias=${{ secrets.FIREBASE_SIGNING_KEY_ALIAS }}" >> secrets.properties
+          echo "firebase_signing_key_password=${{ secrets.FIREBASE_SIGNING_KEY_PASSWORD }}" >> secrets.properties
+          echo "firebase_signing_keystore_password=${{ secrets.FIREBASE_SIGNING_KEYSTORE_PASSWORD }}" >> secrets.properties
+          echo "${{ secrets.FIREBASE_KEYSTORE }}" > firebase.keystore.asc
+          gpg --batch --decrypt --output "config/keystore/firebase.keystore" --passphrase "${{ secrets.FIREBASE_SIGNING_KEYSTORE_GPG }}" --yes "firebase.keystore.asc"
+
+      - name: Publish Firebase version to Firebase App Distribution
+        run: fastlane distributeFirebase
