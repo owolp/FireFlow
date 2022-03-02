@@ -1,13 +1,32 @@
 name: Firebase App Distribution
 
 on:
-
   workflow_dispatch:
     inputs:
       message:
+        required: true
         description: "Publish version to Firebase App Distribution"
 
   workflow_run:
     workflows: [ "All Branches", "Develop Branch", "Main Branch", "Release Branch" ]
     type:
       - complete
+
+jobs:
+  distribution_firebase:
+    name: Firebase App Distribution
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7
+
+      - name: Install Dependencies
+        run: gem install bundler && bundle install
+
+      - name: Publish version to Firebase App Distribution
+        run: fastlane distributeFirebase

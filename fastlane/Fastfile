@@ -61,7 +61,7 @@ platform :android do
   end
 
   desc "Submit a new beta build to Firebase App Distribution"
-  lane :distribute do |options|
+  lane :distributeFirebase do |options|
     build_notes = "#{options[:notes]}\nBuilt by #{options[:author]}"
 
     build_android_app(
