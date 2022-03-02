@@ -117,4 +117,4 @@ jobs:
           gpg --batch --decrypt --output "config/keystore/dev.keystore" --passphrase "${{ secrets.DEV_SIGNING_KEYSTORE_GPG }}" --yes "dev.keystore.asc"
 
       - name: Publish Dev version to Firebase App Distribution
-        run: fastlane distributeDev
+        run: fastlane distributeDev author:"$GITHUB_ACTOR" appId:"${{ secrets.DEV_FIREBASE_APP_ID }}" group:"${{ secrets.DEV_FIREBASE_DISTRIBUTION_GROUPS }}" firebaseToken:"${{ secrets.CLI_TOKEN_FIREBASE }}"
