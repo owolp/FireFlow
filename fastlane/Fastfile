@@ -68,6 +68,7 @@ platform :android do
         task: "assemble",
         flavor: "firebase",
         build_type: "release"
+    )
 
     firebase_app_distribution(
         app: options[:appId],
