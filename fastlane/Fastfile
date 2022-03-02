@@ -59,4 +59,21 @@ platform :android do
   lane :dev_debug_unit_tests do
     gradle(task: "testDevDebugUnitTest")
   end
+
+  desc "Submit a new beta build to Firebase App Distribution"
+  lane :distribute do |options|
+    build_notes = "#{options[:notes]}\nBuilt by #{options[:author]}"
+
+    build_android_app(
+        task: "assemble",
+        flavor: "firebase",
+        build_type: "release"
+
+    firebase_app_distribution(
+        app: options[:appId],
+        groups: options[:group],
+        firebase_cli_token: options[:firebaseToken],
+        release_notes: build_notes
+    )
+  end
 end

@@ -1,0 +1,13 @@
+name: Firebase App Distribution
+
+on:
+
+  workflow_dispatch:
+    inputs:
+      message:
+        description: "Publish version to Firebase App Distribution"
+
+  workflow_run:
+    workflows: [ "All Branches", "Develop Branch", "Main Branch", "Release Branch" ]
+    type:
+      - complete
