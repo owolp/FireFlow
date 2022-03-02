@@ -50,6 +50,11 @@ platform :android do
     gradle(task: "ktlintCheck")
   end
 
+  desc "Runs Detekt"
+  lane :detekt do
+    gradle(task: "detektCheck")
+  end
+
   desc "Runs Dev unit tests"
   lane :dev_debug_unit_tests do
     gradle(task: "testDevDebugUnitTest")
