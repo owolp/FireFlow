@@ -308,7 +308,7 @@ formatting:
   ImportOrdering:
     active: true
     autoCorrect: true
-    layout: '*,java.**,javax.**,kotlin.**,^'
+    layout: '*,java.**,javax.**,kotlin.**,org.gradle.**,^'
   Indentation:
     active: true
     autoCorrect: true
