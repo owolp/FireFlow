@@ -90,13 +90,13 @@ android {
         create("dev") {
             signingConfig = signingConfigs.getByName(signingConfigDev)
             applicationIdSuffix = ".dev"
-            versionNameSuffix = "-d"
+            versionNameSuffix = "-d-${AppVersioning.retrieveVersionCode()}"
         }
 
         create("firebase") {
             signingConfig = signingConfigs.getByName(signingConfigFirebase)
             applicationIdSuffix = ".firebase"
-            versionNameSuffix = "-b"
+            versionNameSuffix = "-f-${AppVersioning.retrieveVersionCode()}"
         }
 
         create("play") {
