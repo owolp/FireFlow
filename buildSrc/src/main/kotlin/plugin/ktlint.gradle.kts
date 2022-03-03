@@ -28,6 +28,10 @@ dependencies {
 }
 
 val inputFiles = project.fileTree(mapOf("dir" to "src", "include" to "**/*.kt"))
+val kotlinFiles = "**/*.kt"
+val kotlinScriptFiles = "**/*.kts"
+val buildFiles = "**/build/**"
+val testFiles = "**/*Test.kt"
 
 val ktlintCheck by tasks.creating(JavaExec::class) {
     description = "Runs Ktlint on the whole project at once."
@@ -41,9 +45,10 @@ val ktlintCheck by tasks.creating(JavaExec::class) {
         "--reporter=html?group_by_file," +
             "output=${project.rootDir}/reports/ktlint/ktlint-check-report.html",
         "--android",
-        "src/**/*.kt",
-        "*.kts",
-        "!src/**/*Test.kt"
+        kotlinFiles,
+        kotlinScriptFiles,
+        "!$buildFiles",
+        "!$testFiles"
     )
 }
 
@@ -57,8 +62,9 @@ val ktlintFormat by tasks.creating(JavaExec::class) {
     args = listOf(
         "--android",
         "-F",
-        "src/**/*.kt",
-        "*.kts",
-        "!src/**/*Test.kt"
+        kotlinFiles,
+        kotlinScriptFiles,
+        "!$buildFiles",
+        "!$testFiles"
     )
 }

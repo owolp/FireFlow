@@ -25,7 +25,6 @@ plugins {
 
 detekt {
     toolVersion = "1.20.0-RC1"
-    config = files("$rootDir/config/detekt/detekt.yml")
 }
 
 dependencies {
@@ -34,14 +33,13 @@ dependencies {
 
 val detektCheck by tasks.registering(Detekt::class) {
     description = "Runs Detekt on the whole project at once."
+    config.setFrom(configFile)
     parallel = true
-    buildUponDefaultConfig = true
     setSource(analysisDir)
     include(kotlinFiles)
     include(kotlinScriptFiles)
     exclude(resourceFiles)
     exclude(buildFiles)
-    exclude(buildGradleFile)
     reports {
         xml.required.set(true)
         html.required.set(true)
@@ -51,16 +49,14 @@ val detektCheck by tasks.registering(Detekt::class) {
 
 val detektFormat by tasks.registering(Detekt::class) {
     description = "Formats whole project."
+    config.setFrom(configFile)
     parallel = true
-    disableDefaultRuleSets = true
-    buildUponDefaultConfig = true
     autoCorrect = true
     setSource(analysisDir)
     include(kotlinFiles)
     include(kotlinScriptFiles)
     exclude(resourceFiles)
     exclude(buildFiles)
-    exclude(buildGradleFile)
     reports {
         xml.required.set(true)
         html.required.set(true)
@@ -69,10 +65,9 @@ val detektFormat by tasks.registering(Detekt::class) {
 }
 
 val analysisDir = file(projectDir)
-val configFile = file("$rootDir/config/detekt/detekt.yml")
+val configFile = files("${project.rootDir}/config/detekt/detekt.yml")
 
 val kotlinFiles = "**/*.kt"
 val kotlinScriptFiles = "**/*.kts"
-val buildGradleFile = "**/build.gradle.kts"
 val resourceFiles = "**/resources/**"
 val buildFiles = "**/build/**"

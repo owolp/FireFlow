@@ -62,7 +62,6 @@ platform :android do
 
   desc "Submit a new Firebase build to Firebase App Distribution"
   lane :distributeFirebase do |options|
-    build_notes = "#{options[:notes]}\nBuilt by #{options[:author]}"
 
     build_android_app(
         task: "assemble",
@@ -73,8 +72,7 @@ platform :android do
     firebase_app_distribution(
         app: options[:appId],
         groups: options[:group],
-        firebase_cli_token: options[:firebaseToken],
-        release_notes: build_notes
+        firebase_cli_token: options[:firebaseToken]
     )
   end
 end

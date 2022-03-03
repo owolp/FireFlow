@@ -15,14 +15,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import java.util.Properties
-
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
 }
 
-val secretProperties = retrieveSecretProperties()
+val secretProperties = AppSecret.retrieveSecretProperties(project)
 
 android {
     val signingConfigDebug = "debug"
@@ -30,14 +28,15 @@ android {
     val signingConfigFirebase = "firebase"
     val signingConfigPlay = "play"
 
-    compileSdk = 32
+    compileSdk = AppVersioning.COMPILE_SDK
 
     defaultConfig {
         applicationId = "dev.zitech.fireflow"
-        minSdk = 29
-        targetSdk = 32
-        versionCode = 1
-        versionName = "1.0"
+        minSdk = AppVersioning.MIN_SDK
+        targetSdk = AppVersioning.TARGET_SDK
+
+        versionName = AppVersioning.retrieveVersionName()
+        versionCode = AppVersioning.retrieveVersionCode()
     }
 
     signingConfigs {
@@ -91,13 +90,13 @@ android {
         create("dev") {
             signingConfig = signingConfigs.getByName(signingConfigDev)
             applicationIdSuffix = ".dev"
-            versionNameSuffix = "-d"
+            versionNameSuffix = "-d-${AppVersioning.retrieveVersionCode()}"
         }
 
         create("firebase") {
             signingConfig = signingConfigs.getByName(signingConfigFirebase)
             applicationIdSuffix = ".firebase"
-            versionNameSuffix = "-b"
+            versionNameSuffix = "-f-${AppVersioning.retrieveVersionCode()}"
         }
 
         create("play") {
@@ -106,8 +105,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 
     kotlinOptions {
@@ -126,15 +125,4 @@ dependencies {
     implementation(libs.google.material)
 
     testImplementation(libs.junit)
-}
-
-fun retrieveSecretProperties(): Properties {
-    val secretProperties = Properties()
-
-    val secretsPropertiesFile: File = project.rootProject.file("secrets.properties")
-    if (secretsPropertiesFile.exists()) {
-        secretProperties.load(secretsPropertiesFile.inputStream())
-    }
-
-    return secretProperties
 }
