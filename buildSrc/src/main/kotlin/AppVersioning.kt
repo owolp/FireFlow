@@ -27,19 +27,9 @@ object AppVersioning {
 
     private const val LOCAL_BUILD_VERSION_CODE = 424242
 
-    fun retrieveVersionName(): String {
-        val versionName = listOf(MAJOR, MINOR, PATCH).joinToString(separator = ".")
+    fun retrieveVersionName(): String =
+        listOf(MAJOR, MINOR, PATCH).joinToString(separator = ".")
 
-        println("AppVersioning. versionName = $versionName")
-
-        return versionName
-    }
-
-    fun retrieveVersionCode(): Int {
-        val versionCode = System.getenv("GITHUB_RUN_NUMBER")?.toInt() ?: LOCAL_BUILD_VERSION_CODE
-
-        println("AppVersioning, versionCode = $versionCode")
-
-        return versionCode
-    }
+    fun retrieveVersionCode(): Int =
+        System.getenv("GITHUB_RUN_NUMBER")?.toInt() ?: LOCAL_BUILD_VERSION_CODE
 }
