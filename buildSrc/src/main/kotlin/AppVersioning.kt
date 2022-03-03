@@ -36,7 +36,7 @@ object AppVersioning {
     }
 
     fun retrieveVersionCode(): Int {
-        val versionCode = System.getenv("GITHUB_RUN_ID")?.toInt() ?: LOCAL_BUILD_VERSION_CODE
+        val versionCode = System.getenv("GITHUB_RUN_NUMBER")?.toInt() ?: LOCAL_BUILD_VERSION_CODE
 
         println("AppVersioning, versionCode = $versionCode")
 
