@@ -10,9 +10,15 @@ on:
 jobs:
   download:
     runs-on: ubuntu-latest
+
     steps:
-      - name: 'Download artifact'
-        uses: actions/github-script@v5
+      - name: Save PR number
+        env:
+          PR_NUMBER: ${{ github.event.number }}
+        run: |
+          mkdir -p ./pr
+          echo $PR_NUMBER > ./pr/pr_number
+      - uses: actions/upload-artifact@v3
         with:
-          script: |
-            mkdir -p ./pr
+          name: pr_number
+          path: pr/
