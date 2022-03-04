@@ -1,7 +1,6 @@
 name: Use the data
 
 on:
-  pull_request:
   workflow_run:
     workflows: [Upload data]
     types:

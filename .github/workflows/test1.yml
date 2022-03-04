@@ -4,20 +4,17 @@ on:
   pull_request:
 
 jobs:
-  lint:
-    name: Lint
+  upload:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v3
-
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
+      - name: Save PR number
+        env:
+          PR_NUMBER: ${{ github.event.number }}
+        run: |
+          mkdir -p ./pr
+          echo $PR_NUMBER > ./pr/pr_number
+      - uses: actions/upload-artifact@v3
         with:
-          ruby-version: 2.7
-
-      - name: Install Dependencies
-        run: gem install bundler && bundle install
-
-      - name: Run Fastlane Ktlint Lane
-        run: fastlane ktlint
+          name: pr_number
+          path: pr/
