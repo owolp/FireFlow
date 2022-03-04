@@ -2,16 +2,15 @@ name: assemble
 
 on:
   workflow_run:
-    workflows:
-      - analysis
+    workflows: [ analysis ]
     types:
-      - requested
+      - completed
 
 jobs:
   assemble_dev:
     name: Assemble Dev
     runs-on: ubuntu-latest
-#    if: ${{ github.workflow_run.conclusion == 'success' }} && ${{ github.event_name == 'push' }} && (${{ github.ref_name == 'develop' }} || ${{ github.ref_name == 'main' }} || ${{ github.ref_name == 'release' }})
+    #    if: ${{ github.workflow_run.conclusion == 'success' }} && ${{ github.event_name == 'push' }} && (${{ github.ref_name == 'develop' }} || ${{ github.ref_name == 'main' }} || ${{ github.ref_name == 'release' }})
 
     steps:
       - name: Checkout Repo
@@ -45,7 +44,7 @@ jobs:
   assemble_play:
     name: Assemble Play
     runs-on: ubuntu-latest
-#    if: ${{ github.workflow_run.conclusion == 'success' }} && ${{ github.event_name == 'push' }} && (${{ github.ref_name == 'develop' }} || ${{ github.ref_name == 'main' }} || ${{ github.ref_name == 'release' }})
+    #    if: ${{ github.workflow_run.conclusion == 'success' }} && ${{ github.event_name == 'push' }} && (${{ github.ref_name == 'develop' }} || ${{ github.ref_name == 'main' }} || ${{ github.ref_name == 'release' }})
 
     steps:
       - name: Checkout Repo
@@ -73,7 +72,7 @@ jobs:
   assemble_gallery:
     name: Assemble Gallery
     runs-on: ubuntu-latest
-#    if: ${{ github.workflow_run.conclusion == 'success' }} && ${{ github.event_name == 'push' }} && (${{ github.ref_name == 'develop' }} || ${{ github.ref_name == 'main' }} || ${{ github.ref_name == 'release' }})
+    #    if: ${{ github.workflow_run.conclusion == 'success' }} && ${{ github.event_name == 'push' }} && (${{ github.ref_name == 'develop' }} || ${{ github.ref_name == 'main' }} || ${{ github.ref_name == 'release' }})
 
     steps:
       - name: Checkout Repo
@@ -101,7 +100,7 @@ jobs:
   assemble_foss:
     name: Assemble FOSS
     runs-on: ubuntu-latest
-#    if: ${{ github.workflow_run.conclusion == 'success' }} && ${{ github.event_name == 'push' }} && (${{ github.ref_name == 'develop' }} || ${{ github.ref_name == 'main' }} || ${{ github.ref_name == 'release' }})
+    #    if: ${{ github.workflow_run.conclusion == 'success' }} && ${{ github.event_name == 'push' }} && (${{ github.ref_name == 'develop' }} || ${{ github.ref_name == 'main' }} || ${{ github.ref_name == 'release' }})
 
     steps:
       - name: Checkout Repo
