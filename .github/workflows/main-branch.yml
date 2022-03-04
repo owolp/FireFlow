@@ -91,12 +91,6 @@ jobs:
       - name: Run Fastlane Assemble Dev Release Lane
         run: fastlane assemble_dev_release
 
-      - name: Upload APK
-        uses: actions/upload-artifact@v2
-        with:
-          name: dev_app_apk
-          path: "*/build/outputs/apk/*/release/*.apk"
-
   assemble_play:
     name: Assemble Play
     needs:

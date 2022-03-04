@@ -69,12 +69,60 @@ platform :android do
     gradle(task: "testDevDebugUnitTest")
   end
 
-  desc "Submit a new Dev build to Firebase App Distribution"
-  lane :distributeDev do |options|
+  desc "Submit new Dev build to Firebase App Distribution"
+  lane :distribute_dev do |options|
 
     build_android_app(
         task: "assemble",
         flavor: "dev",
+        build_type: "release"
+    )
+
+    firebase_app_distribution(
+        app: options[:appId],
+        groups: options[:group],
+        firebase_cli_token: options[:firebaseToken]
+    )
+  end
+
+  desc "Submit new Play build to Firebase App Distribution"
+  lane :distribute_play do |options|
+
+    build_android_app(
+        task: "assemble",
+        flavor: "play",
+        build_type: "release"
+    )
+
+    firebase_app_distribution(
+        app: options[:appId],
+        groups: options[:group],
+        firebase_cli_token: options[:firebaseToken]
+    )
+  end
+
+  desc "Submit new Gallery build to Firebase App Distribution"
+  lane :distribute_gallery do |options|
+
+    build_android_app(
+        task: "assemble",
+        flavor: "gallery",
+        build_type: "release"
+    )
+
+    firebase_app_distribution(
+        app: options[:appId],
+        groups: options[:group],
+        firebase_cli_token: options[:firebaseToken]
+    )
+  end
+
+  desc "Submit new FOSS build to Firebase App Distribution"
+  lane :distribute_foss do |options|
+
+    build_android_app(
+        task: "assemble",
+        flavor: "foss",
         build_type: "release"
     )
 

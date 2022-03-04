@@ -91,12 +91,6 @@ jobs:
       - name: Run Fastlane Assemble Dev Release Lane
         run: fastlane assemble_dev_release
 
-      - name: Upload APK
-        uses: actions/upload-artifact@v2
-        with:
-          name: dev_app_apk
-          path: "*/build/outputs/apk/*/release/*.apk"
-
   assemble_play:
     name: Assemble Play
     needs:
@@ -216,7 +210,7 @@ jobs:
           gpg --batch --decrypt --output "config/keystore/dev.keystore" --passphrase "${{ secrets.DEV_SIGNING_KEYSTORE_GPG }}" --yes "dev.keystore.asc"
 
       - name: Publish Dev version to Firebase App Distribution
-        run: fastlane distributeDev appId:"${{ secrets.DEV_FIREBASE_APP_ID }}" group:"${{ secrets.FIREBASE_DISTRIBUTION_GROUPS }}" firebaseToken:"${{ secrets.CLI_TOKEN_FIREBASE }}"
+        run: fastlane distribute_dev appId:"${{ secrets.DEV_FIREBASE_APP_ID }}" group:"${{ secrets.FIREBASE_DISTRIBUTION_GROUPS }}" firebaseToken:"${{ secrets.CLI_TOKEN_FIREBASE }}"
 
   distribution_play:
     name: Play App Distribution
@@ -244,7 +238,7 @@ jobs:
           gpg --batch --decrypt --output "config/keystore/prod.keystore" --passphrase "${{ secrets.PROD_SIGNING_KEYSTORE_GPG }}" --yes "prod.keystore.asc"
 
       - name: Publish Play version to Firebase App Distribution
-        run: fastlane distributePlay appId:"${{ secrets.PLAY_FIREBASE_APP_ID }}" group:"${{ secrets.FIREBASE_DISTRIBUTION_GROUPS }}" firebaseToken:"${{ secrets.CLI_TOKEN_FIREBASE }}"
+        run: fastlane distribute_play appId:"${{ secrets.PLAY_FIREBASE_APP_ID }}" group:"${{ secrets.FIREBASE_DISTRIBUTION_GROUPS }}" firebaseToken:"${{ secrets.CLI_TOKEN_FIREBASE }}"
 
   distribution_gallery:
     name: Gallery App Distribution
@@ -272,7 +266,7 @@ jobs:
           gpg --batch --decrypt --output "config/keystore/prod.keystore" --passphrase "${{ secrets.PROD_SIGNING_KEYSTORE_GPG }}" --yes "prod.keystore.asc"
 
       - name: Publish Gallery version to Firebase App Distribution
-        run: fastlane distributeGallery appId:"${{ secrets.GALLERY_FIREBASE_APP_ID }}" group:"${{ secrets.FIREBASE_DISTRIBUTION_GROUPS }}" firebaseToken:"${{ secrets.CLI_TOKEN_FIREBASE }}"
+        run: fastlane distribute_gallery appId:"${{ secrets.GALLERY_FIREBASE_APP_ID }}" group:"${{ secrets.FIREBASE_DISTRIBUTION_GROUPS }}" firebaseToken:"${{ secrets.CLI_TOKEN_FIREBASE }}"
 
   distribution_foss:
     name: FOSS App Distribution
@@ -300,4 +294,4 @@ jobs:
           gpg --batch --decrypt --output "config/keystore/prod.keystore" --passphrase "${{ secrets.PROD_SIGNING_KEYSTORE_GPG }}" --yes "prod.keystore.asc"
 
       - name: Publish FOSS version to Firebase App Distribution
-        run: fastlane distributeGallery appId:"${{ secrets.FOSS_FIREBASE_APP_ID }}" group:"${{ secrets.FIREBASE_DISTRIBUTION_GROUPS }}" firebaseToken:"${{ secrets.CLI_TOKEN_FIREBASE }}"
+        run: fastlane distribute_foss appId:"${{ secrets.FOSS_FIREBASE_APP_ID }}" group:"${{ secrets.FIREBASE_DISTRIBUTION_GROUPS }}" firebaseToken:"${{ secrets.CLI_TOKEN_FIREBASE }}"
