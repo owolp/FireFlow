@@ -2,12 +2,16 @@ name: Use the data
 
 on:
   pull_request:
+  workflow_run:
+    workflows: [Upload data]
+    types:
+      - completed
 
 jobs:
   download:
     runs-on: ubuntu-latest
-#    needs:
-#      - upload
+    needs:
+      - upload
     steps:
       - name: 'Download artifact'
         uses: actions/github-script@v5
