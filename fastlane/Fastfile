@@ -27,20 +27,29 @@ platform :android do
     )
   end
 
-  desc "Assemble Firebase Release"
-  lane :assemble_firebase_release do
-    build_android_app(
-      task: "assemble",
-      flavor: "firebase",
-      build_type: "release"
-    )
-  end
-
   desc "Assemble Play Release"
   lane :assemble_play_release do
     build_android_app(
       task: "assemble",
       flavor: "play",
+      build_type: "release"
+    )
+  end
+
+  desc "Assemble Gallery Release"
+  lane :assemble_gallery_release do
+    build_android_app(
+      task: "assemble",
+      flavor: "gallery",
+      build_type: "release"
+    )
+  end
+
+  desc "Assemble FOSS Release"
+  lane :assemble_foss_release do
+    build_android_app(
+      task: "assemble",
+      flavor: "foss",
       build_type: "release"
     )
   end
@@ -60,12 +69,60 @@ platform :android do
     gradle(task: "testDevDebugUnitTest")
   end
 
-  desc "Submit a new Firebase build to Firebase App Distribution"
-  lane :distributeFirebase do |options|
+  desc "Submit new Dev build to Firebase App Distribution"
+  lane :distribute_dev do |options|
 
     build_android_app(
         task: "assemble",
-        flavor: "firebase",
+        flavor: "dev",
+        build_type: "release"
+    )
+
+    firebase_app_distribution(
+        app: options[:appId],
+        groups: options[:group],
+        firebase_cli_token: options[:firebaseToken]
+    )
+  end
+
+  desc "Submit new Play build to Firebase App Distribution"
+  lane :distribute_play do |options|
+
+    build_android_app(
+        task: "assemble",
+        flavor: "play",
+        build_type: "release"
+    )
+
+    firebase_app_distribution(
+        app: options[:appId],
+        groups: options[:group],
+        firebase_cli_token: options[:firebaseToken]
+    )
+  end
+
+  desc "Submit new Gallery build to Firebase App Distribution"
+  lane :distribute_gallery do |options|
+
+    build_android_app(
+        task: "assemble",
+        flavor: "gallery",
+        build_type: "release"
+    )
+
+    firebase_app_distribution(
+        app: options[:appId],
+        groups: options[:group],
+        firebase_cli_token: options[:firebaseToken]
+    )
+  end
+
+  desc "Submit new FOSS build to Firebase App Distribution"
+  lane :distribute_foss do |options|
+
+    build_android_app(
+        task: "assemble",
+        flavor: "foss",
         build_type: "release"
     )
 

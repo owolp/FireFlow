@@ -25,8 +25,7 @@ val secretProperties = AppSecret.retrieveSecretProperties(project)
 android {
     val signingConfigDebug = "debug"
     val signingConfigDev = "dev"
-    val signingConfigFirebase = "firebase"
-    val signingConfigPlay = "play"
+    val signingConfigProd = "prod"
 
     compileSdk = AppVersioning.COMPILE_SDK
 
@@ -54,18 +53,11 @@ android {
             storePassword = "${secretProperties["dev_signing_keystore_password"]}"
         }
 
-        create(signingConfigFirebase) {
-            storeFile = project.rootProject.file("config/keystore/firebase.keystore")
-            keyAlias = "${secretProperties["firebase_signing_key_alias"]}"
-            keyPassword = "${secretProperties["firebase_signing_key_password"]}"
-            storePassword = "${secretProperties["firebase_signing_keystore_password"]}"
-        }
-
-        create(signingConfigPlay) {
-            storeFile = project.rootProject.file("config/keystore/play.keystore")
-            keyAlias = "${secretProperties["play_signing_key_alias"]}"
-            keyPassword = "${secretProperties["play_signing_key_password"]}"
-            storePassword = "${secretProperties["play_signing_keystore_password"]}"
+        create(signingConfigProd) {
+            storeFile = project.rootProject.file("config/keystore/prod.keystore")
+            keyAlias = "${secretProperties["prod_signing_key_alias"]}"
+            keyPassword = "${secretProperties["prod_signing_key_password"]}"
+            storePassword = "${secretProperties["prod_signing_keystore_password"]}"
         }
     }
 
@@ -90,17 +82,22 @@ android {
         create("dev") {
             signingConfig = signingConfigs.getByName(signingConfigDev)
             applicationIdSuffix = ".dev"
-            versionNameSuffix = "-d-${AppVersioning.retrieveVersionCode()}"
-        }
-
-        create("firebase") {
-            signingConfig = signingConfigs.getByName(signingConfigFirebase)
-            applicationIdSuffix = ".firebase"
-            versionNameSuffix = "-f-${AppVersioning.retrieveVersionCode()}"
+            versionNameSuffix = "-${AppVersioning.retrieveVersionCode()}"
         }
 
         create("play") {
-            signingConfig = signingConfigs.getByName(signingConfigPlay)
+            signingConfig = signingConfigs.getByName(signingConfigProd)
+            applicationIdSuffix = ".play"
+        }
+
+        create("gallery") {
+            signingConfig = signingConfigs.getByName(signingConfigProd)
+            applicationIdSuffix = ".gallery"
+        }
+
+        create("foss") {
+            signingConfig = signingConfigs.getByName(signingConfigProd)
+            applicationIdSuffix = ".foss"
         }
     }
 
