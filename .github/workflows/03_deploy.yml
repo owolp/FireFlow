@@ -4,6 +4,8 @@ on:
   workflow_run:
     workflows:
       - 'assemble'
+    branches:
+      - '*'
     types:
       - completed
 
@@ -11,7 +13,7 @@ jobs:
   distribution_dev:
     name: Dev App Distribution
     runs-on: ubuntu-latest
-    if: github.workflow_run.conclusion == "success" && github.event_name == "push" && (github.ref_name == "develop" ||github.ref_name == "release")
+    if: github.workflow_run.conclusion == "success" && github.event_name == "push" && (github.ref_name == "develop" || github.ref_name == "release")
 
     steps:
       - name: Checkout Repo
@@ -39,7 +41,7 @@ jobs:
   distribution_play:
     name: Play App Distribution
     runs-on: ubuntu-latest
-    if: github.workflow_run.conclusion == "success" && github.event_name == "push" && (github.ref_name == "develop" ||github.ref_name == "release")
+    if: github.workflow_run.conclusion == "success" && github.event_name == "push" && (github.ref_name == "develop" || github.ref_name == "release")
 
     steps:
       - name: Checkout Repo
@@ -67,7 +69,7 @@ jobs:
   distribution_gallery:
     name: Gallery App Distribution
     runs-on: ubuntu-latest
-    if: github.workflow_run.conclusion == "success" && github.event_name == "push" && (github.ref_name == "develop" ||github.ref_name == "release")
+    if: github.workflow_run.conclusion == "success" && github.event_name == "push" && (github.ref_name == "develop" || github.ref_name == "release")
 
     steps:
       - name: Checkout Repo
@@ -95,7 +97,7 @@ jobs:
   distribution_foss:
     name: FOSS App Distribution
     runs-on: ubuntu-latest
-    if: github.workflow_run.conclusion == "success" && github.event_name == "push" && (github.ref_name == "develop" ||github.ref_name == "release")
+    if: github.workflow_run.conclusion == "success" && github.event_name == "push" && (github.ref_name == "develop" || github.ref_name == "release")
 
     steps:
       - name: Checkout Repo
