@@ -1,10 +1,7 @@
 name: Use the data
 
 on:
-  workflow_run:
-    workflows: [Upload data]
-    types:
-      - completed
+  pull_request:
 
 jobs:
   download:
