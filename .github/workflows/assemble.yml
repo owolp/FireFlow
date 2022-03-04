@@ -3,7 +3,7 @@ name: assemble
 on:
   workflow_run:
     workflows:
-      - 'analysis'
+      - analysis
     types:
       - requested
 
