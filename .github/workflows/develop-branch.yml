@@ -97,43 +97,6 @@ jobs:
           name: dev_app_apk
           path: "*/build/outputs/apk/*/release/*.apk"
 
-  assemble_firebase:
-    name: Assemble Firebase
-    needs:
-      - lint
-      - detekt
-      - unit_test
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v3
-
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 2.7
-
-      - name: Install Dependencies
-        run: gem install bundler && bundle install
-
-      - name: Restore Firebase Secrets
-        run: |
-          echo "firebase_signing_key_alias=${{ secrets.FIREBASE_SIGNING_KEY_ALIAS }}" >> secrets.properties
-          echo "firebase_signing_key_password=${{ secrets.FIREBASE_SIGNING_KEY_PASSWORD }}" >> secrets.properties
-          echo "firebase_signing_keystore_password=${{ secrets.FIREBASE_SIGNING_KEYSTORE_PASSWORD }}" >> secrets.properties
-          echo "${{ secrets.FIREBASE_KEYSTORE }}" > firebase.keystore.asc
-          gpg --batch --decrypt --output "config/keystore/firebase.keystore" --passphrase "${{ secrets.FIREBASE_SIGNING_KEYSTORE_GPG }}" --yes "firebase.keystore.asc"
-
-      - name: Run Fastlane Assemble Firebase Release Lane
-        run: fastlane assemble_firebase_release
-
-      - name: Upload APK
-        uses: actions/upload-artifact@v2
-        with:
-          name: firebase_app_apk
-          path: "*/build/outputs/apk/*/release/*.apk"
-
   assemble_play:
     name: Assemble Play
     needs:
@@ -154,21 +117,86 @@ jobs:
       - name: Install Dependencies
         run: gem install bundler && bundle install
 
-      - name: Restore Play Secrets
+      - name: Restore Prod Secrets
         run: |
-          echo "play_signing_key_alias=${{ secrets.PLAY_SIGNING_KEY_ALIAS }}" >> secrets.properties
-          echo "play_signing_key_password=${{ secrets.PLAY_SIGNING_KEY_PASSWORD }}" >> secrets.properties
-          echo "play_signing_keystore_password=${{ secrets.PLAY_SIGNING_KEYSTORE_PASSWORD }}" >> secrets.properties
-          echo "${{ secrets.PLAY_KEYSTORE }}" > play.keystore.asc
-          gpg --batch --decrypt --output "config/keystore/play.keystore" --passphrase "${{ secrets.PLAY_SIGNING_KEYSTORE_GPG }}" --yes "play.keystore.asc"
+          echo "prod_signing_key_alias=${{ secrets.PROD_SIGNING_KEY_ALIAS }}" >> secrets.properties
+          echo "prod_signing_key_password=${{ secrets.PROD_SIGNING_KEY_PASSWORD }}" >> secrets.properties
+          echo "prod_signing_keystore_password=${{ secrets.PROD_SIGNING_KEYSTORE_PASSWORD }}" >> secrets.properties
+          echo "${{ secrets.PROD_KEYSTORE }}" > prod.keystore.asc
+          gpg --batch --decrypt --output "config/keystore/prod.keystore" --passphrase "${{ secrets.PROD_SIGNING_KEYSTORE_GPG }}" --yes "prod.keystore.asc"
 
-      - name: Run Fastlane Assemble Plat Release Lane
+      - name: Run Fastlane Assemble Play Release Lane
         run: fastlane assemble_play_release
 
-  distribution_firebase:
-    name: Firebase App Distribution
+  assemble_gallery:
+    name: Assemble Gallery
     needs:
-      - assemble_firebase
+      - lint
+      - detekt
+      - unit_test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7
+
+      - name: Install Dependencies
+        run: gem install bundler && bundle install
+
+      - name: Restore Prod Secrets
+        run: |
+          echo "prod_signing_key_alias=${{ secrets.PROD_SIGNING_KEY_ALIAS }}" >> secrets.properties
+          echo "prod_signing_key_password=${{ secrets.PROD_SIGNING_KEY_PASSWORD }}" >> secrets.properties
+          echo "prod_signing_keystore_password=${{ secrets.PROD_SIGNING_KEYSTORE_PASSWORD }}" >> secrets.properties
+          echo "${{ secrets.PROD_KEYSTORE }}" > prod.keystore.asc
+          gpg --batch --decrypt --output "config/keystore/prod.keystore" --passphrase "${{ secrets.PROD_SIGNING_KEYSTORE_GPG }}" --yes "prod.keystore.asc"
+
+      - name: Run Fastlane Assemble Gallery Release Lane
+        run: fastlane assemble_gallery_release
+
+  assemble_foss:
+    name: Assemble FOSS
+    needs:
+      - lint
+      - detekt
+      - unit_test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7
+
+      - name: Install Dependencies
+        run: gem install bundler && bundle install
+
+      - name: Restore Prod Secrets
+        run: |
+          echo "prod_signing_key_alias=${{ secrets.PROD_SIGNING_KEY_ALIAS }}" >> secrets.properties
+          echo "prod_signing_key_password=${{ secrets.PROD_SIGNING_KEY_PASSWORD }}" >> secrets.properties
+          echo "prod_signing_keystore_password=${{ secrets.PROD_SIGNING_KEYSTORE_PASSWORD }}" >> secrets.properties
+          echo "${{ secrets.PROD_KEYSTORE }}" > prod.keystore.asc
+          gpg --batch --decrypt --output "config/keystore/prod.keystore" --passphrase "${{ secrets.PROD_SIGNING_KEYSTORE_GPG }}" --yes "prod.keystore.asc"
+
+      - name: Run Fastlane Assemble FOSS Release Lane
+        run: fastlane assemble_foss_release
+
+  distribution_dev:
+    name: Dev App Distribution
+    needs:
+      - assemble_dev
+      - assemble_play
+      - assemble_gallery
+      - assemble_foss
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
@@ -182,13 +210,13 @@ jobs:
       - name: Install Dependencies
         run: gem install bundler && bundle install
 
-      - name: Restore Firebase Secrets
+      - name: Restore Dev Secrets
         run: |
-          echo "firebase_signing_key_alias=${{ secrets.FIREBASE_SIGNING_KEY_ALIAS }}" >> secrets.properties
-          echo "firebase_signing_key_password=${{ secrets.FIREBASE_SIGNING_KEY_PASSWORD }}" >> secrets.properties
-          echo "firebase_signing_keystore_password=${{ secrets.FIREBASE_SIGNING_KEYSTORE_PASSWORD }}" >> secrets.properties
-          echo "${{ secrets.FIREBASE_KEYSTORE }}" > firebase.keystore.asc
-          gpg --batch --decrypt --output "config/keystore/firebase.keystore" --passphrase "${{ secrets.FIREBASE_SIGNING_KEYSTORE_GPG }}" --yes "firebase.keystore.asc"
+          echo "dev_signing_key_alias=${{ secrets.DEV_SIGNING_KEY_ALIAS }}" >> secrets.properties
+          echo "dev_signing_key_password=${{ secrets.DEV_SIGNING_KEY_PASSWORD }}" >> secrets.properties
+          echo "dev_signing_keystore_password=${{ secrets.DEV_SIGNING_KEYSTORE_PASSWORD }}" >> secrets.properties
+          echo "${{ secrets.DEV_KEYSTORE }}" > dev.keystore.asc
+          gpg --batch --decrypt --output "config/keystore/dev.keystore" --passphrase "${{ secrets.DEV_SIGNING_KEYSTORE_GPG }}" --yes "dev.keystore.asc"
 
-      - name: Publish Firebase version to Firebase App Distribution
-        run: fastlane distributeFirebase appId:"${{ secrets.FIREBASE_FIREBASE_APP_ID }}" group:"${{ secrets.FIREBASE_FIREBASE_DISTRIBUTION_GROUPS }}" firebaseToken:"${{ secrets.CLI_TOKEN_FIREBASE }}"
+      - name: Publish Dev version to Firebase App Distribution
+        run: fastlane distributeDev appId:"${{ secrets.DEV_FIREBASE_APP_ID }}" group:"${{ secrets.FIREBASE_DISTRIBUTION_GROUPS }}" firebaseToken:"${{ secrets.FIREBASE_CLI_TOKEN }}"
