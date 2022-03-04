@@ -5,7 +5,7 @@ on:
     workflows:
       - 'analysis'
     types:
-      - completed
+      - requested
 
 jobs:
   assemble_dev:
