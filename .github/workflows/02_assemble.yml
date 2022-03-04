@@ -1,72 +1,17 @@
-name: Develop Branch
+name: assemble
 
 on:
-  push:
-    branches:
-      - 'develop'
+  workflow_run:
+    workflows:
+      - 'analysis'
+    types:
+      - completed
 
 jobs:
-  lint:
-    name: Lint
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v3
-
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 2.7
-
-      - name: Install Dependencies
-        run: gem install bundler && bundle install
-
-      - name: Run Fastlane Ktlint Lane
-        run: fastlane ktlint
-
-  detekt:
-    name: Static code analysis
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v3
-
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 2.7
-
-      - name: Install Dependencies
-        run: gem install bundler && bundle install
-
-      - name: Run Fastlane Ktlint Lane
-        run: fastlane detekt
-
-  unit_test:
-    name: Unit Test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v3
-
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 2.7
-
-      - name: Install Dependencies
-        run: gem install bundler && bundle install
-
-      - name: Run Fastlane Debug Release Unit Tests Lane
-        run: fastlane dev_debug_unit_tests
-
   assemble_dev:
     name: Assemble Dev
-    needs:
-      - lint
-      - detekt
-      - unit_test
     runs-on: ubuntu-latest
+    if: github.workflow.conclusion == "success" && github.event_name == "push" && (github.ref_name == "develop" || github.ref_name == "main" ||github.ref_name == "release")
 
     steps:
       - name: Checkout Repo
@@ -99,11 +44,8 @@ jobs:
 
   assemble_play:
     name: Assemble Play
-    needs:
-      - lint
-      - detekt
-      - unit_test
     runs-on: ubuntu-latest
+    if: github.workflow.conclusion == "success" && github.event_name == "push" && (github.ref_name == "develop" || github.ref_name == "main" ||github.ref_name == "release")
 
     steps:
       - name: Checkout Repo
@@ -130,11 +72,8 @@ jobs:
 
   assemble_gallery:
     name: Assemble Gallery
-    needs:
-      - lint
-      - detekt
-      - unit_test
     runs-on: ubuntu-latest
+    if: github.workflow.conclusion == "success" && github.event_name == "push" && (github.ref_name == "develop" || github.ref_name == "main" ||github.ref_name == "release")
 
     steps:
       - name: Checkout Repo
@@ -161,11 +100,8 @@ jobs:
 
   assemble_foss:
     name: Assemble FOSS
-    needs:
-      - lint
-      - detekt
-      - unit_test
     runs-on: ubuntu-latest
+    if: github.workflow.conclusion == "success" && github.event_name == "push" && (github.ref_name == "develop" || github.ref_name == "main" ||github.ref_name == "release")
 
     steps:
       - name: Checkout Repo
@@ -189,34 +125,3 @@ jobs:
 
       - name: Run Fastlane Assemble FOSS Release Lane
         run: fastlane assemble_foss_release
-
-  distribution_dev:
-    name: Dev App Distribution
-    needs:
-      - assemble_dev
-      - assemble_play
-      - assemble_gallery
-      - assemble_foss
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v3
-
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 2.7
-
-      - name: Install Dependencies
-        run: gem install bundler && bundle install
-
-      - name: Restore Dev Secrets
-        run: |
-          echo "dev_signing_key_alias=${{ secrets.DEV_SIGNING_KEY_ALIAS }}" >> secrets.properties
-          echo "dev_signing_key_password=${{ secrets.DEV_SIGNING_KEY_PASSWORD }}" >> secrets.properties
-          echo "dev_signing_keystore_password=${{ secrets.DEV_SIGNING_KEYSTORE_PASSWORD }}" >> secrets.properties
-          echo "${{ secrets.DEV_KEYSTORE }}" > dev.keystore.asc
-          gpg --batch --decrypt --output "config/keystore/dev.keystore" --passphrase "${{ secrets.DEV_SIGNING_KEYSTORE_GPG }}" --yes "dev.keystore.asc"
-
-      - name: Publish Dev version to Firebase App Distribution
-        run: fastlane distribute_dev appId:"${{ secrets.DEV_FIREBASE_APP_ID }}" group:"${{ secrets.FIREBASE_DISTRIBUTION_GROUPS }}" firebaseToken:"${{ secrets.FIREBASE_CLI_TOKEN }}"

@@ -1,0 +1,66 @@
+name: analysis
+
+on:
+  pull_request:
+    branches:
+      - '*'
+  push:
+    branches:
+      - 'develop'
+      - 'main'
+      - 'release'
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7
+
+      - name: Install Dependencies
+        run: gem install bundler && bundle install
+
+      - name: Run Fastlane Ktlint Lane
+        run: fastlane ktlint
+
+  detekt:
+    name: Static code analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7
+
+      - name: Install Dependencies
+        run: gem install bundler && bundle install
+
+      - name: Run Fastlane Ktlint Lane
+        run: fastlane detekt
+
+  unit_test:
+    name: Unit Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7
+
+      - name: Install Dependencies
+        run: gem install bundler && bundle install
+
+      - name: Run Fastlane Debug Release Unit Tests Lane
+        run: fastlane dev_debug_unit_tests
