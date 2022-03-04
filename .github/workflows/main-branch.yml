@@ -67,7 +67,6 @@ jobs:
       - detekt
       - unit_test
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v3
@@ -98,7 +97,6 @@ jobs:
       - detekt
       - unit_test
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v3
@@ -129,7 +127,6 @@ jobs:
       - detekt
       - unit_test
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v3
@@ -160,7 +157,6 @@ jobs:
       - detekt
       - unit_test
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v3
