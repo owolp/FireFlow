@@ -27,20 +27,29 @@ platform :android do
     )
   end
 
-  desc "Assemble Firebase Release"
-  lane :assemble_firebase_release do
-    build_android_app(
-      task: "assemble",
-      flavor: "firebase",
-      build_type: "release"
-    )
-  end
-
   desc "Assemble Play Release"
   lane :assemble_play_release do
     build_android_app(
       task: "assemble",
       flavor: "play",
+      build_type: "release"
+    )
+  end
+
+  desc "Assemble Gallery Release"
+  lane :assemble_gallery_release do
+    build_android_app(
+      task: "assemble",
+      flavor: "gallery",
+      build_type: "release"
+    )
+  end
+
+  desc "Assemble FOSS Release"
+  lane :assemble_foss_release do
+    build_android_app(
+      task: "assemble",
+      flavor: "foss",
       build_type: "release"
     )
   end
@@ -60,12 +69,12 @@ platform :android do
     gradle(task: "testDevDebugUnitTest")
   end
 
-  desc "Submit a new Firebase build to Firebase App Distribution"
-  lane :distributeFirebase do |options|
+  desc "Submit a new Dev build to Firebase App Distribution"
+  lane :distributeDev do |options|
 
     build_android_app(
         task: "assemble",
-        flavor: "firebase",
+        flavor: "dev",
         build_type: "release"
     )
 
