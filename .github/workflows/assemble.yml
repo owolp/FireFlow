@@ -10,7 +10,6 @@ jobs:
   assemble_dev:
     name: Assemble Dev
     runs-on: ubuntu-latest
-    #    if: ${{ github.workflow_run.conclusion == 'success' }} && ${{ github.event_name == 'push' }} && (${{ github.ref_name == 'develop' }} || ${{ github.ref_name == 'main' }} || ${{ github.ref_name == 'release' }})
 
     steps:
       - name: Checkout Repo
