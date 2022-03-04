@@ -2,7 +2,7 @@ name: assemble
 
 on:
   workflow_run:
-    workflows: [analysis]
+    workflows: [Upload data]
     types:
       - completed
 
