@@ -191,6 +191,9 @@ jobs:
     name: Dev App Distribution
     needs:
       - assemble_dev
+      - assemble_play
+      - assemble_gallery
+      - assemble_foss
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
@@ -218,7 +221,10 @@ jobs:
   distribution_play:
     name: Play App Distribution
     needs:
+      - assemble_dev
       - assemble_play
+      - assemble_gallery
+      - assemble_foss
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
@@ -246,7 +252,10 @@ jobs:
   distribution_gallery:
     name: Gallery App Distribution
     needs:
+      - assemble_dev
+      - assemble_play
       - assemble_gallery
+      - assemble_foss
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
@@ -274,6 +283,9 @@ jobs:
   distribution_foss:
     name: FOSS App Distribution
     needs:
+      - assemble_dev
+      - assemble_play
+      - assemble_gallery
       - assemble_foss
     runs-on: ubuntu-latest
     steps:
