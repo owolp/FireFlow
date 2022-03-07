@@ -16,8 +16,8 @@
  */
 
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
+    id(BuildPlugins.APPLICATION)
+    id(BuildPlugins.KOTLIN_ANDROID)
 }
 
 val secretProperties = AppSecret.retrieveSecretProperties(project)
@@ -31,8 +31,6 @@ android {
 
     defaultConfig {
         applicationId = "dev.zitech.fireflow"
-        minSdk = AppVersioning.MIN_SDK
-        targetSdk = AppVersioning.TARGET_SDK
 
         versionName = AppVersioning.retrieveVersionName()
         versionCode = AppVersioning.retrieveVersionCode()
@@ -99,19 +97,6 @@ android {
             signingConfig = signingConfigs.getByName(signingConfigProd)
             applicationIdSuffix = ".foss"
         }
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-
-    kotlinOptions {
-        jvmTarget = "11"
-    }
-
-    sourceSets {
-        map { it.java.srcDir("src/${it.name}/kotlin") }
     }
 }
 

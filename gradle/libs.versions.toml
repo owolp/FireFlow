@@ -1,10 +1,9 @@
 [versions]
+jvmTarget = "11"
 ktlint = "0.42.1"
 kotlin = "1.6.10"
 
 [libraries]
-
-# AndroidX
 android-build-gradle = "com.android.tools.build:gradle:7.1.2"
 androidx-appcompat = "androidx.appcompat:appcompat:1.4.1"
 androidx-core = "androidx.core:core-ktx:1.7.0"
