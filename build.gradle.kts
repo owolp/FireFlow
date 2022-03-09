@@ -139,6 +139,16 @@ fun AppExtension.androidApplication(project: Project) {
         }
     }
 
+    configureBuildTypes(project)
+    configureFlavorDimensions()
+    configureProductFlavors(signingConfigDev, signingConfigProd)
+}
+
+fun AppExtension.configureFlavorDimensions() {
+    flavorDimensions("default")
+}
+
+fun AppExtension.configureBuildTypes(project: Project) {
     buildTypes {
         getByName("debug") {
             isDebuggable = true
@@ -153,9 +163,12 @@ fun AppExtension.androidApplication(project: Project) {
             )
         }
     }
+}
 
-    flavorDimensions("default")
-
+fun AppExtension.configureProductFlavors(
+    signingConfigDev: String,
+    signingConfigProd: String
+) {
     productFlavors {
         create("dev") {
             signingConfig = signingConfigs.getByName(signingConfigDev)
