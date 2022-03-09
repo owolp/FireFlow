@@ -16,8 +16,10 @@
  */
 
 object BuildPlugins {
+    const val APPLICATION = "com.android.application"
     const val DETEKT = "plugin.detekt"
     const val GRADLE_VERSION_PLUGIN = "plugin.gradle-versions-plugin"
     const val GIT_HOOKS = "plugin.git-hooks"
+    const val KOTLIN_ANDROID = "org.jetbrains.kotlin.android"
     const val KTLINT = "plugin.ktlint"
 }
