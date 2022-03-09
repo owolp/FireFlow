@@ -91,7 +91,7 @@ jobs:
         run: fastlane assemble_dev_release
 
       - name: Upload APK
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: dev_app_apk
           path: "*/build/outputs/apk/*/release/*.apk"
