@@ -26,6 +26,7 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core)
     implementation(libs.androidx.costraintlayout)
+    implementation(libs.androidx.startup)
     implementation(libs.google.material)
     implementation(libs.google.dagger.hilt.android)
     kapt(libs.google.dagger.hilt.compiler)
