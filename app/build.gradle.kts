@@ -17,7 +17,9 @@
 
 plugins {
     id(BuildPlugins.APPLICATION)
+    id(BuildPlugins.DAGGER)
     id(BuildPlugins.KOTLIN_ANDROID)
+    kotlin(BuildPlugins.KAPT)
 }
 
 dependencies {
@@ -25,6 +27,12 @@ dependencies {
     implementation(libs.androidx.core)
     implementation(libs.androidx.costraintlayout)
     implementation(libs.google.material)
+    implementation(libs.google.dagger.hilt.android)
+    kapt(libs.google.dagger.hilt.compiler)
 
     testImplementation(libs.junit)
+}
+
+kapt {
+    correctErrorTypes = true
 }
