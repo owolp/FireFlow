@@ -1,0 +1,2 @@
+*.sh linguist-vendored
+fastlane/* linguist-vendored
