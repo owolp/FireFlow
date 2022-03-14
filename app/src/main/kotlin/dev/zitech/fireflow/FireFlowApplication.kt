@@ -15,24 +15,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id(BuildPlugins.APPLICATION)
-    id(BuildPlugins.DAGGER)
-    id(BuildPlugins.KOTLIN_ANDROID)
-    kotlin(BuildPlugins.KAPT)
-}
+package dev.zitech.fireflow
 
-dependencies {
-    implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.core)
-    implementation(libs.androidx.costraintlayout)
-    implementation(libs.google.material)
-    implementation(libs.google.dagger.hilt.android)
-    kapt(libs.google.dagger.hilt.compiler)
+import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
 
-    testImplementation(libs.junit)
-}
-
-kapt {
-    correctErrorTypes = true
-}
+@HiltAndroidApp
+class FireFlowApplication : Application()
