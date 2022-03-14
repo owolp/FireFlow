@@ -15,14 +15,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-object BuildPlugins {
-    const val APPLICATION = "com.android.application"
-    const val DAGGER = "dagger.hilt.android.plugin"
-    const val DETEKT = "plugin.detekt"
-    const val GRADLE_VERSION_PLUGIN = "plugin.gradle-versions-plugin"
-    const val GIT_HOOKS = "plugin.git-hooks"
-    const val KAPT = "kapt"
-    const val KOTLIN_ANDROID = "org.jetbrains.kotlin.android"
-    const val KTLINT = "plugin.ktlint"
-    const val LIBRARY = "com.android.library"
+package dev.zitech.core.common.framework.logger
+
+import dev.zitech.core.common.BuildConfig
+
+object AppConfigProvider {
+
+    fun isDebugMode(): Boolean {
+        return BuildConfig.DEBUG
+    }
 }

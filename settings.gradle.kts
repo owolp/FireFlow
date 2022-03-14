@@ -16,3 +16,5 @@
  */
 
 include(":app")
+include(":core-component:core")
+include(":core-component:common")
