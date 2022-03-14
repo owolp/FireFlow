@@ -23,6 +23,8 @@ plugins {
 }
 
 dependencies {
+    implementation(project(Modules.core))
+
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core)
     implementation(libs.androidx.costraintlayout)

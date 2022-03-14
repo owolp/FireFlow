@@ -14,15 +14,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+dependencies {
+    api(project(Modules.common))
+}
 
-object BuildPlugins {
-    const val APPLICATION = "com.android.application"
-    const val DAGGER = "dagger.hilt.android.plugin"
-    const val DETEKT = "plugin.detekt"
-    const val GRADLE_VERSION_PLUGIN = "plugin.gradle-versions-plugin"
-    const val GIT_HOOKS = "plugin.git-hooks"
-    const val KAPT = "kapt"
-    const val KOTLIN_ANDROID = "org.jetbrains.kotlin.android"
-    const val KTLINT = "plugin.ktlint"
-    const val LIBRARY = "com.android.library"
+plugins {
+    id(BuildPlugins.KOTLIN_ANDROID)
+    id(BuildPlugins.LIBRARY)
 }
