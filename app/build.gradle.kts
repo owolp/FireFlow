@@ -23,7 +23,7 @@ plugins {
 }
 
 dependencies {
-    implementation(project(Modules.core))
+    implementation(projects.coreComponent.core)
 
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core)
