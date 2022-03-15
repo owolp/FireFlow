@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 dependencies {
-    api(project(Modules.common))
+    api(projects.coreComponent.common)
 }
 
 plugins {
