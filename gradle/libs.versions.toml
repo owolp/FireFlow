@@ -16,4 +16,5 @@ google-dagger-hilt-gradle = { module = "com.google.dagger:hilt-android-gradle-pl
 google-material = "com.google.android.material:material:1.5.0"
 jakewharton-timber = "com.jakewharton.timber:timber:5.0.1"
 jetbrains-kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+jetbrains-kotlin-coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0"
 junit = "junit:junit:4.13.2"

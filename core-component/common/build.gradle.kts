@@ -18,8 +18,16 @@
 plugins {
     id(BuildPlugins.KOTLIN_ANDROID)
     id(BuildPlugins.LIBRARY)
+    kotlin(BuildPlugins.KAPT)
 }
 
 dependencies {
+    implementation(libs.google.dagger.hilt.android)
+    kapt(libs.google.dagger.hilt.compiler)
     implementation(libs.jakewharton.timber)
+    implementation(libs.jetbrains.kotlin.coroutines)
+}
+
+kapt {
+    correctErrorTypes = true
 }

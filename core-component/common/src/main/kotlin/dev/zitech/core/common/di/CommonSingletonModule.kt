@@ -15,28 +15,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id(BuildPlugins.APPLICATION)
-    id(BuildPlugins.DAGGER)
-    id(BuildPlugins.KOTLIN_ANDROID)
-    kotlin(BuildPlugins.KAPT)
-}
+package dev.zitech.core.common.di
 
-dependencies {
-    implementation(projects.coreComponent.core)
+import dagger.Binds
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import dev.zitech.core.common.data.dispatcher.AppDispatchers
+import dev.zitech.core.common.data.dispatcher.AppDispatchersImpl
 
-    implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.core)
-    implementation(libs.androidx.costraintlayout)
-    implementation(libs.androidx.startup)
-    implementation(libs.google.material)
-    implementation(libs.google.dagger.hilt.android)
-    kapt(libs.google.dagger.hilt.compiler)
-    implementation(libs.jetbrains.kotlin.coroutines)
+@Module
+@InstallIn(SingletonComponent::class)
+interface CommonSingletonModule {
 
-    testImplementation(libs.junit)
-}
-
-kapt {
-    correctErrorTypes = true
+    @Binds
+    fun appDispatchers(appDispatchersImpl: AppDispatchersImpl): AppDispatchers
 }
