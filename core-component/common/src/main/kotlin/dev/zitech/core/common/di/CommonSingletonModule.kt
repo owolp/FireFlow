@@ -21,13 +21,15 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import dev.zitech.core.common.data.dispatcher.AppDispatchers
-import dev.zitech.core.common.data.dispatcher.AppDispatchersImpl
+import dev.zitech.core.common.framework.dispatcher.AppDispatchers
+import dev.zitech.core.common.framework.dispatcher.AppDispatchersImpl
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-interface CommonSingletonModule {
+internal interface CommonSingletonModule {
 
+    @Singleton
     @Binds
     fun appDispatchers(appDispatchersImpl: AppDispatchersImpl): AppDispatchers
 }
