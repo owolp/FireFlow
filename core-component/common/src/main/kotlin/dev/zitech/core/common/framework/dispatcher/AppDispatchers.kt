@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.common.data.dispatcher
+package dev.zitech.core.common.framework.dispatcher
 
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
