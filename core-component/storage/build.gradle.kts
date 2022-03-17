@@ -22,6 +22,9 @@ plugins {
 }
 
 dependencies {
+    implementation(projects.coreComponent.common)
+
+    implementation(libs.androidx.datastore.preferences)
     implementation(libs.google.dagger.hilt.android)
     kapt(libs.google.dagger.hilt.compiler)
     implementation(libs.jakewharton.timber)
