@@ -15,9 +15,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+package dev.zitech.core.storage.di.annotation
 
-include(":app")
-include(":core-component:core")
-include(":core-component:common")
-include(":core-component:storage")
+import javax.inject.Qualifier
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+internal annotation class StandardPreferencesDataSource
