@@ -15,28 +15,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id(BuildPlugins.APPLICATION)
-    id(BuildPlugins.DAGGER)
-    id(BuildPlugins.KOTLIN_ANDROID)
-    kotlin(BuildPlugins.KAPT)
+package dev.zitech.core.common.dispatcher
+
+import javax.inject.Inject
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+
+interface AppDispatchers {
+    val main: CoroutineDispatcher
+    val io: CoroutineDispatcher
 }
 
-dependencies {
-    implementation(projects.coreComponent.core)
-
-    implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.core)
-    implementation(libs.androidx.costraintlayout)
-    implementation(libs.androidx.startup)
-    implementation(libs.google.material)
-    implementation(libs.google.dagger.hilt.android)
-    kapt(libs.google.dagger.hilt.compiler)
-    implementation(libs.jetbrains.kotlin.coroutines)
-
-    testImplementation(libs.junit)
-}
-
-kapt {
-    correctErrorTypes = true
+class AppDispatchersImpl @Inject constructor() : AppDispatchers {
+    override val main: CoroutineDispatcher = Dispatchers.Main
+    override val io: CoroutineDispatcher = Dispatchers.IO
 }
