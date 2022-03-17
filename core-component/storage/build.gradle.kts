@@ -14,9 +14,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
-include(":app")
-include(":core-component:core")
-include(":core-component:common")
-include(":core-component:storage")
+plugins {
+    id(BuildPlugins.KOTLIN_ANDROID)
+    id(BuildPlugins.LIBRARY)
+    kotlin(BuildPlugins.KAPT)
+}
+
+dependencies {
+    implementation(libs.google.dagger.hilt.android)
+    kapt(libs.google.dagger.hilt.compiler)
+    implementation(libs.jakewharton.timber)
+    implementation(libs.jetbrains.kotlin.coroutines)
+}
+
+kapt {
+    correctErrorTypes = true
+}
