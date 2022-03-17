@@ -22,4 +22,5 @@ plugins {
 
 dependencies {
     implementation(libs.jakewharton.timber)
+    implementation(libs.jetbrains.kotlin.coroutines)
 }
