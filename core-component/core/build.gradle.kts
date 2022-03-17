@@ -16,6 +16,7 @@
  */
 dependencies {
     api(projects.coreComponent.common)
+    api(projects.coreComponent.storage)
 }
 
 plugins {
