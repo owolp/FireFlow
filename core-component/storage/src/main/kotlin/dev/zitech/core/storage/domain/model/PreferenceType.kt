@@ -15,9 +15,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+package dev.zitech.core.storage.domain.model
 
-include(":app")
-include(":core-component:core")
-include(":core-component:common")
-include(":core-component:storage")
+enum class PreferenceType {
+    STANDARD
+}
