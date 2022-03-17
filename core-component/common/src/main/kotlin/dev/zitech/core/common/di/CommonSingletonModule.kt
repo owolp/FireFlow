@@ -21,8 +21,8 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import dev.zitech.core.common.dispatcher.AppDispatchers
-import dev.zitech.core.common.dispatcher.AppDispatchersImpl
+import dev.zitech.core.common.data.dispatcher.AppDispatchers
+import dev.zitech.core.common.data.dispatcher.AppDispatchersImpl
 
 @Module
 @InstallIn(SingletonComponent::class)
