@@ -40,6 +40,7 @@ val detektCheck by tasks.registering(Detekt::class) {
     include(kotlinScriptFiles)
     exclude(resourceFiles)
     exclude(buildFiles)
+    exclude(testFiles)
     reports {
         xml.required.set(true)
         html.required.set(true)
@@ -57,6 +58,7 @@ val detektFormat by tasks.registering(Detekt::class) {
     include(kotlinScriptFiles)
     exclude(resourceFiles)
     exclude(buildFiles)
+    exclude(testFiles)
     reports {
         xml.required.set(true)
         html.required.set(true)
@@ -71,3 +73,4 @@ val kotlinFiles = "**/*.kt"
 val kotlinScriptFiles = "**/*.kts"
 val resourceFiles = "**/resources/**"
 val buildFiles = "**/build/**"
+val testFiles = "**/*Test.kt"

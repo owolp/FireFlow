@@ -32,9 +32,7 @@ dependencies {
     implementation(libs.google.material)
     implementation(libs.google.dagger.hilt.android)
     kapt(libs.google.dagger.hilt.compiler)
-    implementation(libs.jetbrains.kotlin.coroutines)
-
-    testImplementation(libs.junit)
+    implementation(libs.jetbrains.kotlin.coroutines.android)
 }
 
 kapt {

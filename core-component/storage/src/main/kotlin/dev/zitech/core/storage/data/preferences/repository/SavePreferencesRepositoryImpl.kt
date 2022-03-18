@@ -23,6 +23,7 @@ import dev.zitech.core.storage.framework.preference.PreferencesDataSource
 import javax.inject.Inject
 
 internal class SavePreferencesRepositoryImpl @Inject constructor(
+    private val securedPreferencesDataSource: PreferencesDataSource,
     private val standardPreferencesDataSource: PreferencesDataSource
 ) : SavePreferencesRepository {
 
@@ -32,6 +33,9 @@ internal class SavePreferencesRepositoryImpl @Inject constructor(
         value: Boolean
     ) {
         when (preferenceType) {
+            PreferenceType.SECURED -> {
+                securedPreferencesDataSource.saveBoolean(key, value)
+            }
             PreferenceType.STANDARD -> {
                 standardPreferencesDataSource.saveBoolean(key, value)
             }
@@ -44,6 +48,9 @@ internal class SavePreferencesRepositoryImpl @Inject constructor(
         value: Float
     ) {
         when (preferenceType) {
+            PreferenceType.SECURED -> {
+                securedPreferencesDataSource.saveFloat(key, value)
+            }
             PreferenceType.STANDARD -> {
                 standardPreferencesDataSource.saveFloat(key, value)
             }
@@ -56,6 +63,9 @@ internal class SavePreferencesRepositoryImpl @Inject constructor(
         value: Int
     ) {
         when (preferenceType) {
+            PreferenceType.SECURED -> {
+                securedPreferencesDataSource.saveInt(key, value)
+            }
             PreferenceType.STANDARD -> {
                 standardPreferencesDataSource.saveInt(key, value)
             }
@@ -68,6 +78,9 @@ internal class SavePreferencesRepositoryImpl @Inject constructor(
         value: Long
     ) {
         when (preferenceType) {
+            PreferenceType.SECURED -> {
+                securedPreferencesDataSource.saveLong(key, value)
+            }
             PreferenceType.STANDARD -> {
                 standardPreferencesDataSource.saveLong(key, value)
             }
@@ -80,6 +93,9 @@ internal class SavePreferencesRepositoryImpl @Inject constructor(
         value: String
     ) {
         when (preferenceType) {
+            PreferenceType.SECURED -> {
+                securedPreferencesDataSource.saveString(key, value)
+            }
             PreferenceType.STANDARD -> {
                 standardPreferencesDataSource.saveString(key, value)
             }

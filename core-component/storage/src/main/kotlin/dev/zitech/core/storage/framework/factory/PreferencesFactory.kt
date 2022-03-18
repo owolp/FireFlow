@@ -18,25 +18,29 @@
 package dev.zitech.core.storage.framework.factory
 
 import android.content.Context
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences as DataStorePreferences
-import androidx.datastore.preferences.preferencesDataStore
 import dev.zitech.core.storage.domain.model.PreferenceType
 import dev.zitech.core.storage.framework.preference.PreferencesDataSource
+import dev.zitech.core.storage.framework.preference.SecuredPreferencesDataSource
 import dev.zitech.core.storage.framework.preference.StandardPreferencesDataSource
 
 internal object PreferencesFactory {
 
+    private const val SECURED_PREFERENCES_NAME = "secured_preferences"
     private const val STANDARD_PREFERENCES_NAME = "standard_preferences"
-
-    private val Context.dataStore: DataStore<DataStorePreferences> by preferencesDataStore(
-        name = STANDARD_PREFERENCES_NAME
-    )
 
     fun createsPreferences(context: Context, type: PreferenceType): PreferencesDataSource =
         when (type) {
+            PreferenceType.SECURED -> {
+                SecuredPreferencesDataSource(
+                    context = context,
+                    fileName = SECURED_PREFERENCES_NAME
+                )
+            }
             PreferenceType.STANDARD -> {
-                StandardPreferencesDataSource(context.dataStore)
+                StandardPreferencesDataSource(
+                    context = context,
+                    fileName = STANDARD_PREFERENCES_NAME
+                )
             }
         }
 }

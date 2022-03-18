@@ -21,6 +21,7 @@ object BuildPlugins {
     const val DETEKT = "plugin.detekt"
     const val GRADLE_VERSION_PLUGIN = "plugin.gradle-versions-plugin"
     const val GIT_HOOKS = "plugin.git-hooks"
+    const val JUNIT5 = "de.mannodermaus.android-junit5"
     const val KAPT = "kapt"
     const val KOTLIN_ANDROID = "org.jetbrains.kotlin.android"
     const val KTLINT = "plugin.ktlint"

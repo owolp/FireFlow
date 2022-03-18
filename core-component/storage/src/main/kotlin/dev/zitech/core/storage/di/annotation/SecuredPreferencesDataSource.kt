@@ -15,9 +15,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.storage.domain.model
+package dev.zitech.core.storage.di.annotation
 
-enum class PreferenceType {
-    SECURED,
-    STANDARD
-}
+import javax.inject.Qualifier
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+internal annotation class SecuredPreferencesDataSource

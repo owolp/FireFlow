@@ -17,6 +17,7 @@
 
 package dev.zitech.core.storage.framework.preference
 
+import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences as DataStorePreferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
@@ -26,6 +27,7 @@ import androidx.datastore.preferences.core.floatPreferencesKey
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.preferencesDataStore
 import dev.zitech.core.common.framework.logger.Logger
 import java.io.IOException
 import kotlinx.coroutines.flow.Flow
@@ -34,12 +36,15 @@ import kotlinx.coroutines.flow.map
 
 @Suppress("TooManyFunctions")
 internal class StandardPreferencesDataSource(
-    private val preferenceDataStore: DataStore<DataStorePreferences>
+    context: Context,
+    private val fileName: String
 ) : PreferencesDataSource {
 
-    companion object {
-        const val TAG = "StandardPreferences"
-    }
+    private val Context.dataStore: DataStore<DataStorePreferences> by preferencesDataStore(
+        name = fileName
+    )
+
+    private val preferenceDataStore: DataStore<DataStorePreferences> = context.dataStore
 
     override fun getBoolean(key: String, defaultValue: Boolean): Flow<Boolean> =
         getDataStorePreferences().map { preferences ->
@@ -127,7 +132,7 @@ internal class StandardPreferencesDataSource(
                 preferences.remove(booleanPreferencesKey(key))
             }
         } catch (exception: IOException) {
-            Logger.e(TAG, exception)
+            Logger.e(fileName, exception)
         }
     }
 
@@ -137,7 +142,7 @@ internal class StandardPreferencesDataSource(
                 preferences.remove(floatPreferencesKey(key))
             }
         } catch (exception: IOException) {
-            Logger.e(TAG, exception)
+            Logger.e(fileName, exception)
         }
     }
 
@@ -147,7 +152,7 @@ internal class StandardPreferencesDataSource(
                 preferences.remove(intPreferencesKey(key))
             }
         } catch (exception: IOException) {
-            Logger.e(TAG, exception)
+            Logger.e(fileName, exception)
         }
     }
 
@@ -157,7 +162,7 @@ internal class StandardPreferencesDataSource(
                 preferences.remove(longPreferencesKey(key))
             }
         } catch (exception: IOException) {
-            Logger.e(TAG, exception)
+            Logger.e(fileName, exception)
         }
     }
 
@@ -167,7 +172,7 @@ internal class StandardPreferencesDataSource(
                 preferences.remove(stringPreferencesKey(key))
             }
         } catch (exception: IOException) {
-            Logger.e(TAG, exception)
+            Logger.e(fileName, exception)
         }
     }
 
@@ -177,14 +182,14 @@ internal class StandardPreferencesDataSource(
                 preferences.clear()
             }
         } catch (exception: IOException) {
-            Logger.e(TAG, exception)
+            Logger.e(fileName, exception)
         }
     }
 
     private fun getDataStorePreferences(): Flow<DataStorePreferences> =
         preferenceDataStore.data.catch { exception ->
             if (exception is IOException) {
-                Logger.e(TAG, exception)
+                Logger.e(fileName, exception)
                 emit(emptyPreferences())
             } else {
                 throw exception
