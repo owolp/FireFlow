@@ -18,5 +18,6 @@
 package dev.zitech.core.storage.domain.model
 
 enum class PreferenceType {
+    SECURED,
     STANDARD
 }
