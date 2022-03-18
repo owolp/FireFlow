@@ -24,6 +24,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 
 internal class GetPreferencesRepositoryImpl @Inject constructor(
+    private val securedPreferencesDataSource: PreferencesDataSource,
     private val standardPreferencesDataSource: PreferencesDataSource
 ) : GetPreferencesRepository {
 
@@ -32,6 +33,9 @@ internal class GetPreferencesRepositoryImpl @Inject constructor(
         key: String,
         defaultValue: Boolean
     ): Flow<Boolean> = when (preferenceType) {
+        PreferenceType.SECURED -> {
+            securedPreferencesDataSource.getBoolean(key, defaultValue)
+        }
         PreferenceType.STANDARD -> {
             standardPreferencesDataSource.getBoolean(key, defaultValue)
         }
@@ -42,6 +46,9 @@ internal class GetPreferencesRepositoryImpl @Inject constructor(
         key: String,
         defaultValue: Float
     ): Flow<Float> = when (preferenceType) {
+        PreferenceType.SECURED -> {
+            securedPreferencesDataSource.getFloat(key, defaultValue)
+        }
         PreferenceType.STANDARD -> {
             standardPreferencesDataSource.getFloat(key, defaultValue)
         }
@@ -52,6 +59,9 @@ internal class GetPreferencesRepositoryImpl @Inject constructor(
         key: String,
         defaultValue: Int
     ): Flow<Int> = when (preferenceType) {
+        PreferenceType.SECURED -> {
+            securedPreferencesDataSource.getInt(key, defaultValue)
+        }
         PreferenceType.STANDARD -> {
             standardPreferencesDataSource.getInt(key, defaultValue)
         }
@@ -62,6 +72,9 @@ internal class GetPreferencesRepositoryImpl @Inject constructor(
         key: String,
         defaultValue: Long
     ): Flow<Long> = when (preferenceType) {
+        PreferenceType.SECURED -> {
+            securedPreferencesDataSource.getLong(key, defaultValue)
+        }
         PreferenceType.STANDARD -> {
             standardPreferencesDataSource.getLong(key, defaultValue)
         }
@@ -72,6 +85,9 @@ internal class GetPreferencesRepositoryImpl @Inject constructor(
         key: String,
         defaultValue: String?
     ): Flow<String?> = when (preferenceType) {
+        PreferenceType.SECURED -> {
+            securedPreferencesDataSource.getString(key, defaultValue)
+        }
         PreferenceType.STANDARD -> {
             standardPreferencesDataSource.getString(key, defaultValue)
         }

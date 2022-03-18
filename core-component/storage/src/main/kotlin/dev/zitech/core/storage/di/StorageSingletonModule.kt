@@ -27,6 +27,7 @@ import dev.zitech.core.storage.data.preferences.repository.ContainsPreferencesRe
 import dev.zitech.core.storage.data.preferences.repository.GetPreferencesRepositoryImpl
 import dev.zitech.core.storage.data.preferences.repository.RemovePreferencesRepositoryImpl
 import dev.zitech.core.storage.data.preferences.repository.SavePreferencesRepositoryImpl
+import dev.zitech.core.storage.di.annotation.SecuredPreferencesDataSource
 import dev.zitech.core.storage.di.annotation.StandardPreferencesDataSource
 import dev.zitech.core.storage.domain.model.PreferenceType
 import dev.zitech.core.storage.domain.repository.ContainsPreferencesRepository
@@ -56,9 +57,11 @@ internal object StorageSingletonModule {
     @Singleton
     @Provides
     fun containsPreferencesRepository(
+        @SecuredPreferencesDataSource securedPreferencesDataSource: PreferencesDataSource,
         @StandardPreferencesDataSource standardPreferencesDataSource: PreferencesDataSource
     ): ContainsPreferencesRepository {
         return ContainsPreferencesRepositoryImpl(
+            securedPreferencesDataSource = securedPreferencesDataSource,
             standardPreferencesDataSource = standardPreferencesDataSource
         )
     }
@@ -66,9 +69,11 @@ internal object StorageSingletonModule {
     @Singleton
     @Provides
     fun getPreferencesRepository(
+        @SecuredPreferencesDataSource securedPreferencesDataSource: PreferencesDataSource,
         @StandardPreferencesDataSource standardPreferencesDataSource: PreferencesDataSource
     ): GetPreferencesRepository {
         return GetPreferencesRepositoryImpl(
+            securedPreferencesDataSource = securedPreferencesDataSource,
             standardPreferencesDataSource = standardPreferencesDataSource
         )
     }
@@ -76,9 +81,11 @@ internal object StorageSingletonModule {
     @Singleton
     @Provides
     fun removePreferencesRepository(
+        @SecuredPreferencesDataSource securedPreferencesDataSource: PreferencesDataSource,
         @StandardPreferencesDataSource standardPreferencesDataSource: PreferencesDataSource
     ): RemovePreferencesRepository {
         return RemovePreferencesRepositoryImpl(
+            securedPreferencesDataSource = securedPreferencesDataSource,
             standardPreferencesDataSource = standardPreferencesDataSource
         )
     }
@@ -86,9 +93,11 @@ internal object StorageSingletonModule {
     @Singleton
     @Provides
     fun savePreferencesRepository(
+        @SecuredPreferencesDataSource securedPreferencesDataSource: PreferencesDataSource,
         @StandardPreferencesDataSource standardPreferencesDataSource: PreferencesDataSource
     ): SavePreferencesRepository {
         return SavePreferencesRepositoryImpl(
+            securedPreferencesDataSource = securedPreferencesDataSource,
             standardPreferencesDataSource = standardPreferencesDataSource
         )
     }
