@@ -25,7 +25,7 @@ dependencies {
     implementation(libs.google.dagger.hilt.android)
     kapt(libs.google.dagger.hilt.compiler)
     implementation(libs.jakewharton.timber)
-    implementation(libs.jetbrains.kotlin.coroutines)
+    implementation(libs.jetbrains.kotlin.coroutines.android)
 }
 
 kapt {

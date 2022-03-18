@@ -18,6 +18,7 @@
 plugins {
     id(BuildPlugins.KOTLIN_ANDROID)
     id(BuildPlugins.LIBRARY)
+    id(BuildPlugins.JUNIT5)
     kotlin(BuildPlugins.KAPT)
 }
 
@@ -30,7 +31,14 @@ dependencies {
     implementation(libs.google.dagger.hilt.android)
     kapt(libs.google.dagger.hilt.compiler)
     implementation(libs.jakewharton.timber)
-    implementation(libs.jetbrains.kotlin.coroutines)
+    implementation(libs.jetbrains.kotlin.coroutines.android)
+
+    testImplementation(libs.google.truth)
+    testImplementation(libs.cash.turbine)
+    testImplementation(libs.mockk.mockk)
+    implementation(libs.jetbrains.kotlin.coroutines.test)
+    testImplementation(libs.junit.jupiter.api)
+    testRuntimeOnly(libs.junit.jupiter.engine)
 }
 
 kapt {
