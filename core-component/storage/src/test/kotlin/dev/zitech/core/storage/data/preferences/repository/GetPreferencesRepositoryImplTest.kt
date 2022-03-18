@@ -54,7 +54,6 @@ internal class GetPreferencesRepositoryImplTest {
     @Nested
     inner class Boolean {
 
-
         private val defaultValue = DataFactory.createRandomBoolean()
 
         @Test
@@ -96,7 +95,6 @@ internal class GetPreferencesRepositoryImplTest {
 
     @Nested
     inner class Float {
-
 
         private val defaultValue = DataFactory.createRandomDouble().toFloat()
 
@@ -140,7 +138,6 @@ internal class GetPreferencesRepositoryImplTest {
     @Nested
     inner class Int {
 
-
         private val defaultValue = DataFactory.createRandomInt()
 
         @Test
@@ -183,7 +180,6 @@ internal class GetPreferencesRepositoryImplTest {
     @Nested
     inner class Long {
 
-
         private val defaultValue = DataFactory.createRandomLong()
 
         @Test
@@ -225,7 +221,6 @@ internal class GetPreferencesRepositoryImplTest {
 
     @Nested
     inner class String {
-
 
         private val defaultValue = DataFactory.createRandomString()
 

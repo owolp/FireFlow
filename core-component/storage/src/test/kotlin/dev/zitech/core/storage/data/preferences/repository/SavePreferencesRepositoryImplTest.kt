@@ -53,7 +53,6 @@ internal class SavePreferencesRepositoryImplTest {
     @Nested
     inner class Boolean {
 
-
         @Test
         @DisplayName("WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource")
         fun securedPreferencesDataSource() = runBlocking {
@@ -85,8 +84,6 @@ internal class SavePreferencesRepositoryImplTest {
 
     @Nested
     inner class Float {
-
-
 
         @Test
         @DisplayName("WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource")
@@ -120,8 +117,6 @@ internal class SavePreferencesRepositoryImplTest {
     @Nested
     inner class Int {
 
-
-
         @Test
         @DisplayName("WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource")
         fun securedPreferencesDataSource() = runBlocking {
@@ -154,8 +149,6 @@ internal class SavePreferencesRepositoryImplTest {
     @Nested
     inner class Long {
 
-
-
         @Test
         @DisplayName("WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource")
         fun securedPreferencesDataSource() = runBlocking {
@@ -187,8 +180,6 @@ internal class SavePreferencesRepositoryImplTest {
 
     @Nested
     inner class String {
-
-
 
         @Test
         @DisplayName("WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource")
