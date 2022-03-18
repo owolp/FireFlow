@@ -25,6 +25,7 @@ dependencies {
     implementation(projects.coreComponent.common)
 
     implementation(libs.androidx.datastore.preferences)
+    implementation(libs.androidx.security.crypto)
     implementation(libs.google.dagger.hilt.android)
     kapt(libs.google.dagger.hilt.compiler)
     implementation(libs.jakewharton.timber)
