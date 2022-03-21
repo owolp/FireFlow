@@ -24,6 +24,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 
 internal class ContainsPreferencesRepositoryImpl @Inject constructor(
+    private val developmentPreferencesDataSource: PreferencesDataSource,
     private val securedPreferencesDataSource: PreferencesDataSource,
     private val standardPreferencesDataSource: PreferencesDataSource
 ) : ContainsPreferencesRepository {
@@ -32,6 +33,9 @@ internal class ContainsPreferencesRepositoryImpl @Inject constructor(
         preferenceType: PreferenceType,
         key: String
     ): Flow<Boolean> = when (preferenceType) {
+        PreferenceType.DEVELOPMENT -> {
+            developmentPreferencesDataSource.containsBoolean(key)
+        }
         PreferenceType.SECURED -> {
             securedPreferencesDataSource.containsBoolean(key)
         }
@@ -44,6 +48,9 @@ internal class ContainsPreferencesRepositoryImpl @Inject constructor(
         preferenceType: PreferenceType,
         key: String
     ): Flow<Boolean> = when (preferenceType) {
+        PreferenceType.DEVELOPMENT -> {
+            developmentPreferencesDataSource.containsFloat(key)
+        }
         PreferenceType.SECURED -> {
             securedPreferencesDataSource.containsFloat(key)
         }
@@ -56,6 +63,9 @@ internal class ContainsPreferencesRepositoryImpl @Inject constructor(
         preferenceType: PreferenceType,
         key: String
     ): Flow<Boolean> = when (preferenceType) {
+        PreferenceType.DEVELOPMENT -> {
+            developmentPreferencesDataSource.containsInt(key)
+        }
         PreferenceType.SECURED -> {
             securedPreferencesDataSource.containsInt(key)
         }
@@ -68,6 +78,9 @@ internal class ContainsPreferencesRepositoryImpl @Inject constructor(
         preferenceType: PreferenceType,
         key: String
     ): Flow<Boolean> = when (preferenceType) {
+        PreferenceType.DEVELOPMENT -> {
+            developmentPreferencesDataSource.containsLong(key)
+        }
         PreferenceType.SECURED -> {
             securedPreferencesDataSource.containsLong(key)
         }
@@ -80,6 +93,9 @@ internal class ContainsPreferencesRepositoryImpl @Inject constructor(
         preferenceType: PreferenceType,
         key: String
     ): Flow<Boolean> = when (preferenceType) {
+        PreferenceType.DEVELOPMENT -> {
+            developmentPreferencesDataSource.containsString(key)
+        }
         PreferenceType.SECURED -> {
             securedPreferencesDataSource.containsString(key)
         }

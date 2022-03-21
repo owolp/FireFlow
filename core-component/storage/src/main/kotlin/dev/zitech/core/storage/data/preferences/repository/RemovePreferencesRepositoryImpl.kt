@@ -23,6 +23,7 @@ import dev.zitech.core.storage.framework.preference.PreferencesDataSource
 import javax.inject.Inject
 
 internal class RemovePreferencesRepositoryImpl @Inject constructor(
+    private val developmentPreferencesDataSource: PreferencesDataSource,
     private val securedPreferencesDataSource: PreferencesDataSource,
     private val standardPreferencesDataSource: PreferencesDataSource
 ) : RemovePreferencesRepository {
@@ -32,6 +33,9 @@ internal class RemovePreferencesRepositoryImpl @Inject constructor(
         key: String
     ) {
         when (preferenceType) {
+            PreferenceType.DEVELOPMENT -> {
+                developmentPreferencesDataSource.removeBoolean(key)
+            }
             PreferenceType.SECURED -> {
                 securedPreferencesDataSource.removeBoolean(key)
             }
@@ -46,6 +50,9 @@ internal class RemovePreferencesRepositoryImpl @Inject constructor(
         key: String
     ) {
         when (preferenceType) {
+            PreferenceType.DEVELOPMENT -> {
+                developmentPreferencesDataSource.removeFloat(key)
+            }
             PreferenceType.SECURED -> {
                 securedPreferencesDataSource.removeFloat(key)
             }
@@ -60,6 +67,9 @@ internal class RemovePreferencesRepositoryImpl @Inject constructor(
         key: String
     ) {
         when (preferenceType) {
+            PreferenceType.DEVELOPMENT -> {
+                developmentPreferencesDataSource.removeInt(key)
+            }
             PreferenceType.SECURED -> {
                 securedPreferencesDataSource.removeInt(key)
             }
@@ -74,6 +84,9 @@ internal class RemovePreferencesRepositoryImpl @Inject constructor(
         key: String
     ) {
         when (preferenceType) {
+            PreferenceType.DEVELOPMENT -> {
+                developmentPreferencesDataSource.removeLong(key)
+            }
             PreferenceType.SECURED -> {
                 securedPreferencesDataSource.removeLong(key)
             }
@@ -88,6 +101,9 @@ internal class RemovePreferencesRepositoryImpl @Inject constructor(
         key: String
     ) {
         when (preferenceType) {
+            PreferenceType.DEVELOPMENT -> {
+                developmentPreferencesDataSource.removeString(key)
+            }
             PreferenceType.SECURED -> {
                 securedPreferencesDataSource.removeString(key)
             }
@@ -99,6 +115,9 @@ internal class RemovePreferencesRepositoryImpl @Inject constructor(
 
     override suspend fun removeAll(preferenceType: PreferenceType) {
         when (preferenceType) {
+            PreferenceType.DEVELOPMENT -> {
+                developmentPreferencesDataSource.removeAll()
+            }
             PreferenceType.SECURED -> {
                 securedPreferencesDataSource.removeAll()
             }

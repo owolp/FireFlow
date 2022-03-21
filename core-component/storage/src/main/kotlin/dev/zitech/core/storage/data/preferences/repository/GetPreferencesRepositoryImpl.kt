@@ -24,6 +24,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 
 internal class GetPreferencesRepositoryImpl @Inject constructor(
+    private val developmentPreferencesDataSource: PreferencesDataSource,
     private val securedPreferencesDataSource: PreferencesDataSource,
     private val standardPreferencesDataSource: PreferencesDataSource
 ) : GetPreferencesRepository {
@@ -33,6 +34,9 @@ internal class GetPreferencesRepositoryImpl @Inject constructor(
         key: String,
         defaultValue: Boolean
     ): Flow<Boolean> = when (preferenceType) {
+        PreferenceType.DEVELOPMENT -> {
+            developmentPreferencesDataSource.getBoolean(key, defaultValue)
+        }
         PreferenceType.SECURED -> {
             securedPreferencesDataSource.getBoolean(key, defaultValue)
         }
@@ -46,6 +50,9 @@ internal class GetPreferencesRepositoryImpl @Inject constructor(
         key: String,
         defaultValue: Float
     ): Flow<Float> = when (preferenceType) {
+        PreferenceType.DEVELOPMENT -> {
+            developmentPreferencesDataSource.getFloat(key, defaultValue)
+        }
         PreferenceType.SECURED -> {
             securedPreferencesDataSource.getFloat(key, defaultValue)
         }
@@ -59,6 +66,9 @@ internal class GetPreferencesRepositoryImpl @Inject constructor(
         key: String,
         defaultValue: Int
     ): Flow<Int> = when (preferenceType) {
+        PreferenceType.DEVELOPMENT -> {
+            developmentPreferencesDataSource.getInt(key, defaultValue)
+        }
         PreferenceType.SECURED -> {
             securedPreferencesDataSource.getInt(key, defaultValue)
         }
@@ -72,6 +82,9 @@ internal class GetPreferencesRepositoryImpl @Inject constructor(
         key: String,
         defaultValue: Long
     ): Flow<Long> = when (preferenceType) {
+        PreferenceType.DEVELOPMENT -> {
+            developmentPreferencesDataSource.getLong(key, defaultValue)
+        }
         PreferenceType.SECURED -> {
             securedPreferencesDataSource.getLong(key, defaultValue)
         }
@@ -85,6 +98,9 @@ internal class GetPreferencesRepositoryImpl @Inject constructor(
         key: String,
         defaultValue: String?
     ): Flow<String?> = when (preferenceType) {
+        PreferenceType.DEVELOPMENT -> {
+            developmentPreferencesDataSource.getString(key, defaultValue)
+        }
         PreferenceType.SECURED -> {
             securedPreferencesDataSource.getString(key, defaultValue)
         }
