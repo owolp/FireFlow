@@ -14,13 +14,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-dependencies {
-    api(projects.coreComponent.common)
-    api(projects.coreComponent.featureFlag)
-    api(projects.coreComponent.storage)
-}
 
 plugins {
     id(BuildPlugins.KOTLIN_ANDROID)
     id(BuildPlugins.LIBRARY)
+    id(BuildPlugins.JUNIT5)
+    kotlin(BuildPlugins.KAPT)
+}
+
+dependencies {
+
+    implementation(libs.google.dagger.hilt.android)
+    kapt(libs.google.dagger.hilt.compiler)
+    implementation(libs.jetbrains.kotlin.coroutines.android)
+
+    testImplementation(libs.google.truth)
+    testImplementation(libs.mockk.mockk)
+    implementation(libs.jetbrains.kotlin.coroutines.test)
+    testImplementation(libs.junit.jupiter.api)
+    testRuntimeOnly(libs.junit.jupiter.engine)
+}
+
+kapt {
+    correctErrorTypes = true
 }
