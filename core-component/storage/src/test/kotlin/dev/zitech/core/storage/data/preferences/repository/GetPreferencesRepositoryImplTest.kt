@@ -38,6 +38,7 @@ internal class GetPreferencesRepositoryImplTest {
 
     private val key = DataFactory.createRandomString()
 
+    private val developmentPreferencesDataSource = mockk<PreferencesDataSource>()
     private val securedPreferencesDataSource = mockk<PreferencesDataSource>()
     private val standardPreferencesDataSource = mockk<PreferencesDataSource>()
 
@@ -46,6 +47,7 @@ internal class GetPreferencesRepositoryImplTest {
     @BeforeEach
     fun setUp() {
         sut = GetPreferencesRepositoryImpl(
+            developmentPreferencesDataSource = developmentPreferencesDataSource,
             securedPreferencesDataSource = securedPreferencesDataSource,
             standardPreferencesDataSource = standardPreferencesDataSource
         )
@@ -55,6 +57,29 @@ internal class GetPreferencesRepositoryImplTest {
     inner class Boolean {
 
         private val defaultValue = DataFactory.createRandomBoolean()
+
+        @Test
+        @DisplayName("WHEN called with PreferenceType.DEVELOPMENT THEN return result from " +
+            "developmentPreferencesDataSource")
+        fun developmentPreferencesDataSource() = runBlocking {
+            val preferenceType = PreferenceType.DEVELOPMENT
+            val flowResult = DataFactory.createRandomBoolean()
+
+            every { developmentPreferencesDataSource.getBoolean(key, defaultValue) } returns flowOf(
+                flowResult
+            )
+
+            sut.getBoolean(preferenceType, key, defaultValue).test {
+                assertThat(awaitItem()).isEqualTo(flowResult)
+                awaitComplete()
+            }
+            coVerify { developmentPreferencesDataSource.getBoolean(key, defaultValue) }
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
+        }
 
         @Test
         @DisplayName("WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource")
@@ -71,7 +96,11 @@ internal class GetPreferencesRepositoryImplTest {
                 awaitComplete()
             }
             coVerify { securedPreferencesDataSource.getBoolean(key, defaultValue) }
-            confirmVerified(securedPreferencesDataSource, standardPreferencesDataSource)
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
         }
 
         @Test
@@ -89,7 +118,11 @@ internal class GetPreferencesRepositoryImplTest {
                 awaitComplete()
             }
             coVerify { standardPreferencesDataSource.getBoolean(key, defaultValue) }
-            confirmVerified(securedPreferencesDataSource, standardPreferencesDataSource)
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
         }
     }
 
@@ -97,6 +130,29 @@ internal class GetPreferencesRepositoryImplTest {
     inner class Float {
 
         private val defaultValue = DataFactory.createRandomDouble().toFloat()
+
+        @Test
+        @DisplayName("WHEN called with PreferenceType.DEVELOPMENT THEN return result from " +
+            "developmentPreferencesDataSource")
+        fun developmentPreferencesDataSource() = runBlocking {
+            val preferenceType = PreferenceType.DEVELOPMENT
+            val flowResult = DataFactory.createRandomDouble().toFloat()
+
+            every { developmentPreferencesDataSource.getFloat(key, defaultValue) } returns flowOf(
+                flowResult
+            )
+
+            sut.getFloat(preferenceType, key, defaultValue).test {
+                assertThat(awaitItem()).isEqualTo(flowResult)
+                awaitComplete()
+            }
+            coVerify { developmentPreferencesDataSource.getFloat(key, defaultValue) }
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
+        }
 
         @Test
         @DisplayName("WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource")
@@ -113,7 +169,11 @@ internal class GetPreferencesRepositoryImplTest {
                 awaitComplete()
             }
             coVerify { securedPreferencesDataSource.getFloat(key, defaultValue) }
-            confirmVerified(securedPreferencesDataSource, standardPreferencesDataSource)
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
         }
 
         @Test
@@ -131,7 +191,11 @@ internal class GetPreferencesRepositoryImplTest {
                 awaitComplete()
             }
             coVerify { standardPreferencesDataSource.getFloat(key, defaultValue) }
-            confirmVerified(securedPreferencesDataSource, standardPreferencesDataSource)
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
         }
     }
 
@@ -139,6 +203,29 @@ internal class GetPreferencesRepositoryImplTest {
     inner class Int {
 
         private val defaultValue = DataFactory.createRandomInt()
+
+        @Test
+        @DisplayName("WHEN called with PreferenceType.DEVELOPMENT THEN return result from " +
+            "developmentPreferencesDataSource")
+        fun developmentPreferencesDataSource() = runBlocking {
+            val preferenceType = PreferenceType.DEVELOPMENT
+            val flowResult = DataFactory.createRandomInt()
+
+            every { developmentPreferencesDataSource.getInt(key, defaultValue) } returns flowOf(
+                flowResult
+            )
+
+            sut.getInt(preferenceType, key, defaultValue).test {
+                assertThat(awaitItem()).isEqualTo(flowResult)
+                awaitComplete()
+            }
+            coVerify { developmentPreferencesDataSource.getInt(key, defaultValue) }
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
+        }
 
         @Test
         @DisplayName("WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource")
@@ -155,7 +242,11 @@ internal class GetPreferencesRepositoryImplTest {
                 awaitComplete()
             }
             coVerify { securedPreferencesDataSource.getInt(key, defaultValue) }
-            confirmVerified(securedPreferencesDataSource, standardPreferencesDataSource)
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
         }
 
         @Test
@@ -173,7 +264,11 @@ internal class GetPreferencesRepositoryImplTest {
                 awaitComplete()
             }
             coVerify { standardPreferencesDataSource.getInt(key, defaultValue) }
-            confirmVerified(securedPreferencesDataSource, standardPreferencesDataSource)
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
         }
     }
 
@@ -181,6 +276,29 @@ internal class GetPreferencesRepositoryImplTest {
     inner class Long {
 
         private val defaultValue = DataFactory.createRandomLong()
+
+        @Test
+        @DisplayName("WHEN called with PreferenceType.DEVELOPMENT THEN return result from " +
+            "developmentPreferencesDataSource")
+        fun developmentPreferencesDataSource() = runBlocking {
+            val preferenceType = PreferenceType.DEVELOPMENT
+            val flowResult = DataFactory.createRandomLong()
+
+            every { developmentPreferencesDataSource.getLong(key, defaultValue) } returns flowOf(
+                flowResult
+            )
+
+            sut.getLong(preferenceType, key, defaultValue).test {
+                assertThat(awaitItem()).isEqualTo(flowResult)
+                awaitComplete()
+            }
+            coVerify { developmentPreferencesDataSource.getLong(key, defaultValue) }
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
+        }
 
         @Test
         @DisplayName("WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource")
@@ -197,7 +315,11 @@ internal class GetPreferencesRepositoryImplTest {
                 awaitComplete()
             }
             coVerify { securedPreferencesDataSource.getLong(key, defaultValue) }
-            confirmVerified(securedPreferencesDataSource, standardPreferencesDataSource)
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
         }
 
         @Test
@@ -215,7 +337,11 @@ internal class GetPreferencesRepositoryImplTest {
                 awaitComplete()
             }
             coVerify { standardPreferencesDataSource.getLong(key, defaultValue) }
-            confirmVerified(securedPreferencesDataSource, standardPreferencesDataSource)
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
         }
     }
 
@@ -223,6 +349,29 @@ internal class GetPreferencesRepositoryImplTest {
     inner class String {
 
         private val defaultValue = DataFactory.createRandomString()
+
+        @Test
+        @DisplayName("WHEN called with PreferenceType.DEVELOPMENT THEN return result from " +
+            "developmentPreferencesDataSource")
+        fun developmentPreferencesDataSource() = runBlocking {
+            val preferenceType = PreferenceType.DEVELOPMENT
+            val flowResult = DataFactory.createRandomString()
+
+            every { developmentPreferencesDataSource.getString(key, defaultValue) } returns flowOf(
+                flowResult
+            )
+
+            sut.getString(preferenceType, key, defaultValue).test {
+                assertThat(awaitItem()).isEqualTo(flowResult)
+                awaitComplete()
+            }
+            coVerify { developmentPreferencesDataSource.getString(key, defaultValue) }
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
+        }
 
         @Test
         @DisplayName("WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource")
@@ -239,7 +388,11 @@ internal class GetPreferencesRepositoryImplTest {
                 awaitComplete()
             }
             coVerify { securedPreferencesDataSource.getString(key, defaultValue) }
-            confirmVerified(securedPreferencesDataSource, standardPreferencesDataSource)
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
         }
 
         @Test
@@ -257,7 +410,11 @@ internal class GetPreferencesRepositoryImplTest {
                 awaitComplete()
             }
             coVerify { standardPreferencesDataSource.getString(key, defaultValue) }
-            confirmVerified(securedPreferencesDataSource, standardPreferencesDataSource)
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
         }
     }
 }

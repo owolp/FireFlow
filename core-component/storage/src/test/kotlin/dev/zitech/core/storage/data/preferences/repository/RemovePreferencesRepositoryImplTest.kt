@@ -37,6 +37,7 @@ internal class RemovePreferencesRepositoryImplTest {
 
     private val key = DataFactory.createRandomString()
 
+    private val developmentPreferencesDataSource = mockk<PreferencesDataSource>()
     private val securedPreferencesDataSource = mockk<PreferencesDataSource>()
     private val standardPreferencesDataSource = mockk<PreferencesDataSource>()
 
@@ -45,6 +46,7 @@ internal class RemovePreferencesRepositoryImplTest {
     @BeforeEach
     fun setUp() {
         sut = RemovePreferencesRepositoryImpl(
+            developmentPreferencesDataSource = developmentPreferencesDataSource,
             securedPreferencesDataSource = securedPreferencesDataSource,
             standardPreferencesDataSource = standardPreferencesDataSource
         )
@@ -52,6 +54,24 @@ internal class RemovePreferencesRepositoryImplTest {
 
     @Nested
     inner class Boolean {
+
+        @Test
+        @DisplayName("WHEN called with PreferenceType.DEVELOPMENT THEN return result from " +
+            "developmentPreferencesDataSource")
+        fun developmentPreferencesDataSource() = runBlocking {
+            val preferenceType = PreferenceType.DEVELOPMENT
+
+            coEvery { developmentPreferencesDataSource.removeBoolean(key) } just Runs
+
+            sut.removeBoolean(preferenceType, key)
+
+            coVerify { developmentPreferencesDataSource.removeBoolean(key) }
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
+        }
 
         @Test
         @DisplayName("WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource")
@@ -63,7 +83,11 @@ internal class RemovePreferencesRepositoryImplTest {
             sut.removeBoolean(preferenceType, key)
 
             coVerify { securedPreferencesDataSource.removeBoolean(key) }
-            confirmVerified(securedPreferencesDataSource, standardPreferencesDataSource)
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
         }
 
         @Test
@@ -76,12 +100,34 @@ internal class RemovePreferencesRepositoryImplTest {
             sut.removeBoolean(preferenceType, key)
 
             coVerify { standardPreferencesDataSource.removeBoolean(key) }
-            confirmVerified(securedPreferencesDataSource, standardPreferencesDataSource)
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
         }
     }
 
     @Nested
     inner class Float {
+
+        @Test
+        @DisplayName("WHEN called with PreferenceType.DEVELOPMENT THEN return result from " +
+            "developmentPreferencesDataSource")
+        fun developmentPreferencesDataSource() = runBlocking {
+            val preferenceType = PreferenceType.DEVELOPMENT
+
+            coEvery { developmentPreferencesDataSource.removeFloat(key) } just Runs
+
+            sut.removeFloat(preferenceType, key)
+
+            coVerify { developmentPreferencesDataSource.removeFloat(key) }
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
+        }
 
         @Test
         @DisplayName("WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource")
@@ -93,7 +139,11 @@ internal class RemovePreferencesRepositoryImplTest {
             sut.removeFloat(preferenceType, key)
 
             coVerify { securedPreferencesDataSource.removeFloat(key) }
-            confirmVerified(securedPreferencesDataSource, standardPreferencesDataSource)
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
         }
 
         @Test
@@ -106,12 +156,34 @@ internal class RemovePreferencesRepositoryImplTest {
             sut.removeFloat(preferenceType, key)
 
             coVerify { standardPreferencesDataSource.removeFloat(key) }
-            confirmVerified(securedPreferencesDataSource, standardPreferencesDataSource)
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
         }
     }
 
     @Nested
     inner class Int {
+
+        @Test
+        @DisplayName("WHEN called with PreferenceType.DEVELOPMENT THEN return result from " +
+            "developmentPreferencesDataSource")
+        fun developmentPreferencesDataSource() = runBlocking {
+            val preferenceType = PreferenceType.DEVELOPMENT
+
+            coEvery { developmentPreferencesDataSource.removeInt(key) } just Runs
+
+            sut.removeInt(preferenceType, key)
+
+            coVerify { developmentPreferencesDataSource.removeInt(key) }
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
+        }
 
         @Test
         @DisplayName("WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource")
@@ -123,7 +195,11 @@ internal class RemovePreferencesRepositoryImplTest {
             sut.removeInt(preferenceType, key)
 
             coVerify { securedPreferencesDataSource.removeInt(key) }
-            confirmVerified(securedPreferencesDataSource, standardPreferencesDataSource)
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
         }
 
         @Test
@@ -136,12 +212,34 @@ internal class RemovePreferencesRepositoryImplTest {
             sut.removeInt(preferenceType, key)
 
             coVerify { standardPreferencesDataSource.removeInt(key) }
-            confirmVerified(securedPreferencesDataSource, standardPreferencesDataSource)
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
         }
     }
 
     @Nested
     inner class Long {
+
+        @Test
+        @DisplayName("WHEN called with PreferenceType.DEVELOPMENT THEN return result from " +
+            "developmentPreferencesDataSource")
+        fun developmentPreferencesDataSource() = runBlocking {
+            val preferenceType = PreferenceType.DEVELOPMENT
+
+            coEvery { developmentPreferencesDataSource.removeLong(key) } just Runs
+
+            sut.removeLong(preferenceType, key)
+
+            coVerify { developmentPreferencesDataSource.removeLong(key) }
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
+        }
 
         @Test
         @DisplayName("WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource")
@@ -153,7 +251,11 @@ internal class RemovePreferencesRepositoryImplTest {
             sut.removeLong(preferenceType, key)
 
             coVerify { securedPreferencesDataSource.removeLong(key) }
-            confirmVerified(securedPreferencesDataSource, standardPreferencesDataSource)
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
         }
 
         @Test
@@ -166,12 +268,34 @@ internal class RemovePreferencesRepositoryImplTest {
             sut.removeLong(preferenceType, key)
 
             coVerify { standardPreferencesDataSource.removeLong(key) }
-            confirmVerified(securedPreferencesDataSource, standardPreferencesDataSource)
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
         }
     }
 
     @Nested
     inner class String {
+
+        @Test
+        @DisplayName("WHEN called with PreferenceType.DEVELOPMENT THEN return result from " +
+            "developmentPreferencesDataSource")
+        fun developmentPreferencesDataSource() = runBlocking {
+            val preferenceType = PreferenceType.DEVELOPMENT
+
+            coEvery { developmentPreferencesDataSource.removeString(key) } just Runs
+
+            sut.removeString(preferenceType, key)
+
+            coVerify { developmentPreferencesDataSource.removeString(key) }
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
+        }
 
         @Test
         @DisplayName("WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource")
@@ -183,7 +307,11 @@ internal class RemovePreferencesRepositoryImplTest {
             sut.removeString(preferenceType, key)
 
             coVerify { securedPreferencesDataSource.removeString(key) }
-            confirmVerified(securedPreferencesDataSource, standardPreferencesDataSource)
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
         }
 
         @Test
@@ -196,12 +324,34 @@ internal class RemovePreferencesRepositoryImplTest {
             sut.removeString(preferenceType, key)
 
             coVerify { standardPreferencesDataSource.removeString(key) }
-            confirmVerified(securedPreferencesDataSource, standardPreferencesDataSource)
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
         }
     }
 
     @Nested
     inner class RemoveAll {
+
+        @Test
+        @DisplayName("WHEN called with PreferenceType.DEVELOPMENT THEN return result from " +
+            "developmentPreferencesDataSource")
+        fun developmentPreferencesDataSource() = runBlocking {
+            val preferenceType = PreferenceType.DEVELOPMENT
+
+            coEvery { developmentPreferencesDataSource.removeAll() } just Runs
+
+            sut.removeAll(preferenceType)
+
+            coVerify { developmentPreferencesDataSource.removeAll() }
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
+        }
 
         @Test
         @DisplayName("WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource")
@@ -213,7 +363,11 @@ internal class RemovePreferencesRepositoryImplTest {
             sut.removeAll(preferenceType)
 
             coVerify { securedPreferencesDataSource.removeAll() }
-            confirmVerified(securedPreferencesDataSource, standardPreferencesDataSource)
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
         }
 
         @Test
@@ -226,7 +380,11 @@ internal class RemovePreferencesRepositoryImplTest {
             sut.removeAll(preferenceType)
 
             coVerify { standardPreferencesDataSource.removeAll() }
-            confirmVerified(securedPreferencesDataSource, standardPreferencesDataSource)
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
         }
     }
 }
