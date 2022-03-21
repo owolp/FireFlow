@@ -23,6 +23,8 @@ plugins {
 }
 
 dependencies {
+    implementation(projects.coreComponent.common)
+    implementation(projects.coreComponent.storage)
 
     implementation(libs.google.dagger.hilt.android)
     kapt(libs.google.dagger.hilt.compiler)
