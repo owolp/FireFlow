@@ -23,6 +23,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import dev.zitech.core.common.framework.dispatcher.AppDispatchers
 import dev.zitech.core.storage.data.preferences.repository.ContainsPreferencesRepositoryImpl
 import dev.zitech.core.storage.data.preferences.repository.GetPreferencesRepositoryImpl
 import dev.zitech.core.storage.data.preferences.repository.RemovePreferencesRepositoryImpl
@@ -47,8 +48,10 @@ internal object StorageSingletonModule {
     @Singleton
     @Provides
     fun developmentPreferencesDataSource(
+        appDispatchers: AppDispatchers,
         @ApplicationContext applicationContext: Context
     ): PreferencesDataSource = PreferencesFactory.createsPreferences(
+        appDispatchers,
         applicationContext,
         PreferenceType.DEVELOPMENT
     )
@@ -57,8 +60,10 @@ internal object StorageSingletonModule {
     @Singleton
     @Provides
     fun securedPreferencesDataSource(
+        appDispatchers: AppDispatchers,
         @ApplicationContext applicationContext: Context
     ): PreferencesDataSource = PreferencesFactory.createsPreferences(
+        appDispatchers,
         applicationContext,
         PreferenceType.SECURED
     )
@@ -67,8 +72,10 @@ internal object StorageSingletonModule {
     @Singleton
     @Provides
     fun standardPreferencesDataSource(
+        appDispatchers: AppDispatchers,
         @ApplicationContext applicationContext: Context
     ): PreferencesDataSource = PreferencesFactory.createsPreferences(
+        appDispatchers,
         applicationContext,
         PreferenceType.STANDARD
     )

@@ -18,6 +18,7 @@
 package dev.zitech.core.storage.framework.preference
 
 import android.content.Context
+import dev.zitech.core.common.framework.dispatcher.AppDispatchers
 import dev.zitech.core.storage.domain.model.PreferenceType
 
 internal object PreferencesFactory {
@@ -26,24 +27,31 @@ internal object PreferencesFactory {
     private const val SECURED_PREFERENCES_NAME = "secured_preferences"
     private const val STANDARD_PREFERENCES_NAME = "standard_preferences"
 
-    fun createsPreferences(context: Context, type: PreferenceType): PreferencesDataSource =
+    fun createsPreferences(
+        appDispatchers: AppDispatchers,
+        context: Context,
+        type: PreferenceType
+    ): PreferencesDataSource =
         when (type) {
             PreferenceType.DEVELOPMENT -> {
                 StandardPreferencesDataSource(
-                    context = context,
-                    fileName = DEVELOPMENT_PREFERENCES_NAME
+                    appDispatchers = appDispatchers,
+                    fileName = DEVELOPMENT_PREFERENCES_NAME,
+                    context = context
                 )
             }
             PreferenceType.SECURED -> {
                 SecuredPreferencesDataSource(
-                    context = context,
-                    fileName = SECURED_PREFERENCES_NAME
+                    appDispatchers = appDispatchers,
+                    fileName = SECURED_PREFERENCES_NAME,
+                    context = context
                 )
             }
             PreferenceType.STANDARD -> {
                 StandardPreferencesDataSource(
-                    context = context,
-                    fileName = STANDARD_PREFERENCES_NAME
+                    appDispatchers = appDispatchers,
+                    fileName = STANDARD_PREFERENCES_NAME,
+                    context = context
                 )
             }
         }
