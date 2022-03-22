@@ -24,10 +24,8 @@ plugins {
 
 dependencies {
     implementation(projects.coreComponent.common)
+    implementation(projects.coreComponent.storage)
 
-    implementation(libs.androidx.core)
-    implementation(libs.androidx.datastore.preferences)
-    implementation(libs.androidx.security.crypto)
     implementation(libs.google.dagger.hilt.android)
     kapt(libs.google.dagger.hilt.compiler)
     implementation(libs.jetbrains.kotlin.coroutines.android)

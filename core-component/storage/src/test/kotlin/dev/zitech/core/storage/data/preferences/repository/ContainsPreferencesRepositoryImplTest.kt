@@ -38,6 +38,7 @@ internal class ContainsPreferencesRepositoryImplTest {
 
     private val key = DataFactory.createRandomString()
 
+    private val developmentPreferencesDataSource = mockk<PreferencesDataSource>()
     private val securedPreferencesDataSource = mockk<PreferencesDataSource>()
     private val standardPreferencesDataSource = mockk<PreferencesDataSource>()
 
@@ -46,6 +47,7 @@ internal class ContainsPreferencesRepositoryImplTest {
     @BeforeEach
     fun setUp() {
         sut = ContainsPreferencesRepositoryImpl(
+            developmentPreferencesDataSource = developmentPreferencesDataSource,
             securedPreferencesDataSource = securedPreferencesDataSource,
             standardPreferencesDataSource = standardPreferencesDataSource
         )
@@ -53,6 +55,29 @@ internal class ContainsPreferencesRepositoryImplTest {
 
     @Nested
     inner class Boolean {
+
+        @Test
+        @DisplayName("WHEN called with PreferenceType.DEVELOPMENT THEN return result " +
+            "from developmentPreferencesDataSource")
+        fun developmentPreferencesDataSource() = runBlocking {
+            val preferenceType = PreferenceType.DEVELOPMENT
+            val flowResult = DataFactory.createRandomBoolean()
+
+            every { developmentPreferencesDataSource.containsBoolean(key) } returns flowOf(
+                flowResult
+            )
+
+            sut.containsBoolean(preferenceType, key).test {
+                assertThat(awaitItem()).isEqualTo(flowResult)
+                awaitComplete()
+            }
+            coVerify { developmentPreferencesDataSource.containsBoolean(key) }
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
+        }
 
         @Test
         @DisplayName("WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource")
@@ -69,7 +94,11 @@ internal class ContainsPreferencesRepositoryImplTest {
                 awaitComplete()
             }
             coVerify { securedPreferencesDataSource.containsBoolean(key) }
-            confirmVerified(securedPreferencesDataSource, standardPreferencesDataSource)
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
         }
 
         @Test
@@ -87,12 +116,39 @@ internal class ContainsPreferencesRepositoryImplTest {
                 awaitComplete()
             }
             coVerify { standardPreferencesDataSource.containsBoolean(key) }
-            confirmVerified(securedPreferencesDataSource, standardPreferencesDataSource)
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
         }
     }
 
     @Nested
     inner class Float {
+
+        @Test
+        @DisplayName("WHEN called with PreferenceType.DEVELOPMENT THEN return result " +
+            "from developmentPreferencesDataSource")
+        fun developmentPreferencesDataSource() = runBlocking {
+            val preferenceType = PreferenceType.DEVELOPMENT
+            val flowResult = DataFactory.createRandomBoolean()
+
+            every { developmentPreferencesDataSource.containsFloat(key) } returns flowOf(
+                flowResult
+            )
+
+            sut.containsFloat(preferenceType, key).test {
+                assertThat(awaitItem()).isEqualTo(flowResult)
+                awaitComplete()
+            }
+            coVerify { developmentPreferencesDataSource.containsFloat(key) }
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
+        }
 
         @Test
         @DisplayName("WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource")
@@ -109,7 +165,11 @@ internal class ContainsPreferencesRepositoryImplTest {
                 awaitComplete()
             }
             coVerify { securedPreferencesDataSource.containsFloat(key) }
-            confirmVerified(securedPreferencesDataSource, standardPreferencesDataSource)
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
         }
 
         @Test
@@ -127,12 +187,39 @@ internal class ContainsPreferencesRepositoryImplTest {
                 awaitComplete()
             }
             coVerify { standardPreferencesDataSource.containsFloat(key) }
-            confirmVerified(securedPreferencesDataSource, standardPreferencesDataSource)
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
         }
     }
 
     @Nested
     inner class Int {
+
+        @Test
+        @DisplayName("WHEN called with PreferenceType.DEVELOPMENT THEN return result " +
+            "from developmentPreferencesDataSource")
+        fun developmentPreferencesDataSource() = runBlocking {
+            val preferenceType = PreferenceType.DEVELOPMENT
+            val flowResult = DataFactory.createRandomBoolean()
+
+            every { developmentPreferencesDataSource.containsInt(key) } returns flowOf(
+                flowResult
+            )
+
+            sut.containsInt(preferenceType, key).test {
+                assertThat(awaitItem()).isEqualTo(flowResult)
+                awaitComplete()
+            }
+            coVerify { developmentPreferencesDataSource.containsInt(key) }
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
+        }
 
         @Test
         @DisplayName("WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource")
@@ -149,7 +236,11 @@ internal class ContainsPreferencesRepositoryImplTest {
                 awaitComplete()
             }
             coVerify { securedPreferencesDataSource.containsInt(key) }
-            confirmVerified(securedPreferencesDataSource, standardPreferencesDataSource)
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
         }
 
         @Test
@@ -167,12 +258,39 @@ internal class ContainsPreferencesRepositoryImplTest {
                 awaitComplete()
             }
             coVerify { standardPreferencesDataSource.containsInt(key) }
-            confirmVerified(securedPreferencesDataSource, standardPreferencesDataSource)
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
         }
     }
 
     @Nested
     inner class Long {
+
+        @Test
+        @DisplayName("WHEN called with PreferenceType.DEVELOPMENT THEN return result " +
+            "from developmentPreferencesDataSource")
+        fun developmentPreferencesDataSource() = runBlocking {
+            val preferenceType = PreferenceType.DEVELOPMENT
+            val flowResult = DataFactory.createRandomBoolean()
+
+            every { developmentPreferencesDataSource.containsLong(key) } returns flowOf(
+                flowResult
+            )
+
+            sut.containsLong(preferenceType, key).test {
+                assertThat(awaitItem()).isEqualTo(flowResult)
+                awaitComplete()
+            }
+            coVerify { developmentPreferencesDataSource.containsLong(key) }
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
+        }
 
         @Test
         @DisplayName("WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource")
@@ -189,7 +307,11 @@ internal class ContainsPreferencesRepositoryImplTest {
                 awaitComplete()
             }
             coVerify { securedPreferencesDataSource.containsLong(key) }
-            confirmVerified(securedPreferencesDataSource, standardPreferencesDataSource)
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
         }
 
         @Test
@@ -207,12 +329,39 @@ internal class ContainsPreferencesRepositoryImplTest {
                 awaitComplete()
             }
             coVerify { standardPreferencesDataSource.containsLong(key) }
-            confirmVerified(securedPreferencesDataSource, standardPreferencesDataSource)
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
         }
     }
 
     @Nested
     inner class String {
+
+        @Test
+        @DisplayName("WHEN called with PreferenceType.DEVELOPMENT THEN return result " +
+            "from developmentPreferencesDataSource")
+        fun developmentPreferencesDataSource() = runBlocking {
+            val preferenceType = PreferenceType.DEVELOPMENT
+            val flowResult = DataFactory.createRandomBoolean()
+
+            every { developmentPreferencesDataSource.containsString(key) } returns flowOf(
+                flowResult
+            )
+
+            sut.containsString(preferenceType, key).test {
+                assertThat(awaitItem()).isEqualTo(flowResult)
+                awaitComplete()
+            }
+            coVerify { developmentPreferencesDataSource.containsString(key) }
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
+        }
 
         @Test
         @DisplayName("WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource")
@@ -229,7 +378,11 @@ internal class ContainsPreferencesRepositoryImplTest {
                 awaitComplete()
             }
             coVerify { securedPreferencesDataSource.containsString(key) }
-            confirmVerified(securedPreferencesDataSource, standardPreferencesDataSource)
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
         }
 
         @Test
@@ -247,7 +400,11 @@ internal class ContainsPreferencesRepositoryImplTest {
                 awaitComplete()
             }
             coVerify { standardPreferencesDataSource.containsString(key) }
-            confirmVerified(securedPreferencesDataSource, standardPreferencesDataSource)
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
         }
     }
 }

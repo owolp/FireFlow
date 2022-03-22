@@ -28,16 +28,20 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import dev.zitech.core.common.framework.dispatcher.AppDispatchers
 import dev.zitech.core.common.framework.logger.Logger
 import java.io.IOException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 
 @Suppress("TooManyFunctions")
 internal class StandardPreferencesDataSource(
-    context: Context,
-    private val fileName: String
+    private val appDispatchers: AppDispatchers,
+    private val fileName: String,
+    context: Context
 ) : PreferencesDataSource {
 
     private val Context.dataStore: DataStore<DataStorePreferences> by preferencesDataStore(
@@ -97,92 +101,114 @@ internal class StandardPreferencesDataSource(
         }
 
     override suspend fun saveBoolean(key: String, value: Boolean) {
-        preferenceDataStore.edit { preferences ->
-            preferences[booleanPreferencesKey(key)] = value
+        withContext(appDispatchers.io) {
+            preferenceDataStore.edit { preferences ->
+                preferences[booleanPreferencesKey(key)] = value
+            }
         }
     }
 
     override suspend fun saveFloat(key: String, value: Float) {
-        preferenceDataStore.edit { preferences ->
-            preferences[floatPreferencesKey(key)] = value
+        withContext(appDispatchers.io) {
+            preferenceDataStore.edit { preferences ->
+                preferences[floatPreferencesKey(key)] = value
+            }
         }
     }
 
     override suspend fun saveInt(key: String, value: Int) {
-        preferenceDataStore.edit { preferences ->
-            preferences[intPreferencesKey(key)] = value
+        withContext(appDispatchers.io) {
+            preferenceDataStore.edit { preferences ->
+                preferences[intPreferencesKey(key)] = value
+            }
         }
     }
 
     override suspend fun saveLong(key: String, value: Long) {
-        preferenceDataStore.edit { preferences ->
-            preferences[longPreferencesKey(key)] = value
+        withContext(appDispatchers.io) {
+            preferenceDataStore.edit { preferences ->
+                preferences[longPreferencesKey(key)] = value
+            }
         }
     }
 
     override suspend fun saveString(key: String, value: String) {
-        preferenceDataStore.edit { preferences ->
-            preferences[stringPreferencesKey(key)] = value
+        withContext(appDispatchers.io) {
+            preferenceDataStore.edit { preferences ->
+                preferences[stringPreferencesKey(key)] = value
+            }
         }
     }
 
     override suspend fun removeBoolean(key: String) {
-        try {
-            preferenceDataStore.edit { preferences ->
-                preferences.remove(booleanPreferencesKey(key))
+        withContext(appDispatchers.io) {
+            try {
+                preferenceDataStore.edit { preferences ->
+                    preferences.remove(booleanPreferencesKey(key))
+                }
+            } catch (exception: IOException) {
+                Logger.e(fileName, exception)
             }
-        } catch (exception: IOException) {
-            Logger.e(fileName, exception)
         }
     }
 
     override suspend fun removeFloat(key: String) {
-        try {
-            preferenceDataStore.edit { preferences ->
-                preferences.remove(floatPreferencesKey(key))
+        withContext(appDispatchers.io) {
+            try {
+                preferenceDataStore.edit { preferences ->
+                    preferences.remove(floatPreferencesKey(key))
+                }
+            } catch (exception: IOException) {
+                Logger.e(fileName, exception)
             }
-        } catch (exception: IOException) {
-            Logger.e(fileName, exception)
         }
     }
 
     override suspend fun removeInt(key: String) {
-        try {
-            preferenceDataStore.edit { preferences ->
-                preferences.remove(intPreferencesKey(key))
+        withContext(appDispatchers.io) {
+            try {
+                preferenceDataStore.edit { preferences ->
+                    preferences.remove(intPreferencesKey(key))
+                }
+            } catch (exception: IOException) {
+                Logger.e(fileName, exception)
             }
-        } catch (exception: IOException) {
-            Logger.e(fileName, exception)
         }
     }
 
     override suspend fun removeLong(key: String) {
-        try {
-            preferenceDataStore.edit { preferences ->
-                preferences.remove(longPreferencesKey(key))
+        withContext(appDispatchers.io) {
+            try {
+                preferenceDataStore.edit { preferences ->
+                    preferences.remove(longPreferencesKey(key))
+                }
+            } catch (exception: IOException) {
+                Logger.e(fileName, exception)
             }
-        } catch (exception: IOException) {
-            Logger.e(fileName, exception)
         }
     }
 
     override suspend fun removeString(key: String) {
-        try {
-            preferenceDataStore.edit { preferences ->
-                preferences.remove(stringPreferencesKey(key))
+        withContext(appDispatchers.io) {
+            try {
+                preferenceDataStore.edit { preferences ->
+                    preferences.remove(stringPreferencesKey(key))
+                }
+            } catch (exception: IOException) {
+                Logger.e(fileName, exception)
             }
-        } catch (exception: IOException) {
-            Logger.e(fileName, exception)
         }
     }
 
     override suspend fun removeAll() {
-        try {
-            preferenceDataStore.edit { preferences ->
-                preferences.clear()
+        withContext(appDispatchers.io) {
+            try {
+                preferenceDataStore.edit { preferences ->
+                    preferences.clear()
+                }
+            } catch (exception: IOException) {
+                Logger.e(fileName, exception)
             }
-        } catch (exception: IOException) {
-            Logger.e(fileName, exception)
         }
     }
 
@@ -194,5 +220,5 @@ internal class StandardPreferencesDataSource(
             } else {
                 throw exception
             }
-        }
+        }.flowOn(appDispatchers.io)
 }

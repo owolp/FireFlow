@@ -14,13 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-dependencies {
-    api(projects.coreComponent.common)
-    api(projects.coreComponent.featureFlag)
-    api(projects.coreComponent.storage)
-}
 
-plugins {
-    id(BuildPlugins.KOTLIN_ANDROID)
-    id(BuildPlugins.LIBRARY)
+package dev.zitech.core.featureflag.domain.repository
+
+import dev.zitech.core.featureflag.domain.model.DevFeature
+import dev.zitech.core.featureflag.domain.model.Feature
+
+interface DevFeatureFlag {
+
+    suspend fun getDevFeatures(): List<DevFeature>
+    suspend fun setDevFeatureEnabled(feature: Feature, enabled: Boolean)
 }

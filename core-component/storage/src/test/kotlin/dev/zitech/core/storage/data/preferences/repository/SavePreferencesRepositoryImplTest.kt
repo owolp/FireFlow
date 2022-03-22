@@ -37,6 +37,7 @@ internal class SavePreferencesRepositoryImplTest {
 
     private val key = DataFactory.createRandomString()
 
+    private val developmentPreferencesDataSource = mockk<PreferencesDataSource>()
     private val securedPreferencesDataSource = mockk<PreferencesDataSource>()
     private val standardPreferencesDataSource = mockk<PreferencesDataSource>()
 
@@ -45,6 +46,7 @@ internal class SavePreferencesRepositoryImplTest {
     @BeforeEach
     fun setUp() {
         sut = SavePreferencesRepositoryImpl(
+            developmentPreferencesDataSource = developmentPreferencesDataSource,
             securedPreferencesDataSource = securedPreferencesDataSource,
             standardPreferencesDataSource = standardPreferencesDataSource
         )
@@ -52,6 +54,25 @@ internal class SavePreferencesRepositoryImplTest {
 
     @Nested
     inner class Boolean {
+
+        @Test
+        @DisplayName("WHEN called with PreferenceType.DEVELOPMENT THEN return result from " +
+            "developmentPreferencesDataSource")
+        fun developmentPreferencesDataSource() = runBlocking {
+            val preferenceType = PreferenceType.DEVELOPMENT
+            val value = DataFactory.createRandomBoolean()
+
+            coEvery { developmentPreferencesDataSource.saveBoolean(key, value) } just Runs
+
+            sut.saveBoolean(preferenceType, key, value)
+
+            coVerify { developmentPreferencesDataSource.saveBoolean(key, value) }
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
+        }
 
         @Test
         @DisplayName("WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource")
@@ -64,7 +85,11 @@ internal class SavePreferencesRepositoryImplTest {
             sut.saveBoolean(preferenceType, key, value)
 
             coVerify { securedPreferencesDataSource.saveBoolean(key, value) }
-            confirmVerified(securedPreferencesDataSource, standardPreferencesDataSource)
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
         }
 
         @Test
@@ -78,12 +103,35 @@ internal class SavePreferencesRepositoryImplTest {
             sut.saveBoolean(preferenceType, key, value)
 
             coVerify { standardPreferencesDataSource.saveBoolean(key, value) }
-            confirmVerified(securedPreferencesDataSource, standardPreferencesDataSource)
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
         }
     }
 
     @Nested
     inner class Float {
+
+        @Test
+        @DisplayName("WHEN called with PreferenceType.DEVELOPMENT THEN return result from " +
+            "developmentPreferencesDataSource")
+        fun developmentPreferencesDataSource() = runBlocking {
+            val preferenceType = PreferenceType.DEVELOPMENT
+            val value = DataFactory.createRandomDouble().toFloat()
+
+            coEvery { developmentPreferencesDataSource.saveFloat(key, value) } just Runs
+
+            sut.saveFloat(preferenceType, key, value)
+
+            coVerify { developmentPreferencesDataSource.saveFloat(key, value) }
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
+        }
 
         @Test
         @DisplayName("WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource")
@@ -96,7 +144,11 @@ internal class SavePreferencesRepositoryImplTest {
             sut.saveFloat(preferenceType, key, value)
 
             coVerify { securedPreferencesDataSource.saveFloat(key, value) }
-            confirmVerified(securedPreferencesDataSource, standardPreferencesDataSource)
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
         }
 
         @Test
@@ -110,12 +162,35 @@ internal class SavePreferencesRepositoryImplTest {
             sut.saveFloat(preferenceType, key, value)
 
             coVerify { standardPreferencesDataSource.saveFloat(key, value) }
-            confirmVerified(securedPreferencesDataSource, standardPreferencesDataSource)
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
         }
     }
 
     @Nested
     inner class Int {
+
+        @Test
+        @DisplayName("WHEN called with PreferenceType.DEVELOPMENT THEN return result from " +
+            "developmentPreferencesDataSource")
+        fun developmentPreferencesDataSource() = runBlocking {
+            val preferenceType = PreferenceType.DEVELOPMENT
+            val value = DataFactory.createRandomInt()
+
+            coEvery { developmentPreferencesDataSource.saveInt(key, value) } just Runs
+
+            sut.saveInt(preferenceType, key, value)
+
+            coVerify { developmentPreferencesDataSource.saveInt(key, value) }
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
+        }
 
         @Test
         @DisplayName("WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource")
@@ -128,7 +203,11 @@ internal class SavePreferencesRepositoryImplTest {
             sut.saveInt(preferenceType, key, value)
 
             coVerify { securedPreferencesDataSource.saveInt(key, value) }
-            confirmVerified(securedPreferencesDataSource, standardPreferencesDataSource)
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
         }
 
         @Test
@@ -142,12 +221,35 @@ internal class SavePreferencesRepositoryImplTest {
             sut.saveInt(preferenceType, key, value)
 
             coVerify { standardPreferencesDataSource.saveInt(key, value) }
-            confirmVerified(securedPreferencesDataSource, standardPreferencesDataSource)
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
         }
     }
 
     @Nested
     inner class Long {
+
+        @Test
+        @DisplayName("WHEN called with PreferenceType.DEVELOPMENT THEN return result from " +
+            "developmentPreferencesDataSource")
+        fun developmentPreferencesDataSource() = runBlocking {
+            val preferenceType = PreferenceType.DEVELOPMENT
+            val value = DataFactory.createRandomLong()
+
+            coEvery { developmentPreferencesDataSource.saveLong(key, value) } just Runs
+
+            sut.saveLong(preferenceType, key, value)
+
+            coVerify { developmentPreferencesDataSource.saveLong(key, value) }
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
+        }
 
         @Test
         @DisplayName("WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource")
@@ -160,7 +262,11 @@ internal class SavePreferencesRepositoryImplTest {
             sut.saveLong(preferenceType, key, value)
 
             coVerify { securedPreferencesDataSource.saveLong(key, value) }
-            confirmVerified(securedPreferencesDataSource, standardPreferencesDataSource)
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
         }
 
         @Test
@@ -174,12 +280,35 @@ internal class SavePreferencesRepositoryImplTest {
             sut.saveLong(preferenceType, key, value)
 
             coVerify { standardPreferencesDataSource.saveLong(key, value) }
-            confirmVerified(securedPreferencesDataSource, standardPreferencesDataSource)
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
         }
     }
 
     @Nested
     inner class String {
+
+        @Test
+        @DisplayName("WHEN called with PreferenceType.DEVELOPMENT THEN return result from " +
+            "developmentPreferencesDataSource")
+        fun developmentPreferencesDataSource() = runBlocking {
+            val preferenceType = PreferenceType.DEVELOPMENT
+            val value = DataFactory.createRandomString()
+
+            coEvery { developmentPreferencesDataSource.saveString(key, value) } just Runs
+
+            sut.saveString(preferenceType, key, value)
+
+            coVerify { developmentPreferencesDataSource.saveString(key, value) }
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
+        }
 
         @Test
         @DisplayName("WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource")
@@ -192,7 +321,11 @@ internal class SavePreferencesRepositoryImplTest {
             sut.saveString(preferenceType, key, value)
 
             coVerify { securedPreferencesDataSource.saveString(key, value) }
-            confirmVerified(securedPreferencesDataSource, standardPreferencesDataSource)
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
         }
 
         @Test
@@ -206,7 +339,11 @@ internal class SavePreferencesRepositoryImplTest {
             sut.saveString(preferenceType, key, value)
 
             coVerify { standardPreferencesDataSource.saveString(key, value) }
-            confirmVerified(securedPreferencesDataSource, standardPreferencesDataSource)
+            confirmVerified(
+                developmentPreferencesDataSource,
+                securedPreferencesDataSource,
+                standardPreferencesDataSource
+            )
         }
     }
 }

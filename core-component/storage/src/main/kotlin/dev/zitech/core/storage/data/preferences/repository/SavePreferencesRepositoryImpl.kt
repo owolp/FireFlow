@@ -23,6 +23,7 @@ import dev.zitech.core.storage.framework.preference.PreferencesDataSource
 import javax.inject.Inject
 
 internal class SavePreferencesRepositoryImpl @Inject constructor(
+    private val developmentPreferencesDataSource: PreferencesDataSource,
     private val securedPreferencesDataSource: PreferencesDataSource,
     private val standardPreferencesDataSource: PreferencesDataSource
 ) : SavePreferencesRepository {
@@ -33,6 +34,9 @@ internal class SavePreferencesRepositoryImpl @Inject constructor(
         value: Boolean
     ) {
         when (preferenceType) {
+            PreferenceType.DEVELOPMENT -> {
+                developmentPreferencesDataSource.saveBoolean(key, value)
+            }
             PreferenceType.SECURED -> {
                 securedPreferencesDataSource.saveBoolean(key, value)
             }
@@ -48,6 +52,9 @@ internal class SavePreferencesRepositoryImpl @Inject constructor(
         value: Float
     ) {
         when (preferenceType) {
+            PreferenceType.DEVELOPMENT -> {
+                developmentPreferencesDataSource.saveFloat(key, value)
+            }
             PreferenceType.SECURED -> {
                 securedPreferencesDataSource.saveFloat(key, value)
             }
@@ -63,6 +70,9 @@ internal class SavePreferencesRepositoryImpl @Inject constructor(
         value: Int
     ) {
         when (preferenceType) {
+            PreferenceType.DEVELOPMENT -> {
+                developmentPreferencesDataSource.saveInt(key, value)
+            }
             PreferenceType.SECURED -> {
                 securedPreferencesDataSource.saveInt(key, value)
             }
@@ -78,6 +88,9 @@ internal class SavePreferencesRepositoryImpl @Inject constructor(
         value: Long
     ) {
         when (preferenceType) {
+            PreferenceType.DEVELOPMENT -> {
+                developmentPreferencesDataSource.saveLong(key, value)
+            }
             PreferenceType.SECURED -> {
                 securedPreferencesDataSource.saveLong(key, value)
             }
@@ -93,6 +106,9 @@ internal class SavePreferencesRepositoryImpl @Inject constructor(
         value: String
     ) {
         when (preferenceType) {
+            PreferenceType.DEVELOPMENT -> {
+                developmentPreferencesDataSource.saveString(key, value)
+            }
             PreferenceType.SECURED -> {
                 securedPreferencesDataSource.saveString(key, value)
             }

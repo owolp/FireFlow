@@ -14,13 +14,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-dependencies {
-    api(projects.coreComponent.common)
-    api(projects.coreComponent.featureFlag)
-    api(projects.coreComponent.storage)
-}
 
-plugins {
-    id(BuildPlugins.KOTLIN_ANDROID)
-    id(BuildPlugins.LIBRARY)
+package dev.zitech.core.featureflag.domain.usecase
+
+import dev.zitech.core.storage.domain.model.PreferenceType
+import dev.zitech.core.storage.domain.repository.SavePreferencesRepository
+import javax.inject.Inject
+
+internal class SetDevFeatureFlagEnabledUseCase @Inject constructor(
+    private val savePreferencesRepository: SavePreferencesRepository
+) {
+
+    suspend operator fun invoke(
+        key: String,
+        value: Boolean
+    ) {
+        savePreferencesRepository.saveBoolean(
+            preferenceType = PreferenceType.DEVELOPMENT,
+            key = key,
+            value = value
+        )
+    }
 }
