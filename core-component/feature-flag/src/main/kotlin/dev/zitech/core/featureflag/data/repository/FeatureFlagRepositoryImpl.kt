@@ -17,6 +17,7 @@
 
 package dev.zitech.core.featureflag.data.repository
 
+import androidx.annotation.VisibleForTesting
 import dev.zitech.core.common.framework.logger.AppConfigProvider
 import dev.zitech.core.featureflag.data.provider.DevFeatureFlagProvider
 import dev.zitech.core.featureflag.data.provider.ProdFeatureFlagProvider
@@ -33,7 +34,8 @@ internal class FeatureFlagRepositoryImpl @Inject constructor(
     private val prodFeatureFlagProvider: ProdFeatureFlagProvider
 ) : FeatureFlagRepository {
 
-    private val providers = CopyOnWriteArrayList<FeatureFlagProvider>()
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    val providers = CopyOnWriteArrayList<FeatureFlagProvider>()
 
     override fun init() {
         if (AppConfigProvider.isDebugMode()) {
@@ -45,7 +47,7 @@ internal class FeatureFlagRepositoryImpl @Inject constructor(
 
     override suspend fun isFeatureEnabled(feature: Feature): Boolean =
         providers.filter { it.hasFeature(feature) }
-            .sortedBy(FeatureFlagProvider::priority)
+            .sortedByDescending(FeatureFlagProvider::priority)
             .firstOrNull()
             ?.isFeatureEnabled(feature)
             ?: feature.defaultValue
