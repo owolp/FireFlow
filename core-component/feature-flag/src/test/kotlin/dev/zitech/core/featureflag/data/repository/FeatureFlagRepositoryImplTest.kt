@@ -30,6 +30,7 @@ import dev.zitech.core.featureflag.domain.model.ProdFeature
 import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
@@ -210,6 +211,24 @@ internal class FeatureFlagRepositoryImplTest {
                     coVerify(exactly = 0) { devFeatureFlagProvider.isFeatureEnabled(feature) }
                 }
             }
+
+            @Test
+            @DisplayName("WHEN there are no feature flag providers added")
+            fun noFlagProvidersAdded() = runBlocking {
+                val feature = mockkClass(Feature::class)
+                every { feature.defaultValue } returns true
+
+                val result = sut.isFeatureEnabled(feature)
+
+                assertThat(result).isTrue()
+                coVerify(exactly = 0) {
+                    devFeatureFlagProvider.hasFeature(feature)
+                    devFeatureFlagProvider.isFeatureEnabled(feature)
+                    prodFeatureFlagProvider.hasFeature(feature)
+                    prodFeatureFlagProvider.isFeatureEnabled(feature)
+                }
+                confirmVerified(devFeatureFlagProvider, prodFeatureFlagProvider)
+            }
         }
 
         @Nested
@@ -333,6 +352,24 @@ internal class FeatureFlagRepositoryImplTest {
                     coVerify { prodFeatureFlagProvider.isFeatureEnabled(feature) }
                     coVerify(exactly = 0) { devFeatureFlagProvider.isFeatureEnabled(feature) }
                 }
+            }
+
+            @Test
+            @DisplayName("WHEN there are no feature flag providers added")
+            fun noFlagProvidersAdded() = runBlocking {
+                val feature = mockkClass(Feature::class)
+                every { feature.defaultValue } returns false
+
+                val result = sut.isFeatureEnabled(feature)
+
+                assertThat(result).isFalse()
+                coVerify(exactly = 0) {
+                    devFeatureFlagProvider.hasFeature(feature)
+                    devFeatureFlagProvider.isFeatureEnabled(feature)
+                    prodFeatureFlagProvider.hasFeature(feature)
+                    prodFeatureFlagProvider.isFeatureEnabled(feature)
+                }
+                confirmVerified(devFeatureFlagProvider, prodFeatureFlagProvider)
             }
         }
     }
