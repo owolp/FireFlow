@@ -40,8 +40,8 @@ import dev.zitech.core.storage.framework.preference.PreferencesDataSource
 import dev.zitech.core.storage.framework.preference.PreferencesFactory
 import javax.inject.Singleton
 
-@Module
 @InstallIn(SingletonComponent::class)
+@Module
 internal object StorageSingletonModule {
 
     @DevelopmentPreferencesDataSource
