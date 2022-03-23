@@ -26,7 +26,7 @@ interface AppScopes {
     val singleton: CoroutineScope
 }
 
-class AppScopesImpl @Inject constructor(
+internal class AppScopesImpl @Inject constructor(
     appDispatchers: AppDispatchers
 ) : AppScopes {
     override val singleton = CoroutineScope(SupervisorJob() + appDispatchers.default)
