@@ -15,27 +15,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.common.di
+package dev.zitech.core.common.framework.scope
 
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
 import dev.zitech.core.common.framework.dispatcher.AppDispatchers
-import dev.zitech.core.common.framework.dispatcher.AppDispatchersImpl
-import dev.zitech.core.common.framework.scope.AppScopes
-import dev.zitech.core.common.framework.scope.AppScopesImpl
-import javax.inject.Singleton
+import javax.inject.Inject
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
 
-@InstallIn(SingletonComponent::class)
-@Module
-internal interface CommonSingletonModule {
+interface AppScopes {
+    val singleton: CoroutineScope
+}
 
-    @Singleton
-    @Binds
-    fun appDispatchers(appDispatchersImpl: AppDispatchersImpl): AppDispatchers
-
-    @Singleton
-    @Binds
-    fun appScopes(appScopesImpl: AppScopesImpl): AppScopes
+class AppScopesImpl @Inject constructor(
+    appDispatchers: AppDispatchers
+) : AppScopes {
+    override val singleton = CoroutineScope(SupervisorJob() + appDispatchers.default)
 }

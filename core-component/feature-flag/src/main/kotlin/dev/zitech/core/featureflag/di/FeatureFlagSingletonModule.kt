@@ -30,8 +30,8 @@ import dev.zitech.core.featureflag.domain.provider.FeatureFlagProvider
 import dev.zitech.core.featureflag.domain.repository.FeatureFlagRepository
 import javax.inject.Singleton
 
-@Module
 @InstallIn(SingletonComponent::class)
+@Module
 internal interface FeatureFlagSingletonModule {
 
     @DevFeatureFlagProviderAnnotation
