@@ -27,7 +27,7 @@ import dev.zitech.fireflow.framework.leak.MemoryLeakDetector
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 
-internal class LeakCanaryInitializer : Initializer<Unit> {
+internal class MemoryLeakDetectorInitializer : Initializer<Unit> {
 
     @Inject
     lateinit var appScopes: AppScopes

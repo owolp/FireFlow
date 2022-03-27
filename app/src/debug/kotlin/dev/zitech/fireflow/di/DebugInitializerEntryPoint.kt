@@ -22,7 +22,7 @@ import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
-import dev.zitech.fireflow.initializer.LeakCanaryInitializer
+import dev.zitech.fireflow.initializer.MemoryLeakDetectorInitializer
 
 @InstallIn(SingletonComponent::class)
 @EntryPoint
@@ -41,5 +41,5 @@ internal interface DebugInitializerEntryPoint {
         }
     }
 
-    fun inject(initializer: LeakCanaryInitializer)
+    fun inject(memoryLeakDetectorInitializer: MemoryLeakDetectorInitializer)
 }

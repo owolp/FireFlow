@@ -22,7 +22,7 @@ import androidx.startup.Initializer
 import dev.zitech.core.common.framework.logger.AppConfigProvider
 import dev.zitech.core.common.framework.logger.Logger
 
-internal class TimberInitializer : Initializer<Unit> {
+internal class LoggerInitializer : Initializer<Unit> {
 
     override fun create(context: Context) {
         Logger.init(
