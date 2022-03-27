@@ -15,20 +15,25 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.fireflow.initializer
+package dev.zitech.fireflow.framework.performance
 
-import android.content.Context
-import androidx.startup.Initializer
-import dev.zitech.core.common.framework.logger.AppConfigProvider
-import dev.zitech.core.common.framework.logger.Logger
+import android.os.StrictMode
 
-internal class TimberInitializer : Initializer<Unit> {
+internal object StrictLogger {
 
-    override fun create(context: Context) {
-        Logger.init(
-            isDebug = AppConfigProvider.isDebugMode()
+    fun init() {
+        StrictMode.setThreadPolicy(
+            StrictMode.ThreadPolicy.Builder()
+                .detectAll()
+                .penaltyLog()
+                .build()
+        )
+
+        StrictMode.setVmPolicy(
+            StrictMode.VmPolicy.Builder()
+                .detectAll()
+                .penaltyLog()
+                .build()
         )
     }
-
-    override fun dependencies(): List<Class<out Initializer<*>>> = emptyList()
 }

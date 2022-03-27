@@ -27,7 +27,10 @@
             android:exported="false">
 
             <meta-data
-                android:name="dev.zitech.fireflow.initializer.LeakCanaryInitializer"
+                android:name="dev.zitech.fireflow.initializer.MemoryLeakDetectorInitializer"
+                android:value="androidx.startup" />
+            <meta-data
+                android:name="dev.zitech.fireflow.initializer.StrictLoggerInitializer"
                 android:value="androidx.startup" />
         </provider>
 

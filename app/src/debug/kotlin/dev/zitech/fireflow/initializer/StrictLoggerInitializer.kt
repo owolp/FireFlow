@@ -23,11 +23,11 @@ import dev.zitech.core.common.framework.scope.AppScopes
 import dev.zitech.core.featureflag.domain.model.DevFeature
 import dev.zitech.core.featureflag.domain.usecase.IsFeatureEnabledUseCase
 import dev.zitech.fireflow.di.DebugInitializerEntryPoint
-import dev.zitech.fireflow.framework.leak.MemoryLeakDetector
+import dev.zitech.fireflow.framework.performance.StrictLogger
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 
-internal class LeakCanaryInitializer : Initializer<Unit> {
+internal class StrictLoggerInitializer : Initializer<Unit> {
 
     @Inject
     lateinit var appScopes: AppScopes
@@ -39,9 +39,9 @@ internal class LeakCanaryInitializer : Initializer<Unit> {
         DebugInitializerEntryPoint.resolve(context).inject(this)
 
         appScopes.singleton.launch {
-            MemoryLeakDetector.init(
-                isFeatureEnabledUseCase(DevFeature.LEAK_CANARY)
-            )
+            if (isFeatureEnabledUseCase(DevFeature.STRICT_MODE)) {
+                StrictLogger.init()
+            }
         }
     }
 
