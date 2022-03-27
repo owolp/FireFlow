@@ -35,7 +35,7 @@ dependencies {
     testImplementation(libs.cash.turbine)
     testImplementation(libs.google.truth)
     testImplementation(libs.mockk.mockk)
-    implementation(libs.jetbrains.kotlin.coroutines.test)
+    testImplementation(libs.jetbrains.kotlin.coroutines.test)
     testImplementation(libs.junit.jupiter.api)
     testRuntimeOnly(libs.junit.jupiter.engine)
 }
