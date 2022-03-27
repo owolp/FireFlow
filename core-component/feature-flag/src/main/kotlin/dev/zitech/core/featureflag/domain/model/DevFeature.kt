@@ -30,15 +30,16 @@ enum class DevFeature(
 ) : Feature {
 
     LEAK_CANARY(
-        key = "devfeature.leakcanary",
+        key = "dev-feature.leak-canary",
         title = "Leak Canary",
         explanation = "A memory leak detection library for Android",
         defaultValue = false
     ),
     STRICT_MODE(
-        "devfeature.strictmode",
+        "dev-feature.strict-mode",
         "Strict mode",
-        "Detect IO operations accidentally performed on the Main Thread",
+        "А developer tool which detects things you might be doing by accident and brings " +
+            "them to your attention so you can fix them.",
         defaultValue = false
     )
 }
