@@ -28,3 +28,4 @@ jetbrains-kotlin-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-cor
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
 mockk-mockk = "io.mockk:mockk:1.12.3"
+squareup-leakcanary-android = "com.squareup.leakcanary:leakcanary-android:2.8.1"

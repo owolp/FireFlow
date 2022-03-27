@@ -33,6 +33,8 @@ dependencies {
     implementation(libs.google.dagger.hilt.android)
     kapt(libs.google.dagger.hilt.compiler)
     implementation(libs.jetbrains.kotlin.coroutines.android)
+
+    debugImplementation(libs.squareup.leakcanary.android)
 }
 
 kapt {
