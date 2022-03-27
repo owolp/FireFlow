@@ -39,7 +39,7 @@ internal class StrictLoggerInitializer : Initializer<Unit> {
         DebugInitializerEntryPoint.resolve(context).inject(this)
 
         appScopes.singleton.launch {
-            if (isFeatureEnabledUseCase(DevFeature.LEAK_CANARY)) {
+            if (isFeatureEnabledUseCase(DevFeature.STRICT_MODE)) {
                 StrictLogger.init()
             }
         }

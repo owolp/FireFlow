@@ -33,7 +33,6 @@ internal object StrictLogger {
             StrictMode.VmPolicy.Builder()
                 .detectAll()
                 .penaltyLog()
-                .penaltyDeath()
                 .build()
         )
     }
