@@ -15,28 +15,23 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id(BuildPlugins.APPLICATION)
-    id(BuildPlugins.DAGGER)
-    id(BuildPlugins.KOTLIN_ANDROID)
-    kotlin(BuildPlugins.KAPT)
-}
+package dev.zitech.fireflow.initializer
 
-dependencies {
-    implementation(projects.coreComponent.core)
+import android.content.Context
+import androidx.startup.Initializer
+import dev.zitech.fireflow.di.InitializerEntryPoint
 
-    implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.core)
-    implementation(libs.androidx.costraintlayout)
-    implementation(libs.androidx.startup)
-    implementation(libs.google.material)
-    implementation(libs.google.dagger.hilt.android)
-    kapt(libs.google.dagger.hilt.compiler)
-    implementation(libs.jetbrains.kotlin.coroutines.android)
+/**
+ * All [Initializer]'s that need DI components should add this class as dependency
+ */
+internal class DependencyGraphInitializer : Initializer<Unit> {
 
-    debugImplementation(libs.squareup.leakcanary.android)
-}
+    override fun create(context: Context) {
+        /**
+         *  This will lazily initialize ApplicationComponent before Application's onCreate()
+         */
+        InitializerEntryPoint.resolve(context)
+    }
 
-kapt {
-    correctErrorTypes = true
+    override fun dependencies(): List<Class<out Initializer<*>>> = emptyList()
 }

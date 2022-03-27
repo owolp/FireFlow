@@ -15,28 +15,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id(BuildPlugins.APPLICATION)
-    id(BuildPlugins.DAGGER)
-    id(BuildPlugins.KOTLIN_ANDROID)
-    kotlin(BuildPlugins.KAPT)
-}
+package dev.zitech.fireflow.framework.leak
 
-dependencies {
-    implementation(projects.coreComponent.core)
+import leakcanary.LeakCanary
 
-    implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.core)
-    implementation(libs.androidx.costraintlayout)
-    implementation(libs.androidx.startup)
-    implementation(libs.google.material)
-    implementation(libs.google.dagger.hilt.android)
-    kapt(libs.google.dagger.hilt.compiler)
-    implementation(libs.jetbrains.kotlin.coroutines.android)
+internal object MemoryLeakDetector {
 
-    debugImplementation(libs.squareup.leakcanary.android)
-}
-
-kapt {
-    correctErrorTypes = true
+    fun init(dumpHeap: Boolean) {
+        LeakCanary.config = LeakCanary.config.copy(dumpHeap = dumpHeap)
+    }
 }
