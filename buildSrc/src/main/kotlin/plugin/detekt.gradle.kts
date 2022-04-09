@@ -28,7 +28,7 @@ detekt {
 }
 
 dependencies {
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.20.0-RC1")
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.20.0-RC2")
 }
 
 val detektCheck by tasks.registering(Detekt::class) {
