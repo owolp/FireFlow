@@ -22,15 +22,33 @@ plugins {
     kotlin(BuildPlugins.KAPT)
 }
 
+android {
+    defaultConfig {
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments.putAll(
+                    mapOf(
+                        "room.schemaLocation" to "$projectDir/schemas"
+                    )
+                )
+            }
+        }
+    }
+}
+
 dependencies {
     implementation(projects.coreComponent.common)
 
     implementation(libs.androidx.core)
     implementation(libs.androidx.datastore.preferences)
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    kapt(libs.androidx.room.compiler)
     implementation(libs.androidx.security.crypto)
     implementation(libs.google.dagger.hilt.android)
     kapt(libs.google.dagger.hilt.compiler)
     implementation(libs.jetbrains.kotlin.coroutines.android)
+    implementation(libs.zetetic.sqlcipher)
 
     testImplementation(libs.cash.turbine)
     testImplementation(libs.google.truth)
