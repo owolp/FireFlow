@@ -22,7 +22,16 @@ import kotlin.random.Random
 
 object DataFactory {
 
-    fun createRandomString(): String = UUID.randomUUID().toString()
+    fun createRandomString(length: Int? = null): String = if (length != null) {
+        val charPool: List<Char> = ('a'..'z') + ('A'..'Z') + ('0'..'9')
+
+        (1..length)
+            .map { Random.nextInt(0, charPool.size) }
+            .map(charPool::get)
+            .joinToString("")
+    } else {
+        UUID.randomUUID().toString()
+    }
 
     fun createRandomInt(min: Int = 0, max: Int = Int.MAX_VALUE): Int = Random.nextInt(min, max)
 
@@ -33,13 +42,4 @@ object DataFactory {
         Random.nextDouble(min, max)
 
     fun createRandomBoolean(): Boolean = Random.nextBoolean()
-
-    fun createRandomStringList(): List<String> {
-        val stringList = mutableListOf<String>()
-        (1..createRandomInt(min = 2, max = 10)).forEach { _ ->
-            stringList.add(createRandomString())
-        }
-
-        return stringList
-    }
 }
