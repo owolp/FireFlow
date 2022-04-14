@@ -20,45 +20,12 @@ package dev.zitech.fireflow
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
-import dev.zitech.core.storage.domain.usecase.GetCurrentUserAccountUseCase
-import dev.zitech.core.storage.domain.usecase.SaveUserAccountUseCase
-import javax.inject.Inject
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    @Inject
-    lateinit var getCurrentUserAccountUseCase: GetCurrentUserAccountUseCase
-
-    @Inject
-    lateinit var saveUserAccountUseCase: SaveUserAccountUseCase
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        GlobalScope.launch {
-//            saveUserAccountUseCase(true)
-            val result = getCurrentUserAccountUseCase()
-            val a = result
-//          userAccountDao.saveUserAccount(UserAccountEntity(isCurrentUserAccount = true))
-
-//            getCurrentUserAccountUseCase().collect{
-//                when(it) {
-//                    is DataResult.Error -> {
-//                        Logger.e("KOKO", exception = it.cause)
-//                    }
-//                    is DataResult.Success -> {
-//                        Logger.d("KOKO", it.value.id.toString())
-//                    }
-//                }
-//            }
-        }
     }
 }
