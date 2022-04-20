@@ -69,7 +69,7 @@ internal class UserAccountRepositoryImplTest {
 
         @Test
         @DisplayName("WHEN exception THEN return Error")
-        fun failure() = runBlocking {
+        fun error() = runBlocking {
             // Arrange
             val exception = DataFactory.createException()
             coEvery { mockedUserAccountDatabaseSource.getUserAccounts() } throws exception
@@ -111,7 +111,7 @@ internal class UserAccountRepositoryImplTest {
             }
 
             @Test
-            @DisplayName("WHEN account is null THEN return Failure")
+            @DisplayName("WHEN account is null THEN return Error")
             fun accountNull() = runBlocking {
                 // Arrange
                 val message = DataFactory.createRandomString()
@@ -131,7 +131,7 @@ internal class UserAccountRepositoryImplTest {
         }
 
         @Test
-        @DisplayName("WHEN exception THEN return Failure")
+        @DisplayName("WHEN exception THEN return Error")
         fun exception() = runBlocking {
             // Arrange
             val exception = DataFactory.createException()
@@ -171,7 +171,7 @@ internal class UserAccountRepositoryImplTest {
 
         @Test
         @DisplayName("WHEN exception THEN return Error")
-        fun failure() = runBlocking {
+        fun error() = runBlocking {
             // Arrange
             val exception = DataFactory.createException()
             coEvery { mockedUserAccountDatabaseSource.saveUserAccount(true) } throws exception
