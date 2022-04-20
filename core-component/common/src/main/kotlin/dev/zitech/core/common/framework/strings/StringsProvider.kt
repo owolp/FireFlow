@@ -22,7 +22,7 @@ import javax.inject.Inject
 
 interface StringsProvider {
     operator fun invoke(resId: Int): String
-    fun get(resId: Int, vararg args: CharSequence): String
+    operator fun invoke(resId: Int, vararg args: CharSequence): String
 }
 
 internal class StringsProviderImpl @Inject constructor(
@@ -32,6 +32,6 @@ internal class StringsProviderImpl @Inject constructor(
     override fun invoke(resId: Int): String =
         context.getString(resId)
 
-    override fun get(resId: Int, vararg args: CharSequence): String =
+    override fun invoke(resId: Int, vararg args: CharSequence): String =
         context.getString(resId, args)
 }

@@ -25,7 +25,7 @@ import javax.inject.Inject
 internal class UserAccountMapper @Inject constructor() : Mapper<UserAccountEntity, UserAccount> {
 
     override fun invoke(input: UserAccountEntity) = UserAccount(
-        id = input.id!!,
+        id = input.id ?: -1,
         isCurrentUserAccount = input.isCurrentUserAccount
     )
 }

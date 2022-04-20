@@ -42,4 +42,8 @@ object DataFactory {
         Random.nextDouble(min, max)
 
     fun createRandomBoolean(): Boolean = Random.nextBoolean()
+
+    fun createException(
+        message: String = createRandomString()
+    ): Exception = Exception(message)
 }
