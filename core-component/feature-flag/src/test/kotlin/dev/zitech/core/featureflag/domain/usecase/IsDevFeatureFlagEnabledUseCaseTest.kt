@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech
+ * Copyright (C) 2022 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,8 +21,8 @@ import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import dev.zitech.core.common.DataFactory
 import dev.zitech.core.featureflag.domain.model.Feature
-import dev.zitech.core.storage.domain.model.PreferenceType
-import dev.zitech.core.storage.domain.repository.GetPreferencesRepository
+import dev.zitech.core.persistence.domain.model.PreferenceType
+import dev.zitech.core.persistence.domain.repository.GetPreferencesRepository
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkClass
