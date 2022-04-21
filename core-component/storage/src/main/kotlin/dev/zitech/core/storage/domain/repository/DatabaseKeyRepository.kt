@@ -15,17 +15,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.fireflow
+package dev.zitech.core.storage.domain.repository
 
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import dagger.hilt.android.AndroidEntryPoint
+import dev.zitech.core.storage.domain.model.DatabaseKey
 
-@AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-    }
+internal interface DatabaseKeyRepository {
+    suspend fun getDatabaseKey(): DatabaseKey
 }

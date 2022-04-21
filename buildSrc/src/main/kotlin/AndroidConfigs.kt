@@ -15,17 +15,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.fireflow
-
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import dagger.hilt.android.AndroidEntryPoint
-
-@AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-    }
+object AndroidConfigs {
+    const val TEST_INSTRUMENTATION_RUNNER = "androidx.test.runner.AndroidJUnitRunner"
+    const val TEST_INSTRUMENTATION_RUNNER_ARGUMENT_KEY = "runnerBuilder"
+    const val TEST_INSTRUMENTATION_RUNNER_ARGUMENT_VALUE =
+        "de.mannodermaus.junit5.AndroidJUnit5Builder"
 }

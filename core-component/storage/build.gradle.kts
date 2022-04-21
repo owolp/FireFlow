@@ -22,15 +22,48 @@ plugins {
     kotlin(BuildPlugins.KAPT)
 }
 
+android {
+    defaultConfig {
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments.putAll(
+                    mapOf(
+                        "room.schemaLocation" to "$projectDir/schemas"
+                    )
+                )
+            }
+        }
+
+        testInstrumentationRunner = AndroidConfigs.TEST_INSTRUMENTATION_RUNNER
+        testInstrumentationRunnerArguments[
+            AndroidConfigs.TEST_INSTRUMENTATION_RUNNER_ARGUMENT_KEY
+        ] = AndroidConfigs.TEST_INSTRUMENTATION_RUNNER_ARGUMENT_VALUE
+    }
+}
+
 dependencies {
     implementation(projects.coreComponent.common)
 
     implementation(libs.androidx.core)
     implementation(libs.androidx.datastore.preferences)
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    kapt(libs.androidx.room.compiler)
     implementation(libs.androidx.security.crypto)
     implementation(libs.google.dagger.hilt.android)
     kapt(libs.google.dagger.hilt.compiler)
     implementation(libs.jetbrains.kotlin.coroutines.android)
+    implementation(libs.zetetic.sqlcipher)
+
+    androidTestImplementation(libs.androidx.test.core)
+    androidTestImplementation(libs.androidx.arch.core.testing)
+    androidTestImplementation(libs.androidx.room.testing)
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.google.truth)
+    androidTestImplementation(libs.jetbrains.kotlin.coroutines.test)
+    androidTestImplementation(libs.junit.jupiter.api)
+    androidTestImplementation(libs.mannodermaus.junit5.android.test.core)
+    androidTestRuntimeOnly(libs.mannodermaus.junit5.android.test.runner)
 
     testImplementation(testFixtures(projects.coreComponent.common))
     testImplementation(libs.cash.turbine)

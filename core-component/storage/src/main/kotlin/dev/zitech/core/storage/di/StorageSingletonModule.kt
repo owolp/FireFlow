@@ -18,12 +18,19 @@
 package dev.zitech.core.storage.di
 
 import android.content.Context
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import dev.zitech.core.common.framework.dispatcher.AppDispatchers
+import dev.zitech.core.common.framework.strings.StringsProvider
+import dev.zitech.core.storage.data.database.FireFlowDatabase
+import dev.zitech.core.storage.data.database.dao.UserAccountDao
+import dev.zitech.core.storage.data.database.mapper.UserAccountMapper
+import dev.zitech.core.storage.data.database.repository.DatabaseKeyRepositoryImpl
+import dev.zitech.core.storage.data.database.repository.UserAccountRepositoryImpl
 import dev.zitech.core.storage.data.preferences.repository.ContainsPreferencesRepositoryImpl
 import dev.zitech.core.storage.data.preferences.repository.GetPreferencesRepositoryImpl
 import dev.zitech.core.storage.data.preferences.repository.RemovePreferencesRepositoryImpl
@@ -33,16 +40,22 @@ import dev.zitech.core.storage.di.annotation.SecuredPreferencesDataSource
 import dev.zitech.core.storage.di.annotation.StandardPreferencesDataSource
 import dev.zitech.core.storage.domain.model.PreferenceType
 import dev.zitech.core.storage.domain.repository.ContainsPreferencesRepository
+import dev.zitech.core.storage.domain.repository.DatabaseKeyRepository
 import dev.zitech.core.storage.domain.repository.GetPreferencesRepository
 import dev.zitech.core.storage.domain.repository.RemovePreferencesRepository
 import dev.zitech.core.storage.domain.repository.SavePreferencesRepository
+import dev.zitech.core.storage.domain.repository.UserAccountRepository
+import dev.zitech.core.storage.framework.database.DatabaseFactory
+import dev.zitech.core.storage.framework.database.user.UserAccountDatabaseSource
+import dev.zitech.core.storage.framework.database.user.UserAccountDatabaseSourceImpl
 import dev.zitech.core.storage.framework.preference.PreferencesDataSource
 import dev.zitech.core.storage.framework.preference.PreferencesFactory
 import javax.inject.Singleton
+import kotlinx.coroutines.runBlocking
 
 @InstallIn(SingletonComponent::class)
 @Module
-internal object StorageSingletonModule {
+internal object StorageSingletonProvidesModule {
 
     @DevelopmentPreferencesDataSource
     @Singleton
@@ -127,4 +140,53 @@ internal object StorageSingletonModule {
         securedPreferencesDataSource = securedPreferencesDataSource,
         standardPreferencesDataSource = standardPreferencesDataSource
     )
+
+    @Singleton
+    @Provides
+    fun userAccountDatabaseSource(
+        fireFlowDatabase: FireFlowDatabase,
+        userAccountMapper: UserAccountMapper
+    ): UserAccountDatabaseSource =
+        UserAccountDatabaseSourceImpl(
+            userAccountDao = fireFlowDatabase.userAccountDao(),
+            userAccountMapper = userAccountMapper
+        )
+
+    @Singleton
+    @Provides
+    fun databaseFactory(
+        @ApplicationContext applicationContext: Context,
+        databaseKeyRepository: DatabaseKeyRepository
+    ): FireFlowDatabase = runBlocking {
+        DatabaseFactory(
+            context = applicationContext,
+            databaseKeyRepository = databaseKeyRepository
+        ).createRoomDatabase("fireflow")
+    }
+
+    @Singleton
+    @Provides
+    fun userAccountDao(fireFlowDatabase: FireFlowDatabase): UserAccountDao =
+        fireFlowDatabase.userAccountDao()
+
+    @Singleton
+    @Provides
+    fun userAccountRepository(
+        userAccountDatabaseSource: UserAccountDatabaseSource,
+        stringsProvider: StringsProvider
+    ): UserAccountRepository = UserAccountRepositoryImpl(
+        userAccountDatabaseSource = userAccountDatabaseSource,
+        stringsProvider = stringsProvider
+    )
+}
+
+@InstallIn(SingletonComponent::class)
+@Module
+internal interface StorageSingletonBindsModule {
+
+    @Singleton
+    @Binds
+    fun databaseKeyRepository(
+        databaseKeyRepositoryImpl: DatabaseKeyRepositoryImpl
+    ): DatabaseKeyRepository
 }

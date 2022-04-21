@@ -1,19 +1,29 @@
 [versions]
+androidJunit = "1.3.0"
 coroutines = "1.6.0"
 dagger = "2.41"
 junit = "5.8.2"
 jvmTarget = "11"
 ktlint = "0.42.1"
 kotlin = "1.6.10"
+room = "2.4.2"
+test = "1.4.0"
 
 [libraries]
 android-build-gradle = "com.android.tools.build:gradle:7.2.0-rc01"
 androidx-appcompat = "androidx.appcompat:appcompat:1.4.1"
+androidx-arch-core-testing = "androidx.arch.core:core-testing:2.1.0"
 androidx-core = "androidx.core:core-ktx:1.7.0"
 androidx-costraintlayout = "androidx.constraintlayout:constraintlayout:2.1.3"
 androidx-datastore-preferences = "androidx.datastore:datastore-preferences:1.0.0"
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+androidx-room-testing = { module = "androidx.room:room-testing", version.ref = "room" }
 androidx-security-crypto = "androidx.security:security-crypto:1.0.0"
 androidx-startup = "androidx.startup:startup-runtime:1.1.1"
+androidx-test-runner = { module = "androidx.test:runner", version.ref = "test" }
+androidx-test-core = { module = "androidx.test:core-ktx", version.ref = "test" }
 cash-turbine = "app.cash.turbine:turbine:0.7.0"
 google-dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "dagger" }
 google-dagger-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "dagger" }
@@ -21,6 +31,8 @@ google-dagger-hilt-gradle = { module = "com.google.dagger:hilt-android-gradle-pl
 google-material = "com.google.android.material:material:1.5.0"
 google-truth = "com.google.truth:truth:1.1.3"
 mannodermaus-gradle-plugins-android-junit5 = "de.mannodermaus.gradle.plugins:android-junit5:1.8.2.0"
+mannodermaus-junit5-android-test-core = { module = "de.mannodermaus.junit5:android-test-core", version.ref = "androidJunit" }
+mannodermaus-junit5-android-test-runner = { module = "de.mannodermaus.junit5:android-test-runner", version.ref = "androidJunit" }
 jakewharton-timber = "com.jakewharton.timber:timber:5.0.1"
 jetbrains-kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 jetbrains-kotlin-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
@@ -29,3 +41,4 @@ junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.re
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
 mockk-mockk = "io.mockk:mockk:1.12.3"
 squareup-leakcanary-android = "com.squareup.leakcanary:leakcanary-android:2.8.1"
+zetetic-sqlcipher = "net.zetetic:android-database-sqlcipher:4.5.1"

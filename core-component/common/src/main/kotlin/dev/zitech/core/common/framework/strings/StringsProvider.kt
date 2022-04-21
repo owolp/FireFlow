@@ -15,17 +15,23 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.fireflow
+package dev.zitech.core.common.framework.strings
 
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import dagger.hilt.android.AndroidEntryPoint
+import android.content.Context
+import javax.inject.Inject
 
-@AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+interface StringsProvider {
+    operator fun invoke(resId: Int): String
+    operator fun invoke(resId: Int, vararg args: CharSequence): String
+}
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-    }
+internal class StringsProviderImpl @Inject constructor(
+    private val context: Context
+) : StringsProvider {
+
+    override fun invoke(resId: Int): String =
+        context.getString(resId)
+
+    override fun invoke(resId: Int, vararg args: CharSequence): String =
+        context.getString(resId, args)
 }
