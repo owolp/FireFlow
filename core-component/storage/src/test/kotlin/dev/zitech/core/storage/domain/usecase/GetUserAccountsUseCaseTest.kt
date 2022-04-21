@@ -20,7 +20,7 @@ package dev.zitech.core.storage.domain.usecase
 import com.google.common.truth.Truth.assertThat
 import dev.zitech.core.common.DataFactory
 import dev.zitech.core.common.domain.model.DataResult
-import dev.zitech.core.common.framework.strings.StringsProvider
+import dev.zitech.core.common.framework.strings.FakeStringsProvider
 import dev.zitech.core.storage.data.database.mapper.UserAccountMapper
 import dev.zitech.core.storage.data.database.repository.UserAccountRepositoryImpl
 import dev.zitech.core.storage.framework.database.dao.FakeUserAccountDao
@@ -38,8 +38,8 @@ internal class GetUserAccountsUseCaseTest {
         FakeUserAccountDao(),
         UserAccountMapper()
     )
+    private val stringsProvider = FakeStringsProvider()
     private val mockedUserAccountDatabaseSource = mockk<UserAccountDatabaseSource>()
-    private val mockedStringsProvider = mockk<StringsProvider>()
 
     @Test
     @DisplayName("WHEN there is no exception THEN return Success")
@@ -51,7 +51,7 @@ internal class GetUserAccountsUseCaseTest {
         val sut = GetUserAccountsUseCase(
             UserAccountRepositoryImpl(
                 userAccountDatabaseSource,
-                mockedStringsProvider
+                stringsProvider
             )
         )
 
@@ -72,7 +72,7 @@ internal class GetUserAccountsUseCaseTest {
         val sut = GetUserAccountsUseCase(
             UserAccountRepositoryImpl(
                 mockedUserAccountDatabaseSource,
-                mockedStringsProvider
+                stringsProvider
             )
         )
 

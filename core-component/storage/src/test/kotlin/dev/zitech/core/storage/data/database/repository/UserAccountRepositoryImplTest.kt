@@ -20,6 +20,7 @@ package dev.zitech.core.storage.data.database.repository
 import com.google.common.truth.Truth.assertThat
 import dev.zitech.core.common.DataFactory
 import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.framework.strings.FakeStringsProvider
 import dev.zitech.core.common.framework.strings.StringsProvider
 import dev.zitech.core.storage.R
 import dev.zitech.core.storage.data.database.mapper.UserAccountMapper
@@ -42,6 +43,7 @@ internal class UserAccountRepositoryImplTest {
         UserAccountMapper()
     )
     private val mockedUserAccountDatabaseSource = mockk<UserAccountDatabaseSource>()
+    private val stringsProvider = FakeStringsProvider()
     private val mockedStringsProvider = mockk<StringsProvider>()
 
     @Nested
@@ -53,7 +55,7 @@ internal class UserAccountRepositoryImplTest {
             // Arrange
             val sut: UserAccountRepository = UserAccountRepositoryImpl(
                 userAccountDatabaseSource,
-                mockedStringsProvider
+                stringsProvider
             )
 
             userAccountDatabaseSource.saveUserAccount(false)
@@ -75,7 +77,7 @@ internal class UserAccountRepositoryImplTest {
             coEvery { mockedUserAccountDatabaseSource.getUserAccounts() } throws exception
             val sut: UserAccountRepository = UserAccountRepositoryImpl(
                 mockedUserAccountDatabaseSource,
-                mockedStringsProvider
+                stringsProvider
             )
 
             // Act
@@ -97,7 +99,7 @@ internal class UserAccountRepositoryImplTest {
                 // Arrange
                 val sut: UserAccountRepository = UserAccountRepositoryImpl(
                     userAccountDatabaseSource,
-                    mockedStringsProvider
+                    stringsProvider
                 )
 
                 userAccountDatabaseSource.saveUserAccount(true)
@@ -115,11 +117,11 @@ internal class UserAccountRepositoryImplTest {
             fun accountNull() = runBlocking {
                 // Arrange
                 val message = DataFactory.createRandomString()
-                every { mockedStringsProvider(R.string.error_message_current_user_null) } returns message
+                stringsProvider.addString(R.string.error_message_current_user_null, message)
 
                 val sut: UserAccountRepository = UserAccountRepositoryImpl(
                     userAccountDatabaseSource,
-                    mockedStringsProvider
+                    stringsProvider
                 )
 
                 // Act
@@ -159,7 +161,7 @@ internal class UserAccountRepositoryImplTest {
             // Arrange
             val sut: UserAccountRepository = UserAccountRepositoryImpl(
                 userAccountDatabaseSource,
-                mockedStringsProvider
+                stringsProvider
             )
 
             // Act
@@ -177,7 +179,7 @@ internal class UserAccountRepositoryImplTest {
             coEvery { mockedUserAccountDatabaseSource.saveUserAccount(true) } throws exception
             val sut: UserAccountRepository = UserAccountRepositoryImpl(
                 mockedUserAccountDatabaseSource,
-                mockedStringsProvider
+                stringsProvider
             )
 
             // Act

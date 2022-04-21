@@ -20,15 +20,13 @@ package dev.zitech.core.storage.domain.usecase
 import com.google.common.truth.Truth.assertThat
 import dev.zitech.core.common.DataFactory
 import dev.zitech.core.common.domain.model.DataResult
-import dev.zitech.core.common.framework.strings.StringsProvider
+import dev.zitech.core.common.framework.strings.FakeStringsProvider
 import dev.zitech.core.storage.R
 import dev.zitech.core.storage.data.database.mapper.UserAccountMapper
 import dev.zitech.core.storage.data.database.repository.UserAccountRepositoryImpl
 import dev.zitech.core.storage.framework.database.dao.FakeUserAccountDao
 import dev.zitech.core.storage.framework.database.user.UserAccountDatabaseSource
 import dev.zitech.core.storage.framework.database.user.UserAccountDatabaseSourceImpl
-import io.mockk.every
-import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -39,7 +37,7 @@ internal class GetCurrentUserAccountUseCaseTest {
         FakeUserAccountDao(),
         UserAccountMapper()
     )
-    private val mockedStringsProvider = mockk<StringsProvider>()
+    private val stringsProvider = FakeStringsProvider()
 
     @Test
     @DisplayName("WHEN there is current account THEN return Success")
@@ -49,7 +47,7 @@ internal class GetCurrentUserAccountUseCaseTest {
         val sut = GetCurrentUserAccountUseCase(
             UserAccountRepositoryImpl(
                 userAccountDatabaseSource,
-                mockedStringsProvider
+                stringsProvider
             )
         )
 
@@ -66,12 +64,12 @@ internal class GetCurrentUserAccountUseCaseTest {
     fun error() = runBlocking {
         // Arrange
         val message = DataFactory.createRandomString()
-        every { mockedStringsProvider(R.string.error_message_current_user_null) } returns message
+        stringsProvider.addString(R.string.error_message_current_user_null, message)
 
         val sut = GetCurrentUserAccountUseCase(
             UserAccountRepositoryImpl(
                 userAccountDatabaseSource,
-                mockedStringsProvider
+                stringsProvider
             )
         )
 
