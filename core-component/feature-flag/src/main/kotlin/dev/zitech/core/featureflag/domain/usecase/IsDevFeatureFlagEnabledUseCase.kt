@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech
+ * Copyright (C) 2022 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,8 +18,8 @@
 package dev.zitech.core.featureflag.domain.usecase
 
 import dev.zitech.core.featureflag.domain.model.Feature
-import dev.zitech.core.storage.domain.model.PreferenceType
-import dev.zitech.core.storage.domain.repository.GetPreferencesRepository
+import dev.zitech.core.persistence.domain.model.PreferenceType
+import dev.zitech.core.persistence.domain.repository.GetPreferencesRepository
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 
