@@ -29,7 +29,7 @@ internal interface UserAccountDao {
     @Query("SELECT * FROM user_accounts")
     suspend fun getUserAccounts(): List<UserAccountEntity>
 
-    @Query("SELECT * FROM user_accounts WHERE isCurrentUserAccount = 1 LIMIT 1")
+    @Query("SELECT * FROM user_accounts WHERE isCurrentUserAccount = 1 ORDER BY id DESC LIMIT 1")
     suspend fun getCurrentUserAccount(): UserAccountEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
