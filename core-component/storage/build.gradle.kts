@@ -32,6 +32,7 @@ dependencies {
     kapt(libs.google.dagger.hilt.compiler)
     implementation(libs.jetbrains.kotlin.coroutines.android)
 
+    testImplementation(testFixtures(projects.coreComponent.common))
     testImplementation(libs.cash.turbine)
     testImplementation(libs.google.truth)
     testImplementation(libs.mockk.mockk)
