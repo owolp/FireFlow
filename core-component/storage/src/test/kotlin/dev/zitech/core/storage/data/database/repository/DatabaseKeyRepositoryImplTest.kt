@@ -72,7 +72,7 @@ internal class DatabaseKeyRepositoryImplTest {
     }
 
     @Test
-    @DisplayName("WHEN getDatabaseKey GIVEN key is not saved THEN save key and return it")
+    @DisplayName("GIVEN key is not saved WHEN getDatabaseKey THEN save key and return it")
     fun keyNotSaved() = runBlocking {
         // Act
         val result = sut.getDatabaseKey()
@@ -82,7 +82,7 @@ internal class DatabaseKeyRepositoryImplTest {
     }
 
     @Test
-    @DisplayName("WHEN getDatabaseKey GIVEN key is saved THEN return it")
+    @DisplayName("GIVEN key is saved WHEN getDatabaseKey THEN return it")
     fun keySaved() = runBlocking {
         // Arrange
         val value = DataFactory.createRandomString()
