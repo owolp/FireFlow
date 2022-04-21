@@ -15,17 +15,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.fireflow
+package dev.zitech.core.storage.data.database.entity
 
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import dagger.hilt.android.AndroidEntryPoint
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-@AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-    }
-}
+@Entity(
+    tableName = "user_accounts"
+)
+internal data class UserAccountEntity(
+    @PrimaryKey(autoGenerate = true)
+    val id: Long? = null,
+    val isCurrentUserAccount: Boolean
+)

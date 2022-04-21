@@ -15,17 +15,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.fireflow
+package dev.zitech.core.storage.domain.repository
 
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import dagger.hilt.android.AndroidEntryPoint
+import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.storage.domain.model.UserAccount
 
-@AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+interface UserAccountRepository {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-    }
+    suspend fun getCurrentUserAccount(): DataResult<UserAccount>
+    suspend fun getUserAccounts(): DataResult<List<UserAccount>>
+    suspend fun saveUserAccount(isCurrentUserAccount: Boolean): DataResult<Long>
 }

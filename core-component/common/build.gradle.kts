@@ -32,6 +32,13 @@ dependencies {
     kapt(libs.google.dagger.hilt.compiler)
     implementation(libs.jakewharton.timber)
     implementation(libs.jetbrains.kotlin.coroutines.android)
+
+    testImplementation(libs.cash.turbine)
+    testImplementation(libs.google.truth)
+    testImplementation(libs.mockk.mockk)
+    testImplementation(libs.jetbrains.kotlin.coroutines.test)
+    testImplementation(libs.junit.jupiter.api)
+    testRuntimeOnly(libs.junit.jupiter.engine)
 }
 
 kapt {

@@ -15,17 +15,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.fireflow
+package dev.zitech.core.storage.data.database.mapper
 
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import dagger.hilt.android.AndroidEntryPoint
+import dev.zitech.core.common.data.mapper.Mapper
+import dev.zitech.core.storage.data.database.entity.UserAccountEntity
+import dev.zitech.core.storage.domain.model.UserAccount
+import javax.inject.Inject
 
-@AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+internal class UserAccountMapper @Inject constructor() : Mapper<UserAccountEntity, UserAccount> {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-    }
+    override fun invoke(input: UserAccountEntity) = UserAccount(
+        id = input.id ?: -1,
+        isCurrentUserAccount = input.isCurrentUserAccount
+    )
 }

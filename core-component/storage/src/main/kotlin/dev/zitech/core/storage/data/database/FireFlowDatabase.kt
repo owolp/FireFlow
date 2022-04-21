@@ -15,17 +15,20 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.fireflow
+package dev.zitech.core.storage.data.database
 
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import dagger.hilt.android.AndroidEntryPoint
+import androidx.room.Database
+import androidx.room.RoomDatabase
+import dev.zitech.core.storage.data.database.dao.UserAccountDao
+import dev.zitech.core.storage.data.database.entity.UserAccountEntity
 
-@AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+@Database(
+    entities = [
+        UserAccountEntity::class
+    ],
+    version = 1
+)
+internal abstract class FireFlowDatabase : RoomDatabase() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-    }
+    abstract fun userAccountDao(): UserAccountDao
 }

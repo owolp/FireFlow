@@ -17,19 +17,34 @@
 
 package dev.zitech.core.common.di
 
+import android.content.Context
 import dagger.Binds
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import dev.zitech.core.common.framework.dispatcher.AppDispatchers
 import dev.zitech.core.common.framework.dispatcher.AppDispatchersImpl
 import dev.zitech.core.common.framework.scope.AppScopes
 import dev.zitech.core.common.framework.scope.AppScopesImpl
+import dev.zitech.core.common.framework.strings.StringsProvider
+import dev.zitech.core.common.framework.strings.StringsProviderImpl
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
-internal interface CommonSingletonModule {
+internal object CommonSingletonProvidesModule {
+
+    @Singleton
+    @Provides
+    fun stringsProvider(@ApplicationContext applicationContext: Context): StringsProvider =
+        StringsProviderImpl(applicationContext)
+}
+
+@InstallIn(SingletonComponent::class)
+@Module
+internal interface CommonSingletonBindsModule {
 
     @Singleton
     @Binds
