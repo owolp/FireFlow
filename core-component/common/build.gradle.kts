@@ -21,6 +21,12 @@ plugins {
     kotlin(BuildPlugins.KAPT)
 }
 
+android {
+    testFixtures {
+        enable = true
+    }
+}
+
 dependencies {
     implementation(libs.google.dagger.hilt.android)
     kapt(libs.google.dagger.hilt.compiler)

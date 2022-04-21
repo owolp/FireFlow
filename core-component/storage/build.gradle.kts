@@ -50,6 +50,7 @@ dependencies {
     implementation(libs.jetbrains.kotlin.coroutines.android)
     implementation(libs.zetetic.sqlcipher)
 
+    testImplementation(testFixtures(projects.coreComponent.common))
     testImplementation(libs.cash.turbine)
     testImplementation(libs.google.truth)
     testImplementation(libs.mockk.mockk)
