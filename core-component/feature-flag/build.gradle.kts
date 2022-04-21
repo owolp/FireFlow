@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech
+ * Copyright (C) 2022 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@ plugins {
 
 dependencies {
     implementation(projects.coreComponent.common)
-    implementation(projects.coreComponent.storage)
+    implementation(projects.coreComponent.persistence)
 
     implementation(libs.google.dagger.hilt.android)
     kapt(libs.google.dagger.hilt.compiler)
