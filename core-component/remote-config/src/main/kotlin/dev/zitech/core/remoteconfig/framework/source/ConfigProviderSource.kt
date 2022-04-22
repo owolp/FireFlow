@@ -15,27 +15,21 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id(BuildPlugins.KOTLIN_ANDROID)
-    id(BuildPlugins.LIBRARY)
-    kotlin(BuildPlugins.KAPT)
-}
+package dev.zitech.core.remoteconfig.framework.source
 
-dependencies {
-    implementation(projects.coreComponent.common)
+import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.remoteconfig.domain.model.BooleanConfig
+import dev.zitech.core.remoteconfig.domain.model.DoubleConfig
+import dev.zitech.core.remoteconfig.domain.model.LongConfig
+import dev.zitech.core.remoteconfig.domain.model.StringConfig
+import kotlinx.coroutines.flow.Flow
 
-    implementation(libs.google.dagger.hilt.android)
-    kapt(libs.google.dagger.hilt.compiler)
-    implementation(libs.jetbrains.kotlin.coroutines.android)
+interface ConfigProviderSource {
 
-    testImplementation(libs.cash.turbine)
-    testImplementation(libs.google.truth)
-    testImplementation(libs.mockk.mockk)
-    testImplementation(libs.jetbrains.kotlin.coroutines.test)
-    testImplementation(libs.junit.jupiter.api)
-    testRuntimeOnly(libs.junit.jupiter.engine)
-}
+    fun init(): Flow<DataResult<Unit>>
 
-kapt {
-    correctErrorTypes = true
+    suspend fun getString(config: StringConfig): String
+    suspend fun getBoolean(config: BooleanConfig): Boolean
+    suspend fun getDouble(config: DoubleConfig): Double
+    suspend fun getLong(config: LongConfig): Long
 }

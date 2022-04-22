@@ -15,27 +15,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id(BuildPlugins.KOTLIN_ANDROID)
-    id(BuildPlugins.LIBRARY)
-    kotlin(BuildPlugins.KAPT)
-}
+package dev.zitech.core.remoteconfig.domain.model
 
-dependencies {
-    implementation(projects.coreComponent.common)
-
-    implementation(libs.google.dagger.hilt.android)
-    kapt(libs.google.dagger.hilt.compiler)
-    implementation(libs.jetbrains.kotlin.coroutines.android)
-
-    testImplementation(libs.cash.turbine)
-    testImplementation(libs.google.truth)
-    testImplementation(libs.mockk.mockk)
-    testImplementation(libs.jetbrains.kotlin.coroutines.test)
-    testImplementation(libs.junit.jupiter.api)
-    testRuntimeOnly(libs.junit.jupiter.engine)
-}
-
-kapt {
-    correctErrorTypes = true
-}
+enum class StringConfig(
+    override val key: String,
+    override val title: String,
+    override val explanation: String,
+    override val defaultValue: String
+) : Config<String>

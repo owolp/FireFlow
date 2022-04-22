@@ -72,6 +72,7 @@ fun PluginContainer.applyConfig(project: Project) {
                     .getByType<LibraryExtension>()
                     .apply {
                         baseConfig()
+                        configureProductFlavors()
                     }
             }
         }
@@ -100,6 +101,9 @@ fun BaseExtension.baseConfig() {
     sourceSets {
         map { it.java.srcDir("src/${it.name}/kotlin") }
     }
+
+    configureBuildTypes(project)
+    configureFlavorDimensions()
 }
 
 fun AppExtension.androidApplication(project: Project) {
@@ -141,16 +145,14 @@ fun AppExtension.androidApplication(project: Project) {
         }
     }
 
-    configureBuildTypes(project)
-    configureFlavorDimensions()
     configureProductFlavors(signingConfigDev, signingConfigProd)
 }
 
-fun AppExtension.configureFlavorDimensions() {
+fun BaseExtension.configureFlavorDimensions() {
     flavorDimensions("default")
 }
 
-fun AppExtension.configureBuildTypes(project: Project) {
+fun BaseExtension.configureBuildTypes(project: Project) {
     buildTypes {
         getByName("debug") {
             isDebuggable = true
@@ -167,30 +169,47 @@ fun AppExtension.configureBuildTypes(project: Project) {
     }
 }
 
+val dev = "dev"
+val foss = "foss"
+val gallery = "gallery"
+val play = "play"
+
 fun AppExtension.configureProductFlavors(
     signingConfigDev: String,
     signingConfigProd: String
 ) {
     productFlavors {
-        create("dev") {
+        create(dev) {
             signingConfig = signingConfigs.getByName(signingConfigDev)
-            applicationIdSuffix = ".dev"
+            applicationIdSuffix = ".$dev"
             versionNameSuffix = "-${AppVersioning.retrieveVersionCode()}"
         }
 
-        create("play") {
+        create(play) {
             signingConfig = signingConfigs.getByName(signingConfigProd)
-            applicationIdSuffix = ".play"
+            applicationIdSuffix = ".$play"
         }
 
-        create("gallery") {
+        create(gallery) {
             signingConfig = signingConfigs.getByName(signingConfigProd)
-            applicationIdSuffix = ".gallery"
+            applicationIdSuffix = ".$gallery"
         }
 
-        create("foss") {
+        create(foss) {
             signingConfig = signingConfigs.getByName(signingConfigProd)
-            applicationIdSuffix = ".foss"
+            applicationIdSuffix = ".$foss"
         }
+    }
+}
+
+fun BaseExtension.configureProductFlavors() {
+    productFlavors {
+        create(dev) {}
+
+        create(play) {}
+
+        create(gallery) {}
+
+        create(foss) {}
     }
 }
