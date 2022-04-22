@@ -18,12 +18,12 @@
 package dev.zitech.core.persistence.data.database.repository
 
 import dev.zitech.core.common.DataFactory
-import dev.zitech.core.persistence.domain.model.DatabaseKey
-import dev.zitech.core.persistence.domain.model.PreferenceType
-import dev.zitech.core.persistence.domain.repository.ContainsPreferencesRepository
-import dev.zitech.core.persistence.domain.repository.DatabaseKeyRepository
-import dev.zitech.core.persistence.domain.repository.GetPreferencesRepository
-import dev.zitech.core.persistence.domain.repository.SavePreferencesRepository
+import dev.zitech.core.persistence.domain.model.database.DatabaseKey
+import dev.zitech.core.persistence.domain.model.preferences.PreferenceType
+import dev.zitech.core.persistence.domain.repository.database.DatabaseKeyRepository
+import dev.zitech.core.persistence.domain.repository.preferences.ContainsPreferencesRepository
+import dev.zitech.core.persistence.domain.repository.preferences.GetPreferencesRepository
+import dev.zitech.core.persistence.domain.repository.preferences.SavePreferencesRepository
 import javax.inject.Inject
 import kotlinx.coroutines.flow.first
 

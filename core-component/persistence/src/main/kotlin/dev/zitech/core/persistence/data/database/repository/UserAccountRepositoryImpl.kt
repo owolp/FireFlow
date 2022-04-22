@@ -21,9 +21,9 @@ import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.common.framework.logger.Logger
 import dev.zitech.core.common.framework.strings.StringsProvider
 import dev.zitech.core.persistence.R
-import dev.zitech.core.persistence.domain.model.UserAccount
-import dev.zitech.core.persistence.domain.repository.UserAccountRepository
-import dev.zitech.core.persistence.framework.database.user.UserAccountDatabaseSource
+import dev.zitech.core.persistence.domain.model.database.UserAccount
+import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
+import dev.zitech.core.persistence.domain.source.database.UserAccountDatabaseSource
 import javax.inject.Inject
 
 internal class UserAccountRepositoryImpl @Inject constructor(

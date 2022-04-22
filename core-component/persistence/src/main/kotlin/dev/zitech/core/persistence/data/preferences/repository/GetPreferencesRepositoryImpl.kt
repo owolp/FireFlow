@@ -17,9 +17,9 @@
 
 package dev.zitech.core.persistence.data.preferences.repository
 
-import dev.zitech.core.persistence.domain.model.PreferenceType
-import dev.zitech.core.persistence.domain.repository.GetPreferencesRepository
-import dev.zitech.core.persistence.framework.preference.PreferencesDataSource
+import dev.zitech.core.persistence.domain.model.preferences.PreferenceType
+import dev.zitech.core.persistence.domain.repository.preferences.GetPreferencesRepository
+import dev.zitech.core.persistence.domain.source.preferences.PreferencesDataSource
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 

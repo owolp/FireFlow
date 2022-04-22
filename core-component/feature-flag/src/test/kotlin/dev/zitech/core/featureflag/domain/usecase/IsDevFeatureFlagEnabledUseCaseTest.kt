@@ -21,8 +21,8 @@ import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import dev.zitech.core.common.DataFactory
 import dev.zitech.core.featureflag.domain.model.Feature
-import dev.zitech.core.persistence.domain.model.PreferenceType
-import dev.zitech.core.persistence.domain.repository.GetPreferencesRepository
+import dev.zitech.core.persistence.domain.model.preferences.PreferenceType
+import dev.zitech.core.persistence.domain.repository.preferences.GetPreferencesRepository
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkClass

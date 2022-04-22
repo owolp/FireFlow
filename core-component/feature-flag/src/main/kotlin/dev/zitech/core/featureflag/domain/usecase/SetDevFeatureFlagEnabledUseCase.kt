@@ -17,8 +17,8 @@
 
 package dev.zitech.core.featureflag.domain.usecase
 
-import dev.zitech.core.persistence.domain.model.PreferenceType
-import dev.zitech.core.persistence.domain.repository.SavePreferencesRepository
+import dev.zitech.core.persistence.domain.model.preferences.PreferenceType
+import dev.zitech.core.persistence.domain.repository.preferences.SavePreferencesRepository
 import javax.inject.Inject
 
 internal class SetDevFeatureFlagEnabledUseCase @Inject constructor(

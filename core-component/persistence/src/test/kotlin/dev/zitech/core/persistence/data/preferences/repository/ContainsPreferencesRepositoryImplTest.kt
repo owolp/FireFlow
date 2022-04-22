@@ -20,9 +20,9 @@ package dev.zitech.core.persistence.data.preferences.repository
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import dev.zitech.core.common.DataFactory
-import dev.zitech.core.persistence.domain.model.PreferenceType
-import dev.zitech.core.persistence.domain.repository.ContainsPreferencesRepository
-import dev.zitech.core.persistence.framework.preference.PreferencesDataSource
+import dev.zitech.core.persistence.domain.model.preferences.PreferenceType
+import dev.zitech.core.persistence.domain.repository.preferences.ContainsPreferencesRepository
+import dev.zitech.core.persistence.domain.source.preferences.PreferencesDataSource
 import io.mockk.coVerify
 import io.mockk.confirmVerified
 import io.mockk.every
