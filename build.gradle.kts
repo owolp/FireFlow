@@ -36,6 +36,7 @@ buildscript {
     dependencies {
         classpath(libs.android.build.gradle)
         classpath(libs.google.dagger.hilt.gradle)
+        classpath(libs.google.gms.services)
         classpath(libs.jetbrains.kotlin.gradle)
         classpath(libs.mannodermaus.gradle.plugins.android.junit5)
     }

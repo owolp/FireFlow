@@ -28,6 +28,9 @@ dependencies {
     kapt(libs.google.dagger.hilt.compiler)
     implementation(libs.jetbrains.kotlin.coroutines.android)
 
+    playImplementation(platform(libs.google.firebase.bom))
+    playImplementation("com.google.firebase:firebase-config-ktx")
+
     testImplementation(libs.cash.turbine)
     testImplementation(libs.google.truth)
     testImplementation(libs.mockk.mockk)

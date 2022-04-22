@@ -18,6 +18,7 @@
 plugins {
     id(BuildPlugins.APPLICATION)
     id(BuildPlugins.DAGGER)
+    id(BuildPlugins.GOOGLE_SERVICES)
     id(BuildPlugins.KOTLIN_ANDROID)
     kotlin(BuildPlugins.KAPT)
 }

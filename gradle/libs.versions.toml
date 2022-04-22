@@ -28,7 +28,9 @@ cash-turbine = "app.cash.turbine:turbine:0.7.0"
 google-dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "dagger" }
 google-dagger-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "dagger" }
 google-dagger-hilt-gradle = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "dagger" }
+google-firebase-bom = "com.google.firebase:firebase-bom:29.3.1"
 google-material = "com.google.android.material:material:1.5.0"
+google-gms-services = "com.google.gms:google-services:4.3.10"
 google-truth = "com.google.truth:truth:1.1.3"
 mannodermaus-gradle-plugins-android-junit5 = "de.mannodermaus.gradle.plugins:android-junit5:1.8.2.0"
 mannodermaus-junit5-android-test-core = { module = "de.mannodermaus.junit5:android-test-core", version.ref = "androidJunit" }
