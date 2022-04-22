@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2022 Zitech
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,11 +15,25 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+plugins {
+    id(BuildPlugins.KOTLIN_ANDROID)
+    id(BuildPlugins.LIBRARY)
+    kotlin(BuildPlugins.KAPT)
+}
 
-include(":app")
-include(":core-component:core")
-include(":core-component:common")
-include(":core-component:feature-flag")
-include(":core-component:persistence")
-include(":core-component:remote-config")
+dependencies {
+    implementation(libs.google.dagger.hilt.android)
+    kapt(libs.google.dagger.hilt.compiler)
+    implementation(libs.jetbrains.kotlin.coroutines.android)
+
+    testImplementation(libs.cash.turbine)
+    testImplementation(libs.google.truth)
+    testImplementation(libs.mockk.mockk)
+    testImplementation(libs.jetbrains.kotlin.coroutines.test)
+    testImplementation(libs.junit.jupiter.api)
+    testRuntimeOnly(libs.junit.jupiter.engine)
+}
+
+kapt {
+    correctErrorTypes = true
+}
