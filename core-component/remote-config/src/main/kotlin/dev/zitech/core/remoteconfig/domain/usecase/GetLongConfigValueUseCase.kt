@@ -19,8 +19,9 @@ package dev.zitech.core.remoteconfig.domain.usecase
 
 import dev.zitech.core.remoteconfig.domain.model.LongConfig
 import dev.zitech.core.remoteconfig.domain.repository.ConfigRepository
+import javax.inject.Inject
 
-class GetLongConfigValueUseCase(
+class GetLongConfigValueUseCase @Inject constructor(
     private val configRepository: ConfigRepository
 ) {
 

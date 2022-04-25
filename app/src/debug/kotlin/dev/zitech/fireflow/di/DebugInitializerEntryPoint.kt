@@ -22,6 +22,7 @@ import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
+import dev.zitech.fireflow.initializer.LoggerInitializer
 import dev.zitech.fireflow.initializer.MemoryLeakDetectorInitializer
 import dev.zitech.fireflow.initializer.StrictLoggerInitializer
 
@@ -42,6 +43,7 @@ internal interface DebugInitializerEntryPoint {
         }
     }
 
+    fun inject(loggerInitializer: LoggerInitializer)
     fun inject(memoryLeakDetectorInitializer: MemoryLeakDetectorInitializer)
     fun inject(strictLoggerInitializer: StrictLoggerInitializer)
 }

@@ -19,8 +19,9 @@ package dev.zitech.core.remoteconfig.domain.usecase
 
 import dev.zitech.core.remoteconfig.domain.model.StringConfig
 import dev.zitech.core.remoteconfig.domain.repository.ConfigRepository
+import javax.inject.Inject
 
-class GetStringConfigValueUseCase(
+class GetStringConfigValueUseCase @Inject constructor(
     private val configRepository: ConfigRepository
 ) {
 

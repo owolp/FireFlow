@@ -22,6 +22,7 @@ import androidx.startup.Initializer
 import dev.zitech.core.common.framework.logger.AppConfigProvider
 import dev.zitech.core.common.framework.logger.BuildMode
 import dev.zitech.core.common.framework.logger.Logger
+import dev.zitech.fireflow.di.DebugInitializerEntryPoint
 import javax.inject.Inject
 
 internal class LoggerInitializer : Initializer<Unit> {
@@ -30,6 +31,8 @@ internal class LoggerInitializer : Initializer<Unit> {
     lateinit var appConfigProvider: AppConfigProvider
 
     override fun create(context: Context) {
+        DebugInitializerEntryPoint.resolve(context).inject(this)
+
         Logger.init(
             isDebug = when (appConfigProvider.buildMode) {
                 BuildMode.RELEASE -> false
