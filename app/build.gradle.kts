@@ -26,9 +26,13 @@ plugins {
 dependencies {
     implementation(projects.coreComponent.core)
 
+    implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core)
     implementation(libs.androidx.costraintlayout)
+    implementation(libs.androidx.lifecycle.runtime)
+    kapt(libs.androidx.lifecycle.compiler)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.startup)
     implementation(libs.google.material)
     implementation(libs.google.dagger.hilt.android)
