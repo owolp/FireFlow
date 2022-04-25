@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech
+ * Copyright (C) 2022 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,16 +34,16 @@ internal class ConfigRepositoryImpl @Inject constructor(
     override fun init(isDebugBuild: Boolean): Flow<DataResult<Unit>> =
         configProviderSource.init()
 
-    override suspend fun getBooleanConfigs(): List<BooleanConfig> =
+    override fun getBooleanConfigs(): List<BooleanConfig> =
         BooleanConfig.values().toList()
 
-    override suspend fun getDoubleConfigs(): List<DoubleConfig> =
+    override fun getDoubleConfigs(): List<DoubleConfig> =
         DoubleConfig.values().toList()
 
-    override suspend fun getLongConfigs(): List<LongConfig> =
+    override fun getLongConfigs(): List<LongConfig> =
         LongConfig.values().toList()
 
-    override suspend fun getStringConfigs(): List<StringConfig> =
+    override fun getStringConfigs(): List<StringConfig> =
         StringConfig.values().toList()
 
     override suspend fun getBooleanValue(config: BooleanConfig): Boolean =

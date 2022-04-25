@@ -15,8 +15,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.common.framework.logger
+package dev.zitech.core.remoteconfig.domain.usecase
 
-enum class BuildMode {
-    RELEASE, DEBUG
+import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.remoteconfig.framework.configurator.RemoteConfigurator
+import javax.inject.Inject
+import kotlinx.coroutines.flow.Flow
+
+class InitializeRemoteConfiguratorUseCase @Inject constructor(
+    private val remoteConfigurator: RemoteConfigurator
+) {
+    operator fun invoke(): Flow<DataResult<Unit>> =
+        remoteConfigurator.init()
 }

@@ -15,25 +15,32 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.remoteconfig.domain.repository
+package dev.zitech.core.remoteconfig.domain.usecase
 
-import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.remoteconfig.domain.model.BooleanConfig
 import dev.zitech.core.remoteconfig.domain.model.DoubleConfig
 import dev.zitech.core.remoteconfig.domain.model.LongConfig
 import dev.zitech.core.remoteconfig.domain.model.StringConfig
-import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-interface ConfigRepository {
-    fun init(isDebugBuild: Boolean): Flow<DataResult<Unit>>
+internal class GetDefaultConfigValuesUseCase @Inject constructor() {
 
-    fun getBooleanConfigs(): List<BooleanConfig>
-    fun getDoubleConfigs(): List<DoubleConfig>
-    fun getLongConfigs(): List<LongConfig>
-    fun getStringConfigs(): List<StringConfig>
+    operator fun invoke(): Map<String, Any> {
+        val properties = mutableMapOf<String, Any>()
 
-    suspend fun getBooleanValue(config: BooleanConfig): Boolean
-    suspend fun getDoubleValue(config: DoubleConfig): Double
-    suspend fun getLongValue(config: LongConfig): Long
-    suspend fun getStringsValue(config: StringConfig): String
+        BooleanConfig.values().forEach {
+            properties[it.key] = it.defaultValue
+        }
+        DoubleConfig.values().forEach {
+            properties[it.key] = it.defaultValue
+        }
+        LongConfig.values().forEach {
+            properties[it.key] = it.defaultValue
+        }
+        StringConfig.values().forEach {
+            properties[it.key] = it.defaultValue
+        }
+
+        return properties
+    }
 }

@@ -15,8 +15,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.common.framework.logger
+package dev.zitech.core.remoteconfig.domain.usecase
 
-enum class BuildMode {
-    RELEASE, DEBUG
+import dev.zitech.core.remoteconfig.domain.model.LongConfig
+import dev.zitech.core.remoteconfig.domain.repository.ConfigRepository
+
+class GetLongConfigValueUseCase(
+    private val configRepository: ConfigRepository
+) {
+
+    suspend operator fun invoke(config: LongConfig): Long =
+        configRepository.getLongValue(config)
 }

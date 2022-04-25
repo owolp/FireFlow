@@ -15,8 +15,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.common.framework.logger
+package dev.zitech.core.remoteconfig.domain.usecase
 
-enum class BuildMode {
-    RELEASE, DEBUG
+import dev.zitech.core.remoteconfig.domain.model.StringConfig
+import dev.zitech.core.remoteconfig.domain.repository.ConfigRepository
+import javax.inject.Inject
+
+class GetStringConfigsValueUseCase @Inject constructor(
+    private val configRepository: ConfigRepository
+) {
+
+    operator fun invoke(): List<StringConfig> =
+        configRepository.getStringConfigs()
 }
