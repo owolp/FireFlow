@@ -30,6 +30,9 @@ dependencies {
 
     playImplementation(platform(libs.google.firebase.bom))
     playImplementation("com.google.firebase:firebase-config-ktx")
+    playImplementation("com.google.firebase:firebase-analytics-ktx") {
+        because("Firebase Config needs Firebase Analytics")
+    }
 
     testImplementation(libs.cash.turbine)
     testImplementation(libs.google.truth)

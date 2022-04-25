@@ -18,6 +18,7 @@ dependencies {
     api(projects.coreComponent.common)
     api(projects.coreComponent.featureFlag)
     api(projects.coreComponent.persistence)
+    api(projects.coreComponent.remoteConfig)
 }
 
 plugins {
