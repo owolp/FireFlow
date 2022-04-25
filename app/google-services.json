@@ -1,7 +1,8 @@
 {
   "project_info": {
     "project_number": "",
-    "project_id": ""
+    "project_id": "",
+    "storage_bucket": ""
   },
   "client": [
     {
@@ -11,22 +12,25 @@
           "package_name": "dev.zitech.fireflow.dev"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": ""
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 1
+          "other_platform_oauth_client": [
+            {
+              "client_id": "",
+              "client_type": 3
+            }
+          ]
         }
       }
     },
@@ -37,22 +41,25 @@
           "package_name": "dev.zitech.fireflow.foss"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": ""
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 1
+          "other_platform_oauth_client": [
+            {
+              "client_id": "",
+              "client_type": 3
+            }
+          ]
         }
       }
     },
@@ -63,22 +70,25 @@
           "package_name": "dev.zitech.fireflow.gallery"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": ""
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 1
+          "other_platform_oauth_client": [
+            {
+              "client_id": "",
+              "client_type": 3
+            }
+          ]
         }
       }
     },
@@ -89,22 +99,25 @@
           "package_name": "dev.zitech.fireflow.play"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": ""
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 1
+          "other_platform_oauth_client": [
+            {
+              "client_id": "",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
