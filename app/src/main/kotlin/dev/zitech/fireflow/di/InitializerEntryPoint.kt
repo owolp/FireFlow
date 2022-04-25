@@ -22,6 +22,7 @@ import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
+import dev.zitech.fireflow.initializer.LoggerInitializer
 
 @InstallIn(SingletonComponent::class)
 @EntryPoint
@@ -39,4 +40,6 @@ internal interface InitializerEntryPoint {
             )
         }
     }
+
+    fun inject(loggerInitializer: LoggerInitializer)
 }
