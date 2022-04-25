@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2022 Zitech
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,19 +17,6 @@
 
 package dev.zitech.core.common.framework.logger
 
-import dev.zitech.core.common.BuildConfig
-import javax.inject.Inject
-
-interface AppConfigProvider {
-    val buildMode: BuildMode
-}
-
-internal class AppConfigProviderImpl @Inject constructor() : AppConfigProvider {
-
-    override val buildMode: BuildMode
-        get(): BuildMode = if (BuildConfig.DEBUG) {
-            BuildMode.DEBUG
-        } else {
-            BuildMode.RELEASE
-        }
+enum class BuildMode {
+    RELEASE, DEBUG
 }

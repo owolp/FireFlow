@@ -25,6 +25,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import dev.zitech.core.common.framework.dispatcher.AppDispatchers
+import dev.zitech.core.common.framework.logger.AppConfigProvider
 import dev.zitech.core.common.framework.strings.StringsProvider
 import dev.zitech.core.persistence.data.database.repository.DatabaseKeyRepositoryImpl
 import dev.zitech.core.persistence.data.database.repository.UserAccountRepositoryImpl
@@ -156,10 +157,12 @@ internal object PersistenceSingletonProvidesModule {
     @Provides
     fun databaseFactory(
         @ApplicationContext applicationContext: Context,
+        appConfigProvider: AppConfigProvider,
         databaseKeyRepository: DatabaseKeyRepository
     ): FireFlowDatabase = runBlocking {
         DatabaseFactory(
             context = applicationContext,
+            appConfigProvider = appConfigProvider,
             databaseKeyRepository = databaseKeyRepository
         ).createRoomDatabase("fireflow")
     }

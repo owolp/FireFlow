@@ -20,6 +20,7 @@ package dev.zitech.core.persistence.framework.database.factory
 import android.content.Context
 import androidx.room.Room
 import dev.zitech.core.common.framework.logger.AppConfigProvider
+import dev.zitech.core.common.framework.logger.BuildMode
 import dev.zitech.core.persistence.domain.repository.database.DatabaseKeyRepository
 import dev.zitech.core.persistence.framework.database.FireFlowDatabase
 import javax.inject.Inject
@@ -28,6 +29,7 @@ import net.sqlcipher.database.SupportFactory
 
 internal class DatabaseFactory @Inject constructor(
     private val context: Context,
+    private val appConfigProvider: AppConfigProvider,
     private val databaseKeyRepository: DatabaseKeyRepository,
 ) {
 
@@ -38,7 +40,7 @@ internal class DatabaseFactory @Inject constructor(
             databaseName
         )
 
-        if (!AppConfigProvider.isDebugMode()) {
+        if (appConfigProvider.buildMode == BuildMode.RELEASE) {
             roomBuilder.openHelperFactory(
                 SupportFactory(
                     SQLiteDatabase.getBytes(

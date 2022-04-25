@@ -20,15 +20,24 @@ package dev.zitech.fireflow.initializer
 import android.content.Context
 import androidx.startup.Initializer
 import dev.zitech.core.common.framework.logger.AppConfigProvider
+import dev.zitech.core.common.framework.logger.BuildMode
 import dev.zitech.core.common.framework.logger.Logger
+import javax.inject.Inject
 
 internal class LoggerInitializer : Initializer<Unit> {
 
+    @Inject
+    lateinit var appConfigProvider: AppConfigProvider
+
     override fun create(context: Context) {
         Logger.init(
-            isDebug = AppConfigProvider.isDebugMode()
+            isDebug = when (appConfigProvider.buildMode) {
+                BuildMode.RELEASE -> false
+                BuildMode.DEBUG -> true
+            }
         )
     }
 
-    override fun dependencies(): List<Class<out Initializer<*>>> = emptyList()
+    override fun dependencies(): List<Class<out Initializer<*>>> =
+        listOf(DependencyGraphInitializer::class.java)
 }
