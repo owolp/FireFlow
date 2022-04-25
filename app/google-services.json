@@ -1,13 +1,13 @@
 {
   "project_info": {
     "project_number": "",
-    "project_id": "fireflow",
+    "project_id": "",
     "storage_bucket": ""
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "",
+        "mobilesdk_app_id": "1",
         "android_client_info": {
           "package_name": "dev.zitech.fireflow.dev"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [
         {
           "client_id": "",
-          "client_type": 3
+          "client_type": 1
         }
       ],
       "api_key": [
@@ -28,7 +28,7 @@
           "other_platform_oauth_client": [
             {
               "client_id": "",
-              "client_type": 3
+              "client_type": 1
             }
           ]
         }
@@ -36,7 +36,7 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "",
+        "mobilesdk_app_id": "1",
         "android_client_info": {
           "package_name": "dev.zitech.fireflow.foss"
         }
@@ -44,7 +44,7 @@
       "oauth_client": [
         {
           "client_id": "",
-          "client_type": 3
+          "client_type": 1
         }
       ],
       "api_key": [
@@ -56,8 +56,8 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "",
-              "client_type": 3
+              "client_id": "1",
+              "client_type": 1
             }
           ]
         }
@@ -65,7 +65,7 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "",
+        "mobilesdk_app_id": "1",
         "android_client_info": {
           "package_name": "dev.zitech.fireflow.gallery"
         }
@@ -73,7 +73,7 @@
       "oauth_client": [
         {
           "client_id": "",
-          "client_type": 3
+          "client_type": 1
         }
       ],
       "api_key": [
@@ -86,7 +86,7 @@
           "other_platform_oauth_client": [
             {
               "client_id": "",
-              "client_type": 3
+              "client_type": 1
             }
           ]
         }
@@ -94,7 +94,7 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "",
+        "mobilesdk_app_id": "1",
         "android_client_info": {
           "package_name": "dev.zitech.fireflow.play"
         }
@@ -102,7 +102,7 @@
       "oauth_client": [
         {
           "client_id": "",
-          "client_type": 3
+          "client_type": 1
         }
       ],
       "api_key": [
@@ -115,7 +115,7 @@
           "other_platform_oauth_client": [
             {
               "client_id": "",
-              "client_type": 3
+              "client_type": 1
             }
           ]
         }
