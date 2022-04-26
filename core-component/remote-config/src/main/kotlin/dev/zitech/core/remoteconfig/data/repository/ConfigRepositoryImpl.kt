@@ -31,7 +31,7 @@ internal class ConfigRepositoryImpl @Inject constructor(
     private val configProviderSource: ConfigProviderSource
 ) : ConfigRepository {
 
-    override fun init(isDebugBuild: Boolean): Flow<DataResult<Unit>> =
+    override fun init(): Flow<DataResult<Unit>> =
         configProviderSource.init()
 
     override fun getBooleanConfigs(): List<BooleanConfig> =
@@ -55,6 +55,6 @@ internal class ConfigRepositoryImpl @Inject constructor(
     override suspend fun getLongValue(config: LongConfig): Long =
         configProviderSource.getLong(config)
 
-    override suspend fun getStringsValue(config: StringConfig): String =
+    override suspend fun getStringValue(config: StringConfig): String =
         configProviderSource.getString(config)
 }

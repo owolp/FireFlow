@@ -15,25 +15,32 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.remoteconfig.domain.repository
+package dev.zitech.core.remoteconfig.framework.source
 
+import dev.zitech.core.common.DataFactory
 import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.remoteconfig.domain.model.BooleanConfig
 import dev.zitech.core.remoteconfig.domain.model.DoubleConfig
 import dev.zitech.core.remoteconfig.domain.model.LongConfig
 import dev.zitech.core.remoteconfig.domain.model.StringConfig
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 
-interface ConfigRepository {
-    fun init(): Flow<DataResult<Unit>>
+internal class FakeConfigProviderSource : ConfigProviderSource {
 
-    fun getBooleanConfigs(): List<BooleanConfig>
-    fun getDoubleConfigs(): List<DoubleConfig>
-    fun getLongConfigs(): List<LongConfig>
-    fun getStringConfigs(): List<StringConfig>
+    var result = DataResult.Success(Unit)
+    var string = DataFactory.createRandomString()
+    var boolean = DataFactory.createRandomBoolean()
+    var double = DataFactory.createRandomDouble()
+    var long = DataFactory.createRandomLong()
 
-    suspend fun getBooleanValue(config: BooleanConfig): Boolean
-    suspend fun getDoubleValue(config: DoubleConfig): Double
-    suspend fun getLongValue(config: LongConfig): Long
-    suspend fun getStringValue(config: StringConfig): String
+    override fun init(): Flow<DataResult<Unit>> = flowOf(result)
+
+    override suspend fun getString(config: StringConfig): String = string
+
+    override suspend fun getBoolean(config: BooleanConfig): Boolean = boolean
+
+    override suspend fun getDouble(config: DoubleConfig): Double = double
+
+    override suspend fun getLong(config: LongConfig): Long = long
 }

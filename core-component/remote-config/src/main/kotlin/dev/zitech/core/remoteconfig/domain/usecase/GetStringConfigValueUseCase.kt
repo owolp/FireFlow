@@ -26,5 +26,5 @@ class GetStringConfigValueUseCase @Inject constructor(
 ) {
 
     suspend operator fun invoke(config: StringConfig): String =
-        configRepository.getStringsValue(config)
+        configRepository.getStringValue(config)
 }
