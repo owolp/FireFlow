@@ -24,22 +24,22 @@ import kotlinx.coroutines.flow.Flow
 internal class RemoteConfiguratorImpl @Inject constructor() : RemoteConfigurator {
 
     override fun init(): Flow<DataResult<Unit>> {
-        TODO("Not yet implemented")
+        TODO("#65")
     }
 
     override suspend fun getString(key: String): String? {
-        TODO("Not yet implemented")
+        TODO("#65")
     }
 
     override suspend fun getBoolean(key: String): Boolean? {
-        TODO("Not yet implemented")
+        TODO("#65")
     }
 
     override suspend fun getDouble(key: String): Double? {
-        TODO("Not yet implemented")
+        TODO("#65")
     }
 
     override suspend fun getLong(key: String): Long? {
-        TODO("Not yet implemented")
+        TODO("#65")
     }
 }
