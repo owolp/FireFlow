@@ -17,4 +17,11 @@
 
 package dev.zitech.core.common.presentation.architecture
 
-interface MviState
+import java.util.UUID
+
+interface MviState {
+    interface Event {
+        val uniqueId: String
+            get() = UUID.randomUUID().toString()
+    }
+}

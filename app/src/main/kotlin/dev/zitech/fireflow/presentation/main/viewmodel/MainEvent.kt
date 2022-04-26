@@ -17,9 +17,9 @@
 
 package dev.zitech.fireflow.presentation.main.viewmodel
 
-import dev.zitech.core.common.presentation.architecture.MviEvent
+import dev.zitech.core.common.presentation.architecture.MviState
 
-sealed interface MainEvent : MviEvent
+sealed interface MainEvent : MviState.Event
 
 object EnterApplication : MainEvent
 object Idle : MainEvent
