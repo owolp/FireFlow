@@ -38,7 +38,9 @@ internal class RemoteConfiguratorImpl @Inject constructor(
 
     companion object {
         private const val TAG = "RemoteConfigurator"
-        private const val RELEASE_MINIMUM_FETCH_INTERVAL_IN_SECONDS = 1 * 720000 * 60L // 12 hours
+
+        // 12 hours * 60 minutes * 60 seconds
+        private const val RELEASE_MINIMUM_FETCH_INTERVAL_IN_SECONDS = 12L * 60L * 60L
         private const val DEBUG_MINIMUM_FETCH_INTERVAL_IN_SECONDS = 1L
     }
 
