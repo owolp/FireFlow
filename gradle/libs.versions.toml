@@ -1,6 +1,6 @@
 [versions]
 androidJunit = "1.3.0"
-coroutines = "1.6.0"
+coroutines = "1.6.1"
 dagger = "2.41"
 junit = "5.8.2"
 jvmTarget = "11"
