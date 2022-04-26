@@ -17,14 +17,23 @@
 
 package dev.zitech.core.remoteconfig.domain.usecase
 
-import dev.zitech.core.remoteconfig.domain.model.BooleanConfig
-import dev.zitech.core.remoteconfig.domain.repository.ConfigRepository
-import javax.inject.Inject
+import com.google.common.truth.Truth.assertThat
+import dev.zitech.core.remoteconfig.data.repository.ConfigRepositoryImpl
+import dev.zitech.core.remoteconfig.framework.source.FakeConfigProviderSource
+import org.junit.Test
 
-class GetBooleanConfigsValueUseCase @Inject constructor(
-    private val configRepository: ConfigRepository
-) {
+internal class GetStringConfigsUseCaseTest {
 
-    operator fun invoke(): List<BooleanConfig> =
-        configRepository.getBooleanConfigs()
+    @Test
+    fun invoke() {
+        // Arrange
+        val configRepository = ConfigRepositoryImpl(FakeConfigProviderSource())
+        val sut = GetStringConfigsUseCase(configRepository)
+
+        // Act
+        val result = sut()
+
+        // Assert
+        assertThat(result).isEmpty()
+    }
 }

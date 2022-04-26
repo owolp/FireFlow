@@ -17,14 +17,23 @@
 
 package dev.zitech.core.remoteconfig.domain.usecase
 
-import dev.zitech.core.remoteconfig.domain.model.DoubleConfig
-import dev.zitech.core.remoteconfig.domain.repository.ConfigRepository
-import javax.inject.Inject
+import com.google.common.truth.Truth.assertThat
+import dev.zitech.core.remoteconfig.data.repository.ConfigRepositoryImpl
+import dev.zitech.core.remoteconfig.framework.source.FakeConfigProviderSource
+import org.junit.Test
 
-class GetDoubleConfigsValueUseCase @Inject constructor(
-    private val configRepository: ConfigRepository
-) {
+internal class GetLongConfigsUseCaseTest {
 
-    operator fun invoke(): List<DoubleConfig> =
-        configRepository.getDoubleConfigs()
+    @Test
+    fun invoke() {
+        // Arrange
+        val configRepository = ConfigRepositoryImpl(FakeConfigProviderSource())
+        val sut = GetLongConfigsUseCase(configRepository)
+
+        // Act
+        val result = sut()
+
+        // Assert
+        assertThat(result).isEmpty()
+    }
 }

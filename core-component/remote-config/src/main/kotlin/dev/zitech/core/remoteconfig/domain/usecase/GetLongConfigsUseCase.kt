@@ -17,14 +17,14 @@
 
 package dev.zitech.core.remoteconfig.domain.usecase
 
-import dev.zitech.core.remoteconfig.domain.model.StringConfig
+import dev.zitech.core.remoteconfig.domain.model.LongConfig
 import dev.zitech.core.remoteconfig.domain.repository.ConfigRepository
 import javax.inject.Inject
 
-class GetStringConfigsValueUseCase @Inject constructor(
+class GetLongConfigsUseCase @Inject constructor(
     private val configRepository: ConfigRepository
 ) {
 
-    operator fun invoke(): List<StringConfig> =
-        configRepository.getStringConfigs()
+    operator fun invoke(): List<LongConfig> =
+        configRepository.getLongConfigs()
 }
