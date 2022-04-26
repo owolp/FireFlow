@@ -22,10 +22,10 @@ import dev.zitech.core.common.DataFactory
 import dev.zitech.core.persistence.data.preferences.repository.ContainsPreferencesRepositoryImpl
 import dev.zitech.core.persistence.data.preferences.repository.GetPreferencesRepositoryImpl
 import dev.zitech.core.persistence.data.preferences.repository.SavePreferencesRepositoryImpl
-import dev.zitech.core.persistence.domain.repository.ContainsPreferencesRepository
-import dev.zitech.core.persistence.domain.repository.DatabaseKeyRepository
-import dev.zitech.core.persistence.domain.repository.GetPreferencesRepository
-import dev.zitech.core.persistence.domain.repository.SavePreferencesRepository
+import dev.zitech.core.persistence.domain.repository.preferences.ContainsPreferencesRepository
+import dev.zitech.core.persistence.domain.repository.database.DatabaseKeyRepository
+import dev.zitech.core.persistence.domain.repository.preferences.GetPreferencesRepository
+import dev.zitech.core.persistence.domain.repository.preferences.SavePreferencesRepository
 import dev.zitech.core.persistence.framework.preferences.FakePreferencesDataSource
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.BeforeEach

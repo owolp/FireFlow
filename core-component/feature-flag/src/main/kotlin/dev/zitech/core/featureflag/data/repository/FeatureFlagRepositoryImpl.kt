@@ -19,6 +19,7 @@ package dev.zitech.core.featureflag.data.repository
 
 import androidx.annotation.VisibleForTesting
 import dev.zitech.core.common.framework.logger.AppConfigProvider
+import dev.zitech.core.common.framework.logger.BuildMode
 import dev.zitech.core.featureflag.data.provider.DevFeatureFlagProvider
 import dev.zitech.core.featureflag.data.provider.ProdFeatureFlagProvider
 import dev.zitech.core.featureflag.domain.model.DevFeature
@@ -30,6 +31,7 @@ import java.util.concurrent.CopyOnWriteArrayList
 import javax.inject.Inject
 
 internal class FeatureFlagRepositoryImpl @Inject constructor(
+    private val appConfigProvider: AppConfigProvider,
     private val devFeatureFlagProvider: DevFeatureFlagProvider,
     private val prodFeatureFlagProvider: ProdFeatureFlagProvider
 ) : FeatureFlagRepository {
@@ -38,10 +40,9 @@ internal class FeatureFlagRepositoryImpl @Inject constructor(
     val providers = CopyOnWriteArrayList<FeatureFlagProvider>()
 
     override fun init() {
-        if (AppConfigProvider.isDebugMode()) {
-            providers.add(devFeatureFlagProvider)
-        } else {
-            providers.add(prodFeatureFlagProvider)
+        when (appConfigProvider.buildMode) {
+            BuildMode.RELEASE -> providers.add(prodFeatureFlagProvider)
+            BuildMode.DEBUG -> providers.add(devFeatureFlagProvider)
         }
     }
 

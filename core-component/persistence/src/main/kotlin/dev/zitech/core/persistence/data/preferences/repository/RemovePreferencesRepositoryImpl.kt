@@ -17,9 +17,9 @@
 
 package dev.zitech.core.persistence.data.preferences.repository
 
-import dev.zitech.core.persistence.domain.model.PreferenceType
-import dev.zitech.core.persistence.domain.repository.RemovePreferencesRepository
-import dev.zitech.core.persistence.framework.preference.PreferencesDataSource
+import dev.zitech.core.persistence.domain.model.preferences.PreferenceType
+import dev.zitech.core.persistence.domain.repository.preferences.RemovePreferencesRepository
+import dev.zitech.core.persistence.domain.source.preferences.PreferencesDataSource
 import javax.inject.Inject
 
 internal class RemovePreferencesRepositoryImpl @Inject constructor(

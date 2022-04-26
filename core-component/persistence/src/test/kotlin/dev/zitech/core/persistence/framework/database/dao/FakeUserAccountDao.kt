@@ -17,8 +17,7 @@
 
 package dev.zitech.core.persistence.framework.database.dao
 
-import dev.zitech.core.persistence.data.database.dao.UserAccountDao
-import dev.zitech.core.persistence.data.database.entity.UserAccountEntity
+import dev.zitech.core.persistence.framework.database.entity.UserAccountEntity
 
 internal class FakeUserAccountDao : UserAccountDao {
 

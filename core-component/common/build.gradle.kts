@@ -28,6 +28,8 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.lifecycle.runtime)
+    kapt(libs.androidx.lifecycle.compiler)
     implementation(libs.google.dagger.hilt.android)
     kapt(libs.google.dagger.hilt.compiler)
     implementation(libs.jakewharton.timber)

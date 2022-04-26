@@ -29,7 +29,7 @@
         android:theme="@style/Theme.FireFlow">
 
         <activity
-            android:name=".MainActivity"
+            android:name=".presentation.main.view.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

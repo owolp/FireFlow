@@ -18,10 +18,18 @@
 package dev.zitech.core.common.framework.logger
 
 import dev.zitech.core.common.BuildConfig
+import javax.inject.Inject
 
-object AppConfigProvider {
+interface AppConfigProvider {
+    val buildMode: BuildMode
+}
 
-    fun isDebugMode(): Boolean {
-        return BuildConfig.DEBUG
-    }
+internal class AppConfigProviderImpl @Inject constructor() : AppConfigProvider {
+
+    override val buildMode: BuildMode
+        get(): BuildMode = if (BuildConfig.DEBUG) {
+            BuildMode.DEBUG
+        } else {
+            BuildMode.RELEASE
+        }
 }

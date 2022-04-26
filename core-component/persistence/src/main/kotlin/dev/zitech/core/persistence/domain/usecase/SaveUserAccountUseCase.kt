@@ -18,7 +18,7 @@
 package dev.zitech.core.persistence.domain.usecase
 
 import dev.zitech.core.common.domain.model.DataResult
-import dev.zitech.core.persistence.domain.repository.UserAccountRepository
+import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
 import javax.inject.Inject
 
 class SaveUserAccountUseCase @Inject constructor(

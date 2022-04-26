@@ -20,6 +20,7 @@ package dev.zitech.core.featureflag.data.repository
 import com.google.common.truth.Truth.assertThat
 import dev.zitech.core.common.DataFactory
 import dev.zitech.core.common.framework.logger.AppConfigProvider
+import dev.zitech.core.common.framework.logger.BuildMode
 import dev.zitech.core.featureflag.data.provider.DevFeatureFlagProvider
 import dev.zitech.core.featureflag.data.provider.PRIORITY_MEDIUM
 import dev.zitech.core.featureflag.data.provider.PRIORITY_MINIMUM
@@ -35,7 +36,6 @@ import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
 import io.mockk.mockkClass
-import io.mockk.mockkObject
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -44,6 +44,7 @@ import org.junit.jupiter.api.Test
 
 internal class FeatureFlagRepositoryImplTest {
 
+    private val appConfigProvider = mockk<AppConfigProvider>()
     private val devFeatureFlagProvider = mockk<DevFeatureFlagProvider>()
     private val prodFeatureFlagProvider = mockk<ProdFeatureFlagProvider>()
 
@@ -52,6 +53,7 @@ internal class FeatureFlagRepositoryImplTest {
     @BeforeEach
     fun setUp() {
         sut = FeatureFlagRepositoryImpl(
+            appConfigProvider = appConfigProvider,
             devFeatureFlagProvider = devFeatureFlagProvider,
             prodFeatureFlagProvider = prodFeatureFlagProvider
         )
@@ -61,10 +63,9 @@ internal class FeatureFlagRepositoryImplTest {
     inner class Init {
 
         @Test
-        @DisplayName("WHEN debug THEN add devFeatureFlagProvider")
+        @DisplayName("WHEN BuildMode Debug THEN add devFeatureFlagProvider")
         fun isDebugModeTrue() {
-            mockkObject(AppConfigProvider)
-            every { AppConfigProvider.isDebugMode() } returns true
+            every { appConfigProvider.buildMode } returns BuildMode.DEBUG
 
             sut.init()
 
@@ -74,10 +75,9 @@ internal class FeatureFlagRepositoryImplTest {
         }
 
         @Test
-        @DisplayName("WHEN not debug THEN add prodFeatureFlagProvider")
+        @DisplayName("WHEN BuildMode Release THEN add prodFeatureFlagProvider")
         fun isDebugModeFalse() {
-            mockkObject(AppConfigProvider)
-            every { AppConfigProvider.isDebugMode() } returns false
+            every { appConfigProvider.buildMode } returns BuildMode.RELEASE
 
             sut.init()
 
