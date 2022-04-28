@@ -30,11 +30,15 @@ internal class ConfigProviderSourceImpl @Inject constructor() : ConfigProviderSo
 
     override fun init(): Flow<DataResult<Unit>> = flowOf(DataResult.Success(Unit))
 
-    override suspend fun getString(config: StringConfig): String = config.defaultValue
+    override fun getString(config: StringConfig): DataResult<String> =
+        DataResult.Success(config.defaultValue)
 
-    override suspend fun getBoolean(config: BooleanConfig): Boolean = config.defaultValue
+    override fun getBoolean(config: BooleanConfig): DataResult<Boolean> =
+        DataResult.Success(config.defaultValue)
 
-    override suspend fun getDouble(config: DoubleConfig): Double = config.defaultValue
+    override fun getDouble(config: DoubleConfig): DataResult<Double> =
+        DataResult.Success(config.defaultValue)
 
-    override suspend fun getLong(config: LongConfig): Long = config.defaultValue
+    override fun getLong(config: LongConfig): DataResult<Long> =
+        DataResult.Success(config.defaultValue)
 }

@@ -27,9 +27,8 @@ import kotlinx.coroutines.flow.Flow
 interface ConfigProviderSource {
 
     fun init(): Flow<DataResult<Unit>>
-
-    suspend fun getString(config: StringConfig): String
-    suspend fun getBoolean(config: BooleanConfig): Boolean
-    suspend fun getDouble(config: DoubleConfig): Double
-    suspend fun getLong(config: LongConfig): Long
+    fun getBoolean(config: BooleanConfig): DataResult<Boolean>
+    fun getDouble(config: DoubleConfig): DataResult<Double>
+    fun getLong(config: LongConfig): DataResult<Long>
+    fun getString(config: StringConfig): DataResult<String>
 }

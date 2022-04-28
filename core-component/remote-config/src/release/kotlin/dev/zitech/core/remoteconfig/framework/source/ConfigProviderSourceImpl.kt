@@ -33,15 +33,15 @@ class ConfigProviderSourceImpl @Inject constructor(
     override fun init(): Flow<DataResult<Unit>> =
         remoteConfigurator.init()
 
-    override suspend fun getString(config: StringConfig): String =
-        remoteConfigurator.getString(config.key) ?: config.defaultValue
+    override fun getBoolean(config: BooleanConfig): DataResult<Boolean> =
+        remoteConfigurator.getBoolean(config.key)
 
-    override suspend fun getBoolean(config: BooleanConfig): Boolean =
-        remoteConfigurator.getBoolean(config.key) ?: config.defaultValue
+    override fun getDouble(config: DoubleConfig): DataResult<Double> =
+        remoteConfigurator.getDouble(config.key)
 
-    override suspend fun getDouble(config: DoubleConfig): Double =
-        remoteConfigurator.getDouble(config.key) ?: config.defaultValue
+    override fun getLong(config: LongConfig): DataResult<Long> =
+        remoteConfigurator.getLong(config.key)
 
-    override suspend fun getLong(config: LongConfig): Long =
-        remoteConfigurator.getLong(config.key) ?: config.defaultValue
+    override fun getString(config: StringConfig): DataResult<String> =
+        remoteConfigurator.getString(config.key)
 }
