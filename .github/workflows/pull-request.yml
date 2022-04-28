@@ -39,11 +39,6 @@ jobs:
 
   distribution_gallery:
     name: Gallery App Distribution
-    needs:
-      - assemble_dev
-      - assemble_play
-      - assemble_gallery
-      - assemble_foss
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
