@@ -17,6 +17,7 @@
 
 package dev.zitech.core.remoteconfig.domain.usecase
 
+import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.remoteconfig.domain.model.StringConfig
 import dev.zitech.core.remoteconfig.domain.repository.ConfigRepository
 import javax.inject.Inject
@@ -26,5 +27,8 @@ class GetStringConfigValueUseCase @Inject constructor(
 ) {
 
     suspend operator fun invoke(config: StringConfig): String =
-        configRepository.getStringValue(config)
+        when (val result = configRepository.getStringValue(config)) {
+            is DataResult.Success -> result.value
+            is DataResult.Error -> config.defaultValue
+        }
 }
