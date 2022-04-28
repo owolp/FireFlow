@@ -117,11 +117,6 @@ jobs:
           echo "${{ secrets.PROD_KEYSTORE }}" > prod.keystore.asc
           gpg --batch --decrypt --output "config/keystore/prod.keystore" --passphrase "${{ secrets.PROD_SIGNING_KEYSTORE_GPG }}" --yes "prod.keystore.asc"
 
-      - name: Restore Google Play Services JSON
-        run: |
-          echo "${{ secrets.PLAY_GOOGLE_SERVICES_JSON }}" > google-services.json.asc
-          gpg --batch --decrypt --output "app/src/play/google-services.json" --passphrase "${{ secrets.PLAY_GOOGLE_SERVICES_JSON_GPG }}" --yes "google-services.json.asc"
-
       - name: Run Fastlane Assemble Play Release Lane
         run: fastlane assemble_play_release
 
