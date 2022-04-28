@@ -47,6 +47,10 @@ internal class ConfigRepositoryImplTest {
 
     @Test
     fun init() = runBlocking {
+        // Arrange
+        fakeConfigProviderSource.initResult = DataResult.Success(Unit)
+
+        // Act & Assert
         sut.init().test {
             assertThat(awaitItem()).isEqualTo(DataResult.Success(Unit))
             awaitComplete()
@@ -92,52 +96,52 @@ internal class ConfigRepositoryImplTest {
     @Test
     fun getBooleanValue() = runBlocking {
         // Arrange
-        val expectedResult = DataFactory.createRandomString()
-        fakeConfigProviderSource.string = expectedResult
+        val expectedResult = DataFactory.createRandomBoolean()
+        fakeConfigProviderSource.booleanResult = DataResult.Success(expectedResult)
 
         // Act
-        val result = sut.getStringValue(mockkClass(StringConfig::class))
+        val result = sut.getBooleanValue(mockkClass(BooleanConfig::class))
 
         // Assert
-        assertThat(result).isEqualTo(expectedResult)
+        assertThat((result as DataResult.Success).value).isEqualTo(expectedResult)
     }
 
     @Test
     fun getDoubleValue() = runBlocking {
         // Arrange
         val expectedResult = DataFactory.createRandomDouble()
-        fakeConfigProviderSource.double = expectedResult
+        fakeConfigProviderSource.doubleResult = DataResult.Success(expectedResult)
 
         // Act
         val result = sut.getDoubleValue(mockkClass(DoubleConfig::class))
 
         // Assert
-        assertThat(result).isEqualTo(expectedResult)
+        assertThat((result as DataResult.Success).value).isEqualTo(expectedResult)
     }
 
     @Test
     fun getLongValue() = runBlocking {
         // Arrange
         val expectedResult = DataFactory.createRandomLong()
-        fakeConfigProviderSource.long = expectedResult
+        fakeConfigProviderSource.longResult = DataResult.Success(expectedResult)
 
         // Act
         val result = sut.getLongValue(mockkClass(LongConfig::class))
 
         // Assert
-        assertThat(result).isEqualTo(expectedResult)
+        assertThat((result as DataResult.Success).value).isEqualTo(expectedResult)
     }
 
     @Test
     fun getStringValue() = runBlocking {
         // Arrange
         val expectedResult = DataFactory.createRandomString()
-        fakeConfigProviderSource.string = expectedResult
+        fakeConfigProviderSource.stringResult = DataResult.Success(expectedResult)
 
         // Act
         val result = sut.getStringValue(mockkClass(StringConfig::class))
 
         // Assert
-        assertThat(result).isEqualTo(expectedResult)
+        assertThat((result as DataResult.Success).value).isEqualTo(expectedResult)
     }
 }

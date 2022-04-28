@@ -29,10 +29,12 @@ internal class InitializeRemoteConfiguratorUseCaseTest {
     @Test
     fun invoke() = runBlocking {
         // Arrange
-        val fakeRemoteConfigurator = FakeRemoteConfigurator()
+        val fakeRemoteConfigurator = FakeRemoteConfigurator().apply {
+            initResult = DataResult.Success(Unit)
+        }
         val sut = InitializeRemoteConfiguratorUseCase(fakeRemoteConfigurator)
 
-        // Assert
+        // Act & Assert
         sut().test {
             assertThat(awaitItem()).isEqualTo(DataResult.Success(Unit))
             awaitComplete()

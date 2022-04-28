@@ -19,6 +19,7 @@ package dev.zitech.core.remoteconfig.domain.usecase
 
 import com.google.common.truth.Truth.assertThat
 import dev.zitech.core.common.DataFactory
+import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.remoteconfig.data.repository.ConfigRepositoryImpl
 import dev.zitech.core.remoteconfig.domain.model.DoubleConfig
 import dev.zitech.core.remoteconfig.framework.source.FakeConfigProviderSource
@@ -33,7 +34,7 @@ internal class GetDoubleConfigValueUseCaseTest {
         // Arrange
         val expectedResult = DataFactory.createRandomDouble()
         val fakeConfigProviderSource = FakeConfigProviderSource()
-        fakeConfigProviderSource.double = expectedResult
+        fakeConfigProviderSource.doubleResult = DataResult.Success(expectedResult)
         val configRepository = ConfigRepositoryImpl(fakeConfigProviderSource)
         val sut = GetDoubleConfigValueUseCase(configRepository)
 
