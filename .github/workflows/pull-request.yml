@@ -37,6 +37,12 @@ jobs:
       - name: Publish Play version to Firebase App Distribution
         run: fastlane distribute_play appId:"${{ secrets.PLAY_FIREBASE_APP_ID }}" group:"${{ secrets.FIREBASE_DISTRIBUTION_GROUPS }}" firebaseToken:"${{ secrets.FIREBASE_CLI_TOKEN }}"
 
+      - name: Upload APK
+        uses: actions/upload-artifact@v2
+        with:
+          name: play_app_apk
+          path: "*/build/outputs/apk/*/release/*.apk"
+
   distribution_gallery:
     name: Gallery App Distribution
     runs-on: ubuntu-latest
@@ -67,3 +73,9 @@ jobs:
 
       - name: Publish Gallery version to Firebase App Distribution
         run: fastlane distribute_gallery appId:"${{ secrets.GALLERY_FIREBASE_APP_ID }}" group:"${{ secrets.FIREBASE_DISTRIBUTION_GROUPS }}" firebaseToken:"${{ secrets.FIREBASE_CLI_TOKEN }}"
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v2
+        with:
+          name: gallery_app_apk
+          path: "*/build/outputs/apk/*/release/*.apk"
