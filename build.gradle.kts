@@ -31,9 +31,11 @@ buildscript {
     repositories {
         google()
         mavenCentral()
+        maven("https://developer.huawei.com/repo/")
     }
 
     dependencies {
+        classpath(libs.huawei.agconnect.agcp)
         classpath(libs.android.build.gradle)
         classpath(libs.google.dagger.hilt.gradle)
         classpath(libs.google.gms.services)
@@ -46,6 +48,7 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+        maven("https://developer.huawei.com/repo/")
     }
 }
 
