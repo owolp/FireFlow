@@ -23,8 +23,8 @@ import kotlinx.coroutines.flow.Flow
 interface RemoteConfigurator {
 
     fun init(): Flow<DataResult<Unit>>
-    suspend fun getString(key: String): String?
-    suspend fun getBoolean(key: String): Boolean?
-    suspend fun getDouble(key: String): Double?
-    suspend fun getLong(key: String): Long?
+    fun getBoolean(key: String): DataResult<Boolean>
+    fun getDouble(key: String): DataResult<Double>
+    fun getLong(key: String): DataResult<Long>
+    fun getString(key: String): DataResult<String>
 }

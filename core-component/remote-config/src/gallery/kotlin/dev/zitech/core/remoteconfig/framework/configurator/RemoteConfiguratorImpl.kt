@@ -17,29 +17,112 @@
 
 package dev.zitech.core.remoteconfig.framework.configurator
 
+import com.huawei.agconnect.remoteconfig.AGConnectConfig
 import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.framework.logger.Logger
+import dev.zitech.core.remoteconfig.domain.usecase.GetDefaultConfigValuesUseCase
 import javax.inject.Inject
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 
-internal class RemoteConfiguratorImpl @Inject constructor() : RemoteConfigurator {
+@ExperimentalCoroutinesApi
+internal class RemoteConfiguratorImpl @Inject constructor(
+    private val getDefaultConfigValuesUseCase: GetDefaultConfigValuesUseCase
+) : RemoteConfigurator {
 
-    override fun init(): Flow<DataResult<Unit>> {
-        TODO("#65")
+    companion object {
+        private const val TAG = "RemoteConfigurator"
     }
 
-    override suspend fun getString(key: String): String? {
-        TODO("#65")
+    private val huaweiRemoteConfig = AGConnectConfig.getInstance()
+
+    override fun init(): Flow<DataResult<Unit>> = callbackFlow {
+        logInfo("Set default values")
+        huaweiRemoteConfig
+            .applyDefault(getDefaultConfigValuesUseCase())
+        logInfo("Default values set")
+
+        huaweiRemoteConfig.fetch()
+            .addOnSuccessListener {
+                logInfo("Fetch completed")
+
+                huaweiRemoteConfig.apply(it)
+                logInfo("Applied completed")
+
+                if (!isClosedForSend) {
+                    trySend(DataResult.Success(Unit))
+                } else {
+                    logError("fetch addOnSuccessListener isClosedForSend=true")
+                }
+
+                close()
+            }
+            .addOnFailureListener {
+                logError("Failed to fetch remote config")
+
+                if (!isClosedForSend) {
+                    trySend(DataResult.Error())
+                } else {
+                    logError("fetch addOnFailureListener isClosedForSend=true")
+                }
+
+                close()
+            }
+
+        awaitClose()
     }
 
-    override suspend fun getBoolean(key: String): Boolean? {
-        TODO("#65")
+    @Suppress("TooGenericExceptionCaught")
+    override fun getString(key: String): DataResult<String> =
+        try {
+            DataResult.Success(
+                huaweiRemoteConfig.getValueAsString(key)
+            )
+        } catch (e: Exception) {
+            logError("getString $key", e)
+            DataResult.Error()
+        }
+
+    @Suppress("TooGenericExceptionCaught")
+    override fun getBoolean(key: String): DataResult<Boolean> =
+        try {
+            DataResult.Success(
+                huaweiRemoteConfig.getValueAsBoolean(key)
+            )
+        } catch (e: Exception) {
+            logError("getBoolean $key", e)
+            DataResult.Error()
+        }
+
+    @Suppress("TooGenericExceptionCaught")
+    override fun getDouble(key: String): DataResult<Double> =
+        try {
+            DataResult.Success(
+                huaweiRemoteConfig.getValueAsDouble(key)
+            )
+        } catch (e: Exception) {
+            logError("getDouble $key", e)
+            DataResult.Error()
+        }
+
+    @Suppress("TooGenericExceptionCaught")
+    override fun getLong(key: String): DataResult<Long> =
+        try {
+            DataResult.Success(
+                huaweiRemoteConfig.getValueAsLong(key)
+            )
+        } catch (e: Exception) {
+            logError("getLong $key", e)
+            DataResult.Error()
+        }
+
+    private fun logInfo(infoMessage: String) {
+        Logger.i(TAG, infoMessage)
     }
 
-    override suspend fun getDouble(key: String): Double? {
-        TODO("#65")
-    }
-
-    override suspend fun getLong(key: String): Long? {
-        TODO("#65")
+    private fun logError(errorMessage: String, exception: Exception? = null) {
+        Logger.e(TAG, exception, errorMessage)
     }
 }
