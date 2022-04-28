@@ -32,8 +32,8 @@ interface ConfigRepository {
     fun getLongConfigs(): List<LongConfig>
     fun getStringConfigs(): List<StringConfig>
 
-    suspend fun getBooleanValue(config: BooleanConfig): Boolean
-    suspend fun getDoubleValue(config: DoubleConfig): Double
-    suspend fun getLongValue(config: LongConfig): Long
-    suspend fun getStringValue(config: StringConfig): String
+    suspend fun getBooleanValue(config: BooleanConfig): DataResult<Boolean>
+    suspend fun getDoubleValue(config: DoubleConfig): DataResult<Double>
+    suspend fun getLongValue(config: LongConfig): DataResult<Long>
+    suspend fun getStringValue(config: StringConfig): DataResult<String>
 }

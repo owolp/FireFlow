@@ -17,6 +17,7 @@
 
 package dev.zitech.core.remoteconfig.domain.usecase
 
+import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.remoteconfig.domain.model.BooleanConfig
 import dev.zitech.core.remoteconfig.domain.repository.ConfigRepository
 import javax.inject.Inject
@@ -26,5 +27,8 @@ class GetBooleanConfigValueUseCase @Inject constructor(
 ) {
 
     suspend operator fun invoke(config: BooleanConfig): Boolean =
-        configRepository.getBooleanValue(config)
+        when (val result = configRepository.getBooleanValue(config)) {
+            is DataResult.Success -> result.value
+            is DataResult.Error -> config.defaultValue
+        }
 }

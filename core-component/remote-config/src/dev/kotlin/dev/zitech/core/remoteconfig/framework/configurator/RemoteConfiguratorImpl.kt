@@ -25,13 +25,13 @@ import kotlinx.coroutines.flow.flowOf
 internal class RemoteConfiguratorImpl @Inject constructor() : RemoteConfigurator {
 
     override fun init(): Flow<DataResult<Unit>> =
-        flowOf(DataResult.Success(Unit))
+        flowOf(DataResult.Error())
 
-    override suspend fun getString(key: String): String? = null
+    override fun getString(key: String): DataResult<String> = DataResult.Error()
 
-    override suspend fun getBoolean(key: String): Boolean? = null
+    override fun getBoolean(key: String): DataResult<Boolean> = DataResult.Error()
 
-    override suspend fun getDouble(key: String): Double? = null
+    override fun getDouble(key: String): DataResult<Double> = DataResult.Error()
 
-    override suspend fun getLong(key: String): Long? = null
+    override fun getLong(key: String): DataResult<Long> = DataResult.Error()
 }

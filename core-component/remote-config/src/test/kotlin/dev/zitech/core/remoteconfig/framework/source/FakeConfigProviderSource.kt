@@ -17,7 +17,6 @@
 
 package dev.zitech.core.remoteconfig.framework.source
 
-import dev.zitech.core.common.DataFactory
 import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.remoteconfig.domain.model.BooleanConfig
 import dev.zitech.core.remoteconfig.domain.model.DoubleConfig
@@ -28,19 +27,19 @@ import kotlinx.coroutines.flow.flowOf
 
 internal class FakeConfigProviderSource : ConfigProviderSource {
 
-    var result = DataResult.Success(Unit)
-    var string = DataFactory.createRandomString()
-    var boolean = DataFactory.createRandomBoolean()
-    var double = DataFactory.createRandomDouble()
-    var long = DataFactory.createRandomLong()
+    var initResult: DataResult<Unit> = DataResult.Error()
+    var stringResult: DataResult<String> = DataResult.Error()
+    var booleanResult: DataResult<Boolean> = DataResult.Error()
+    var doubleResult: DataResult<Double> = DataResult.Error()
+    var longResult: DataResult<Long> = DataResult.Error()
 
-    override fun init(): Flow<DataResult<Unit>> = flowOf(result)
+    override fun init(): Flow<DataResult<Unit>> = flowOf(initResult)
 
-    override suspend fun getString(config: StringConfig): String = string
+    override fun getString(config: StringConfig): DataResult<String> = stringResult
 
-    override suspend fun getBoolean(config: BooleanConfig): Boolean = boolean
+    override fun getBoolean(config: BooleanConfig): DataResult<Boolean> = booleanResult
 
-    override suspend fun getDouble(config: DoubleConfig): Double = double
+    override fun getDouble(config: DoubleConfig): DataResult<Double> = doubleResult
 
-    override suspend fun getLong(config: LongConfig): Long = long
+    override fun getLong(config: LongConfig): DataResult<Long> = longResult
 }

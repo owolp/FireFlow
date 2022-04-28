@@ -20,7 +20,6 @@ package dev.zitech.fireflow.presentation.main.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.common.presentation.architecture.MviViewModel
 import dev.zitech.core.remoteconfig.domain.usecase.InitializeRemoteConfiguratorUseCase
 import javax.inject.Inject
@@ -60,13 +59,10 @@ internal class MainViewModel @Inject constructor(
     }
 
     private suspend fun handleViewCreated() {
-        initializeRemoteConfiguratorUseCase().collect { result ->
+        initializeRemoteConfiguratorUseCase().collect {
             mutableState.update {
                 it.copy(
-                    event = when (result) {
-                        is DataResult.Success -> EnterApplication
-                        is DataResult.Error -> ShowError
-                    }
+                    event = EnterApplication
                 )
             }
         }

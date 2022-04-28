@@ -34,6 +34,10 @@ dependencies {
         because("Firebase Config needs Firebase Analytics")
     }
 
+    galleryImplementation(libs.huawei.agconnect.core)
+    galleryImplementation(libs.huawei.agconnect.remoteconfig)
+    galleryImplementation(libs.huawei.hms.hianalytics)
+
     testImplementation(libs.cash.turbine)
     testImplementation(libs.google.truth)
     testImplementation(libs.mockk.mockk)

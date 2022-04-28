@@ -17,6 +17,7 @@
 
 plugins {
     id(BuildPlugins.APPLICATION)
+    id(BuildPlugins.AGPCONNECT)
     id(BuildPlugins.DAGGER)
     id(BuildPlugins.GOOGLE_SERVICES)
     id(BuildPlugins.KOTLIN_ANDROID)

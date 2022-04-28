@@ -23,19 +23,19 @@ import kotlinx.coroutines.flow.flowOf
 
 internal class FakeRemoteConfigurator : RemoteConfigurator {
 
-    var result = DataResult.Success(Unit)
-    var string: String? = null
-    var boolean: Boolean? = null
-    var double: Double? = null
-    var long: Long? = null
+    var initResult: DataResult<Unit> = DataResult.Error()
+    var stringResult: DataResult<String> = DataResult.Error()
+    var booleanResult: DataResult<Boolean> = DataResult.Error()
+    var doubleResult: DataResult<Double> = DataResult.Error()
+    var longResult: DataResult<Long> = DataResult.Error()
 
-    override fun init(): Flow<DataResult<Unit>> = flowOf(result)
+    override fun init(): Flow<DataResult<Unit>> = flowOf(initResult)
 
-    override suspend fun getString(key: String): String? = string
+    override fun getString(key: String): DataResult<String> = stringResult
 
-    override suspend fun getBoolean(key: String): Boolean? = boolean
+    override fun getBoolean(key: String): DataResult<Boolean> = booleanResult
 
-    override suspend fun getDouble(key: String): Double? = double
+    override fun getDouble(key: String): DataResult<Double> = doubleResult
 
-    override suspend fun getLong(key: String): Long? = long
+    override fun getLong(key: String): DataResult<Long> = longResult
 }

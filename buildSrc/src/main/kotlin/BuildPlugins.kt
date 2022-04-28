@@ -16,6 +16,7 @@
  */
 
 object BuildPlugins {
+    const val AGPCONNECT = "com.huawei.agconnect"
     const val APPLICATION = "com.android.application"
     const val DAGGER = "dagger.hilt.android.plugin"
     const val DETEKT = "plugin.detekt"

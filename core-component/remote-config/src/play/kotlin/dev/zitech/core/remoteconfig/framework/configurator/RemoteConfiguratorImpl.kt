@@ -25,6 +25,7 @@ import dev.zitech.core.common.framework.logger.AppConfigProvider
 import dev.zitech.core.common.framework.logger.BuildMode
 import dev.zitech.core.common.framework.logger.Logger
 import dev.zitech.core.remoteconfig.domain.usecase.GetDefaultConfigValuesUseCase
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
@@ -39,14 +40,13 @@ internal class RemoteConfiguratorImpl @Inject constructor(
     companion object {
         private const val TAG = "RemoteConfigurator"
 
-        // 12 hours * 60 minutes * 60 seconds
-        private const val RELEASE_MINIMUM_FETCH_INTERVAL_IN_SECONDS = 12L * 60L * 60L
+        private const val RELEASE_MINIMUM_FETCH_INTERVAL_IN_HOURS = 12L
         private const val DEBUG_MINIMUM_FETCH_INTERVAL_IN_SECONDS = 1L
     }
 
     private val configSettings = remoteConfigSettings {
         minimumFetchIntervalInSeconds = when (appConfigProvider.buildMode) {
-            BuildMode.RELEASE -> RELEASE_MINIMUM_FETCH_INTERVAL_IN_SECONDS
+            BuildMode.RELEASE -> TimeUnit.HOURS.toSeconds(RELEASE_MINIMUM_FETCH_INTERVAL_IN_HOURS)
             BuildMode.DEBUG -> DEBUG_MINIMUM_FETCH_INTERVAL_IN_SECONDS
         }
     }
@@ -64,33 +64,34 @@ internal class RemoteConfiguratorImpl @Inject constructor(
                 firebaseRemoteConfig.fetchAndActivate()
                     .addOnSuccessListener {
                         logInfo("Fetch and Activated completed")
+
                         if (!isClosedForSend) {
                             trySend(DataResult.Success(Unit))
                         } else {
                             logError("fetchAndActivate addOnSuccessListener isClosedForSend=true")
-                            trySend(DataResult.Error())
                         }
 
                         close()
                     }
                     .addOnFailureListener {
-                        logError("Failed to fetch and activate remote config")
+                        logError("Failed to Fetch and Activate remote config")
+
                         if (!isClosedForSend) {
-                            trySend(DataResult.Success(Unit))
+                            trySend(DataResult.Error())
                         } else {
                             logError("fetchAndActivate addOnFailureListener isClosedForSend=true")
-                            trySend(DataResult.Error())
                         }
+
                         close()
                     }
             }
             .addOnFailureListener {
                 logError("Failed to set default value to remote config")
-                if (!this.isClosedForSend) {
-                    trySend(DataResult.Success(Unit))
-                } else {
-                    logError("init addOnSuccessListener isClosedForSend=true")
+
+                if (!isClosedForSend) {
                     trySend(DataResult.Error())
+                } else {
+                    logError("init addOnFailureListener isClosedForSend=true")
                 }
 
                 close()
@@ -100,46 +101,54 @@ internal class RemoteConfiguratorImpl @Inject constructor(
     }
 
     @Suppress("TooGenericExceptionCaught")
-    override suspend fun getString(key: String): String? =
+    override fun getString(key: String): DataResult<String> =
         try {
-            firebaseRemoteConfig.getString(key)
+            DataResult.Success(
+                firebaseRemoteConfig.getString(key)
+            )
         } catch (e: Exception) {
-            Logger.e(TAG, e, "getString $key")
-            null
+            logError("getString $key", e)
+            DataResult.Error()
         }
 
     @Suppress("TooGenericExceptionCaught")
-    override suspend fun getBoolean(key: String): Boolean? =
+    override fun getBoolean(key: String): DataResult<Boolean> =
         try {
-            firebaseRemoteConfig.getBoolean(key)
+            DataResult.Success(
+                firebaseRemoteConfig.getBoolean(key)
+            )
         } catch (e: Exception) {
-            Logger.e(TAG, e, "getBoolean $key")
-            null
+            logError("getBoolean $key", e)
+            DataResult.Error()
         }
 
     @Suppress("TooGenericExceptionCaught")
-    override suspend fun getDouble(key: String): Double? =
+    override fun getDouble(key: String): DataResult<Double> =
         try {
-            firebaseRemoteConfig.getDouble(key)
+            DataResult.Success(
+                firebaseRemoteConfig.getDouble(key)
+            )
         } catch (e: Exception) {
-            Logger.e(TAG, e, "getDouble $key")
-            null
+            logError("getDouble $key", e)
+            DataResult.Error()
         }
 
     @Suppress("TooGenericExceptionCaught")
-    override suspend fun getLong(key: String): Long? =
+    override fun getLong(key: String): DataResult<Long> =
         try {
-            firebaseRemoteConfig.getLong(key)
+            DataResult.Success(
+                firebaseRemoteConfig.getLong(key)
+            )
         } catch (e: Exception) {
-            Logger.e(TAG, e, "getLong $key")
-            null
+            logError("getLong $key", e)
+            DataResult.Error()
         }
 
     private fun logInfo(infoMessage: String) {
         Logger.i(TAG, infoMessage)
     }
 
-    private fun logError(errorMessage: String) {
-        Logger.e(TAG, errorMessage)
+    private fun logError(errorMessage: String, exception: Exception? = null) {
+        Logger.e(TAG, exception, errorMessage)
     }
 }

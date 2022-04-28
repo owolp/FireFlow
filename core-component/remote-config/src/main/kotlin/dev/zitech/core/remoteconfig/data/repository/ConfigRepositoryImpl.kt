@@ -46,15 +46,15 @@ internal class ConfigRepositoryImpl @Inject constructor(
     override fun getStringConfigs(): List<StringConfig> =
         StringConfig.values().toList()
 
-    override suspend fun getBooleanValue(config: BooleanConfig): Boolean =
+    override suspend fun getBooleanValue(config: BooleanConfig): DataResult<Boolean> =
         configProviderSource.getBoolean(config)
 
-    override suspend fun getDoubleValue(config: DoubleConfig): Double =
+    override suspend fun getDoubleValue(config: DoubleConfig): DataResult<Double> =
         configProviderSource.getDouble(config)
 
-    override suspend fun getLongValue(config: LongConfig): Long =
+    override suspend fun getLongValue(config: LongConfig): DataResult<Long> =
         configProviderSource.getLong(config)
 
-    override suspend fun getStringValue(config: StringConfig): String =
+    override suspend fun getStringValue(config: StringConfig): DataResult<String> =
         configProviderSource.getString(config)
 }
