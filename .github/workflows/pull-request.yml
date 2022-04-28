@@ -6,102 +6,8 @@ on:
       - '*'
 
 jobs:
-  lint:
-    name: Lint
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v3
-
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 2.7
-
-      - name: Install Dependencies
-        run: gem install bundler && bundle install
-
-      - name: Run Fastlane Ktlint Lane
-        run: fastlane ktlint
-
-  detekt:
-    name: Static code analysis
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v3
-
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 2.7
-
-      - name: Install Dependencies
-        run: gem install bundler && bundle install
-
-      - name: Run Fastlane Ktlint Lane
-        run: fastlane detekt
-
-  unit_test:
-    name: Unit Test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v3
-
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 2.7
-
-      - name: Install Dependencies
-        run: gem install bundler && bundle install
-
-      - name: Run Fastlane Debug Release Unit Tests Lane
-        run: fastlane dev_debug_unit_tests
-
-  assemble_dev:
-    name: Assemble Dev
-    needs:
-      - lint
-      - detekt
-      - unit_test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v3
-
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 2.7
-
-      - name: Install Dependencies
-        run: gem install bundler && bundle install
-
-      - name: Restore Dev Secrets
-        run: |
-          echo "dev_signing_key_alias=${{ secrets.DEV_SIGNING_KEY_ALIAS }}" >> secrets.properties
-          echo "dev_signing_key_password=${{ secrets.DEV_SIGNING_KEY_PASSWORD }}" >> secrets.properties
-          echo "dev_signing_keystore_password=${{ secrets.DEV_SIGNING_KEYSTORE_PASSWORD }}" >> secrets.properties
-          echo "${{ secrets.DEV_KEYSTORE }}" > dev.keystore.asc
-          gpg --batch --decrypt --output "config/keystore/dev.keystore" --passphrase "${{ secrets.DEV_SIGNING_KEYSTORE_GPG }}" --yes "dev.keystore.asc"
-
-      - name: Run Fastlane Assemble Dev Release Lane
-        run: fastlane assemble_dev_release
-
-      - name: Upload APK
-        uses: actions/upload-artifact@v3
-        with:
-          name: dev_app_apk
-          path: "*/build/outputs/apk/*/release/*.apk"
-
-  assemble_play:
-    name: Assemble Play
-    needs:
-      - lint
-      - detekt
-      - unit_test
+  distribution_play:
+    name: Play App Distribution
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
@@ -123,15 +29,21 @@ jobs:
           echo "${{ secrets.PROD_KEYSTORE }}" > prod.keystore.asc
           gpg --batch --decrypt --output "config/keystore/prod.keystore" --passphrase "${{ secrets.PROD_SIGNING_KEYSTORE_GPG }}" --yes "prod.keystore.asc"
 
-      - name: Run Fastlane Assemble Play Release Lane
-        run: fastlane assemble_play_release
+      - name: Restore Google Play Services JSON
+        run: |
+          echo "${{ secrets.PLAY_GOOGLE_SERVICES_JSON }}" > google-services.json.asc
+          gpg --batch --decrypt --output "app/src/play/google-services.json" --passphrase "${{ secrets.PLAY_GOOGLE_SERVICES_JSON_GPG }}" --yes "google-services.json.asc"
 
-  assemble_gallery:
-    name: Assemble Gallery
+      - name: Publish Play version to Firebase App Distribution
+        run: fastlane distribute_play appId:"${{ secrets.PLAY_FIREBASE_APP_ID }}" group:"${{ secrets.FIREBASE_DISTRIBUTION_GROUPS }}" firebaseToken:"${{ secrets.FIREBASE_CLI_TOKEN }}"
+
+  distribution_gallery:
+    name: Gallery App Distribution
     needs:
-      - lint
-      - detekt
-      - unit_test
+      - assemble_dev
+      - assemble_play
+      - assemble_gallery
+      - assemble_foss
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
@@ -153,35 +65,10 @@ jobs:
           echo "${{ secrets.PROD_KEYSTORE }}" > prod.keystore.asc
           gpg --batch --decrypt --output "config/keystore/prod.keystore" --passphrase "${{ secrets.PROD_SIGNING_KEYSTORE_GPG }}" --yes "prod.keystore.asc"
 
-      - name: Run Fastlane Assemble Gallery Release Lane
-        run: fastlane assemble_gallery_release
-
-  assemble_foss:
-    name: Assemble FOSS
-    needs:
-      - lint
-      - detekt
-      - unit_test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v3
-
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 2.7
-
-      - name: Install Dependencies
-        run: gem install bundler && bundle install
-
-      - name: Restore Prod Secrets
+      - name: Restore Huawei Services JSON
         run: |
-          echo "prod_signing_key_alias=${{ secrets.PROD_SIGNING_KEY_ALIAS }}" >> secrets.properties
-          echo "prod_signing_key_password=${{ secrets.PROD_SIGNING_KEY_PASSWORD }}" >> secrets.properties
-          echo "prod_signing_keystore_password=${{ secrets.PROD_SIGNING_KEYSTORE_PASSWORD }}" >> secrets.properties
-          echo "${{ secrets.PROD_KEYSTORE }}" > prod.keystore.asc
-          gpg --batch --decrypt --output "config/keystore/prod.keystore" --passphrase "${{ secrets.PROD_SIGNING_KEYSTORE_GPG }}" --yes "prod.keystore.asc"
+          echo "${{ secrets.GALLERY_AGCONNECT_SERVICES_JSON }}" > agconnect-services.json.asc
+          gpg --batch --decrypt --output "app/src/gallery/agconnect-services.json" --passphrase "${{ secrets.GALLERY_AGCONNECT_SERVICES_JSON_GPG }}" --yes "agconnect-services.json.asc"
 
-      - name: Run Fastlane Assemble FOSS Release Lane
-        run: fastlane assemble_foss_release
+      - name: Publish Gallery version to Firebase App Distribution
+        run: fastlane distribute_gallery appId:"${{ secrets.GALLERY_FIREBASE_APP_ID }}" group:"${{ secrets.FIREBASE_DISTRIBUTION_GROUPS }}" firebaseToken:"${{ secrets.FIREBASE_CLI_TOKEN }}"
