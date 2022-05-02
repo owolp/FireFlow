@@ -14,15 +14,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-dependencies {
-    api(projects.coreComponent.analytics)
-    api(projects.coreComponent.common)
-    api(projects.coreComponent.featureFlag)
-    api(projects.coreComponent.persistence)
-    api(projects.coreComponent.remoteConfig)
-}
 
-plugins {
-    id(BuildPlugins.KOTLIN_ANDROID)
-    id(BuildPlugins.LIBRARY)
+package dev.zitech.core.persistence.domain.usecase.preferences
+
+import dev.zitech.core.persistence.domain.model.preferences.BooleanPreference
+import dev.zitech.core.persistence.domain.model.preferences.PreferenceType
+import dev.zitech.core.persistence.domain.repository.preferences.SavePreferencesRepository
+import javax.inject.Inject
+
+class SaveAllowPersonalizedAdsValueUseCase @Inject constructor(
+    private val savePreferencesRepository: SavePreferencesRepository
+) {
+
+    suspend operator fun invoke(value: Boolean) =
+        savePreferencesRepository.saveBoolean(
+            PreferenceType.SECURED,
+            BooleanPreference.PERSONALIZED_ADS.key,
+            value
+        )
 }

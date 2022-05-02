@@ -14,15 +14,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-dependencies {
-    api(projects.coreComponent.analytics)
-    api(projects.coreComponent.common)
-    api(projects.coreComponent.featureFlag)
-    api(projects.coreComponent.persistence)
-    api(projects.coreComponent.remoteConfig)
-}
 
-plugins {
-    id(BuildPlugins.KOTLIN_ANDROID)
-    id(BuildPlugins.LIBRARY)
-}
+package dev.zitech.core.persistence.domain.model.preferences
+
+enum class IntPreference(
+    override val key: String,
+    override val title: String,
+    override val explanation: String,
+    override val defaultValue: Int
+) : Preference<Int>
