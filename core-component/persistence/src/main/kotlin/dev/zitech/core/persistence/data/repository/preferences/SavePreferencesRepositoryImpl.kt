@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.persistence.data.preferences.repository
+package dev.zitech.core.persistence.data.repository.preferences
 
 import dev.zitech.core.persistence.domain.model.preferences.PreferenceType
 import dev.zitech.core.persistence.domain.repository.preferences.SavePreferencesRepository

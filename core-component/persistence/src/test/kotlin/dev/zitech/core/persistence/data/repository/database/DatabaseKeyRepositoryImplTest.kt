@@ -15,13 +15,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.persistence.data.database.repository
+package dev.zitech.core.persistence.data.repository.database
 
 import com.google.common.truth.Truth.assertThat
 import dev.zitech.core.common.DataFactory
-import dev.zitech.core.persistence.data.preferences.repository.ContainsPreferencesRepositoryImpl
-import dev.zitech.core.persistence.data.preferences.repository.GetPreferencesRepositoryImpl
-import dev.zitech.core.persistence.data.preferences.repository.SavePreferencesRepositoryImpl
+import dev.zitech.core.persistence.data.repository.preferences.ContainsPreferencesRepositoryImpl
+import dev.zitech.core.persistence.data.repository.preferences.GetPreferencesRepositoryImpl
+import dev.zitech.core.persistence.data.repository.preferences.SavePreferencesRepositoryImpl
 import dev.zitech.core.persistence.domain.repository.preferences.ContainsPreferencesRepository
 import dev.zitech.core.persistence.domain.repository.database.DatabaseKeyRepository
 import dev.zitech.core.persistence.domain.repository.preferences.GetPreferencesRepository

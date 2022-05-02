@@ -23,9 +23,10 @@ import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.common.framework.strings.FakeStringsProvider
 import dev.zitech.core.persistence.R
 import dev.zitech.core.persistence.framework.database.mapper.UserAccountMapper
-import dev.zitech.core.persistence.data.database.repository.UserAccountRepositoryImpl
+import dev.zitech.core.persistence.data.repository.database.UserAccountRepositoryImpl
 import dev.zitech.core.persistence.framework.database.dao.FakeUserAccountDao
 import dev.zitech.core.persistence.domain.source.database.UserAccountDatabaseSource
+import dev.zitech.core.persistence.domain.usecase.database.GetCurrentUserAccountUseCase
 import dev.zitech.core.persistence.framework.database.source.UserAccountDatabaseSourceImpl
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.DisplayName

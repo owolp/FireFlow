@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.persistence.data.database.repository
+package dev.zitech.core.persistence.data.repository.database
 
 import dev.zitech.core.common.DataFactory
 import dev.zitech.core.persistence.domain.model.database.DatabaseKey

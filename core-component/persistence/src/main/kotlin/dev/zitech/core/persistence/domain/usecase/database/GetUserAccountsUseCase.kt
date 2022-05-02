@@ -15,17 +15,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.persistence.domain.usecase
+package dev.zitech.core.persistence.domain.usecase.database
 
 import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
 import javax.inject.Inject
 
-class GetCurrentUserAccountUseCase @Inject constructor(
+class GetUserAccountsUseCase @Inject constructor(
     private val userAccountRepository: UserAccountRepository
 ) {
 
-    suspend operator fun invoke(): DataResult<UserAccount> =
-        userAccountRepository.getCurrentUserAccount()
+    suspend operator fun invoke(): DataResult<List<UserAccount>> =
+        userAccountRepository.getUserAccounts()
 }

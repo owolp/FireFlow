@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.persistence.data.database.repository
+package dev.zitech.core.persistence.data.repository.database
 
 import com.google.common.truth.Truth.assertThat
 import dev.zitech.core.common.DataFactory
@@ -23,10 +23,10 @@ import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.common.framework.strings.FakeStringsProvider
 import dev.zitech.core.common.framework.strings.StringsProvider
 import dev.zitech.core.persistence.R
-import dev.zitech.core.persistence.framework.database.mapper.UserAccountMapper
 import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
-import dev.zitech.core.persistence.framework.database.dao.FakeUserAccountDao
 import dev.zitech.core.persistence.domain.source.database.UserAccountDatabaseSource
+import dev.zitech.core.persistence.framework.database.dao.FakeUserAccountDao
+import dev.zitech.core.persistence.framework.database.mapper.UserAccountMapper
 import dev.zitech.core.persistence.framework.database.source.UserAccountDatabaseSourceImpl
 import io.mockk.coEvery
 import io.mockk.every

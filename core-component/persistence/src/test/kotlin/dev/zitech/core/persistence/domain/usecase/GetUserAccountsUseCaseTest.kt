@@ -22,9 +22,10 @@ import dev.zitech.core.common.DataFactory
 import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.common.framework.strings.FakeStringsProvider
 import dev.zitech.core.persistence.framework.database.mapper.UserAccountMapper
-import dev.zitech.core.persistence.data.database.repository.UserAccountRepositoryImpl
+import dev.zitech.core.persistence.data.repository.database.UserAccountRepositoryImpl
 import dev.zitech.core.persistence.framework.database.dao.FakeUserAccountDao
 import dev.zitech.core.persistence.domain.source.database.UserAccountDatabaseSource
+import dev.zitech.core.persistence.domain.usecase.database.GetUserAccountsUseCase
 import dev.zitech.core.persistence.framework.database.source.UserAccountDatabaseSourceImpl
 import io.mockk.coEvery
 import io.mockk.mockk
