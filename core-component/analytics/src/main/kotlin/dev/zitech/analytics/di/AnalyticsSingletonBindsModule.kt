@@ -55,7 +55,7 @@ internal interface AnalyticsSingletonBindsModule {
 
 @InstallIn(SingletonComponent::class)
 @Module
-internal interface AnalyticsSingletonProvidesModule {
+internal object AnalyticsSingletonProvidesModule {
 
     @Singleton
     @Provides
