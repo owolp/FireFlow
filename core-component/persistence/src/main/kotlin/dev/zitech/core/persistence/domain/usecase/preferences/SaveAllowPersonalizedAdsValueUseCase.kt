@@ -28,7 +28,7 @@ class SaveAllowPersonalizedAdsValueUseCase @Inject constructor(
 
     suspend operator fun invoke(value: Boolean) =
         savePreferencesRepository.saveBoolean(
-            PreferenceType.SECURED,
+            PreferenceType.STANDARD,
             BooleanPreference.PERSONALIZED_ADS.key,
             value
         )

@@ -26,14 +26,17 @@ enum class BooleanPreference(
 
     ANALYTICS_COLLECTION(
         key = "analytics_collection",
-        title = "Disable Analytics data collection",
-        explanation = "Enable to send analytics collection",
+        title = "Analytics data collection",
+        explanation = "In some cases, you may wish to temporarily or permanently disable " +
+            "collection of Analytics data, such as to collect end-user consent or to fulfill " +
+            "legal obligations.",
         defaultValue = false
     ),
     PERSONALIZED_ADS(
         key = "personalized_ads",
-        title = "Disable personalized advertising features",
-        explanation = "Enable to send personalized advertising features",
+        title = "Analytics personalized advertising features",
+        explanation = "To programmatically control whether a user's Analytics data should be " +
+            "used for personalized advertising, set the appropriate default behavior",
         defaultValue = false
     )
 }

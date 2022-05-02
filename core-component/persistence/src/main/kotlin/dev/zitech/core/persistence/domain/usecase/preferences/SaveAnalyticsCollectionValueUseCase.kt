@@ -28,7 +28,7 @@ class SaveAnalyticsCollectionValueUseCase @Inject constructor(
 
     suspend operator fun invoke(value: Boolean) =
         savePreferencesRepository.saveBoolean(
-            PreferenceType.SECURED,
+            PreferenceType.STANDARD,
             BooleanPreference.ANALYTICS_COLLECTION.key,
             value
         )
