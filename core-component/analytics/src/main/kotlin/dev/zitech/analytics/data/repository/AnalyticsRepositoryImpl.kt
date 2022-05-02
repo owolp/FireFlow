@@ -15,12 +15,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+package dev.zitech.analytics.data.repository
 
-include(":app")
-include(":core-component:core")
-include(":core-component:analytics")
-include(":core-component:common")
-include(":core-component:feature-flag")
-include(":core-component:persistence")
-include(":core-component:remote-config")
+import dev.zitech.analytics.domain.repository.AnalyticsRepository
+import dev.zitech.analytics.framework.source.AnalyticsProviderSource
+import javax.inject.Inject
+
+internal class AnalyticsRepositoryImpl @Inject constructor(
+    private val analyticsProviderSource: AnalyticsProviderSource
+) : AnalyticsRepository {
+
+    override fun allowPersonalizedAds(enabled: Boolean) =
+        analyticsProviderSource.allowPersonalizedAds(enabled)
+
+    override fun setCollectionEnabled(enabled: Boolean) =
+        analyticsProviderSource.setCollectionEnabled(enabled)
+}

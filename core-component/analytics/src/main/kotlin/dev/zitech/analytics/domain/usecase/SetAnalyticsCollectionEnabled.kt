@@ -15,12 +15,23 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+package dev.zitech.analytics.domain.usecase
 
-include(":app")
-include(":core-component:core")
-include(":core-component:analytics")
-include(":core-component:common")
-include(":core-component:feature-flag")
-include(":core-component:persistence")
-include(":core-component:remote-config")
+import dev.zitech.analytics.domain.repository.AnalyticsRepository
+import dev.zitech.core.common.framework.logger.AppConfigProvider
+import dev.zitech.core.common.framework.logger.BuildMode
+import javax.inject.Inject
+
+class SetAnalyticsCollectionEnabled @Inject constructor(
+    private val appConfigProvider: AppConfigProvider,
+    private val analyticsRepository: AnalyticsRepository
+) {
+
+    operator fun invoke(enabled: Boolean) =
+        analyticsRepository.setCollectionEnabled(
+            when (appConfigProvider.buildMode) {
+                BuildMode.RELEASE -> enabled
+                BuildMode.DEBUG -> false
+            }
+        )
+}

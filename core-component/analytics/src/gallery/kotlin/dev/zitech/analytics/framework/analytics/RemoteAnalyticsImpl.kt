@@ -15,12 +15,23 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+package dev.zitech.analytics.framework.analytics
 
-include(":app")
-include(":core-component:core")
-include(":core-component:analytics")
-include(":core-component:common")
-include(":core-component:feature-flag")
-include(":core-component:persistence")
-include(":core-component:remote-config")
+import android.content.Context
+import com.huawei.hms.analytics.HiAnalytics
+import javax.inject.Inject
+
+internal class RemoteAnalyticsImpl @Inject constructor(
+    context: Context
+) : RemoteAnalytics {
+
+    private val hiAnalytics = HiAnalytics.getInstance(context)
+
+    override fun allowPersonalizedAds(enabled: Boolean) {
+        hiAnalytics.setCollectAdsIdEnabled(enabled)
+    }
+
+    override fun setCollectionEnabled(enabled: Boolean) {
+        hiAnalytics.setAnalyticsEnabled(enabled)
+    }
+}

@@ -15,12 +15,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+package dev.zitech.analytics.framework.source
 
-include(":app")
-include(":core-component:core")
-include(":core-component:analytics")
-include(":core-component:common")
-include(":core-component:feature-flag")
-include(":core-component:persistence")
-include(":core-component:remote-config")
+import dev.zitech.analytics.framework.analytics.RemoteAnalytics
+import javax.inject.Inject
+
+internal class AnalyticsProviderSourceImpl @Inject constructor(
+    private val remoteAnalytics: RemoteAnalytics
+) : AnalyticsProviderSource {
+
+    override fun allowPersonalizedAds(enabled: Boolean) =
+        remoteAnalytics.allowPersonalizedAds(enabled)
+
+    override fun setCollectionEnabled(enabled: Boolean) =
+        remoteAnalytics.setCollectionEnabled(enabled)
+}

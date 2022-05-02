@@ -24,7 +24,7 @@ import dev.zitech.core.remoteconfig.domain.model.LongConfig
 import dev.zitech.core.remoteconfig.domain.model.StringConfig
 import kotlinx.coroutines.flow.Flow
 
-interface ConfigProviderSource {
+internal interface ConfigProviderSource {
 
     fun init(): Flow<DataResult<Unit>>
     fun getBoolean(config: BooleanConfig): DataResult<Boolean>
