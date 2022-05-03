@@ -19,6 +19,7 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 include(":app")
 include(":core-component:core")
+include(":core-component:analytics")
 include(":core-component:common")
 include(":core-component:feature-flag")
 include(":core-component:persistence")

@@ -15,6 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 dependencies {
+    api(projects.coreComponent.analytics)
     api(projects.coreComponent.common)
     api(projects.coreComponent.featureFlag)
     api(projects.coreComponent.persistence)

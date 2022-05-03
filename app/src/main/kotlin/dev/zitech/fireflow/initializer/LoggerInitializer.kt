@@ -19,8 +19,8 @@ package dev.zitech.fireflow.initializer
 
 import android.content.Context
 import androidx.startup.Initializer
-import dev.zitech.core.common.framework.logger.AppConfigProvider
-import dev.zitech.core.common.framework.logger.BuildMode
+import dev.zitech.core.common.domain.model.BuildMode
+import dev.zitech.core.common.framework.applicationconfig.AppConfigProvider
 import dev.zitech.core.common.framework.logger.Logger
 import dev.zitech.fireflow.di.InitializerEntryPoint
 import javax.inject.Inject
