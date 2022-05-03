@@ -22,7 +22,7 @@ import dev.zitech.core.common.domain.model.BuildMode
 import dev.zitech.core.common.framework.applicationconfig.AppConfigProvider
 import javax.inject.Inject
 
-class SetAnalyticsCollectionEnabled @Inject constructor(
+class SetAnalyticsCollectionUseCase @Inject constructor(
     private val appConfigProvider: AppConfigProvider,
     private val analyticsRepository: AnalyticsRepository
 ) {

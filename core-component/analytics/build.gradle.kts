@@ -34,6 +34,7 @@ dependencies {
 
     galleryImplementation(libs.huawei.hms.hianalytics)
 
+    testImplementation(testFixtures(projects.coreComponent.common))
     testImplementation(libs.cash.turbine)
     testImplementation(libs.google.truth)
     testImplementation(libs.mockk.mockk)
