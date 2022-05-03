@@ -24,10 +24,10 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import dev.zitech.core.common.framework.applicationconfig.AppConfigProvider
+import dev.zitech.core.common.framework.applicationconfig.AppConfigProviderImpl
 import dev.zitech.core.common.framework.dispatcher.AppDispatchers
 import dev.zitech.core.common.framework.dispatcher.AppDispatchersImpl
-import dev.zitech.core.common.framework.logger.AppConfigProvider
-import dev.zitech.core.common.framework.logger.AppConfigProviderImpl
 import dev.zitech.core.common.framework.scope.AppScopes
 import dev.zitech.core.common.framework.scope.AppScopesImpl
 import dev.zitech.core.common.framework.strings.StringsProvider

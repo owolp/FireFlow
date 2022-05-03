@@ -15,8 +15,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.common.framework.logger
+package dev.zitech.core.common.framework.applicationconfig
 
-enum class BuildMode {
-    RELEASE, DEBUG
+import dev.zitech.core.common.BuildConfig
+import dev.zitech.core.common.domain.model.BuildMode
+import javax.inject.Inject
+
+interface AppConfigProvider {
+    val buildMode: BuildMode
+}
+
+internal class AppConfigProviderImpl @Inject constructor() : AppConfigProvider {
+
+    override val buildMode: BuildMode
+        get(): BuildMode = if (BuildConfig.DEBUG) {
+            BuildMode.DEBUG
+        } else {
+            BuildMode.RELEASE
+        }
 }

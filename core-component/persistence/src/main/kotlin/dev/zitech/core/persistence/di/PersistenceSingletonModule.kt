@@ -24,8 +24,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import dev.zitech.core.common.framework.applicationconfig.AppConfigProvider
 import dev.zitech.core.common.framework.dispatcher.AppDispatchers
-import dev.zitech.core.common.framework.logger.AppConfigProvider
 import dev.zitech.core.common.framework.strings.StringsProvider
 import dev.zitech.core.persistence.data.repository.database.DatabaseKeyRepositoryImpl
 import dev.zitech.core.persistence.data.repository.database.UserAccountRepositoryImpl
