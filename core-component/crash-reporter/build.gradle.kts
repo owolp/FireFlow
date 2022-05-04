@@ -15,13 +15,25 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+plugins {
+    id(BuildPlugins.KOTLIN_ANDROID)
+    id(BuildPlugins.LIBRARY)
+    kotlin(BuildPlugins.KAPT)
+}
 
-include(":app")
-include(":core-component:core")
-include(":core-component:analytics")
-include(":core-component:common")
-include(":core-component:crash-reporter")
-include(":core-component:feature-flag")
-include(":core-component:persistence")
-include(":core-component:remote-config")
+dependencies {
+    implementation(libs.google.dagger.hilt.android)
+    kapt(libs.google.dagger.hilt.compiler)
+    implementation(libs.jetbrains.kotlin.coroutines.android)
+
+    testImplementation(libs.cash.turbine)
+    testImplementation(libs.google.truth)
+    testImplementation(libs.mockk.mockk)
+    testImplementation(libs.jetbrains.kotlin.coroutines.test)
+    testImplementation(libs.junit.jupiter.api)
+    testRuntimeOnly(libs.junit.jupiter.engine)
+}
+
+kapt {
+    correctErrorTypes = true
+}
