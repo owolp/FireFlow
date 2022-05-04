@@ -14,6 +14,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
+plugins {
+    id(BuildPlugins.KOTLIN_ANDROID)
+    id(BuildPlugins.LIBRARY)
+}
+
 dependencies {
     api(projects.coreComponent.analytics)
     api(projects.coreComponent.common)
@@ -21,9 +27,4 @@ dependencies {
     api(projects.coreComponent.featureFlag)
     api(projects.coreComponent.persistence)
     api(projects.coreComponent.remoteConfig)
-}
-
-plugins {
-    id(BuildPlugins.KOTLIN_ANDROID)
-    id(BuildPlugins.LIBRARY)
 }
