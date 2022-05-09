@@ -45,6 +45,12 @@
             tools:node="merge">
 
             <meta-data
+                android:name="dev.zitech.fireflow.initializer.AnalyticsInitializer"
+                android:value="androidx.startup" />
+            <meta-data
+                android:name="dev.zitech.fireflow.initializer.CrashReporterInitializer"
+                android:value="androidx.startup" />
+            <meta-data
                 android:name="dev.zitech.fireflow.initializer.DependencyGraphInitializer"
                 android:value="androidx.startup" />
             <meta-data

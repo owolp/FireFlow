@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.persistence.domain.usecase
+package dev.zitech.core.persistence.domain.usecase.database
 
 import com.google.common.truth.Truth.assertThat
 import dev.zitech.core.common.DataFactory
@@ -25,7 +25,7 @@ import dev.zitech.core.persistence.framework.database.mapper.UserAccountMapper
 import dev.zitech.core.persistence.data.repository.database.UserAccountRepositoryImpl
 import dev.zitech.core.persistence.framework.database.dao.FakeUserAccountDao
 import dev.zitech.core.persistence.domain.source.database.UserAccountDatabaseSource
-import dev.zitech.core.persistence.domain.usecase.database.SaveUserAccountUseCase
+import dev.zitech.core.persistence.domain.usecase.database.GetUserAccountsUseCase
 import dev.zitech.core.persistence.framework.database.source.UserAccountDatabaseSourceImpl
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -33,7 +33,7 @@ import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
-internal class SaveUserAccountUseCaseTest {
+internal class GetUserAccountsUseCaseTest {
 
     private val userAccountDatabaseSource: UserAccountDatabaseSource = UserAccountDatabaseSourceImpl(
         FakeUserAccountDao(),
@@ -46,8 +46,10 @@ internal class SaveUserAccountUseCaseTest {
     @DisplayName("WHEN there is no exception THEN return Success")
     fun success() = runBlocking {
         // Arrange
-        val isCurrentUserAccount = DataFactory.createRandomBoolean()
-        val sut = SaveUserAccountUseCase(
+        userAccountDatabaseSource.saveUserAccount(false)
+        userAccountDatabaseSource.saveUserAccount(false)
+        userAccountDatabaseSource.saveUserAccount(true)
+        val sut = GetUserAccountsUseCase(
             UserAccountRepositoryImpl(
                 userAccountDatabaseSource,
                 stringsProvider
@@ -55,21 +57,20 @@ internal class SaveUserAccountUseCaseTest {
         )
 
         // Act
-        val result = sut(isCurrentUserAccount)
+        val result = sut()
 
         // Assert
-        assertThat((result as DataResult.Success).value).isEqualTo(1)
+        assertThat((result as DataResult.Success).value).hasSize(3)
     }
 
     @Test
     @DisplayName("WHEN there is exception THEN return Error")
     fun error() = runBlocking {
         // Arrange
-        val isCurrentUserAccount = DataFactory.createRandomBoolean()
         val exception = DataFactory.createException()
-        coEvery { mockedUserAccountDatabaseSource.saveUserAccount(isCurrentUserAccount) } throws exception
+        coEvery { mockedUserAccountDatabaseSource.getUserAccounts() } throws exception
 
-        val sut = SaveUserAccountUseCase(
+        val sut = GetUserAccountsUseCase(
             UserAccountRepositoryImpl(
                 mockedUserAccountDatabaseSource,
                 stringsProvider
@@ -77,7 +78,7 @@ internal class SaveUserAccountUseCaseTest {
         )
 
         // Act
-        val result = sut(isCurrentUserAccount)
+        val result = sut()
 
         // Assert
         assertThat((result as DataResult.Error).cause).isEqualTo(exception)

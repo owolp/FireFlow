@@ -22,8 +22,8 @@ import dev.zitech.analytics.data.repository.AnalyticsRepositoryImpl
 import dev.zitech.analytics.framework.analytics.FakeRemoteAnalytics
 import dev.zitech.analytics.framework.source.AnalyticsProviderSourceImpl
 import dev.zitech.core.common.DataFactory
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 internal class AllowPersonalizedAdsUseCaseTest {
 
@@ -37,7 +37,7 @@ internal class AllowPersonalizedAdsUseCaseTest {
 
     private lateinit var sut: AllowPersonalizedAdsUseCase
 
-    @Before
+    @BeforeEach
     fun setup() {
         sut = AllowPersonalizedAdsUseCase(analyticsRepository)
     }

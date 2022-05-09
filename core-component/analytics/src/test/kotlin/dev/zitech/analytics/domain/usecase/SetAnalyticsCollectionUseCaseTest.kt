@@ -23,8 +23,8 @@ import dev.zitech.analytics.framework.analytics.FakeRemoteAnalytics
 import dev.zitech.analytics.framework.source.AnalyticsProviderSourceImpl
 import dev.zitech.core.common.DataFactory
 import dev.zitech.core.common.framework.applicationconfig.FakeAppConfigProvider
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 internal class SetAnalyticsCollectionUseCaseTest {
 
@@ -39,7 +39,7 @@ internal class SetAnalyticsCollectionUseCaseTest {
 
     private lateinit var sut: SetAnalyticsCollectionUseCase
 
-    @Before
+    @BeforeEach
     fun setup() {
         sut = SetAnalyticsCollectionUseCase(
             appConfigProvider,

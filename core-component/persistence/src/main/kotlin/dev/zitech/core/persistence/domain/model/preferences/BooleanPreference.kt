@@ -32,6 +32,12 @@ enum class BooleanPreference(
             "legal obligations.",
         defaultValue = false
     ),
+    CRASH_REPORTER_COLLECTION(
+        key = "crash_reporter_collection",
+        title = "Crash data collection",
+        explanation = "Automatically post crash reports to a report server",
+        defaultValue = false
+    ),
     PERSONALIZED_ADS(
         key = "personalized_ads",
         title = "Analytics personalized advertising features",

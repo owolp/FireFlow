@@ -15,41 +15,37 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.persistence.domain.usecase
+package dev.zitech.core.persistence.domain.usecase.database
 
 import com.google.common.truth.Truth.assertThat
 import dev.zitech.core.common.DataFactory
 import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.common.framework.strings.FakeStringsProvider
+import dev.zitech.core.persistence.R
 import dev.zitech.core.persistence.framework.database.mapper.UserAccountMapper
 import dev.zitech.core.persistence.data.repository.database.UserAccountRepositoryImpl
 import dev.zitech.core.persistence.framework.database.dao.FakeUserAccountDao
 import dev.zitech.core.persistence.domain.source.database.UserAccountDatabaseSource
-import dev.zitech.core.persistence.domain.usecase.database.GetUserAccountsUseCase
+import dev.zitech.core.persistence.domain.usecase.database.GetCurrentUserAccountUseCase
 import dev.zitech.core.persistence.framework.database.source.UserAccountDatabaseSourceImpl
-import io.mockk.coEvery
-import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
-internal class GetUserAccountsUseCaseTest {
+internal class GetCurrentUserAccountUseCaseTest {
 
     private val userAccountDatabaseSource: UserAccountDatabaseSource = UserAccountDatabaseSourceImpl(
         FakeUserAccountDao(),
         UserAccountMapper()
     )
     private val stringsProvider = FakeStringsProvider()
-    private val mockedUserAccountDatabaseSource = mockk<UserAccountDatabaseSource>()
 
     @Test
-    @DisplayName("WHEN there is no exception THEN return Success")
+    @DisplayName("WHEN there is current account THEN return Success")
     fun success() = runBlocking {
         // Arrange
-        userAccountDatabaseSource.saveUserAccount(false)
-        userAccountDatabaseSource.saveUserAccount(false)
         userAccountDatabaseSource.saveUserAccount(true)
-        val sut = GetUserAccountsUseCase(
+        val sut = GetCurrentUserAccountUseCase(
             UserAccountRepositoryImpl(
                 userAccountDatabaseSource,
                 stringsProvider
@@ -60,19 +56,20 @@ internal class GetUserAccountsUseCaseTest {
         val result = sut()
 
         // Assert
-        assertThat((result as DataResult.Success).value).hasSize(3)
+        assertThat((result as DataResult.Success).value.id).isEqualTo(-1)
+        assertThat(result.value.isCurrentUserAccount).isEqualTo(true)
     }
 
     @Test
-    @DisplayName("WHEN there is exception THEN return Error")
+    @DisplayName("WHEN there is no current account THEN return Error")
     fun error() = runBlocking {
         // Arrange
-        val exception = DataFactory.createException()
-        coEvery { mockedUserAccountDatabaseSource.getUserAccounts() } throws exception
+        val message = DataFactory.createRandomString()
+        stringsProvider.addString(R.string.error_message_current_user_null, message)
 
-        val sut = GetUserAccountsUseCase(
+        val sut = GetCurrentUserAccountUseCase(
             UserAccountRepositoryImpl(
-                mockedUserAccountDatabaseSource,
+                userAccountDatabaseSource,
                 stringsProvider
             )
         )
@@ -81,6 +78,6 @@ internal class GetUserAccountsUseCaseTest {
         val result = sut()
 
         // Assert
-        assertThat((result as DataResult.Error).cause).isEqualTo(exception)
+        assertThat((result as DataResult.Error).message).isEqualTo(message)
     }
 }
