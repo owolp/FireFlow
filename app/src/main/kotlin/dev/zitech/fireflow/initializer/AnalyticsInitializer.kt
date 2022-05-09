@@ -51,9 +51,6 @@ internal class AnalyticsInitializer : Initializer<Unit> {
             setAnalyticsCollectionUseCase(
                 getAnalyticsCollectionValueUseCase()
             )
-        }
-
-        appScopes.singletonLaunch {
             allowPersonalizedAdsValueUseCase(
                 getAllowPersonalizedAdsValueUseCase()
             )
