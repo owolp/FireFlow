@@ -20,8 +20,8 @@ package dev.zitech.analytics.framework.source
 import com.google.common.truth.Truth.assertThat
 import dev.zitech.analytics.framework.analytics.FakeRemoteAnalytics
 import dev.zitech.core.common.DataFactory
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 internal class AnalyticsProviderSourceImplTest {
 
@@ -29,7 +29,7 @@ internal class AnalyticsProviderSourceImplTest {
 
     private lateinit var sut: AnalyticsProviderSource
 
-    @Before
+    @BeforeEach
     fun setup() {
         sut = AnalyticsProviderSourceImpl(
             remoteAnalytics

@@ -18,6 +18,7 @@
 plugins {
     id(BuildPlugins.KOTLIN_ANDROID)
     id(BuildPlugins.LIBRARY)
+    id(BuildPlugins.JUNIT5)
     kotlin(BuildPlugins.KAPT)
 }
 
@@ -25,6 +26,8 @@ dependencies {
     implementation(libs.google.dagger.hilt.android)
     kapt(libs.google.dagger.hilt.compiler)
     implementation(libs.jetbrains.kotlin.coroutines.android)
+
+    fossImplementation(libs.acra.http)
 
     testImplementation(libs.cash.turbine)
     testImplementation(libs.google.truth)

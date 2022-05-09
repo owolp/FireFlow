@@ -29,8 +29,8 @@ import dev.zitech.core.remoteconfig.domain.repository.ConfigRepository
 import dev.zitech.core.remoteconfig.framework.source.FakeConfigProviderSource
 import io.mockk.mockkClass
 import kotlinx.coroutines.runBlocking
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 internal class ConfigRepositoryImplTest {
 
@@ -38,7 +38,7 @@ internal class ConfigRepositoryImplTest {
 
     private lateinit var sut: ConfigRepository
 
-    @Before
+    @BeforeEach
     fun setup() {
         sut = ConfigRepositoryImpl(
             fakeConfigProviderSource

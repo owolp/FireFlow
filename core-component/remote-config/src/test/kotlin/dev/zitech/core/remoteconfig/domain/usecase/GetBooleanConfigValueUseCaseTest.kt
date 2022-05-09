@@ -25,7 +25,7 @@ import dev.zitech.core.remoteconfig.domain.model.BooleanConfig
 import dev.zitech.core.remoteconfig.framework.source.FakeConfigProviderSource
 import io.mockk.mockkClass
 import kotlinx.coroutines.runBlocking
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 internal class GetBooleanConfigValueUseCaseTest {
 

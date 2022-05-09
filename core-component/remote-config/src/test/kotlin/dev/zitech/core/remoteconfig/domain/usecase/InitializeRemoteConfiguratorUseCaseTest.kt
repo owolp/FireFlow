@@ -22,7 +22,7 @@ import com.google.common.truth.Truth.assertThat
 import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.remoteconfig.framework.configurator.FakeRemoteConfigurator
 import kotlinx.coroutines.runBlocking
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 internal class InitializeRemoteConfiguratorUseCaseTest {
 

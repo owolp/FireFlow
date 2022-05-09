@@ -21,13 +21,19 @@ import dev.zitech.core.common.framework.dispatcher.AppDispatchers
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 
 interface AppScopes {
     val singleton: CoroutineScope
+    fun singletonLaunch(func: suspend CoroutineScope.() -> Unit)
 }
 
 internal class AppScopesImpl @Inject constructor(
     appDispatchers: AppDispatchers
 ) : AppScopes {
     override val singleton = CoroutineScope(SupervisorJob() + appDispatchers.default)
+
+    override fun singletonLaunch(func: suspend CoroutineScope.() -> Unit) {
+        singleton.launch { func() }
+    }
 }
