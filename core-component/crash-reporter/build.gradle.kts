@@ -29,6 +29,12 @@ dependencies {
 
     fossImplementation(libs.acra.http)
 
+    playImplementation(platform(libs.google.firebase.bom))
+    playImplementation("com.google.firebase:firebase-crashlytics-ktx")
+    playImplementation("com.google.firebase:firebase-analytics-ktx") {
+        because("Firebase Config needs Firebase Analytics")
+    }
+
     testImplementation(libs.cash.turbine)
     testImplementation(libs.google.truth)
     testImplementation(libs.mockk.mockk)

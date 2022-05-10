@@ -39,6 +39,7 @@ buildscript {
         classpath(libs.android.build.gradle)
         classpath(libs.google.dagger.hilt.gradle)
         classpath(libs.google.gms.services)
+        classpath(libs.google.firebase.crashlytics.gradle)
         classpath(libs.jetbrains.kotlin.gradle)
         classpath(libs.mannodermaus.gradle.plugins.android.junit5)
     }
@@ -113,10 +114,6 @@ fun BaseExtension.baseConfig() {
 fun AppExtension.androidApplication(project: Project) {
     val secretProperties = AppSecret.retrieveSecretProperties(project)
 
-    val signingConfigDebug = "debug"
-    val signingConfigDev = "dev"
-    val signingConfigProd = "prod"
-
     compileSdkVersion(AppVersioning.COMPILE_SDK)
 
     defaultConfig {
@@ -127,21 +124,21 @@ fun AppExtension.androidApplication(project: Project) {
     }
 
     signingConfigs {
-        getByName(signingConfigDebug) {
+        getByName(SigningConfigs.DEBUG) {
             storeFile = project.rootProject.file("config/keystore/debug.keystore")
             keyAlias = "androiddebugkey"
             keyPassword = "android"
             storePassword = "android"
         }
 
-        create(signingConfigDev) {
+        create(SigningConfigs.DEV) {
             storeFile = project.rootProject.file("config/keystore/dev.keystore")
             keyAlias = "${secretProperties["dev_signing_key_alias"]}"
             keyPassword = "${secretProperties["dev_signing_key_password"]}"
             storePassword = "${secretProperties["dev_signing_keystore_password"]}"
         }
 
-        create(signingConfigProd) {
+        create(SigningConfigs.PROD) {
             storeFile = project.rootProject.file("config/keystore/prod.keystore")
             keyAlias = "${secretProperties["prod_signing_key_alias"]}"
             keyPassword = "${secretProperties["prod_signing_key_password"]}"
@@ -149,7 +146,7 @@ fun AppExtension.androidApplication(project: Project) {
         }
     }
 
-    configureProductFlavors(signingConfigDev, signingConfigProd)
+    configureProductFlavors(SigningConfigs.DEV, SigningConfigs.PROD)
 }
 
 fun BaseExtension.configureFlavorDimensions() {
@@ -158,12 +155,12 @@ fun BaseExtension.configureFlavorDimensions() {
 
 fun BaseExtension.configureBuildTypes(project: Project) {
     buildTypes {
-        getByName("debug") {
+        getByName(BuildTypes.DEBUG) {
             isDebuggable = true
             isMinifyEnabled = false
         }
 
-        getByName("release") {
+        getByName(BuildTypes.RELEASE) {
             isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android.txt"),
@@ -173,47 +170,42 @@ fun BaseExtension.configureBuildTypes(project: Project) {
     }
 }
 
-val dev = "dev"
-val foss = "foss"
-val gallery = "gallery"
-val play = "play"
-
 fun AppExtension.configureProductFlavors(
     signingConfigDev: String,
     signingConfigProd: String
 ) {
     productFlavors {
-        create(dev) {
+        create(ProductFlavors.DEV) {
             signingConfig = signingConfigs.getByName(signingConfigDev)
-            applicationIdSuffix = ".$dev"
+            applicationIdSuffix = ".${ProductFlavors.DEV}"
             versionNameSuffix = "-${AppVersioning.retrieveVersionCode()}"
         }
 
-        create(play) {
+        create(ProductFlavors.PLAY) {
             signingConfig = signingConfigs.getByName(signingConfigProd)
-            applicationIdSuffix = ".$play"
+            applicationIdSuffix = ".${ProductFlavors.PLAY}"
         }
 
-        create(gallery) {
+        create(ProductFlavors.GALLERY) {
             signingConfig = signingConfigs.getByName(signingConfigProd)
-            applicationIdSuffix = ".$gallery"
+            applicationIdSuffix = ".${ProductFlavors.GALLERY}"
         }
 
-        create(foss) {
+        create(ProductFlavors.FOSS) {
             signingConfig = signingConfigs.getByName(signingConfigProd)
-            applicationIdSuffix = ".$foss"
+            applicationIdSuffix = ".${ProductFlavors.FOSS}"
         }
     }
 }
 
 fun BaseExtension.configureProductFlavors() {
     productFlavors {
-        create(dev) {}
+        create(ProductFlavors.DEV) {}
 
-        create(play) {}
+        create(ProductFlavors.PLAY) {}
 
-        create(gallery) {}
+        create(ProductFlavors.GALLERY) {}
 
-        create(foss) {}
+        create(ProductFlavors.FOSS) {}
     }
 }

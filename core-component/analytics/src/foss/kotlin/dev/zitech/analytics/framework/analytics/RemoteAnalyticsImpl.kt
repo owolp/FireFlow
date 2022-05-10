@@ -20,7 +20,7 @@ package dev.zitech.analytics.framework.analytics
 import android.content.Context
 import javax.inject.Inject
 
-@Suppress("UnusedPrivateMember")
+@Suppress("UnusedPrivateMember", "UNUSED_PARAMETER")
 internal class RemoteAnalyticsImpl @Inject constructor(
     context: Context
 ) : RemoteAnalytics {
