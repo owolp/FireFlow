@@ -42,5 +42,5 @@ internal class LoggerInitializer : Initializer<Unit> {
     }
 
     override fun dependencies(): List<Class<out Initializer<*>>> =
-        listOf(CrashReporterInitializer::class.java)
+        listOf(CrashReporterInitializer::class.java, DependencyGraphInitializer::class.java)
 }
