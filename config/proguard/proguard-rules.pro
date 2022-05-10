@@ -30,6 +30,7 @@
     public static final android.os.Parcelable$Creator *;
 }
 
-# Firebase Crashlytics
+# Firebase
 -keepattributes SourceFile,LineNumberTable
 -keep public class * extends java.lang.Exception
+-keep class com.google.errorprone.annotations.Immutable
