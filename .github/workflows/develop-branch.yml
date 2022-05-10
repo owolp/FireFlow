@@ -123,6 +123,11 @@ jobs:
           echo "${{ secrets.PROD_KEYSTORE }}" > prod.keystore.asc
           gpg --batch --decrypt --output "config/keystore/prod.keystore" --passphrase "${{ secrets.PROD_SIGNING_KEYSTORE_GPG }}" --yes "prod.keystore.asc"
 
+      - name: Restore Google Play Services JSON
+        run: |
+          echo "${{ secrets.PLAY_GOOGLE_SERVICES_JSON }}" > google-services.json.asc
+          gpg --batch --decrypt --output "app/google-services.json" --passphrase "${{ secrets.PLAY_GOOGLE_SERVICES_JSON_GPG }}" --yes "google-services.json.asc"
+
       - name: Run Fastlane Assemble Play Release Lane
         run: fastlane assemble_play_release
 
@@ -152,6 +157,11 @@ jobs:
           echo "prod_signing_keystore_password=${{ secrets.PROD_SIGNING_KEYSTORE_PASSWORD }}" >> secrets.properties
           echo "${{ secrets.PROD_KEYSTORE }}" > prod.keystore.asc
           gpg --batch --decrypt --output "config/keystore/prod.keystore" --passphrase "${{ secrets.PROD_SIGNING_KEYSTORE_GPG }}" --yes "prod.keystore.asc"
+
+      - name: Restore Huawei Services JSON
+        run: |
+          echo "${{ secrets.GALLERY_AGCONNECT_SERVICES_JSON }}" > agconnect-services.json.asc
+          gpg --batch --decrypt --output "app/agconnect-services.json" --passphrase "${{ secrets.GALLERY_AGCONNECT_SERVICES_JSON_GPG }}" --yes "agconnect-services.json.asc"
 
       - name: Run Fastlane Assemble Gallery Release Lane
         run: fastlane assemble_gallery_release
