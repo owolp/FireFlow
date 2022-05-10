@@ -15,13 +15,39 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import com.android.build.api.dsl.ApplicationProductFlavor
+import com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
+
 plugins {
     id(BuildPlugins.APPLICATION)
     id(BuildPlugins.AGPCONNECT)
     id(BuildPlugins.GOOGLE_SERVICES)
+    id(BuildPlugins.FIREBASE_CRASHLYTICS)
     id(BuildPlugins.DAGGER)
     id(BuildPlugins.KOTLIN_ANDROID)
     kotlin(BuildPlugins.KAPT)
+}
+
+android {
+    buildTypes {
+        getByName(BuildTypes.DEBUG) {
+            configure<CrashlyticsExtension> {
+                mappingFileUploadEnabled = false
+            }
+        }
+    }
+
+    productFlavors {
+        getByName(ProductFlavors.DEV) {
+            disableCrashlyticsMappingFileUpload()
+        }
+        getByName(ProductFlavors.FOSS) {
+            disableCrashlyticsMappingFileUpload()
+        }
+        getByName(ProductFlavors.GALLERY) {
+            disableCrashlyticsMappingFileUpload()
+        }
+    }
 }
 
 dependencies {
@@ -45,4 +71,10 @@ dependencies {
 
 kapt {
     correctErrorTypes = true
+}
+
+fun ApplicationProductFlavor.disableCrashlyticsMappingFileUpload() {
+    configure<CrashlyticsExtension> {
+        mappingFileUploadEnabled = false
+    }
 }

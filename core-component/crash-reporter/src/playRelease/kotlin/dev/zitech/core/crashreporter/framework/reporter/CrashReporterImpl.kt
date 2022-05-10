@@ -18,30 +18,51 @@
 package dev.zitech.core.crashreporter.framework.reporter
 
 import android.app.Application
+import com.google.firebase.crashlytics.ktx.crashlytics
+import com.google.firebase.ktx.Firebase
 import javax.inject.Inject
 
-@Suppress("UnusedPrivateMember")
+@Suppress("UnusedPrivateMember", "UNUSED_PARAMETER")
 internal class CrashReporterImpl @Inject constructor(
     private val application: Application
 ) : CrashReporter {
 
+    private val firebaseCrashlytics = Firebase.crashlytics
+
     override fun init() {
-        TODO()
+        // NO_OP
     }
 
     override fun log(message: String) {
-        TODO()
+        firebaseCrashlytics.log(message)
     }
 
     override fun recordException(exception: Exception) {
-        TODO()
+        firebaseCrashlytics.recordException(exception)
     }
 
     override fun setCustomKey(key: String, value: Any) {
-        TODO()
+        if (value is Boolean) {
+            firebaseCrashlytics.setCustomKey(key, value)
+        }
+        if (value is Double) {
+            firebaseCrashlytics.setCustomKey(key, value)
+        }
+        if (value is Float) {
+            firebaseCrashlytics.setCustomKey(key, value)
+        }
+        if (value is Int) {
+            firebaseCrashlytics.setCustomKey(key, value)
+        }
+        if (value is Long) {
+            firebaseCrashlytics.setCustomKey(key, value)
+        }
+        if (value is String) {
+            firebaseCrashlytics.setCustomKey(key, value)
+        }
     }
 
     override fun setCrashCollectionEnabled(enabled: Boolean) {
-        TODO()
+        firebaseCrashlytics.setCrashlyticsCollectionEnabled(enabled)
     }
 }

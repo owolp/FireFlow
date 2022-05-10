@@ -20,7 +20,7 @@ package dev.zitech.core.crashreporter.framework.reporter
 import android.app.Application
 import javax.inject.Inject
 
-@Suppress("UnusedPrivateMember")
+@Suppress("UnusedPrivateMember", "UNUSED_PARAMETER")
 internal class CrashReporterImpl @Inject constructor(
     private val application: Application
 ) : CrashReporter {

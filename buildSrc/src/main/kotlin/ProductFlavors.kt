@@ -15,21 +15,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.analytics.framework.analytics
-
-import android.content.Context
-import javax.inject.Inject
-
-@Suppress("UnusedPrivateMember", "UNUSED_PARAMETER")
-internal class RemoteAnalyticsImpl @Inject constructor(
-    context: Context
-) : RemoteAnalytics {
-
-    override fun allowPersonalizedAds(enabled: Boolean) {
-        // NO_OP
-    }
-
-    override fun setCollectionEnabled(enabled: Boolean) {
-        // NO_OP
-    }
+object ProductFlavors {
+    const val DEV = "dev"
+    const val FOSS = "foss"
+    const val GALLERY = "gallery"
+    const val PLAY = "play"
 }

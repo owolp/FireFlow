@@ -20,6 +20,7 @@ object BuildPlugins {
     const val APPLICATION = "com.android.application"
     const val DAGGER = "dagger.hilt.android.plugin"
     const val DETEKT = "plugin.detekt"
+    const val FIREBASE_CRASHLYTICS = "com.google.firebase.crashlytics"
     const val GOOGLE_SERVICES = "com.google.gms.google-services"
     const val GRADLE_VERSION_PLUGIN = "plugin.gradle-versions-plugin"
     const val GIT_HOOKS = "plugin.git-hooks"

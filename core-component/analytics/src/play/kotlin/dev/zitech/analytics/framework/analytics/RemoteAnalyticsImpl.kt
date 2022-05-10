@@ -23,7 +23,7 @@ import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
 import javax.inject.Inject
 
-@Suppress("UnusedPrivateMember")
+@Suppress("UnusedPrivateMember", "UNUSED_PARAMETER")
 internal class RemoteAnalyticsImpl @Inject constructor(
     context: Context
 ) : RemoteAnalytics {

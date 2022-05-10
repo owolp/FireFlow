@@ -29,3 +29,10 @@
 -keep class * implements android.os.Parcelable {
     public static final android.os.Parcelable$Creator *;
 }
+
+# Firebase
+-keepattributes SourceFile,LineNumberTable
+-keep public class * extends java.lang.Exception
+
+# R8: Missing class com.google.errorprone.annotations.Immutable (referenced from: com.google.crypto.tink.KeyTemplate and 4 other contexts)
+-dontwarn com.google.errorprone.annotations.Immutable
