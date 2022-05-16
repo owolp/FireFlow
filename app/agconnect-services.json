@@ -18,6 +18,8 @@
   "client": {
     "cp_id": "1",
     "product_id": "1",
+    "client_id": "1",
+    "client_secret": "1",
     "project_id": "1",
     "app_id": "1",
     "package_name": "dev.zitech.fireflow.gallery"

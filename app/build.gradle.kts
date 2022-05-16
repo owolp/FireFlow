@@ -51,7 +51,7 @@ android {
             disableAgConnectCrashMappingFileUpload()
         }
         getByName(ProductFlavors.PLAY) {
-            disableFirebaseCrashlyticsMappingFileUpload()
+            disableAgConnectCrashMappingFileUpload()
         }
         getByName(ProductFlavors.GALLERY) {
             disableFirebaseCrashlyticsMappingFileUpload()
