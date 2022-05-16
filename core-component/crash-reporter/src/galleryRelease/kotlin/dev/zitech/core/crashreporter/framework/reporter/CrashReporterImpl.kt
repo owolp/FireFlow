@@ -18,6 +18,7 @@
 package dev.zitech.core.crashreporter.framework.reporter
 
 import android.app.Application
+import com.huawei.agconnect.crash.AGConnectCrash
 import javax.inject.Inject
 
 @Suppress("UnusedPrivateMember", "UNUSED_PARAMETER")
@@ -25,23 +26,42 @@ internal class CrashReporterImpl @Inject constructor(
     private val application: Application
 ) : CrashReporter {
 
+    private val agConnectCrash = AGConnectCrash.getInstance()
+
     override fun init() {
-        TODO()
+        // NO_OP
     }
 
     override fun log(message: String) {
-        TODO()
+        agConnectCrash.log(message)
     }
 
     override fun recordException(exception: Exception) {
-        TODO()
+        agConnectCrash.recordException(exception)
     }
 
     override fun setCustomKey(key: String, value: Any) {
-        TODO()
+        if (value is Boolean) {
+            agConnectCrash.setCustomKey(key, value)
+        }
+        if (value is Double) {
+            agConnectCrash.setCustomKey(key, value)
+        }
+        if (value is Float) {
+            agConnectCrash.setCustomKey(key, value)
+        }
+        if (value is Int) {
+            agConnectCrash.setCustomKey(key, value)
+        }
+        if (value is Long) {
+            agConnectCrash.setCustomKey(key, value)
+        }
+        if (value is String) {
+            agConnectCrash.setCustomKey(key, value)
+        }
     }
 
     override fun setCrashCollectionEnabled(enabled: Boolean) {
-        TODO()
+        agConnectCrash.enableCrashCollection(enabled)
     }
 }

@@ -31,9 +31,7 @@ dependencies {
 
     playImplementation(platform(libs.google.firebase.bom))
     playImplementation("com.google.firebase:firebase-config-ktx")
-    playImplementation("com.google.firebase:firebase-analytics-ktx") {
-        because("Firebase Config needs Firebase Analytics")
-    }
+    playImplementation("com.google.firebase:firebase-analytics-ktx")
 
     galleryImplementation(libs.huawei.agconnect.core)
     galleryImplementation(libs.huawei.agconnect.remoteconfig)

@@ -34,18 +34,31 @@ android {
             configure<CrashlyticsExtension> {
                 mappingFileUploadEnabled = false
             }
+            agcp {
+                mappingUpload = false
+                debug = true
+            }
         }
     }
 
     productFlavors {
         getByName(ProductFlavors.DEV) {
-            disableCrashlyticsMappingFileUpload()
+            disableFirebaseCrashlyticsMappingFileUpload()
+            disableAgConnectCrashMappingFileUpload()
         }
         getByName(ProductFlavors.FOSS) {
-            disableCrashlyticsMappingFileUpload()
+            disableFirebaseCrashlyticsMappingFileUpload()
+            disableAgConnectCrashMappingFileUpload()
+        }
+        getByName(ProductFlavors.PLAY) {
+            disableAgConnectCrashMappingFileUpload()
         }
         getByName(ProductFlavors.GALLERY) {
-            disableCrashlyticsMappingFileUpload()
+            disableFirebaseCrashlyticsMappingFileUpload()
+            agcp {
+                mappingUpload = true
+                debug = false
+            }
         }
     }
 }
@@ -73,8 +86,14 @@ kapt {
     correctErrorTypes = true
 }
 
-fun ApplicationProductFlavor.disableCrashlyticsMappingFileUpload() {
+fun ApplicationProductFlavor.disableFirebaseCrashlyticsMappingFileUpload() {
     configure<CrashlyticsExtension> {
         mappingFileUploadEnabled = false
+    }
+}
+
+fun disableAgConnectCrashMappingFileUpload() {
+    agcp {
+        mappingUpload = false
     }
 }
