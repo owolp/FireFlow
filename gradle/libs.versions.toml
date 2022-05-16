@@ -44,7 +44,7 @@ huawei-agconnect-agcp = { module = "com.huawei.agconnect:agcp", version.ref = "a
 huawei-agconnect-core = { module = "com.huawei.agconnect:agconnect-core", version.ref = "agconnect" }
 huawei-agconnect-crash = { module = "com.huawei.agconnect:agconnect-crash", version.ref = "agconnect" }
 huawei-agconnect-remoteconfig = { module = "com.huawei.agconnect:agconnect-remoteconfig", version.ref = "agconnect" }
-huawei-hms-hianalytics = "com.huawei.hms:hianalytics:6.4.1.302"
+huawei-hms-hianalytics = "com.huawei.hms:hianalytics:6.5.0.300"
 mannodermaus-gradle-plugins-android-junit5 = "de.mannodermaus.gradle.plugins:android-junit5:1.8.2.0"
 mannodermaus-junit5-android-test-core = { module = "de.mannodermaus.junit5:android-test-core", version.ref = "androidJunit" }
 mannodermaus-junit5-android-test-runner = { module = "de.mannodermaus.junit5:android-test-runner", version.ref = "androidJunit" }
