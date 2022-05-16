@@ -54,6 +54,6 @@ jetbrains-kotlin-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-
 jetbrains-kotlin-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
-mockk-mockk = "io.mockk:mockk:1.12.3"
+mockk-mockk = "io.mockk:mockk:1.12.4"
 squareup-leakcanary-android = "com.squareup.leakcanary:leakcanary-android:2.9.1"
 zetetic-sqlcipher = "net.zetetic:android-database-sqlcipher:4.5.1"
