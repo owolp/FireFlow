@@ -15,6 +15,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+apply(from = "$rootDir/config/dependencies/test-dependencies.gradle")
+
 plugins {
     id(BuildPlugins.KOTLIN_ANDROID)
     id(BuildPlugins.LIBRARY)
@@ -64,14 +66,6 @@ dependencies {
     androidTestImplementation(libs.junit.jupiter.api)
     androidTestImplementation(libs.mannodermaus.junit5.android.test.core)
     androidTestRuntimeOnly(libs.mannodermaus.junit5.android.test.runner)
-
-    testImplementation(testFixtures(projects.coreComponent.common))
-    testImplementation(libs.cash.turbine)
-    testImplementation(libs.google.truth)
-    testImplementation(libs.mockk.mockk)
-    testImplementation(libs.jetbrains.kotlin.coroutines.test)
-    testImplementation(libs.junit.jupiter.api)
-    testRuntimeOnly(libs.junit.jupiter.engine)
 }
 
 kapt {

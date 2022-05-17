@@ -15,6 +15,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+apply(from = "$rootDir/config/dependencies/test-dependencies.gradle")
+
 plugins {
     id(BuildPlugins.KOTLIN_ANDROID)
     id(BuildPlugins.LIBRARY)
@@ -35,13 +37,6 @@ dependencies {
 
     galleryImplementation(libs.huawei.agconnect.crash)
     galleryImplementation(libs.huawei.hms.hianalytics)
-
-    testImplementation(libs.cash.turbine)
-    testImplementation(libs.google.truth)
-    testImplementation(libs.mockk.mockk)
-    testImplementation(libs.jetbrains.kotlin.coroutines.test)
-    testImplementation(libs.junit.jupiter.api)
-    testRuntimeOnly(libs.junit.jupiter.engine)
 }
 
 kapt {
