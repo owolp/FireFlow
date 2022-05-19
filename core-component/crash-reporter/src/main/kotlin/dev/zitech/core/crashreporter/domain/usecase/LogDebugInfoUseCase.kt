@@ -15,13 +15,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.crashreporter.framework.reporter
+package dev.zitech.core.crashreporter.domain.usecase
 
-internal interface CrashReporter {
+import dev.zitech.core.crashreporter.domain.repository.CrashReporterRepository
+import javax.inject.Inject
 
-    fun init()
-    fun log(message: String)
-    fun recordException(throwable: Throwable)
-    fun setCustomKey(key: String, value: Any)
-    fun setCrashCollectionEnabled(enabled: Boolean)
+class LogDebugInfoUseCase @Inject constructor(
+    private val crashReporterRepository: CrashReporterRepository
+) {
+
+    operator fun invoke(message: String) =
+        crashReporterRepository.log(message)
 }

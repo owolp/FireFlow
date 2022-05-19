@@ -22,10 +22,8 @@ import timber.log.Timber
 @Suppress("TooManyFunctions")
 object Logger {
 
-    fun init(isDebug: Boolean) {
-        if (isDebug) {
-            plantDebug()
-        }
+    fun init(errorTree: ErrorTree) {
+        Timber.plant(errorTree())
     }
 
     fun d(tag: String, message: String) {
@@ -70,14 +68,5 @@ object Logger {
 
     fun w(tag: String, throwable: Throwable?, message: String) {
         Timber.tag(tag).w(throwable, message)
-    }
-
-    private fun plantDebug() {
-        Timber.plant(
-            object : Timber.DebugTree() {
-                override fun createStackElementTag(element: StackTraceElement) =
-                    "(${element.fileName}:${element.lineNumber})#${element.methodName}"
-            }
-        )
     }
 }

@@ -21,7 +21,7 @@ internal class FakeCrashReporter : CrashReporter {
 
     var initValue: Boolean = false
     var logValue: String = ""
-    var recordExceptionValue: Exception? = null
+    var recordExceptionValue: Throwable? = null
     var setCustomKeyValue: MutableMap<String, Any> = mutableMapOf()
     var setCrashCollectionEnabledValue: Boolean = false
 
@@ -33,8 +33,8 @@ internal class FakeCrashReporter : CrashReporter {
         logValue = message
     }
 
-    override fun recordException(exception: Exception) {
-        recordExceptionValue = exception
+    override fun recordException(throwable: Throwable) {
+        recordExceptionValue = throwable
     }
 
     override fun setCustomKey(key: String, value: Any) {

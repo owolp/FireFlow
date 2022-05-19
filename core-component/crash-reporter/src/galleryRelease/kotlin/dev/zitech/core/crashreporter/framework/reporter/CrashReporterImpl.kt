@@ -36,8 +36,8 @@ internal class CrashReporterImpl @Inject constructor(
         agConnectCrash.log(message)
     }
 
-    override fun recordException(exception: Exception) {
-        agConnectCrash.recordException(exception)
+    override fun recordException(throwable: Throwable) {
+        agConnectCrash.recordException(throwable)
     }
 
     override fun setCustomKey(key: String, value: Any) {
