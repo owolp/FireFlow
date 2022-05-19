@@ -69,6 +69,7 @@ dependencies {
     implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core)
+    implementation(libs.androidx.core.splash)
     implementation(libs.androidx.costraintlayout)
     implementation(libs.androidx.lifecycle.runtime)
     kapt(libs.androidx.lifecycle.compiler)

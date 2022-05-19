@@ -17,6 +17,8 @@
 
 package dev.zitech.fireflow.presentation.main.viewmodel
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -33,22 +35,21 @@ internal class MainViewModel @Inject constructor(
     private val initializeRemoteConfiguratorUseCase: InitializeRemoteConfiguratorUseCase
 ) : ViewModel(), MviViewModel<MainIntent, MainState> {
 
+    private val mutableShowSplashScreen = MutableLiveData(true)
+    val showSplashScreen: LiveData<Boolean> = mutableShowSplashScreen
+
     private val mutableState = MutableStateFlow(MainState())
     override val state: StateFlow<MainState> = mutableState
+
+    init {
+        initializeRemoteConfigurator()
+    }
 
     override fun sendIntent(intent: MainIntent) {
         viewModelScope.launch {
             when (intent) {
-                EnterApplicationHandled -> handleEnterApplicationHandled()
                 ShowErrorHandled -> handleShowErrorHandled()
-                ViewCreated -> handleViewCreated()
             }
-        }
-    }
-
-    private fun handleEnterApplicationHandled() {
-        mutableState.update {
-            it.copy(event = Idle)
         }
     }
 
@@ -58,12 +59,10 @@ internal class MainViewModel @Inject constructor(
         }
     }
 
-    private suspend fun handleViewCreated() {
-        initializeRemoteConfiguratorUseCase().collect {
-            mutableState.update {
-                it.copy(
-                    event = EnterApplication
-                )
+    private fun initializeRemoteConfigurator() {
+        viewModelScope.launch {
+            initializeRemoteConfiguratorUseCase().collect {
+                mutableShowSplashScreen.postValue(false)
             }
         }
     }

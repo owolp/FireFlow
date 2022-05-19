@@ -20,18 +20,16 @@ package dev.zitech.fireflow.presentation.main.view
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import dagger.hilt.android.AndroidEntryPoint
 import dev.zitech.core.common.framework.flow.collectWhenStarted
 import dev.zitech.core.common.presentation.architecture.MviView
 import dev.zitech.fireflow.R
-import dev.zitech.fireflow.presentation.main.viewmodel.EnterApplication
-import dev.zitech.fireflow.presentation.main.viewmodel.EnterApplicationHandled
 import dev.zitech.fireflow.presentation.main.viewmodel.Idle
 import dev.zitech.fireflow.presentation.main.viewmodel.MainState
 import dev.zitech.fireflow.presentation.main.viewmodel.MainViewModel
 import dev.zitech.fireflow.presentation.main.viewmodel.ShowError
 import dev.zitech.fireflow.presentation.main.viewmodel.ShowErrorHandled
-import dev.zitech.fireflow.presentation.main.viewmodel.ViewCreated
 
 @AndroidEntryPoint
 internal class MainActivity : AppCompatActivity(), MviView<MainState> {
@@ -39,24 +37,27 @@ internal class MainActivity : AppCompatActivity(), MviView<MainState> {
     private val mainViewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen().apply {
+            setKeepOnScreenCondition {
+                mainViewModel.showSplashScreen.value!!
+            }
+        }
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         mainViewModel.state.collectWhenStarted(this, this::render)
-        mainViewModel.sendIntent(ViewCreated)
     }
 
     override fun render(state: MainState) {
         when (state.event) {
-            EnterApplication -> {
-                // TODO
-                mainViewModel.sendIntent(EnterApplicationHandled)
-            }
             ShowError -> {
                 // TODO
                 mainViewModel.sendIntent(ShowErrorHandled)
             }
-            Idle -> {}
+            Idle -> {
+                // NO_OP
+            }
         }
     }
 }
