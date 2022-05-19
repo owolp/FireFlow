@@ -37,8 +37,8 @@ internal class CrashReporterImpl @Inject constructor(
         firebaseCrashlytics.log(message)
     }
 
-    override fun recordException(exception: Exception) {
-        firebaseCrashlytics.recordException(exception)
+    override fun recordException(throwable: Throwable) {
+        firebaseCrashlytics.recordException(throwable)
     }
 
     override fun setCustomKey(key: String, value: Any) {

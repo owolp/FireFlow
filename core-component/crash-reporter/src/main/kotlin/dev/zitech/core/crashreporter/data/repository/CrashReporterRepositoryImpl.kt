@@ -33,8 +33,8 @@ internal class CrashReporterRepositoryImpl @Inject constructor(
         crashReporter.log(message)
     }
 
-    override fun recordException(exception: Exception) {
-        crashReporter.recordException(exception)
+    override fun recordException(throwable: Throwable) {
+        crashReporter.recordException(throwable)
     }
 
     override fun setCustomKey(key: String, value: Any) {

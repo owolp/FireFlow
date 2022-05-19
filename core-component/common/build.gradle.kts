@@ -31,6 +31,8 @@ android {
 }
 
 dependencies {
+    implementation(projects.coreComponent.crashReporter)
+
     implementation(libs.androidx.lifecycle.runtime)
     kapt(libs.androidx.lifecycle.compiler)
     implementation(libs.google.dagger.hilt.android)

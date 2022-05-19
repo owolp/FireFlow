@@ -15,13 +15,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.crashreporter.framework.reporter
+package dev.zitech.core.common.framework.logger
 
-internal interface CrashReporter {
+import timber.log.Timber
 
-    fun init()
-    fun log(message: String)
-    fun recordException(throwable: Throwable)
-    fun setCustomKey(key: String, value: Any)
-    fun setCrashCollectionEnabled(enabled: Boolean)
+interface ErrorTree {
+    operator fun invoke(): Timber.Tree
 }

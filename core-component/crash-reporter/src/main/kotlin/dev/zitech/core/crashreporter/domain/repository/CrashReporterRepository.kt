@@ -21,7 +21,7 @@ interface CrashReporterRepository {
 
     fun init()
     fun log(message: String)
-    fun recordException(exception: Exception)
+    fun recordException(throwable: Throwable)
     fun setCustomKey(key: String, value: Any)
     fun setCrashCollectionEnabled(enabled: Boolean)
 }

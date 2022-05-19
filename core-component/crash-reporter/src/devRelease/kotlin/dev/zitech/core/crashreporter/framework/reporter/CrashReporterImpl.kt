@@ -33,7 +33,7 @@ internal class CrashReporterImpl @Inject constructor(
         // NO_OP
     }
 
-    override fun recordException(exception: Exception) {
+    override fun recordException(throwable: Throwable) {
         // NO_OP
     }
 

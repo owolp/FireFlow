@@ -66,8 +66,8 @@ internal class CrashReporterImpl @Inject constructor(
         setCustomKey("Event at ${System.currentTimeMillis()}", message)
     }
 
-    override fun recordException(exception: Exception) {
-        ACRA.errorReporter.handleSilentException(exception)
+    override fun recordException(throwable: Throwable) {
+        ACRA.errorReporter.handleSilentException(throwable)
     }
 
     override fun setCustomKey(key: String, value: Any) {

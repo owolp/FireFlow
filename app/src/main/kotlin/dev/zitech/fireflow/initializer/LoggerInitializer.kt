@@ -19,8 +19,7 @@ package dev.zitech.fireflow.initializer
 
 import android.content.Context
 import androidx.startup.Initializer
-import dev.zitech.core.common.domain.model.BuildMode
-import dev.zitech.core.common.framework.applicationconfig.AppConfigProvider
+import dev.zitech.core.common.framework.logger.ErrorTree
 import dev.zitech.core.common.framework.logger.Logger
 import dev.zitech.fireflow.di.InitializerEntryPoint
 import javax.inject.Inject
@@ -28,17 +27,12 @@ import javax.inject.Inject
 internal class LoggerInitializer : Initializer<Unit> {
 
     @Inject
-    lateinit var appConfigProvider: AppConfigProvider
+    lateinit var errorTree: ErrorTree
 
     override fun create(context: Context) {
         InitializerEntryPoint.resolve(context).inject(this)
 
-        Logger.init(
-            isDebug = when (appConfigProvider.buildMode) {
-                BuildMode.RELEASE -> false
-                BuildMode.DEBUG -> true
-            }
-        )
+        Logger.init(errorTree)
     }
 
     override fun dependencies(): List<Class<out Initializer<*>>> =
