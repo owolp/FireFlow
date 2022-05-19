@@ -21,6 +21,5 @@ import dev.zitech.core.common.presentation.architecture.MviState
 
 sealed interface MainEvent : MviState.Event
 
-object EnterApplication : MainEvent
 object Idle : MainEvent
 object ShowError : MainEvent

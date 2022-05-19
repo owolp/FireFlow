@@ -21,6 +21,4 @@ import dev.zitech.core.common.presentation.architecture.MviIntent
 
 sealed interface MainIntent : MviIntent
 
-object EnterApplicationHandled : MainIntent
 object ShowErrorHandled : MainIntent
-object ViewCreated : MainIntent
