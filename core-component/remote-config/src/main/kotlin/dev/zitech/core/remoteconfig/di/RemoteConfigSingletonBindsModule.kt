@@ -22,10 +22,10 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dev.zitech.core.remoteconfig.data.repository.ConfigRepositoryImpl
+import dev.zitech.core.remoteconfig.data.source.ConfigProviderSource
 import dev.zitech.core.remoteconfig.domain.repository.ConfigRepository
 import dev.zitech.core.remoteconfig.framework.configurator.RemoteConfigurator
 import dev.zitech.core.remoteconfig.framework.configurator.RemoteConfiguratorImpl
-import dev.zitech.core.remoteconfig.framework.source.ConfigProviderSource
 import dev.zitech.core.remoteconfig.framework.source.ConfigProviderSourceImpl
 import javax.inject.Singleton
 import kotlinx.coroutines.ExperimentalCoroutinesApi
