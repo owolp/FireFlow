@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import dev.zitech.core.common.DataFactory;
+import dev.zitech.core.common.domain.strings.StringsProvider;
 
 public class FakeStringsProvider implements StringsProvider {
 

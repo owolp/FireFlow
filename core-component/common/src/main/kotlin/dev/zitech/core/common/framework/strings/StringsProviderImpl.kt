@@ -15,18 +15,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.common.framework.applicationconfig;
+package dev.zitech.core.common.framework.strings
 
-import org.jetbrains.annotations.NotNull;
+import android.content.Context
+import dev.zitech.core.common.domain.strings.StringsProvider
+import javax.inject.Inject
 
-import dev.zitech.core.common.domain.applicationconfig.AppConfigProvider;
-import dev.zitech.core.common.domain.model.BuildMode;
+internal class StringsProviderImpl @Inject constructor(
+    private val context: Context
+) : StringsProvider {
 
-public class FakeAppConfigProvider implements AppConfigProvider {
+    override fun invoke(resId: Int): String =
+        context.getString(resId)
 
-    @NotNull
-    @Override
-    public BuildMode getBuildMode() {
-        return BuildMode.RELEASE;
-    }
+    override fun invoke(resId: Int, vararg args: CharSequence): String =
+        context.getString(resId, args)
 }

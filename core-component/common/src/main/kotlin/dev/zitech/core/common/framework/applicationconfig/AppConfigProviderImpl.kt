@@ -15,23 +15,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.common.framework.strings
+package dev.zitech.core.common.framework.applicationconfig
 
-import android.content.Context
+import dev.zitech.core.common.BuildConfig
+import dev.zitech.core.common.domain.applicationconfig.AppConfigProvider
+import dev.zitech.core.common.domain.model.BuildMode
 import javax.inject.Inject
 
-interface StringsProvider {
-    operator fun invoke(resId: Int): String
-    operator fun invoke(resId: Int, vararg args: CharSequence): String
-}
+internal class AppConfigProviderImpl @Inject constructor() : AppConfigProvider {
 
-internal class StringsProviderImpl @Inject constructor(
-    private val context: Context
-) : StringsProvider {
-
-    override fun invoke(resId: Int): String =
-        context.getString(resId)
-
-    override fun invoke(resId: Int, vararg args: CharSequence): String =
-        context.getString(resId, args)
+    override val buildMode: BuildMode
+        get(): BuildMode = if (BuildConfig.DEBUG) {
+            BuildMode.DEBUG
+        } else {
+            BuildMode.RELEASE
+        }
 }

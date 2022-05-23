@@ -18,8 +18,8 @@
 package dev.zitech.core.featureflag.data.repository
 
 import androidx.annotation.VisibleForTesting
+import dev.zitech.core.common.domain.applicationconfig.AppConfigProvider
 import dev.zitech.core.common.domain.model.BuildMode
-import dev.zitech.core.common.framework.applicationconfig.AppConfigProvider
 import dev.zitech.core.featureflag.data.provider.DevFeatureFlagProvider
 import dev.zitech.core.featureflag.data.provider.ProdFeatureFlagProvider
 import dev.zitech.core.featureflag.domain.model.DevFeature

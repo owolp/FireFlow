@@ -15,20 +15,25 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.common.framework.dispatcher
+package dev.zitech.core.common.domain.scope
 
+import dev.zitech.core.common.domain.dispatcher.AppDispatchers
 import javax.inject.Inject
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 
-interface AppDispatchers {
-    val default: CoroutineDispatcher
-    val main: CoroutineDispatcher
-    val io: CoroutineDispatcher
+interface AppScopes {
+    val singleton: CoroutineScope
+    fun singletonLaunch(func: suspend CoroutineScope.() -> Unit)
 }
 
-internal class AppDispatchersImpl @Inject constructor() : AppDispatchers {
-    override val default: CoroutineDispatcher = Dispatchers.Default
-    override val main: CoroutineDispatcher = Dispatchers.Main
-    override val io: CoroutineDispatcher = Dispatchers.IO
+internal class AppScopesImpl @Inject constructor(
+    appDispatchers: AppDispatchers
+) : AppScopes {
+    override val singleton = CoroutineScope(SupervisorJob() + appDispatchers.default)
+
+    override fun singletonLaunch(func: suspend CoroutineScope.() -> Unit) {
+        singleton.launch { func() }
+    }
 }

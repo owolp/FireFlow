@@ -15,18 +15,20 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.common.framework.applicationconfig;
+package dev.zitech.core.common.domain.dispatcher
 
-import org.jetbrains.annotations.NotNull;
+import javax.inject.Inject
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 
-import dev.zitech.core.common.domain.applicationconfig.AppConfigProvider;
-import dev.zitech.core.common.domain.model.BuildMode;
+interface AppDispatchers {
+    val default: CoroutineDispatcher
+    val main: CoroutineDispatcher
+    val io: CoroutineDispatcher
+}
 
-public class FakeAppConfigProvider implements AppConfigProvider {
-
-    @NotNull
-    @Override
-    public BuildMode getBuildMode() {
-        return BuildMode.RELEASE;
-    }
+internal class AppDispatchersImpl @Inject constructor() : AppDispatchers {
+    override val default: CoroutineDispatcher = Dispatchers.Default
+    override val main: CoroutineDispatcher = Dispatchers.Main
+    override val io: CoroutineDispatcher = Dispatchers.IO
 }

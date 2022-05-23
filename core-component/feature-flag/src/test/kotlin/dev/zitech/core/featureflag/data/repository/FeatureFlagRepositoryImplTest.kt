@@ -19,7 +19,7 @@ package dev.zitech.core.featureflag.data.repository
 
 import com.google.common.truth.Truth.assertThat
 import dev.zitech.core.common.DataFactory
-import dev.zitech.core.common.framework.applicationconfig.AppConfigProvider
+import dev.zitech.core.common.domain.applicationconfig.AppConfigProvider
 import dev.zitech.core.common.domain.model.BuildMode
 import dev.zitech.core.featureflag.data.provider.DevFeatureFlagProvider
 import dev.zitech.core.featureflag.data.provider.PRIORITY_MEDIUM
