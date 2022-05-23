@@ -28,11 +28,11 @@ import dev.zitech.core.common.domain.applicationconfig.AppConfigProvider
 import dev.zitech.core.common.domain.dispatcher.AppDispatchers
 import dev.zitech.core.common.domain.dispatcher.AppDispatchersImpl
 import dev.zitech.core.common.domain.logger.ErrorTree
-import dev.zitech.core.common.domain.logger.ErrorTreeImpl
 import dev.zitech.core.common.domain.scope.AppScopes
 import dev.zitech.core.common.domain.scope.AppScopesImpl
 import dev.zitech.core.common.domain.strings.StringsProvider
 import dev.zitech.core.common.framework.applicationconfig.AppConfigProviderImpl
+import dev.zitech.core.common.framework.logger.ErrorTreeImpl
 import dev.zitech.core.common.framework.strings.StringsProviderImpl
 import javax.inject.Singleton
 
