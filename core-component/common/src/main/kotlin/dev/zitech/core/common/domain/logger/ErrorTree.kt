@@ -15,16 +15,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.common.framework.logger
+package dev.zitech.core.common.domain.logger
 
-import javax.inject.Inject
 import timber.log.Timber
 
-class ErrorTreeImpl @Inject constructor() : ErrorTree {
-
-    override operator fun invoke(): Timber.Tree =
-        object : Timber.DebugTree() {
-            override fun createStackElementTag(element: StackTraceElement) =
-                "(${element.fileName}:${element.lineNumber})#${element.methodName}"
-        }
+interface ErrorTree {
+    operator fun invoke(): Timber.Tree
 }
