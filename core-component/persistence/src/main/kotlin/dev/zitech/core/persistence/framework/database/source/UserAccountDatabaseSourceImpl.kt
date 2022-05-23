@@ -18,8 +18,8 @@
 package dev.zitech.core.persistence.framework.database.source
 
 import androidx.room.Transaction
+import dev.zitech.core.persistence.data.source.database.UserAccountDatabaseSource
 import dev.zitech.core.persistence.domain.model.database.UserAccount
-import dev.zitech.core.persistence.domain.source.database.UserAccountDatabaseSource
 import dev.zitech.core.persistence.framework.database.dao.UserAccountDao
 import dev.zitech.core.persistence.framework.database.entity.UserAccountEntity
 import dev.zitech.core.persistence.framework.database.mapper.UserAccountMapper

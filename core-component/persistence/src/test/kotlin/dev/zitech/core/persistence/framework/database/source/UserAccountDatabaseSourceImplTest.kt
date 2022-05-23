@@ -18,7 +18,7 @@
 package dev.zitech.core.persistence.framework.database.source
 
 import com.google.common.truth.Truth.assertThat
-import dev.zitech.core.persistence.domain.source.database.UserAccountDatabaseSource
+import dev.zitech.core.persistence.data.source.database.UserAccountDatabaseSource
 import dev.zitech.core.persistence.framework.database.mapper.UserAccountMapper
 import dev.zitech.core.persistence.framework.database.dao.FakeUserAccountDao
 import dev.zitech.core.persistence.framework.database.entity.UserAccountEntityFactory

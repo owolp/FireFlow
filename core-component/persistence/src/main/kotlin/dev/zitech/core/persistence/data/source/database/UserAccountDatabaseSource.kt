@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.persistence.domain.source.database
+package dev.zitech.core.persistence.data.source.database
 
 import dev.zitech.core.persistence.domain.model.database.UserAccount
 
