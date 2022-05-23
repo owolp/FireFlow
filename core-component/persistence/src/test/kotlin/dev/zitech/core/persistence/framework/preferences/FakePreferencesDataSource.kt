@@ -17,7 +17,7 @@
 
 package dev.zitech.core.persistence.framework.preferences
 
-import dev.zitech.core.persistence.domain.source.preferences.PreferencesDataSource
+import dev.zitech.core.persistence.data.source.preferences.PreferencesDataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf

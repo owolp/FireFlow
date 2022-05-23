@@ -30,7 +30,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import dev.zitech.core.common.framework.dispatcher.AppDispatchers
 import dev.zitech.core.common.framework.logger.Logger
-import dev.zitech.core.persistence.domain.source.preferences.PreferencesDataSource
+import dev.zitech.core.persistence.data.source.preferences.PreferencesDataSource
 import java.io.IOException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
