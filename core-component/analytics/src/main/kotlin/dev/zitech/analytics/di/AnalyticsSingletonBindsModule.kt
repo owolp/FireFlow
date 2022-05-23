@@ -26,9 +26,9 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import dev.zitech.analytics.data.repository.AnalyticsRepositoryImpl
 import dev.zitech.analytics.domain.repository.AnalyticsRepository
+import dev.zitech.analytics.domain.source.AnalyticsProviderSource
 import dev.zitech.analytics.framework.analytics.RemoteAnalytics
 import dev.zitech.analytics.framework.analytics.RemoteAnalyticsImpl
-import dev.zitech.analytics.framework.source.AnalyticsProviderSource
 import dev.zitech.analytics.framework.source.AnalyticsProviderSourceImpl
 import javax.inject.Singleton
 

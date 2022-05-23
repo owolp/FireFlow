@@ -23,7 +23,7 @@ import dev.zitech.core.common.DataFactory
 import dev.zitech.core.persistence.data.repository.preferences.ContainsPreferencesRepositoryImpl
 import dev.zitech.core.persistence.domain.model.preferences.PreferenceType
 import dev.zitech.core.persistence.domain.repository.preferences.ContainsPreferencesRepository
-import dev.zitech.core.persistence.data.source.preferences.PreferencesDataSource
+import dev.zitech.core.persistence.domain.source.preferences.PreferencesDataSource
 import io.mockk.coVerify
 import io.mockk.confirmVerified
 import io.mockk.every

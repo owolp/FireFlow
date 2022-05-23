@@ -15,10 +15,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.analytics.framework.source
+package dev.zitech.core.persistence.domain.source.database
 
-internal interface AnalyticsProviderSource {
+import dev.zitech.core.persistence.domain.model.database.UserAccount
 
-    fun allowPersonalizedAds(enabled: Boolean)
-    fun setCollectionEnabled(enabled: Boolean)
+internal interface UserAccountDatabaseSource {
+
+    suspend fun getUserAccounts(): List<UserAccount>
+    suspend fun getCurrentUserAccount(): UserAccount?
+    suspend fun saveUserAccount(isCurrentUserAccount: Boolean): Long
 }

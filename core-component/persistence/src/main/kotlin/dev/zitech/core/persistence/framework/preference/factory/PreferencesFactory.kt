@@ -19,8 +19,8 @@ package dev.zitech.core.persistence.framework.preference.factory
 
 import android.content.Context
 import dev.zitech.core.common.framework.dispatcher.AppDispatchers
-import dev.zitech.core.persistence.data.source.preferences.PreferencesDataSource
 import dev.zitech.core.persistence.domain.model.preferences.PreferenceType
+import dev.zitech.core.persistence.domain.source.preferences.PreferencesDataSource
 import dev.zitech.core.persistence.framework.preference.source.SecuredPreferencesDataSource
 import dev.zitech.core.persistence.framework.preference.source.StandardPreferencesDataSource
 

@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.persistence.data.source.preferences
+package dev.zitech.core.persistence.domain.source.preferences
 
 import kotlinx.coroutines.flow.Flow
 
