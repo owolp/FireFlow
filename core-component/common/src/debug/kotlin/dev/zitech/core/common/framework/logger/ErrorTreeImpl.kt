@@ -15,8 +15,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.common.domain.logger
+package dev.zitech.core.common.framework.logger
 
+import dev.zitech.core.common.domain.logger.ErrorTree
 import javax.inject.Inject
 import timber.log.Timber
 
