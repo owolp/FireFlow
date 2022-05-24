@@ -18,8 +18,8 @@
 package dev.zitech.analytics.domain.usecase
 
 import dev.zitech.analytics.domain.repository.AnalyticsRepository
+import dev.zitech.core.common.domain.applicationconfig.AppConfigProvider
 import dev.zitech.core.common.domain.model.BuildMode
-import dev.zitech.core.common.framework.applicationconfig.AppConfigProvider
 import javax.inject.Inject
 
 class SetAnalyticsCollectionUseCase @Inject constructor(

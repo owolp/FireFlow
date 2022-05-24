@@ -20,7 +20,7 @@ package dev.zitech.fireflow.initializer
 import android.content.Context
 import androidx.startup.Initializer
 import dev.zitech.analytics.domain.usecase.AllowPersonalizedAdsUseCase
-import dev.zitech.core.common.framework.scope.AppScopes
+import dev.zitech.core.common.domain.scope.AppScopes
 import dev.zitech.core.crashreporter.domain.usecase.SetCrashReporterCollectionUseCase
 import dev.zitech.core.persistence.domain.usecase.preferences.GetAllowPersonalizedAdsValueUseCase
 import dev.zitech.core.persistence.domain.usecase.preferences.GetAnalyticsCollectionValueUseCase

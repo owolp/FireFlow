@@ -18,8 +18,8 @@
 package dev.zitech.core.remoteconfig.framework.configurator
 
 import com.huawei.agconnect.remoteconfig.AGConnectConfig
+import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.domain.model.DataResult
-import dev.zitech.core.common.framework.logger.Logger
 import dev.zitech.core.remoteconfig.domain.usecase.GetDefaultConfigValuesUseCase
 import javax.inject.Inject
 import kotlinx.coroutines.ExperimentalCoroutinesApi

@@ -19,6 +19,7 @@ package dev.zitech.core.common.framework.applicationconfig;
 
 import org.jetbrains.annotations.NotNull;
 
+import dev.zitech.core.common.domain.applicationconfig.AppConfigProvider;
 import dev.zitech.core.common.domain.model.BuildMode;
 
 public class FakeAppConfigProvider implements AppConfigProvider {

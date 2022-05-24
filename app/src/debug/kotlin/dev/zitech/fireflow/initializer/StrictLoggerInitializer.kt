@@ -19,7 +19,7 @@ package dev.zitech.fireflow.initializer
 
 import android.content.Context
 import androidx.startup.Initializer
-import dev.zitech.core.common.framework.scope.AppScopes
+import dev.zitech.core.common.domain.scope.AppScopes
 import dev.zitech.core.featureflag.domain.model.DevFeature
 import dev.zitech.core.featureflag.domain.usecase.IsFeatureEnabledUseCase
 import dev.zitech.fireflow.di.DebugInitializerEntryPoint

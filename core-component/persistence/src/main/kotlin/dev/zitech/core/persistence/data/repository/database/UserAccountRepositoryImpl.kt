@@ -17,9 +17,9 @@
 
 package dev.zitech.core.persistence.data.repository.database
 
+import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.domain.model.DataResult
-import dev.zitech.core.common.framework.logger.Logger
-import dev.zitech.core.common.framework.strings.StringsProvider
+import dev.zitech.core.common.domain.strings.StringsProvider
 import dev.zitech.core.persistence.R
 import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository

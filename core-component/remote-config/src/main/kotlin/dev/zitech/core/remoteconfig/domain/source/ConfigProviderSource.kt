@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.remoteconfig.framework.source
+package dev.zitech.core.remoteconfig.domain.source
 
 import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.remoteconfig.domain.model.BooleanConfig

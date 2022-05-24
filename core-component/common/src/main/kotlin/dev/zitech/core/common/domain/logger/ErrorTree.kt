@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.common.framework.logger
+package dev.zitech.core.common.domain.logger
 
 import timber.log.Timber
 

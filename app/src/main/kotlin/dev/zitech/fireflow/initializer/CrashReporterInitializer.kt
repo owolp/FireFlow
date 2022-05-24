@@ -19,7 +19,7 @@ package dev.zitech.fireflow.initializer
 
 import android.content.Context
 import androidx.startup.Initializer
-import dev.zitech.core.common.framework.scope.AppScopes
+import dev.zitech.core.common.domain.scope.AppScopes
 import dev.zitech.core.crashreporter.domain.usecase.InitializeCrashReporterUseCase
 import dev.zitech.core.crashreporter.domain.usecase.SetCrashReporterCollectionUseCase
 import dev.zitech.core.persistence.domain.usecase.preferences.GetCrashReporterCollectionValueUseCase

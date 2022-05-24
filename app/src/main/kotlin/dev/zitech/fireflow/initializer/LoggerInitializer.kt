@@ -19,8 +19,8 @@ package dev.zitech.fireflow.initializer
 
 import android.content.Context
 import androidx.startup.Initializer
-import dev.zitech.core.common.framework.logger.ErrorTree
-import dev.zitech.core.common.framework.logger.Logger
+import dev.zitech.core.common.domain.logger.ErrorTree
+import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.fireflow.di.InitializerEntryPoint
 import javax.inject.Inject
 

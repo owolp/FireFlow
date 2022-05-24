@@ -21,7 +21,7 @@ import android.content.Context
 import androidx.core.content.edit
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
-import dev.zitech.core.common.framework.dispatcher.AppDispatchers
+import dev.zitech.core.common.domain.dispatcher.AppDispatchers
 import dev.zitech.core.persistence.domain.source.preferences.PreferencesDataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf

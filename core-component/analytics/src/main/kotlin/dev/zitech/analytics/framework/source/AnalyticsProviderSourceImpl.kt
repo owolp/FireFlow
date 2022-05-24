@@ -17,6 +17,7 @@
 
 package dev.zitech.analytics.framework.source
 
+import dev.zitech.analytics.domain.source.AnalyticsProviderSource
 import dev.zitech.analytics.framework.analytics.RemoteAnalytics
 import javax.inject.Inject
 

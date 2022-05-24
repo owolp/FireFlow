@@ -15,20 +15,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.common.framework.dispatcher
+package dev.zitech.analytics.domain.source
 
-import javax.inject.Inject
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
+internal interface AnalyticsProviderSource {
 
-interface AppDispatchers {
-    val default: CoroutineDispatcher
-    val main: CoroutineDispatcher
-    val io: CoroutineDispatcher
-}
-
-internal class AppDispatchersImpl @Inject constructor() : AppDispatchers {
-    override val default: CoroutineDispatcher = Dispatchers.Default
-    override val main: CoroutineDispatcher = Dispatchers.Main
-    override val io: CoroutineDispatcher = Dispatchers.IO
+    fun allowPersonalizedAds(enabled: Boolean)
+    fun setCollectionEnabled(enabled: Boolean)
 }

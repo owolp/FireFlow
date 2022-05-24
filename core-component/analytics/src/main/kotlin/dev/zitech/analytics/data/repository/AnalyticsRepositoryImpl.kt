@@ -18,7 +18,7 @@
 package dev.zitech.analytics.data.repository
 
 import dev.zitech.analytics.domain.repository.AnalyticsRepository
-import dev.zitech.analytics.framework.source.AnalyticsProviderSource
+import dev.zitech.analytics.domain.source.AnalyticsProviderSource
 import javax.inject.Inject
 
 internal class AnalyticsRepositoryImpl @Inject constructor(

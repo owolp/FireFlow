@@ -15,17 +15,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.common.framework.logger
+package dev.zitech.core.common.framework.strings
 
-import dev.zitech.core.common.domain.logger.ErrorTree
+import android.content.Context
+import dev.zitech.core.common.domain.strings.StringsProvider
 import javax.inject.Inject
-import timber.log.Timber
 
-class ErrorTreeImpl @Inject constructor() : ErrorTree {
+internal class StringsProviderImpl @Inject constructor(
+    private val context: Context
+) : StringsProvider {
 
-    override operator fun invoke(): Timber.Tree =
-        object : Timber.DebugTree() {
-            override fun createStackElementTag(element: StackTraceElement) =
-                "(${element.fileName}:${element.lineNumber})#${element.methodName}"
-        }
+    override fun invoke(resId: Int): String =
+        context.getString(resId)
+
+    override fun invoke(resId: Int, vararg args: CharSequence): String =
+        context.getString(resId, args)
 }

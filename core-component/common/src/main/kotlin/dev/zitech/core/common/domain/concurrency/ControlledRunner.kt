@@ -30,7 +30,7 @@
  * limitations under the License.
  */
 
-package dev.zitech.core.common.framework.concurrency
+package dev.zitech.core.common.domain.concurrency
 
 import java.util.concurrent.atomic.AtomicReference
 import kotlinx.coroutines.CoroutineStart.LAZY

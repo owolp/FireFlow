@@ -18,6 +18,7 @@
 package dev.zitech.analytics.framework.source
 
 import com.google.common.truth.Truth.assertThat
+import dev.zitech.analytics.domain.source.AnalyticsProviderSource
 import dev.zitech.analytics.framework.analytics.FakeRemoteAnalytics
 import dev.zitech.core.common.DataFactory
 import org.junit.jupiter.api.BeforeEach

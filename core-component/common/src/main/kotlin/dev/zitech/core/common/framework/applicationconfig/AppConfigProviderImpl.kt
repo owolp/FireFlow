@@ -15,10 +15,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.analytics.framework.source
+package dev.zitech.core.common.framework.applicationconfig
 
-internal interface AnalyticsProviderSource {
+import dev.zitech.core.common.BuildConfig
+import dev.zitech.core.common.domain.applicationconfig.AppConfigProvider
+import dev.zitech.core.common.domain.model.BuildMode
+import javax.inject.Inject
 
-    fun allowPersonalizedAds(enabled: Boolean)
-    fun setCollectionEnabled(enabled: Boolean)
+internal class AppConfigProviderImpl @Inject constructor() : AppConfigProvider {
+
+    override val buildMode: BuildMode
+        get(): BuildMode = if (BuildConfig.DEBUG) {
+            BuildMode.DEBUG
+        } else {
+            BuildMode.RELEASE
+        }
 }

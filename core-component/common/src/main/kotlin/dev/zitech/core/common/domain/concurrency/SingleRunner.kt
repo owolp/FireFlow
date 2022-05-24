@@ -30,7 +30,7 @@
  * limitations under the License.
  */
 
-package dev.zitech.core.common.framework.concurrency
+package dev.zitech.core.common.domain.concurrency
 
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock

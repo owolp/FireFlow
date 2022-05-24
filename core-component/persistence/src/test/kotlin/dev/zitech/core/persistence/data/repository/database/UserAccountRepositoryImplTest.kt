@@ -21,7 +21,7 @@ import com.google.common.truth.Truth.assertThat
 import dev.zitech.core.common.DataFactory
 import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.common.framework.strings.FakeStringsProvider
-import dev.zitech.core.common.framework.strings.StringsProvider
+import dev.zitech.core.common.domain.strings.StringsProvider
 import dev.zitech.core.persistence.R
 import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
 import dev.zitech.core.persistence.domain.source.database.UserAccountDatabaseSource

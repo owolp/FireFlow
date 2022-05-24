@@ -18,6 +18,7 @@
 package dev.zitech.core.common.framework.logger
 
 import android.util.Log
+import dev.zitech.core.common.domain.logger.ErrorTree
 import dev.zitech.core.crashreporter.domain.usecase.LogDebugInfoUseCase
 import dev.zitech.core.crashreporter.domain.usecase.RecordCrashExceptionUseCase
 import java.io.IOException
