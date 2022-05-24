@@ -20,10 +20,10 @@ package dev.zitech.core.remoteconfig.framework.configurator
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
+import dev.zitech.core.common.domain.applicationconfig.AppConfigProvider
+import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.domain.model.BuildMode
 import dev.zitech.core.common.domain.model.DataResult
-import dev.zitech.core.common.framework.applicationconfig.AppConfigProvider
-import dev.zitech.core.common.framework.logger.Logger
 import dev.zitech.core.remoteconfig.domain.usecase.GetDefaultConfigValuesUseCase
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
