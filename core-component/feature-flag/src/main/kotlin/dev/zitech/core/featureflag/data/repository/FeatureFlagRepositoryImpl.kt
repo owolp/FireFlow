@@ -21,7 +21,6 @@ import androidx.annotation.VisibleForTesting
 import dev.zitech.core.common.domain.applicationconfig.AppConfigProvider
 import dev.zitech.core.common.domain.model.BuildMode
 import dev.zitech.core.featureflag.data.provider.DevFeatureFlagProvider
-import dev.zitech.core.featureflag.data.provider.ProdFeatureFlagProvider
 import dev.zitech.core.featureflag.domain.model.DevFeature
 import dev.zitech.core.featureflag.domain.model.Feature
 import dev.zitech.core.featureflag.domain.model.ProdFeature
@@ -32,8 +31,9 @@ import javax.inject.Inject
 
 internal class FeatureFlagRepositoryImpl @Inject constructor(
     private val appConfigProvider: AppConfigProvider,
-    private val devFeatureFlagProvider: DevFeatureFlagProvider,
-    private val prodFeatureFlagProvider: ProdFeatureFlagProvider
+    private val devFeatureFlagProvider: FeatureFlagProvider,
+    private val prodFeatureFlagProvider: FeatureFlagProvider,
+    private val remoteFeatureFlagProvider: FeatureFlagProvider
 ) : FeatureFlagRepository {
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
@@ -41,7 +41,10 @@ internal class FeatureFlagRepositoryImpl @Inject constructor(
 
     override fun init() {
         when (appConfigProvider.buildMode) {
-            BuildMode.RELEASE -> providers.add(prodFeatureFlagProvider)
+            BuildMode.RELEASE -> {
+                providers.add(prodFeatureFlagProvider)
+                providers.add(remoteFeatureFlagProvider)
+            }
             BuildMode.DEBUG -> providers.add(devFeatureFlagProvider)
         }
     }
@@ -56,11 +59,12 @@ internal class FeatureFlagRepositoryImpl @Inject constructor(
     override suspend fun getDevFeatures(): List<DevFeature> =
         DevFeature.values().toList()
 
-    override suspend fun setDevFeatureEnabled(feature: Feature, enabled: Boolean) =
-        devFeatureFlagProvider.setFeatureEnabled(
+    override suspend fun setDevFeatureEnabled(feature: Feature, enabled: Boolean) {
+        (devFeatureFlagProvider as? DevFeatureFlagProvider)?.setFeatureEnabled(
             feature = feature,
             enabled = enabled
         )
+    }
 
     override suspend fun getProdFeatures(): List<ProdFeature> =
         ProdFeature.values().toList()

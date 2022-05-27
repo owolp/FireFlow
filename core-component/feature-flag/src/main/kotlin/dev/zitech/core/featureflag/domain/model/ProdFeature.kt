@@ -27,4 +27,12 @@ enum class ProdFeature(
     override val title: String,
     override val explanation: String,
     override val defaultValue: Boolean
-) : Feature
+) : Feature {
+
+    APP_ACTIVE(
+        key = "app_active",
+        title = "Is Application Active",
+        explanation = "If false, application won't open",
+        defaultValue = true
+    )
+}

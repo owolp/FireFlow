@@ -17,6 +17,19 @@
 
 package dev.zitech.core.featureflag.data.provider
 
-internal const val PRIORITY_MINIMUM = 0
-internal const val PRIORITY_MEDIUM = 1
-internal const val PRIORITY_MAXIMUM = 2
+import dev.zitech.core.featureflag.domain.model.Feature
+import dev.zitech.core.featureflag.domain.provider.FeatureFlagProvider
+import dev.zitech.core.remoteconfig.framework.configurator.RemoteConfigurator
+import javax.inject.Inject
+
+@Suppress("UnusedPrivateMember", "UNUSED_PARAMETER")
+internal class RemoteFeatureFlagProvider @Inject constructor(
+    private val remoteConfigurator: RemoteConfigurator
+) : FeatureFlagProvider {
+
+    override val priority: Int = PRIORITY_MAXIMUM
+
+    override suspend fun isFeatureEnabled(feature: Feature): Boolean = feature.defaultValue
+
+    override suspend fun hasFeature(feature: Feature): Boolean = false
+}

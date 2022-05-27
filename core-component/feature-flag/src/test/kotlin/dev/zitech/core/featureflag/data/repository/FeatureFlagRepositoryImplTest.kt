@@ -24,10 +24,10 @@ import dev.zitech.core.common.domain.model.BuildMode
 import dev.zitech.core.featureflag.data.provider.DevFeatureFlagProvider
 import dev.zitech.core.featureflag.data.provider.PRIORITY_MEDIUM
 import dev.zitech.core.featureflag.data.provider.PRIORITY_MINIMUM
-import dev.zitech.core.featureflag.data.provider.ProdFeatureFlagProvider
 import dev.zitech.core.featureflag.domain.model.DevFeature
 import dev.zitech.core.featureflag.domain.model.Feature
 import dev.zitech.core.featureflag.domain.model.ProdFeature
+import dev.zitech.core.featureflag.domain.provider.FeatureFlagProvider
 import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -46,7 +46,8 @@ internal class FeatureFlagRepositoryImplTest {
 
     private val appConfigProvider = mockk<AppConfigProvider>()
     private val devFeatureFlagProvider = mockk<DevFeatureFlagProvider>()
-    private val prodFeatureFlagProvider = mockk<ProdFeatureFlagProvider>()
+    private val prodFeatureFlagProvider = mockk<FeatureFlagProvider>()
+    private val remoteFeatureFlagProvider = mockk<FeatureFlagProvider>()
 
     private lateinit var sut: FeatureFlagRepositoryImpl
 
@@ -55,7 +56,8 @@ internal class FeatureFlagRepositoryImplTest {
         sut = FeatureFlagRepositoryImpl(
             appConfigProvider = appConfigProvider,
             devFeatureFlagProvider = devFeatureFlagProvider,
-            prodFeatureFlagProvider = prodFeatureFlagProvider
+            prodFeatureFlagProvider = prodFeatureFlagProvider,
+            remoteFeatureFlagProvider = remoteFeatureFlagProvider
         )
     }
 
@@ -75,15 +77,16 @@ internal class FeatureFlagRepositoryImplTest {
         }
 
         @Test
-        @DisplayName("WHEN BuildMode Release THEN add prodFeatureFlagProvider")
+        @DisplayName("WHEN BuildMode Release THEN add prodFeatureFlagProvider and remoteFeatureFlagProvider")
         fun isDebugModeFalse() {
             every { appConfigProvider.buildMode } returns BuildMode.RELEASE
 
             sut.init()
 
             assertThat(sut.providers).contains(prodFeatureFlagProvider)
+            assertThat(sut.providers).contains(remoteFeatureFlagProvider)
             assertThat(sut.providers).doesNotContain(devFeatureFlagProvider)
-            assertThat(sut.providers.size).isEqualTo(1)
+            assertThat(sut.providers.size).isEqualTo(2)
         }
     }
 
@@ -129,7 +132,7 @@ internal class FeatureFlagRepositoryImplTest {
                 }
 
                 @Test
-                @DisplayName("has higher priority than prodFeatureFlagProvider")
+                @DisplayName("has higher priority")
                 fun devFeatureFlagProviderHigherThanProdFeatureFlagProvider() = runBlocking {
                     val feature = mockkClass(Feature::class)
 
@@ -188,7 +191,7 @@ internal class FeatureFlagRepositoryImplTest {
                 }
 
                 @Test
-                @DisplayName("WHEN prodFeatureFlagProvider has higher priority than devFeatureFlagProvider")
+                @DisplayName("has higher priority")
                 fun prodFeatureFlagProviderHigherThanDevFeatureFlagProvider() = runBlocking {
                     val feature = mockkClass(Feature::class)
 
@@ -212,6 +215,65 @@ internal class FeatureFlagRepositoryImplTest {
                 }
             }
 
+            @Nested
+            @DisplayName("WHEN remoteFeatureFlagProvider")
+            inner class RemoteFeatureFlagProvider {
+
+                @Test
+                @DisplayName("hasFeature true and the feature is enabled")
+                fun hasFeatureTrue() = runBlocking {
+                    val feature = mockkClass(Feature::class)
+
+                    coEvery { remoteFeatureFlagProvider.hasFeature(feature) } returns true
+                    coEvery { remoteFeatureFlagProvider.isFeatureEnabled(feature) } returns true
+
+                    sut.providers.add(remoteFeatureFlagProvider)
+
+                    val result = sut.isFeatureEnabled(feature)
+
+                    assertThat(result).isTrue()
+                }
+
+                @Test
+                @DisplayName("hasFeature false")
+                fun hasFeatureFalse() = runBlocking {
+                    val feature = mockkClass(Feature::class)
+
+                    every { feature.defaultValue } returns true
+                    coEvery { remoteFeatureFlagProvider.hasFeature(feature) } returns false
+
+                    sut.providers.add(remoteFeatureFlagProvider)
+
+                    val result = sut.isFeatureEnabled(feature)
+
+                    assertThat(result).isTrue()
+                }
+
+                @Test
+                @DisplayName("has higher priority")
+                fun prodFeatureFlagProviderHigherThanDevFeatureFlagProvider() = runBlocking {
+                    val feature = mockkClass(Feature::class)
+
+                    coEvery { remoteFeatureFlagProvider getProperty "priority" } returns PRIORITY_MEDIUM
+                    coEvery { devFeatureFlagProvider getProperty "priority" } returns PRIORITY_MINIMUM
+
+                    coEvery { remoteFeatureFlagProvider.hasFeature(feature) } returns true
+                    coEvery { devFeatureFlagProvider.hasFeature(feature) } returns true
+
+                    coEvery { remoteFeatureFlagProvider.isFeatureEnabled(feature) } returns true
+                    coEvery { devFeatureFlagProvider.isFeatureEnabled(feature) } returns true
+
+                    sut.providers.add(devFeatureFlagProvider)
+                    sut.providers.add(remoteFeatureFlagProvider)
+
+                    val result = sut.isFeatureEnabled(feature)
+
+                    assertThat(result).isTrue()
+                    coVerify { remoteFeatureFlagProvider.isFeatureEnabled(feature) }
+                    coVerify(exactly = 0) { devFeatureFlagProvider.isFeatureEnabled(feature) }
+                }
+            }
+
             @Test
             @DisplayName("WHEN there are no feature flag providers added")
             fun noFlagProvidersAdded() = runBlocking {
@@ -226,8 +288,14 @@ internal class FeatureFlagRepositoryImplTest {
                     devFeatureFlagProvider.isFeatureEnabled(feature)
                     prodFeatureFlagProvider.hasFeature(feature)
                     prodFeatureFlagProvider.isFeatureEnabled(feature)
+                    remoteFeatureFlagProvider.hasFeature(feature)
+                    remoteFeatureFlagProvider.isFeatureEnabled(feature)
                 }
-                confirmVerified(devFeatureFlagProvider, prodFeatureFlagProvider)
+                confirmVerified(
+                    devFeatureFlagProvider,
+                    prodFeatureFlagProvider,
+                    remoteFeatureFlagProvider
+                )
             }
         }
 
@@ -270,7 +338,7 @@ internal class FeatureFlagRepositoryImplTest {
                 }
 
                 @Test
-                @DisplayName("has higher priority than prodFeatureFlagProvider")
+                @DisplayName("has higher priority")
                 fun devFeatureFlagProviderHigherThanProdFeatureFlagProvider() = runBlocking {
                     val feature = mockkClass(Feature::class)
 
@@ -291,6 +359,66 @@ internal class FeatureFlagRepositoryImplTest {
                     assertThat(result).isFalse()
                     coVerify { devFeatureFlagProvider.isFeatureEnabled(feature) }
                     coVerify(exactly = 0) { prodFeatureFlagProvider.isFeatureEnabled(feature) }
+                }
+            }
+
+            @Nested
+            @DisplayName("WHEN remoteFeatureFlagProvider")
+            inner class RemoteFeatureFlagProvider {
+
+                @Test
+                @DisplayName("hasFeature true and the feature is disabled")
+                fun hasFeatureTrue() = runBlocking {
+                    val feature = mockkClass(Feature::class)
+
+                    coEvery { remoteFeatureFlagProvider.hasFeature(feature) } returns true
+                    coEvery { remoteFeatureFlagProvider.isFeatureEnabled(feature) } returns false
+
+                    sut.providers.add(remoteFeatureFlagProvider)
+
+                    val result = sut.isFeatureEnabled(feature)
+
+                    assertThat(result).isFalse()
+                }
+
+
+                @Test
+                @DisplayName("hasFeature false")
+                fun hasFeatureFalse() = runBlocking {
+                    val feature = mockkClass(Feature::class)
+
+                    every { feature.defaultValue } returns false
+                    coEvery { remoteFeatureFlagProvider.hasFeature(feature) } returns false
+
+                    sut.providers.add(remoteFeatureFlagProvider)
+
+                    val result = sut.isFeatureEnabled(feature)
+
+                    assertThat(result).isFalse()
+                }
+
+                @Test
+                @DisplayName("has higher priority")
+                fun prodFeatureFlagProviderHigherThanDevFeatureFlagProvider() = runBlocking {
+                    val feature = mockkClass(Feature::class)
+
+                    coEvery { remoteFeatureFlagProvider getProperty "priority" } returns PRIORITY_MEDIUM
+                    coEvery { devFeatureFlagProvider getProperty "priority" } returns PRIORITY_MINIMUM
+
+                    coEvery { remoteFeatureFlagProvider.hasFeature(feature) } returns true
+                    coEvery { devFeatureFlagProvider.hasFeature(feature) } returns true
+
+                    coEvery { remoteFeatureFlagProvider.isFeatureEnabled(feature) } returns false
+                    coEvery { devFeatureFlagProvider.isFeatureEnabled(feature) } returns false
+
+                    sut.providers.add(devFeatureFlagProvider)
+                    sut.providers.add(remoteFeatureFlagProvider)
+
+                    val result = sut.isFeatureEnabled(feature)
+
+                    assertThat(result).isFalse()
+                    coVerify { remoteFeatureFlagProvider.isFeatureEnabled(feature) }
+                    coVerify(exactly = 0) { devFeatureFlagProvider.isFeatureEnabled(feature) }
                 }
             }
 
@@ -330,7 +458,7 @@ internal class FeatureFlagRepositoryImplTest {
                 }
 
                 @Test
-                @DisplayName("has higher priority than devFeatureFlagProvider")
+                @DisplayName("has higher priority")
                 fun prodFeatureFlagProviderHigherThanDevFeatureFlagProvider() = runBlocking {
                     val feature = mockkClass(Feature::class)
 
@@ -368,8 +496,14 @@ internal class FeatureFlagRepositoryImplTest {
                     devFeatureFlagProvider.isFeatureEnabled(feature)
                     prodFeatureFlagProvider.hasFeature(feature)
                     prodFeatureFlagProvider.isFeatureEnabled(feature)
+                    remoteFeatureFlagProvider.hasFeature(feature)
+                    remoteFeatureFlagProvider.isFeatureEnabled(feature)
                 }
-                confirmVerified(devFeatureFlagProvider, prodFeatureFlagProvider)
+                confirmVerified(
+                    devFeatureFlagProvider,
+                    prodFeatureFlagProvider,
+                    remoteFeatureFlagProvider
+                )
             }
         }
     }
