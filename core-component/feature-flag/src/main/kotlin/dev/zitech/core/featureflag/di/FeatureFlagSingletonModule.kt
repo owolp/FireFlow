@@ -19,20 +19,43 @@ package dev.zitech.core.featureflag.di
 
 import dagger.Binds
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import dev.zitech.core.common.domain.applicationconfig.AppConfigProvider
 import dev.zitech.core.featureflag.data.provider.DevFeatureFlagProvider
 import dev.zitech.core.featureflag.data.provider.ProdFeatureFlagProvider
+import dev.zitech.core.featureflag.data.provider.RemoteFeatureFlagProvider
 import dev.zitech.core.featureflag.data.repository.FeatureFlagRepositoryImpl
 import dev.zitech.core.featureflag.di.annotation.DevFeatureFlagProvider as DevFeatureFlagProviderAnnotation
 import dev.zitech.core.featureflag.di.annotation.ProdFeatureFlagProvider as ProdFeatureFlagProviderAnnotation
+import dev.zitech.core.featureflag.di.annotation.RemoteFeatureFlagProvider as RemoteFeatureFlagProviderAnnotation
 import dev.zitech.core.featureflag.domain.provider.FeatureFlagProvider
 import dev.zitech.core.featureflag.domain.repository.FeatureFlagRepository
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
-internal interface FeatureFlagSingletonModule {
+internal object FeatureFlagSingletonProvidesModule {
+
+    @Singleton
+    @Provides
+    fun featureFlagRepository(
+        appConfigProvider: AppConfigProvider,
+        @DevFeatureFlagProviderAnnotation devFeatureFlagProvider: FeatureFlagProvider,
+        @ProdFeatureFlagProviderAnnotation prodFeatureFlagProvider: FeatureFlagProvider,
+        @RemoteFeatureFlagProviderAnnotation remoteFeatureFlagProvider: FeatureFlagProvider
+    ): FeatureFlagRepository = FeatureFlagRepositoryImpl(
+        appConfigProvider,
+        devFeatureFlagProvider,
+        prodFeatureFlagProvider,
+        remoteFeatureFlagProvider
+    )
+}
+
+@InstallIn(SingletonComponent::class)
+@Module
+internal interface FeatureFlagSingletonBindsModule {
 
     @DevFeatureFlagProviderAnnotation
     @Singleton
@@ -48,9 +71,10 @@ internal interface FeatureFlagSingletonModule {
         prodFeatureFlagProvider: ProdFeatureFlagProvider
     ): FeatureFlagProvider
 
+    @RemoteFeatureFlagProviderAnnotation
     @Singleton
     @Binds
-    fun FeatureFlagRepository(
-        featureFlagRepositoryImpl: FeatureFlagRepositoryImpl
-    ): FeatureFlagRepository
+    fun remoteFeatureFlagProvider(
+        remoteFeatureFlagProvider: RemoteFeatureFlagProvider
+    ): FeatureFlagProvider
 }
