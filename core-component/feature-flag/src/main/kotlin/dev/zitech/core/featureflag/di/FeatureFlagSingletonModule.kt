@@ -31,6 +31,7 @@ import dev.zitech.core.featureflag.di.annotation.DevFeatureFlagProvider as DevFe
 import dev.zitech.core.featureflag.di.annotation.ProdFeatureFlagProvider as ProdFeatureFlagProviderAnnotation
 import dev.zitech.core.featureflag.di.annotation.RemoteFeatureFlagProvider as RemoteFeatureFlagProviderAnnotation
 import dev.zitech.core.featureflag.domain.provider.FeatureFlagProvider
+import dev.zitech.core.featureflag.domain.repository.FeatureFlagRepository
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
@@ -44,7 +45,7 @@ internal object FeatureFlagSingletonProvidesModule {
         @DevFeatureFlagProviderAnnotation devFeatureFlagProvider: FeatureFlagProvider,
         @ProdFeatureFlagProviderAnnotation prodFeatureFlagProvider: FeatureFlagProvider,
         @RemoteFeatureFlagProviderAnnotation remoteFeatureFlagProvider: FeatureFlagProvider
-    ) = FeatureFlagRepositoryImpl(
+    ): FeatureFlagRepository = FeatureFlagRepositoryImpl(
         appConfigProvider,
         devFeatureFlagProvider,
         prodFeatureFlagProvider,
