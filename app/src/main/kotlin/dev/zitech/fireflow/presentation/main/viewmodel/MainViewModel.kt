@@ -22,7 +22,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.zitech.analytics.domain.usecase.event.SendApplicationStartAnalyticsEvent
+import dev.zitech.analytics.domain.usecase.event.ApplicationLaunchAnalyticsEvent
 import dev.zitech.core.common.presentation.architecture.MviViewModel
 import dev.zitech.core.remoteconfig.domain.usecase.InitializeRemoteConfiguratorUseCase
 import javax.inject.Inject
@@ -34,7 +34,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 internal class MainViewModel @Inject constructor(
     private val initializeRemoteConfiguratorUseCase: InitializeRemoteConfiguratorUseCase,
-    sendApplicationStartAnalyticsEvent: SendApplicationStartAnalyticsEvent
+    applicationLaunchAnalyticsEvent: ApplicationLaunchAnalyticsEvent
 ) : ViewModel(), MviViewModel<MainIntent, MainState> {
 
     private val mutableShowSplashScreen = MutableLiveData(true)
@@ -45,7 +45,7 @@ internal class MainViewModel @Inject constructor(
 
     init {
         initializeRemoteConfigurator()
-        sendApplicationStartAnalyticsEvent()
+        applicationLaunchAnalyticsEvent()
     }
 
     override fun sendIntent(intent: MainIntent) {

@@ -15,17 +15,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.analytics.domain.usecase.event
+package dev.zitech.analytics.domain.model.events
 
-import dev.zitech.analytics.domain.model.events.ApplicationStartEvent
-import dev.zitech.analytics.domain.repository.AnalyticsRepository
-import javax.inject.Inject
+import dev.zitech.analytics.domain.model.AnalyticsEvent
+import dev.zitech.analytics.domain.model.AnalyticsProvider
 
-class SendApplicationStartAnalyticsEvent @Inject constructor(
-    private val analyticsRepository: AnalyticsRepository
-) {
-
-    operator fun invoke() {
-        analyticsRepository.logEvent(ApplicationStartEvent())
-    }
-}
+class ApplicationLaunchEvent(
+    override val name: String = "application.launch",
+    override val description: String = "Application Launched",
+    override val params: Map<String, Any?> = emptyMap(),
+    override val providers: List<AnalyticsProvider> = listOf(
+        AnalyticsProvider.FIREBASE, AnalyticsProvider.HUAWEI
+    )
+) : AnalyticsEvent
