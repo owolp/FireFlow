@@ -15,18 +15,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.analytics.domain.usecase
+package dev.zitech.analytics.domain.usecase.event
 
 import com.google.common.truth.Truth.assertThat
 import dev.zitech.analytics.data.repository.AnalyticsRepositoryImpl
+import dev.zitech.analytics.domain.model.events.ApplicationLaunchEvent
 import dev.zitech.analytics.framework.analytics.FakeRemoteAnalytics
 import dev.zitech.analytics.framework.source.AnalyticsProviderSourceImpl
-import dev.zitech.core.common.DataFactory
+import dev.zitech.core.common.domain.model.BuildFlavor
 import dev.zitech.core.common.framework.applicationconfig.FakeAppConfigProvider
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-internal class SetAnalyticsCollectionUseCaseTest {
+internal class ApplicationLaunchAnalyticsEventTest {
 
     private val appConfigProvider = FakeAppConfigProvider()
     private val remoteAnalytics = FakeRemoteAnalytics()
@@ -38,25 +39,44 @@ internal class SetAnalyticsCollectionUseCaseTest {
         analyticsProviderSource
     )
 
-    private lateinit var sut: SetAnalyticsCollectionUseCase
+    private lateinit var sut: ApplicationLaunchAnalyticsEvent
 
     @BeforeEach
     fun setup() {
-        sut = SetAnalyticsCollectionUseCase(
-            appConfigProvider,
+        sut = ApplicationLaunchAnalyticsEvent(
             analyticsRepository
         )
     }
 
     @Test
-    fun invoke() {
+    fun `WHEN flavor Gallery THEN log event`() {
         // Arrange
-        val expectedResult = DataFactory.createRandomBoolean()
+        appConfigProvider.setBuildFlavor(BuildFlavor.GALLERY)
 
         // Act
-        sut(expectedResult)
+        assertThat(remoteAnalytics.events).hasSize(0)
+        sut()
 
         // Assert
-        assertThat(remoteAnalytics.setCollectionEnabledValue).isEqualTo(expectedResult)
+        assertThat(remoteAnalytics.events).hasSize(1)
+        assertThat(remoteAnalytics.events).containsKey(
+            ApplicationLaunchEvent().name
+        )
+    }
+
+    @Test
+    fun `WHEN flavor Play THEN log event`() {
+        // Arrange
+        appConfigProvider.setBuildFlavor(BuildFlavor.PLAY)
+
+        // Act
+        assertThat(remoteAnalytics.events).hasSize(0)
+        sut()
+
+        // Assert
+        assertThat(remoteAnalytics.events).hasSize(1)
+        assertThat(remoteAnalytics.events).containsKey(
+            ApplicationLaunchEvent().name
+        )
     }
 }

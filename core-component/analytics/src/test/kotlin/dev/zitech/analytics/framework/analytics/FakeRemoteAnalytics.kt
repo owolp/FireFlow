@@ -21,6 +21,7 @@ internal class FakeRemoteAnalytics : RemoteAnalytics {
 
     var allowPersonalizedAdsValue: Boolean = false
     var setCollectionEnabledValue: Boolean = false
+    var events = mutableMapOf<String, Map<String, Any?>>()
 
     override fun allowPersonalizedAds(enabled: Boolean) {
         allowPersonalizedAdsValue = enabled
@@ -28,5 +29,9 @@ internal class FakeRemoteAnalytics : RemoteAnalytics {
 
     override fun setCollectionEnabled(enabled: Boolean) {
         setCollectionEnabledValue = enabled
+    }
+
+    override fun logEvent(eventName: String, eventParams: Map<String, Any?>) {
+        events[eventName] = eventParams
     }
 }

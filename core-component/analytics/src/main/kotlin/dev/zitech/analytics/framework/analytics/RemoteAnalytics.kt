@@ -21,4 +21,5 @@ interface RemoteAnalytics {
 
     fun allowPersonalizedAds(enabled: Boolean)
     fun setCollectionEnabled(enabled: Boolean)
+    fun logEvent(eventName: String, eventParams: Map<String, Any?>)
 }

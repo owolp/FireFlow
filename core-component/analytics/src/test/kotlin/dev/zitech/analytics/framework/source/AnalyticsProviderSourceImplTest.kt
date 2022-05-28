@@ -60,4 +60,19 @@ internal class AnalyticsProviderSourceImplTest {
         // Assert
         assertThat(remoteAnalytics.setCollectionEnabledValue).isEqualTo(expectedResult)
     }
+
+    @Test
+    fun logEvent() {
+        // Arrange
+        val eventName = DataFactory.createRandomString()
+        val paramName = DataFactory.createRandomString()
+        val paramValue = DataFactory.createRandomString()
+        val eventParams = mapOf(paramName to paramValue)
+
+        // Act
+        sut.logEvent(eventName, eventParams)
+
+        // Assert
+        assertThat(remoteAnalytics.events[eventName]).isEqualTo(eventParams)
+    }
 }

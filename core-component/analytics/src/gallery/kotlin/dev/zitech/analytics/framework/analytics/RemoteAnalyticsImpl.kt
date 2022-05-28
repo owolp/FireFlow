@@ -18,6 +18,7 @@
 package dev.zitech.analytics.framework.analytics
 
 import android.content.Context
+import android.os.Bundle
 import com.huawei.hms.analytics.HiAnalytics
 import javax.inject.Inject
 
@@ -33,5 +34,13 @@ internal class RemoteAnalyticsImpl @Inject constructor(
 
     override fun setCollectionEnabled(enabled: Boolean) {
         hiAnalytics.setAnalyticsEnabled(enabled)
+    }
+
+    override fun logEvent(eventName: String, eventParams: Map<String, Any?>) {
+        val bundle = Bundle()
+        eventParams.filter { (_, value) -> value != null }
+            .forEach { (key, value) -> bundle.putString(key, value.toString()) }
+
+        hiAnalytics.onEvent(eventName, bundle)
     }
 }

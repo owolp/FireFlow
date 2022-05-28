@@ -20,13 +20,31 @@ package dev.zitech.core.common.framework.applicationconfig;
 import org.jetbrains.annotations.NotNull;
 
 import dev.zitech.core.common.domain.applicationconfig.AppConfigProvider;
+import dev.zitech.core.common.domain.model.BuildFlavor;
 import dev.zitech.core.common.domain.model.BuildMode;
 
 public class FakeAppConfigProvider implements AppConfigProvider {
 
+    BuildMode buildMode = BuildMode.RELEASE;
+    BuildFlavor buildFlavor = BuildFlavor.DEV;
+
     @NotNull
     @Override
     public BuildMode getBuildMode() {
-        return BuildMode.RELEASE;
+        return buildMode;
+    }
+
+    @NotNull
+    @Override
+    public BuildFlavor getBuildFlavor() {
+        return buildFlavor;
+    }
+
+    public void setBuildMode(BuildMode buildMode) {
+        this.buildMode = buildMode;
+    }
+
+    public void setBuildFlavor(BuildFlavor buildFlavor) {
+        this.buildFlavor = buildFlavor;
     }
 }

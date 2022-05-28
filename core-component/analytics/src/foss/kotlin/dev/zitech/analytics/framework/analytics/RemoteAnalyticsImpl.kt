@@ -32,4 +32,8 @@ internal class RemoteAnalyticsImpl @Inject constructor(
     override fun setCollectionEnabled(enabled: Boolean) {
         // NO_OP
     }
+
+    override fun logEvent(eventName: String, eventParams: Map<String, Any?>) {
+        // NO_OP
+    }
 }
