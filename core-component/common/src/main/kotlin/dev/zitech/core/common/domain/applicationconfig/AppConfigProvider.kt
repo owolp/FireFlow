@@ -17,8 +17,10 @@
 
 package dev.zitech.core.common.domain.applicationconfig
 
+import dev.zitech.core.common.domain.model.BuildFlavor
 import dev.zitech.core.common.domain.model.BuildMode
 
 interface AppConfigProvider {
     val buildMode: BuildMode
+    val buildFlavor: BuildFlavor
 }

@@ -17,8 +17,11 @@
 
 package dev.zitech.analytics.domain.repository
 
+import dev.zitech.analytics.domain.model.AnalyticsEvent
+
 interface AnalyticsRepository {
 
     fun allowPersonalizedAds(enabled: Boolean)
     fun setCollectionEnabled(enabled: Boolean)
+    fun logEvent(analyticsEvent: AnalyticsEvent)
 }

@@ -15,11 +15,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.analytics.domain.source
+package dev.zitech.analytics.domain.model.events
 
-internal interface AnalyticsProviderSource {
+import dev.zitech.analytics.domain.model.AnalyticsEvent
+import dev.zitech.analytics.domain.model.AnalyticsProvider
 
-    fun allowPersonalizedAds(enabled: Boolean)
-    fun setCollectionEnabled(enabled: Boolean)
-    fun logEvent(eventName: String, eventParams: Map<String, Any?>)
-}
+class ApplicationStartEvent(
+    override val name: String = "application.start",
+    override val description: String = "Application Started",
+    override val params: Map<String, Any?> = emptyMap(),
+    override val providers: List<AnalyticsProvider> = listOf(
+        AnalyticsProvider.FIREBASE, AnalyticsProvider.HUAWEI
+    )
+) : AnalyticsEvent

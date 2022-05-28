@@ -15,11 +15,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.analytics.domain.source
+package dev.zitech.analytics.domain.model
 
-internal interface AnalyticsProviderSource {
-
-    fun allowPersonalizedAds(enabled: Boolean)
-    fun setCollectionEnabled(enabled: Boolean)
-    fun logEvent(eventName: String, eventParams: Map<String, Any?>)
+interface AnalyticsEvent {
+    val name: String
+    val description: String
+    val params: Map<String, Any?>
+    val providers: List<AnalyticsProvider>
 }

@@ -19,15 +19,25 @@ package dev.zitech.core.common.framework.applicationconfig
 
 import dev.zitech.core.common.BuildConfig
 import dev.zitech.core.common.domain.applicationconfig.AppConfigProvider
+import dev.zitech.core.common.domain.model.BuildFlavor
 import dev.zitech.core.common.domain.model.BuildMode
 import javax.inject.Inject
 
 internal class AppConfigProviderImpl @Inject constructor() : AppConfigProvider {
 
-    override val buildMode: BuildMode
-        get(): BuildMode = if (BuildConfig.DEBUG) {
+    override val buildMode: BuildMode =
+        if (BuildConfig.DEBUG) {
             BuildMode.DEBUG
         } else {
             BuildMode.RELEASE
+        }
+
+    override val buildFlavor: BuildFlavor =
+        when (BuildConfig.FLAVOR) {
+            "dev" -> BuildFlavor.DEV
+            "foss" -> BuildFlavor.FOSS
+            "gallery" -> BuildFlavor.GALLERY
+            "play" -> BuildFlavor.PLAY
+            else -> throw IllegalStateException("Build Config not found!")
         }
 }

@@ -30,4 +30,8 @@ internal class AnalyticsProviderSourceImpl @Inject constructor(
 
     override fun setCollectionEnabled(enabled: Boolean) =
         remoteAnalytics.setCollectionEnabled(enabled)
+
+    override fun logEvent(eventName: String, eventParams: Map<String, Any?>) {
+        remoteAnalytics.logEvent(eventName, eventParams)
+    }
 }

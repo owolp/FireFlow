@@ -22,11 +22,13 @@ import dev.zitech.analytics.domain.repository.AnalyticsRepository
 import dev.zitech.analytics.framework.analytics.FakeRemoteAnalytics
 import dev.zitech.analytics.framework.source.AnalyticsProviderSourceImpl
 import dev.zitech.core.common.DataFactory
+import dev.zitech.core.common.framework.applicationconfig.FakeAppConfigProvider
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 internal class AnalyticsRepositoryImplTest {
 
+    private val appConfigProvider = FakeAppConfigProvider()
     private val remoteAnalytics = FakeRemoteAnalytics()
     private val analyticsProviderSource = AnalyticsProviderSourceImpl(
         remoteAnalytics
@@ -37,6 +39,7 @@ internal class AnalyticsRepositoryImplTest {
     @BeforeEach
     fun setup() {
         sut = AnalyticsRepositoryImpl(
+            appConfigProvider,
             analyticsProviderSource
         )
     }

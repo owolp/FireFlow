@@ -18,6 +18,7 @@
 package dev.zitech.analytics.framework.analytics
 
 import android.content.Context
+import android.os.Bundle
 import com.google.firebase.analytics.FirebaseAnalytics.UserProperty.ALLOW_AD_PERSONALIZATION_SIGNALS
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
@@ -38,5 +39,13 @@ internal class RemoteAnalyticsImpl @Inject constructor(
 
     override fun setCollectionEnabled(enabled: Boolean) {
         firebaseAnalytics.setAnalyticsCollectionEnabled(enabled)
+    }
+
+    override fun logEvent(eventName: String, eventParams: Map<String, Any?>) {
+        val bundle = Bundle()
+        eventParams.filter { (_, value) -> value != null }
+            .forEach { (key, value) -> bundle.putString(key, value.toString()) }
+
+        firebaseAnalytics.logEvent(eventName, bundle)
     }
 }

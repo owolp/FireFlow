@@ -34,6 +34,7 @@ internal class SetAnalyticsCollectionUseCaseTest {
         remoteAnalytics
     )
     private val analyticsRepository = AnalyticsRepositoryImpl(
+        appConfigProvider,
         analyticsProviderSource
     )
 

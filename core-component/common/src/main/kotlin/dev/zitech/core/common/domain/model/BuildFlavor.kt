@@ -15,11 +15,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.analytics.domain.source
+package dev.zitech.core.common.domain.model
 
-internal interface AnalyticsProviderSource {
-
-    fun allowPersonalizedAds(enabled: Boolean)
-    fun setCollectionEnabled(enabled: Boolean)
-    fun logEvent(eventName: String, eventParams: Map<String, Any?>)
+enum class BuildFlavor {
+    DEV, FOSS, GALLERY, PLAY
 }
