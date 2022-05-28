@@ -18,10 +18,13 @@
 package dev.zitech.analytics.data.repository
 
 import com.google.common.truth.Truth.assertThat
+import dev.zitech.analytics.domain.model.AnalyticsEventFactory
+import dev.zitech.analytics.domain.model.AnalyticsProvider
 import dev.zitech.analytics.domain.repository.AnalyticsRepository
 import dev.zitech.analytics.framework.analytics.FakeRemoteAnalytics
 import dev.zitech.analytics.framework.source.AnalyticsProviderSourceImpl
 import dev.zitech.core.common.DataFactory
+import dev.zitech.core.common.domain.model.BuildFlavor
 import dev.zitech.core.common.framework.applicationconfig.FakeAppConfigProvider
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -66,5 +69,97 @@ internal class AnalyticsRepositoryImplTest {
 
         // Assert
         assertThat(remoteAnalytics.setCollectionEnabledValue).isEqualTo(expectedResult)
+    }
+
+    @Test
+    fun `WHEN buildFlavor Dev THEN do not log event`() {
+        // Arrange
+        appConfigProvider.setBuildFlavor(BuildFlavor.DEV)
+        val analyticsEvent = AnalyticsEventFactory.createAnalyticsEvent()
+
+        // Act
+        sut.logEvent(analyticsEvent)
+
+        // Assert
+        assertThat(remoteAnalytics.events).isEmpty()
+    }
+
+    @Test
+    fun `WHEN buildFlavor Foss THEN do not log event`() {
+        // Arrange
+        appConfigProvider.setBuildFlavor(BuildFlavor.FOSS)
+        val analyticsEvent = AnalyticsEventFactory.createAnalyticsEvent()
+
+        // Act
+        sut.logEvent(analyticsEvent)
+
+        // Assert
+        assertThat(remoteAnalytics.events).isEmpty()
+    }
+
+    @Test
+    fun `WHEN buildFlavor Play and provider Huawei THEN do not log event`() {
+        // Arrange
+        appConfigProvider.setBuildFlavor(BuildFlavor.PLAY)
+        val analyticsEvent = AnalyticsEventFactory.createAnalyticsEvent(
+            providers = listOf(AnalyticsProvider.HUAWEI)
+        )
+
+        // Act
+        assertThat(remoteAnalytics.events).isEmpty()
+        sut.logEvent(analyticsEvent)
+
+        // Assert
+        assertThat(remoteAnalytics.events).hasSize(0)
+    }
+
+    @Test
+    fun `WHEN buildFlavor Play and provider Firebase THEN log event`() {
+        // Arrange
+        appConfigProvider.setBuildFlavor(BuildFlavor.PLAY)
+        val analyticsEvent = AnalyticsEventFactory.createAnalyticsEvent(
+            providers = listOf(AnalyticsProvider.FIREBASE)
+        )
+
+        // Act
+        assertThat(remoteAnalytics.events).isEmpty()
+        sut.logEvent(analyticsEvent)
+
+        // Assert
+        assertThat(remoteAnalytics.events).hasSize(1)
+        assertThat(remoteAnalytics.events[analyticsEvent.name]).isEqualTo(analyticsEvent.params)
+    }
+
+    @Test
+    fun `WHEN buildFlavor Gallery and provider Firebase THEN do not log event`() {
+        // Arrange
+        appConfigProvider.setBuildFlavor(BuildFlavor.GALLERY)
+        val analyticsEvent = AnalyticsEventFactory.createAnalyticsEvent(
+            providers = listOf(AnalyticsProvider.FIREBASE)
+        )
+
+        // Act
+        assertThat(remoteAnalytics.events).isEmpty()
+        sut.logEvent(analyticsEvent)
+
+        // Assert
+        assertThat(remoteAnalytics.events).hasSize(0)
+    }
+
+    @Test
+    fun `WHEN buildFlavor Huawei and provider Gallery THEN log event`() {
+        // Arrange
+        appConfigProvider.setBuildFlavor(BuildFlavor.GALLERY)
+        val analyticsEvent = AnalyticsEventFactory.createAnalyticsEvent(
+            providers = listOf(AnalyticsProvider.HUAWEI)
+        )
+
+        // Act
+        assertThat(remoteAnalytics.events).isEmpty()
+        sut.logEvent(analyticsEvent)
+
+        // Assert
+        assertThat(remoteAnalytics.events).hasSize(1)
+        assertThat(remoteAnalytics.events[analyticsEvent.name]).isEqualTo(analyticsEvent.params)
     }
 }
