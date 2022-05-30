@@ -37,6 +37,7 @@ dependencies {
     playImplementation("com.google.firebase:firebase-analytics-ktx")
     playImplementation("com.google.firebase:firebase-perf-ktx")
 
+    galleryImplementation(libs.huawei.agconnect.apms)
     galleryImplementation(libs.huawei.hms.hianalytics)
 }
 

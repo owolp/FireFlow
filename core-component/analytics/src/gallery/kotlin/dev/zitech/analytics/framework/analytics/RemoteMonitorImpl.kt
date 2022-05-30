@@ -18,31 +18,15 @@
 package dev.zitech.analytics.framework.analytics
 
 import android.content.Context
-import android.os.Bundle
-import com.huawei.agconnect.common.network.AccessNetworkManager
-import com.huawei.hms.analytics.HiAnalytics
+import com.huawei.agconnect.apms.APMS
 import javax.inject.Inject
 
-internal class RemoteAnalyticsImpl @Inject constructor(
+@Suppress("UnusedPrivateMember", "UNUSED_PARAMETER")
+internal class RemoteMonitorImpl @Inject constructor(
     context: Context
-) : RemoteAnalytics {
-
-    private val hiAnalytics = HiAnalytics.getInstance(context)
-
-    override fun allowPersonalizedAds(enabled: Boolean) {
-        hiAnalytics.setCollectAdsIdEnabled(enabled)
-    }
+) : RemoteMonitor {
 
     override fun setCollectionEnabled(enabled: Boolean) {
-        AccessNetworkManager.getInstance().setAccessNetwork(enabled)
-        hiAnalytics.setAnalyticsEnabled(enabled)
-    }
-
-    override fun logEvent(eventName: String, eventParams: Map<String, Any?>) {
-        val bundle = Bundle()
-        eventParams.filter { (_, value) -> value != null }
-            .forEach { (key, value) -> bundle.putString(key, value.toString()) }
-
-        hiAnalytics.onEvent(eventName, bundle)
+        APMS.getInstance().enableCollection(enabled)
     }
 }

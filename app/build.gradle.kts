@@ -39,6 +39,14 @@ android {
                 mappingUpload = false
                 debug = true
             }
+            configure<com.huawei.agconnect.apms.plugin.APMSExtension> {
+                instrumentationEnabled = false
+            }
+            withGroovyBuilder {
+                "FirebasePerformance" {
+                    invokeMethod("setInstrumentationEnabled", false)
+                }
+            }
         }
     }
 
@@ -59,6 +67,7 @@ android {
             agcp {
                 mappingUpload = true
                 debug = false
+                enableAPMS = true
             }
         }
     }
