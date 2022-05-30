@@ -25,11 +25,16 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import dev.zitech.analytics.data.repository.AnalyticsRepositoryImpl
+import dev.zitech.analytics.data.repository.PerformanceRepositoryImpl
 import dev.zitech.analytics.domain.repository.AnalyticsRepository
+import dev.zitech.analytics.domain.repository.PerformanceRepository
 import dev.zitech.analytics.domain.source.AnalyticsProviderSource
+import dev.zitech.analytics.framework.analytics.PerformanceAnalytics
+import dev.zitech.analytics.framework.analytics.PerformanceAnalyticsImpl
 import dev.zitech.analytics.framework.analytics.RemoteAnalytics
 import dev.zitech.analytics.framework.analytics.RemoteAnalyticsImpl
 import dev.zitech.analytics.framework.source.AnalyticsProviderSourceImpl
+import dev.zitech.analytics.framework.source.PerformanceProviderSourceImpl
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
@@ -44,13 +49,31 @@ internal interface AnalyticsSingletonBindsModule {
 
     @Singleton
     @Binds
+    fun performanceProviderSource(
+        performanceProviderSourceImpl: PerformanceProviderSourceImpl
+    ): AnalyticsProviderSource
+
+    @Singleton
+    @Binds
     fun remoteAnalytics(remoteAnalyticsImpl: RemoteAnalyticsImpl): RemoteAnalytics
+
+    @Singleton
+    @Binds
+    fun performanceAnalytics(
+        performanceAnalyticsImpl: PerformanceAnalyticsImpl
+    ): PerformanceAnalytics
 
     @Singleton
     @Binds
     fun analyticsRepository(
         analyticsRepositoryImpl: AnalyticsRepositoryImpl
     ): AnalyticsRepository
+
+    @Singleton
+    @Binds
+    fun performanceRepository(
+        performanceRepositoryImpl: PerformanceRepositoryImpl
+    ): PerformanceRepository
 }
 
 @InstallIn(SingletonComponent::class)
@@ -62,6 +85,14 @@ internal object AnalyticsSingletonProvidesModule {
     fun remoteAnalytics(
         @ApplicationContext context: Context
     ) = RemoteAnalyticsImpl(
+        context = context
+    )
+
+    @Singleton
+    @Provides
+    fun performanceAnalytics(
+        @ApplicationContext context: Context
+    ) = PerformanceAnalyticsImpl(
         context = context
     )
 }
