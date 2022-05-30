@@ -56,6 +56,9 @@
             <meta-data
                 android:name="dev.zitech.fireflow.initializer.LoggerInitializer"
                 android:value="androidx.startup" />
+            <meta-data
+                android:name="dev.zitech.fireflow.initializer.PerformanceInitializer"
+                android:value="androidx.startup" />
         </provider>
 
     </application>

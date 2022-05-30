@@ -58,6 +58,14 @@ internal class UserAccountRepositoryImpl @Inject constructor(
             DataResult.Error(cause = exception)
         }
 
+    override suspend fun isUserLoggedIn(): DataResult<Boolean> =
+        try {
+            val isUserLoggedIn = userAccountDatabaseSource.isUserLoggedIn()
+            DataResult.Success(isUserLoggedIn)
+        } catch (exception: Exception) {
+            DataResult.Error(cause = exception)
+        }
+
     override suspend fun saveUserAccount(isCurrentUserAccount: Boolean): DataResult<Long> =
         try {
             val id = userAccountDatabaseSource.saveUserAccount(isCurrentUserAccount)

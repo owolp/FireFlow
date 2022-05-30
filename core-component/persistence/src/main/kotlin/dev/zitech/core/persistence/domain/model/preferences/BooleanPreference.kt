@@ -38,6 +38,14 @@ enum class BooleanPreference(
         explanation = "Automatically post crash reports to a report server",
         defaultValue = false
     ),
+    PERFORMANCE_COLLECTION(
+        key = "performance_collection",
+        title = "Application performance data collection",
+        explanation = "In some cases, you may wish to temporarily or permanently disable " +
+            "collection of Application performance data, such as to collect end-user consent or " +
+            "to fulfill legal obligations.",
+        defaultValue = false
+    ),
     PERSONALIZED_ADS(
         key = "personalized_ads",
         title = "Analytics personalized advertising features",

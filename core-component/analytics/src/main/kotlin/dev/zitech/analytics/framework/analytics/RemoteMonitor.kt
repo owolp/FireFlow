@@ -17,7 +17,7 @@
 
 package dev.zitech.analytics.framework.analytics
 
-interface PerformanceAnalytics {
+interface RemoteMonitor {
 
     fun setCollectionEnabled(enabled: Boolean)
 }

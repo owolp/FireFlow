@@ -25,6 +25,7 @@ import dagger.hilt.components.SingletonComponent
 import dev.zitech.fireflow.initializer.AnalyticsInitializer
 import dev.zitech.fireflow.initializer.CrashReporterInitializer
 import dev.zitech.fireflow.initializer.LoggerInitializer
+import dev.zitech.fireflow.initializer.PerformanceInitializer
 
 @InstallIn(SingletonComponent::class)
 @EntryPoint
@@ -46,4 +47,5 @@ internal interface InitializerEntryPoint {
     fun inject(analyticsInitializer: AnalyticsInitializer)
     fun inject(crashReporterInitializer: CrashReporterInitializer)
     fun inject(loggerInitializer: LoggerInitializer)
+    fun inject(performanceInitializer: PerformanceInitializer)
 }

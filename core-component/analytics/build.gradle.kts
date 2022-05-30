@@ -27,6 +27,7 @@ plugins {
 dependencies {
     implementation(projects.coreComponent.common)
     implementation(projects.coreComponent.persistence)
+    implementation(projects.coreComponent.remoteConfig)
 
     implementation(libs.google.dagger.hilt.android)
     kapt(libs.google.dagger.hilt.compiler)

@@ -15,19 +15,21 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.remoteconfig.domain.model
+package dev.zitech.analytics.framework.analytics
 
-enum class BooleanConfig(
-    override val key: String,
-    override val title: String,
-    override val explanation: String,
-    override val defaultValue: Boolean
-) : Config<Boolean> {
+import android.content.Context
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.perf.ktx.performance
+import javax.inject.Inject
 
-    PERFORMANCE_COLLECTION_ENABLED(
-        key = "performance_collection_enabled",
-        title = "Is Performance Collection Enabled",
-        explanation = "If true, application performance 3rd party collection tools will be enabled",
-        defaultValue = false
-    )
+@Suppress("UnusedPrivateMember", "UNUSED_PARAMETER")
+internal class RemoteMonitorImpl @Inject constructor(
+    context: Context
+) : RemoteMonitor {
+
+    private val firebasePerformance = Firebase.performance
+
+    override fun setCollectionEnabled(enabled: Boolean) {
+        firebasePerformance.isPerformanceCollectionEnabled = enabled
+    }
 }

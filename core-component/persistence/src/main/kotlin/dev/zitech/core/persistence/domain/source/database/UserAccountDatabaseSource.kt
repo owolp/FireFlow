@@ -23,5 +23,6 @@ internal interface UserAccountDatabaseSource {
 
     suspend fun getUserAccounts(): List<UserAccount>
     suspend fun getCurrentUserAccount(): UserAccount?
+    suspend fun isUserLoggedIn(): Boolean
     suspend fun saveUserAccount(isCurrentUserAccount: Boolean): Long
 }

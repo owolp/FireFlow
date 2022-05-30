@@ -15,19 +15,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.remoteconfig.domain.model
+package dev.zitech.core.persistence.domain.usecase.database
 
-enum class BooleanConfig(
-    override val key: String,
-    override val title: String,
-    override val explanation: String,
-    override val defaultValue: Boolean
-) : Config<Boolean> {
+import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
+import javax.inject.Inject
 
-    PERFORMANCE_COLLECTION_ENABLED(
-        key = "performance_collection_enabled",
-        title = "Is Performance Collection Enabled",
-        explanation = "If true, application performance 3rd party collection tools will be enabled",
-        defaultValue = false
-    )
+class IsUserLoggedInUseCase @Inject constructor(
+    private val userAccountRepository: UserAccountRepository
+) {
+
+    suspend operator fun invoke(): DataResult<Boolean> =
+        userAccountRepository.isUserLoggedIn()
 }

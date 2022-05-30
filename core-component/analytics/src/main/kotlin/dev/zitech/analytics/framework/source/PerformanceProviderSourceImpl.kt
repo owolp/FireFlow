@@ -18,13 +18,13 @@
 package dev.zitech.analytics.framework.source
 
 import dev.zitech.analytics.domain.source.PerformanceProviderSource
-import dev.zitech.analytics.framework.analytics.PerformanceAnalytics
+import dev.zitech.analytics.framework.analytics.RemoteMonitor
 import javax.inject.Inject
 
 internal class PerformanceProviderSourceImpl @Inject constructor(
-    private val performanceAnalytics: PerformanceAnalytics
+    private val remoteMonitor: RemoteMonitor
 ) : PerformanceProviderSource {
 
     override fun setCollectionEnabled(enabled: Boolean) =
-        performanceAnalytics.setCollectionEnabled(enabled)
+        remoteMonitor.setCollectionEnabled(enabled)
 }

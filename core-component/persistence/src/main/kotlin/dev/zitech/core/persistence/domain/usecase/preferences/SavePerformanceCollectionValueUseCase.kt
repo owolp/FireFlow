@@ -15,21 +15,21 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.analytics.framework.analytics
+package dev.zitech.core.persistence.domain.usecase.preferences
 
-import android.content.Context
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.perf.ktx.performance
+import dev.zitech.core.persistence.domain.model.preferences.BooleanPreference
+import dev.zitech.core.persistence.domain.model.preferences.PreferenceType
+import dev.zitech.core.persistence.domain.repository.preferences.SavePreferencesRepository
 import javax.inject.Inject
 
-@Suppress("UnusedPrivateMember", "UNUSED_PARAMETER")
-internal class PerformanceAnalyticsImpl @Inject constructor(
-    context: Context
-) : PerformanceAnalytics {
+class SavePerformanceCollectionValueUseCase @Inject constructor(
+    private val savePreferencesRepository: SavePreferencesRepository
+) {
 
-    private val firebasePerformance = Firebase.performance
-
-    override fun setCollectionEnabled(enabled: Boolean) {
-        firebasePerformance.isPerformanceCollectionEnabled = enabled
-    }
+    suspend operator fun invoke(value: Boolean) =
+        savePreferencesRepository.saveBoolean(
+            PreferenceType.STANDARD,
+            BooleanPreference.PERFORMANCE_COLLECTION.key,
+            value
+        )
 }

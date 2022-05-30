@@ -29,10 +29,11 @@ import dev.zitech.analytics.data.repository.PerformanceRepositoryImpl
 import dev.zitech.analytics.domain.repository.AnalyticsRepository
 import dev.zitech.analytics.domain.repository.PerformanceRepository
 import dev.zitech.analytics.domain.source.AnalyticsProviderSource
-import dev.zitech.analytics.framework.analytics.PerformanceAnalytics
-import dev.zitech.analytics.framework.analytics.PerformanceAnalyticsImpl
+import dev.zitech.analytics.domain.source.PerformanceProviderSource
 import dev.zitech.analytics.framework.analytics.RemoteAnalytics
 import dev.zitech.analytics.framework.analytics.RemoteAnalyticsImpl
+import dev.zitech.analytics.framework.analytics.RemoteMonitor
+import dev.zitech.analytics.framework.analytics.RemoteMonitorImpl
 import dev.zitech.analytics.framework.source.AnalyticsProviderSourceImpl
 import dev.zitech.analytics.framework.source.PerformanceProviderSourceImpl
 import javax.inject.Singleton
@@ -51,7 +52,7 @@ internal interface AnalyticsSingletonBindsModule {
     @Binds
     fun performanceProviderSource(
         performanceProviderSourceImpl: PerformanceProviderSourceImpl
-    ): AnalyticsProviderSource
+    ): PerformanceProviderSource
 
     @Singleton
     @Binds
@@ -59,9 +60,9 @@ internal interface AnalyticsSingletonBindsModule {
 
     @Singleton
     @Binds
-    fun performanceAnalytics(
-        performanceAnalyticsImpl: PerformanceAnalyticsImpl
-    ): PerformanceAnalytics
+    fun remoteMonitor(
+        remoteMonitorImpl: RemoteMonitorImpl
+    ): RemoteMonitor
 
     @Singleton
     @Binds
@@ -92,7 +93,7 @@ internal object AnalyticsSingletonProvidesModule {
     @Provides
     fun performanceAnalytics(
         @ApplicationContext context: Context
-    ) = PerformanceAnalyticsImpl(
+    ) = RemoteMonitorImpl(
         context = context
     )
 }

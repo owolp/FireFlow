@@ -24,5 +24,6 @@ interface UserAccountRepository {
 
     suspend fun getCurrentUserAccount(): DataResult<UserAccount>
     suspend fun getUserAccounts(): DataResult<List<UserAccount>>
+    suspend fun isUserLoggedIn(): DataResult<Boolean>
     suspend fun saveUserAccount(isCurrentUserAccount: Boolean): DataResult<Long>
 }
