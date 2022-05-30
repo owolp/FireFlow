@@ -19,7 +19,6 @@ package dev.zitech.core.featureflag.data.provider
 
 import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.featureflag.domain.model.Feature
-import dev.zitech.core.featureflag.domain.model.ProdFeature
 import dev.zitech.core.featureflag.domain.provider.FeatureFlagProvider
 import dev.zitech.core.remoteconfig.framework.configurator.RemoteConfigurator
 import javax.inject.Inject
@@ -38,7 +37,6 @@ internal class RemoteFeatureFlagProvider @Inject constructor(
 
     override suspend fun hasFeature(feature: Feature): Boolean =
         when (feature) {
-            ProdFeature.APP_ACTIVE -> true
             else -> false
         }
 }
