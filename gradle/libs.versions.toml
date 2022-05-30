@@ -38,6 +38,7 @@ google-dagger-hilt-compiler = { module = "com.google.dagger:hilt-compiler", vers
 google-dagger-hilt-gradle = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "dagger" }
 google-firebase-bom = "com.google.firebase:firebase-bom:30.0.2"
 google-firebase-crashlytics-gradle = "com.google.firebase:firebase-crashlytics-gradle:2.8.1"
+google-firebase-performance-gradle = "com.google.firebase:perf-plugin:1.4.1"
 google-material = "com.google.android.material:material:1.6.0"
 google-gms-services = "com.google.gms:google-services:4.3.10"
 google-truth = "com.google.truth:truth:1.1.3"

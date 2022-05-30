@@ -23,6 +23,7 @@ plugins {
     id(BuildPlugins.AGPCONNECT)
     id(BuildPlugins.GOOGLE_SERVICES)
     id(BuildPlugins.FIREBASE_CRASHLYTICS)
+    id(BuildPlugins.FIREBASE_PERFORMANCE)
     id(BuildPlugins.DAGGER)
     id(BuildPlugins.KOTLIN_ANDROID)
     kotlin(BuildPlugins.KAPT)

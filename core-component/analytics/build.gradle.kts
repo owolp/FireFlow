@@ -34,6 +34,7 @@ dependencies {
 
     playImplementation(platform(libs.google.firebase.bom))
     playImplementation("com.google.firebase:firebase-analytics-ktx")
+    playImplementation("com.google.firebase:firebase-perf-ktx")
 
     galleryImplementation(libs.huawei.hms.hianalytics)
 }
