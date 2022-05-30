@@ -15,16 +15,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.persistence.domain.usecase.database
+package dev.zitech.core.persistence.domain.model.database
 
-import dev.zitech.core.common.domain.model.DataResult
-import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
-import javax.inject.Inject
-
-class IsUserLoggedInUseCase @Inject constructor(
-    private val userAccountRepository: UserAccountRepository
-) {
-
-    suspend operator fun invoke(): DataResult<Boolean> =
-        userAccountRepository.isUserLoggedIn()
+enum class UserLoggedState {
+    LOGGED_IN, LOGGED_OUT
 }

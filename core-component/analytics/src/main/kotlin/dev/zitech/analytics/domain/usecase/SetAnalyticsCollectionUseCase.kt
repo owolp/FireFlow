@@ -18,20 +18,21 @@
 package dev.zitech.analytics.domain.usecase
 
 import dev.zitech.analytics.domain.repository.AnalyticsRepository
-import dev.zitech.core.common.domain.applicationconfig.AppConfigProvider
-import dev.zitech.core.common.domain.model.BuildMode
+import dev.zitech.core.persistence.domain.model.database.UserLoggedState.LOGGED_IN
+import dev.zitech.core.persistence.domain.model.database.UserLoggedState.LOGGED_OUT
+import dev.zitech.core.persistence.domain.usecase.database.GetUserLoggedStateUseCase
+import dev.zitech.core.persistence.domain.usecase.preferences.GetAnalyticsCollectionValueUseCase
 import javax.inject.Inject
 
 class SetAnalyticsCollectionUseCase @Inject constructor(
-    private val appConfigProvider: AppConfigProvider,
-    private val analyticsRepository: AnalyticsRepository
+    private val analyticsRepository: AnalyticsRepository,
+    private val getUserLoggedStateUseCase: GetUserLoggedStateUseCase,
+    private val getAnalyticsCollectionValueUseCase: GetAnalyticsCollectionValueUseCase
 ) {
 
-    operator fun invoke(enabled: Boolean) =
-        analyticsRepository.setCollectionEnabled(
-            when (appConfigProvider.buildMode) {
-                BuildMode.RELEASE -> enabled
-                BuildMode.DEBUG -> false
-            }
-        )
+    suspend operator fun invoke(enabled: Boolean? = null) =
+        enabled ?: when (getUserLoggedStateUseCase()) {
+            LOGGED_IN -> getAnalyticsCollectionValueUseCase()
+            LOGGED_OUT -> false
+        }.let { analyticsRepository.setCollectionEnabled(it) }
 }

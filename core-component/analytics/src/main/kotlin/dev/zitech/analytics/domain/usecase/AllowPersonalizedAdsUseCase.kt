@@ -18,12 +18,20 @@
 package dev.zitech.analytics.domain.usecase
 
 import dev.zitech.analytics.domain.repository.AnalyticsRepository
+import dev.zitech.core.persistence.domain.model.database.UserLoggedState
+import dev.zitech.core.persistence.domain.usecase.database.GetUserLoggedStateUseCase
+import dev.zitech.core.persistence.domain.usecase.preferences.GetAllowPersonalizedAdsValueUseCase
 import javax.inject.Inject
 
 class AllowPersonalizedAdsUseCase @Inject constructor(
-    private val analyticsRepository: AnalyticsRepository
+    private val analyticsRepository: AnalyticsRepository,
+    private val getUserLoggedStateUseCase: GetUserLoggedStateUseCase,
+    private val getAllowPersonalizedAdsValueUseCase: GetAllowPersonalizedAdsValueUseCase
 ) {
 
-    operator fun invoke(enabled: Boolean) =
-        analyticsRepository.allowPersonalizedAds(enabled)
+    suspend operator fun invoke(enabled: Boolean? = null) =
+        enabled ?: when (getUserLoggedStateUseCase()) {
+            UserLoggedState.LOGGED_IN -> getAllowPersonalizedAdsValueUseCase()
+            UserLoggedState.LOGGED_OUT -> false
+        }.let { analyticsRepository.allowPersonalizedAds(it) }
 }

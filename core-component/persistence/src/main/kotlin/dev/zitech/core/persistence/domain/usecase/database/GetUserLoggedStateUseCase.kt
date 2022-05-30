@@ -15,16 +15,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.persistence.domain.repository.database
+package dev.zitech.core.persistence.domain.usecase.database
 
-import dev.zitech.core.common.domain.model.DataResult
-import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.domain.model.database.UserLoggedState
+import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
+import javax.inject.Inject
 
-interface UserAccountRepository {
+class GetUserLoggedStateUseCase @Inject constructor(
+    private val userAccountRepository: UserAccountRepository
+) {
 
-    suspend fun getCurrentUserAccount(): DataResult<UserAccount>
-    suspend fun getUserAccounts(): DataResult<List<UserAccount>>
-    suspend fun getUserLoggedState(): UserLoggedState
-    suspend fun saveUserAccount(isCurrentUserAccount: Boolean): DataResult<Long>
+    suspend operator fun invoke(): UserLoggedState =
+        userAccountRepository.getUserLoggedState()
 }

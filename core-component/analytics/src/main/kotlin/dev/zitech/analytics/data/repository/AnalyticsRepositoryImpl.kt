@@ -23,6 +23,7 @@ import dev.zitech.analytics.domain.repository.AnalyticsRepository
 import dev.zitech.analytics.domain.source.AnalyticsProviderSource
 import dev.zitech.core.common.domain.applicationconfig.AppConfigProvider
 import dev.zitech.core.common.domain.model.BuildFlavor
+import dev.zitech.core.common.domain.model.BuildMode
 import javax.inject.Inject
 
 internal class AnalyticsRepositoryImpl @Inject constructor(
@@ -34,7 +35,12 @@ internal class AnalyticsRepositoryImpl @Inject constructor(
         analyticsProviderSource.allowPersonalizedAds(enabled)
 
     override fun setCollectionEnabled(enabled: Boolean) =
-        analyticsProviderSource.setCollectionEnabled(enabled)
+        analyticsProviderSource.setCollectionEnabled(
+            when (appConfigProvider.buildMode) {
+                BuildMode.RELEASE -> enabled
+                BuildMode.DEBUG -> false
+            }
+        )
 
     override fun logEvent(analyticsEvent: AnalyticsEvent) {
         if (isValidAnalyticsProvider(analyticsEvent)) {

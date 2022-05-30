@@ -22,8 +22,6 @@ import androidx.startup.Initializer
 import dev.zitech.analytics.domain.usecase.AllowPersonalizedAdsUseCase
 import dev.zitech.analytics.domain.usecase.SetAnalyticsCollectionUseCase
 import dev.zitech.core.common.domain.scope.AppScopes
-import dev.zitech.core.persistence.domain.usecase.preferences.GetAllowPersonalizedAdsValueUseCase
-import dev.zitech.core.persistence.domain.usecase.preferences.GetAnalyticsCollectionValueUseCase
 import dev.zitech.fireflow.di.InitializerEntryPoint
 import javax.inject.Inject
 
@@ -38,22 +36,14 @@ internal class AnalyticsInitializer : Initializer<Unit> {
     @Inject
     lateinit var setAnalyticsCollectionUseCase: SetAnalyticsCollectionUseCase
 
-    @Inject
-    lateinit var getAllowPersonalizedAdsValueUseCase: GetAllowPersonalizedAdsValueUseCase
-
-    @Inject
-    lateinit var getAnalyticsCollectionValueUseCase: GetAnalyticsCollectionValueUseCase
-
     override fun create(context: Context) {
         InitializerEntryPoint.resolve(context).inject(this)
 
         appScopes.singletonLaunch {
-            setAnalyticsCollectionUseCase(
-                getAnalyticsCollectionValueUseCase()
-            )
-            allowPersonalizedAdsValueUseCase(
-                getAllowPersonalizedAdsValueUseCase()
-            )
+            setAnalyticsCollectionUseCase()
+        }
+        appScopes.singletonLaunch {
+            allowPersonalizedAdsValueUseCase()
         }
     }
 

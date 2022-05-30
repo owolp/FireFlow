@@ -18,8 +18,9 @@
 package dev.zitech.analytics.domain.usecase
 
 import dev.zitech.analytics.domain.repository.PerformanceRepository
-import dev.zitech.core.common.domain.model.DataResult
-import dev.zitech.core.persistence.domain.usecase.database.IsUserLoggedInUseCase
+import dev.zitech.core.persistence.domain.model.database.UserLoggedState.LOGGED_IN
+import dev.zitech.core.persistence.domain.model.database.UserLoggedState.LOGGED_OUT
+import dev.zitech.core.persistence.domain.usecase.database.GetUserLoggedStateUseCase
 import dev.zitech.core.persistence.domain.usecase.preferences.GetPerformanceCollectionValueUseCase
 import dev.zitech.core.remoteconfig.domain.model.BooleanConfig
 import dev.zitech.core.remoteconfig.domain.usecase.GetBooleanConfigValueUseCase
@@ -27,25 +28,17 @@ import javax.inject.Inject
 
 class SetPerformanceCollectionUseCase @Inject constructor(
     private val performanceRepository: PerformanceRepository,
-    private val isUserLoggedInUseCase: IsUserLoggedInUseCase,
+    private val getUserLoggedStateUseCase: GetUserLoggedStateUseCase,
     private val getPerformanceCollectionValueUseCase: GetPerformanceCollectionValueUseCase,
     private val getBooleanConfigValueUseCase: GetBooleanConfigValueUseCase
 ) {
 
-    suspend operator fun invoke() =
-        when (val result = isUserLoggedInUseCase()) {
-            is DataResult.Success -> {
-                if (result.value) {
-                    getPerformanceCollectionValueUseCase() &&
-                        getBooleanConfigValueUseCase(BooleanConfig.PERFORMANCE_COLLECTION_ENABLED)
-                } else {
-                    false
-                }
+    suspend operator fun invoke(enabled: Boolean? = null) =
+        enabled ?: when (getUserLoggedStateUseCase()) {
+            LOGGED_IN -> {
+                getPerformanceCollectionValueUseCase() &&
+                    getBooleanConfigValueUseCase(BooleanConfig.PERFORMANCE_COLLECTION_ENABLED)
             }
-            is DataResult.Error -> {
-                false
-            }
-        }.let { enabled ->
-            performanceRepository.setCollectionEnabled(enabled)
-        }
+            LOGGED_OUT -> false
+        }.let { performanceRepository.setCollectionEnabled(it) }
 }
