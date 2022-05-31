@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.analytics.framework.reporter
+package dev.zitech.core.reporter.crash.framework
 
 import dev.zitech.core.reporter.crash.domain.reporter.CrashReporter
 

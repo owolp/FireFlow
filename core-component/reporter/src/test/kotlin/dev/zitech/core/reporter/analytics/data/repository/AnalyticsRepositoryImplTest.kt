@@ -15,18 +15,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.analytics.data.repository
+package dev.zitech.core.reporter.analytics.data.repository
 
 import com.google.common.truth.Truth.assertThat
-import dev.zitech.core.reporter.analytics.data.repository.AnalyticsRepositoryImpl
-import dev.zitech.analytics.domain.model.AnalyticsEventFactory
-import dev.zitech.core.reporter.analytics.domain.model.AnalyticsProvider
-import dev.zitech.core.reporter.analytics.domain.repository.AnalyticsRepository
-import dev.zitech.analytics.framework.analytics.FakeAnalyticsReporter
-import dev.zitech.core.reporter.analytics.framework.AnalyticsProviderSourceImpl
+import dev.zitech.core.reporter.analytics.domain.model.AnalyticsEventFactory
+import dev.zitech.core.reporter.analytics.framework.FakeAnalyticsReporter
 import dev.zitech.core.common.DataFactory
 import dev.zitech.core.common.domain.model.BuildFlavor
 import dev.zitech.core.common.framework.applicationconfig.FakeAppConfigProvider
+import dev.zitech.core.reporter.analytics.domain.model.AnalyticsProvider
+import dev.zitech.core.reporter.analytics.domain.repository.AnalyticsRepository
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -34,9 +32,6 @@ internal class AnalyticsRepositoryImplTest {
 
     private val appConfigProvider = FakeAppConfigProvider()
     private val remoteAnalytics = FakeAnalyticsReporter()
-    private val analyticsProviderSource = AnalyticsProviderSourceImpl(
-        remoteAnalytics
-    )
 
     private lateinit var sut: AnalyticsRepository
 
@@ -44,7 +39,7 @@ internal class AnalyticsRepositoryImplTest {
     fun setup() {
         sut = AnalyticsRepositoryImpl(
             appConfigProvider,
-            analyticsProviderSource
+            remoteAnalytics
         )
     }
 

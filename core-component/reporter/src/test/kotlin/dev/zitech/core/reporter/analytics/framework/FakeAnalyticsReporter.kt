@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.analytics.framework.analytics
+package dev.zitech.core.reporter.analytics.framework
 
 import dev.zitech.core.reporter.analytics.domain.reporter.AnalyticsReporter
 

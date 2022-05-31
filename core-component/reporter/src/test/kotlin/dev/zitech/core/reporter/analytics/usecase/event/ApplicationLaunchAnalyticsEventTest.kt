@@ -15,16 +15,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.analytics.domain.usecase.analytics.event
+package dev.zitech.core.reporter.analytics.usecase.event
 
 import com.google.common.truth.Truth.assertThat
+import dev.zitech.core.common.domain.model.BuildFlavor
+import dev.zitech.core.common.framework.applicationconfig.FakeAppConfigProvider
 import dev.zitech.core.reporter.analytics.data.repository.AnalyticsRepositoryImpl
 import dev.zitech.core.reporter.analytics.domain.model.event.ApplicationLaunchEvent
 import dev.zitech.core.reporter.analytics.domain.usecase.event.ApplicationLaunchAnalyticsEvent
-import dev.zitech.analytics.framework.analytics.FakeAnalyticsReporter
-import dev.zitech.core.reporter.analytics.framework.AnalyticsProviderSourceImpl
-import dev.zitech.core.common.domain.model.BuildFlavor
-import dev.zitech.core.common.framework.applicationconfig.FakeAppConfigProvider
+import dev.zitech.core.reporter.analytics.framework.FakeAnalyticsReporter
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -32,12 +31,9 @@ internal class ApplicationLaunchAnalyticsEventTest {
 
     private val appConfigProvider = FakeAppConfigProvider()
     private val remoteAnalytics = FakeAnalyticsReporter()
-    private val analyticsProviderSource = AnalyticsProviderSourceImpl(
-        remoteAnalytics
-    )
     private val analyticsRepository = AnalyticsRepositoryImpl(
         appConfigProvider,
-        analyticsProviderSource
+        remoteAnalytics
     )
 
     private lateinit var sut: ApplicationLaunchAnalyticsEvent

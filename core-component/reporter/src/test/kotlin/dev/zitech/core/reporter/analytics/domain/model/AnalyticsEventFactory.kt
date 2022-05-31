@@ -15,9 +15,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.analytics.domain.model
+package dev.zitech.core.reporter.analytics.domain.model
 
-import dev.zitech.core.reporter.analytics.domain.model.AnalyticsProvider
 import dev.zitech.core.reporter.analytics.domain.model.event.AnalyticsEvent
 
 object AnalyticsEventFactory {

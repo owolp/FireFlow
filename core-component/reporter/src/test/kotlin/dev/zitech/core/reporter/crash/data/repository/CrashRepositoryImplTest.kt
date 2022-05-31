@@ -15,18 +15,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.analytics.data.repository
+package dev.zitech.core.reporter.crash.data.repository
 
 import com.google.common.truth.Truth.assertThat
+import dev.zitech.core.reporter.crash.framework.FakeCrashReporter
+import dev.zitech.core.common.framework.applicationconfig.FakeAppConfigProvider
 import dev.zitech.core.reporter.crash.domain.repository.CrashRepository
-import dev.zitech.analytics.framework.reporter.FakeCrashReporter
-import dev.zitech.core.reporter.crash.data.repository.CrashRepositoryImpl
 import io.mockk.mockkClass
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 internal class CrashRepositoryImplTest {
 
+    private val appConfigProvider = FakeAppConfigProvider()
     private val crashReporter = FakeCrashReporter()
 
     private lateinit var sut: CrashRepository
@@ -34,6 +35,7 @@ internal class CrashRepositoryImplTest {
     @BeforeEach
     fun setup() {
         sut = CrashRepositoryImpl(
+            appConfigProvider,
             crashReporter
         )
     }
@@ -89,7 +91,7 @@ internal class CrashRepositoryImplTest {
     }
 
     @Test
-    fun setCrashCollectionEnabled() {
+    fun setCollectionEnabled() {
         // Arrange
         val enabled = true
 
