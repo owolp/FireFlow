@@ -32,6 +32,7 @@ dependencies {
     implementation(libs.google.dagger.hilt.android)
     kapt(libs.google.dagger.hilt.compiler)
     implementation(libs.jetbrains.kotlin.coroutines.android)
+    implementation(libs.jakewharton.timber)
 
     fossImplementation(libs.acra.http)
 

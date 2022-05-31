@@ -24,6 +24,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import dev.zitech.core.common.domain.logger.ErrorTree
 import dev.zitech.core.reporter.analytics.data.repository.AnalyticsRepositoryImpl
 import dev.zitech.core.reporter.analytics.domain.reporter.AnalyticsReporter
 import dev.zitech.core.reporter.analytics.domain.repository.AnalyticsRepository
@@ -32,6 +33,7 @@ import dev.zitech.core.reporter.crash.data.repository.CrashRepositoryImpl
 import dev.zitech.core.reporter.crash.domain.reporter.CrashReporter
 import dev.zitech.core.reporter.crash.domain.repository.CrashRepository
 import dev.zitech.core.reporter.crash.framework.CrashReporterImpl
+import dev.zitech.core.reporter.crash.framework.ErrorTreeImpl
 import dev.zitech.core.reporter.performance.data.repository.PerformanceRepositoryImpl
 import dev.zitech.core.reporter.performance.domain.reporter.PerformanceReporter
 import dev.zitech.core.reporter.performance.domain.repository.PerformanceRepository
@@ -67,6 +69,10 @@ internal interface AnalyticsSingletonBindsModule {
     fun performanceRepository(
         performanceRepositoryImpl: PerformanceRepositoryImpl
     ): PerformanceRepository
+
+    @Singleton
+    @Binds
+    fun errorTree(errorTreeImpl: ErrorTreeImpl): ErrorTree
 }
 
 @InstallIn(SingletonComponent::class)

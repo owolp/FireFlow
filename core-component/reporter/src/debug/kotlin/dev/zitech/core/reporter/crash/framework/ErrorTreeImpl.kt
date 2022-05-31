@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.common.framework.logger
+package dev.zitech.core.reporter.crash.framework
 
 import dev.zitech.core.common.domain.logger.ErrorTree
 import javax.inject.Inject
