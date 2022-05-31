@@ -19,10 +19,6 @@ package dev.zitech.core.reporter.crash.framework
 
 import android.util.Log
 import dev.zitech.core.common.domain.logger.ErrorTree
-import dev.zitech.core.common.framework.logger.extractCallerClassName
-import dev.zitech.core.common.framework.logger.extractCallerLineNumber
-import dev.zitech.core.common.framework.logger.extractCallerMethodName
-import dev.zitech.core.common.framework.logger.filter
 import dev.zitech.core.reporter.crash.domain.usecase.LogDebugInfoUseCase
 import dev.zitech.core.reporter.crash.domain.usecase.RecordCrashExceptionUseCase
 import java.io.IOException
