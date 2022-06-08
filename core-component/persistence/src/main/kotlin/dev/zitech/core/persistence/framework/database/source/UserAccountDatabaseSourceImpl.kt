@@ -40,6 +40,9 @@ internal class UserAccountDatabaseSourceImpl @Inject constructor(
             userAccountMapper(it)
         }
 
+    override suspend fun isUserLoggedIn(): Boolean =
+        userAccountDao.getCurrentUserAccount() != null
+
     @Transaction
     override suspend fun saveUserAccount(isCurrentUserAccount: Boolean): Long {
         userAccountDao.removeCurrentUserAccount()

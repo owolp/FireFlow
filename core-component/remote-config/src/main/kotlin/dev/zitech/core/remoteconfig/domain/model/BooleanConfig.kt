@@ -22,4 +22,18 @@ enum class BooleanConfig(
     override val title: String,
     override val explanation: String,
     override val defaultValue: Boolean
-) : Config<Boolean>
+) : Config<Boolean> {
+
+    APP_ACTIVE(
+        key = "app_active",
+        title = "Is Application Active",
+        explanation = "If false, application won't open",
+        defaultValue = true
+    ),
+    PERFORMANCE_COLLECTION_ENABLED(
+        key = "performance_collection_enabled",
+        title = "Is Performance Collection Enabled",
+        explanation = "If true, application performance 3rd party collection tools will be enabled",
+        defaultValue = false
+    )
+}

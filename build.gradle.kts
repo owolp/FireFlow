@@ -40,6 +40,7 @@ buildscript {
         classpath(libs.google.dagger.hilt.gradle)
         classpath(libs.google.gms.services)
         classpath(libs.google.firebase.crashlytics.gradle)
+        classpath(libs.google.firebase.performance.gradle)
         classpath(libs.jetbrains.kotlin.gradle)
         classpath(libs.mannodermaus.gradle.plugins.android.junit5)
     }

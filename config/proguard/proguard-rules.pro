@@ -21,7 +21,6 @@
 #-renamesourcefileattribute SourceFile
 
 # AppGallery Connect SDK
--keep class com.huawei.agconnect.remoteconfig.*{*;}
 -keepclassmembers class **{
     public <init>(android.content.Context,com.huawei.agconnect.AGConnectInstance);
 }
@@ -29,6 +28,15 @@
 -keep class * implements android.os.Parcelable {
     public static final android.os.Parcelable$Creator *;
 }
+
+-keep class com.huawei.agconnect.**{*;}
+-dontwarn com.huawei.agconnect.**
+-keep class com.hianalytics.android.**{*;}
+-keep class com.huawei.updatesdk.**{*;}
+-keep class com.huawei.hms.**{*;}
+-keep interface com.huawei.hms.analytics.type.HAEventType{*;}
+-keep interface com.huawei.hms.analytics.type.HAParamType{*;}
+-keepattributes Exceptions, Signature, InnerClasses, LineNumberTable
 
 # Firebase
 -keepattributes SourceFile,LineNumberTable

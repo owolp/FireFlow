@@ -21,10 +21,9 @@ plugins {
 }
 
 dependencies {
-    api(projects.coreComponent.analytics)
     api(projects.coreComponent.common)
-    api(projects.coreComponent.crashReporter)
     api(projects.coreComponent.featureFlag)
     api(projects.coreComponent.persistence)
     api(projects.coreComponent.remoteConfig)
+    api(projects.coreComponent.reporter)
 }

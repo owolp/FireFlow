@@ -19,6 +19,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="dev.zitech.fireflow">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".FireFlowApplication"
         android:allowBackup="true"
@@ -45,7 +47,7 @@
             tools:node="merge">
 
             <meta-data
-                android:name="dev.zitech.fireflow.initializer.AnalyticsInitializer"
+                android:name="dev.zitech.fireflow.initializer.AnalyticsReporterInitializer"
                 android:value="androidx.startup" />
             <meta-data
                 android:name="dev.zitech.fireflow.initializer.CrashReporterInitializer"
@@ -55,6 +57,9 @@
                 android:value="androidx.startup" />
             <meta-data
                 android:name="dev.zitech.fireflow.initializer.LoggerInitializer"
+                android:value="androidx.startup" />
+            <meta-data
+                android:name="dev.zitech.fireflow.initializer.PerformanceReporterInitializer"
                 android:value="androidx.startup" />
         </provider>
 

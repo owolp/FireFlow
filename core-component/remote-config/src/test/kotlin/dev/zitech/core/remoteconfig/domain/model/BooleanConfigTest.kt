@@ -33,4 +33,16 @@ internal class BooleanConfigTest {
             assertThat(it.explanation).isNotEmpty()
         }
     }
+
+    @Test
+    @DisplayName("APP_ACTIVE default value")
+    fun appActive() {
+        assertThat(BooleanConfig.APP_ACTIVE.defaultValue).isTrue()
+    }
+
+    @Test
+    @DisplayName("PERFORMANCE_COLLECTION_ENABLED default value")
+    fun performanceCollectionEnabled() {
+        assertThat(BooleanConfig.PERFORMANCE_COLLECTION_ENABLED.defaultValue).isFalse()
+    }
 }

@@ -23,6 +23,7 @@ plugins {
     id(BuildPlugins.AGPCONNECT)
     id(BuildPlugins.GOOGLE_SERVICES)
     id(BuildPlugins.FIREBASE_CRASHLYTICS)
+    id(BuildPlugins.FIREBASE_PERFORMANCE)
     id(BuildPlugins.DAGGER)
     id(BuildPlugins.KOTLIN_ANDROID)
     kotlin(BuildPlugins.KAPT)
@@ -37,6 +38,14 @@ android {
             agcp {
                 mappingUpload = false
                 debug = true
+            }
+            configure<com.huawei.agconnect.apms.plugin.APMSExtension> {
+                instrumentationEnabled = false
+            }
+            withGroovyBuilder {
+                "FirebasePerformance" {
+                    invokeMethod("setInstrumentationEnabled", false)
+                }
             }
         }
     }
@@ -58,6 +67,7 @@ android {
             agcp {
                 mappingUpload = true
                 debug = false
+                enableAPMS = true
             }
         }
     }

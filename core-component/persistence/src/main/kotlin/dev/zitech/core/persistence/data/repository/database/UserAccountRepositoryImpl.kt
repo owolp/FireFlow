@@ -22,6 +22,7 @@ import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.common.domain.strings.StringsProvider
 import dev.zitech.core.persistence.R
 import dev.zitech.core.persistence.domain.model.database.UserAccount
+import dev.zitech.core.persistence.domain.model.database.UserLoggedState
 import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
 import dev.zitech.core.persistence.domain.source.database.UserAccountDatabaseSource
 import javax.inject.Inject
@@ -56,6 +57,19 @@ internal class UserAccountRepositoryImpl @Inject constructor(
             }
         } catch (exception: Exception) {
             DataResult.Error(cause = exception)
+        }
+
+    @Suppress("SwallowedException")
+    override suspend fun getUserLoggedState(): UserLoggedState =
+        try {
+            userAccountDatabaseSource.isUserLoggedIn()
+            if (userAccountDatabaseSource.isUserLoggedIn()) {
+                UserLoggedState.LOGGED_IN
+            } else {
+                UserLoggedState.LOGGED_OUT
+            }
+        } catch (exception: Exception) {
+            UserLoggedState.LOGGED_OUT
         }
 
     override suspend fun saveUserAccount(isCurrentUserAccount: Boolean): DataResult<Long> =
