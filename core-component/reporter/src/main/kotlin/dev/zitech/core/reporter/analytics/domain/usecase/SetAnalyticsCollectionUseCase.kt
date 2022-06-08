@@ -31,8 +31,10 @@ class SetAnalyticsCollectionUseCase @Inject constructor(
 ) {
 
     suspend operator fun invoke(enabled: Boolean? = null) =
-        enabled ?: when (getUserLoggedStateUseCase()) {
-            LOGGED_IN -> getAnalyticsCollectionValueUseCase()
-            LOGGED_OUT -> false
-        }.let { analyticsRepository.setCollectionEnabled(it) }
+        (
+            enabled ?: when (getUserLoggedStateUseCase()) {
+                LOGGED_IN -> getAnalyticsCollectionValueUseCase()
+                LOGGED_OUT -> false
+            }
+            ).run { analyticsRepository.setCollectionEnabled(this) }
 }

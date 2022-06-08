@@ -31,8 +31,10 @@ class AllowPersonalizedAdsUseCase @Inject constructor(
 ) {
 
     suspend operator fun invoke(enabled: Boolean? = null) =
-        enabled ?: when (getUserLoggedStateUseCase()) {
-            LOGGED_IN -> getAllowPersonalizedAdsValueUseCase()
-            LOGGED_OUT -> false
-        }.let { analyticsRepository.allowPersonalizedAds(it) }
+        (
+            enabled ?: when (getUserLoggedStateUseCase()) {
+                LOGGED_IN -> getAllowPersonalizedAdsValueUseCase()
+                LOGGED_OUT -> false
+            }
+            ).run { analyticsRepository.allowPersonalizedAds(this) }
 }
