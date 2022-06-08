@@ -18,20 +18,20 @@
 package dev.zitech.core.reporter.analytics.data.repository
 
 import com.google.common.truth.Truth.assertThat
-import dev.zitech.core.reporter.analytics.domain.model.AnalyticsEventFactory
-import dev.zitech.core.reporter.analytics.framework.FakeAnalyticsReporter
 import dev.zitech.core.common.DataFactory
 import dev.zitech.core.common.domain.model.BuildFlavor
 import dev.zitech.core.common.framework.applicationconfig.FakeAppConfigProvider
+import dev.zitech.core.reporter.analytics.domain.model.AnalyticsEventFactory
 import dev.zitech.core.reporter.analytics.domain.model.AnalyticsProvider
 import dev.zitech.core.reporter.analytics.domain.repository.AnalyticsRepository
+import dev.zitech.core.reporter.analytics.framework.FakeAnalyticsReporter
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 internal class AnalyticsRepositoryImplTest {
 
     private val appConfigProvider = FakeAppConfigProvider()
-    private val remoteAnalytics = FakeAnalyticsReporter()
+    private val analyticsReporter = FakeAnalyticsReporter()
 
     private lateinit var sut: AnalyticsRepository
 
@@ -39,7 +39,7 @@ internal class AnalyticsRepositoryImplTest {
     fun setup() {
         sut = AnalyticsRepositoryImpl(
             appConfigProvider,
-            remoteAnalytics
+            analyticsReporter
         )
     }
 
@@ -52,7 +52,7 @@ internal class AnalyticsRepositoryImplTest {
         sut.allowPersonalizedAds(expectedResult)
 
         // Assert
-        assertThat(remoteAnalytics.allowPersonalizedAdsValue).isEqualTo(expectedResult)
+        assertThat(analyticsReporter.allowPersonalizedAdsValue).isEqualTo(expectedResult)
     }
 
     @Test
@@ -64,7 +64,7 @@ internal class AnalyticsRepositoryImplTest {
         sut.setCollectionEnabled(expectedResult)
 
         // Assert
-        assertThat(remoteAnalytics.setCollectionEnabledValue).isEqualTo(expectedResult)
+        assertThat(analyticsReporter.setCollectionEnabledValue).isEqualTo(expectedResult)
     }
 
     @Test
@@ -77,7 +77,7 @@ internal class AnalyticsRepositoryImplTest {
         sut.logEvent(analyticsEvent)
 
         // Assert
-        assertThat(remoteAnalytics.events).isEmpty()
+        assertThat(analyticsReporter.events).isEmpty()
     }
 
     @Test
@@ -90,7 +90,7 @@ internal class AnalyticsRepositoryImplTest {
         sut.logEvent(analyticsEvent)
 
         // Assert
-        assertThat(remoteAnalytics.events).isEmpty()
+        assertThat(analyticsReporter.events).isEmpty()
     }
 
     @Test
@@ -102,11 +102,11 @@ internal class AnalyticsRepositoryImplTest {
         )
 
         // Act
-        assertThat(remoteAnalytics.events).isEmpty()
+        assertThat(analyticsReporter.events).isEmpty()
         sut.logEvent(analyticsEvent)
 
         // Assert
-        assertThat(remoteAnalytics.events).hasSize(0)
+        assertThat(analyticsReporter.events).hasSize(0)
     }
 
     @Test
@@ -118,12 +118,12 @@ internal class AnalyticsRepositoryImplTest {
         )
 
         // Act
-        assertThat(remoteAnalytics.events).isEmpty()
+        assertThat(analyticsReporter.events).isEmpty()
         sut.logEvent(analyticsEvent)
 
         // Assert
-        assertThat(remoteAnalytics.events).hasSize(1)
-        assertThat(remoteAnalytics.events[analyticsEvent.name]).isEqualTo(analyticsEvent.params)
+        assertThat(analyticsReporter.events).hasSize(1)
+        assertThat(analyticsReporter.events[analyticsEvent.name]).isEqualTo(analyticsEvent.params)
     }
 
     @Test
@@ -135,11 +135,11 @@ internal class AnalyticsRepositoryImplTest {
         )
 
         // Act
-        assertThat(remoteAnalytics.events).isEmpty()
+        assertThat(analyticsReporter.events).isEmpty()
         sut.logEvent(analyticsEvent)
 
         // Assert
-        assertThat(remoteAnalytics.events).hasSize(0)
+        assertThat(analyticsReporter.events).hasSize(0)
     }
 
     @Test
@@ -151,11 +151,11 @@ internal class AnalyticsRepositoryImplTest {
         )
 
         // Act
-        assertThat(remoteAnalytics.events).isEmpty()
+        assertThat(analyticsReporter.events).isEmpty()
         sut.logEvent(analyticsEvent)
 
         // Assert
-        assertThat(remoteAnalytics.events).hasSize(1)
-        assertThat(remoteAnalytics.events[analyticsEvent.name]).isEqualTo(analyticsEvent.params)
+        assertThat(analyticsReporter.events).hasSize(1)
+        assertThat(analyticsReporter.events[analyticsEvent.name]).isEqualTo(analyticsEvent.params)
     }
 }

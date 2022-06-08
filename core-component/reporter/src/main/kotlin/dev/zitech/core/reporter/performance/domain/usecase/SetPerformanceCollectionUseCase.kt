@@ -34,11 +34,13 @@ class SetPerformanceCollectionUseCase @Inject constructor(
 ) {
 
     suspend operator fun invoke(enabled: Boolean? = null) =
-        enabled ?: when (getUserLoggedStateUseCase()) {
-            LOGGED_IN -> {
-                getPerformanceCollectionValueUseCase() &&
-                    getBooleanConfigValueUseCase(BooleanConfig.PERFORMANCE_COLLECTION_ENABLED)
+        (
+            enabled ?: when (getUserLoggedStateUseCase()) {
+                LOGGED_IN -> {
+                    getPerformanceCollectionValueUseCase() &&
+                        getBooleanConfigValueUseCase(BooleanConfig.PERFORMANCE_COLLECTION_ENABLED)
+                }
+                LOGGED_OUT -> false
             }
-            LOGGED_OUT -> false
-        }.let { performanceRepository.setCollectionEnabled(it) }
+            ).run { performanceRepository.setCollectionEnabled(this) }
 }

@@ -15,13 +15,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.reporter.analytics.domain.usecase
+package dev.zitech.core.reporter.performance.domain.usecase
 
 import dev.zitech.core.common.DataFactory
 import dev.zitech.core.persistence.domain.model.database.UserLoggedState
 import dev.zitech.core.persistence.domain.usecase.database.GetUserLoggedStateUseCase
-import dev.zitech.core.persistence.domain.usecase.preferences.GetAnalyticsCollectionValueUseCase
-import dev.zitech.core.reporter.analytics.domain.repository.AnalyticsRepository
+import dev.zitech.core.persistence.domain.usecase.preferences.GetPerformanceCollectionValueUseCase
+import dev.zitech.core.remoteconfig.domain.model.BooleanConfig
+import dev.zitech.core.remoteconfig.domain.usecase.GetBooleanConfigValueUseCase
+import dev.zitech.core.reporter.performance.domain.repository.PerformanceRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -32,20 +34,22 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 @ExperimentalCoroutinesApi
-internal class SetAnalyticsCollectionUseCaseTest {
+internal class SetPerformanceCollectionUseCaseTest {
 
-    private val analyticsRepository = mockk<AnalyticsRepository>(relaxUnitFun = true)
+    private val performanceRepository = mockk<PerformanceRepository>(relaxUnitFun = true)
     private val getUserLoggedStateUseCase = mockk<GetUserLoggedStateUseCase>()
-    private val getAnalyticsCollectionValueUseCase = mockk<GetAnalyticsCollectionValueUseCase>()
+    private val getPerformanceCollectionValueUseCase = mockk<GetPerformanceCollectionValueUseCase>()
+    private val getBooleanConfigValueUseCase = mockk<GetBooleanConfigValueUseCase>()
 
-    private lateinit var sut: SetAnalyticsCollectionUseCase
+    private lateinit var sut: SetPerformanceCollectionUseCase
 
     @BeforeEach
     fun setup() {
-        sut = SetAnalyticsCollectionUseCase(
-            analyticsRepository,
+        sut = SetPerformanceCollectionUseCase(
+            performanceRepository,
             getUserLoggedStateUseCase,
-            getAnalyticsCollectionValueUseCase
+            getPerformanceCollectionValueUseCase,
+            getBooleanConfigValueUseCase
         )
     }
 
@@ -58,19 +62,25 @@ internal class SetAnalyticsCollectionUseCaseTest {
         sut(expectedResult)
 
         // Assert
-        verify { analyticsRepository.setCollectionEnabled(expectedResult) }
+        verify { performanceRepository.setCollectionEnabled(expectedResult) }
         coVerify(exactly = 0) {
             getUserLoggedStateUseCase()
-            getAnalyticsCollectionValueUseCase()
+            getPerformanceCollectionValueUseCase()
         }
     }
 
     @Test
     fun `GIVEN enabled null value and user is logged in THEN invoke setCollectionEnabled with correct value`() = runTest {
         // Arrange
-        val expectedResult = DataFactory.createRandomBoolean()
+        val performanceCollectionEnabled = DataFactory.createRandomBoolean()
+        coEvery { getPerformanceCollectionValueUseCase() } returns performanceCollectionEnabled
+
+        val booleanConfigValue = DataFactory.createRandomBoolean()
+        coEvery { getBooleanConfigValueUseCase(BooleanConfig.PERFORMANCE_COLLECTION_ENABLED) } returns booleanConfigValue
+
+        val expectedResult = performanceCollectionEnabled && booleanConfigValue
+
         coEvery { getUserLoggedStateUseCase() } returns UserLoggedState.LOGGED_IN
-        coEvery { getAnalyticsCollectionValueUseCase() } returns expectedResult
 
         // Act
         sut(null)
@@ -78,9 +88,9 @@ internal class SetAnalyticsCollectionUseCaseTest {
         // Assert
         coVerify {
             getUserLoggedStateUseCase()
-            getAnalyticsCollectionValueUseCase()
+            getPerformanceCollectionValueUseCase()
         }
-        verify { analyticsRepository.setCollectionEnabled(expectedResult) }
+        verify { performanceRepository.setCollectionEnabled(expectedResult) }
     }
 
     @Test
@@ -88,14 +98,14 @@ internal class SetAnalyticsCollectionUseCaseTest {
         // Arrange
         val expectedResult = false
         coEvery { getUserLoggedStateUseCase() } returns UserLoggedState.LOGGED_OUT
-        coEvery { getAnalyticsCollectionValueUseCase() } returns expectedResult
+        coEvery { getPerformanceCollectionValueUseCase() } returns expectedResult
 
         // Act
         sut(null)
 
         // Assert
         coVerify { getUserLoggedStateUseCase() }
-        coVerify(exactly = 0) { getAnalyticsCollectionValueUseCase() }
-        verify { analyticsRepository.setCollectionEnabled(expectedResult) }
+        coVerify(exactly = 0) { getPerformanceCollectionValueUseCase() }
+        verify { performanceRepository.setCollectionEnabled(expectedResult) }
     }
 }
