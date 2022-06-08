@@ -691,6 +691,7 @@ style:
     active: false
   MaxLineLength:
     active: true
+    excludes: [ '**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**' ]
     maxLineLength: 120
     excludePackageStatements: true
     excludeImportStatements: true
