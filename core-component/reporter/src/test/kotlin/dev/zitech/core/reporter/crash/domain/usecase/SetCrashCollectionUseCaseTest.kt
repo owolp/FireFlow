@@ -15,13 +15,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.reporter.analytics.domain.usecase
+package dev.zitech.core.reporter.crash.domain.usecase
 
 import dev.zitech.core.common.DataFactory
 import dev.zitech.core.persistence.domain.model.database.UserLoggedState
 import dev.zitech.core.persistence.domain.usecase.database.GetUserLoggedStateUseCase
-import dev.zitech.core.persistence.domain.usecase.preferences.GetAnalyticsCollectionValueUseCase
-import dev.zitech.core.reporter.analytics.domain.repository.AnalyticsRepository
+import dev.zitech.core.persistence.domain.usecase.preferences.GetCrashReporterCollectionValueUseCase
+import dev.zitech.core.reporter.crash.domain.repository.CrashRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -32,25 +32,25 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 @ExperimentalCoroutinesApi
-internal class SetAnalyticsCollectionUseCaseTest {
+internal class SetCrashCollectionUseCaseTest {
 
-    private val analyticsRepository = mockk<AnalyticsRepository>(relaxUnitFun = true)
+    private val crashRepository = mockk<CrashRepository>(relaxUnitFun = true)
     private val getUserLoggedStateUseCase = mockk<GetUserLoggedStateUseCase>()
-    private val getAnalyticsCollectionValueUseCase = mockk<GetAnalyticsCollectionValueUseCase>()
+    private val getCrashReporterCollectionValueUseCase = mockk<GetCrashReporterCollectionValueUseCase>()
 
-    private lateinit var sut: SetAnalyticsCollectionUseCase
+    private lateinit var sut: SetCrashCollectionUseCase
 
     @BeforeEach
     fun setup() {
-        sut = SetAnalyticsCollectionUseCase(
-            analyticsRepository,
+        sut = SetCrashCollectionUseCase(
+            crashRepository,
             getUserLoggedStateUseCase,
-            getAnalyticsCollectionValueUseCase
+            getCrashReporterCollectionValueUseCase
         )
     }
 
     @Test
-    fun `GIVEN enabled not null value THEN invoke allowPersonalizedAds with correct value`() = runTest {
+    fun `GIVEN enabled not null value THEN invoke setCollectionEnabled with correct value`() = runTest {
         // Arrange
         val expectedResult = DataFactory.createRandomBoolean()
 
@@ -58,19 +58,19 @@ internal class SetAnalyticsCollectionUseCaseTest {
         sut(expectedResult)
 
         // Assert
-        verify { analyticsRepository.setCollectionEnabled(expectedResult) }
+        verify { crashRepository.setCollectionEnabled(expectedResult) }
         coVerify(exactly = 0) {
             getUserLoggedStateUseCase()
-            getAnalyticsCollectionValueUseCase()
+            getCrashReporterCollectionValueUseCase()
         }
     }
 
     @Test
-    fun `GIVEN enabled null value and user is logged in THEN invoke allowPersonalizedAds with correct value`() = runTest {
+    fun `GIVEN enabled null value and user is logged in THEN invoke setCollectionEnabled with correct value`() = runTest {
         // Arrange
         val expectedResult = DataFactory.createRandomBoolean()
         coEvery { getUserLoggedStateUseCase() } returns UserLoggedState.LOGGED_IN
-        coEvery { getAnalyticsCollectionValueUseCase() } returns expectedResult
+        coEvery { getCrashReporterCollectionValueUseCase() } returns expectedResult
 
         // Act
         sut(null)
@@ -78,24 +78,24 @@ internal class SetAnalyticsCollectionUseCaseTest {
         // Assert
         coVerify {
             getUserLoggedStateUseCase()
-            getAnalyticsCollectionValueUseCase()
+            getCrashReporterCollectionValueUseCase()
         }
-        verify { analyticsRepository.setCollectionEnabled(expectedResult) }
+        verify { crashRepository.setCollectionEnabled(expectedResult) }
     }
 
     @Test
-    fun `GIVEN enabled null value and user is not logged in THEN invoke allowPersonalizedAds with correct value`() = runTest {
+    fun `GIVEN enabled null value and user is not logged in THEN invoke setCollectionEnabled with correct value`() = runTest {
         // Arrange
         val expectedResult = false
         coEvery { getUserLoggedStateUseCase() } returns UserLoggedState.LOGGED_OUT
-        coEvery { getAnalyticsCollectionValueUseCase() } returns expectedResult
+        coEvery { getCrashReporterCollectionValueUseCase() } returns expectedResult
 
         // Act
         sut(null)
 
         // Assert
         coVerify { getUserLoggedStateUseCase() }
-        coVerify(exactly = 0) { getAnalyticsCollectionValueUseCase() }
-        verify { analyticsRepository.setCollectionEnabled(expectedResult) }
+        coVerify(exactly = 0) { getCrashReporterCollectionValueUseCase() }
+        verify { crashRepository.setCollectionEnabled(expectedResult) }
     }
 }

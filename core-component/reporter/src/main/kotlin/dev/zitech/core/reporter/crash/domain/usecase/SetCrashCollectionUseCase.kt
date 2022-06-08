@@ -31,13 +31,15 @@ class SetCrashCollectionUseCase @Inject constructor(
 ) {
 
     suspend operator fun invoke(enabled: Boolean? = null) =
-        enabled ?: when (getUserLoggedStateUseCase()) {
-            LOGGED_IN -> getCrashReporterCollectionValueUseCase()
-            LOGGED_OUT -> false
-        }.let {
-            if (it) {
+        (
+            enabled ?: when (getUserLoggedStateUseCase()) {
+                LOGGED_IN -> getCrashReporterCollectionValueUseCase()
+                LOGGED_OUT -> false
+            }
+            ).run {
+            if (this) {
                 crashRepository.init()
             }
-            crashRepository.setCollectionEnabled(it)
+            crashRepository.setCollectionEnabled(this)
         }
 }
