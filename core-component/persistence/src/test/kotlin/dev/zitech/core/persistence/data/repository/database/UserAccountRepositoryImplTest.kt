@@ -20,17 +20,22 @@ package dev.zitech.core.persistence.data.repository.database
 import com.google.common.truth.Truth.assertThat
 import dev.zitech.core.common.DataFactory
 import dev.zitech.core.common.domain.model.DataResult
-import dev.zitech.core.common.framework.strings.FakeStringsProvider
 import dev.zitech.core.common.domain.strings.StringsProvider
+import dev.zitech.core.common.framework.strings.FakeStringsProvider
 import dev.zitech.core.persistence.R
+import dev.zitech.core.persistence.data.cache.UserAccountInMemoryCache
+import dev.zitech.core.persistence.data.repository.cache.FakeCacheRepository
+import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
 import dev.zitech.core.persistence.domain.source.database.UserAccountDatabaseSource
 import dev.zitech.core.persistence.framework.database.dao.FakeUserAccountDao
 import dev.zitech.core.persistence.framework.database.mapper.UserAccountMapper
 import dev.zitech.core.persistence.framework.database.source.UserAccountDatabaseSourceImpl
 import io.mockk.coEvery
+import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkClass
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
@@ -38,6 +43,8 @@ import org.junit.jupiter.api.Test
 
 internal class UserAccountRepositoryImplTest {
 
+    private val fakeCacheRepository = FakeCacheRepository()
+    private val userAccountInMemoryCache = UserAccountInMemoryCache(fakeCacheRepository)
     private val userAccountDatabaseSource: UserAccountDatabaseSource = UserAccountDatabaseSourceImpl(
         FakeUserAccountDao(),
         UserAccountMapper()
@@ -54,6 +61,7 @@ internal class UserAccountRepositoryImplTest {
         fun success() = runBlocking {
             // Arrange
             val sut: UserAccountRepository = UserAccountRepositoryImpl(
+                userAccountInMemoryCache,
                 userAccountDatabaseSource,
                 stringsProvider
             )
@@ -76,6 +84,7 @@ internal class UserAccountRepositoryImplTest {
             val exception = DataFactory.createException()
             coEvery { mockedUserAccountDatabaseSource.getUserAccounts() } throws exception
             val sut: UserAccountRepository = UserAccountRepositoryImpl(
+                userAccountInMemoryCache,
                 mockedUserAccountDatabaseSource,
                 stringsProvider
             )
@@ -92,63 +101,94 @@ internal class UserAccountRepositoryImplTest {
     inner class GetCurrentUserAccount {
 
         @Nested
-        inner class NoException {
+        inner class WithCache {
             @Test
-            @DisplayName("WHEN account is not null THEN return Success")
-            fun accountNotNull() = runBlocking {
+            @DisplayName("WHEN cache is not null THEN return Success")
+            fun cacheNotNull() = runBlocking {
                 // Arrange
-                val sut: UserAccountRepository = UserAccountRepositoryImpl(
-                    userAccountDatabaseSource,
-                    stringsProvider
-                )
-
-                userAccountDatabaseSource.saveUserAccount(true)
-
-                // Act
-                val result = sut.getCurrentUserAccount()
-
-                // Assert
-                assertThat((result as DataResult.Success).value.id).isEqualTo(-1)
-                assertThat(result.value.isCurrentUserAccount).isTrue()
-            }
-
-            @Test
-            @DisplayName("WHEN account is null THEN return Error")
-            fun accountNull() = runBlocking {
-                // Arrange
-                val message = DataFactory.createRandomString()
-                stringsProvider.addString(R.string.error_message_current_user_null, message)
+                val userAccountCache = mockkClass(UserAccount::class)
+                userAccountInMemoryCache.data = userAccountCache
 
                 val sut: UserAccountRepository = UserAccountRepositoryImpl(
-                    userAccountDatabaseSource,
-                    stringsProvider
+                    userAccountInMemoryCache,
+                    mockedUserAccountDatabaseSource,
+                    mockedStringsProvider
                 )
 
                 // Act
                 val result = sut.getCurrentUserAccount()
 
                 // Assert
-                assertThat((result as DataResult.Error).message).isEqualTo(message)
+                assertThat((result as DataResult.Success).value).isEqualTo(userAccountCache)
+                confirmVerified(mockedUserAccountDatabaseSource, mockedStringsProvider)
             }
         }
 
-        @Test
-        @DisplayName("WHEN exception THEN return Error")
-        fun exception() = runBlocking {
-            // Arrange
-            val exception = DataFactory.createException()
-            every { mockedStringsProvider(R.string.error_message_current_user_null) } throws exception
+        @Nested
+        inner class NoCache {
 
-            val sut: UserAccountRepository = UserAccountRepositoryImpl(
-                userAccountDatabaseSource,
-                mockedStringsProvider
-            )
+            @Nested
+            inner class NoException {
+                @Test
+                @DisplayName("WHEN account is not null THEN return Success")
+                fun accountNotNull() = runBlocking {
+                    // Arrange
+                    val sut: UserAccountRepository = UserAccountRepositoryImpl(
+                        userAccountInMemoryCache,
+                        userAccountDatabaseSource,
+                        stringsProvider
+                    )
 
-            // Act
-            val result = sut.getCurrentUserAccount()
+                    userAccountDatabaseSource.saveUserAccount(true)
 
-            // Assert
-            assertThat((result as DataResult.Error).cause).isEqualTo(exception)
+                    // Act
+                    val result = sut.getCurrentUserAccount()
+
+                    // Assert
+                    assertThat((result as DataResult.Success).value.id).isEqualTo(-1)
+                    assertThat(result.value.isCurrentUserAccount).isTrue()
+                }
+
+                @Test
+                @DisplayName("WHEN account is null THEN return Error")
+                fun accountNull() = runBlocking {
+                    // Arrange
+                    val message = DataFactory.createRandomString()
+                    stringsProvider.addString(R.string.error_message_current_user_null, message)
+
+                    val sut: UserAccountRepository = UserAccountRepositoryImpl(
+                        userAccountInMemoryCache,
+                        userAccountDatabaseSource,
+                        stringsProvider
+                    )
+
+                    // Act
+                    val result = sut.getCurrentUserAccount()
+
+                    // Assert
+                    assertThat((result as DataResult.Error).message).isEqualTo(message)
+                }
+            }
+
+            @Test
+            @DisplayName("WHEN exception THEN return Error")
+            fun exception() = runBlocking {
+                // Arrange
+                val exception = DataFactory.createException()
+                every { mockedStringsProvider(R.string.error_message_current_user_null) } throws exception
+
+                val sut: UserAccountRepository = UserAccountRepositoryImpl(
+                    userAccountInMemoryCache,
+                    userAccountDatabaseSource,
+                    mockedStringsProvider
+                )
+
+                // Act
+                val result = sut.getCurrentUserAccount()
+
+                // Assert
+                assertThat((result as DataResult.Error).cause).isEqualTo(exception)
+            }
         }
     }
 
@@ -160,6 +200,7 @@ internal class UserAccountRepositoryImplTest {
         fun success() = runBlocking {
             // Arrange
             val sut: UserAccountRepository = UserAccountRepositoryImpl(
+                userAccountInMemoryCache,
                 userAccountDatabaseSource,
                 stringsProvider
             )
@@ -178,6 +219,7 @@ internal class UserAccountRepositoryImplTest {
             val exception = DataFactory.createException()
             coEvery { mockedUserAccountDatabaseSource.saveUserAccount(true) } throws exception
             val sut: UserAccountRepository = UserAccountRepositoryImpl(
+                userAccountInMemoryCache,
                 mockedUserAccountDatabaseSource,
                 stringsProvider
             )

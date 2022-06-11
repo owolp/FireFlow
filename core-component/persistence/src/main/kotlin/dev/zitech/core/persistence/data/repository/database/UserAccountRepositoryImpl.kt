@@ -50,7 +50,6 @@ internal class UserAccountRepositoryImpl @Inject constructor(
         val currentUserAccount = userAccountInMemoryCache.data
 
         return if (currentUserAccount != null) {
-            Logger.d(TAG, "cache")
             DataResult.Success(currentUserAccount)
         } else {
             try {

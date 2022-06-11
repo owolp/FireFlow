@@ -23,7 +23,7 @@ import java.math.BigInteger
 
 open class InMemoryCache<T : Any>(
     private val cacheRepository: CacheRepository,
-    private val lifetimeMillis: Long = Long.MAX_VALUE
+    private val lifetimeMillis: Int = Int.MAX_VALUE
 ) : Cache {
 
     private var cacheExpirationTimeMillis: BigInteger? = null

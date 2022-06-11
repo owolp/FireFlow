@@ -41,6 +41,10 @@ android {
             AndroidConfigs.TEST_INSTRUMENTATION_RUNNER_ARGUMENT_KEY
         ] = AndroidConfigs.TEST_INSTRUMENTATION_RUNNER_ARGUMENT_VALUE
     }
+
+    testFixtures {
+        enable = true
+    }
 }
 
 dependencies {
