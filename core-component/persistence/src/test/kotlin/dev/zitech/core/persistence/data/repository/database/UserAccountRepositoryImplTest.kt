@@ -24,7 +24,7 @@ import dev.zitech.core.common.domain.strings.StringsProvider
 import dev.zitech.core.common.framework.strings.FakeStringsProvider
 import dev.zitech.core.persistence.R
 import dev.zitech.core.persistence.data.cache.UserAccountInMemoryCache
-import dev.zitech.core.persistence.data.repository.cache.FakeCacheRepository
+import dev.zitech.core.persistence.data.repository.cache.CacheRepositoryImpl
 import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
 import dev.zitech.core.persistence.domain.source.database.UserAccountDatabaseSource
@@ -43,8 +43,8 @@ import org.junit.jupiter.api.Test
 
 internal class UserAccountRepositoryImplTest {
 
-    private val fakeCacheRepository = FakeCacheRepository()
-    private val userAccountInMemoryCache = UserAccountInMemoryCache(fakeCacheRepository)
+    private val cacheRepository = CacheRepositoryImpl()
+    private val userAccountInMemoryCache = UserAccountInMemoryCache(cacheRepository)
     private val userAccountDatabaseSource: UserAccountDatabaseSource = UserAccountDatabaseSourceImpl(
         FakeUserAccountDao(),
         UserAccountMapper()

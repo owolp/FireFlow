@@ -17,7 +17,9 @@
 
 package dev.zitech.core.persistence.domain.model.cache
 
+import androidx.annotation.VisibleForTesting
 import dev.zitech.core.common.domain.logger.Logger
+import dev.zitech.core.common.framework.time.TimeHelper
 import dev.zitech.core.persistence.domain.repository.cache.CacheRepository
 import java.math.BigInteger
 
@@ -26,10 +28,12 @@ open class InMemoryCache<T : Any>(
     private val lifetimeMillis: Int = Int.MAX_VALUE
 ) : Cache {
 
-    private var cacheExpirationTimeMillis: BigInteger? = null
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    var cacheExpirationTimeMillis: BigInteger? = null
 
     override fun invalidate() {
-        Logger.d(this::class.java.simpleName, "invalidate cache")
+        Logger.i(this::class.java.simpleName, "invalidate cache")
+        clearExpirationTime()
         data = null
         cacheRepository.removeCache(this)
     }
@@ -38,8 +42,13 @@ open class InMemoryCache<T : Any>(
         set(value) {
             field = value
             if (value != null) {
+                Logger.i(this::class.java.simpleName, "set cache")
                 setExpirationTime()
                 cacheRepository.addCache(this)
+            } else {
+                Logger.i(this::class.java.simpleName, "clear cache")
+                clearExpirationTime()
+                cacheRepository.removeCache(this)
             }
         }
         get() {
@@ -49,13 +58,23 @@ open class InMemoryCache<T : Any>(
 
     private fun checkCacheExpired() {
         cacheExpirationTimeMillis?.let { expirationTime ->
-            if (System.currentTimeMillis().toBigInteger() > expirationTime) {
+            if (TimeHelper.getCurrentTime().toBigInteger() > expirationTime) {
                 invalidate()
             }
         }
     }
 
     private fun setExpirationTime() {
-        cacheExpirationTimeMillis = (System.currentTimeMillis() + lifetimeMillis).toBigInteger()
+        if (lifetimeMillis < 0) {
+            throw IllegalStateException(
+                "lifetimeMillis not supported, " +
+                    "must be a positive number=$lifetimeMillis"
+            )
+        }
+        cacheExpirationTimeMillis = (TimeHelper.getCurrentTime() + lifetimeMillis).toBigInteger()
+    }
+
+    private fun clearExpirationTime() {
+        cacheExpirationTimeMillis = null
     }
 }

@@ -15,31 +15,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.persistence.data.repository.cache;
+package dev.zitech.core.common.framework.time
 
-import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
-
-import dev.zitech.core.persistence.domain.model.cache.Cache;
-import dev.zitech.core.persistence.domain.repository.cache.CacheRepository;
-
-public class FakeCacheRepository implements CacheRepository {
-
-    public final ArrayList<Cache> caches = new ArrayList<>();
-
-    @Override
-    public void addCache(@NotNull Cache cache) {
-        caches.add(cache);
-    }
-
-    @Override
-    public void removeCache(@NotNull Cache cache) {
-        caches.remove(cache);
-    }
-
-    @Override
-    public void invalidateCaches() {
-        caches.clear();
-    }
+object TimeHelper {
+    fun getCurrentTime(): Long = System.currentTimeMillis()
 }
