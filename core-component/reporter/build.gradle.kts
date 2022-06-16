@@ -29,6 +29,7 @@ dependencies {
     implementation(projects.coreComponent.persistence)
     implementation(projects.coreComponent.remoteConfig)
 
+    implementation(libs.androidx.compose.runtime)
     implementation(libs.google.dagger.hilt.android)
     kapt(libs.google.dagger.hilt.compiler)
     implementation(libs.jetbrains.kotlin.coroutines.android)

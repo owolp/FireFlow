@@ -1,25 +1,34 @@
 [versions]
+accompanist = "0.24.11-rc"
 agconnect = "1.6.6.200"
 androidJunit = "1.3.0"
+compose = "1.2.0-rc01"
 coroutines = "1.6.2"
 dagger = "2.42"
 junit = "5.8.2"
 jvmTarget = "11"
 lifecycle = "2.5.0-rc01"
 ktlint = "0.42.1"
-kotlin = "1.7.0"
+kotlin = "1.6.21"
 room = "2.4.2"
 test = "1.4.0"
 
 [libraries]
 acra-http = "ch.acra:acra-http:5.9.3"
 android-build-gradle = "com.android.tools.build:gradle:7.2.1"
-androidx-activity-ktx = "androidx.activity:activity-ktx:1.4.0"
+androidx-activity-compose = "androidx.activity:activity-compose:1.4.0"
 androidx-appcompat = "androidx.appcompat:appcompat:1.4.2"
 androidx-arch-core-testing = "androidx.arch.core:core-testing:2.1.0"
+androidx-compose-animation = { module = "androidx.compose.animation:animation", version.ref = "compose" }
+androidx-compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
+androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
+androidx-compose-material-icons = { module = "androidx.compose.material:material-icons-extended", version.ref = "compose" }
+androidx-compose-material-material = { module = "androidx.compose.material:material", version.ref = "compose" }
+androidx-compose-material3-material3 = "androidx.compose.material3:material3:1.0.0-alpha13"
+androidx-compose-runtime = { module = "androidx.compose.runtime:runtime", version.ref = "compose" }
 androidx-core = "androidx.core:core-ktx:1.8.0"
 androidx-core-splash = "androidx.core:core-splashscreen:1.0.0-rc01"
-androidx-costraintlayout = "androidx.constraintlayout:constraintlayout:2.1.4"
+androidx-costraintlayout-compose = "androidx.constraintlayout:constraintlayout-compose:1.0.0-beta02"
 androidx-datastore-preferences = "androidx.datastore:datastore-preferences:1.0.0"
 androidx-lifecycle-compiler = { module = "androidx.lifecycle:lifecycle-compiler", version.ref = "lifecycle" }
 androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
@@ -33,6 +42,7 @@ androidx-startup = "androidx.startup:startup-runtime:1.1.1"
 androidx-test-runner = { module = "androidx.test:runner", version.ref = "test" }
 androidx-test-core = { module = "androidx.test:core-ktx", version.ref = "test" }
 cash-turbine = "app.cash.turbine:turbine:0.8.0"
+google-accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
 google-dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "dagger" }
 google-dagger-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "dagger" }
 google-dagger-hilt-gradle = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "dagger" }
