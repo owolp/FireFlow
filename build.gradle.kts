@@ -56,7 +56,6 @@ allprojects {
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         with(kotlinOptions) {
             jvmTarget = libs.versions.jvmTarget.get()
-            allWarningsAsErrors = true
         }
     }
 }
