@@ -54,13 +54,10 @@ allprojects {
     }
 
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions.jvmTarget = libs.versions.jvmTarget.get()
-
-        kotlinOptions.allWarningsAsErrors = true
-
-        kotlinOptions.freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
-        kotlinOptions.freeCompilerArgs += "-Xopt-in=kotlin.Experimental"
-        kotlinOptions.freeCompilerArgs += "-Xallow-jvm-ir-dependencies"
+        with(kotlinOptions) {
+            jvmTarget = libs.versions.jvmTarget.get()
+            allWarningsAsErrors = true
+        }
     }
 }
 
