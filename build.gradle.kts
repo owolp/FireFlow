@@ -52,6 +52,16 @@ allprojects {
         mavenCentral()
         maven("https://developer.huawei.com/repo/")
     }
+
+    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+        kotlinOptions.jvmTarget = libs.versions.jvmTarget.get()
+
+        kotlinOptions.allWarningsAsErrors = true
+
+        kotlinOptions.freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
+        kotlinOptions.freeCompilerArgs += "-Xopt-in=kotlin.Experimental"
+        kotlinOptions.freeCompilerArgs += "-Xallow-jvm-ir-dependencies"
+    }
 }
 
 subprojects {
@@ -98,12 +108,6 @@ fun BaseExtension.baseConfig() {
     compileOptions.apply {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
-    }
-
-    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions {
-            jvmTarget = libs.versions.jvmTarget.get()
-        }
     }
 
     sourceSets {
