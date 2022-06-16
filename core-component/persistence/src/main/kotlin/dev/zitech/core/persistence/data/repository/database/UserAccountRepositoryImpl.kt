@@ -21,6 +21,7 @@ import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.common.domain.strings.StringsProvider
 import dev.zitech.core.persistence.R
+import dev.zitech.core.persistence.domain.model.cache.InMemoryCache
 import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.domain.model.database.UserLoggedState
 import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
@@ -28,6 +29,7 @@ import dev.zitech.core.persistence.domain.source.database.UserAccountDatabaseSou
 import javax.inject.Inject
 
 internal class UserAccountRepositoryImpl @Inject constructor(
+    private val userAccountInMemoryCache: InMemoryCache<UserAccount>,
     private val userAccountDatabaseSource: UserAccountDatabaseSource,
     private val stringsProvider: StringsProvider
 ) : UserAccountRepository {
@@ -44,20 +46,28 @@ internal class UserAccountRepositoryImpl @Inject constructor(
             DataResult.Error(cause = exception)
         }
 
-    override suspend fun getCurrentUserAccount(): DataResult<UserAccount> =
-        try {
-            val userAccount = userAccountDatabaseSource.getCurrentUserAccount()
-            if (userAccount != null) {
-                DataResult.Success(userAccount)
-            } else {
-                Logger.e(TAG, message = "Current user is null")
-                DataResult.Error(
-                    message = stringsProvider(R.string.error_message_current_user_null)
-                )
+    override suspend fun getCurrentUserAccount(): DataResult<UserAccount> {
+        val currentUserAccount = userAccountInMemoryCache.data
+
+        return if (currentUserAccount != null) {
+            DataResult.Success(currentUserAccount)
+        } else {
+            try {
+                val userAccount = userAccountDatabaseSource.getCurrentUserAccount()
+                if (userAccount != null) {
+                    userAccountInMemoryCache.data = userAccount
+                    DataResult.Success(userAccount)
+                } else {
+                    Logger.e(TAG, message = "Current user is null")
+                    DataResult.Error(
+                        message = stringsProvider(R.string.error_message_current_user_null)
+                    )
+                }
+            } catch (exception: Exception) {
+                DataResult.Error(cause = exception)
             }
-        } catch (exception: Exception) {
-            DataResult.Error(cause = exception)
         }
+    }
 
     @Suppress("SwallowedException")
     override suspend fun getUserLoggedState(): UserLoggedState =

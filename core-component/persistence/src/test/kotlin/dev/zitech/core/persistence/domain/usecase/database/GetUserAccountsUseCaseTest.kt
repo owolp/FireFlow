@@ -20,39 +20,33 @@ package dev.zitech.core.persistence.domain.usecase.database
 import com.google.common.truth.Truth.assertThat
 import dev.zitech.core.common.DataFactory
 import dev.zitech.core.common.domain.model.DataResult
-import dev.zitech.core.common.framework.strings.FakeStringsProvider
-import dev.zitech.core.persistence.framework.database.mapper.UserAccountMapper
-import dev.zitech.core.persistence.data.repository.database.UserAccountRepositoryImpl
-import dev.zitech.core.persistence.framework.database.dao.FakeUserAccountDao
-import dev.zitech.core.persistence.domain.source.database.UserAccountDatabaseSource
-import dev.zitech.core.persistence.framework.database.source.UserAccountDatabaseSourceImpl
+import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
 import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.confirmVerified
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
 internal class GetUserAccountsUseCaseTest {
 
-    private val userAccountDatabaseSource: UserAccountDatabaseSource = UserAccountDatabaseSourceImpl(
-        FakeUserAccountDao(),
-        UserAccountMapper()
-    )
-    private val stringsProvider = FakeStringsProvider()
-    private val mockedUserAccountDatabaseSource = mockk<UserAccountDatabaseSource>()
+    private val userAccountRepository = mockk<UserAccountRepository>()
+
+    private lateinit var sut: GetUserAccountsUseCase
+
+    @BeforeEach
+    fun setup() {
+        sut = GetUserAccountsUseCase(userAccountRepository)
+    }
 
     @Test
     @DisplayName("WHEN there is no exception THEN return Success")
     fun success() = runBlocking {
         // Arrange
-        userAccountDatabaseSource.saveUserAccount(false)
-        userAccountDatabaseSource.saveUserAccount(false)
-        userAccountDatabaseSource.saveUserAccount(true)
-        val sut = GetUserAccountsUseCase(
-            UserAccountRepositoryImpl(
-                userAccountDatabaseSource,
-                stringsProvider
-            )
+        coEvery { userAccountRepository.getUserAccounts() } returns DataResult.Success(
+            listOf(mockk(), mockk(), mockk())
         )
 
         // Act
@@ -60,6 +54,8 @@ internal class GetUserAccountsUseCaseTest {
 
         // Assert
         assertThat((result as DataResult.Success).value).hasSize(3)
+        coVerify { userAccountRepository.getUserAccounts() }
+        confirmVerified(userAccountRepository)
     }
 
     @Test
@@ -67,13 +63,8 @@ internal class GetUserAccountsUseCaseTest {
     fun error() = runBlocking {
         // Arrange
         val exception = DataFactory.createException()
-        coEvery { mockedUserAccountDatabaseSource.getUserAccounts() } throws exception
-
-        val sut = GetUserAccountsUseCase(
-            UserAccountRepositoryImpl(
-                mockedUserAccountDatabaseSource,
-                stringsProvider
-            )
+        coEvery { userAccountRepository.getUserAccounts() } returns DataResult.Error(
+            cause = exception
         )
 
         // Act
@@ -81,5 +72,7 @@ internal class GetUserAccountsUseCaseTest {
 
         // Assert
         assertThat((result as DataResult.Error).cause).isEqualTo(exception)
+        coVerify { userAccountRepository.getUserAccounts() }
+        confirmVerified(userAccountRepository)
     }
 }
