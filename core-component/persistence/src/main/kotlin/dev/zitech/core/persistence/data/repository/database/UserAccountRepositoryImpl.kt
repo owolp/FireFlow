@@ -56,7 +56,6 @@ internal class UserAccountRepositoryImpl @Inject constructor(
                 val userAccount = userAccountDatabaseSource.getCurrentUserAccount()
                 if (userAccount != null) {
                     userAccountInMemoryCache.data = userAccount
-                    Logger.d(TAG, "db")
                     DataResult.Success(userAccount)
                 } else {
                     Logger.e(TAG, message = "Current user is null")
