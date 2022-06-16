@@ -27,6 +27,7 @@ plugins {
 dependencies {
     implementation(projects.coreComponent.common)
 
+    implementation(libs.androidx.compose.runtime)
     implementation(libs.google.dagger.hilt.android)
     kapt(libs.google.dagger.hilt.compiler)
     implementation(libs.jetbrains.kotlin.coroutines.android)

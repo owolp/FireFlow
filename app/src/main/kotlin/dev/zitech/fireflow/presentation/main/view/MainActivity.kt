@@ -18,8 +18,8 @@
 package dev.zitech.fireflow.presentation.main.view
 
 import android.os.Bundle
+import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import dagger.hilt.android.AndroidEntryPoint
 import dev.zitech.core.common.framework.flow.collectWhenStarted
@@ -32,7 +32,7 @@ import dev.zitech.fireflow.presentation.main.viewmodel.ShowError
 import dev.zitech.fireflow.presentation.main.viewmodel.ShowErrorHandled
 
 @AndroidEntryPoint
-internal class MainActivity : AppCompatActivity(), MviView<MainState> {
+internal class MainActivity : ComponentActivity(), MviView<MainState> {
 
     private val mainViewModel: MainViewModel by viewModels()
 

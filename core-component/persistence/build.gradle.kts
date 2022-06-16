@@ -50,6 +50,7 @@ android {
 dependencies {
     implementation(projects.coreComponent.common)
 
+    implementation(libs.androidx.compose.runtime)
     implementation(libs.androidx.core)
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.androidx.room.runtime)

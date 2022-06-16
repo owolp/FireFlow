@@ -35,8 +35,8 @@ buildscript {
     }
 
     dependencies {
-        classpath(libs.huawei.agconnect.agcp)
         classpath(libs.android.build.gradle)
+        classpath(libs.huawei.agconnect.agcp)
         classpath(libs.google.dagger.hilt.gradle)
         classpath(libs.google.gms.services)
         classpath(libs.google.firebase.crashlytics.gradle)
@@ -88,6 +88,8 @@ fun PluginContainer.applyConfig(project: Project) {
 fun BaseExtension.baseConfig() {
     compileSdkVersion(AppVersioning.COMPILE_SDK)
 
+    buildFeatures.compose = true
+
     defaultConfig.apply {
         minSdk = AppVersioning.MIN_SDK
         targetSdk = AppVersioning.TARGET_SDK
@@ -100,13 +102,15 @@ fun BaseExtension.baseConfig() {
 
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         kotlinOptions {
-            jvmTarget = libs.versions.jvmTarget.toString()
+            jvmTarget = libs.versions.jvmTarget.get()
         }
     }
 
     sourceSets {
         map { it.java.srcDir("src/${it.name}/kotlin") }
     }
+
+    composeOptions.kotlinCompilerExtensionVersion = libs.versions.compose.get()
 
     configureBuildTypes(project)
     configureFlavorDimensions()

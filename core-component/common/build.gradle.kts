@@ -31,6 +31,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.compose.runtime)
     implementation(libs.androidx.lifecycle.runtime)
     kapt(libs.androidx.lifecycle.compiler)
     implementation(libs.google.dagger.hilt.android)
