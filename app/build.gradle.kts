@@ -18,6 +18,8 @@
 import com.android.build.api.dsl.ApplicationProductFlavor
 import com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
 
+apply(from = "$rootDir/config/dependencies/compose-dependencies.gradle")
+
 plugins {
     id(BuildPlugins.APPLICATION)
     id(BuildPlugins.AGPCONNECT)
@@ -78,12 +80,6 @@ dependencies {
 
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.compose.animation)
-    implementation(libs.androidx.compose.ui)
-    implementation(libs.androidx.compose.ui.tooling)
-    implementation(libs.androidx.compose.material.icons)
-    implementation(libs.androidx.compose.material.material)
-    implementation(libs.androidx.compose.material3.material3)
     implementation(libs.androidx.core)
     implementation(libs.androidx.core.splash)
     implementation(libs.androidx.costraintlayout.compose)
@@ -91,7 +87,6 @@ dependencies {
     kapt(libs.androidx.lifecycle.compiler)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.startup)
-    implementation(libs.google.accompanist.systemuicontroller)
     implementation(libs.google.material)
     implementation(libs.google.dagger.hilt.android)
     kapt(libs.google.dagger.hilt.compiler)
