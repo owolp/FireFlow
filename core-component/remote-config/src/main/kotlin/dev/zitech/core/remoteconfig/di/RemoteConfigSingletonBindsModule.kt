@@ -27,8 +27,8 @@ import dev.zitech.core.remoteconfig.domain.source.ConfigProviderSource
 import dev.zitech.core.remoteconfig.framework.configurator.RemoteConfigurator
 import dev.zitech.core.remoteconfig.framework.configurator.RemoteConfiguratorImpl
 import dev.zitech.core.remoteconfig.framework.source.ConfigProviderSourceImpl
-import javax.inject.Singleton
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module

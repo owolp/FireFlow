@@ -27,7 +27,7 @@ import javax.inject.Inject
 
 internal class UserAccountDatabaseSourceImpl @Inject constructor(
     private val userAccountDao: UserAccountDao,
-    private val userAccountMapper: UserAccountMapper,
+    private val userAccountMapper: UserAccountMapper
 ) : UserAccountDatabaseSource {
 
     override suspend fun getUserAccounts(): List<UserAccount> =

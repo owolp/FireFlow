@@ -32,7 +32,7 @@ import kotlinx.coroutines.withContext
 internal class SecuredPreferencesDataSource(
     private val appDispatchers: AppDispatchers,
     fileName: String,
-    context: Context,
+    context: Context
 ) : PreferencesDataSource {
 
     private val keyGenParameterSpec = MasterKeys.AES256_GCM_SPEC

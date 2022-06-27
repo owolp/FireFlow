@@ -25,6 +25,7 @@ internal object UserAccountEntityFactory {
         id: Long? = DataFactory.createRandomLong(),
         isCurrentUserAccount: Boolean = false
     ) = UserAccountEntity(
-        id, isCurrentUserAccount
+        id,
+        isCurrentUserAccount
     )
 }

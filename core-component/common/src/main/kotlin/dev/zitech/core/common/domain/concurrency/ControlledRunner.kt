@@ -32,13 +32,13 @@
 
 package dev.zitech.core.common.domain.concurrency
 
-import java.util.concurrent.atomic.AtomicReference
 import kotlinx.coroutines.CoroutineStart.LAZY
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.yield
+import java.util.concurrent.atomic.AtomicReference
 
 /**
  * A controlled runner decides what to do when new tasks are run.

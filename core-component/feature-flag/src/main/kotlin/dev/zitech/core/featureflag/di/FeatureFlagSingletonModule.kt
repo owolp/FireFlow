@@ -27,12 +27,12 @@ import dev.zitech.core.featureflag.data.provider.DevFeatureFlagProvider
 import dev.zitech.core.featureflag.data.provider.ProdFeatureFlagProvider
 import dev.zitech.core.featureflag.data.provider.RemoteFeatureFlagProvider
 import dev.zitech.core.featureflag.data.repository.FeatureFlagRepositoryImpl
-import dev.zitech.core.featureflag.di.annotation.DevFeatureFlagProvider as DevFeatureFlagProviderAnnotation
-import dev.zitech.core.featureflag.di.annotation.ProdFeatureFlagProvider as ProdFeatureFlagProviderAnnotation
-import dev.zitech.core.featureflag.di.annotation.RemoteFeatureFlagProvider as RemoteFeatureFlagProviderAnnotation
 import dev.zitech.core.featureflag.domain.provider.FeatureFlagProvider
 import dev.zitech.core.featureflag.domain.repository.FeatureFlagRepository
 import javax.inject.Singleton
+import dev.zitech.core.featureflag.di.annotation.DevFeatureFlagProvider as DevFeatureFlagProviderAnnotation
+import dev.zitech.core.featureflag.di.annotation.ProdFeatureFlagProvider as ProdFeatureFlagProviderAnnotation
+import dev.zitech.core.featureflag.di.annotation.RemoteFeatureFlagProvider as RemoteFeatureFlagProviderAnnotation
 
 @InstallIn(SingletonComponent::class)
 @Module

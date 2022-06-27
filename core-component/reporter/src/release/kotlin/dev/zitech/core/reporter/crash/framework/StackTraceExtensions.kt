@@ -24,9 +24,9 @@ private const val CALLER_STACK_INDEX = 0
 typealias StackTrace = Array<StackTraceElement?>
 
 internal fun StackTrace.extractCallerClassName(): String? {
-    return if (this.size > CALLER_STACK_INDEX)
+    return if (this.size > CALLER_STACK_INDEX) {
         this[CALLER_STACK_INDEX]?.extractClassName()
-    else null
+    } else null
 }
 
 /**
@@ -55,22 +55,23 @@ private fun String.removePackagePrefix() =
 private fun String.removeLambdaSuffix(): String {
     val anonymousClass = Pattern.compile("(\\\$\\d+)+\$")
     val m = anonymousClass.matcher(this)
-    if (m.find())
+    if (m.find()) {
         return m.replaceAll("")
+    }
 
     return this
 }
 
 internal fun StackTrace.extractCallerMethodName(): String? {
-    return if (this.size > CALLER_STACK_INDEX)
+    return if (this.size > CALLER_STACK_INDEX) {
         this[CALLER_STACK_INDEX]?.methodName
-    else null
+    } else null
 }
 
 internal fun StackTrace.extractCallerLineNumber(): Int {
-    return if (this.size > CALLER_STACK_INDEX)
+    return if (this.size > CALLER_STACK_INDEX) {
         this[CALLER_STACK_INDEX]?.lineNumber ?: -1
-    else -1
+    } else -1
 }
 
 /**
@@ -87,9 +88,9 @@ internal fun StackTrace.filter(topClassNames: Array<Class<out Any>>): Array<Stac
             if (topClassNames.any {
                 element.className.removeLambdaSuffix().startsWith(it.name.removeLambdaSuffix())
             }
-            )
+            ) {
                 index++
-            else break
+            } else break
         } else {
             break
         }

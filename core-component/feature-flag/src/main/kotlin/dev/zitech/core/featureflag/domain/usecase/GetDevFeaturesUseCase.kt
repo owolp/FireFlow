@@ -32,7 +32,7 @@ class GetDevFeaturesUseCase @Inject constructor(
             features.add(
                 Pair(
                     feature,
-                    featureFlagRepository.isFeatureEnabled(feature),
+                    featureFlagRepository.isFeatureEnabled(feature)
                 )
             )
         }

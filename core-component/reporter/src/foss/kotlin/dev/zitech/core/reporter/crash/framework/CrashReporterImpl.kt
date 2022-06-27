@@ -19,13 +19,13 @@ package dev.zitech.core.reporter.crash.framework
 
 import android.app.Application
 import dev.zitech.core.reporter.crash.domain.reporter.CrashReporter
-import javax.inject.Inject
 import org.acra.ACRA
 import org.acra.ACRA.init
 import org.acra.ReportField
 import org.acra.config.CoreConfigurationBuilder
 import org.acra.config.HttpSenderConfigurationBuilder
 import org.acra.data.StringFormat
+import javax.inject.Inject
 
 internal class CrashReporterImpl @Inject constructor(
     private val application: Application

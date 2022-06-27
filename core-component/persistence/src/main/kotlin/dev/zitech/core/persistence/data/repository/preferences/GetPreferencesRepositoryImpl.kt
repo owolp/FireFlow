@@ -20,8 +20,8 @@ package dev.zitech.core.persistence.data.repository.preferences
 import dev.zitech.core.persistence.domain.model.preferences.PreferenceType
 import dev.zitech.core.persistence.domain.repository.preferences.GetPreferencesRepository
 import dev.zitech.core.persistence.domain.source.preferences.PreferencesDataSource
-import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
 internal class GetPreferencesRepositoryImpl @Inject constructor(
     private val developmentPreferencesDataSource: PreferencesDataSource,

@@ -56,8 +56,8 @@ import dev.zitech.core.persistence.framework.database.factory.DatabaseFactory
 import dev.zitech.core.persistence.framework.database.mapper.UserAccountMapper
 import dev.zitech.core.persistence.framework.database.source.UserAccountDatabaseSourceImpl
 import dev.zitech.core.persistence.framework.preference.factory.PreferencesFactory
-import javax.inject.Singleton
 import kotlinx.coroutines.runBlocking
+import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
