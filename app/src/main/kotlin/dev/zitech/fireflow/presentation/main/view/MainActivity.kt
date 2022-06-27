@@ -31,7 +31,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import dagger.hilt.android.AndroidEntryPoint
 import dev.zitech.core.common.framework.flow.collectWhenStarted
 import dev.zitech.core.common.presentation.architecture.MviView
-import dev.zitech.ds.FireFlowTheme
+import dev.zitech.ds.theme.FireFlowTheme
 import dev.zitech.fireflow.presentation.main.viewmodel.Idle
 import dev.zitech.fireflow.presentation.main.viewmodel.MainState
 import dev.zitech.fireflow.presentation.main.viewmodel.MainViewModel

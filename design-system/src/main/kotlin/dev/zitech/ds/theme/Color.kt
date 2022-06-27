@@ -17,7 +17,7 @@
 
 @file:Suppress("MagicNumber")
 
-package dev.zitech.ds
+package dev.zitech.ds.theme
 
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme

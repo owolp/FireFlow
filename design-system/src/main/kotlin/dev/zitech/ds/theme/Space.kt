@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.ds
+package dev.zitech.ds.theme
 
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
