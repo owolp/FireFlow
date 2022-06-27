@@ -15,13 +15,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+package dev.zitech.ds.theme
 
-include(":app")
-include(":core-component:core")
-include(":core-component:common")
-include(":core-component:feature-flag")
-include(":core-component:persistence")
-include(":core-component:remote-config")
-include(":core-component:reporter")
-include(":design-system")
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Shapes
+import androidx.compose.ui.unit.dp
+
+internal val Shape = Shapes(
+    small = RoundedCornerShape(percent = 50),
+    medium = RoundedCornerShape(20.dp),
+    large = RoundedCornerShape(0.dp)
+)

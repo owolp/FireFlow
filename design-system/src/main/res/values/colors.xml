@@ -1,4 +1,4 @@
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2022 Zitech Ltd.
   ~
   ~ This program is free software: you can redistribute it and/or modify
@@ -16,11 +16,6 @@
   -->
 
 <resources>
-
-    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenBackground">@color/md_theme_dark_primary</item>
-        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_round</item>
-        <item name="postSplashScreenTheme">@style/Theme.FireFlow</item>
-    </style>
-
+    <color name="md_theme_light_primary">#6750A4</color>
+    <color name="md_theme_dark_primary">#D0BCFF</color>
 </resources>

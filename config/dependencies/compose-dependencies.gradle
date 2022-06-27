@@ -23,5 +23,5 @@ dependencies {
     implementation libs.androidx.compose.material.icons
     implementation libs.androidx.compose.material.material
     implementation libs.androidx.compose.material3.material3
-    implementation libs.google.accompanist.systemuicontroller
+    implementation libs.google.material
 }
