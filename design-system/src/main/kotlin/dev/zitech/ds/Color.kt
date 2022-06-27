@@ -15,6 +15,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+@file:Suppress("MagicNumber")
+
 package dev.zitech.ds
 
 import androidx.compose.material3.darkColorScheme

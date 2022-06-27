@@ -17,11 +17,12 @@
 
 package dev.zitech.ds
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Shapes
+import androidx.compose.material3.Typography
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
@@ -29,16 +30,18 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.colorResource
-import androidx.core.view.WindowCompat
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
 fun FireFlowTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     dynamicColor: Boolean = true,
+    shapes: Shapes = Shape,
+    space: Space = Space,
+    typography: Typography = Typography,
     content: @Composable () -> Unit
 ) {
     val colorScheme: ColorScheme = when {
@@ -54,17 +57,19 @@ fun FireFlowTheme(
         )
     }
 
-    val view = LocalView.current
-    val window = (view.context as Activity).window
-    if (!view.isInEditMode) {
-        SideEffect {
-            window.statusBarColor = colorScheme.primary.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
-        }
+    val systemUiController = rememberSystemUiController()
+    SideEffect {
+        systemUiController.setSystemBarsColor(
+            color = Color.Transparent,
+            darkIcons = !darkTheme
+        )
     }
 
     ProvideFireFlowTheme(
-        colorScheme = colorScheme
+        colorScheme = colorScheme,
+        shapes = shapes,
+        space = space,
+        typography = typography
     ) {
         MaterialTheme(
             colorScheme = colorScheme,
@@ -76,10 +81,16 @@ fun FireFlowTheme(
 @Composable
 private fun ProvideFireFlowTheme(
     colorScheme: ColorScheme,
+    shapes: Shapes,
+    space: Space,
+    typography: Typography,
     content: @Composable () -> Unit
 ) {
     CompositionLocalProvider(
-        LocalFireFlowColorScheme provides colorScheme,
+        LocalColorScheme provides colorScheme,
+        LocalShapes provides shapes,
+        LocalSpace provides space,
+        LocalTypography provides typography,
         content = content
     )
 }
@@ -89,9 +100,36 @@ object FireFlowTheme {
     val colors: ColorScheme
         @Composable
         @ReadOnlyComposable
-        get() = LocalFireFlowColorScheme.current
+        get() = LocalColorScheme.current
+
+    val shapes: Shapes
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalShapes.current
+
+    val space: Space
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalSpace.current
+
+    val typography: Typography
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalTypography.current
 }
 
-private val LocalFireFlowColorScheme = staticCompositionLocalOf<ColorScheme> {
+private val LocalColorScheme = staticCompositionLocalOf<ColorScheme> {
     error("No FireFlow ColorScheme provided, check if Theme Composable is added")
+}
+
+private val LocalShapes = staticCompositionLocalOf<Shapes> {
+    error("No FireFlow Shapes provided, check if Theme Composable is added")
+}
+
+private val LocalSpace = staticCompositionLocalOf<Space> {
+    error("No FireFlow Spacing provided, check if Theme Composable is added")
+}
+
+private val LocalTypography = staticCompositionLocalOf<Typography> {
+    error("No FireFlow Typography provided, check if Theme Composable is added")
 }

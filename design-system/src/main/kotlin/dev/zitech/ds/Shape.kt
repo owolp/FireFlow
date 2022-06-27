@@ -15,13 +15,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-apply(from = "$rootDir/config/dependencies/compose-dependencies.gradle")
+package dev.zitech.ds
 
-plugins {
-    id(BuildPlugins.KOTLIN_ANDROID)
-    id(BuildPlugins.LIBRARY)
-}
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Shapes
+import androidx.compose.ui.unit.dp
 
-dependencies {
-    implementation(libs.google.accompanist.systemuicontroller)
-}
+val Shape = Shapes(
+    small = RoundedCornerShape(percent = 50),
+    medium = RoundedCornerShape(20.dp),
+    large = RoundedCornerShape(0.dp)
+)

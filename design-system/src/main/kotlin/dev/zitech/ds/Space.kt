@@ -15,13 +15,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-apply(from = "$rootDir/config/dependencies/compose-dependencies.gradle")
+package dev.zitech.ds
 
-plugins {
-    id(BuildPlugins.KOTLIN_ANDROID)
-    id(BuildPlugins.LIBRARY)
-}
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 
-dependencies {
-    implementation(libs.google.accompanist.systemuicontroller)
+object Space {
+    val xss: Dp = 2.dp
+    val xs: Dp = 4.dp
+    val s: Dp = 8.dp
+    val m: Dp = 16.dp
+    val l: Dp = 32.dp
+    val xl: Dp = 64.dp
+    val xxl: Dp = 128.dp
 }

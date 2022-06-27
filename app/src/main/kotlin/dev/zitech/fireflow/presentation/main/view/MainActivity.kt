@@ -63,6 +63,7 @@ internal class MainActivity : ComponentActivity(), MviView<MainState> {
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
+                        style = FireFlowTheme.typography.headlineLarge,
                         color = FireFlowTheme.colors.onBackground,
                         text = "FireFlow"
                     )
