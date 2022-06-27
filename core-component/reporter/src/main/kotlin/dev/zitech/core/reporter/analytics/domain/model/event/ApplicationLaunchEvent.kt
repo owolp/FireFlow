@@ -24,6 +24,7 @@ class ApplicationLaunchEvent(
     override val description: String = "Application Launched",
     override val params: Map<String, Any?> = emptyMap(),
     override val providers: List<AnalyticsProvider> = listOf(
-        AnalyticsProvider.FIREBASE, AnalyticsProvider.HUAWEI
+        AnalyticsProvider.FIREBASE,
+        AnalyticsProvider.HUAWEI
     )
 ) : AnalyticsEvent

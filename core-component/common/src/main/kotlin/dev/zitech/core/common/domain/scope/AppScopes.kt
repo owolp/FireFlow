@@ -18,10 +18,10 @@
 package dev.zitech.core.common.domain.scope
 
 import dev.zitech.core.common.domain.dispatcher.AppDispatchers
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 interface AppScopes {
     val singleton: CoroutineScope

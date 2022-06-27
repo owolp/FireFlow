@@ -15,9 +15,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import org.gradle.api.Project
 import java.io.File
 import java.util.Properties
-import org.gradle.api.Project
 
 object AppSecret {
 

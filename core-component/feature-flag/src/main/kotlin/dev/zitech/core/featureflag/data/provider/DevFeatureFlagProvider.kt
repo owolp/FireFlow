@@ -21,8 +21,8 @@ import dev.zitech.core.featureflag.domain.model.Feature
 import dev.zitech.core.featureflag.domain.provider.FeatureFlagProvider
 import dev.zitech.core.featureflag.domain.usecase.IsDevFeatureFlagEnabledUseCase
 import dev.zitech.core.featureflag.domain.usecase.SetDevFeatureFlagEnabledUseCase
-import javax.inject.Inject
 import kotlinx.coroutines.flow.first
+import javax.inject.Inject
 
 internal class DevFeatureFlagProvider @Inject constructor(
     private val isDevFeatureFlagEnabledUseCase: IsDevFeatureFlagEnabledUseCase,

@@ -34,7 +34,8 @@ internal class AnalyticsReporterImpl @Inject constructor(
 
     override fun allowPersonalizedAds(enabled: Boolean) {
         firebaseAnalytics.setUserProperty(
-            ALLOW_AD_PERSONALIZATION_SIGNALS, "true"
+            ALLOW_AD_PERSONALIZATION_SIGNALS,
+            "true"
         )
     }
 

@@ -24,8 +24,8 @@ import dev.zitech.core.persistence.domain.repository.database.DatabaseKeyReposit
 import dev.zitech.core.persistence.domain.repository.preferences.ContainsPreferencesRepository
 import dev.zitech.core.persistence.domain.repository.preferences.GetPreferencesRepository
 import dev.zitech.core.persistence.domain.repository.preferences.SavePreferencesRepository
-import javax.inject.Inject
 import kotlinx.coroutines.flow.first
+import javax.inject.Inject
 
 class DatabaseKeyRepositoryImpl @Inject constructor(
     private val containsPreferencesRepository: ContainsPreferencesRepository,
@@ -40,7 +40,8 @@ class DatabaseKeyRepositoryImpl @Inject constructor(
 
     override suspend fun getDatabaseKey(): DatabaseKey {
         if (!containsPreferencesRepository.containsString(
-                PreferenceType.SECURED, KEY_SECURED_STORAGE_SECURED_DATABASE
+                PreferenceType.SECURED,
+                KEY_SECURED_STORAGE_SECURED_DATABASE
             ).first()
         ) {
             savePreferencesRepository.saveString(

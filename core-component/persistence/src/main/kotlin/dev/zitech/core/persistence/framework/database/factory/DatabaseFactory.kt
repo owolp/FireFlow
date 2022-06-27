@@ -23,14 +23,14 @@ import dev.zitech.core.common.domain.applicationconfig.AppConfigProvider
 import dev.zitech.core.common.domain.model.BuildMode
 import dev.zitech.core.persistence.domain.repository.database.DatabaseKeyRepository
 import dev.zitech.core.persistence.framework.database.FireFlowDatabase
-import javax.inject.Inject
 import net.sqlcipher.database.SQLiteDatabase
 import net.sqlcipher.database.SupportFactory
+import javax.inject.Inject
 
 internal class DatabaseFactory @Inject constructor(
     private val context: Context,
     private val appConfigProvider: AppConfigProvider,
-    private val databaseKeyRepository: DatabaseKeyRepository,
+    private val databaseKeyRepository: DatabaseKeyRepository
 ) {
 
     suspend fun createRoomDatabase(databaseName: String): FireFlowDatabase {

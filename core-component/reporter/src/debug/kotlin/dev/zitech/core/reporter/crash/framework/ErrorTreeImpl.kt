@@ -18,8 +18,8 @@
 package dev.zitech.core.reporter.crash.framework
 
 import dev.zitech.core.common.domain.logger.ErrorTree
-import javax.inject.Inject
 import timber.log.Timber
+import javax.inject.Inject
 
 class ErrorTreeImpl @Inject constructor() : ErrorTree {
 
