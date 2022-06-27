@@ -21,3 +21,7 @@ plugins {
     id(BuildPlugins.KOTLIN_ANDROID)
     id(BuildPlugins.LIBRARY)
 }
+
+dependencies {
+    implementation(libs.google.material)
+}
