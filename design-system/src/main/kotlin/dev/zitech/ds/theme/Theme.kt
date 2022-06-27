@@ -41,7 +41,7 @@ fun FireFlowTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     dynamicColor: Boolean = true,
     shapes: Shapes = Shape,
-    space: Space = Space,
+    space: Space = Space(),
     typography: Typography = Typography,
     content: @Composable () -> Unit
 ) {

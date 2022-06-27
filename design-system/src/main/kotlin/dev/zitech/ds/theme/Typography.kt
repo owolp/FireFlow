@@ -31,7 +31,7 @@ private val Roboto = FontFamily(
     Font(R.font.roboto_regular, FontWeight.Normal)
 )
 
-val Typography = Typography(
+internal val Typography = Typography(
     displayLarge = TextStyle(
         fontFamily = Roboto,
         fontWeight = FontWeight.W400,
