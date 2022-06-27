@@ -19,12 +19,19 @@ package dev.zitech.fireflow.presentation.main.view
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.Text
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import dagger.hilt.android.AndroidEntryPoint
 import dev.zitech.core.common.framework.flow.collectWhenStarted
 import dev.zitech.core.common.presentation.architecture.MviView
-import dev.zitech.fireflow.R
+import dev.zitech.ds.FireFlowTheme
 import dev.zitech.fireflow.presentation.main.viewmodel.Idle
 import dev.zitech.fireflow.presentation.main.viewmodel.MainState
 import dev.zitech.fireflow.presentation.main.viewmodel.MainViewModel
@@ -44,9 +51,24 @@ internal class MainActivity : ComponentActivity(), MviView<MainState> {
         }
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
         mainViewModel.state.collectWhenStarted(this, this::render)
+
+        setContent {
+            FireFlowTheme {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(FireFlowTheme.colors.background),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        color = FireFlowTheme.colors.onBackground,
+                        text = "FireFlow"
+                    )
+                }
+            }
+        }
     }
 
     override fun render(state: MainState) {
