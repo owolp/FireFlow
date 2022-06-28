@@ -25,6 +25,7 @@ plugins {
 
 dependencies {
     implementation(projects.coreComponent.common)
+    implementation(projects.designSystem)
 
     implementation(libs.androidx.core)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
