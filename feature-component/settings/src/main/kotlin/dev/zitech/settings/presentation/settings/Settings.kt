@@ -15,15 +15,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-dependencies {
-    implementation libs.androidx.compose.animation
-    implementation libs.androidx.compose.ui
-    debugImplementation libs.androidx.compose.ui.tooling
-    implementation libs.androidx.compose.ui.tooling.preview
-    implementation libs.androidx.compose.material.icons
-    implementation libs.androidx.compose.material.material
-    implementation libs.androidx.compose.material3.material3
-    implementation libs.androidx.compose.runtime
-    implementation libs.androidx.lifecycle.viewmodel.compose
-    implementation libs.google.material
+package dev.zitech.settings.presentation.settings
+
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.viewmodel.compose.viewModel
+
+@Composable
+internal fun Settings(
+    viewModel: SettingsViewModel = viewModel()
+) {
+    val state = viewModel.state.collectAsState()
 }

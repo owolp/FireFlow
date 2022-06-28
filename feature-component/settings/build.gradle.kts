@@ -27,6 +27,7 @@ dependencies {
     implementation(projects.coreComponent.common)
 
     implementation(libs.androidx.core)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.google.dagger.hilt.android)
     kapt(libs.google.dagger.hilt.compiler)
     implementation(libs.jetbrains.kotlin.coroutines.android)

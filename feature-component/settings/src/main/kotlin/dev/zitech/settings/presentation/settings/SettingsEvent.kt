@@ -15,15 +15,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-dependencies {
-    implementation libs.androidx.compose.animation
-    implementation libs.androidx.compose.ui
-    debugImplementation libs.androidx.compose.ui.tooling
-    implementation libs.androidx.compose.ui.tooling.preview
-    implementation libs.androidx.compose.material.icons
-    implementation libs.androidx.compose.material.material
-    implementation libs.androidx.compose.material3.material3
-    implementation libs.androidx.compose.runtime
-    implementation libs.androidx.lifecycle.viewmodel.compose
-    implementation libs.google.material
-}
+package dev.zitech.settings.presentation.settings
+
+import dev.zitech.core.common.presentation.architecture.MviState
+
+internal sealed interface SettingsEvent : MviState.Event
+
+internal object Idle : SettingsEvent
