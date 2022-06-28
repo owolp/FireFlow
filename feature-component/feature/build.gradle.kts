@@ -15,15 +15,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+plugins {
+    id(BuildPlugins.KOTLIN_ANDROID)
+    id(BuildPlugins.LIBRARY)
+}
 
-include(":app")
-include(":core-component:core")
-include(":core-component:common")
-include(":core-component:feature-flag")
-include(":core-component:persistence")
-include(":core-component:remote-config")
-include(":core-component:reporter")
-include(":design-system")
-include(":feature-component:feature")
-include(":feature-component:settings")
+dependencies {
+    api(projects.featureComponent.settings)
+}

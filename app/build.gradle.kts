@@ -78,6 +78,7 @@ android {
 dependencies {
     implementation(projects.coreComponent.core)
     implementation(projects.designSystem)
+    implementation(projects.featureComponent.feature)
 
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.appcompat)

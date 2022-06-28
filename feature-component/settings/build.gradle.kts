@@ -15,15 +15,23 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+apply(from = "$rootDir/config/dependencies/compose-dependencies.gradle")
 
-include(":app")
-include(":core-component:core")
-include(":core-component:common")
-include(":core-component:feature-flag")
-include(":core-component:persistence")
-include(":core-component:remote-config")
-include(":core-component:reporter")
-include(":design-system")
-include(":feature-component:feature")
-include(":feature-component:settings")
+plugins {
+    id(BuildPlugins.KOTLIN_ANDROID)
+    id(BuildPlugins.LIBRARY)
+    kotlin(BuildPlugins.KAPT)
+}
+
+dependencies {
+    implementation(projects.coreComponent.common)
+
+    implementation(libs.androidx.core)
+    implementation(libs.google.dagger.hilt.android)
+    kapt(libs.google.dagger.hilt.compiler)
+    implementation(libs.jetbrains.kotlin.coroutines.android)
+}
+
+kapt {
+    correctErrorTypes = true
+}
