@@ -19,6 +19,7 @@ package dev.zitech.ds.molecules.preference
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -57,11 +58,17 @@ object FireFlowPreferences {
     fun Simple(
         title: String,
         modifier: Modifier = Modifier,
-        description: String? = null
+        description: String? = null,
+        onClick: Pair<String, (() -> Unit)>? = null
     ) {
         PreferenceItem(modifier = modifier) {
             Row(
-                modifier = Modifier.padding(FireFlowTheme.space.xs),
+                modifier = Modifier
+                    .clickable(enabled = onClick != null, onClick = { onClick?.second?.invoke() })
+                    .semantics {
+                        stateDescription = onClick?.first.orEmpty()
+                    }
+                    .padding(FireFlowTheme.space.xs),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 FireFlowSpacers.Horizontal(
@@ -93,11 +100,17 @@ object FireFlowPreferences {
         title: String,
         icon: ImageVector,
         modifier: Modifier = Modifier,
-        description: String? = null
+        description: String? = null,
+        onClick: Pair<String, (() -> Unit)>? = null
     ) {
         PreferenceItem(modifier = modifier) {
             Row(
-                modifier = Modifier.padding(FireFlowTheme.space.xs),
+                modifier = Modifier
+                    .clickable(enabled = onClick != null, onClick = { onClick?.second?.invoke() })
+                    .semantics {
+                        stateDescription = onClick?.first.orEmpty()
+                    }
+                    .padding(FireFlowTheme.space.xs),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 FireFlowSpacers.Horizontal(
