@@ -15,10 +15,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.settings.presentation.settings
+package dev.zitech.ds.atoms.checkbox
 
-import dev.zitech.core.common.presentation.architecture.MviState
+import androidx.compose.material3.CheckboxColors
+import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.runtime.Composable
+import dev.zitech.ds.theme.FireFlowTheme
 
-internal data class SettingsState(
-    val event: SettingsEvent = Idle
-) : MviState
+internal object FireFlowCheckboxesColors {
+
+    val primary: CheckboxColors
+        @Composable
+        get() = CheckboxDefaults.colors(
+            checkmarkColor = FireFlowTheme.colors.primary,
+            checkedColor = FireFlowTheme.colors.inversePrimary
+        )
+}
