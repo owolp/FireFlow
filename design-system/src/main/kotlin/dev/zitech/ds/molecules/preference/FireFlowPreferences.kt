@@ -45,8 +45,7 @@ import androidx.compose.ui.unit.dp
 import dev.zitech.ds.atoms.checkbox.FIreFlowCheckboxes
 import dev.zitech.ds.atoms.spacer.FireFlowSpacers
 import dev.zitech.ds.atoms.switch.FireFlowSwitches
-import dev.zitech.ds.atoms.text.TitleMediumText
-import dev.zitech.ds.atoms.text.TitleSmallText
+import dev.zitech.ds.atoms.text.FireFlowTexts
 import dev.zitech.ds.theme.FireFlowTheme
 
 private val imageSize = 32.dp
@@ -78,9 +77,9 @@ object FireFlowPreferences {
                     modifier = Modifier.weight(1.0f),
                     verticalArrangement = Arrangement.spacedBy(FireFlowTheme.space.s)
                 ) {
-                    TitleMediumText(text = title)
+                    FireFlowTexts.TitleMedium(text = title)
                     if (description != null) {
-                        TitleSmallText(
+                        FireFlowTexts.TitleSmall(
                             text = description,
                             color = FireFlowTheme.colors.onBackground.copy(
                                 alpha = descriptionAlpha
@@ -129,9 +128,9 @@ object FireFlowPreferences {
                     modifier = Modifier.weight(1.0f),
                     verticalArrangement = Arrangement.spacedBy(FireFlowTheme.space.s)
                 ) {
-                    TitleMediumText(text = title)
+                    FireFlowTexts.TitleMedium(text = title)
                     if (description != null) {
-                        TitleSmallText(
+                        FireFlowTexts.TitleSmall(
                             text = description,
                             color = FireFlowTheme.colors.onBackground.copy(
                                 alpha = descriptionAlpha
@@ -191,9 +190,9 @@ object FireFlowPreferences {
                     modifier = Modifier.weight(1.0f),
                     verticalArrangement = Arrangement.spacedBy(FireFlowTheme.space.s)
                 ) {
-                    TitleMediumText(text = title)
+                    FireFlowTexts.TitleMedium(text = title)
                     if (description != null) {
-                        TitleSmallText(
+                        FireFlowTexts.TitleSmall(
                             text = description,
                             color = FireFlowTheme.colors.onBackground.copy(
                                 alpha = descriptionAlpha
@@ -257,9 +256,9 @@ object FireFlowPreferences {
                     modifier = Modifier.weight(1.0f),
                     verticalArrangement = Arrangement.spacedBy(FireFlowTheme.space.s)
                 ) {
-                    TitleMediumText(text = title)
+                    FireFlowTexts.TitleMedium(text = title)
                     if (description != null) {
-                        TitleSmallText(
+                        FireFlowTexts.TitleSmall(
                             text = description,
                             color = FireFlowTheme.colors.onBackground.copy(
                                 alpha = descriptionAlpha
