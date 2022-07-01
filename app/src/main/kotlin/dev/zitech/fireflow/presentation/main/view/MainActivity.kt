@@ -21,13 +21,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Text
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import dagger.hilt.android.AndroidEntryPoint
 import dev.zitech.core.common.framework.flow.collectWhenStarted
 import dev.zitech.core.common.presentation.architecture.MviView
@@ -37,7 +33,10 @@ import dev.zitech.fireflow.presentation.main.viewmodel.MainState
 import dev.zitech.fireflow.presentation.main.viewmodel.MainViewModel
 import dev.zitech.fireflow.presentation.main.viewmodel.ShowError
 import dev.zitech.fireflow.presentation.main.viewmodel.ShowErrorHandled
+import dev.zitech.settings.presentation.settings.compose.Settings
 
+@ExperimentalLifecycleComposeApi
+@ExperimentalMaterial3Api
 @AndroidEntryPoint
 internal class MainActivity : ComponentActivity(), MviView<MainState> {
 
@@ -56,18 +55,7 @@ internal class MainActivity : ComponentActivity(), MviView<MainState> {
 
         setContent {
             FireFlowTheme {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(FireFlowTheme.colors.background),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        style = FireFlowTheme.typography.headlineLarge,
-                        color = FireFlowTheme.colors.onBackground,
-                        text = "FireFlow"
-                    )
-                }
+                Settings()
             }
         }
     }

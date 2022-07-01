@@ -15,8 +15,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.settings.presentation.settings
+package dev.zitech.settings.presentation.settings.viewmodel
 
-import dev.zitech.core.common.presentation.architecture.MviIntent
+import dev.zitech.core.common.presentation.architecture.MviState
 
-internal sealed interface SettingsIntent : MviIntent
+sealed interface SettingsEvent : MviState.Event
+
+internal object Idle : SettingsEvent

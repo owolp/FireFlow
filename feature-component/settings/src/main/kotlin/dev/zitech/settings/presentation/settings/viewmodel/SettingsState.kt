@@ -15,10 +15,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.settings.presentation.settings
+package dev.zitech.settings.presentation.settings.viewmodel
 
 import dev.zitech.core.common.presentation.architecture.MviState
 
-internal sealed interface SettingsEvent : MviState.Event
-
-internal object Idle : SettingsEvent
+data class SettingsState(
+    val telemetry: Boolean = false,
+    val crashReporter: Boolean = false,
+    val event: SettingsEvent = Idle
+) : MviState

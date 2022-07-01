@@ -15,21 +15,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.ds.space
+package dev.zitech.settings.presentation.settings.viewmodel
 
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.size
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
+import dev.zitech.core.common.presentation.architecture.MviIntent
 
-@Composable
-fun VerticalSpacer(verticalSpace: Dp) {
-    Spacer(
-        modifier = Modifier.size(
-            width = 0.dp,
-            height = verticalSpace
-        )
-    )
-}
+sealed interface SettingsIntent : MviIntent
+
+data class OnTelemetryCheck(val checked: Boolean) : SettingsIntent
+data class OnCrashReporterCheck(val checked: Boolean) : SettingsIntent
