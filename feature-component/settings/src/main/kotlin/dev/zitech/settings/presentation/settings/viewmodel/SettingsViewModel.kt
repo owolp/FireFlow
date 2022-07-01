@@ -22,7 +22,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.zitech.core.common.presentation.architecture.MviViewModel
 import dev.zitech.core.reporter.analytics.domain.usecase.SetAnalyticsCollectionUseCase
-import dev.zitech.core.reporter.crash.domain.usecase.SetCrashCollectionUseCase
+import dev.zitech.core.reporter.crash.domain.usecase.SetCrashReporterCollectionUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -31,7 +31,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    private val setCrashCollectionUseCase: SetCrashCollectionUseCase,
+    private val setCrashReporterCollectionUseCase: SetCrashReporterCollectionUseCase,
     private val setAnalyticsCollectionUseCase: SetAnalyticsCollectionUseCase
 ) : ViewModel(), MviViewModel<SettingsIntent, SettingsState> {
 
@@ -60,7 +60,7 @@ class SettingsViewModel @Inject constructor(
 
     private suspend fun handleOnCrashReporterCheck(checked: Boolean) {
         // TODO: Show Loading
-        setCrashCollectionUseCase(checked)
+        setCrashReporterCollectionUseCase(checked)
         // TODO: Update value from getCrashCollectionUseCase
         // TODO: If getCrashCollectionUseCase != checked -> Show Error
         mutableState.update {

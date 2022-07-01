@@ -24,7 +24,7 @@ import dev.zitech.core.persistence.domain.usecase.preferences.GetCrashReporterCo
 import dev.zitech.core.reporter.crash.domain.repository.CrashRepository
 import javax.inject.Inject
 
-class SetCrashCollectionUseCase @Inject constructor(
+class SetCrashReporterCollectionUseCase @Inject constructor(
     private val crashRepository: CrashRepository,
     private val getUserLoggedStateUseCase: GetUserLoggedStateUseCase,
     private val getCrashReporterCollectionValueUseCase: GetCrashReporterCollectionValueUseCase

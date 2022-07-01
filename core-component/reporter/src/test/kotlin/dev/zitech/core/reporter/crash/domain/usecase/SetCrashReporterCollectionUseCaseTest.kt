@@ -32,17 +32,17 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 @ExperimentalCoroutinesApi
-internal class SetCrashCollectionUseCaseTest {
+internal class SetCrashReporterCollectionUseCaseTest {
 
     private val crashRepository = mockk<CrashRepository>(relaxUnitFun = true)
     private val getUserLoggedStateUseCase = mockk<GetUserLoggedStateUseCase>()
     private val getCrashReporterCollectionValueUseCase = mockk<GetCrashReporterCollectionValueUseCase>()
 
-    private lateinit var sut: SetCrashCollectionUseCase
+    private lateinit var sut: SetCrashReporterCollectionUseCase
 
     @BeforeEach
     fun setup() {
-        sut = SetCrashCollectionUseCase(
+        sut = SetCrashReporterCollectionUseCase(
             crashRepository,
             getUserLoggedStateUseCase,
             getCrashReporterCollectionValueUseCase
