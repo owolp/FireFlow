@@ -38,6 +38,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.tooling.preview.Preview
@@ -52,6 +53,34 @@ private val imageSize = 32.dp
 private const val descriptionAlpha = 0.7F
 
 object FireFlowPreferences {
+
+    @Composable
+    fun Category(
+        title: String,
+        cdDescription: String,
+        modifier: Modifier = Modifier
+    ) {
+        PreferenceItem(modifier = modifier) {
+            Row(
+                modifier = Modifier
+                    .semantics {
+                        contentDescription = cdDescription
+                    },
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                FireFlowSpacers.Horizontal(
+                    horizontalSpace = FireFlowTheme.space.m + imageSize + FireFlowTheme.space.m
+                )
+                FireFlowTexts.TitleMedium(
+                    text = title,
+                    color = FireFlowTheme.colors.primary
+                )
+                FireFlowSpacers.Horizontal(
+                    horizontalSpace = FireFlowTheme.space.m + imageSize + FireFlowTheme.space.m
+                )
+            }
+        }
+    }
 
     @Composable
     fun Simple(
@@ -293,6 +322,25 @@ object FireFlowPreferences {
 }
 
 @Preview(
+    name = "Category Light Theme",
+    showBackground = true
+)
+@Preview(
+    name = "Category Dark Theme",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showBackground = true
+)
+@Composable
+private fun Category_Preview() {
+    FireFlowTheme {
+        FireFlowPreferences.Category(
+            title = "Category Title",
+            cdDescription = ""
+        )
+    }
+}
+
+@Preview(
     name = "Simple Title Only Light Theme",
     showBackground = true
 )
@@ -302,10 +350,10 @@ object FireFlowPreferences {
     showBackground = true
 )
 @Composable
-private fun SimpleTitlePreview() {
+private fun SimpleTitle_Preview() {
     FireFlowTheme {
         FireFlowPreferences.Simple(
-            title = "Title"
+            title = "Simple Title"
         )
     }
 }
@@ -320,10 +368,10 @@ private fun SimpleTitlePreview() {
     showBackground = true
 )
 @Composable
-private fun SimpleTitleDescriptionPreview() {
+private fun SimpleTitleDescription_Preview() {
     FireFlowTheme {
         FireFlowPreferences.Simple(
-            title = "Title",
+            title = "Simple Title",
             description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
         )
     }
@@ -339,10 +387,10 @@ private fun SimpleTitleDescriptionPreview() {
     showBackground = true
 )
 @Composable
-private fun IconTitlePreview() {
+private fun IconTitle_Preview() {
     FireFlowTheme {
         FireFlowPreferences.Icon(
-            title = "Title",
+            title = "Icon Title",
             icon = Icons.Outlined.Analytics
         )
     }
@@ -358,10 +406,10 @@ private fun IconTitlePreview() {
     showBackground = true
 )
 @Composable
-private fun IconTitleDescriptionPreview() {
+private fun IconTitleDescription_Preview() {
     FireFlowTheme {
         FireFlowPreferences.Icon(
-            title = "Title",
+            title = "Icon Title",
             description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
             icon = Icons.Outlined.Analytics
         )
@@ -381,7 +429,7 @@ private fun IconTitleDescriptionPreview() {
 private fun SwitchTitlePreview() {
     FireFlowTheme {
         FireFlowPreferences.Switch(
-            title = "Title",
+            title = "Switch Title",
             icon = Icons.Outlined.Analytics,
             checked = true,
             cdDescriptionEnabled = "",
@@ -401,10 +449,10 @@ private fun SwitchTitlePreview() {
     showBackground = true
 )
 @Composable
-private fun SwitchTitleDescriptionPreview() {
+private fun SwitchTitleDescription_Preview() {
     FireFlowTheme {
         FireFlowPreferences.Switch(
-            title = "Title",
+            title = "Switch Title",
             description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
             icon = Icons.Outlined.Analytics,
             checked = false,
@@ -426,10 +474,10 @@ private fun SwitchTitleDescriptionPreview() {
 )
 @ExperimentalMaterial3Api
 @Composable
-private fun CheckboxPreview() {
+private fun Checkbox_Preview() {
     FireFlowTheme {
         FireFlowPreferences.Checkbox(
-            title = "Title",
+            title = "Checkbox Title",
             description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
             icon = Icons.Outlined.Analytics,
             checked = false,
