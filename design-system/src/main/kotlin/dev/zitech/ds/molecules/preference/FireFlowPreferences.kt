@@ -49,6 +49,7 @@ import dev.zitech.ds.atoms.text.FireFlowTexts
 import dev.zitech.ds.theme.FireFlowTheme
 
 private val imageSize = 32.dp
+private val actionSize = 56.dp
 private const val descriptionAlpha = 0.7F
 
 object FireFlowPreferences {
@@ -60,6 +61,7 @@ object FireFlowPreferences {
     ) {
         PreferenceItem(modifier = modifier) {
             Row(
+                modifier = Modifier.padding(FireFlowTheme.space.xs),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 FireFlowSpacers.Horizontal(
@@ -70,7 +72,7 @@ object FireFlowPreferences {
                     color = FireFlowTheme.colors.primary
                 )
                 FireFlowSpacers.Horizontal(
-                    horizontalSpace = FireFlowTheme.space.m + imageSize + FireFlowTheme.space.m
+                    horizontalSpace = FireFlowTheme.space.m + actionSize + FireFlowTheme.space.m
                 )
             }
         }
@@ -111,7 +113,7 @@ object FireFlowPreferences {
                     }
                 }
                 FireFlowSpacers.Horizontal(
-                    horizontalSpace = FireFlowTheme.space.m + imageSize + FireFlowTheme.space.m
+                    horizontalSpace = FireFlowTheme.space.m + actionSize + FireFlowTheme.space.m
                 )
             }
         }
@@ -162,7 +164,7 @@ object FireFlowPreferences {
                     }
                 }
                 FireFlowSpacers.Horizontal(
-                    horizontalSpace = FireFlowTheme.space.m + imageSize + FireFlowTheme.space.m
+                    horizontalSpace = FireFlowTheme.space.m + actionSize + FireFlowTheme.space.m
                 )
             }
         }
@@ -225,6 +227,7 @@ object FireFlowPreferences {
                 }
                 FireFlowSpacers.Horizontal(horizontalSpace = FireFlowTheme.space.m)
                 FireFlowSwitches.Primary(
+                    modifier = Modifier.size(actionSize),
                     checked = checked,
                     onCheckedChange = null
                 )
@@ -273,7 +276,7 @@ object FireFlowPreferences {
                     contentDescription = null
                 )
                 FireFlowSpacers.Horizontal(
-                    horizontalSpace = FireFlowTheme.space.l
+                    horizontalSpace = FireFlowTheme.space.m
                 )
                 Column(
                     modifier = Modifier.weight(1.0f),
@@ -291,6 +294,7 @@ object FireFlowPreferences {
                 }
                 FireFlowSpacers.Horizontal(horizontalSpace = FireFlowTheme.space.m)
                 FIreFlowCheckboxes.Primary(
+                    modifier = Modifier.size(actionSize),
                     checked = checked,
                     onCheckedChange = null
                 )

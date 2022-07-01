@@ -31,10 +31,11 @@ object FireFlowSpacers {
 
     @Composable
     fun Horizontal(
-        horizontalSpace: Dp
+        horizontalSpace: Dp,
+        modifier: Modifier = Modifier
     ) {
         Spacer(
-            modifier = Modifier.size(
+            modifier = modifier.size(
                 width = horizontalSpace,
                 height = 0.dp
             )
@@ -43,10 +44,11 @@ object FireFlowSpacers {
 
     @Composable
     fun Vertical(
-        verticalSpace: Dp
+        verticalSpace: Dp,
+        modifier: Modifier = Modifier
     ) {
         Spacer(
-            modifier = Modifier.size(
+            modifier = modifier.size(
                 width = 0.dp,
                 height = verticalSpace
             )
