@@ -21,6 +21,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.zitech.core.common.presentation.architecture.MviViewModel
+import dev.zitech.core.persistence.domain.usecase.preferences.GetAnalyticsCollectionValueUseCase
+import dev.zitech.core.persistence.domain.usecase.preferences.GetCrashReporterCollectionValueUseCase
 import dev.zitech.core.reporter.analytics.domain.usecase.SetAnalyticsCollectionUseCase
 import dev.zitech.core.reporter.crash.domain.usecase.SetCrashReporterCollectionUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,13 +33,22 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    private val setCrashReporterCollectionUseCase: SetCrashReporterCollectionUseCase,
-    private val setAnalyticsCollectionUseCase: SetAnalyticsCollectionUseCase
+    private val getAnalyticsCollectionValueUseCase: GetAnalyticsCollectionValueUseCase,
+    private val setAnalyticsCollectionUseCase: SetAnalyticsCollectionUseCase,
+    private val getCrashReporterCollectionValueUseCase: GetCrashReporterCollectionValueUseCase,
+    private val setCrashReporterCollectionUseCase: SetCrashReporterCollectionUseCase
 ) : ViewModel(), MviViewModel<SettingsIntent, SettingsState> {
 
     private val mutableState = MutableStateFlow(SettingsState())
     override val state: StateFlow<SettingsState> = mutableState
 
+    init {
+        viewModelScope.launch {
+            getPreferencesState()
+        }
+    }
+
+    // TODO: Show initial loading
     override fun sendIntent(intent: SettingsIntent) {
         viewModelScope.launch {
             when (intent) {
@@ -48,24 +59,43 @@ class SettingsViewModel @Inject constructor(
     }
 
     private suspend fun handleOnTelemetryCheck(checked: Boolean) {
-        // TODO: Show Loading
         setAnalyticsCollectionUseCase(checked)
-        // TODO: Update value from getAnalyticsCollectionUseCase
-        // TODO: If getAnalyticsCollectionUseCase != checked -> Show Error
-        mutableState.update {
-            it.copy(telemetry = checked)
+        val isEnabled = getAnalyticsCollectionValueUseCase()
+        if (checked == isEnabled) {
+            mutableState.update {
+                it.copy(telemetry = checked)
+            }
+        } else {
+            // TODO: Show Error
         }
-        // TODO: Hide Loading
     }
 
     private suspend fun handleOnCrashReporterCheck(checked: Boolean) {
-        // TODO: Show Loading
         setCrashReporterCollectionUseCase(checked)
-        // TODO: Update value from getCrashCollectionUseCase
-        // TODO: If getCrashCollectionUseCase != checked -> Show Error
-        mutableState.update {
-            it.copy(crashReporter = checked)
+        val isEnabled = getCrashReporterCollectionValueUseCase()
+        if (checked == isEnabled) {
+            mutableState.update {
+                it.copy(crashReporter = checked)
+            }
+        } else {
+            // TODO: Show Error
         }
-        // TODO: Hide Loading
+    }
+
+    private suspend fun getPreferencesState() {
+        getTelemetryState()
+        getCrashReporterState()
+    }
+
+    private suspend fun getTelemetryState() {
+        mutableState.update {
+            it.copy(telemetry = getAnalyticsCollectionValueUseCase())
+        }
+    }
+
+    private suspend fun getCrashReporterState() {
+        mutableState.update {
+            it.copy(crashReporter = getCrashReporterCollectionValueUseCase())
+        }
     }
 }
