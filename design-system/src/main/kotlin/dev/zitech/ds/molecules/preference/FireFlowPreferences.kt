@@ -38,7 +38,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.tooling.preview.Preview
@@ -57,15 +56,10 @@ object FireFlowPreferences {
     @Composable
     fun Category(
         title: String,
-        cdDescription: String,
         modifier: Modifier = Modifier
     ) {
         PreferenceItem(modifier = modifier) {
             Row(
-                modifier = Modifier
-                    .semantics {
-                        contentDescription = cdDescription
-                    },
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 FireFlowSpacers.Horizontal(
@@ -334,8 +328,7 @@ object FireFlowPreferences {
 private fun Category_Preview() {
     FireFlowTheme {
         FireFlowPreferences.Category(
-            title = "Category Title",
-            cdDescription = ""
+            title = "Category Title"
         )
     }
 }
