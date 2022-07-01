@@ -24,4 +24,5 @@ plugins {
 
 dependencies {
     implementation(libs.google.accompanist.systemuicontroller)
+    implementation(libs.google.accompanist.placeholder.material)
 }
