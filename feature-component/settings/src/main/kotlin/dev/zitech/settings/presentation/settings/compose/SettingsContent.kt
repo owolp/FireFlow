@@ -37,7 +37,7 @@ import dev.zitech.settings.presentation.settings.viewmodel.SettingsState
 
 @ExperimentalMaterial3Api
 @Composable
-internal fun SettingsList(
+internal fun SettingsContent(
     state: SettingsState,
     modifier: Modifier = Modifier,
     onTelemetryCheckChanged: (checked: Boolean) -> Unit,
@@ -71,19 +71,19 @@ internal fun SettingsList(
 }
 
 @Preview(
-    name = "Settings List Light Theme",
+    name = "Settings Content Light Theme",
     showBackground = true
 )
 @Preview(
-    name = "Settings List Dark Theme",
+    name = "Settings Content Dark Theme",
     uiMode = Configuration.UI_MODE_NIGHT_YES,
     showBackground = true
 )
 @ExperimentalMaterial3Api
 @Composable
-internal fun SettingsList_Preview() {
+internal fun SettingsContent_Preview() {
     FireFlowTheme {
-        SettingsList(
+        SettingsContent(
             state = SettingsState(),
             onTelemetryCheckChanged = {},
             onCrashReporterCheckChanged = {}

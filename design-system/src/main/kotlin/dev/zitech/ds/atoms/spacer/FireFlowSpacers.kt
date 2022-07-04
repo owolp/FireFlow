@@ -66,7 +66,7 @@ object FireFlowSpacers {
     showBackground = true
 )
 @Composable
-private fun HorizontalPreview() {
+private fun Horizontal_Preview() {
     FireFlowTheme {
         FireFlowSpacers.Horizontal(10.dp)
     }
@@ -82,7 +82,7 @@ private fun HorizontalPreview() {
     showBackground = true
 )
 @Composable
-private fun VerticalPreview() {
+private fun Vertical_Preview() {
     FireFlowTheme {
         FireFlowSpacers.Vertical(10.dp)
     }

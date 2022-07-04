@@ -24,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import dev.zitech.ds.atoms.loading.FireFlowProgressIndicators
 import dev.zitech.ds.theme.FireFlowTheme
 import dev.zitech.settings.presentation.settings.viewmodel.OnCrashReporterCheck
 import dev.zitech.settings.presentation.settings.viewmodel.OnTelemetryCheck
@@ -36,15 +37,19 @@ fun Settings(
     viewModel: SettingsViewModel = viewModel()
 ) {
     val state = viewModel.state.collectAsStateWithLifecycle()
-    SettingsList(
-        state = state.value,
-        onTelemetryCheckChanged = { checked ->
-            viewModel.sendIntent(OnTelemetryCheck(checked))
-        },
-        onCrashReporterCheckChanged = { checked ->
-            viewModel.sendIntent(OnCrashReporterCheck(checked))
-        }
-    )
+    if (state.value.isLoading) {
+        FireFlowProgressIndicators.Settings()
+    } else {
+        SettingsContent(
+            state = state.value,
+            onTelemetryCheckChanged = { checked ->
+                viewModel.sendIntent(OnTelemetryCheck(checked))
+            },
+            onCrashReporterCheckChanged = { checked ->
+                viewModel.sendIntent(OnCrashReporterCheck(checked))
+            }
+        )
+    }
 }
 
 @Preview(
@@ -59,7 +64,7 @@ fun Settings(
 @ExperimentalLifecycleComposeApi
 @ExperimentalMaterial3Api
 @Composable
-internal fun SettingsPreview() {
+internal fun Settings_Preview() {
     FireFlowTheme {
         Settings()
     }

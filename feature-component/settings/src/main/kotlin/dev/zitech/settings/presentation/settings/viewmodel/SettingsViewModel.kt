@@ -48,7 +48,6 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    // TODO: Show initial loading
     override fun sendIntent(intent: SettingsIntent) {
         viewModelScope.launch {
             when (intent) {
@@ -83,8 +82,14 @@ class SettingsViewModel @Inject constructor(
     }
 
     private suspend fun getPreferencesState() {
+        mutableState.update {
+            it.copy(isLoading = true)
+        }
         getTelemetryState()
         getCrashReporterState()
+        mutableState.update {
+            it.copy(isLoading = false)
+        }
     }
 
     private suspend fun getTelemetryState() {

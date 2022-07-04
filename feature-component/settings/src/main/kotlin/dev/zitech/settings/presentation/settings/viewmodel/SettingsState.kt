@@ -20,6 +20,7 @@ package dev.zitech.settings.presentation.settings.viewmodel
 import dev.zitech.core.common.presentation.architecture.MviState
 
 data class SettingsState(
+    val isLoading: Boolean = false,
     val telemetry: Boolean = false,
     val crashReporter: Boolean = false,
     val event: SettingsEvent = Idle
