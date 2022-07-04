@@ -42,7 +42,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import dev.zitech.ds.atoms.checkbox.FIreFlowCheckboxes
+import dev.zitech.ds.atoms.checkbox.FireFlowCheckboxes
 import dev.zitech.ds.atoms.spacer.FireFlowSpacers
 import dev.zitech.ds.atoms.switch.FireFlowSwitches
 import dev.zitech.ds.atoms.text.FireFlowTexts
@@ -293,7 +293,7 @@ object FireFlowPreferences {
                     }
                 }
                 FireFlowSpacers.Horizontal(horizontalSpace = FireFlowTheme.space.m)
-                FIreFlowCheckboxes.Primary(
+                FireFlowCheckboxes.Primary(
                     modifier = Modifier.size(actionSize),
                     checked = checked,
                     onCheckedChange = null
