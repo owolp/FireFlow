@@ -97,17 +97,17 @@ object FireFlowCategoryPreferences {
 }
 
 @Preview(
-    name = "Category Preference Light Theme",
+    name = "Category Preferences Light Theme",
     showBackground = true
 )
 @Preview(
-    name = "Category Preference Dark Theme",
+    name = "Category Preferences Dark Theme",
     uiMode = Configuration.UI_MODE_NIGHT_YES,
     showBackground = true
 )
 @ExperimentalMaterial3Api
 @Composable
-private fun SettingsListPreview() {
+private fun CategoryPreferences_Preview() {
     FireFlowTheme {
         FireFlowCategoryPreferences.Simple(
             categoryName = "Category Name",
