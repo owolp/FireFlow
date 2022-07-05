@@ -17,8 +17,13 @@
 
 package dev.zitech.settings.presentation.settings.viewmodel
 
+import androidx.annotation.StringRes
 import dev.zitech.core.common.presentation.architecture.MviState
 
 sealed interface SettingsEvent : MviState.Event
 
 internal object Idle : SettingsEvent
+internal data class Error(
+    @StringRes val message: Int,
+    @StringRes val action: Int? = null
+) : SettingsEvent

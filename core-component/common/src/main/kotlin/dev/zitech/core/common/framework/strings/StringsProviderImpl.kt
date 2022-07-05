@@ -18,6 +18,7 @@
 package dev.zitech.core.common.framework.strings
 
 import android.content.Context
+import androidx.annotation.StringRes
 import dev.zitech.core.common.domain.strings.StringsProvider
 import javax.inject.Inject
 
@@ -25,9 +26,9 @@ internal class StringsProviderImpl @Inject constructor(
     private val context: Context
 ) : StringsProvider {
 
-    override fun invoke(resId: Int): String =
+    override fun invoke(@StringRes resId: Int): String =
         context.getString(resId)
 
-    override fun invoke(resId: Int, vararg args: CharSequence): String =
+    override fun invoke(@StringRes resId: Int, vararg args: CharSequence): String =
         context.getString(resId, args)
 }

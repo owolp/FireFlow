@@ -17,7 +17,9 @@
 
 package dev.zitech.core.common.domain.strings
 
+import androidx.annotation.StringRes
+
 interface StringsProvider {
-    operator fun invoke(resId: Int): String
-    operator fun invoke(resId: Int, vararg args: CharSequence): String
+    operator fun invoke(@StringRes resId: Int): String
+    operator fun invoke(@StringRes resId: Int, vararg args: CharSequence): String
 }

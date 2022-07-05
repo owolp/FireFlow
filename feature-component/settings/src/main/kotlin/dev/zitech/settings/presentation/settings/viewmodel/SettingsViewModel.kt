@@ -25,6 +25,7 @@ import dev.zitech.core.persistence.domain.usecase.preferences.GetAnalyticsCollec
 import dev.zitech.core.persistence.domain.usecase.preferences.GetCrashReporterCollectionValueUseCase
 import dev.zitech.core.reporter.analytics.domain.usecase.SetAnalyticsCollectionUseCase
 import dev.zitech.core.reporter.crash.domain.usecase.SetCrashReporterCollectionUseCase
+import dev.zitech.settings.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -65,7 +66,14 @@ class SettingsViewModel @Inject constructor(
                 it.copy(telemetry = checked)
             }
         } else {
-            // TODO: Show Error
+            mutableState.update {
+                it.copy(
+                    event = Error(
+                        message = R.string.data_choices_telemetry_error,
+                        action = R.string.action_restart
+                    )
+                )
+            }
         }
     }
 
@@ -77,7 +85,14 @@ class SettingsViewModel @Inject constructor(
                 it.copy(crashReporter = checked)
             }
         } else {
-            // TODO: Show Error
+            mutableState.update {
+                it.copy(
+                    event = Error(
+                        message = R.string.data_choices_crash_reporter_error,
+                        action = R.string.action_restart
+                    )
+                )
+            }
         }
     }
 
