@@ -17,12 +17,11 @@
 
 package dev.zitech.settings.presentation.settings.viewmodel
 
-import dev.zitech.core.common.presentation.architecture.MviState
+import dev.zitech.core.common.presentation.architecture.MviStateHolder
+import kotlinx.coroutines.flow.MutableStateFlow
+import javax.inject.Inject
 
-sealed interface SettingsEvent : MviState.Event
+class SettingsStateHolder @Inject constructor() : MviStateHolder<SettingsState> {
 
-internal object Idle : SettingsEvent
-internal data class Error(
-    val message: String,
-    val action: String? = null
-) : SettingsEvent
+    override val state: MutableStateFlow<SettingsState> = MutableStateFlow(SettingsState())
+}

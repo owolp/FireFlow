@@ -16,6 +16,7 @@
  */
 
 apply(from = "$rootDir/config/dependencies/compose-dependencies.gradle")
+apply(from = "$rootDir/config/dependencies/test-dependencies.gradle")
 
 plugins {
     id(BuildPlugins.KOTLIN_ANDROID)

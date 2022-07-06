@@ -20,28 +20,30 @@ package dev.zitech.settings.presentation.settings.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.zitech.core.common.domain.strings.StringsProvider
 import dev.zitech.core.common.presentation.architecture.MviViewModel
 import dev.zitech.core.persistence.domain.usecase.preferences.GetAnalyticsCollectionValueUseCase
 import dev.zitech.core.persistence.domain.usecase.preferences.GetCrashReporterCollectionValueUseCase
 import dev.zitech.core.reporter.analytics.domain.usecase.SetAnalyticsCollectionUseCase
 import dev.zitech.core.reporter.crash.domain.usecase.SetCrashReporterCollectionUseCase
 import dev.zitech.settings.R
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
+    private val settingsStateHolder: SettingsStateHolder,
     private val getAnalyticsCollectionValueUseCase: GetAnalyticsCollectionValueUseCase,
     private val setAnalyticsCollectionUseCase: SetAnalyticsCollectionUseCase,
     private val getCrashReporterCollectionValueUseCase: GetCrashReporterCollectionValueUseCase,
-    private val setCrashReporterCollectionUseCase: SetCrashReporterCollectionUseCase
+    private val setCrashReporterCollectionUseCase: SetCrashReporterCollectionUseCase,
+    private val stringsProvider: StringsProvider
 ) : ViewModel(), MviViewModel<SettingsIntent, SettingsState> {
 
-    private val mutableState = MutableStateFlow(SettingsState())
-    override val state: StateFlow<SettingsState> = mutableState
+    override val state: StateFlow<SettingsState> = settingsStateHolder.state.asStateFlow()
 
     init {
         viewModelScope.launch {
@@ -62,18 +64,14 @@ class SettingsViewModel @Inject constructor(
         setAnalyticsCollectionUseCase(checked)
         val isEnabled = getAnalyticsCollectionValueUseCase()
         if (checked == isEnabled) {
-            mutableState.update {
-                it.copy(telemetry = checked)
-            }
+            setTelemetryState(checked)
         } else {
-            mutableState.update {
-                it.copy(
-                    event = Error(
-                        message = R.string.data_choices_telemetry_error,
-                        action = R.string.action_restart
-                    )
+            setErrorState(
+                Error(
+                    message = stringsProvider(R.string.data_choices_telemetry_error),
+                    action = stringsProvider(R.string.action_restart)
                 )
-            }
+            )
         }
     }
 
@@ -81,41 +79,45 @@ class SettingsViewModel @Inject constructor(
         setCrashReporterCollectionUseCase(checked)
         val isEnabled = getCrashReporterCollectionValueUseCase()
         if (checked == isEnabled) {
-            mutableState.update {
-                it.copy(crashReporter = checked)
-            }
+            setCrashReporterState(checked)
         } else {
-            mutableState.update {
-                it.copy(
-                    event = Error(
-                        message = R.string.data_choices_crash_reporter_error,
-                        action = R.string.action_restart
-                    )
+            setErrorState(
+                Error(
+                    message = stringsProvider(R.string.data_choices_crash_reporter_error),
+                    action = stringsProvider(R.string.action_restart)
                 )
-            }
+            )
         }
     }
 
     private suspend fun getPreferencesState() {
-        mutableState.update {
-            it.copy(isLoading = true)
-        }
-        getTelemetryState()
-        getCrashReporterState()
-        mutableState.update {
-            it.copy(isLoading = false)
+        setIsLoadingState(true)
+        setTelemetryState(getAnalyticsCollectionValueUseCase())
+        setCrashReporterState(getCrashReporterCollectionValueUseCase())
+        setIsLoadingState(false)
+    }
+
+    private fun setIsLoadingState(value: Boolean) {
+        settingsStateHolder.state.update {
+            it.copy(isLoading = value)
         }
     }
 
-    private suspend fun getTelemetryState() {
-        mutableState.update {
-            it.copy(telemetry = getAnalyticsCollectionValueUseCase())
+    private fun setTelemetryState(value: Boolean) {
+        settingsStateHolder.state.update {
+            it.copy(telemetry = value)
         }
     }
 
-    private suspend fun getCrashReporterState() {
-        mutableState.update {
-            it.copy(crashReporter = getCrashReporterCollectionValueUseCase())
+    private fun setCrashReporterState(value: Boolean) {
+        settingsStateHolder.state.update {
+            it.copy(crashReporter = value)
+        }
+    }
+
+    private fun setErrorState(value: SettingsEvent) {
+        settingsStateHolder.state.update {
+            it.copy(event = value)
         }
     }
 }

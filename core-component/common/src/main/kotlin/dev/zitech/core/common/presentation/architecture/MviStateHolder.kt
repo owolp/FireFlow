@@ -15,14 +15,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.settings.presentation.settings.viewmodel
+package dev.zitech.core.common.presentation.architecture
 
-import dev.zitech.core.common.presentation.architecture.MviState
+import kotlinx.coroutines.flow.MutableStateFlow
 
-sealed interface SettingsEvent : MviState.Event
-
-internal object Idle : SettingsEvent
-internal data class Error(
-    val message: String,
-    val action: String? = null
-) : SettingsEvent
+interface MviStateHolder<State : MviState> {
+    val state: MutableStateFlow<State>
+}
