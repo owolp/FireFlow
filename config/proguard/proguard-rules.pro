@@ -44,3 +44,7 @@
 
 # R8: Missing class com.google.errorprone.annotations.Immutable (referenced from: com.google.crypto.tink.KeyTemplate and 4 other contexts)
 -dontwarn com.google.errorprone.annotations.Immutable
+
+# SQLCipher
+-keep class net.sqlcipher.** { *; }
+-keep class net.sqlcipher.database.* { *; }
