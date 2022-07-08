@@ -52,6 +52,8 @@ fun Settings(
             }
         )
     }
+
+    @Suppress("ForbiddenComment")
     when (val event = state.value.event) {
         is Error -> {
             // TODO: Show error SnackBar with restart button

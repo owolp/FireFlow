@@ -114,16 +114,19 @@ private fun CategoryPreferences_Preview() {
             preferences = listOf(
                 CategoryPreference.Simple(
                     title = "Simple Title",
-                    description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                    description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do " +
+                        "eiusmod tempor incididunt ut labore et dolore magna aliqua."
                 ),
                 CategoryPreference.Icon(
                     title = "Icon Title",
-                    description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                    description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do " +
+                        "eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                     icon = Icons.Outlined.Analytics
                 ),
                 CategoryPreference.Switch(
                     title = "Switch Title",
-                    description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                    description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do " +
+                        "eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                     icon = Icons.Outlined.Analytics,
                     checked = false,
                     cdDescriptionEnabled = "",
@@ -132,7 +135,8 @@ private fun CategoryPreferences_Preview() {
                 ),
                 CategoryPreference.Checkbox(
                     title = "Checkbox Title",
-                    description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                    description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do " +
+                        "eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                     icon = Icons.Outlined.Analytics,
                     checked = false,
                     cdDescriptionEnabled = "",

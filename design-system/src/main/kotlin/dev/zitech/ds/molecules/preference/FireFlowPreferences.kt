@@ -50,7 +50,7 @@ import dev.zitech.ds.theme.FireFlowTheme
 
 private val imageSize = 32.dp
 private val actionSize = 56.dp
-private const val descriptionAlpha = 0.7F
+private const val DESCRIPTION_ALPHA = 0.7F
 
 object FireFlowPreferences {
 
@@ -107,7 +107,7 @@ object FireFlowPreferences {
                         FireFlowTexts.TitleSmall(
                             text = description,
                             color = FireFlowTheme.colors.onBackground.copy(
-                                alpha = descriptionAlpha
+                                alpha = DESCRIPTION_ALPHA
                             )
                         )
                     }
@@ -158,7 +158,7 @@ object FireFlowPreferences {
                         FireFlowTexts.TitleSmall(
                             text = description,
                             color = FireFlowTheme.colors.onBackground.copy(
-                                alpha = descriptionAlpha
+                                alpha = DESCRIPTION_ALPHA
                             )
                         )
                     }
@@ -220,7 +220,7 @@ object FireFlowPreferences {
                         FireFlowTexts.TitleSmall(
                             text = description,
                             color = FireFlowTheme.colors.onBackground.copy(
-                                alpha = descriptionAlpha
+                                alpha = DESCRIPTION_ALPHA
                             )
                         )
                     }
@@ -287,7 +287,7 @@ object FireFlowPreferences {
                         FireFlowTexts.TitleSmall(
                             text = description,
                             color = FireFlowTheme.colors.onBackground.copy(
-                                alpha = descriptionAlpha
+                                alpha = DESCRIPTION_ALPHA
                             )
                         )
                     }
@@ -369,7 +369,8 @@ private fun SimpleTitleDescription_Preview() {
     FireFlowTheme {
         FireFlowPreferences.Simple(
             title = "Simple Title",
-            description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+            description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod " +
+                "tempor incididunt ut labore et dolore magna aliqua."
         )
     }
 }
@@ -407,7 +408,8 @@ private fun IconTitleDescription_Preview() {
     FireFlowTheme {
         FireFlowPreferences.Icon(
             title = "Icon Title",
-            description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+            description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod " +
+                "tempor incididunt ut labore et dolore magna aliqua.",
             icon = Icons.Outlined.Analytics
         )
     }
@@ -450,7 +452,8 @@ private fun SwitchTitleDescription_Preview() {
     FireFlowTheme {
         FireFlowPreferences.Switch(
             title = "Switch Title",
-            description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+            description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod " +
+                "tempor incididunt ut labore et dolore magna aliqua.",
             icon = Icons.Outlined.Analytics,
             checked = false,
             cdDescriptionEnabled = "",
@@ -475,7 +478,8 @@ private fun Checkbox_Preview() {
     FireFlowTheme {
         FireFlowPreferences.Checkbox(
             title = "Checkbox Title",
-            description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+            description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod " +
+                "tempor incididunt ut labore et dolore magna aliqua.",
             icon = Icons.Outlined.Analytics,
             checked = false,
             cdDescriptionEnabled = "",
