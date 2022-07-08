@@ -39,7 +39,7 @@ object FireFlowProgressIndicators {
     fun Settings(modifier: Modifier = Modifier) {
         ProgressIndicatorItem(
             modifier = modifier,
-            resId = R.raw.settings
+            resId = R.raw.animation_settings
         )
     }
 
