@@ -21,13 +21,15 @@ import dev.zitech.core.persistence.domain.model.database.UserLoggedState.LOGGED_
 import dev.zitech.core.persistence.domain.model.database.UserLoggedState.LOGGED_OUT
 import dev.zitech.core.persistence.domain.usecase.database.GetUserLoggedStateUseCase
 import dev.zitech.core.persistence.domain.usecase.preferences.GetAllowPersonalizedAdsValueUseCase
+import dev.zitech.core.persistence.domain.usecase.preferences.SaveAllowPersonalizedAdsValueUseCase
 import dev.zitech.core.reporter.analytics.domain.repository.AnalyticsRepository
 import javax.inject.Inject
 
 class AllowPersonalizedAdsUseCase @Inject constructor(
     private val analyticsRepository: AnalyticsRepository,
     private val getUserLoggedStateUseCase: GetUserLoggedStateUseCase,
-    private val getAllowPersonalizedAdsValueUseCase: GetAllowPersonalizedAdsValueUseCase
+    private val getAllowPersonalizedAdsValueUseCase: GetAllowPersonalizedAdsValueUseCase,
+    private val saveAllowPersonalizedAdsValueUseCase: SaveAllowPersonalizedAdsValueUseCase
 ) {
 
     suspend operator fun invoke(enabled: Boolean? = null) =
@@ -36,5 +38,8 @@ class AllowPersonalizedAdsUseCase @Inject constructor(
                 LOGGED_IN -> getAllowPersonalizedAdsValueUseCase()
                 LOGGED_OUT -> false
             }
-            ).run { analyticsRepository.allowPersonalizedAds(this) }
+            ).run {
+            analyticsRepository.allowPersonalizedAds(this)
+            saveAllowPersonalizedAdsValueUseCase(this)
+        }
 }

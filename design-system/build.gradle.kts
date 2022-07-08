@@ -23,5 +23,7 @@ plugins {
 }
 
 dependencies {
+    implementation(libs.airbnb.android.lottie.compose)
     implementation(libs.google.accompanist.systemuicontroller)
+    implementation(libs.google.accompanist.placeholder.material)
 }

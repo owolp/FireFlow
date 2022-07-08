@@ -21,13 +21,15 @@ import dev.zitech.core.persistence.domain.model.database.UserLoggedState.LOGGED_
 import dev.zitech.core.persistence.domain.model.database.UserLoggedState.LOGGED_OUT
 import dev.zitech.core.persistence.domain.usecase.database.GetUserLoggedStateUseCase
 import dev.zitech.core.persistence.domain.usecase.preferences.GetAnalyticsCollectionValueUseCase
+import dev.zitech.core.persistence.domain.usecase.preferences.SaveAnalyticsCollectionValueUseCase
 import dev.zitech.core.reporter.analytics.domain.repository.AnalyticsRepository
 import javax.inject.Inject
 
 class SetAnalyticsCollectionUseCase @Inject constructor(
     private val analyticsRepository: AnalyticsRepository,
     private val getUserLoggedStateUseCase: GetUserLoggedStateUseCase,
-    private val getAnalyticsCollectionValueUseCase: GetAnalyticsCollectionValueUseCase
+    private val getAnalyticsCollectionValueUseCase: GetAnalyticsCollectionValueUseCase,
+    private val saveAnalyticsCollectionValueUseCase: SaveAnalyticsCollectionValueUseCase
 ) {
 
     suspend operator fun invoke(enabled: Boolean? = null) =
@@ -36,5 +38,8 @@ class SetAnalyticsCollectionUseCase @Inject constructor(
                 LOGGED_IN -> getAnalyticsCollectionValueUseCase()
                 LOGGED_OUT -> false
             }
-            ).run { analyticsRepository.setCollectionEnabled(this) }
+            ).run {
+            analyticsRepository.setCollectionEnabled(this)
+            saveAnalyticsCollectionValueUseCase(this)
+        }
 }

@@ -21,36 +21,38 @@ import dev.zitech.core.common.DataFactory
 import dev.zitech.core.persistence.domain.model.database.UserLoggedState
 import dev.zitech.core.persistence.domain.usecase.database.GetUserLoggedStateUseCase
 import dev.zitech.core.persistence.domain.usecase.preferences.GetCrashReporterCollectionValueUseCase
+import dev.zitech.core.persistence.domain.usecase.preferences.SaveCrashReporterCollectionValueUseCase
 import dev.zitech.core.reporter.crash.domain.repository.CrashRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
-import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 @ExperimentalCoroutinesApi
-internal class SetCrashCollectionUseCaseTest {
+internal class SetCrashReporterCollectionUseCaseTest {
 
     private val crashRepository = mockk<CrashRepository>(relaxUnitFun = true)
     private val getUserLoggedStateUseCase = mockk<GetUserLoggedStateUseCase>()
     private val getCrashReporterCollectionValueUseCase = mockk<GetCrashReporterCollectionValueUseCase>()
+    private val saveCrashReporterCollectionValueUseCase = mockk<SaveCrashReporterCollectionValueUseCase>(relaxUnitFun = true)
 
-    private lateinit var sut: SetCrashCollectionUseCase
+    private lateinit var sut: SetCrashReporterCollectionUseCase
 
     @BeforeEach
     fun setup() {
-        sut = SetCrashCollectionUseCase(
+        sut = SetCrashReporterCollectionUseCase(
             crashRepository,
             getUserLoggedStateUseCase,
-            getCrashReporterCollectionValueUseCase
+            getCrashReporterCollectionValueUseCase,
+            saveCrashReporterCollectionValueUseCase
         )
     }
 
     @Test
-    fun `GIVEN enabled not null value THEN invoke setCollectionEnabled with correct value`() = runTest {
+    fun `GIVEN enabled not null value THEN invoke setCollectionEnabled and save with correct value`() = runTest {
         // Arrange
         val expectedResult = DataFactory.createRandomBoolean()
 
@@ -58,7 +60,10 @@ internal class SetCrashCollectionUseCaseTest {
         sut(expectedResult)
 
         // Assert
-        verify { crashRepository.setCollectionEnabled(expectedResult) }
+        coVerify {
+            crashRepository.setCollectionEnabled(expectedResult)
+            saveCrashReporterCollectionValueUseCase(expectedResult)
+        }
         coVerify(exactly = 0) {
             getUserLoggedStateUseCase()
             getCrashReporterCollectionValueUseCase()
@@ -66,7 +71,7 @@ internal class SetCrashCollectionUseCaseTest {
     }
 
     @Test
-    fun `GIVEN enabled null value and user is logged in THEN invoke setCollectionEnabled with correct value`() = runTest {
+    fun `GIVEN enabled null value and user is logged in THEN invoke setCollectionEnabled and save with correct value`() = runTest {
         // Arrange
         val expectedResult = DataFactory.createRandomBoolean()
         coEvery { getUserLoggedStateUseCase() } returns UserLoggedState.LOGGED_IN
@@ -80,11 +85,14 @@ internal class SetCrashCollectionUseCaseTest {
             getUserLoggedStateUseCase()
             getCrashReporterCollectionValueUseCase()
         }
-        verify { crashRepository.setCollectionEnabled(expectedResult) }
+        coVerify {
+            crashRepository.setCollectionEnabled(expectedResult)
+            saveCrashReporterCollectionValueUseCase(expectedResult)
+        }
     }
 
     @Test
-    fun `GIVEN enabled null value and user is not logged in THEN invoke setCollectionEnabled with correct value`() = runTest {
+    fun `GIVEN enabled null value and user is not logged in THEN invoke setCollectionEnabled and save with correct value`() = runTest {
         // Arrange
         val expectedResult = false
         coEvery { getUserLoggedStateUseCase() } returns UserLoggedState.LOGGED_OUT
@@ -96,6 +104,9 @@ internal class SetCrashCollectionUseCaseTest {
         // Assert
         coVerify { getUserLoggedStateUseCase() }
         coVerify(exactly = 0) { getCrashReporterCollectionValueUseCase() }
-        verify { crashRepository.setCollectionEnabled(expectedResult) }
+        coVerify {
+            crashRepository.setCollectionEnabled(expectedResult)
+            saveCrashReporterCollectionValueUseCase(expectedResult)
+        }
     }
 }

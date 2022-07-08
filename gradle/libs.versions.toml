@@ -7,7 +7,7 @@ coroutines = "1.6.3"
 dagger = "2.42"
 junit = "5.8.2"
 jvmTarget = "11"
-lifecycle = "2.5.0-rc02"
+lifecycle = "2.6.0-alpha01"
 ktlint = "0.42.1"
 kotlin = "1.6.21"
 room = "2.4.2"
@@ -15,6 +15,7 @@ test = "1.4.0"
 
 [libraries]
 acra-http = "ch.acra:acra-http:5.9.5"
+airbnb-android-lottie-compose = "com.airbnb.android:lottie-compose:5.2.0"
 android-build-gradle = "com.android.tools.build:gradle:7.2.1"
 androidx-activity-compose = "androidx.activity:activity-compose:1.4.0"
 androidx-appcompat = "androidx.appcompat:appcompat:1.4.2"
@@ -33,7 +34,9 @@ androidx-costraintlayout-compose = "androidx.constraintlayout:constraintlayout-c
 androidx-datastore-preferences = "androidx.datastore:datastore-preferences:1.0.0"
 androidx-lifecycle-compiler = { module = "androidx.lifecycle:lifecycle-compiler", version.ref = "lifecycle" }
 androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
+androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
 androidx-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle" }
+androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
@@ -44,6 +47,7 @@ androidx-test-runner = { module = "androidx.test:runner", version.ref = "test" }
 androidx-test-core = { module = "androidx.test:core-ktx", version.ref = "test" }
 cash-turbine = "app.cash.turbine:turbine:0.8.0"
 google-accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
+google-accompanist-placeholder-material = { module = "com.google.accompanist:accompanist-placeholder-material", version.ref = "accompanist" }
 google-dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "dagger" }
 google-dagger-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "dagger" }
 google-dagger-hilt-gradle = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "dagger" }
