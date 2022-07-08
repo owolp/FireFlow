@@ -14,7 +14,7 @@ room = "2.4.2"
 test = "1.4.0"
 
 [libraries]
-acra-http = "ch.acra:acra-http:5.9.3"
+acra-http = "ch.acra:acra-http:5.9.5"
 airbnb-android-lottie-compose = "com.airbnb.android:lottie-compose:5.2.0"
 android-build-gradle = "com.android.tools.build:gradle:7.2.1"
 androidx-activity-compose = "androidx.activity:activity-compose:1.4.0"
@@ -26,7 +26,7 @@ androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", versi
 androidx-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
 androidx-compose-material-icons = { module = "androidx.compose.material:material-icons-extended", version.ref = "compose" }
 androidx-compose-material-material = { module = "androidx.compose.material:material", version.ref = "compose" }
-androidx-compose-material3-material3 = "androidx.compose.material3:material3:1.0.0-alpha13"
+androidx-compose-material3-material3 = "androidx.compose.material3:material3:1.0.0-alpha14"
 androidx-compose-runtime = { module = "androidx.compose.runtime:runtime", version.ref = "compose" }
 androidx-core = "androidx.core:core-ktx:1.8.0"
 androidx-core-splash = "androidx.core:core-splashscreen:1.0.0-rc01"
@@ -55,7 +55,7 @@ google-firebase-bom = "com.google.firebase:firebase-bom:30.2.0"
 google-firebase-crashlytics-gradle = "com.google.firebase:firebase-crashlytics-gradle:2.9.1"
 google-firebase-performance-gradle = "com.google.firebase:perf-plugin:1.4.1"
 google-material = "com.google.android.material:material:1.6.1"
-google-gms-services = "com.google.gms:google-services:4.3.10"
+google-gms-services = "com.google.gms:google-services:4.3.13"
 google-truth = "com.google.truth:truth:1.1.3"
 huawei-agconnect-agcp = { module = "com.huawei.agconnect:agcp", version.ref = "agconnect" }
 huawei-agconnect-apms = "com.huawei.agconnect:agconnect-apms:1.5.2.310"
