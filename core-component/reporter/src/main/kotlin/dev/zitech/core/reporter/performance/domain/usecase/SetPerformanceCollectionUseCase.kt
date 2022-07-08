@@ -21,6 +21,7 @@ import dev.zitech.core.persistence.domain.model.database.UserLoggedState.LOGGED_
 import dev.zitech.core.persistence.domain.model.database.UserLoggedState.LOGGED_OUT
 import dev.zitech.core.persistence.domain.usecase.database.GetUserLoggedStateUseCase
 import dev.zitech.core.persistence.domain.usecase.preferences.GetPerformanceCollectionValueUseCase
+import dev.zitech.core.persistence.domain.usecase.preferences.SavePerformanceCollectionValueUseCase
 import dev.zitech.core.remoteconfig.domain.model.BooleanConfig
 import dev.zitech.core.remoteconfig.domain.usecase.GetBooleanConfigValueUseCase
 import dev.zitech.core.reporter.performance.domain.repository.PerformanceRepository
@@ -30,7 +31,8 @@ class SetPerformanceCollectionUseCase @Inject constructor(
     private val performanceRepository: PerformanceRepository,
     private val getUserLoggedStateUseCase: GetUserLoggedStateUseCase,
     private val getPerformanceCollectionValueUseCase: GetPerformanceCollectionValueUseCase,
-    private val getBooleanConfigValueUseCase: GetBooleanConfigValueUseCase
+    private val getBooleanConfigValueUseCase: GetBooleanConfigValueUseCase,
+    private val savePerformanceCollectionValueUseCase: SavePerformanceCollectionValueUseCase
 ) {
 
     suspend operator fun invoke(enabled: Boolean? = null) =
@@ -42,5 +44,8 @@ class SetPerformanceCollectionUseCase @Inject constructor(
                 }
                 LOGGED_OUT -> false
             }
-            ).run { performanceRepository.setCollectionEnabled(this) }
+            ).run {
+            performanceRepository.setCollectionEnabled(this)
+            savePerformanceCollectionValueUseCase(this)
+        }
 }

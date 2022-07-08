@@ -21,11 +21,11 @@ import dev.zitech.core.common.DataFactory
 import dev.zitech.core.persistence.domain.model.database.UserLoggedState
 import dev.zitech.core.persistence.domain.usecase.database.GetUserLoggedStateUseCase
 import dev.zitech.core.persistence.domain.usecase.preferences.GetAllowPersonalizedAdsValueUseCase
+import dev.zitech.core.persistence.domain.usecase.preferences.SaveAllowPersonalizedAdsValueUseCase
 import dev.zitech.core.reporter.analytics.domain.repository.AnalyticsRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
-import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
@@ -37,6 +37,7 @@ internal class AllowPersonalizedAdsUseCaseTest {
     private val analyticsRepository = mockk<AnalyticsRepository>(relaxUnitFun = true)
     private val getUserLoggedStateUseCase = mockk<GetUserLoggedStateUseCase>()
     private val getAllowPersonalizedAdsValueUseCase = mockk<GetAllowPersonalizedAdsValueUseCase>()
+    private val saveAllowPersonalizedAdsValueUseCase = mockk<SaveAllowPersonalizedAdsValueUseCase>(relaxUnitFun = true)
 
     private lateinit var sut: AllowPersonalizedAdsUseCase
 
@@ -45,12 +46,13 @@ internal class AllowPersonalizedAdsUseCaseTest {
         sut = AllowPersonalizedAdsUseCase(
             analyticsRepository,
             getUserLoggedStateUseCase,
-            getAllowPersonalizedAdsValueUseCase
+            getAllowPersonalizedAdsValueUseCase,
+            saveAllowPersonalizedAdsValueUseCase
         )
     }
 
     @Test
-    fun `GIVEN enabled not null value THEN invoke allowPersonalizedAds with correct value`() = runTest {
+    fun `GIVEN enabled not null value THEN invoke allowPersonalizedAds and save with correct value`() = runTest {
         // Arrange
         val expectedResult = DataFactory.createRandomBoolean()
 
@@ -58,7 +60,10 @@ internal class AllowPersonalizedAdsUseCaseTest {
         sut(expectedResult)
 
         // Assert
-        verify { analyticsRepository.allowPersonalizedAds(expectedResult) }
+        coVerify {
+            analyticsRepository.allowPersonalizedAds(expectedResult)
+            saveAllowPersonalizedAdsValueUseCase(expectedResult)
+        }
         coVerify(exactly = 0) {
             getUserLoggedStateUseCase()
             getAllowPersonalizedAdsValueUseCase()
@@ -66,7 +71,7 @@ internal class AllowPersonalizedAdsUseCaseTest {
     }
 
     @Test
-    fun `GIVEN enabled null value and user is logged in THEN invoke allowPersonalizedAds with correct value`() = runTest {
+    fun `GIVEN enabled null value and user is logged in THEN invoke allowPersonalizedAds and save with correct value`() = runTest {
         // Arrange
         val expectedResult = DataFactory.createRandomBoolean()
         coEvery { getUserLoggedStateUseCase() } returns UserLoggedState.LOGGED_IN
@@ -80,11 +85,14 @@ internal class AllowPersonalizedAdsUseCaseTest {
             getUserLoggedStateUseCase()
             getAllowPersonalizedAdsValueUseCase()
         }
-        verify { analyticsRepository.allowPersonalizedAds(expectedResult) }
+        coVerify {
+            analyticsRepository.allowPersonalizedAds(expectedResult)
+            saveAllowPersonalizedAdsValueUseCase(expectedResult)
+        }
     }
 
     @Test
-    fun `GIVEN enabled null value and user is not logged in THEN invoke allowPersonalizedAds with correct value`() = runTest {
+    fun `GIVEN enabled null value and user is not logged in THEN invoke allowPersonalizedAds and save with correct value`() = runTest {
         // Arrange
         val expectedResult = false
         coEvery { getUserLoggedStateUseCase() } returns UserLoggedState.LOGGED_OUT
@@ -96,6 +104,9 @@ internal class AllowPersonalizedAdsUseCaseTest {
         // Assert
         coVerify { getUserLoggedStateUseCase() }
         coVerify(exactly = 0) { getAllowPersonalizedAdsValueUseCase() }
-        verify { analyticsRepository.allowPersonalizedAds(expectedResult) }
+        coVerify {
+            analyticsRepository.allowPersonalizedAds(expectedResult)
+            saveAllowPersonalizedAdsValueUseCase(expectedResult)
+        }
     }
 }

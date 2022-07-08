@@ -24,24 +24,40 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Text
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
+import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.framework.flow.collectWhenStarted
 import dev.zitech.core.common.presentation.architecture.MviView
+import dev.zitech.core.persistence.domain.model.database.UserLoggedState
+import dev.zitech.core.persistence.domain.usecase.database.GetUserLoggedStateUseCase
+import dev.zitech.core.persistence.domain.usecase.database.SaveUserAccountUseCase
 import dev.zitech.ds.theme.FireFlowTheme
 import dev.zitech.fireflow.presentation.main.viewmodel.Idle
 import dev.zitech.fireflow.presentation.main.viewmodel.MainState
 import dev.zitech.fireflow.presentation.main.viewmodel.MainViewModel
 import dev.zitech.fireflow.presentation.main.viewmodel.ShowError
 import dev.zitech.fireflow.presentation.main.viewmodel.ShowErrorHandled
+import dev.zitech.settings.presentation.settings.compose.Settings
+import javax.inject.Inject
 
+@ExperimentalLifecycleComposeApi
+@ExperimentalMaterial3Api
 @AndroidEntryPoint
 internal class MainActivity : ComponentActivity(), MviView<MainState> {
 
     private val mainViewModel: MainViewModel by viewModels()
+
+    @Inject
+    lateinit var saveUseAccountUseCase: SaveUserAccountUseCase
+
+    @Inject
+    lateinit var getUserLoggedStateUseCase: GetUserLoggedStateUseCase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen().apply {
@@ -54,19 +70,27 @@ internal class MainActivity : ComponentActivity(), MviView<MainState> {
 
         mainViewModel.state.collectWhenStarted(this, this::render)
 
+        lifecycleScope.launchWhenCreated {
+            when (getUserLoggedStateUseCase()) {
+                UserLoggedState.LOGGED_IN -> {
+                    Logger.d("Main", "User Logged In")
+                }
+                UserLoggedState.LOGGED_OUT -> {
+                    Logger.d("Main", "User Logged Out")
+                    saveUseAccountUseCase(true)
+                }
+            }
+        }
+
         setContent {
             FireFlowTheme {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
                         .background(FireFlowTheme.colors.background),
-                    contentAlignment = Alignment.Center
+                    contentAlignment = Alignment.TopCenter
                 ) {
-                    Text(
-                        style = FireFlowTheme.typography.headlineLarge,
-                        color = FireFlowTheme.colors.onBackground,
-                        text = "FireFlow"
-                    )
+                    Settings()
                 }
             }
         }

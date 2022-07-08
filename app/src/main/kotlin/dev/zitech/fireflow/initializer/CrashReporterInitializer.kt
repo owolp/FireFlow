@@ -20,7 +20,7 @@ package dev.zitech.fireflow.initializer
 import android.content.Context
 import androidx.startup.Initializer
 import dev.zitech.core.common.domain.scope.AppScopes
-import dev.zitech.core.reporter.crash.domain.usecase.SetCrashCollectionUseCase
+import dev.zitech.core.reporter.crash.domain.usecase.SetCrashReporterCollectionUseCase
 import dev.zitech.fireflow.di.InitializerEntryPoint
 import javax.inject.Inject
 
@@ -30,13 +30,13 @@ internal class CrashReporterInitializer : Initializer<Unit> {
     lateinit var appScopes: AppScopes
 
     @Inject
-    lateinit var setCrashCollectionUseCase: SetCrashCollectionUseCase
+    lateinit var setCrashReporterCollectionUseCase: SetCrashReporterCollectionUseCase
 
     override fun create(context: Context) {
         InitializerEntryPoint.resolve(context).inject(this)
 
         appScopes.singletonLaunch {
-            setCrashCollectionUseCase()
+            setCrashReporterCollectionUseCase()
         }
     }
 

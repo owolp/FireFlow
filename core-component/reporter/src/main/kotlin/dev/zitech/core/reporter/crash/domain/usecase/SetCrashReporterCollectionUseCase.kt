@@ -21,13 +21,15 @@ import dev.zitech.core.persistence.domain.model.database.UserLoggedState.LOGGED_
 import dev.zitech.core.persistence.domain.model.database.UserLoggedState.LOGGED_OUT
 import dev.zitech.core.persistence.domain.usecase.database.GetUserLoggedStateUseCase
 import dev.zitech.core.persistence.domain.usecase.preferences.GetCrashReporterCollectionValueUseCase
+import dev.zitech.core.persistence.domain.usecase.preferences.SaveCrashReporterCollectionValueUseCase
 import dev.zitech.core.reporter.crash.domain.repository.CrashRepository
 import javax.inject.Inject
 
-class SetCrashCollectionUseCase @Inject constructor(
+class SetCrashReporterCollectionUseCase @Inject constructor(
     private val crashRepository: CrashRepository,
     private val getUserLoggedStateUseCase: GetUserLoggedStateUseCase,
-    private val getCrashReporterCollectionValueUseCase: GetCrashReporterCollectionValueUseCase
+    private val getCrashReporterCollectionValueUseCase: GetCrashReporterCollectionValueUseCase,
+    private val saveCrashReporterCollectionValueUseCase: SaveCrashReporterCollectionValueUseCase
 ) {
 
     suspend operator fun invoke(enabled: Boolean? = null) =
@@ -41,5 +43,6 @@ class SetCrashCollectionUseCase @Inject constructor(
                 crashRepository.init()
             }
             crashRepository.setCollectionEnabled(this)
+            saveCrashReporterCollectionValueUseCase(this)
         }
 }

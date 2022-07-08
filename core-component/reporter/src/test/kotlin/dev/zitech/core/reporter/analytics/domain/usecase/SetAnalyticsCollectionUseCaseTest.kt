@@ -21,11 +21,11 @@ import dev.zitech.core.common.DataFactory
 import dev.zitech.core.persistence.domain.model.database.UserLoggedState
 import dev.zitech.core.persistence.domain.usecase.database.GetUserLoggedStateUseCase
 import dev.zitech.core.persistence.domain.usecase.preferences.GetAnalyticsCollectionValueUseCase
+import dev.zitech.core.persistence.domain.usecase.preferences.SaveAnalyticsCollectionValueUseCase
 import dev.zitech.core.reporter.analytics.domain.repository.AnalyticsRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
-import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
@@ -37,6 +37,7 @@ internal class SetAnalyticsCollectionUseCaseTest {
     private val analyticsRepository = mockk<AnalyticsRepository>(relaxUnitFun = true)
     private val getUserLoggedStateUseCase = mockk<GetUserLoggedStateUseCase>()
     private val getAnalyticsCollectionValueUseCase = mockk<GetAnalyticsCollectionValueUseCase>()
+    private val saveAnalyticsCollectionValueUseCase = mockk<SaveAnalyticsCollectionValueUseCase>(relaxUnitFun = true)
 
     private lateinit var sut: SetAnalyticsCollectionUseCase
 
@@ -45,12 +46,13 @@ internal class SetAnalyticsCollectionUseCaseTest {
         sut = SetAnalyticsCollectionUseCase(
             analyticsRepository,
             getUserLoggedStateUseCase,
-            getAnalyticsCollectionValueUseCase
+            getAnalyticsCollectionValueUseCase,
+            saveAnalyticsCollectionValueUseCase
         )
     }
 
     @Test
-    fun `GIVEN enabled not null value THEN invoke setCollectionEnabled with correct value`() = runTest {
+    fun `GIVEN enabled not null value THEN invoke setCollectionEnabled and save with correct value`() = runTest {
         // Arrange
         val expectedResult = DataFactory.createRandomBoolean()
 
@@ -58,7 +60,10 @@ internal class SetAnalyticsCollectionUseCaseTest {
         sut(expectedResult)
 
         // Assert
-        verify { analyticsRepository.setCollectionEnabled(expectedResult) }
+        coVerify {
+            analyticsRepository.setCollectionEnabled(expectedResult)
+            saveAnalyticsCollectionValueUseCase(expectedResult)
+        }
         coVerify(exactly = 0) {
             getUserLoggedStateUseCase()
             getAnalyticsCollectionValueUseCase()
@@ -66,7 +71,7 @@ internal class SetAnalyticsCollectionUseCaseTest {
     }
 
     @Test
-    fun `GIVEN enabled null value and user is logged in THEN invoke setCollectionEnabled with correct value`() = runTest {
+    fun `GIVEN enabled null value and user is logged in THEN invoke setCollectionEnabled and save with correct value`() = runTest {
         // Arrange
         val expectedResult = DataFactory.createRandomBoolean()
         coEvery { getUserLoggedStateUseCase() } returns UserLoggedState.LOGGED_IN
@@ -80,11 +85,14 @@ internal class SetAnalyticsCollectionUseCaseTest {
             getUserLoggedStateUseCase()
             getAnalyticsCollectionValueUseCase()
         }
-        verify { analyticsRepository.setCollectionEnabled(expectedResult) }
+        coVerify {
+            analyticsRepository.setCollectionEnabled(expectedResult)
+            saveAnalyticsCollectionValueUseCase(expectedResult)
+        }
     }
 
     @Test
-    fun `GIVEN enabled null value and user is not logged in THEN invoke setCollectionEnabled with correct value`() = runTest {
+    fun `GIVEN enabled null value and user is not logged in THEN invoke setCollectionEnabled and save with correct value`() = runTest {
         // Arrange
         val expectedResult = false
         coEvery { getUserLoggedStateUseCase() } returns UserLoggedState.LOGGED_OUT
@@ -96,6 +104,9 @@ internal class SetAnalyticsCollectionUseCaseTest {
         // Assert
         coVerify { getUserLoggedStateUseCase() }
         coVerify(exactly = 0) { getAnalyticsCollectionValueUseCase() }
-        verify { analyticsRepository.setCollectionEnabled(expectedResult) }
+        coVerify {
+            analyticsRepository.setCollectionEnabled(expectedResult)
+            saveAnalyticsCollectionValueUseCase(expectedResult)
+        }
     }
 }
