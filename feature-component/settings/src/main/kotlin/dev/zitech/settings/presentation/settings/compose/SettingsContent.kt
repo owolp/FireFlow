@@ -99,7 +99,7 @@ private fun getPreferencesList(
 )
 @ExperimentalMaterial3Api
 @Composable
-internal fun SettingsContent_Preview() {
+private fun SettingsContent_Preview() {
     FireFlowTheme {
         SettingsContent(
             state = SettingsState(),

@@ -76,7 +76,7 @@ fun Settings(
 @ExperimentalLifecycleComposeApi
 @ExperimentalMaterial3Api
 @Composable
-internal fun Settings_Preview() {
+private fun Settings_Preview() {
     FireFlowTheme {
         Settings()
     }

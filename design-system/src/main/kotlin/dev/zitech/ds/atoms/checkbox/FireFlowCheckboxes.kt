@@ -114,7 +114,7 @@ private fun PrimaryUncheckedEnabledPreview() {
 )
 @ExperimentalMaterial3Api
 @Composable
-private fun PrimaryUncheckedDisabledPreview() {
+private fun Primary_UncheckedDisabled_Preview() {
     FireFlowTheme {
         FireFlowCheckboxes.Primary(
             checked = false,
