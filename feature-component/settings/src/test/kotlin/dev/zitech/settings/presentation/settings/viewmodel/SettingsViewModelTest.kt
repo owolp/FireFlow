@@ -20,7 +20,9 @@ package dev.zitech.settings.presentation.settings.viewmodel
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import dev.zitech.core.common.DataFactory
+import dev.zitech.core.common.domain.model.BuildFlavor
 import dev.zitech.core.common.domain.strings.StringsProvider
+import dev.zitech.core.common.framework.applicationconfig.FakeAppConfigProvider
 import dev.zitech.core.persistence.domain.usecase.preferences.GetAnalyticsCollectionValueUseCase
 import dev.zitech.core.persistence.domain.usecase.preferences.GetCrashReporterCollectionValueUseCase
 import dev.zitech.core.reporter.analytics.domain.usecase.SetAnalyticsCollectionUseCase
@@ -49,6 +51,7 @@ internal class SettingsViewModelTest {
     private val getCrashReporterCollectionValueUseCase = mockk<GetCrashReporterCollectionValueUseCase>()
     private val setCrashReporterCollectionUseCase = mockk<SetCrashReporterCollectionUseCase>()
     private val stringsProvider = mockk<StringsProvider>()
+    private val appConfigProvider = FakeAppConfigProvider()
 
     @Test
     fun `WHEN OnCrashReporterCheck GIVEN checked is true and collection is true THEN crashReporter is true`() = runTest {
@@ -70,7 +73,8 @@ internal class SettingsViewModelTest {
                 setAnalyticsCollectionUseCase,
                 getCrashReporterCollectionValueUseCase,
                 setCrashReporterCollectionUseCase,
-                stringsProvider
+                stringsProvider,
+                appConfigProvider
             )
 
             sut.sendIntent(OnCrashReporterCheck(checked))
@@ -78,6 +82,7 @@ internal class SettingsViewModelTest {
             // Assert
             assertThat(awaitItem().isLoading).isFalse()
             assertThat(awaitItem().isLoading).isTrue()
+            assertThat(awaitItem().telemetry).isEqualTo(isAnalyticsEnabled)
             assertThat(awaitItem().isLoading).isFalse()
             assertThat(awaitItem().crashReporter).isEqualTo(checked)
             assertThat(cancelAndConsumeRemainingEvents()).isEmpty()
@@ -104,7 +109,8 @@ internal class SettingsViewModelTest {
                 setAnalyticsCollectionUseCase,
                 getCrashReporterCollectionValueUseCase,
                 setCrashReporterCollectionUseCase,
-                stringsProvider
+                stringsProvider,
+                appConfigProvider
             )
 
             sut.sendIntent(OnCrashReporterCheck(checked))
@@ -112,6 +118,7 @@ internal class SettingsViewModelTest {
             // Assert
             assertThat(awaitItem().isLoading).isFalse()
             assertThat(awaitItem().isLoading).isTrue()
+            assertThat(awaitItem().telemetry).isEqualTo(isAnalyticsEnabled)
             assertThat(awaitItem().isLoading).isFalse()
             assertThat(cancelAndConsumeRemainingEvents()).isEmpty()
         }
@@ -142,7 +149,8 @@ internal class SettingsViewModelTest {
                 setAnalyticsCollectionUseCase,
                 getCrashReporterCollectionValueUseCase,
                 setCrashReporterCollectionUseCase,
-                stringsProvider
+                stringsProvider,
+                appConfigProvider
             )
 
             sut.sendIntent(OnCrashReporterCheck(checked))
@@ -150,6 +158,7 @@ internal class SettingsViewModelTest {
             // Assert
             assertThat(awaitItem().isLoading).isFalse()
             assertThat(awaitItem().isLoading).isTrue()
+            assertThat(awaitItem().telemetry).isEqualTo(isAnalyticsEnabled)
             assertThat(awaitItem().isLoading).isFalse()
             with(awaitItem().event as Error) {
                 assertThat(this.message).isEqualTo(message)
@@ -179,7 +188,8 @@ internal class SettingsViewModelTest {
                 setAnalyticsCollectionUseCase,
                 getCrashReporterCollectionValueUseCase,
                 setCrashReporterCollectionUseCase,
-                stringsProvider
+                stringsProvider,
+                appConfigProvider
             )
 
             sut.sendIntent(OnTelemetryCheck(checked))
@@ -187,6 +197,7 @@ internal class SettingsViewModelTest {
             // Assert
             assertThat(awaitItem().isLoading).isFalse()
             assertThat(awaitItem().isLoading).isTrue()
+            assertThat(awaitItem().telemetry).isEqualTo(defaultIsAnalyticsEnabled)
             assertThat(awaitItem().isLoading).isFalse()
             assertThat(awaitItem().telemetry).isEqualTo(checked)
             assertThat(cancelAndConsumeRemainingEvents()).isEmpty()
@@ -194,7 +205,7 @@ internal class SettingsViewModelTest {
     }
 
     @Test
-    fun `WHEN OnTelemetryCheck GIVEN checked is false and collection is false THEN show only loading`() = runTest {
+    fun `WHEN OnTelemetryCheck GIVEN checked is false and collection is false THEN telemetry is false`() = runTest {
         // Arrange
         val defaultIsAnalyticsEnabled = false
         coEvery { getAnalyticsCollectionValueUseCase() } returnsMany listOf(defaultIsAnalyticsEnabled, false)
@@ -213,7 +224,45 @@ internal class SettingsViewModelTest {
                 setAnalyticsCollectionUseCase,
                 getCrashReporterCollectionValueUseCase,
                 setCrashReporterCollectionUseCase,
-                stringsProvider
+                stringsProvider,
+                appConfigProvider
+            )
+
+            sut.sendIntent(OnTelemetryCheck(checked))
+
+            // Assert
+            assertThat(awaitItem().isLoading).isFalse()
+            assertThat(awaitItem().isLoading).isTrue()
+            assertThat(awaitItem().telemetry).isEqualTo(defaultIsAnalyticsEnabled)
+            assertThat(awaitItem().isLoading).isFalse()
+            assertThat(cancelAndConsumeRemainingEvents()).isEmpty()
+        }
+    }
+
+    @Test
+    fun `WHEN OnTelemetryCheck GIVEN build config is FOSS THEN show only loading`() = runTest {
+        // Arrange
+        val defaultIsAnalyticsEnabled = false
+        coEvery { getAnalyticsCollectionValueUseCase() } returnsMany listOf(defaultIsAnalyticsEnabled, false)
+
+        val isCrashReporterEnabled = false
+        coEvery { getCrashReporterCollectionValueUseCase() } returns isCrashReporterEnabled
+
+        val checked = false
+        coEvery { setAnalyticsCollectionUseCase(checked) } just Runs
+
+        appConfigProvider.setBuildFlavor(BuildFlavor.FOSS)
+
+        settingsStateHolder.state.test {
+            // Act
+            val sut = SettingsViewModel(
+                settingsStateHolder,
+                getAnalyticsCollectionValueUseCase,
+                setAnalyticsCollectionUseCase,
+                getCrashReporterCollectionValueUseCase,
+                setCrashReporterCollectionUseCase,
+                stringsProvider,
+                appConfigProvider
             )
 
             sut.sendIntent(OnTelemetryCheck(checked))
@@ -251,7 +300,8 @@ internal class SettingsViewModelTest {
                 setAnalyticsCollectionUseCase,
                 getCrashReporterCollectionValueUseCase,
                 setCrashReporterCollectionUseCase,
-                stringsProvider
+                stringsProvider,
+                appConfigProvider
             )
 
             sut.sendIntent(OnTelemetryCheck(checked))
@@ -259,6 +309,7 @@ internal class SettingsViewModelTest {
             // Assert
             assertThat(awaitItem().isLoading).isFalse()
             assertThat(awaitItem().isLoading).isTrue()
+            assertThat(awaitItem().telemetry).isEqualTo(defaultIsAnalyticsEnabled)
             assertThat(awaitItem().isLoading).isFalse()
             with(awaitItem().event as Error) {
                 assertThat(this.message).isEqualTo(message)

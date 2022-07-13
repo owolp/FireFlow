@@ -20,6 +20,8 @@ package dev.zitech.settings.presentation.settings.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.zitech.core.common.domain.applicationconfig.AppConfigProvider
+import dev.zitech.core.common.domain.model.BuildFlavor
 import dev.zitech.core.common.domain.strings.StringsProvider
 import dev.zitech.core.common.presentation.architecture.MviViewModel
 import dev.zitech.core.persistence.domain.usecase.preferences.GetAnalyticsCollectionValueUseCase
@@ -40,7 +42,8 @@ class SettingsViewModel @Inject constructor(
     private val setAnalyticsCollectionUseCase: SetAnalyticsCollectionUseCase,
     private val getCrashReporterCollectionValueUseCase: GetCrashReporterCollectionValueUseCase,
     private val setCrashReporterCollectionUseCase: SetCrashReporterCollectionUseCase,
-    private val stringsProvider: StringsProvider
+    private val stringsProvider: StringsProvider,
+    private val appConfigProvider: AppConfigProvider
 ) : ViewModel(), MviViewModel<SettingsIntent, SettingsState> {
 
     override val state: StateFlow<SettingsState> = settingsStateHolder.state.asStateFlow()
@@ -64,7 +67,7 @@ class SettingsViewModel @Inject constructor(
         setAnalyticsCollectionUseCase(checked)
         val isEnabled = getAnalyticsCollectionValueUseCase()
         if (checked == isEnabled) {
-            setTelemetryState(checked)
+            setTelemetryState(checked, appConfigProvider.buildFlavor)
         } else {
             setErrorState(
                 Error(
@@ -92,7 +95,10 @@ class SettingsViewModel @Inject constructor(
 
     private suspend fun getPreferencesState() {
         setIsLoadingState(true)
-        setTelemetryState(getAnalyticsCollectionValueUseCase())
+        setTelemetryState(
+            getAnalyticsCollectionValueUseCase(),
+            appConfigProvider.buildFlavor
+        )
         setCrashReporterState(getCrashReporterCollectionValueUseCase())
         setIsLoadingState(false)
     }
@@ -103,9 +109,14 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    private fun setTelemetryState(value: Boolean) {
-        settingsStateHolder.state.update {
-            it.copy(telemetry = value)
+    private fun setTelemetryState(
+        value: Boolean,
+        buildFlavor: BuildFlavor
+    ) {
+        if (buildFlavor != BuildFlavor.FOSS) {
+            settingsStateHolder.state.update {
+                it.copy(telemetry = value)
+            }
         }
     }
 
