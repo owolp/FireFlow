@@ -21,7 +21,7 @@ import dev.zitech.core.common.presentation.architecture.MviState
 
 data class SettingsState(
     val isLoading: Boolean = false,
-    val telemetry: Boolean = false,
+    val telemetry: Boolean? = null,
     val crashReporter: Boolean = false,
     val event: SettingsEvent = Idle
 ) : MviState

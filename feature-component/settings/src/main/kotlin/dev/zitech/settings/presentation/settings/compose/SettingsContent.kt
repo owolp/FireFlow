@@ -46,28 +46,46 @@ internal fun SettingsContent(
     Column(modifier = modifier.verticalScroll(rememberScrollState())) {
         FireFlowCategoryPreferences.Simple(
             categoryName = stringResource(id = R.string.data_choices_category),
-            preferences = listOf(
-                CategoryPreference.Switch(
-                    title = stringResource(id = R.string.data_choices_telemetry_title),
-                    icon = Icons.Outlined.Analytics,
-                    checked = state.telemetry,
-                    onCheckedChanged = onTelemetryCheckChanged,
-                    cdDescriptionEnabled = stringResource(id = R.string.cd_data_choices_telemetry_enabled),
-                    cdDescriptionDisabled = stringResource(id = R.string.cd_data_choices_telemetry_disabled),
-                    description = stringResource(id = R.string.data_choices_telemetry_description)
-                ),
-                CategoryPreference.Switch(
-                    title = stringResource(id = R.string.data_choices_crash_reporter_title),
-                    icon = Icons.Outlined.BugReport,
-                    checked = state.crashReporter,
-                    onCheckedChanged = onCrashReporterCheckChanged,
-                    cdDescriptionEnabled = stringResource(id = R.string.cd_data_choices_crash_reporter_enabled),
-                    cdDescriptionDisabled = stringResource(id = R.string.cd_data_choices_crash_reporter_disabled),
-                    description = stringResource(id = R.string.data_choices_crash_reporter_description)
-                )
+            preferences = getPreferencesList(state, onTelemetryCheckChanged, onCrashReporterCheckChanged)
+        )
+    }
+}
+
+@Composable
+private fun getPreferencesList(
+    state: SettingsState,
+    onTelemetryCheckChanged: (checked: Boolean) -> Unit,
+    onCrashReporterCheckChanged: (checked: Boolean) -> Unit
+): List<CategoryPreference> {
+    val categoryPreferences = mutableListOf<CategoryPreference>()
+
+    if (state.telemetry != null) {
+        categoryPreferences.add(
+            CategoryPreference.Switch(
+                title = stringResource(id = R.string.data_choices_telemetry_title),
+                icon = Icons.Outlined.Analytics,
+                checked = state.telemetry,
+                onCheckedChanged = onTelemetryCheckChanged,
+                cdDescriptionEnabled = stringResource(id = R.string.cd_data_choices_telemetry_enabled),
+                cdDescriptionDisabled = stringResource(id = R.string.cd_data_choices_telemetry_disabled),
+                description = stringResource(id = R.string.data_choices_telemetry_description)
             )
         )
     }
+
+    categoryPreferences.add(
+        CategoryPreference.Switch(
+            title = stringResource(id = R.string.data_choices_crash_reporter_title),
+            icon = Icons.Outlined.BugReport,
+            checked = state.crashReporter,
+            onCheckedChanged = onCrashReporterCheckChanged,
+            cdDescriptionEnabled = stringResource(id = R.string.cd_data_choices_crash_reporter_enabled),
+            cdDescriptionDisabled = stringResource(id = R.string.cd_data_choices_crash_reporter_disabled),
+            description = stringResource(id = R.string.data_choices_crash_reporter_description)
+        )
+    )
+
+    return categoryPreferences
 }
 
 @Preview(
@@ -81,7 +99,7 @@ internal fun SettingsContent(
 )
 @ExperimentalMaterial3Api
 @Composable
-internal fun SettingsContent_Preview() {
+private fun SettingsContent_Preview() {
     FireFlowTheme {
         SettingsContent(
             state = SettingsState(),

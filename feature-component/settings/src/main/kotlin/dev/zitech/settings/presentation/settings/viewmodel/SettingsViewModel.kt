@@ -20,13 +20,12 @@ package dev.zitech.settings.presentation.settings.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.zitech.core.common.domain.strings.StringsProvider
+import dev.zitech.core.common.domain.applicationconfig.AppConfigProvider
+import dev.zitech.core.common.domain.model.BuildFlavor
 import dev.zitech.core.common.presentation.architecture.MviViewModel
-import dev.zitech.core.persistence.domain.usecase.preferences.GetAnalyticsCollectionValueUseCase
-import dev.zitech.core.persistence.domain.usecase.preferences.GetCrashReporterCollectionValueUseCase
-import dev.zitech.core.reporter.analytics.domain.usecase.SetAnalyticsCollectionUseCase
-import dev.zitech.core.reporter.crash.domain.usecase.SetCrashReporterCollectionUseCase
-import dev.zitech.settings.R
+import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsAnalyticsCollectionStates
+import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsCrashReporterCollectionStates
+import dev.zitech.settings.presentation.settings.viewmodel.error.SettingsErrorProvider
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -36,11 +35,10 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     private val settingsStateHolder: SettingsStateHolder,
-    private val getAnalyticsCollectionValueUseCase: GetAnalyticsCollectionValueUseCase,
-    private val setAnalyticsCollectionUseCase: SetAnalyticsCollectionUseCase,
-    private val getCrashReporterCollectionValueUseCase: GetCrashReporterCollectionValueUseCase,
-    private val setCrashReporterCollectionUseCase: SetCrashReporterCollectionUseCase,
-    private val stringsProvider: StringsProvider
+    private val settingsAnalyticsCollectionStates: SettingsAnalyticsCollectionStates,
+    private val settingsCrashReporterCollectionStates: SettingsCrashReporterCollectionStates,
+    private val settingsErrorProvider: SettingsErrorProvider,
+    private val appConfigProvider: AppConfigProvider
 ) : ViewModel(), MviViewModel<SettingsIntent, SettingsState> {
 
     override val state: StateFlow<SettingsState> = settingsStateHolder.state.asStateFlow()
@@ -61,39 +59,32 @@ class SettingsViewModel @Inject constructor(
     }
 
     private suspend fun handleOnTelemetryCheck(checked: Boolean) {
-        setAnalyticsCollectionUseCase(checked)
-        val isEnabled = getAnalyticsCollectionValueUseCase()
+        settingsAnalyticsCollectionStates.setAnalyticsCollection(checked)
+        val isEnabled = settingsAnalyticsCollectionStates.getAnalyticsCollectionValue()
         if (checked == isEnabled) {
-            setTelemetryState(checked)
+            setTelemetryState(checked, appConfigProvider.buildFlavor)
         } else {
-            setErrorState(
-                Error(
-                    message = stringsProvider(R.string.data_choices_telemetry_error),
-                    action = stringsProvider(R.string.action_restart)
-                )
-            )
+            setErrorState(settingsErrorProvider.getTelemetryError())
         }
     }
 
     private suspend fun handleOnCrashReporterCheck(checked: Boolean) {
-        setCrashReporterCollectionUseCase(checked)
-        val isEnabled = getCrashReporterCollectionValueUseCase()
+        settingsCrashReporterCollectionStates.setCrashReporterCollection(checked)
+        val isEnabled = settingsCrashReporterCollectionStates.getCrashReporterCollectionValue()
         if (checked == isEnabled) {
             setCrashReporterState(checked)
         } else {
-            setErrorState(
-                Error(
-                    message = stringsProvider(R.string.data_choices_crash_reporter_error),
-                    action = stringsProvider(R.string.action_restart)
-                )
-            )
+            setErrorState(settingsErrorProvider.getCrashReporterError())
         }
     }
 
     private suspend fun getPreferencesState() {
         setIsLoadingState(true)
-        setTelemetryState(getAnalyticsCollectionValueUseCase())
-        setCrashReporterState(getCrashReporterCollectionValueUseCase())
+        setTelemetryState(
+            settingsAnalyticsCollectionStates.getAnalyticsCollectionValue(),
+            appConfigProvider.buildFlavor
+        )
+        setCrashReporterState(settingsCrashReporterCollectionStates.getCrashReporterCollectionValue())
         setIsLoadingState(false)
     }
 
@@ -103,9 +94,14 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    private fun setTelemetryState(value: Boolean) {
-        settingsStateHolder.state.update {
-            it.copy(telemetry = value)
+    private fun setTelemetryState(
+        value: Boolean,
+        buildFlavor: BuildFlavor
+    ) {
+        if (buildFlavor != BuildFlavor.FOSS) {
+            settingsStateHolder.state.update {
+                it.copy(telemetry = value)
+            }
         }
     }
 
