@@ -59,7 +59,7 @@ google-material = "com.google.android.material:material:1.6.1"
 google-gms-services = "com.google.gms:google-services:4.3.13"
 google-truth = "com.google.truth:truth:1.1.3"
 huawei-agconnect-agcp = { module = "com.huawei.agconnect:agcp", version.ref = "agconnect" }
-huawei-agconnect-apms = "com.huawei.agconnect:agconnect-apms:1.5.2.310"
+huawei-agconnect-apms = "com.huawei.agconnect:agconnect-apms:1.5.2.311"
 huawei-agconnect-core = { module = "com.huawei.agconnect:agconnect-core", version.ref = "agconnect" }
 huawei-agconnect-crash = { module = "com.huawei.agconnect:agconnect-crash", version.ref = "agconnect" }
 huawei-agconnect-remoteconfig = { module = "com.huawei.agconnect:agconnect-remoteconfig", version.ref = "agconnect" }
