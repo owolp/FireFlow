@@ -27,6 +27,7 @@ import androidx.compose.material.icons.outlined.BugReport
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import dev.zitech.ds.organisms.categoryprefrence.CategoryPreference
@@ -34,6 +35,10 @@ import dev.zitech.ds.organisms.categoryprefrence.FireFlowCategoryPreferences
 import dev.zitech.ds.theme.FireFlowTheme
 import dev.zitech.settings.R
 import dev.zitech.settings.presentation.settings.viewmodel.SettingsState
+
+internal const val TAG_SETTINGS_CONTENT = "settings_content"
+internal const val TAG_TELEMETRY = "telemetry"
+internal const val TAG_CRASH_REPORTER = "crash_reporter"
 
 @ExperimentalMaterial3Api
 @Composable
@@ -43,7 +48,11 @@ internal fun SettingsContent(
     onTelemetryCheckChanged: (checked: Boolean) -> Unit,
     onCrashReporterCheckChanged: (checked: Boolean) -> Unit
 ) {
-    Column(modifier = modifier.verticalScroll(rememberScrollState())) {
+    Column(
+        modifier = modifier
+            .testTag(TAG_SETTINGS_CONTENT)
+            .verticalScroll(rememberScrollState())
+    ) {
         FireFlowCategoryPreferences.Simple(
             categoryName = stringResource(id = R.string.data_choices_category),
             preferences = getPreferencesList(state, onTelemetryCheckChanged, onCrashReporterCheckChanged)
@@ -62,6 +71,7 @@ private fun getPreferencesList(
     if (state.telemetry != null) {
         categoryPreferences.add(
             CategoryPreference.Switch(
+                modifier = Modifier.testTag(TAG_TELEMETRY),
                 title = stringResource(id = R.string.data_choices_telemetry_title),
                 icon = Icons.Outlined.Analytics,
                 checked = state.telemetry,
@@ -75,6 +85,7 @@ private fun getPreferencesList(
 
     categoryPreferences.add(
         CategoryPreference.Switch(
+            modifier = Modifier.testTag(TAG_CRASH_REPORTER),
             title = stringResource(id = R.string.data_choices_crash_reporter_title),
             icon = Icons.Outlined.BugReport,
             checked = state.crashReporter,

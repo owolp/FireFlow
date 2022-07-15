@@ -35,11 +35,6 @@ android {
                 )
             }
         }
-
-        testInstrumentationRunner = AndroidConfigs.TEST_INSTRUMENTATION_RUNNER
-        testInstrumentationRunnerArguments[
-            AndroidConfigs.TEST_INSTRUMENTATION_RUNNER_ARGUMENT_KEY
-        ] = AndroidConfigs.TEST_INSTRUMENTATION_RUNNER_ARGUMENT_VALUE
     }
 
     testFixtures {
@@ -62,15 +57,7 @@ dependencies {
     implementation(libs.jetbrains.kotlin.coroutines.android)
     implementation(libs.zetetic.sqlcipher)
 
-    androidTestImplementation(libs.androidx.test.core)
-    androidTestImplementation(libs.androidx.arch.core.testing)
     androidTestImplementation(libs.androidx.room.testing)
-    androidTestImplementation(libs.androidx.test.runner)
-    androidTestImplementation(libs.google.truth)
-    androidTestImplementation(libs.jetbrains.kotlin.coroutines.test)
-    androidTestImplementation(libs.junit.jupiter.api)
-    androidTestImplementation(libs.mannodermaus.junit5.android.test.core)
-    androidTestRuntimeOnly(libs.mannodermaus.junit5.android.test.runner)
 }
 
 kapt {

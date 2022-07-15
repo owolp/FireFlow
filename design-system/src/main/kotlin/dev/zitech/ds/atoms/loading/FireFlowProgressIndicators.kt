@@ -26,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
@@ -35,10 +36,13 @@ import dev.zitech.ds.R
 
 object FireFlowProgressIndicators {
 
+    const val PROGRESS_INDICATOR_ITEM = "progress_indicator_item"
+
     @Composable
     fun Settings(modifier: Modifier = Modifier) {
         ProgressIndicatorItem(
-            modifier = modifier,
+            modifier = modifier
+                .testTag(PROGRESS_INDICATOR_ITEM),
             resId = R.raw.animation_settings
         )
     }

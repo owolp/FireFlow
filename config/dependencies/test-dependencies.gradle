@@ -16,6 +16,20 @@
  */
 
 dependencies {
+    androidTestImplementation testFixtures(projects.coreComponent.common)
+    androidTestImplementation libs.androidx.test.core
+    androidTestImplementation libs.androidx.arch.core.testing
+    androidTestImplementation libs.androidx.compose.ui.test.junit4
+    androidTestImplementation libs.androidx.compose.ui.test.manifest
+    androidTestImplementation libs.androidx.test.runner
+    androidTestImplementation libs.google.truth
+    androidTestImplementation libs.jetbrains.kotlin.coroutines.test
+    androidTestImplementation libs.mannodermaus.junit5.android.test.core
+    androidTestImplementation libs.mockk.mockk.android
+    androidTestImplementation libs.junit.jupiter.api
+    androidTestRuntimeOnly libs.mannodermaus.junit5.android.test.runner
+    androidTestRuntimeOnly libs.junit.jupiter.engine
+
     testImplementation testFixtures(projects.coreComponent.common)
     testImplementation libs.cash.turbine
     testImplementation libs.google.truth

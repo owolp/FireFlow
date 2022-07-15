@@ -99,6 +99,10 @@ fun BaseExtension.baseConfig() {
     defaultConfig.apply {
         minSdk = AppVersioning.MIN_SDK
         targetSdk = AppVersioning.TARGET_SDK
+        testInstrumentationRunner = AndroidConfigs.TEST_INSTRUMENTATION_RUNNER
+        testInstrumentationRunnerArguments[
+            AndroidConfigs.TEST_INSTRUMENTATION_RUNNER_ARGUMENT_KEY
+        ] = AndroidConfigs.TEST_INSTRUMENTATION_RUNNER_ARGUMENT_VALUE
     }
 
     compileOptions.apply {
@@ -112,6 +116,7 @@ fun BaseExtension.baseConfig() {
 
     composeOptions.kotlinCompilerExtensionVersion = libs.versions.composeRuntime.get()
 
+    configureWorkaroundForMockk()
     configureBuildTypes(project)
     configureFlavorDimensions()
 }
@@ -212,5 +217,16 @@ fun BaseExtension.configureProductFlavors() {
         create(ProductFlavors.GALLERY) {}
 
         create(ProductFlavors.FOSS) {}
+    }
+}
+
+/*
+    https://github.com/mockk/mockk/issues/297
+ */
+fun BaseExtension.configureWorkaroundForMockk() {
+    testOptions {
+        packagingOptions {
+            jniLibs.useLegacyPackaging = true
+        }
     }
 }

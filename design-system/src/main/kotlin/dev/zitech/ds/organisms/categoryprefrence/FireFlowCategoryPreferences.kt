@@ -49,6 +49,7 @@ object FireFlowCategoryPreferences {
                     is CategoryPreference.Checkbox -> {
                         with(categoryPreference) {
                             FireFlowPreferences.Checkbox(
+                                modifier = categoryPreference.modifier,
                                 title = title,
                                 icon = icon,
                                 checked = checked,
@@ -62,6 +63,7 @@ object FireFlowCategoryPreferences {
                     is CategoryPreference.Icon -> {
                         with(categoryPreference) {
                             FireFlowPreferences.Icon(
+                                modifier = categoryPreference.modifier,
                                 title = title,
                                 icon = icon,
                                 description = description
@@ -71,6 +73,7 @@ object FireFlowCategoryPreferences {
                     is CategoryPreference.Simple -> {
                         with(categoryPreference) {
                             FireFlowPreferences.Simple(
+                                modifier = categoryPreference.modifier,
                                 title = title,
                                 description = description
                             )
@@ -79,6 +82,7 @@ object FireFlowCategoryPreferences {
                     is CategoryPreference.Switch -> {
                         with(categoryPreference) {
                             FireFlowPreferences.Switch(
+                                modifier = categoryPreference.modifier,
                                 title = title,
                                 icon = icon,
                                 checked = checked,
