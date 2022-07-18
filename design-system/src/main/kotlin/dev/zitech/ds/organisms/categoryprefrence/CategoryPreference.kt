@@ -20,14 +20,16 @@ package dev.zitech.ds.organisms.categoryprefrence
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 
-sealed class CategoryPreference {
+sealed class CategoryPreference(
+    val uniqueId: String
+) {
 
     data class Simple(
         val title: String,
         val modifier: Modifier = Modifier,
         val description: String? = null,
         val onClick: Pair<String, (() -> Unit)>? = null
-    ) : CategoryPreference()
+    ) : CategoryPreference(title)
 
     data class Icon(
         val title: String,
@@ -35,7 +37,7 @@ sealed class CategoryPreference {
         val modifier: Modifier = Modifier,
         val description: String? = null,
         val onClick: Pair<String, (() -> Unit)>? = null
-    ) : CategoryPreference()
+    ) : CategoryPreference(title)
 
     data class Switch(
         val title: String,
@@ -46,7 +48,7 @@ sealed class CategoryPreference {
         val onCheckedChanged: (checked: Boolean) -> Unit,
         val modifier: Modifier = Modifier,
         val description: String? = null
-    ) : CategoryPreference()
+    ) : CategoryPreference(title)
 
     data class Checkbox(
         val title: String,
@@ -57,5 +59,5 @@ sealed class CategoryPreference {
         val modifier: Modifier = Modifier,
         val onCheckedChanged: (checked: Boolean) -> Unit,
         val description: String? = null
-    ) : CategoryPreference()
+    ) : CategoryPreference(title)
 }

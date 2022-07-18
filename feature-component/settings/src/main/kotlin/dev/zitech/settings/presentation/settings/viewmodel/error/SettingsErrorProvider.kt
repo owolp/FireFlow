@@ -35,4 +35,9 @@ class SettingsErrorProvider @Inject constructor(
         message = stringsProvider(R.string.data_choices_crash_reporter_error),
         action = stringsProvider(R.string.action_restart)
     )
+
+    internal fun getPersonalizedAdsError(): Error = Error(
+        message = stringsProvider(R.string.data_choices_personalized_ads_error),
+        action = stringsProvider(R.string.action_restart)
+    )
 }

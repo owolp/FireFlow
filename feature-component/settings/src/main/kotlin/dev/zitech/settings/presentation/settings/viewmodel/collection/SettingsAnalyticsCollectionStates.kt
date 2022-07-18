@@ -17,13 +17,17 @@
 
 package dev.zitech.settings.presentation.settings.viewmodel.collection
 
+import dev.zitech.core.persistence.domain.usecase.preferences.GetAllowPersonalizedAdsValueUseCase
 import dev.zitech.core.persistence.domain.usecase.preferences.GetAnalyticsCollectionValueUseCase
+import dev.zitech.core.reporter.analytics.domain.usecase.AllowPersonalizedAdsUseCase
 import dev.zitech.core.reporter.analytics.domain.usecase.SetAnalyticsCollectionUseCase
 import javax.inject.Inject
 
 class SettingsAnalyticsCollectionStates @Inject constructor(
     private val getAnalyticsCollectionValueUseCase: GetAnalyticsCollectionValueUseCase,
-    private val setAnalyticsCollectionUseCase: SetAnalyticsCollectionUseCase
+    private val setAnalyticsCollectionUseCase: SetAnalyticsCollectionUseCase,
+    private val getAllowPersonalizedAdsValueUseCase: GetAllowPersonalizedAdsValueUseCase,
+    private val allowPersonalizedAdsUseCase: AllowPersonalizedAdsUseCase
 ) {
 
     internal suspend fun setAnalyticsCollection(checked: Boolean) {
@@ -32,4 +36,11 @@ class SettingsAnalyticsCollectionStates @Inject constructor(
 
     internal suspend fun getAnalyticsCollectionValue(): Boolean =
         getAnalyticsCollectionValueUseCase()
+
+    internal suspend fun setAllowPersonalizedAdsValue(checked: Boolean) {
+        allowPersonalizedAdsUseCase(checked)
+    }
+
+    internal suspend fun getAllowPersonalizedAdsValue(): Boolean =
+        getAllowPersonalizedAdsValueUseCase()
 }

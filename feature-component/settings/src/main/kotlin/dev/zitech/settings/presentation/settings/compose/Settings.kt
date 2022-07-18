@@ -18,6 +18,7 @@
 package dev.zitech.settings.presentation.settings.compose
 
 import android.content.res.Configuration
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,11 +30,13 @@ import dev.zitech.ds.theme.FireFlowTheme
 import dev.zitech.settings.presentation.settings.viewmodel.Error
 import dev.zitech.settings.presentation.settings.viewmodel.Idle
 import dev.zitech.settings.presentation.settings.viewmodel.OnCrashReporterCheck
+import dev.zitech.settings.presentation.settings.viewmodel.OnPersonalizedAdsCheck
 import dev.zitech.settings.presentation.settings.viewmodel.OnTelemetryCheck
 import dev.zitech.settings.presentation.settings.viewmodel.SettingsViewModel
 
 @ExperimentalLifecycleComposeApi
 @ExperimentalMaterial3Api
+@ExperimentalFoundationApi
 @Composable
 fun Settings(
     viewModel: SettingsViewModel = viewModel()
@@ -46,6 +49,9 @@ fun Settings(
             state = state.value,
             onTelemetryCheckChanged = { checked ->
                 viewModel.sendIntent(OnTelemetryCheck(checked))
+            },
+            onPersonalizedAdsCheckChanged = { checked ->
+                viewModel.sendIntent(OnPersonalizedAdsCheck(checked))
             },
             onCrashReporterCheckChanged = { checked ->
                 viewModel.sendIntent(OnCrashReporterCheck(checked))
@@ -75,6 +81,7 @@ fun Settings(
 )
 @ExperimentalLifecycleComposeApi
 @ExperimentalMaterial3Api
+@ExperimentalFoundationApi
 @Composable
 private fun Settings_Preview() {
     FireFlowTheme {

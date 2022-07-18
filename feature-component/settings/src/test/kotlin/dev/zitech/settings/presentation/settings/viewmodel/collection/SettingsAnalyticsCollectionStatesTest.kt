@@ -19,7 +19,9 @@ package dev.zitech.settings.presentation.settings.viewmodel.collection
 
 import com.google.common.truth.Truth.assertThat
 import dev.zitech.core.common.DataFactory
+import dev.zitech.core.persistence.domain.usecase.preferences.GetAllowPersonalizedAdsValueUseCase
 import dev.zitech.core.persistence.domain.usecase.preferences.GetAnalyticsCollectionValueUseCase
+import dev.zitech.core.reporter.analytics.domain.usecase.AllowPersonalizedAdsUseCase
 import dev.zitech.core.reporter.analytics.domain.usecase.SetAnalyticsCollectionUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -34,6 +36,8 @@ internal class SettingsAnalyticsCollectionStatesTest {
 
     private val getAnalyticsCollectionValueUseCase = mockk<GetAnalyticsCollectionValueUseCase>()
     private val setAnalyticsCollectionUseCase = mockk<SetAnalyticsCollectionUseCase>(relaxed = true)
+    private val getAllowPersonalizedAdsValueUseCase = mockk<GetAllowPersonalizedAdsValueUseCase>()
+    private val allowPersonalizedAdsUseCase = mockk<AllowPersonalizedAdsUseCase>(relaxUnitFun = true)
 
     private lateinit var sut: SettingsAnalyticsCollectionStates
 
@@ -41,7 +45,9 @@ internal class SettingsAnalyticsCollectionStatesTest {
     fun setup() {
         sut = SettingsAnalyticsCollectionStates(
             getAnalyticsCollectionValueUseCase,
-            setAnalyticsCollectionUseCase
+            setAnalyticsCollectionUseCase,
+            getAllowPersonalizedAdsValueUseCase,
+            allowPersonalizedAdsUseCase
         )
     }
 
@@ -69,5 +75,31 @@ internal class SettingsAnalyticsCollectionStatesTest {
         // Assert
         assertThat(result).isEqualTo(checked)
         coVerify { getAnalyticsCollectionValueUseCase() }
+    }
+
+    @Test
+    fun setAllowPersonalizedAdsValue() = runTest {
+        // Arrange
+        val checked = DataFactory.createRandomBoolean()
+
+        // Act
+        sut.setAllowPersonalizedAdsValue(checked)
+
+        // Assert
+        coVerify { allowPersonalizedAdsUseCase(checked) }
+    }
+
+    @Test
+    fun getAllowPersonalizedAdsValue() = runTest {
+        // Arrange
+        val checked = DataFactory.createRandomBoolean()
+        coEvery { getAllowPersonalizedAdsValueUseCase() } returns checked
+
+        // Act
+        val result = sut.getAllowPersonalizedAdsValue()
+
+        // Assert
+        assertThat(result).isEqualTo(checked)
+        coVerify { getAllowPersonalizedAdsValueUseCase() }
     }
 }
