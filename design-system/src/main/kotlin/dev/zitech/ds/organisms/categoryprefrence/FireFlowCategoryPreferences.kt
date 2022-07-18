@@ -50,56 +50,66 @@ object FireFlowCategoryPreferences {
             FireFlowPreferences.Category(title = categoryName)
             LazyColumn {
                 items(preferences, key = { it.uniqueId }) { categoryPreference ->
-                    when (categoryPreference) {
-                        is CategoryPreference.Checkbox -> {
-                            with(categoryPreference) {
-                                FireFlowPreferences.Checkbox(
-                                    modifier = Modifier.animateItemPlacement(),
-                                    title = title,
-                                    icon = icon,
-                                    checked = checked,
-                                    cdDescriptionEnabled = cdDescriptionEnabled,
-                                    cdDescriptionDisabled = cdDescriptionDisabled,
-                                    onCheckedChanged = onCheckedChanged,
-                                    description = description
-                                )
-                            }
-                        }
-                        is CategoryPreference.Icon -> {
-                            with(categoryPreference) {
-                                FireFlowPreferences.Icon(
-                                    modifier = Modifier.animateItemPlacement(),
-                                    title = title,
-                                    icon = icon,
-                                    description = description
-                                )
-                            }
-                        }
-                        is CategoryPreference.Simple -> {
-                            with(categoryPreference) {
-                                FireFlowPreferences.Simple(
-                                    modifier = Modifier.animateItemPlacement(),
-                                    title = title,
-                                    description = description
-                                )
-                            }
-                        }
-                        is CategoryPreference.Switch -> {
-                            with(categoryPreference) {
-                                FireFlowPreferences.Switch(
-                                    modifier = Modifier.animateItemPlacement(),
-                                    title = title,
-                                    icon = icon,
-                                    checked = checked,
-                                    cdDescriptionEnabled = cdDescriptionEnabled,
-                                    cdDescriptionDisabled = cdDescriptionDisabled,
-                                    onCheckedChanged = onCheckedChanged,
-                                    description = description
-                                )
-                            }
-                        }
-                    }
+                    val animateItemPlacementModifier = Modifier.animateItemPlacement()
+                    CategoryPreferenceItem(categoryPreference, animateItemPlacementModifier)
                     FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.l)
+                }
+            }
+        }
+    }
+
+    @ExperimentalMaterial3Api
+    @Composable
+    private fun CategoryPreferenceItem(
+        categoryPreference: CategoryPreference,
+        modifier: Modifier
+    ) {
+        when (categoryPreference) {
+            is CategoryPreference.Checkbox -> {
+                with(categoryPreference) {
+                    FireFlowPreferences.Checkbox(
+                        modifier = modifier,
+                        title = title,
+                        icon = icon,
+                        checked = checked,
+                        cdDescriptionEnabled = cdDescriptionEnabled,
+                        cdDescriptionDisabled = cdDescriptionDisabled,
+                        onCheckedChanged = onCheckedChanged,
+                        description = description
+                    )
+                }
+            }
+            is CategoryPreference.Icon -> {
+                with(categoryPreference) {
+                    FireFlowPreferences.Icon(
+                        modifier = modifier,
+                        title = title,
+                        icon = icon,
+                        description = description
+                    )
+                }
+            }
+            is CategoryPreference.Simple -> {
+                with(categoryPreference) {
+                    FireFlowPreferences.Simple(
+                        modifier = modifier,
+                        title = title,
+                        description = description
+                    )
+                }
+            }
+            is CategoryPreference.Switch -> {
+                with(categoryPreference) {
+                    FireFlowPreferences.Switch(
+                        modifier = modifier,
+                        title = title,
+                        icon = icon,
+                        checked = checked,
+                        cdDescriptionEnabled = cdDescriptionEnabled,
+                        cdDescriptionDisabled = cdDescriptionDisabled,
+                        onCheckedChanged = onCheckedChanged,
+                        description = description
+                    )
                 }
             }
         }
