@@ -19,6 +19,7 @@ import com.android.build.api.dsl.ApplicationProductFlavor
 import com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
 
 apply(from = "$rootDir/config/dependencies/compose-dependencies.gradle")
+apply(from = "$rootDir/config/dependencies/test-dependencies.gradle")
 
 plugins {
     id(BuildPlugins.APPLICATION)
@@ -32,6 +33,7 @@ plugins {
 }
 
 android {
+
     buildTypes {
         getByName(BuildTypes.DEBUG) {
             configure<CrashlyticsExtension> {
@@ -95,6 +97,8 @@ dependencies {
     implementation(libs.jetbrains.kotlin.coroutines.android)
 
     debugImplementation(libs.squareup.leakcanary.android)
+
+    androidTestImplementation(libs.androidx.room.testing)
 }
 
 kapt {

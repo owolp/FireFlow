@@ -15,12 +15,24 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.persistence.data.cache
+package dev.zitech.settings.di.fake
 
-import dev.zitech.core.persistence.domain.model.cache.InMemoryCache
-import dev.zitech.core.persistence.domain.model.database.UserAccount
+import dev.zitech.core.persistence.domain.model.cache.Cache
 import dev.zitech.core.persistence.domain.repository.cache.CacheRepository
-import javax.inject.Inject
 
-class UserAccountInMemoryCache @Inject constructor(cacheRepository: CacheRepository) :
-    InMemoryCache<UserAccount>(cacheRepository)
+internal class FakeCacheRepository : CacheRepository {
+
+    private val caches = ArrayList<Cache>()
+
+    override fun addCache(cache: Cache) {
+        caches.add(cache)
+    }
+
+    override fun removeCache(cache: Cache) {
+        caches.remove(cache)
+    }
+
+    override fun invalidateCaches() {
+        caches.clear()
+    }
+}

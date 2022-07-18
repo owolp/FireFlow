@@ -18,40 +18,52 @@
 package dev.zitech.settings.presentation.settings.compose
 
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
-import dev.zitech.settings.presentation.screen.settings.SettingsScreen
-import dev.zitech.settings.presentation.settings.viewmodel.SettingsState
-import dev.zitech.settings.presentation.settings.viewmodel.SettingsViewModel
-import io.mockk.every
-import io.mockk.mockk
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
+import dev.zitech.fireflow.presentation.main.view.MainActivity
+import dev.zitech.settings.presentation.screen.settings.SS
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.runTest
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
 @ExperimentalLifecycleComposeApi
 @ExperimentalMaterial3Api
 @ExperimentalCoroutinesApi
-internal class SettingsTest {
+@HiltAndroidTest
+internal class ST {
 
-    @get:Rule
-    val composeTestRule = createComposeRule()
+    @get:Rule(order = 1)
+    var hiltAndroidRule = HiltAndroidRule(this)
 
-    private val settingsViewModel = mockk<SettingsViewModel>()
+    @get:Rule(order = 2)
+    val composeTestRule = createAndroidComposeRule<MainActivity>()
+
+    //    private val settingsViewModel = mockk<SettingsViewModel>()
+//    @Inject
+//    lateinit var settingsViewModel: SettingsViewModel
+
+    @Before
+    fun setup() {
+        hiltAndroidRule.inject()
+    }
 
     @Test
     fun when_state_isLoading_true_then_show_settings_progress_indicator() = runTest {
         // Arrange
-        every { settingsViewModel.state } returns MutableStateFlow(
-            SettingsState(
-                isLoading = true
-            )
-        )
+//        every { settingsViewModel.state } returns MutableStateFlow(
+//            SettingsState(
+//                isLoading = true
+//            )
+//        )
+
         // Act
-        val settingsScreen = SettingsScreen(composeTestRule)
-        settingsScreen.launch(settingsViewModel)
+        val settingsScreen = SS(composeTestRule)
+//        settingsScreen.launch(settingsViewModel)
+        settingsScreen.launch()
 
         // Assert
         settingsScreen.assertions.run {
@@ -62,15 +74,16 @@ internal class SettingsTest {
     @Test
     fun when_state_isLoading_false_then_do_not_show_settings_progress_indicator_and_show_settings_content() {
         // Arrange
-        every { settingsViewModel.state } returns MutableStateFlow(
-            SettingsState(
-                isLoading = false
-            )
-        )
+//        every { settingsViewModel.state } returns MutableStateFlow(
+//            SettingsState(
+//                isLoading = false
+//            )
+//        )
 
         // Act
-        val settingsScreen = SettingsScreen(composeTestRule)
-        settingsScreen.launch(settingsViewModel)
+        val settingsScreen = SS(composeTestRule)
+//        settingsScreen.launch(settingsViewModel)
+        settingsScreen.launch()
 
         // Assert
         settingsScreen.assertions.run {
@@ -82,16 +95,17 @@ internal class SettingsTest {
     @Test
     fun when_state_isLoading_false_and_telemetry_is_true_then_show_telemetry_on() {
         // Arrange
-        every { settingsViewModel.state } returns MutableStateFlow(
-            SettingsState(
-                isLoading = false,
-                telemetry = true
-            )
-        )
+//        every { settingsViewModel.state } returns MutableStateFlow(
+//            SettingsState(
+//                isLoading = false,
+//                telemetry = true
+//            )
+//        )
 
         // Act
-        val settingsScreen = SettingsScreen(composeTestRule)
-        settingsScreen.launch(settingsViewModel)
+        val settingsScreen = SS(composeTestRule)
+//        settingsScreen.launch(settingsViewModel)
+        settingsScreen.launch()
 
         // Assert
         settingsScreen.assertions.run {
@@ -106,16 +120,17 @@ internal class SettingsTest {
     @Test
     fun when_state_isLoading_false_and_telemetry_is_false_then_show_telemetry_off() {
         // Arrange
-        every { settingsViewModel.state } returns MutableStateFlow(
-            SettingsState(
-                isLoading = false,
-                telemetry = false
-            )
-        )
+//        every { settingsViewModel.state } returns MutableStateFlow(
+//            SettingsState(
+//                isLoading = false,
+//                telemetry = false
+//            )
+//        )
 
         // Act
-        val settingsScreen = SettingsScreen(composeTestRule)
-        settingsScreen.launch(settingsViewModel)
+        val settingsScreen = SS(composeTestRule)
+//        settingsScreen.launch(settingsViewModel)
+        settingsScreen.launch()
 
         // Assert
         settingsScreen.assertions.run {
@@ -130,16 +145,17 @@ internal class SettingsTest {
     @Test
     fun when_state_isLoading_false_and_telemetry_is_null_then_do_not_show_telemetry() {
         // Arrange
-        every { settingsViewModel.state } returns MutableStateFlow(
-            SettingsState(
-                isLoading = false,
-                telemetry = null
-            )
-        )
+//        every { settingsViewModel.state } returns MutableStateFlow(
+//            SettingsState(
+//                isLoading = false,
+//                telemetry = null
+//            )
+//        )
 
         // Act
-        val settingsScreen = SettingsScreen(composeTestRule)
-        settingsScreen.launch(settingsViewModel)
+        val settingsScreen = SS(composeTestRule)
+//        settingsScreen.launch(settingsViewModel)
+        settingsScreen.launch()
 
         // Assert
         settingsScreen.assertions.run {

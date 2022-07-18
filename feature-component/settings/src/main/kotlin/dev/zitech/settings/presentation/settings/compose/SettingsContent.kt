@@ -36,9 +36,9 @@ import dev.zitech.ds.theme.FireFlowTheme
 import dev.zitech.settings.R
 import dev.zitech.settings.presentation.settings.viewmodel.SettingsState
 
-internal const val TAG_SETTINGS_CONTENT = "settings_content"
-internal const val TAG_TELEMETRY = "telemetry"
-internal const val TAG_CRASH_REPORTER = "crash_reporter"
+const val TAG_SETTINGS_CONTENT = "settings_content"
+const val TAG_TELEMETRY = "telemetry"
+const val TAG_CRASH_REPORTER = "crash_reporter"
 
 @ExperimentalMaterial3Api
 @Composable

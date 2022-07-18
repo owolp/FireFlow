@@ -30,17 +30,16 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.test.platform.app.InstrumentationRegistry
-import dev.zitech.ds.atoms.loading.FireFlowProgressIndicators.PROGRESS_INDICATOR_ITEM
+import dev.zitech.ds.atoms.loading.FireFlowProgressIndicators
 import dev.zitech.ds.theme.FireFlowTheme
 import dev.zitech.settings.R
 import dev.zitech.settings.presentation.settings.compose.Settings
 import dev.zitech.settings.presentation.settings.compose.TAG_SETTINGS_CONTENT
 import dev.zitech.settings.presentation.settings.compose.TAG_TELEMETRY
-import dev.zitech.settings.presentation.settings.viewmodel.SettingsViewModel
 
 @ExperimentalLifecycleComposeApi
 @ExperimentalMaterial3Api
-internal class SettingsScreen(
+internal class SS(
     private val composeTestRule: ComposeContentTestRule
 ) {
 
@@ -49,10 +48,12 @@ internal class SettingsScreen(
 
     val assertions = Assertions(composeTestRule, screenResources)
 
-    fun launch(viewModel: SettingsViewModel) {
+    //    fun launch(viewModel: SettingsViewModel) {
+    fun launch() {
         composeTestRule.setContent {
             FireFlowTheme {
-                Settings(viewModel)
+//                Settings(viewModel)
+                Settings()
             }
         }
     }
@@ -68,12 +69,12 @@ internal class SettingsScreen(
     ) {
 
         fun settingsProgressIndicatorIsVisible() {
-            composeTestRule.onNodeWithTag(PROGRESS_INDICATOR_ITEM)
+            composeTestRule.onNodeWithTag(FireFlowProgressIndicators.PROGRESS_INDICATOR_ITEM)
                 .assertIsDisplayed()
         }
 
         fun settingsProgressIndicatorIsNotVisible() {
-            composeTestRule.onNodeWithTag(PROGRESS_INDICATOR_ITEM)
+            composeTestRule.onNodeWithTag(FireFlowProgressIndicators.PROGRESS_INDICATOR_ITEM)
                 .assertDoesNotExist()
         }
 

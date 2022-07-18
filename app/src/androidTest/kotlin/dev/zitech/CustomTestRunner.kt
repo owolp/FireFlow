@@ -15,12 +15,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.persistence.data.cache
+package dev.zitech
 
-import dev.zitech.core.persistence.domain.model.cache.InMemoryCache
-import dev.zitech.core.persistence.domain.model.database.UserAccount
-import dev.zitech.core.persistence.domain.repository.cache.CacheRepository
-import javax.inject.Inject
+import android.app.Application
+import android.content.Context
+import androidx.test.runner.AndroidJUnitRunner
+import dagger.hilt.android.testing.HiltTestApplication
 
-class UserAccountInMemoryCache @Inject constructor(cacheRepository: CacheRepository) :
-    InMemoryCache<UserAccount>(cacheRepository)
+class CustomTestRunner : AndroidJUnitRunner() {
+
+    override fun newApplication(cl: ClassLoader?, className: String?, context: Context?): Application {
+        return super.newApplication(cl, HiltTestApplication::class.java.name, context)
+    }
+}

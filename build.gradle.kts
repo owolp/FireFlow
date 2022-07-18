@@ -116,6 +116,7 @@ fun BaseExtension.baseConfig() {
 
     composeOptions.kotlinCompilerExtensionVersion = libs.versions.composeRuntime.get()
 
+    excludeDependenciesForAndroidTests()
     configureWorkaroundForMockk()
     configureBuildTypes(project)
     configureFlavorDimensions()
@@ -228,5 +229,22 @@ fun BaseExtension.configureWorkaroundForMockk() {
         packagingOptions {
             jniLibs.useLegacyPackaging = true
         }
+    }
+}
+
+fun BaseExtension.excludeDependenciesForAndroidTests() {
+    packagingOptions {
+        resources.excludes.add("META-INF/LICENSE.md")
+        resources.excludes.add("META-INF/LICENSE-notice.md")
+        resources.excludes.add("META-INF/licenses/ASM")
+//        jniLibs.excludes.addAll(
+//            listOf(
+//                "META-INF/LICENSE.md"
+//            )
+//        )
+//        exclude("**/attach_hotspot_windows.dll")
+//        exclude("META-INF/AL2.0")
+//        exclude("META-INF/LGPL2.1")
+//        exclude("META-INF/licenses/ASM")
     }
 }

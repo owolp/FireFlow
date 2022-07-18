@@ -15,12 +15,32 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.persistence.data.cache
+package dev.zitech.core.persistence.di
 
+import dagger.Binds
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import dev.zitech.core.persistence.data.cache.UserAccountInMemoryCache
+import dev.zitech.core.persistence.data.repository.cache.CacheRepositoryImpl
 import dev.zitech.core.persistence.domain.model.cache.InMemoryCache
 import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.domain.repository.cache.CacheRepository
-import javax.inject.Inject
+import javax.inject.Singleton
 
-class UserAccountInMemoryCache @Inject constructor(cacheRepository: CacheRepository) :
-    InMemoryCache<UserAccount>(cacheRepository)
+@InstallIn(SingletonComponent::class)
+@Module
+interface CacheSingletonBindsModule {
+
+    @Singleton
+    @Binds
+    fun inMemoryCacheInvalidator(
+        inMemoryCacheInvalidatorImpl: CacheRepositoryImpl
+    ): CacheRepository
+
+    @Singleton
+    @Binds
+    fun userAccountInMemoryCache(
+        userAccountInMemoryCache: UserAccountInMemoryCache
+    ): InMemoryCache<UserAccount>
+}

@@ -23,7 +23,7 @@ import androidx.room.PrimaryKey
 @Entity(
     tableName = "user_accounts"
 )
-internal data class UserAccountEntity(
+data class UserAccountEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long? = null,
     val isCurrentUserAccount: Boolean

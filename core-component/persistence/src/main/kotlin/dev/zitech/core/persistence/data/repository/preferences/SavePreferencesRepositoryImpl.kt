@@ -22,7 +22,7 @@ import dev.zitech.core.persistence.domain.repository.preferences.SavePreferences
 import dev.zitech.core.persistence.domain.source.preferences.PreferencesDataSource
 import javax.inject.Inject
 
-internal class SavePreferencesRepositoryImpl @Inject constructor(
+class SavePreferencesRepositoryImpl @Inject constructor(
     private val developmentPreferencesDataSource: PreferencesDataSource,
     private val securedPreferencesDataSource: PreferencesDataSource,
     private val standardPreferencesDataSource: PreferencesDataSource

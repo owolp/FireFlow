@@ -22,7 +22,7 @@ import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.framework.database.entity.UserAccountEntity
 import javax.inject.Inject
 
-internal class UserAccountMapper @Inject constructor() : Mapper<UserAccountEntity, UserAccount> {
+class UserAccountMapper @Inject constructor() : Mapper<UserAccountEntity, UserAccount> {
 
     override fun invoke(input: UserAccountEntity) = UserAccount(
         id = input.id ?: -1,

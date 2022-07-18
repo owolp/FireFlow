@@ -19,6 +19,6 @@ package dev.zitech.core.persistence.domain.repository.database
 
 import dev.zitech.core.persistence.domain.model.database.DatabaseKey
 
-internal interface DatabaseKeyRepository {
+interface DatabaseKeyRepository {
     suspend fun getDatabaseKey(): DatabaseKey
 }

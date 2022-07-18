@@ -19,7 +19,7 @@ package dev.zitech.core.persistence.domain.source.database
 
 import dev.zitech.core.persistence.domain.model.database.UserAccount
 
-internal interface UserAccountDatabaseSource {
+interface UserAccountDatabaseSource {
 
     suspend fun getUserAccounts(): List<UserAccount>
     suspend fun getCurrentUserAccount(): UserAccount?

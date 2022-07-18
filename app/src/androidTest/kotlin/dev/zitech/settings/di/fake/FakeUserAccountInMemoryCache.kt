@@ -15,12 +15,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.persistence.data.cache
+package dev.zitech.settings.di.fake
 
 import dev.zitech.core.persistence.domain.model.cache.InMemoryCache
 import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.domain.repository.cache.CacheRepository
 import javax.inject.Inject
 
-class UserAccountInMemoryCache @Inject constructor(cacheRepository: CacheRepository) :
+internal class FakeUserAccountInMemoryCache @Inject constructor(cacheRepository: CacheRepository) :
     InMemoryCache<UserAccount>(cacheRepository)

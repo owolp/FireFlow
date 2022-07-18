@@ -23,12 +23,14 @@ dependencies {
     androidTestImplementation libs.androidx.compose.ui.test.manifest
     androidTestImplementation libs.androidx.test.runner
     androidTestImplementation libs.google.truth
+    androidTestImplementation libs.google.dagger.hilt.android.testing
     androidTestImplementation libs.jetbrains.kotlin.coroutines.test
     androidTestImplementation libs.mannodermaus.junit5.android.test.core
     androidTestImplementation libs.mockk.mockk.android
     androidTestImplementation libs.junit.jupiter.api
     androidTestRuntimeOnly libs.mannodermaus.junit5.android.test.runner
     androidTestRuntimeOnly libs.junit.jupiter.engine
+    kaptAndroidTest libs.google.dagger.hilt.android.compiler
 
     testImplementation testFixtures(projects.coreComponent.common)
     testImplementation libs.cash.turbine

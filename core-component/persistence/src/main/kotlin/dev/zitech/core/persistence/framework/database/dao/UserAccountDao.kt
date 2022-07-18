@@ -24,7 +24,7 @@ import androidx.room.Query
 import dev.zitech.core.persistence.framework.database.entity.UserAccountEntity
 
 @Dao
-internal interface UserAccountDao {
+interface UserAccountDao {
 
     @Query("SELECT * FROM user_accounts")
     suspend fun getUserAccounts(): List<UserAccountEntity>

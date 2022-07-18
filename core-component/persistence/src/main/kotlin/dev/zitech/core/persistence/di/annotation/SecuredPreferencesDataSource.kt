@@ -21,4 +21,4 @@ import javax.inject.Qualifier
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
-internal annotation class SecuredPreferencesDataSource
+annotation class SecuredPreferencesDataSource

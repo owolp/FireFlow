@@ -20,7 +20,7 @@ package dev.zitech.core.persistence.domain.source.preferences
 import kotlinx.coroutines.flow.Flow
 
 @Suppress("TooManyFunctions")
-internal interface PreferencesDataSource {
+interface PreferencesDataSource {
 
     fun getBoolean(key: String, defaultValue: Boolean): Flow<Boolean>
 

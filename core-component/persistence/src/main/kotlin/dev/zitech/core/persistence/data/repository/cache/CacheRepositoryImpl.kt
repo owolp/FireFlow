@@ -22,7 +22,7 @@ import dev.zitech.core.persistence.domain.model.cache.Cache
 import dev.zitech.core.persistence.domain.repository.cache.CacheRepository
 import javax.inject.Inject
 
-internal class CacheRepositoryImpl @Inject constructor() : CacheRepository {
+class CacheRepositoryImpl @Inject constructor() : CacheRepository {
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     val caches = mutableListOf<Cache>()

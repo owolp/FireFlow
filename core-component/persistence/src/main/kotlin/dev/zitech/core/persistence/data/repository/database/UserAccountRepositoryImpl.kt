@@ -28,7 +28,7 @@ import dev.zitech.core.persistence.domain.repository.database.UserAccountReposit
 import dev.zitech.core.persistence.domain.source.database.UserAccountDatabaseSource
 import javax.inject.Inject
 
-internal class UserAccountRepositoryImpl @Inject constructor(
+class UserAccountRepositoryImpl @Inject constructor(
     private val userAccountInMemoryCache: InMemoryCache<UserAccount>,
     private val userAccountDatabaseSource: UserAccountDatabaseSource,
     private val stringsProvider: StringsProvider

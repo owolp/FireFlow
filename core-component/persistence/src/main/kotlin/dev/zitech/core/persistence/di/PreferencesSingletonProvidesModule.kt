@@ -18,19 +18,12 @@
 package dev.zitech.core.persistence.di
 
 import android.content.Context
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import dev.zitech.core.common.domain.applicationconfig.AppConfigProvider
 import dev.zitech.core.common.domain.dispatcher.AppDispatchers
-import dev.zitech.core.common.domain.strings.StringsProvider
-import dev.zitech.core.persistence.data.cache.UserAccountInMemoryCache
-import dev.zitech.core.persistence.data.repository.cache.CacheRepositoryImpl
-import dev.zitech.core.persistence.data.repository.database.DatabaseKeyRepositoryImpl
-import dev.zitech.core.persistence.data.repository.database.UserAccountRepositoryImpl
 import dev.zitech.core.persistence.data.repository.preferences.ContainsPreferencesRepositoryImpl
 import dev.zitech.core.persistence.data.repository.preferences.GetPreferencesRepositoryImpl
 import dev.zitech.core.persistence.data.repository.preferences.RemovePreferencesRepositoryImpl
@@ -38,30 +31,18 @@ import dev.zitech.core.persistence.data.repository.preferences.SavePreferencesRe
 import dev.zitech.core.persistence.di.annotation.DevelopmentPreferencesDataSource
 import dev.zitech.core.persistence.di.annotation.SecuredPreferencesDataSource
 import dev.zitech.core.persistence.di.annotation.StandardPreferencesDataSource
-import dev.zitech.core.persistence.domain.model.cache.InMemoryCache
-import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.domain.model.preferences.PreferenceType
-import dev.zitech.core.persistence.domain.repository.cache.CacheRepository
-import dev.zitech.core.persistence.domain.repository.database.DatabaseKeyRepository
-import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
 import dev.zitech.core.persistence.domain.repository.preferences.ContainsPreferencesRepository
 import dev.zitech.core.persistence.domain.repository.preferences.GetPreferencesRepository
 import dev.zitech.core.persistence.domain.repository.preferences.RemovePreferencesRepository
 import dev.zitech.core.persistence.domain.repository.preferences.SavePreferencesRepository
-import dev.zitech.core.persistence.domain.source.database.UserAccountDatabaseSource
 import dev.zitech.core.persistence.domain.source.preferences.PreferencesDataSource
-import dev.zitech.core.persistence.framework.database.FireFlowDatabase
-import dev.zitech.core.persistence.framework.database.dao.UserAccountDao
-import dev.zitech.core.persistence.framework.database.factory.DatabaseFactory
-import dev.zitech.core.persistence.framework.database.mapper.UserAccountMapper
-import dev.zitech.core.persistence.framework.database.source.UserAccountDatabaseSourceImpl
 import dev.zitech.core.persistence.framework.preference.factory.PreferencesFactory
-import kotlinx.coroutines.runBlocking
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
-internal object PersistenceSingletonProvidesModule {
+object PreferencesSingletonProvidesModule {
 
     @DevelopmentPreferencesDataSource
     @Singleton
@@ -146,69 +127,4 @@ internal object PersistenceSingletonProvidesModule {
         securedPreferencesDataSource = securedPreferencesDataSource,
         standardPreferencesDataSource = standardPreferencesDataSource
     )
-
-    @Singleton
-    @Provides
-    fun userAccountDatabaseSource(
-        fireFlowDatabase: FireFlowDatabase,
-        userAccountMapper: UserAccountMapper
-    ): UserAccountDatabaseSource =
-        UserAccountDatabaseSourceImpl(
-            userAccountDao = fireFlowDatabase.userAccountDao(),
-            userAccountMapper = userAccountMapper
-        )
-
-    @Singleton
-    @Provides
-    fun databaseFactory(
-        @ApplicationContext applicationContext: Context,
-        appConfigProvider: AppConfigProvider,
-        databaseKeyRepository: DatabaseKeyRepository
-    ): FireFlowDatabase = runBlocking {
-        DatabaseFactory(
-            context = applicationContext,
-            appConfigProvider = appConfigProvider,
-            databaseKeyRepository = databaseKeyRepository
-        ).createRoomDatabase("fireflow")
-    }
-
-    @Singleton
-    @Provides
-    fun userAccountDao(fireFlowDatabase: FireFlowDatabase): UserAccountDao =
-        fireFlowDatabase.userAccountDao()
-
-    @Singleton
-    @Provides
-    fun userAccountRepository(
-        userAccountInMemoryCache: UserAccountInMemoryCache,
-        userAccountDatabaseSource: UserAccountDatabaseSource,
-        stringsProvider: StringsProvider
-    ): UserAccountRepository = UserAccountRepositoryImpl(
-        userAccountInMemoryCache = userAccountInMemoryCache,
-        userAccountDatabaseSource = userAccountDatabaseSource,
-        stringsProvider = stringsProvider
-    )
-}
-
-@InstallIn(SingletonComponent::class)
-@Module
-internal interface PersistenceSingletonBindsModule {
-
-    @Singleton
-    @Binds
-    fun databaseKeyRepository(
-        databaseKeyRepositoryImpl: DatabaseKeyRepositoryImpl
-    ): DatabaseKeyRepository
-
-    @Singleton
-    @Binds
-    fun inMemoryCacheInvalidator(
-        inMemoryCacheInvalidatorImpl: CacheRepositoryImpl
-    ): CacheRepository
-
-    @Singleton
-    @Binds
-    fun userAccountInMemoryCache(
-        userAccountInMemoryCache: UserAccountInMemoryCache
-    ): InMemoryCache<UserAccount>
 }

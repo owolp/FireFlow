@@ -16,7 +16,9 @@
  */
 
 object AndroidConfigs {
-    const val TEST_INSTRUMENTATION_RUNNER = "androidx.test.runner.AndroidJUnitRunner"
+//        const val TEST_INSTRUMENTATION_RUNNER = "androidx.test.runner.AndroidJUnitRunner"
+    const val TEST_INSTRUMENTATION_RUNNER = "dev.zitech.CustomTestRunner"
+
     const val TEST_INSTRUMENTATION_RUNNER_ARGUMENT_KEY = "runnerBuilder"
     const val TEST_INSTRUMENTATION_RUNNER_ARGUMENT_VALUE =
         "de.mannodermaus.junit5.AndroidJUnit5Builder"

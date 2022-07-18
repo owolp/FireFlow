@@ -25,7 +25,7 @@ import dev.zitech.core.persistence.framework.database.entity.UserAccountEntity
 import dev.zitech.core.persistence.framework.database.mapper.UserAccountMapper
 import javax.inject.Inject
 
-internal class UserAccountDatabaseSourceImpl @Inject constructor(
+class UserAccountDatabaseSourceImpl @Inject constructor(
     private val userAccountDao: UserAccountDao,
     private val userAccountMapper: UserAccountMapper
 ) : UserAccountDatabaseSource {

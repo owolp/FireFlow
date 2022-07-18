@@ -28,7 +28,7 @@ import dev.zitech.core.persistence.framework.database.entity.UserAccountEntity
     ],
     version = 1
 )
-internal abstract class FireFlowDatabase : RoomDatabase() {
+abstract class FireFlowDatabase : RoomDatabase() {
 
     abstract fun userAccountDao(): UserAccountDao
 }

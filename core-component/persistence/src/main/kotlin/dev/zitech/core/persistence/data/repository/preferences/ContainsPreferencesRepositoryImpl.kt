@@ -23,7 +23,7 @@ import dev.zitech.core.persistence.domain.source.preferences.PreferencesDataSour
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-internal class ContainsPreferencesRepositoryImpl @Inject constructor(
+class ContainsPreferencesRepositoryImpl @Inject constructor(
     private val developmentPreferencesDataSource: PreferencesDataSource,
     private val securedPreferencesDataSource: PreferencesDataSource,
     private val standardPreferencesDataSource: PreferencesDataSource

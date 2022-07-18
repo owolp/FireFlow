@@ -54,6 +54,8 @@ cash-turbine = "app.cash.turbine:turbine:0.8.0"
 google-accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
 google-accompanist-placeholder-material = { module = "com.google.accompanist:accompanist-placeholder-material", version.ref = "accompanist" }
 google-dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "dagger" }
+google-dagger-hilt-android-testing = { module = "com.google.dagger:hilt-android-testing", version.ref = "dagger" }
+google-dagger-hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "dagger" }
 google-dagger-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "dagger" }
 google-dagger-hilt-gradle = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "dagger" }
 google-firebase-bom = "com.google.firebase:firebase-bom:30.2.0"
