@@ -499,4 +499,46 @@ internal class SettingsViewModelTest {
             settingsAnalyticsCollectionStates.setAllowPersonalizedAdsValue(checked)
         }
     }
+
+    @Test
+    fun `WHEN OnPersonalizedAdsCheck GIVEN build config is FOSS THEN show only loading`() = runTest {
+        // Arrange
+        val defaultIsAnalyticsEnabled = false
+        coEvery { settingsAnalyticsCollectionStates.getAnalyticsCollectionValue() } returns defaultIsAnalyticsEnabled
+
+        val defaultIsPersonalizedAdsEnabled = false
+        coEvery { settingsAnalyticsCollectionStates.getAllowPersonalizedAdsValue() } returns defaultIsPersonalizedAdsEnabled
+
+        val defaultIsCrashReporterEnabled = false
+        coEvery { settingsCrashReporterCollectionStates.getCrashReporterCollectionValue() } returns defaultIsCrashReporterEnabled
+
+        val checked = DataFactory.createRandomBoolean()
+
+        appConfigProvider.setBuildFlavor(BuildFlavor.FOSS)
+
+        settingsStateHolder.state.test {
+            // Act
+            val sut = SettingsViewModel(
+                settingsStateHolder,
+                settingsAnalyticsCollectionStates,
+                settingsCrashReporterCollectionStates,
+                settingsErrorProvider,
+                appConfigProvider
+            )
+
+            sut.sendIntent(OnPersonalizedAdsCheck(checked))
+
+            // Assert
+            assertThat(awaitItem().isLoading).isFalse()
+            assertThat(awaitItem().isLoading).isTrue()
+            assertThat(awaitItem().isLoading).isFalse()
+            assertThat(cancelAndConsumeRemainingEvents()).isEmpty()
+        }
+        coVerify(exactly = 0) {
+            settingsAnalyticsCollectionStates.setAnalyticsCollection(true)
+            settingsAnalyticsCollectionStates.setAnalyticsCollection(false)
+            settingsAnalyticsCollectionStates.setAllowPersonalizedAdsValue(true)
+            settingsAnalyticsCollectionStates.setAllowPersonalizedAdsValue(false)
+        }
+    }
 }

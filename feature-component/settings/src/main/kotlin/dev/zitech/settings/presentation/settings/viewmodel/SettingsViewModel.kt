@@ -91,12 +91,16 @@ class SettingsViewModel @Inject constructor(
     }
 
     private suspend fun handleOnPersonalizedAdsCheck(checked: Boolean) {
-        settingsAnalyticsCollectionStates.setAllowPersonalizedAdsValue(checked)
-        val isEnabled = settingsAnalyticsCollectionStates.getAllowPersonalizedAdsValue()
-        if (checked == isEnabled) {
-            setPersonalizedAdsState(checked, appConfigProvider.buildFlavor)
+        if (appConfigProvider.buildFlavor != BuildFlavor.FOSS) {
+            settingsAnalyticsCollectionStates.setAllowPersonalizedAdsValue(checked)
+            val isEnabled = settingsAnalyticsCollectionStates.getAllowPersonalizedAdsValue()
+            if (checked == isEnabled) {
+                setPersonalizedAdsState(checked, appConfigProvider.buildFlavor)
+            } else {
+                setErrorState(settingsErrorProvider.getPersonalizedAdsError())
+            }
         } else {
-            setErrorState(settingsErrorProvider.getPersonalizedAdsError())
+            Logger.e(TAG, "Setting personalized ads on FOSS build is not supported")
         }
     }
 
