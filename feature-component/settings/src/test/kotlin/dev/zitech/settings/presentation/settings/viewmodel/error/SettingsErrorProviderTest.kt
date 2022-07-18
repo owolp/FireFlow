@@ -70,4 +70,20 @@ internal class SettingsErrorProviderTest {
         assertThat(result.message).isEqualTo(message)
         assertThat(result.action).isEqualTo(action)
     }
+
+    @Test
+    fun getPersonalizedAdsError() {
+        // Arrange
+        val message = DataFactory.createRandomString()
+        every { stringsProvider(R.string.data_choices_personalized_ads_error) } returns message
+        val action = DataFactory.createRandomString()
+        every { stringsProvider(R.string.action_restart) } returns action
+
+        // Act
+        val result = sut.getPersonalizedAdsError()
+
+        // Assert
+        assertThat(result.message).isEqualTo(message)
+        assertThat(result.action).isEqualTo(action)
+    }
 }

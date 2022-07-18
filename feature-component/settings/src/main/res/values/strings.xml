@@ -23,6 +23,11 @@
     <string name="data_choices_telemetry_error">The Telemetry settings were not saved correctly. Please try restarting the app.</string>
     <string name="cd_data_choices_telemetry_enabled">Telemetry Enabled</string>
     <string name="cd_data_choices_telemetry_disabled">Telemetry Disabled</string>
+    <string name="data_choices_personalized_ads_title">Personalized Ads</string>
+    <string name="data_choices_personalized_ads_description">To deliver personalized ads, the application uses information about you to serve ads that are more relevant to you.</string>
+    <string name="data_choices_personalized_ads_error">The Personalized Ads settings were not saved correctly. Please try restarting the app.</string>
+    <string name="cd_data_choices_personalized_ads_enabled">Personalized Ads Enabled</string>
+    <string name="cd_data_choices_personalized_ads_disabled">Personalized Ads Disabled</string>
     <string name="data_choices_crash_reporter_title">Crash Reporter</string>
     <string name="data_choices_crash_reporter_description">Submit automatic crash reports to help make the application more stable and secure.</string>
     <string name="data_choices_crash_reporter_error">The Crash Reporter settings were not saved correctly. Please try restarting the app.</string>

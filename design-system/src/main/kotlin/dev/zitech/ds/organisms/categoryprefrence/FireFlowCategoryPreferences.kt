@@ -18,8 +18,11 @@
 package dev.zitech.ds.organisms.categoryprefrence
 
 import android.content.res.Configuration
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Analytics
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -30,6 +33,7 @@ import dev.zitech.ds.atoms.spacer.FireFlowSpacers
 import dev.zitech.ds.molecules.preference.FireFlowPreferences
 import dev.zitech.ds.theme.FireFlowTheme
 
+@ExperimentalFoundationApi
 object FireFlowCategoryPreferences {
 
     @ExperimentalMaterial3Api
@@ -44,53 +48,59 @@ object FireFlowCategoryPreferences {
                 .background(FireFlowTheme.colors.background)
         ) {
             FireFlowPreferences.Category(title = categoryName)
-            preferences.forEach { categoryPreference ->
-                when (categoryPreference) {
-                    is CategoryPreference.Checkbox -> {
-                        with(categoryPreference) {
-                            FireFlowPreferences.Checkbox(
-                                title = title,
-                                icon = icon,
-                                checked = checked,
-                                cdDescriptionEnabled = cdDescriptionEnabled,
-                                cdDescriptionDisabled = cdDescriptionDisabled,
-                                onCheckedChanged = onCheckedChanged,
-                                description = description
-                            )
+            LazyColumn {
+                items(preferences, key = { it.uniqueId }) { categoryPreference ->
+                    when (categoryPreference) {
+                        is CategoryPreference.Checkbox -> {
+                            with(categoryPreference) {
+                                FireFlowPreferences.Checkbox(
+                                    modifier = Modifier.animateItemPlacement(),
+                                    title = title,
+                                    icon = icon,
+                                    checked = checked,
+                                    cdDescriptionEnabled = cdDescriptionEnabled,
+                                    cdDescriptionDisabled = cdDescriptionDisabled,
+                                    onCheckedChanged = onCheckedChanged,
+                                    description = description
+                                )
+                            }
+                        }
+                        is CategoryPreference.Icon -> {
+                            with(categoryPreference) {
+                                FireFlowPreferences.Icon(
+                                    modifier = Modifier.animateItemPlacement(),
+                                    title = title,
+                                    icon = icon,
+                                    description = description
+                                )
+                            }
+                        }
+                        is CategoryPreference.Simple -> {
+                            with(categoryPreference) {
+                                FireFlowPreferences.Simple(
+                                    modifier = Modifier.animateItemPlacement(),
+                                    title = title,
+                                    description = description
+                                )
+                            }
+                        }
+                        is CategoryPreference.Switch -> {
+                            with(categoryPreference) {
+                                FireFlowPreferences.Switch(
+                                    modifier = Modifier.animateItemPlacement(),
+                                    title = title,
+                                    icon = icon,
+                                    checked = checked,
+                                    cdDescriptionEnabled = cdDescriptionEnabled,
+                                    cdDescriptionDisabled = cdDescriptionDisabled,
+                                    onCheckedChanged = onCheckedChanged,
+                                    description = description
+                                )
+                            }
                         }
                     }
-                    is CategoryPreference.Icon -> {
-                        with(categoryPreference) {
-                            FireFlowPreferences.Icon(
-                                title = title,
-                                icon = icon,
-                                description = description
-                            )
-                        }
-                    }
-                    is CategoryPreference.Simple -> {
-                        with(categoryPreference) {
-                            FireFlowPreferences.Simple(
-                                title = title,
-                                description = description
-                            )
-                        }
-                    }
-                    is CategoryPreference.Switch -> {
-                        with(categoryPreference) {
-                            FireFlowPreferences.Switch(
-                                title = title,
-                                icon = icon,
-                                checked = checked,
-                                cdDescriptionEnabled = cdDescriptionEnabled,
-                                cdDescriptionDisabled = cdDescriptionDisabled,
-                                onCheckedChanged = onCheckedChanged,
-                                description = description
-                            )
-                        }
-                    }
+                    FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.l)
                 }
-                FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.l)
             }
         }
     }
@@ -106,6 +116,7 @@ object FireFlowCategoryPreferences {
     showBackground = true
 )
 @ExperimentalMaterial3Api
+@ExperimentalFoundationApi
 @Composable
 private fun CategoryPreferences_Preview() {
     FireFlowTheme {

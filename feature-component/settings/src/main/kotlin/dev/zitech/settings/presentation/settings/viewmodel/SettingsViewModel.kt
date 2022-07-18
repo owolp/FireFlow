@@ -21,6 +21,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.zitech.core.common.domain.applicationconfig.AppConfigProvider
+import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.domain.model.BuildFlavor
 import dev.zitech.core.common.presentation.architecture.MviViewModel
 import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsAnalyticsCollectionStates
@@ -41,6 +42,10 @@ class SettingsViewModel @Inject constructor(
     private val appConfigProvider: AppConfigProvider
 ) : ViewModel(), MviViewModel<SettingsIntent, SettingsState> {
 
+    companion object {
+        private const val TAG = "SettingsViewModel"
+    }
+
     override val state: StateFlow<SettingsState> = settingsStateHolder.state.asStateFlow()
 
     init {
@@ -54,17 +59,8 @@ class SettingsViewModel @Inject constructor(
             when (intent) {
                 is OnCrashReporterCheck -> handleOnCrashReporterCheck(intent.checked)
                 is OnTelemetryCheck -> handleOnTelemetryCheck(intent.checked)
+                is OnPersonalizedAdsCheck -> handleOnPersonalizedAdsCheck(intent.checked)
             }
-        }
-    }
-
-    private suspend fun handleOnTelemetryCheck(checked: Boolean) {
-        settingsAnalyticsCollectionStates.setAnalyticsCollection(checked)
-        val isEnabled = settingsAnalyticsCollectionStates.getAnalyticsCollectionValue()
-        if (checked == isEnabled) {
-            setTelemetryState(checked, appConfigProvider.buildFlavor)
-        } else {
-            setErrorState(settingsErrorProvider.getTelemetryError())
         }
     }
 
@@ -78,10 +74,40 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    private suspend fun handleOnTelemetryCheck(checked: Boolean) {
+        if (appConfigProvider.buildFlavor != BuildFlavor.FOSS) {
+            settingsAnalyticsCollectionStates.setAnalyticsCollection(checked)
+            val isEnabled = settingsAnalyticsCollectionStates.getAnalyticsCollectionValue()
+            if (checked == isEnabled) {
+                setTelemetryState(checked, appConfigProvider.buildFlavor)
+                settingsAnalyticsCollectionStates.setAllowPersonalizedAdsValue(checked)
+                setPersonalizedAdsState(checked, appConfigProvider.buildFlavor)
+            } else {
+                setErrorState(settingsErrorProvider.getTelemetryError())
+            }
+        } else {
+            Logger.e(TAG, "Setting telemetry on FOSS build is not supported")
+        }
+    }
+
+    private suspend fun handleOnPersonalizedAdsCheck(checked: Boolean) {
+        settingsAnalyticsCollectionStates.setAllowPersonalizedAdsValue(checked)
+        val isEnabled = settingsAnalyticsCollectionStates.getAllowPersonalizedAdsValue()
+        if (checked == isEnabled) {
+            setPersonalizedAdsState(checked, appConfigProvider.buildFlavor)
+        } else {
+            setErrorState(settingsErrorProvider.getPersonalizedAdsError())
+        }
+    }
+
     private suspend fun getPreferencesState() {
         setIsLoadingState(true)
         setTelemetryState(
             settingsAnalyticsCollectionStates.getAnalyticsCollectionValue(),
+            appConfigProvider.buildFlavor
+        )
+        setPersonalizedAdsState(
+            settingsAnalyticsCollectionStates.getAllowPersonalizedAdsValue(),
             appConfigProvider.buildFlavor
         )
         setCrashReporterState(settingsCrashReporterCollectionStates.getCrashReporterCollectionValue())
@@ -101,6 +127,17 @@ class SettingsViewModel @Inject constructor(
         if (buildFlavor != BuildFlavor.FOSS) {
             settingsStateHolder.state.update {
                 it.copy(telemetry = value)
+            }
+        }
+    }
+
+    private fun setPersonalizedAdsState(
+        value: Boolean,
+        buildFlavor: BuildFlavor
+    ) {
+        if (buildFlavor != BuildFlavor.FOSS) {
+            settingsStateHolder.state.update {
+                it.copy(personalizedAds = value)
             }
         }
     }

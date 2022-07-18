@@ -18,9 +18,8 @@
 package dev.zitech.settings.presentation.settings.compose
 
 import android.content.res.Configuration
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Analytics
 import androidx.compose.material.icons.outlined.BugReport
@@ -36,17 +35,24 @@ import dev.zitech.settings.R
 import dev.zitech.settings.presentation.settings.viewmodel.SettingsState
 
 @ExperimentalMaterial3Api
+@ExperimentalFoundationApi
 @Composable
 internal fun SettingsContent(
     state: SettingsState,
     modifier: Modifier = Modifier,
     onTelemetryCheckChanged: (checked: Boolean) -> Unit,
+    onPersonalizedAdsCheckChanged: (checked: Boolean) -> Unit,
     onCrashReporterCheckChanged: (checked: Boolean) -> Unit
 ) {
-    Column(modifier = modifier.verticalScroll(rememberScrollState())) {
+    Column(modifier = modifier) {
         FireFlowCategoryPreferences.Simple(
             categoryName = stringResource(id = R.string.data_choices_category),
-            preferences = getPreferencesList(state, onTelemetryCheckChanged, onCrashReporterCheckChanged)
+            preferences = getPreferencesList(
+                state = state,
+                onTelemetryCheckChanged = onTelemetryCheckChanged,
+                onPersonalizedAdsCheckChanged = onPersonalizedAdsCheckChanged,
+                onCrashReporterCheckChanged = onCrashReporterCheckChanged
+            )
         )
     }
 }
@@ -55,6 +61,7 @@ internal fun SettingsContent(
 private fun getPreferencesList(
     state: SettingsState,
     onTelemetryCheckChanged: (checked: Boolean) -> Unit,
+    onPersonalizedAdsCheckChanged: (checked: Boolean) -> Unit,
     onCrashReporterCheckChanged: (checked: Boolean) -> Unit
 ): List<CategoryPreference> {
     val categoryPreferences = mutableListOf<CategoryPreference>()
@@ -71,6 +78,20 @@ private fun getPreferencesList(
                 description = stringResource(id = R.string.data_choices_telemetry_description)
             )
         )
+
+        if (state.telemetry && state.personalizedAds != null) {
+            categoryPreferences.add(
+                CategoryPreference.Switch(
+                    title = stringResource(id = R.string.data_choices_personalized_ads_title),
+                    icon = Icons.Outlined.Analytics,
+                    checked = state.personalizedAds,
+                    onCheckedChanged = onPersonalizedAdsCheckChanged,
+                    cdDescriptionEnabled = stringResource(id = R.string.cd_data_choices_personalized_ads_enabled),
+                    cdDescriptionDisabled = stringResource(id = R.string.cd_data_choices_personalized_ads_disabled),
+                    description = stringResource(id = R.string.data_choices_personalized_ads_description)
+                )
+            )
+        }
     }
 
     categoryPreferences.add(
@@ -98,12 +119,14 @@ private fun getPreferencesList(
     showBackground = true
 )
 @ExperimentalMaterial3Api
+@ExperimentalFoundationApi
 @Composable
 private fun SettingsContent_Preview() {
     FireFlowTheme {
         SettingsContent(
             state = SettingsState(),
             onTelemetryCheckChanged = {},
+            onPersonalizedAdsCheckChanged = {},
             onCrashReporterCheckChanged = {}
         )
     }
