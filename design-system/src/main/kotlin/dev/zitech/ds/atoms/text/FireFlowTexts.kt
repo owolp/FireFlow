@@ -20,6 +20,7 @@ package dev.zitech.ds.atoms.text
 import android.content.res.Configuration
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import dev.zitech.ds.atoms.text.FireFlowTexts.BodyMedium
@@ -43,9 +44,11 @@ object FireFlowTexts {
     @Composable
     fun DisplayLarge(
         text: String,
+        modifier: Modifier = Modifier,
         color: Color = FireFlowTheme.colors.onBackground
     ) {
         Text(
+            modifier = modifier,
             text = text,
             color = color,
             style = FireFlowTheme.typography.displayLarge
@@ -55,9 +58,11 @@ object FireFlowTexts {
     @Composable
     fun DisplayMedium(
         text: String,
+        modifier: Modifier = Modifier,
         color: Color = FireFlowTheme.colors.onBackground
     ) {
         Text(
+            modifier = modifier,
             text = text,
             color = color,
             style = FireFlowTheme.typography.displayMedium
@@ -67,9 +72,11 @@ object FireFlowTexts {
     @Composable
     fun DisplaySmall(
         text: String,
+        modifier: Modifier = Modifier,
         color: Color = FireFlowTheme.colors.onBackground
     ) {
         Text(
+            modifier = modifier,
             text = text,
             color = color,
             style = FireFlowTheme.typography.displaySmall
@@ -79,9 +86,11 @@ object FireFlowTexts {
     @Composable
     fun HeadlineLarge(
         text: String,
+        modifier: Modifier = Modifier,
         color: Color = FireFlowTheme.colors.onBackground
     ) {
         Text(
+            modifier = modifier,
             text = text,
             color = color,
             style = FireFlowTheme.typography.headlineLarge
@@ -91,9 +100,11 @@ object FireFlowTexts {
     @Composable
     fun HeadlineMedium(
         text: String,
+        modifier: Modifier = Modifier,
         color: Color = FireFlowTheme.colors.onBackground
     ) {
         Text(
+            modifier = modifier,
             text = text,
             color = color,
             style = FireFlowTheme.typography.headlineMedium
@@ -103,9 +114,11 @@ object FireFlowTexts {
     @Composable
     fun TitleLarge(
         text: String,
+        modifier: Modifier = Modifier,
         color: Color = FireFlowTheme.colors.onBackground
     ) {
         Text(
+            modifier = modifier,
             text = text,
             color = color,
             style = FireFlowTheme.typography.titleLarge
@@ -115,9 +128,11 @@ object FireFlowTexts {
     @Composable
     fun TitleMedium(
         text: String,
+        modifier: Modifier = Modifier,
         color: Color = FireFlowTheme.colors.onBackground
     ) {
         Text(
+            modifier = modifier,
             text = text,
             color = color,
             style = FireFlowTheme.typography.titleMedium
@@ -127,9 +142,11 @@ object FireFlowTexts {
     @Composable
     fun TitleSmall(
         text: String,
+        modifier: Modifier = Modifier,
         color: Color = FireFlowTheme.colors.onBackground
     ) {
         Text(
+            modifier = modifier,
             text = text,
             color = color,
             style = FireFlowTheme.typography.titleSmall
@@ -139,9 +156,11 @@ object FireFlowTexts {
     @Composable
     fun HeadlineSmall(
         text: String,
+        modifier: Modifier = Modifier,
         color: Color = FireFlowTheme.colors.onBackground
     ) {
         Text(
+            modifier = modifier,
             text = text,
             color = color,
             style = FireFlowTheme.typography.headlineSmall
@@ -151,9 +170,11 @@ object FireFlowTexts {
     @Composable
     fun BodyLarge(
         text: String,
+        modifier: Modifier = Modifier,
         color: Color = FireFlowTheme.colors.onBackground
     ) {
         Text(
+            modifier = modifier,
             text = text,
             color = color,
             style = FireFlowTheme.typography.bodyLarge
@@ -163,9 +184,11 @@ object FireFlowTexts {
     @Composable
     fun BodyMedium(
         text: String,
+        modifier: Modifier = Modifier,
         color: Color = FireFlowTheme.colors.onBackground
     ) {
         Text(
+            modifier = modifier,
             text = text,
             color = color,
             style = FireFlowTheme.typography.bodyMedium
@@ -175,9 +198,11 @@ object FireFlowTexts {
     @Composable
     fun BodySmall(
         text: String,
+        modifier: Modifier = Modifier,
         color: Color = FireFlowTheme.colors.onBackground
     ) {
         Text(
+            modifier = modifier,
             text = text,
             color = color,
             style = FireFlowTheme.typography.bodySmall
@@ -187,9 +212,11 @@ object FireFlowTexts {
     @Composable
     fun LabelLarge(
         text: String,
+        modifier: Modifier = Modifier,
         color: Color = FireFlowTheme.colors.onBackground
     ) {
         Text(
+            modifier = modifier,
             text = text,
             color = color,
             style = FireFlowTheme.typography.labelLarge
@@ -199,9 +226,11 @@ object FireFlowTexts {
     @Composable
     fun LabelMedium(
         text: String,
+        modifier: Modifier = Modifier,
         color: Color = FireFlowTheme.colors.onBackground
     ) {
         Text(
+            modifier = modifier,
             text = text,
             color = color,
             style = FireFlowTheme.typography.labelMedium
@@ -211,9 +240,11 @@ object FireFlowTexts {
     @Composable
     fun LabelSmall(
         text: String,
+        modifier: Modifier = Modifier,
         color: Color = FireFlowTheme.colors.onBackground
     ) {
         Text(
+            modifier = modifier,
             text = text,
             color = color,
             style = FireFlowTheme.typography.labelSmall
