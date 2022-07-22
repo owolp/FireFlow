@@ -15,12 +15,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.persistence.data.cache
+package dev.zitech.fireflow.presentation.main.viewmodel
 
-import dev.zitech.core.persistence.domain.model.cache.InMemoryCache
-import dev.zitech.core.persistence.domain.model.database.UserAccount
-import dev.zitech.core.persistence.domain.repository.cache.CacheRepository
+import dev.zitech.core.common.presentation.architecture.MviStateHolder
+import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 
-internal class UserAccountInMemoryCache @Inject constructor(cacheRepository: CacheRepository) :
-    InMemoryCache<UserAccount>(cacheRepository)
+class MainStateHolder @Inject constructor() : MviStateHolder<MainState> {
+
+    override val state: MutableStateFlow<MainState> = MutableStateFlow(MainState())
+}

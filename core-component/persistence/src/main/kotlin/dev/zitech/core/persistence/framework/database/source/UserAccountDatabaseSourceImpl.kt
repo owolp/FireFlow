@@ -23,6 +23,8 @@ import dev.zitech.core.persistence.domain.source.database.UserAccountDatabaseSou
 import dev.zitech.core.persistence.framework.database.dao.UserAccountDao
 import dev.zitech.core.persistence.framework.database.entity.UserAccountEntity
 import dev.zitech.core.persistence.framework.database.mapper.UserAccountMapper
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 internal class UserAccountDatabaseSourceImpl @Inject constructor(
@@ -35,8 +37,8 @@ internal class UserAccountDatabaseSourceImpl @Inject constructor(
             userAccountMapper(userAccountEntity)
         }
 
-    override suspend fun getCurrentUserAccount(): UserAccount? =
-        userAccountDao.getCurrentUserAccount()?.let {
+    override fun getCurrentUserAccount(): Flow<UserAccount> =
+        userAccountDao.getCurrentUserAccountFlow().map {
             userAccountMapper(it)
         }
 
@@ -48,8 +50,13 @@ internal class UserAccountDatabaseSourceImpl @Inject constructor(
         userAccountDao.removeCurrentUserAccount()
         return userAccountDao.saveUserAccount(
             UserAccountEntity(
-                isCurrentUserAccount = isCurrentUserAccount
+                isCurrentUserAccount = isCurrentUserAccount,
+                theme = 0
             )
         )
+    }
+
+    override suspend fun updateCurrentUserAccountTheme(theme: UserAccount.Theme) {
+        userAccountDao.updateCurrentUserAccountTheme(theme.id)
     }
 }

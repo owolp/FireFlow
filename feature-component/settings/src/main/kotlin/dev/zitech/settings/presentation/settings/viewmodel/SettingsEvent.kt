@@ -26,3 +26,8 @@ internal data class Error(
     val message: String,
     val action: String? = null
 ) : SettingsEvent
+
+internal data class Dialog(
+    val title: String,
+    val text: String
+) : SettingsEvent

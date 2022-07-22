@@ -26,5 +26,6 @@ import androidx.room.PrimaryKey
 internal data class UserAccountEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long? = null,
-    val isCurrentUserAccount: Boolean
+    val isCurrentUserAccount: Boolean,
+    val theme: Long
 )

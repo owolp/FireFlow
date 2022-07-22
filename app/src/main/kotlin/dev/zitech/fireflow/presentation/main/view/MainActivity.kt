@@ -23,21 +23,19 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
-import dev.zitech.core.common.domain.logger.Logger
-import dev.zitech.core.common.framework.flow.collectWhenStarted
-import dev.zitech.core.common.presentation.architecture.MviView
-import dev.zitech.core.persistence.domain.model.database.UserLoggedState
-import dev.zitech.core.persistence.domain.usecase.database.GetUserLoggedStateUseCase
-import dev.zitech.core.persistence.domain.usecase.database.SaveUserAccountUseCase
+import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.ds.theme.FireFlowTheme
 import dev.zitech.fireflow.presentation.main.viewmodel.Idle
 import dev.zitech.fireflow.presentation.main.viewmodel.MainState
@@ -45,61 +43,47 @@ import dev.zitech.fireflow.presentation.main.viewmodel.MainViewModel
 import dev.zitech.fireflow.presentation.main.viewmodel.ShowError
 import dev.zitech.fireflow.presentation.main.viewmodel.ShowErrorHandled
 import dev.zitech.settings.presentation.settings.compose.Settings
-import javax.inject.Inject
 
+@Suppress("ForbiddenComment")
 @ExperimentalLifecycleComposeApi
 @ExperimentalMaterial3Api
 @ExperimentalFoundationApi
 @AndroidEntryPoint
-internal class MainActivity : ComponentActivity(), MviView<MainState> {
+internal class MainActivity : ComponentActivity() {
 
     private val mainViewModel: MainViewModel by viewModels()
-
-    @Inject
-    lateinit var saveUseAccountUseCase: SaveUserAccountUseCase
-
-    @Inject
-    lateinit var getUserLoggedStateUseCase: GetUserLoggedStateUseCase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen().apply {
             setKeepOnScreenCondition {
-                mainViewModel.showSplashScreen.value!!
+                mainViewModel.state.value.splash
             }
         }
 
         super.onCreate(savedInstanceState)
 
-        mainViewModel.state.collectWhenStarted(this, this::render)
-
-        lifecycleScope.launchWhenCreated {
-            when (getUserLoggedStateUseCase()) {
-                UserLoggedState.LOGGED_IN -> {
-                    Logger.d("Main", "User Logged In")
-                }
-                UserLoggedState.LOGGED_OUT -> {
-                    Logger.d("Main", "User Logged Out")
-                    saveUseAccountUseCase(true)
-                }
-            }
-        }
-
         setContent {
-            FireFlowTheme {
+            val mainState = mainViewModel.state.collectAsStateWithLifecycle()
+            FireFlowTheme(
+                darkTheme = isDarkTheme(mainState.value)
+            ) {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
                         .background(FireFlowTheme.colors.background),
                     contentAlignment = Alignment.TopCenter
                 ) {
+                    // TODO: Use navigation
                     Settings()
                 }
+                EventHandler(mainState)
             }
         }
     }
 
-    override fun render(state: MainState) {
-        when (state.event) {
+    @Composable
+    private fun EventHandler(mainState: State<MainState>) {
+        when (mainState.value.event) {
             ShowError -> {
                 // TODO
                 mainViewModel.sendIntent(ShowErrorHandled)
@@ -109,4 +93,12 @@ internal class MainActivity : ComponentActivity(), MviView<MainState> {
             }
         }
     }
+
+    @Composable
+    private fun isDarkTheme(mainState: MainState): Boolean =
+        when (mainState.theme) {
+            UserAccount.Theme.DARK -> true
+            UserAccount.Theme.LIGHT -> false
+            else -> isSystemInDarkTheme()
+        }
 }

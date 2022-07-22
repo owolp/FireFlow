@@ -22,12 +22,16 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import dev.zitech.core.persistence.framework.database.entity.UserAccountEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 internal interface UserAccountDao {
 
     @Query("SELECT * FROM user_accounts")
     suspend fun getUserAccounts(): List<UserAccountEntity>
+
+    @Query("SELECT * FROM user_accounts WHERE isCurrentUserAccount = 1 ORDER BY id DESC LIMIT 1")
+    fun getCurrentUserAccountFlow(): Flow<UserAccountEntity>
 
     @Query("SELECT * FROM user_accounts WHERE isCurrentUserAccount = 1 ORDER BY id DESC LIMIT 1")
     suspend fun getCurrentUserAccount(): UserAccountEntity?
@@ -37,4 +41,7 @@ internal interface UserAccountDao {
 
     @Query("UPDATE user_accounts SET isCurrentUserAccount=0")
     suspend fun removeCurrentUserAccount(): Int
+
+    @Query("UPDATE user_accounts SET theme=:theme WHERE isCurrentUserAccount = 1")
+    suspend fun updateCurrentUserAccountTheme(theme: Long)
 }

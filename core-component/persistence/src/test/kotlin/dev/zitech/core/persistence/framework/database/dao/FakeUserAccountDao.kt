@@ -18,12 +18,18 @@
 package dev.zitech.core.persistence.framework.database.dao
 
 import dev.zitech.core.persistence.framework.database.entity.UserAccountEntity
+import dev.zitech.core.persistence.framework.database.entity.UserAccountEntityFactory
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 
 internal class FakeUserAccountDao : UserAccountDao {
 
     private val userAccountEntityList = mutableListOf<UserAccountEntity>()
 
     override suspend fun getUserAccounts(): List<UserAccountEntity> = userAccountEntityList
+
+    override fun getCurrentUserAccountFlow(): Flow<UserAccountEntity> =
+        flowOf(userAccountEntityList.first { it.isCurrentUserAccount })
 
     override suspend fun getCurrentUserAccount(): UserAccountEntity? =
         userAccountEntityList.firstOrNull { it.isCurrentUserAccount }
@@ -41,6 +47,18 @@ internal class FakeUserAccountDao : UserAccountDao {
         } else {
             -1
         }
+    }
+
+    override suspend fun updateCurrentUserAccountTheme(theme: Long) {
+        val currentUserAccount = getCurrentUserAccount()
+        val updatedCurrentUserAccount = UserAccountEntityFactory.createUserAccountEntity(
+            id = currentUserAccount?.id,
+            isCurrentUserAccount = true,
+            theme = theme
+        )
+
+        val currentAccountIndex = userAccountEntityList.indexOf(currentUserAccount)
+        userAccountEntityList[currentAccountIndex] = updatedCurrentUserAccount
     }
 
     fun containsCurrentUserAccountEntity(): Boolean =

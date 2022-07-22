@@ -26,8 +26,6 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import dev.zitech.core.common.domain.applicationconfig.AppConfigProvider
 import dev.zitech.core.common.domain.dispatcher.AppDispatchers
-import dev.zitech.core.common.domain.strings.StringsProvider
-import dev.zitech.core.persistence.data.cache.UserAccountInMemoryCache
 import dev.zitech.core.persistence.data.repository.cache.CacheRepositoryImpl
 import dev.zitech.core.persistence.data.repository.database.DatabaseKeyRepositoryImpl
 import dev.zitech.core.persistence.data.repository.database.UserAccountRepositoryImpl
@@ -38,8 +36,6 @@ import dev.zitech.core.persistence.data.repository.preferences.SavePreferencesRe
 import dev.zitech.core.persistence.di.annotation.DevelopmentPreferencesDataSource
 import dev.zitech.core.persistence.di.annotation.SecuredPreferencesDataSource
 import dev.zitech.core.persistence.di.annotation.StandardPreferencesDataSource
-import dev.zitech.core.persistence.domain.model.cache.InMemoryCache
-import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.domain.model.preferences.PreferenceType
 import dev.zitech.core.persistence.domain.repository.cache.CacheRepository
 import dev.zitech.core.persistence.domain.repository.database.DatabaseKeyRepository
@@ -180,13 +176,9 @@ internal object PersistenceSingletonProvidesModule {
     @Singleton
     @Provides
     fun userAccountRepository(
-        userAccountInMemoryCache: UserAccountInMemoryCache,
-        userAccountDatabaseSource: UserAccountDatabaseSource,
-        stringsProvider: StringsProvider
+        userAccountDatabaseSource: UserAccountDatabaseSource
     ): UserAccountRepository = UserAccountRepositoryImpl(
-        userAccountInMemoryCache = userAccountInMemoryCache,
-        userAccountDatabaseSource = userAccountDatabaseSource,
-        stringsProvider = stringsProvider
+        userAccountDatabaseSource = userAccountDatabaseSource
     )
 }
 
@@ -205,10 +197,4 @@ internal interface PersistenceSingletonBindsModule {
     fun inMemoryCacheInvalidator(
         inMemoryCacheInvalidatorImpl: CacheRepositoryImpl
     ): CacheRepository
-
-    @Singleton
-    @Binds
-    fun userAccountInMemoryCache(
-        userAccountInMemoryCache: UserAccountInMemoryCache
-    ): InMemoryCache<UserAccount>
 }

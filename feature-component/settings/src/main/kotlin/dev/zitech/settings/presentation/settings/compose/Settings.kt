@@ -26,7 +26,9 @@ import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.zitech.ds.atoms.loading.FireFlowProgressIndicators
+import dev.zitech.ds.molecules.dialog.FireFlowDialogs
 import dev.zitech.ds.theme.FireFlowTheme
+import dev.zitech.settings.presentation.settings.viewmodel.Dialog
 import dev.zitech.settings.presentation.settings.viewmodel.Error
 import dev.zitech.settings.presentation.settings.viewmodel.Idle
 import dev.zitech.settings.presentation.settings.viewmodel.OnCrashReporterCheck
@@ -63,6 +65,13 @@ fun Settings(
     when (val event = state.value.event) {
         is Error -> {
             // TODO: Show error SnackBar with restart button
+        }
+        is Dialog -> {
+            FireFlowDialogs.Alert(
+                title = event.title,
+                text = event.text,
+                onConfirmButtonClick = { /*TODO*/ }
+            )
         }
         Idle -> {
             // NO_OP

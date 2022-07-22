@@ -19,5 +19,12 @@ package dev.zitech.core.persistence.domain.model.database
 
 data class UserAccount(
     val id: Long,
-    val isCurrentUserAccount: Boolean
-)
+    val isCurrentUserAccount: Boolean,
+    val theme: Theme
+) {
+    enum class Theme(val id: Long) {
+        SYSTEM(0),
+        DARK(1),
+        LIGHT(2)
+    }
+}

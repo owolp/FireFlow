@@ -20,13 +20,26 @@ package dev.zitech.core.persistence.domain.usecase.database
 import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
-class GetCurrentUserAccountUseCase @Inject constructor(
-    private val userAccountRepository: UserAccountRepository
+class UpdateCurrentUserAccountUseCase @Inject constructor(
+    private val userAccountRepository: UserAccountRepository,
+    private val getCurrentUserAccountUseCase: GetCurrentUserAccountUseCase
 ) {
 
-    operator fun invoke(): Flow<DataResult<UserAccount>> =
-        userAccountRepository.getCurrentUserAccount()
+    suspend operator fun invoke(
+        theme: UserAccount.Theme? = null
+    ): DataResult<Unit> =
+        when (val result = getCurrentUserAccountUseCase().first()) {
+            is DataResult.Success -> {
+                if (theme != null) updateTheme(theme)
+                DataResult.Success(Unit)
+            }
+            is DataResult.Error -> result
+        }
+
+    private suspend fun updateTheme(theme: UserAccount.Theme) {
+        userAccountRepository.updateCurrentUserAccountTheme(theme)
+    }
 }

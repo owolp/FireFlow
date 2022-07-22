@@ -18,11 +18,13 @@
 package dev.zitech.core.persistence.domain.source.database
 
 import dev.zitech.core.persistence.domain.model.database.UserAccount
+import kotlinx.coroutines.flow.Flow
 
 internal interface UserAccountDatabaseSource {
 
     suspend fun getUserAccounts(): List<UserAccount>
-    suspend fun getCurrentUserAccount(): UserAccount?
+    fun getCurrentUserAccount(): Flow<UserAccount>
     suspend fun isUserLoggedIn(): Boolean
     suspend fun saveUserAccount(isCurrentUserAccount: Boolean): Long
+    suspend fun updateCurrentUserAccountTheme(theme: UserAccount.Theme)
 }

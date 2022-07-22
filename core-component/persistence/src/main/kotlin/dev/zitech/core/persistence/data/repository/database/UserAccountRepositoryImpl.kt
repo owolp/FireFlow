@@ -19,19 +19,17 @@ package dev.zitech.core.persistence.data.repository.database
 
 import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.domain.model.DataResult
-import dev.zitech.core.common.domain.strings.StringsProvider
-import dev.zitech.core.persistence.R
-import dev.zitech.core.persistence.domain.model.cache.InMemoryCache
 import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.domain.model.database.UserLoggedState
 import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
 import dev.zitech.core.persistence.domain.source.database.UserAccountDatabaseSource
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 internal class UserAccountRepositoryImpl @Inject constructor(
-    private val userAccountInMemoryCache: InMemoryCache<UserAccount>,
-    private val userAccountDatabaseSource: UserAccountDatabaseSource,
-    private val stringsProvider: StringsProvider
+    private val userAccountDatabaseSource: UserAccountDatabaseSource
 ) : UserAccountRepository {
 
     companion object {
@@ -46,39 +44,24 @@ internal class UserAccountRepositoryImpl @Inject constructor(
             DataResult.Error(cause = exception)
         }
 
-    override suspend fun getCurrentUserAccount(): DataResult<UserAccount> {
-        val currentUserAccount = userAccountInMemoryCache.data
-
-        return if (currentUserAccount != null) {
-            DataResult.Success(currentUserAccount)
-        } else {
-            try {
-                val userAccount = userAccountDatabaseSource.getCurrentUserAccount()
-                if (userAccount != null) {
-                    userAccountInMemoryCache.data = userAccount
-                    DataResult.Success(userAccount)
-                } else {
-                    Logger.e(TAG, message = "Current user is null")
-                    DataResult.Error(
-                        message = stringsProvider(R.string.error_message_current_user_null)
-                    )
-                }
-            } catch (exception: Exception) {
-                DataResult.Error(cause = exception)
+    override fun getCurrentUserAccount(): Flow<DataResult<UserAccount>> =
+        userAccountDatabaseSource.getCurrentUserAccount()
+            .map {
+                DataResult.Success(it)
             }
-        }
-    }
+            .catch { throwable ->
+                DataResult.Error(cause = Exception(throwable))
+            }
 
-    @Suppress("SwallowedException")
     override suspend fun getUserLoggedState(): UserLoggedState =
         try {
-            userAccountDatabaseSource.isUserLoggedIn()
             if (userAccountDatabaseSource.isUserLoggedIn()) {
                 UserLoggedState.LOGGED_IN
             } else {
                 UserLoggedState.LOGGED_OUT
             }
         } catch (exception: Exception) {
+            Logger.e(TAG, exception)
             UserLoggedState.LOGGED_OUT
         }
 
@@ -86,6 +69,14 @@ internal class UserAccountRepositoryImpl @Inject constructor(
         try {
             val id = userAccountDatabaseSource.saveUserAccount(isCurrentUserAccount)
             DataResult.Success(id)
+        } catch (exception: Exception) {
+            DataResult.Error(cause = exception)
+        }
+
+    override suspend fun updateCurrentUserAccountTheme(theme: UserAccount.Theme): DataResult<Unit> =
+        try {
+            userAccountDatabaseSource.updateCurrentUserAccountTheme(theme)
+            DataResult.Success(Unit)
         } catch (exception: Exception) {
             DataResult.Error(cause = exception)
         }

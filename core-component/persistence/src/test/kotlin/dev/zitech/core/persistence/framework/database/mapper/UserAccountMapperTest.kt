@@ -20,9 +20,10 @@ package dev.zitech.core.persistence.framework.database.mapper
 import com.google.common.truth.Truth.assertThat
 import dev.zitech.core.common.DataFactory
 import dev.zitech.core.common.data.mapper.Mapper
-import dev.zitech.core.persistence.framework.database.entity.UserAccountEntity
 import dev.zitech.core.persistence.domain.model.database.UserAccount
+import dev.zitech.core.persistence.framework.database.entity.UserAccountEntity
 import dev.zitech.core.persistence.framework.database.entity.UserAccountEntityFactory
+import javax.inject.Named
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
@@ -38,6 +39,7 @@ internal class UserAccountMapperTest {
     }
 
     @Nested
+    @Named("Id")
     inner class Id {
 
         @Test
@@ -85,5 +87,74 @@ internal class UserAccountMapperTest {
 
         // Assert
         assertThat(result.isCurrentUserAccount).isEqualTo(isCurrentUserAccount)
+    }
+
+    @Nested
+    @Named("Theme")
+    inner class Theme {
+
+        @Test
+        @DisplayName("WHEN input theme is System Id THEN return SYSTEM")
+        fun system() {
+            // Arrange
+            val themeId = UserAccount.Theme.SYSTEM.id
+            val input = UserAccountEntityFactory.createUserAccountEntity(
+                theme = themeId
+            )
+
+            // Act
+            val result = sut(input)
+
+            // Assert
+            assertThat(result.theme).isEqualTo(UserAccount.Theme.SYSTEM)
+        }
+
+        @Test
+        @DisplayName("WHEN input theme is Dark Id THEN return DARK")
+        fun dark() {
+            // Arrange
+            val themeId = UserAccount.Theme.DARK.id
+            val input = UserAccountEntityFactory.createUserAccountEntity(
+                theme = themeId
+            )
+
+            // Act
+            val result = sut(input)
+
+            // Assert
+            assertThat(result.theme).isEqualTo(UserAccount.Theme.DARK)
+        }
+
+        @Test
+        @DisplayName("WHEN input theme is Light Id THEN return LIGHT")
+        fun light() {
+            // Arrange
+            val themeId = UserAccount.Theme.LIGHT.id
+            val input = UserAccountEntityFactory.createUserAccountEntity(
+                theme = themeId
+            )
+
+            // Act
+            val result = sut(input)
+
+            // Assert
+            assertThat(result.theme).isEqualTo(UserAccount.Theme.LIGHT)
+        }
+
+        @Test
+        @DisplayName("WHEN input theme is other Id THEN return SYSTEM")
+        fun other() {
+            // Arrange
+            val themeId = DataFactory.createRandomLong(min = 10)
+            val input = UserAccountEntityFactory.createUserAccountEntity(
+                theme = themeId
+            )
+
+            // Act
+            val result = sut(input)
+
+            // Assert
+            assertThat(result.theme).isEqualTo(UserAccount.Theme.SYSTEM)
+        }
     }
 }
