@@ -23,12 +23,14 @@ plugins {
     id("io.gitlab.arturbosch.detekt")
 }
 
+val detektVersion = "1.21.0"
+
 detekt {
-    toolVersion = "1.20.0-RC1"
+    toolVersion = detektVersion
 }
 
 dependencies {
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.20.0")
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:$detektVersion")
 }
 
 val detektCheck by tasks.registering(Detekt::class) {
