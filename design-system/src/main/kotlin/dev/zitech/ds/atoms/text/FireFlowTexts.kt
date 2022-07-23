@@ -262,7 +262,7 @@ object FireFlowTexts {
     showBackground = true
 )
 @Composable
-private fun DisplayLarge_Preview() {
+private fun Display_Large_Preview() {
     FireFlowTheme {
         DisplayLarge(
             text = "Display Large Text"
@@ -280,7 +280,7 @@ private fun DisplayLarge_Preview() {
     showBackground = true
 )
 @Composable
-private fun DisplayMedium_Preview() {
+private fun Display_Medium_Preview() {
     FireFlowTheme {
         DisplayMedium(
             text = "Display Medium Text"
@@ -298,7 +298,7 @@ private fun DisplayMedium_Preview() {
     showBackground = true
 )
 @Composable
-private fun DisplaySmall_Preview() {
+private fun Display_Small_Preview() {
     FireFlowTheme {
         DisplaySmall(
             text = "Display Small Text"
@@ -316,7 +316,7 @@ private fun DisplaySmall_Preview() {
     showBackground = true
 )
 @Composable
-private fun HeadlineLarge_Preview() {
+private fun Headline_Large_Preview() {
     FireFlowTheme {
         HeadlineLarge(
             text = "Headline Large Text"
@@ -334,7 +334,7 @@ private fun HeadlineLarge_Preview() {
     showBackground = true
 )
 @Composable
-private fun HeadlineMedium_Preview() {
+private fun Headline_Medium_Preview() {
     FireFlowTheme {
         HeadlineMedium(
             text = "Headline Medium Text"
@@ -352,7 +352,7 @@ private fun HeadlineMedium_Preview() {
     showBackground = true
 )
 @Composable
-private fun HeadlineSmall_Preview() {
+private fun Headline_Small_Preview() {
     FireFlowTheme {
         HeadlineSmall(
             text = "Headline Small Text"
@@ -370,7 +370,7 @@ private fun HeadlineSmall_Preview() {
     showBackground = true
 )
 @Composable
-private fun TitleLarge_Preview() {
+private fun Title_Large_Preview() {
     FireFlowTheme {
         TitleLarge(
             text = "Title Large Text"
@@ -388,7 +388,7 @@ private fun TitleLarge_Preview() {
     showBackground = true
 )
 @Composable
-private fun TitleMedium_Preview() {
+private fun Title_Medium_Preview() {
     FireFlowTheme {
         TitleMedium(
             text = "Title Medium Text"
@@ -406,7 +406,7 @@ private fun TitleMedium_Preview() {
     showBackground = true
 )
 @Composable
-private fun TitleSmall_Preview() {
+private fun Title_Small_Preview() {
     FireFlowTheme {
         TitleSmall(
             text = "Title Small Text"
@@ -424,7 +424,7 @@ private fun TitleSmall_Preview() {
     showBackground = true
 )
 @Composable
-private fun BodyLarge_Preview() {
+private fun Body_Large_Preview() {
     FireFlowTheme {
         FireFlowTexts.BodyLarge(
             text = "Body Large Text"
@@ -442,7 +442,7 @@ private fun BodyLarge_Preview() {
     showBackground = true
 )
 @Composable
-private fun BodyMedium_Preview() {
+private fun Body_Medium_Preview() {
     FireFlowTheme {
         BodyMedium(
             text = "Body Medium Text"
@@ -460,7 +460,7 @@ private fun BodyMedium_Preview() {
     showBackground = true
 )
 @Composable
-private fun BodySmall_Preview() {
+private fun Body_Small_Preview() {
     FireFlowTheme {
         BodySmall(
             text = "Body Small Text"
@@ -478,7 +478,7 @@ private fun BodySmall_Preview() {
     showBackground = true
 )
 @Composable
-private fun LabelLarge_Preview() {
+private fun Label_Large_Preview() {
     FireFlowTheme {
         LabelLarge(
             text = "Label Large Text"
@@ -496,7 +496,7 @@ private fun LabelLarge_Preview() {
     showBackground = true
 )
 @Composable
-private fun LabelMedium_Preview() {
+private fun Label_Medium_Preview() {
     FireFlowTheme {
         LabelMedium(
             text = "Label Medium Text"
@@ -514,7 +514,7 @@ private fun LabelMedium_Preview() {
     showBackground = true
 )
 @Composable
-private fun LabelSmall_Preview() {
+private fun Label_Small_Preview() {
     FireFlowTheme {
         LabelSmall(
             text = "Label Small Text"

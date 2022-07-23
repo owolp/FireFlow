@@ -15,109 +15,113 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.ds.atoms.checkbox
+package dev.zitech.ds.atoms.radio
 
 import android.content.res.Configuration
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.RadioButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import dev.zitech.ds.theme.FireFlowTheme
 
 @ExperimentalMaterial3Api
-object FireFlowCheckboxes {
+object FireFlowRadioButtons {
 
     @Composable
     fun Primary(
-        checked: Boolean,
+        selected: Boolean,
         modifier: Modifier = Modifier,
-        onCheckedChange: ((Boolean) -> Unit)? = null,
+        onClick: (() -> Unit)? = null,
         enabled: Boolean = true
     ) {
-        Checkbox(
-            checked = checked,
+        RadioButton(
             modifier = modifier,
-            onCheckedChange = onCheckedChange,
+            selected = selected,
+            onClick = if (onClick != null) {
+                { onClick() }
+            } else {
+                null
+            },
             enabled = enabled,
-            colors = FireFlowCheckboxesColors.primary
+            colors = FireFlowRadioButtonsColors.primary
         )
     }
 }
 
 @Preview(
-    name = "Primary Checked Enabled Light Theme",
+    name = "Primary Selected Enabled Light Theme",
     showBackground = true
 )
 @Preview(
-    name = "Primary Checked Enabled Dark Theme",
+    name = "Primary Selected Enabled Dark Theme",
     uiMode = Configuration.UI_MODE_NIGHT_YES,
     showBackground = true
 )
 @ExperimentalMaterial3Api
 @Composable
-private fun Primary_Checked_Enabled_Preview() {
+private fun Primary_Selected_Enabled_Preview() {
     FireFlowTheme {
-        FireFlowCheckboxes.Primary(
-            checked = true
+        FireFlowRadioButtons.Primary(
+            selected = true
         )
     }
 }
 
 @Preview(
-    name = "Primary Checked Disabled Light Theme",
+    name = "Primary Selected Disabled Light Theme",
     showBackground = true
 )
 @Preview(
-    name = "Primary Checked Dark Disabled Theme",
+    name = "Primary Selected Dark Disabled Theme",
     uiMode = Configuration.UI_MODE_NIGHT_YES,
     showBackground = true
 )
 @ExperimentalMaterial3Api
 @Composable
-private fun Primary_Checked_Disabled_Preview() {
+private fun Primary_Selected_Disabled_Preview() {
     FireFlowTheme {
-        FireFlowCheckboxes.Primary(
-            checked = true,
+        FireFlowRadioButtons.Primary(
+            selected = true,
             enabled = false
         )
     }
 }
 
 @Preview(
-    name = "Primary Unchecked Enabled Light Theme",
+    name = "Primary Not Selected Enabled Light Theme",
     showBackground = true
 )
 @Preview(
-    name = "Primary Unchecked Enabled Dark Theme",
+    name = "Primary Not Selected Enabled Dark Theme",
     uiMode = Configuration.UI_MODE_NIGHT_YES,
     showBackground = true
 )
 @ExperimentalMaterial3Api
 @Composable
-private fun Primary_Unchecked_Enabled_Preview() {
+private fun Primary_NotSelected_Enabled_Preview() {
     FireFlowTheme {
-        FireFlowCheckboxes.Primary(
-            checked = false
+        FireFlowRadioButtons.Primary(
+            selected = false
         )
     }
 }
 
 @Preview(
-    name = "Primary Unchecked Disabled Light Theme",
+    name = "Primary Not Selected Disabled Light Theme",
     showBackground = true
 )
 @Preview(
-    name = "Primary Unchecked Disabled Dark Theme",
+    name = "Primary Not Selected Disabled Dark Theme",
     uiMode = Configuration.UI_MODE_NIGHT_YES,
     showBackground = true
 )
 @ExperimentalMaterial3Api
 @Composable
-private fun Primary_Unchecked_Disabled_Preview() {
+private fun Primary_NotSelected_Disabled_Preview() {
     FireFlowTheme {
-        FireFlowCheckboxes.Primary(
-            checked = false,
+        FireFlowRadioButtons.Primary(
+            selected = false,
             enabled = false
         )
     }

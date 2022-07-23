@@ -18,9 +18,12 @@
 package dev.zitech.ds.molecules.dialog
 
 import android.content.res.Configuration
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -63,6 +66,39 @@ object FireFlowDialogs {
             }
         )
     }
+
+    @ExperimentalMaterial3Api
+    @Composable
+    fun Radio(
+        title: String,
+        radioItems: List<DialogRadioItem>,
+        onItemClick: (id: Int) -> Unit,
+        modifier: Modifier = Modifier,
+        onDismissRequest: (() -> Unit)? = null
+    ) {
+        AlertDialog(
+            modifier = modifier,
+            title = {
+                FireFlowTexts.TitleMedium(
+                    text = title
+                )
+            },
+            text = {
+                LazyColumn {
+                    items(radioItems, key = { it.id }) { item ->
+                        FireFlowButtons.Radio(
+                            text = item.text,
+                            selected = item.selected,
+                            onClick = { onItemClick(item.id) },
+                            enabled = item.enabled
+                        )
+                    }
+                }
+            },
+            confirmButton = {},
+            onDismissRequest = { onDismissRequest?.invoke() }
+        )
+    }
 }
 
 @Preview(
@@ -81,6 +117,52 @@ private fun Alert_Preview() {
             title = "Alert Title",
             text = "Alert Text",
             onConfirmButtonClick = {}
+        )
+    }
+}
+
+@Preview(
+    name = "Radio Light Theme",
+    showBackground = true
+)
+@Preview(
+    name = "Radio Dark Theme",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showBackground = true
+)
+@ExperimentalMaterial3Api
+@Composable
+private fun Radio_Preview() {
+    FireFlowTheme {
+        FireFlowDialogs.Radio(
+            title = "Radio Title",
+            radioItems = listOf(
+                DialogRadioItem(
+                    id = 0,
+                    text = "Radio Item Selected Enabled",
+                    selected = true,
+                    enabled = true
+                ),
+                DialogRadioItem(
+                    id = 1,
+                    text = "Radio Item Selected Disabled",
+                    selected = true,
+                    enabled = false
+                ),
+                DialogRadioItem(
+                    id = 2,
+                    text = "Radio Item Not Selected Enabled",
+                    selected = false,
+                    enabled = true
+                ),
+                DialogRadioItem(
+                    id = 3,
+                    text = "Radio Item Not Selected Disabled",
+                    selected = false,
+                    enabled = false
+                )
+            ),
+            onItemClick = {}
         )
     }
 }

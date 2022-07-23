@@ -53,7 +53,7 @@ object FireFlowSwitches {
     showBackground = true
 )
 @Composable
-private fun Primary_CheckedEnabled_Preview() {
+private fun Primary_Checked_Enabled_Preview() {
     FireFlowTheme {
         FireFlowSwitches.Primary(
             checked = true
@@ -71,7 +71,7 @@ private fun Primary_CheckedEnabled_Preview() {
     showBackground = true
 )
 @Composable
-private fun Primary_CheckedDisabled_Preview() {
+private fun Primary_Checked_Disabled_Preview() {
     FireFlowTheme {
         FireFlowSwitches.Primary(
             checked = true,
@@ -90,7 +90,7 @@ private fun Primary_CheckedDisabled_Preview() {
     showBackground = true
 )
 @Composable
-private fun Primary_UncheckedEnabled_Preview() {
+private fun Primary_Unchecked_Enabled_Preview() {
     FireFlowTheme {
         FireFlowSwitches.Primary(
             checked = false
@@ -108,7 +108,7 @@ private fun Primary_UncheckedEnabled_Preview() {
     showBackground = true
 )
 @Composable
-private fun Primary_UncheckedDisabled_Preview() {
+private fun Primary_Unchecked_Disabled_Preview() {
     FireFlowTheme {
         FireFlowSwitches.Primary(
             checked = false,

@@ -128,7 +128,7 @@ object FireFlowCategoryPreferences {
 @ExperimentalMaterial3Api
 @ExperimentalFoundationApi
 @Composable
-private fun CategoryPreferences_Preview() {
+private fun Category_Preferences_Preview() {
     FireFlowTheme {
         FireFlowCategoryPreferences.Simple(
             categoryName = "Category Name",
