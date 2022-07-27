@@ -18,6 +18,7 @@
 package dev.zitech.core.persistence.framework.database.source
 
 import androidx.room.Transaction
+import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.domain.source.database.UserAccountDatabaseSource
 import dev.zitech.core.persistence.framework.database.dao.UserAccountDao
@@ -56,7 +57,7 @@ internal class UserAccountDatabaseSourceImpl @Inject constructor(
         )
     }
 
-    override suspend fun updateCurrentUserAccountTheme(theme: UserAccount.Theme) {
+    override suspend fun updateCurrentUserAccountTheme(theme: ApplicationTheme) {
         userAccountDao.updateCurrentUserAccountTheme(theme.id)
     }
 }

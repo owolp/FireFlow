@@ -15,12 +15,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.persistence.domain.model.database
+package dev.zitech.core.common.domain.model
 
-import dev.zitech.core.common.domain.model.ApplicationTheme
-
-data class UserAccount(
-    val id: Long,
-    val isCurrentUserAccount: Boolean,
-    val theme: ApplicationTheme
-)
+enum class ApplicationTheme(val id: Long) {
+    SYSTEM(0),
+    DARK(1),
+    LIGHT(2)
+}

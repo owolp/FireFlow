@@ -17,13 +17,16 @@
 
 package dev.zitech.core.persistence.domain.model;
 
+import static dev.zitech.core.common.domain.model.ApplicationTheme.SYSTEM;
+
+import dev.zitech.core.common.domain.model.ApplicationTheme;
 import dev.zitech.core.persistence.domain.model.database.UserAccount;
 
 public class UserAccountBuilder {
 
     private Long id = 0L;
     private Boolean isCurrentUserAccount = false;
-    private UserAccount.Theme theme = UserAccount.Theme.SYSTEM;
+    private ApplicationTheme theme = SYSTEM;
 
 
     public UserAccountBuilder setId(Long id) {
@@ -36,7 +39,7 @@ public class UserAccountBuilder {
         return this;
     }
 
-    public UserAccountBuilder setTheme(UserAccount.Theme theme) {
+    public UserAccountBuilder setTheme(ApplicationTheme theme) {
         this.theme = theme;
         return this;
     }

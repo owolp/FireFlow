@@ -18,9 +18,9 @@
 package dev.zitech.core.persistence.domain.usecase.database
 
 import com.google.common.truth.Truth.assertThat
+import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.persistence.domain.model.UserAccountBuilder
-import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -58,14 +58,14 @@ internal class UpdateCurrentUserAccountUseCaseTest {
     fun theme() = runTest {
         // Arrange
         val currentUserAccount = UserAccountBuilder()
-            .setTheme(UserAccount.Theme.DARK)
+            .setTheme(ApplicationTheme.DARK)
             .build()
 
         coEvery {
             getCurrentUserAccountUseCase()
         } returns flowOf(DataResult.Success(currentUserAccount))
 
-        val input: UserAccount.Theme = UserAccount.Theme.SYSTEM
+        val input: ApplicationTheme = ApplicationTheme.SYSTEM
 
         // Act
         sut(theme = input)
@@ -83,7 +83,7 @@ internal class UpdateCurrentUserAccountUseCaseTest {
             getCurrentUserAccountUseCase()
         } returns flowOf(error)
 
-        val input: UserAccount.Theme = UserAccount.Theme.SYSTEM
+        val input: ApplicationTheme = ApplicationTheme.SYSTEM
 
         // Act
         val result = sut(theme = input)

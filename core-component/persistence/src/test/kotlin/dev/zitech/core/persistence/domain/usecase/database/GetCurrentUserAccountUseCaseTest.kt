@@ -63,14 +63,13 @@ internal class GetCurrentUserAccountUseCaseTest {
         val userAccountRepository = mockk<UserAccountRepository>()
         val sut = GetCurrentUserAccountUseCase(userAccountRepository)
 
-        val account = UserAccountBuilder().build()
         every {
             userAccountRepository.getCurrentUserAccount()
-        } returns flowOf(DataResult.Success(account))
+        } returns flowOf(DataResult.Error())
 
         // Act & Assert
         sut().test {
-            assertThat((awaitItem() is DataResult.Error))
+            assertThat(awaitItem()).isInstanceOf(DataResult.Error::class.java)
             awaitComplete()
         }
         coVerify { userAccountRepository.getCurrentUserAccount() }

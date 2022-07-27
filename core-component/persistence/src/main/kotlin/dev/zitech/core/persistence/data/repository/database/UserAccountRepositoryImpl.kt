@@ -18,6 +18,7 @@
 package dev.zitech.core.persistence.data.repository.database
 
 import dev.zitech.core.common.domain.logger.Logger
+import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.domain.model.database.UserLoggedState
@@ -73,7 +74,7 @@ internal class UserAccountRepositoryImpl @Inject constructor(
             DataResult.Error(cause = exception)
         }
 
-    override suspend fun updateCurrentUserAccountTheme(theme: UserAccount.Theme): DataResult<Unit> =
+    override suspend fun updateCurrentUserAccountTheme(theme: ApplicationTheme): DataResult<Unit> =
         try {
             userAccountDatabaseSource.updateCurrentUserAccountTheme(theme)
             DataResult.Success(Unit)

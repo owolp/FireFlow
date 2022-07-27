@@ -19,10 +19,11 @@ package dev.zitech.core.persistence.framework.database.mapper
 
 import dev.zitech.core.common.data.mapper.Mapper
 import dev.zitech.core.common.domain.logger.Logger
+import dev.zitech.core.common.domain.model.ApplicationTheme
+import dev.zitech.core.common.domain.model.ApplicationTheme.DARK
+import dev.zitech.core.common.domain.model.ApplicationTheme.LIGHT
+import dev.zitech.core.common.domain.model.ApplicationTheme.SYSTEM
 import dev.zitech.core.persistence.domain.model.database.UserAccount
-import dev.zitech.core.persistence.domain.model.database.UserAccount.Theme.DARK
-import dev.zitech.core.persistence.domain.model.database.UserAccount.Theme.LIGHT
-import dev.zitech.core.persistence.domain.model.database.UserAccount.Theme.SYSTEM
 import dev.zitech.core.persistence.framework.database.entity.UserAccountEntity
 import javax.inject.Inject
 
@@ -38,7 +39,7 @@ internal class UserAccountMapper @Inject constructor() : Mapper<UserAccountEntit
         theme = getUserTheme(input.theme)
     )
 
-    private fun getUserTheme(theme: Long): UserAccount.Theme =
+    private fun getUserTheme(theme: Long): ApplicationTheme =
         when (theme) {
             SYSTEM.id -> SYSTEM
             DARK.id -> DARK

@@ -17,8 +17,8 @@
 
 package dev.zitech.core.persistence.domain.usecase.database
 
+import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.core.common.domain.model.DataResult
-import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
@@ -29,7 +29,7 @@ class UpdateCurrentUserAccountUseCase @Inject constructor(
 ) {
 
     suspend operator fun invoke(
-        theme: UserAccount.Theme? = null
+        theme: ApplicationTheme? = null
     ): DataResult<Unit> =
         when (val result = getCurrentUserAccountUseCase().first()) {
             is DataResult.Success -> {
@@ -39,7 +39,7 @@ class UpdateCurrentUserAccountUseCase @Inject constructor(
             is DataResult.Error -> result
         }
 
-    private suspend fun updateTheme(theme: UserAccount.Theme) {
+    private suspend fun updateTheme(theme: ApplicationTheme) {
         userAccountRepository.updateCurrentUserAccountTheme(theme)
     }
 }
