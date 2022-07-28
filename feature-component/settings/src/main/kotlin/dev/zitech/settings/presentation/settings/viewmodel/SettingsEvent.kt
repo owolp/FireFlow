@@ -18,6 +18,7 @@
 package dev.zitech.settings.presentation.settings.viewmodel
 
 import dev.zitech.core.common.presentation.architecture.MviState
+import dev.zitech.ds.molecules.dialog.DialogRadioItem
 
 sealed interface SettingsEvent : MviState.Event
 
@@ -30,4 +31,9 @@ internal data class Error(
 internal data class Dialog(
     val title: String,
     val text: String
+) : SettingsEvent
+
+internal data class SelectTheme(
+    val title: String,
+    val themes: List<DialogRadioItem>
 ) : SettingsEvent

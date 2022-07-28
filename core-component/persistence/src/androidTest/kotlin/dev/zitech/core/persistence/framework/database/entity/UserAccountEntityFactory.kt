@@ -24,10 +24,10 @@ internal object UserAccountEntityFactory {
     fun createUserAccountEntity(
         id: Long? = DataFactory.createRandomLong(),
         isCurrentUserAccount: Boolean = false,
-        theme: Long = 0L
+        theme: Int = 0
     ) = UserAccountEntity(
         id,
         isCurrentUserAccount,
-        theme = theme
+        theme
     )
 }

@@ -27,5 +27,5 @@ internal data class UserAccountEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long? = null,
     val isCurrentUserAccount: Boolean,
-    val theme: Long
+    val theme: Int
 )

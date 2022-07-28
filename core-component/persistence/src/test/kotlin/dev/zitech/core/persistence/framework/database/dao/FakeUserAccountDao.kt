@@ -49,7 +49,7 @@ internal class FakeUserAccountDao : UserAccountDao {
         }
     }
 
-    override suspend fun updateCurrentUserAccountTheme(theme: Long) {
+    override suspend fun updateCurrentUserAccountTheme(theme: Int) {
         val currentUserAccount = getCurrentUserAccount()
         val updatedCurrentUserAccount = UserAccountEntityFactory.createUserAccountEntity(
             id = currentUserAccount?.id,

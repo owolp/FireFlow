@@ -88,7 +88,7 @@ object FireFlowButtons {
                 onClick = null,
                 enabled = enabled
             )
-            FireFlowTexts.LabelMedium(
+            FireFlowTexts.BodyLarge(
                 modifier = Modifier.padding(
                     start = FireFlowTheme.space.s
                 ),

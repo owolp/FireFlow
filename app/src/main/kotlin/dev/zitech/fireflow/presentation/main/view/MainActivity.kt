@@ -35,7 +35,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
-import dev.zitech.core.persistence.domain.model.database.UserAccount
+import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.ds.theme.FireFlowTheme
 import dev.zitech.fireflow.presentation.main.viewmodel.Idle
 import dev.zitech.fireflow.presentation.main.viewmodel.MainState
@@ -97,8 +97,8 @@ internal class MainActivity : ComponentActivity() {
     @Composable
     private fun isDarkTheme(mainState: MainState): Boolean =
         when (mainState.theme) {
-            UserAccount.Theme.DARK -> true
-            UserAccount.Theme.LIGHT -> false
+            ApplicationTheme.DARK -> true
+            ApplicationTheme.LIGHT -> false
             else -> isSystemInDarkTheme()
         }
 }

@@ -146,7 +146,7 @@ internal class UserAccountMapperTest {
         @DisplayName("WHEN input theme is other Id THEN return SYSTEM")
         fun other() {
             // Arrange
-            val themeId = DataFactory.createRandomLong(min = 10)
+            val themeId = DataFactory.createRandomInt(min = 10)
             val input = UserAccountEntityFactory.createUserAccountEntity(
                 theme = themeId
             )

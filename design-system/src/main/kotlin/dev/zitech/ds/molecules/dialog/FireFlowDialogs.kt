@@ -18,6 +18,7 @@
 package dev.zitech.ds.molecules.dialog
 
 import android.content.res.Configuration
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -79,12 +80,14 @@ object FireFlowDialogs {
         AlertDialog(
             modifier = modifier,
             title = {
-                FireFlowTexts.TitleMedium(
+                FireFlowTexts.TitleLarge(
                     text = title
                 )
             },
             text = {
-                LazyColumn {
+                LazyColumn(
+                    verticalArrangement = Arrangement.spacedBy(FireFlowTheme.space.s)
+                ) {
                     items(radioItems, key = { it.id }) { item ->
                         FireFlowButtons.Radio(
                             text = item.text,

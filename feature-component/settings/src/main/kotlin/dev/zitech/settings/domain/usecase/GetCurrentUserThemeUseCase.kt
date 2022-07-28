@@ -15,16 +15,23 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.settings.presentation.settings.viewmodel
+package dev.zitech.settings.domain.usecase
 
 import dev.zitech.core.common.domain.model.ApplicationTheme
-import dev.zitech.core.common.presentation.architecture.MviState
+import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.persistence.domain.usecase.database.GetCurrentUserAccountUseCase
+import kotlinx.coroutines.flow.first
+import javax.inject.Inject
 
-data class SettingsState(
-    val isLoading: Boolean = false,
-    val telemetry: Boolean? = null,
-    val personalizedAds: Boolean? = null,
-    val crashReporter: Boolean = false,
-    val theme: ApplicationTheme = ApplicationTheme.SYSTEM,
-    val event: SettingsEvent = Idle
-) : MviState
+class GetCurrentUserThemeUseCase @Inject constructor(
+    private val getCurrentUserAccountUseCase: GetCurrentUserAccountUseCase
+) {
+
+    suspend operator fun invoke(): ApplicationTheme =
+        when (val result = getCurrentUserAccountUseCase().first()) {
+            is DataResult.Success -> {
+                ApplicationTheme.values().first { it.id == result.value.theme.id }
+            }
+            is DataResult.Error -> ApplicationTheme.SYSTEM
+        }
+}

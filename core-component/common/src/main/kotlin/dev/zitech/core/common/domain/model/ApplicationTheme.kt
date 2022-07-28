@@ -17,8 +17,14 @@
 
 package dev.zitech.core.common.domain.model
 
-enum class ApplicationTheme(val id: Long) {
-    SYSTEM(0),
-    DARK(1),
-    LIGHT(2)
+import androidx.annotation.StringRes
+import dev.zitech.core.common.R
+
+enum class ApplicationTheme(
+    val id: Int,
+    @StringRes val text: Int
+) {
+    SYSTEM(0, R.string.application_theme_system),
+    DARK(1, R.string.application_theme_dark),
+    LIGHT(2, R.string.application_theme_light)
 }

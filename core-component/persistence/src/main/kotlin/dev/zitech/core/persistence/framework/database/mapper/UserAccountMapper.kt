@@ -39,7 +39,7 @@ internal class UserAccountMapper @Inject constructor() : Mapper<UserAccountEntit
         theme = getUserTheme(input.theme)
     )
 
-    private fun getUserTheme(theme: Long): ApplicationTheme =
+    private fun getUserTheme(theme: Int): ApplicationTheme =
         when (theme) {
             SYSTEM.id -> SYSTEM
             DARK.id -> DARK

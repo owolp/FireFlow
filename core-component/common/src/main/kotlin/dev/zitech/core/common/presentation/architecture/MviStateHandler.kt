@@ -15,13 +15,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.settings.presentation.settings.viewmodel
+package dev.zitech.core.common.presentation.architecture
 
-import dev.zitech.core.common.presentation.architecture.MviStateHolder
-import kotlinx.coroutines.flow.MutableStateFlow
-import javax.inject.Inject
+import kotlinx.coroutines.flow.StateFlow
 
-class SettingsStateHolder @Inject constructor() : MviStateHolder<SettingsState> {
-
-    override val state: MutableStateFlow<SettingsState> = MutableStateFlow(SettingsState())
+interface MviStateHandler<State : MviState> {
+    val state: StateFlow<State>
 }

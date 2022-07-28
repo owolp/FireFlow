@@ -29,17 +29,15 @@ import dev.zitech.core.persistence.domain.usecase.database.SaveUserAccountUseCas
 import dev.zitech.core.remoteconfig.domain.usecase.InitializeRemoteConfiguratorUseCase
 import dev.zitech.core.reporter.analytics.domain.usecase.event.ApplicationLaunchAnalyticsEvent
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 internal class MainViewModel @Inject constructor(
-    private val mainStateHolder: MainStateHolder,
+    private val mainStateHandler: MainStateHandler,
     private val initializeRemoteConfiguratorUseCase: InitializeRemoteConfiguratorUseCase,
     private val getUserLoggedStateUseCase: GetUserLoggedStateUseCase,
     private val saveUseAccountUseCase: SaveUserAccountUseCase,
@@ -47,7 +45,7 @@ internal class MainViewModel @Inject constructor(
     applicationLaunchAnalyticsEvent: ApplicationLaunchAnalyticsEvent
 ) : ViewModel(), MviViewModel<MainIntent, MainState> {
 
-    override val state: StateFlow<MainState> = mainStateHolder.state.asStateFlow()
+    override val state: StateFlow<MainState> = mainStateHandler.state
 
     init {
         initializeRemoteConfigurator()
@@ -63,9 +61,7 @@ internal class MainViewModel @Inject constructor(
     }
 
     private fun handleShowErrorHandled() {
-        mainStateHolder.state.update {
-            it.copy(event = Idle)
-        }
+        mainStateHandler.setEvent(Idle)
     }
 
     private fun initializeRemoteConfigurator() {
@@ -95,10 +91,8 @@ internal class MainViewModel @Inject constructor(
             .onEach { result ->
                 when (result) {
                     is DataResult.Success -> {
-                        mainStateHolder.state.update {
-                            it.copy(theme = result.value.theme)
-                        }
-                        hideSplashScreen()
+                        mainStateHandler.setTheme(result.value.theme)
+                        mainStateHandler.hideSplashScreen()
                     }
                     is DataResult.Error -> {
                         // TODO: Navigate Out?
@@ -106,11 +100,5 @@ internal class MainViewModel @Inject constructor(
                 }
             }
             .launchIn(viewModelScope)
-    }
-
-    private fun hideSplashScreen() {
-        mainStateHolder.state.update {
-            it.copy(splash = false)
-        }
     }
 }
