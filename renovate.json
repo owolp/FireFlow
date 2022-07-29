@@ -14,11 +14,8 @@
             ]
         }
     ],
-    "timezone": "Europe/Sofia",
-    "schedule": [
-        "after 10am and before 5:00pm every monday"
-    ],
     "assignees": [
         "owolp"
-    ]
+    ],
+    "prConcurrentLimit": 1
 }
