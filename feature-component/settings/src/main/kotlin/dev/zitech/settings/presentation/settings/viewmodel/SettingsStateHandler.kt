@@ -85,9 +85,7 @@ class SettingsStateHandler @Inject constructor() : MviStateHandler<SettingsState
 
     fun setEvent(event: SettingsEvent) {
         mutableState.update {
-            it.copy(
-                event = event
-            )
+            it.copy(event = event)
         }
     }
 }

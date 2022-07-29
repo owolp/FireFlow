@@ -44,9 +44,7 @@ class MainStateHandler @Inject constructor() : MviStateHandler<MainState> {
 
     fun setEvent(event: MainEvent) {
         mutableState.update {
-            it.copy(
-                event = event
-            )
+            it.copy(event = event)
         }
     }
 }
