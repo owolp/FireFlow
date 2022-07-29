@@ -34,6 +34,9 @@ dependencies {
     implementation(libs.google.dagger.hilt.android)
     kapt(libs.google.dagger.hilt.compiler)
     implementation(libs.jetbrains.kotlin.coroutines.android)
+
+    testImplementation(testFixtures(projects.designSystem))
+    testImplementation(testFixtures(projects.coreComponent.persistence))
 }
 
 kapt {

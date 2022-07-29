@@ -66,6 +66,7 @@ dependencies {
     androidTestImplementation(libs.androidx.arch.core.testing)
     androidTestImplementation(libs.androidx.room.testing)
     androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.cash.turbine)
     androidTestImplementation(libs.google.truth)
     androidTestImplementation(libs.jetbrains.kotlin.coroutines.test)
     androidTestImplementation(libs.junit.jupiter.api)

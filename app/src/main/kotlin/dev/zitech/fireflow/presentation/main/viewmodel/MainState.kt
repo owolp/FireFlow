@@ -17,8 +17,11 @@
 
 package dev.zitech.fireflow.presentation.main.viewmodel
 
+import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.core.common.presentation.architecture.MviState
 
 data class MainState(
+    val splash: Boolean = true,
+    val theme: ApplicationTheme? = null,
     val event: MainEvent = Idle
 ) : MviState

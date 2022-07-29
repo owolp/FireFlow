@@ -15,10 +15,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.common.presentation.architecture
+package dev.zitech.core.common.domain.model
 
-import kotlinx.coroutines.flow.MutableStateFlow
+import androidx.annotation.StringRes
+import dev.zitech.core.common.R
 
-interface MviStateHolder<State : MviState> {
-    val state: MutableStateFlow<State>
+enum class ApplicationTheme(
+    val id: Int,
+    @StringRes val text: Int
+) {
+    SYSTEM(0, R.string.application_theme_system),
+    DARK(1, R.string.application_theme_dark),
+    LIGHT(2, R.string.application_theme_light)
 }

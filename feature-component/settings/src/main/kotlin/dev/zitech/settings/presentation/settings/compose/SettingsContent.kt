@@ -19,15 +19,17 @@ package dev.zitech.settings.presentation.settings.compose
 
 import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Analytics
+import androidx.compose.material.icons.outlined.Brightness6
 import androidx.compose.material.icons.outlined.BugReport
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import dev.zitech.ds.atoms.spacer.FireFlowSpacers
 import dev.zitech.ds.organisms.categoryprefrence.CategoryPreference
 import dev.zitech.ds.organisms.categoryprefrence.FireFlowCategoryPreferences
 import dev.zitech.ds.theme.FireFlowTheme
@@ -40,29 +42,65 @@ import dev.zitech.settings.presentation.settings.viewmodel.SettingsState
 internal fun SettingsContent(
     state: SettingsState,
     modifier: Modifier = Modifier,
-    onTelemetryCheckChanged: (checked: Boolean) -> Unit,
-    onPersonalizedAdsCheckChanged: (checked: Boolean) -> Unit,
-    onCrashReporterCheckChanged: (checked: Boolean) -> Unit
+    onTelemetryCheckChange: (checked: Boolean) -> Unit,
+    onPersonalizedAdsCheckChange: (checked: Boolean) -> Unit,
+    onCrashReporterCheckChange: (checked: Boolean) -> Unit,
+    onThemeClick: () -> Unit
 ) {
-    Column(modifier = modifier) {
-        FireFlowCategoryPreferences.Simple(
-            categoryName = stringResource(id = R.string.data_choices_category),
-            preferences = getPreferencesList(
-                state = state,
-                onTelemetryCheckChanged = onTelemetryCheckChanged,
-                onPersonalizedAdsCheckChanged = onPersonalizedAdsCheckChanged,
-                onCrashReporterCheckChanged = onCrashReporterCheckChanged
+    LazyColumn(
+        modifier = modifier
+    ) {
+        item {
+            FireFlowCategoryPreferences.Simple(
+                categoryName = stringResource(id = R.string.data_choices_category),
+                preferences = getDataChoicesPreferences(
+                    state = state,
+                    onTelemetryCheckChange = onTelemetryCheckChange,
+                    onPersonalizedAdsCheckChange = onPersonalizedAdsCheckChange,
+                    onCrashReporterCheckChange = onCrashReporterCheckChange
+                )
             )
-        )
+        }
+        item {
+            FireFlowCategoryPreferences.Simple(
+                categoryName = stringResource(id = R.string.appearance_category),
+                preferences = getAppearancePreferences(
+                    state = state,
+                    onThemeClick = onThemeClick
+                )
+            )
+        }
+        item {
+            FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.m)
+        }
     }
 }
 
 @Composable
-private fun getPreferencesList(
+private fun getAppearancePreferences(
     state: SettingsState,
-    onTelemetryCheckChanged: (checked: Boolean) -> Unit,
-    onPersonalizedAdsCheckChanged: (checked: Boolean) -> Unit,
-    onCrashReporterCheckChanged: (checked: Boolean) -> Unit
+    onThemeClick: () -> Unit
+): List<CategoryPreference> {
+    val categoryPreferences = mutableListOf<CategoryPreference>()
+
+    categoryPreferences.add(
+        CategoryPreference.Icon(
+            title = stringResource(id = R.string.appearance_theme),
+            icon = Icons.Outlined.Brightness6,
+            description = stringResource(id = state.theme.text),
+            onClick = Pair(stringResource(id = R.string.cd_appearance_theme_click), onThemeClick)
+        )
+    )
+
+    return categoryPreferences
+}
+
+@Composable
+private fun getDataChoicesPreferences(
+    state: SettingsState,
+    onTelemetryCheckChange: (checked: Boolean) -> Unit,
+    onPersonalizedAdsCheckChange: (checked: Boolean) -> Unit,
+    onCrashReporterCheckChange: (checked: Boolean) -> Unit
 ): List<CategoryPreference> {
     val categoryPreferences = mutableListOf<CategoryPreference>()
 
@@ -72,7 +110,7 @@ private fun getPreferencesList(
                 title = stringResource(id = R.string.data_choices_telemetry_title),
                 icon = Icons.Outlined.Analytics,
                 checked = state.telemetry,
-                onCheckedChanged = onTelemetryCheckChanged,
+                onCheckedChanged = onTelemetryCheckChange,
                 cdDescriptionEnabled = stringResource(id = R.string.cd_data_choices_telemetry_enabled),
                 cdDescriptionDisabled = stringResource(id = R.string.cd_data_choices_telemetry_disabled),
                 description = stringResource(id = R.string.data_choices_telemetry_description)
@@ -85,7 +123,7 @@ private fun getPreferencesList(
                     title = stringResource(id = R.string.data_choices_personalized_ads_title),
                     icon = Icons.Outlined.Analytics,
                     checked = state.personalizedAds,
-                    onCheckedChanged = onPersonalizedAdsCheckChanged,
+                    onCheckedChanged = onPersonalizedAdsCheckChange,
                     cdDescriptionEnabled = stringResource(id = R.string.cd_data_choices_personalized_ads_enabled),
                     cdDescriptionDisabled = stringResource(id = R.string.cd_data_choices_personalized_ads_disabled),
                     description = stringResource(id = R.string.data_choices_personalized_ads_description)
@@ -99,7 +137,7 @@ private fun getPreferencesList(
             title = stringResource(id = R.string.data_choices_crash_reporter_title),
             icon = Icons.Outlined.BugReport,
             checked = state.crashReporter,
-            onCheckedChanged = onCrashReporterCheckChanged,
+            onCheckedChanged = onCrashReporterCheckChange,
             cdDescriptionEnabled = stringResource(id = R.string.cd_data_choices_crash_reporter_enabled),
             cdDescriptionDisabled = stringResource(id = R.string.cd_data_choices_crash_reporter_disabled),
             description = stringResource(id = R.string.data_choices_crash_reporter_description)
@@ -125,9 +163,10 @@ private fun SettingsContent_Preview() {
     FireFlowTheme {
         SettingsContent(
             state = SettingsState(),
-            onTelemetryCheckChanged = {},
-            onPersonalizedAdsCheckChanged = {},
-            onCrashReporterCheckChanged = {}
+            onTelemetryCheckChange = {},
+            onPersonalizedAdsCheckChange = {},
+            onCrashReporterCheckChange = {},
+            onThemeClick = {}
         )
     }
 }

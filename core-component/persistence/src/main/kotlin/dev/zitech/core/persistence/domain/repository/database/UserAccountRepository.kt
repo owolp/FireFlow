@@ -17,14 +17,17 @@
 
 package dev.zitech.core.persistence.domain.repository.database
 
+import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.domain.model.database.UserLoggedState
+import kotlinx.coroutines.flow.Flow
 
 interface UserAccountRepository {
 
-    suspend fun getCurrentUserAccount(): DataResult<UserAccount>
+    fun getCurrentUserAccount(): Flow<DataResult<UserAccount>>
     suspend fun getUserAccounts(): DataResult<List<UserAccount>>
     suspend fun getUserLoggedState(): UserLoggedState
     suspend fun saveUserAccount(isCurrentUserAccount: Boolean): DataResult<Long>
+    suspend fun updateCurrentUserAccountTheme(theme: ApplicationTheme): DataResult<Unit>
 }

@@ -17,31 +17,35 @@
 
 package dev.zitech.fireflow.presentation.main.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.common.presentation.architecture.MviViewModel
+import dev.zitech.core.persistence.domain.model.database.UserLoggedState
+import dev.zitech.core.persistence.domain.usecase.database.GetCurrentUserAccountUseCase
+import dev.zitech.core.persistence.domain.usecase.database.GetUserLoggedStateUseCase
+import dev.zitech.core.persistence.domain.usecase.database.SaveUserAccountUseCase
 import dev.zitech.core.remoteconfig.domain.usecase.InitializeRemoteConfiguratorUseCase
 import dev.zitech.core.reporter.analytics.domain.usecase.event.ApplicationLaunchAnalyticsEvent
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 internal class MainViewModel @Inject constructor(
+    private val mainStateHandler: MainStateHandler,
     private val initializeRemoteConfiguratorUseCase: InitializeRemoteConfiguratorUseCase,
+    private val getUserLoggedStateUseCase: GetUserLoggedStateUseCase,
+    private val saveUseAccountUseCase: SaveUserAccountUseCase,
+    private val getCurrentUserAccountUseCase: GetCurrentUserAccountUseCase,
     applicationLaunchAnalyticsEvent: ApplicationLaunchAnalyticsEvent
 ) : ViewModel(), MviViewModel<MainIntent, MainState> {
 
-    private val mutableShowSplashScreen = MutableLiveData(true)
-    val showSplashScreen: LiveData<Boolean> = mutableShowSplashScreen
-
-    private val mutableState = MutableStateFlow(MainState())
-    override val state: StateFlow<MainState> = mutableState
+    override val state: StateFlow<MainState> = mainStateHandler.state
 
     init {
         initializeRemoteConfigurator()
@@ -57,16 +61,44 @@ internal class MainViewModel @Inject constructor(
     }
 
     private fun handleShowErrorHandled() {
-        mutableState.update {
-            it.copy(event = Idle)
-        }
+        mainStateHandler.setEvent(Idle)
     }
 
     private fun initializeRemoteConfigurator() {
-        viewModelScope.launch {
-            initializeRemoteConfiguratorUseCase().collect {
-                mutableShowSplashScreen.postValue(false)
+        initializeRemoteConfiguratorUseCase()
+            .onCompletion { checkUserLoggedState() }
+            .launchIn(viewModelScope)
+    }
+
+    /*
+        Development solution to log in user, to be removed for first release
+     */
+    private suspend fun checkUserLoggedState() {
+        when (getUserLoggedStateUseCase()) {
+            UserLoggedState.LOGGED_IN -> {
+                collectCurrentUserAccount()
+            }
+            UserLoggedState.LOGGED_OUT -> {
+                saveUseAccountUseCase(true)
+                collectCurrentUserAccount()
             }
         }
+    }
+
+    @Suppress("ForbiddenComment")
+    private fun collectCurrentUserAccount() {
+        getCurrentUserAccountUseCase()
+            .onEach { result ->
+                when (result) {
+                    is DataResult.Success -> {
+                        mainStateHandler.setTheme(result.value.theme)
+                        mainStateHandler.hideSplashScreen()
+                    }
+                    is DataResult.Error -> {
+                        // TODO: Navigate Out?
+                    }
+                }
+            }
+            .launchIn(viewModelScope)
     }
 }

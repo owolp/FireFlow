@@ -17,66 +17,61 @@
 
 package dev.zitech.core.persistence.domain.usecase.database
 
+import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
-import dev.zitech.core.common.DataFactory
 import dev.zitech.core.common.domain.model.DataResult
-import dev.zitech.core.persistence.domain.model.database.UserAccount
+import dev.zitech.core.persistence.domain.model.UserAccountBuilder
 import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
-import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.mockkClass
-import kotlinx.coroutines.runBlocking
-import org.junit.jupiter.api.BeforeEach
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
+@ExperimentalCoroutinesApi
 internal class GetCurrentUserAccountUseCaseTest {
-
-    private val userAccountRepository = mockk<UserAccountRepository>()
-
-    private lateinit var sut: GetCurrentUserAccountUseCase
-
-    @BeforeEach
-    fun setup() {
-        sut = GetCurrentUserAccountUseCase(userAccountRepository)
-    }
 
     @Test
     @DisplayName("WHEN there is current account THEN return Success")
-    fun success() = runBlocking {
+    fun success() = runTest {
         // Arrange
-        val id = DataFactory.createRandomLong()
-        val isCurrentUserAccount = DataFactory.createRandomBoolean()
-        val userAccount = mockkClass(UserAccount::class)
-        every { userAccount.id } returns id
-        every { userAccount.isCurrentUserAccount } returns isCurrentUserAccount
-        coEvery { userAccountRepository.getCurrentUserAccount() } returns DataResult.Success(userAccount)
+        val userAccountRepository = mockk<UserAccountRepository>()
+        val sut = GetCurrentUserAccountUseCase(userAccountRepository)
 
-        // Act
-        val result = sut()
+        val account = UserAccountBuilder().build()
+        every {
+            userAccountRepository.getCurrentUserAccount()
+        } returns flowOf(DataResult.Success(account))
 
-        // Assert
-        assertThat((result as DataResult.Success).value.id).isEqualTo(id)
-        assertThat(result.value.isCurrentUserAccount).isEqualTo(isCurrentUserAccount)
+        // Act & Assert
+        sut().test {
+            assertThat((awaitItem() as DataResult.Success).value).isEqualTo(account)
+            awaitComplete()
+        }
         coVerify { userAccountRepository.getCurrentUserAccount() }
         confirmVerified(userAccountRepository)
     }
 
     @Test
     @DisplayName("WHEN there is no current account THEN return Error")
-    fun error() = runBlocking {
+    fun error() = runTest {
         // Arrange
-        val message = DataFactory.createRandomString()
-        coEvery { userAccountRepository.getCurrentUserAccount() } returns DataResult.Error(message)
+        val userAccountRepository = mockk<UserAccountRepository>()
+        val sut = GetCurrentUserAccountUseCase(userAccountRepository)
 
-        // Act
-        val result = sut()
+        every {
+            userAccountRepository.getCurrentUserAccount()
+        } returns flowOf(DataResult.Error())
 
-        // Assert
-        assertThat((result as DataResult.Error).message).isEqualTo(message)
+        // Act & Assert
+        sut().test {
+            assertThat(awaitItem()).isInstanceOf(DataResult.Error::class.java)
+            awaitComplete()
+        }
         coVerify { userAccountRepository.getCurrentUserAccount() }
         confirmVerified(userAccountRepository)
     }

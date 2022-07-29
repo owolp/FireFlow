@@ -26,12 +26,18 @@ import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.zitech.ds.atoms.loading.FireFlowProgressIndicators
+import dev.zitech.ds.molecules.dialog.FireFlowDialogs
 import dev.zitech.ds.theme.FireFlowTheme
+import dev.zitech.settings.presentation.settings.viewmodel.Dialog
 import dev.zitech.settings.presentation.settings.viewmodel.Error
 import dev.zitech.settings.presentation.settings.viewmodel.Idle
-import dev.zitech.settings.presentation.settings.viewmodel.OnCrashReporterCheck
-import dev.zitech.settings.presentation.settings.viewmodel.OnPersonalizedAdsCheck
-import dev.zitech.settings.presentation.settings.viewmodel.OnTelemetryCheck
+import dev.zitech.settings.presentation.settings.viewmodel.OnCrashReporterCheckChange
+import dev.zitech.settings.presentation.settings.viewmodel.OnPersonalizedAdsCheckChange
+import dev.zitech.settings.presentation.settings.viewmodel.OnTelemetryCheckChange
+import dev.zitech.settings.presentation.settings.viewmodel.OnThemeDismiss
+import dev.zitech.settings.presentation.settings.viewmodel.OnThemePreferenceClick
+import dev.zitech.settings.presentation.settings.viewmodel.OnThemeSelect
+import dev.zitech.settings.presentation.settings.viewmodel.SelectTheme
 import dev.zitech.settings.presentation.settings.viewmodel.SettingsViewModel
 
 @ExperimentalLifecycleComposeApi
@@ -47,14 +53,17 @@ fun Settings(
     } else {
         SettingsContent(
             state = state.value,
-            onTelemetryCheckChanged = { checked ->
-                viewModel.sendIntent(OnTelemetryCheck(checked))
+            onTelemetryCheckChange = { checked ->
+                viewModel.sendIntent(OnTelemetryCheckChange(checked))
             },
-            onPersonalizedAdsCheckChanged = { checked ->
-                viewModel.sendIntent(OnPersonalizedAdsCheck(checked))
+            onPersonalizedAdsCheckChange = { checked ->
+                viewModel.sendIntent(OnPersonalizedAdsCheckChange(checked))
             },
-            onCrashReporterCheckChanged = { checked ->
-                viewModel.sendIntent(OnCrashReporterCheck(checked))
+            onCrashReporterCheckChange = { checked ->
+                viewModel.sendIntent(OnCrashReporterCheckChange(checked))
+            },
+            onThemeClick = {
+                viewModel.sendIntent(OnThemePreferenceClick)
             }
         )
     }
@@ -63,6 +72,21 @@ fun Settings(
     when (val event = state.value.event) {
         is Error -> {
             // TODO: Show error SnackBar with restart button
+        }
+        is Dialog -> {
+            FireFlowDialogs.Alert(
+                title = event.title,
+                text = event.text,
+                onConfirmButtonClick = { /*TODO*/ }
+            )
+        }
+        is SelectTheme -> {
+            FireFlowDialogs.Radio(
+                title = event.title,
+                radioItems = event.themes,
+                onItemClick = { viewModel.sendIntent(OnThemeSelect(it)) },
+                onDismissRequest = { viewModel.sendIntent(OnThemeDismiss) }
+            )
         }
         Idle -> {
             // NO_OP

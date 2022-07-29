@@ -22,23 +22,26 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.zitech.core.common.domain.applicationconfig.AppConfigProvider
 import dev.zitech.core.common.domain.logger.Logger
+import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.core.common.domain.model.BuildFlavor
 import dev.zitech.core.common.presentation.architecture.MviViewModel
+import dev.zitech.core.persistence.domain.usecase.database.UpdateCurrentUserAccountUseCase
 import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsAnalyticsCollectionStates
 import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsCrashReporterCollectionStates
 import dev.zitech.settings.presentation.settings.viewmodel.error.SettingsErrorProvider
+import dev.zitech.settings.presentation.settings.viewmodel.theme.SettingsThemeProvider
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    private val settingsStateHolder: SettingsStateHolder,
+    private val settingsStateHandler: SettingsStateHandler,
+    private val updateCurrentUserAccountUseCase: UpdateCurrentUserAccountUseCase,
     private val settingsAnalyticsCollectionStates: SettingsAnalyticsCollectionStates,
     private val settingsCrashReporterCollectionStates: SettingsCrashReporterCollectionStates,
     private val settingsErrorProvider: SettingsErrorProvider,
+    private val settingsThemeProvider: SettingsThemeProvider,
     private val appConfigProvider: AppConfigProvider
 ) : ViewModel(), MviViewModel<SettingsIntent, SettingsState> {
 
@@ -46,7 +49,7 @@ class SettingsViewModel @Inject constructor(
         private const val TAG = "SettingsViewModel"
     }
 
-    override val state: StateFlow<SettingsState> = settingsStateHolder.state.asStateFlow()
+    override val state: StateFlow<SettingsState> = settingsStateHandler.state
 
     init {
         viewModelScope.launch {
@@ -57,47 +60,62 @@ class SettingsViewModel @Inject constructor(
     override fun sendIntent(intent: SettingsIntent) {
         viewModelScope.launch {
             when (intent) {
-                is OnCrashReporterCheck -> handleOnCrashReporterCheck(intent.checked)
-                is OnTelemetryCheck -> handleOnTelemetryCheck(intent.checked)
-                is OnPersonalizedAdsCheck -> handleOnPersonalizedAdsCheck(intent.checked)
+                is OnCrashReporterCheckChange -> handleOnCrashReporterCheckChange(intent.checked)
+                is OnTelemetryCheckChange -> handleOnTelemetryCheckChange(intent.checked)
+                is OnPersonalizedAdsCheckChange -> handleOnPersonalizedAdsCheckChange(intent.checked)
+                is OnThemeSelect -> handleOnThemeSelect(intent.id)
+                OnThemePreferenceClick -> handleOnThemeClick()
+                OnThemeDismiss -> handleOnThemeDismiss()
             }
         }
     }
 
-    private suspend fun handleOnCrashReporterCheck(checked: Boolean) {
+    private suspend fun handleOnCrashReporterCheckChange(checked: Boolean) {
         settingsCrashReporterCollectionStates.setCrashReporterCollection(checked)
         val isEnabled = settingsCrashReporterCollectionStates.getCrashReporterCollectionValue()
         if (checked == isEnabled) {
-            setCrashReporterState(checked)
+            settingsStateHandler.setCrashReporterState(checked)
         } else {
-            setErrorState(settingsErrorProvider.getCrashReporterError())
+            settingsStateHandler.setErrorState(settingsErrorProvider.getCrashReporterError())
         }
     }
 
-    private suspend fun handleOnTelemetryCheck(checked: Boolean) {
+    private suspend fun handleOnTelemetryCheckChange(checked: Boolean) {
         if (appConfigProvider.buildFlavor != BuildFlavor.FOSS) {
             settingsAnalyticsCollectionStates.setAnalyticsCollection(checked)
             val isEnabled = settingsAnalyticsCollectionStates.getAnalyticsCollectionValue()
             if (checked == isEnabled) {
-                setTelemetryState(checked, appConfigProvider.buildFlavor)
+                settingsStateHandler.setTelemetryState(checked, appConfigProvider.buildFlavor)
                 settingsAnalyticsCollectionStates.setAllowPersonalizedAdsValue(checked)
-                setPersonalizedAdsState(checked, appConfigProvider.buildFlavor)
+                settingsStateHandler.setPersonalizedAdsState(checked, appConfigProvider.buildFlavor)
             } else {
-                setErrorState(settingsErrorProvider.getTelemetryError())
+                settingsStateHandler.setErrorState(settingsErrorProvider.getTelemetryError())
             }
         } else {
             Logger.e(TAG, "Setting telemetry on FOSS build is not supported")
         }
     }
 
-    private suspend fun handleOnPersonalizedAdsCheck(checked: Boolean) {
+    private suspend fun handleOnThemeSelect(id: Int) {
+        ApplicationTheme.values().first { it.id == id }.run {
+            updateCurrentUserAccountUseCase(theme = this)
+            settingsStateHandler.setTheme(this)
+            settingsStateHandler.resetEvent()
+        }
+    }
+
+    private fun handleOnThemeDismiss() {
+        settingsStateHandler.resetEvent()
+    }
+
+    private suspend fun handleOnPersonalizedAdsCheckChange(checked: Boolean) {
         if (appConfigProvider.buildFlavor != BuildFlavor.FOSS) {
             settingsAnalyticsCollectionStates.setAllowPersonalizedAdsValue(checked)
             val isEnabled = settingsAnalyticsCollectionStates.getAllowPersonalizedAdsValue()
             if (checked == isEnabled) {
-                setPersonalizedAdsState(checked, appConfigProvider.buildFlavor)
+                settingsStateHandler.setPersonalizedAdsState(checked, appConfigProvider.buildFlavor)
             } else {
-                setErrorState(settingsErrorProvider.getPersonalizedAdsError())
+                settingsStateHandler.setErrorState(settingsErrorProvider.getPersonalizedAdsError())
             }
         } else {
             Logger.e(TAG, "Setting personalized ads on FOSS build is not supported")
@@ -105,56 +123,28 @@ class SettingsViewModel @Inject constructor(
     }
 
     private suspend fun getPreferencesState() {
-        setIsLoadingState(true)
-        setTelemetryState(
-            settingsAnalyticsCollectionStates.getAnalyticsCollectionValue(),
-            appConfigProvider.buildFlavor
+        settingsStateHandler.run {
+            setIsLoadingState(true)
+            setTelemetryState(
+                settingsAnalyticsCollectionStates.getAnalyticsCollectionValue(),
+                appConfigProvider.buildFlavor
+            )
+            setPersonalizedAdsState(
+                settingsAnalyticsCollectionStates.getAllowPersonalizedAdsValue(),
+                appConfigProvider.buildFlavor
+            )
+            setCrashReporterState(settingsCrashReporterCollectionStates.getCrashReporterCollectionValue())
+            setTheme(settingsThemeProvider.getCurrentUserTheme())
+            setIsLoadingState(false)
+        }
+    }
+
+    private suspend fun handleOnThemeClick() {
+        settingsStateHandler.setEvent(
+            SelectTheme(
+                title = settingsThemeProvider.getDialogThemeTitle(),
+                themes = settingsThemeProvider.getDialogThemes()
+            )
         )
-        setPersonalizedAdsState(
-            settingsAnalyticsCollectionStates.getAllowPersonalizedAdsValue(),
-            appConfigProvider.buildFlavor
-        )
-        setCrashReporterState(settingsCrashReporterCollectionStates.getCrashReporterCollectionValue())
-        setIsLoadingState(false)
-    }
-
-    private fun setIsLoadingState(value: Boolean) {
-        settingsStateHolder.state.update {
-            it.copy(isLoading = value)
-        }
-    }
-
-    private fun setTelemetryState(
-        value: Boolean,
-        buildFlavor: BuildFlavor
-    ) {
-        if (buildFlavor != BuildFlavor.FOSS) {
-            settingsStateHolder.state.update {
-                it.copy(telemetry = value)
-            }
-        }
-    }
-
-    private fun setPersonalizedAdsState(
-        value: Boolean,
-        buildFlavor: BuildFlavor
-    ) {
-        if (buildFlavor != BuildFlavor.FOSS) {
-            settingsStateHolder.state.update {
-                it.copy(personalizedAds = value)
-            }
-        }
-    }
-
-    private fun setCrashReporterState(value: Boolean) {
-        settingsStateHolder.state.update {
-            it.copy(crashReporter = value)
-        }
-    }
-
-    private fun setErrorState(value: SettingsEvent) {
-        settingsStateHolder.state.update {
-            it.copy(event = value)
-        }
     }
 }

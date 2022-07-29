@@ -56,7 +56,7 @@ object FireFlowCheckboxes {
 )
 @ExperimentalMaterial3Api
 @Composable
-private fun PrimaryCheckedEnabledPreview() {
+private fun Primary_Checked_Enabled_Preview() {
     FireFlowTheme {
         FireFlowCheckboxes.Primary(
             checked = true
@@ -75,7 +75,7 @@ private fun PrimaryCheckedEnabledPreview() {
 )
 @ExperimentalMaterial3Api
 @Composable
-private fun PrimaryCheckedDisabledPreview() {
+private fun Primary_Checked_Disabled_Preview() {
     FireFlowTheme {
         FireFlowCheckboxes.Primary(
             checked = true,
@@ -95,7 +95,7 @@ private fun PrimaryCheckedDisabledPreview() {
 )
 @ExperimentalMaterial3Api
 @Composable
-private fun PrimaryUncheckedEnabledPreview() {
+private fun Primary_Unchecked_Enabled_Preview() {
     FireFlowTheme {
         FireFlowCheckboxes.Primary(
             checked = false
@@ -114,7 +114,7 @@ private fun PrimaryUncheckedEnabledPreview() {
 )
 @ExperimentalMaterial3Api
 @Composable
-private fun Primary_UncheckedDisabled_Preview() {
+private fun Primary_Unchecked_Disabled_Preview() {
     FireFlowTheme {
         FireFlowCheckboxes.Primary(
             checked = false,

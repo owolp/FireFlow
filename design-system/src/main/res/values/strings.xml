@@ -16,5 +16,7 @@
   -->
 
 <resources>
-    <string name="error_message_current_user_null">Something went really wrong, as there is no current user!</string>
+
+    <string name="dialog_button_ok">OK</string>
+
 </resources>

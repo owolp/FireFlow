@@ -16,6 +16,8 @@
  */
 
 dependencies {
+    testFixturesImplementation(projects.coreComponent.common)
+
     testImplementation testFixtures(projects.coreComponent.common)
     testImplementation libs.cash.turbine
     testImplementation libs.google.truth

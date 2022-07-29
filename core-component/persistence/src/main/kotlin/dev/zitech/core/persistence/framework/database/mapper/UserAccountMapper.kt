@@ -18,14 +18,35 @@
 package dev.zitech.core.persistence.framework.database.mapper
 
 import dev.zitech.core.common.data.mapper.Mapper
+import dev.zitech.core.common.domain.logger.Logger
+import dev.zitech.core.common.domain.model.ApplicationTheme
+import dev.zitech.core.common.domain.model.ApplicationTheme.DARK
+import dev.zitech.core.common.domain.model.ApplicationTheme.LIGHT
+import dev.zitech.core.common.domain.model.ApplicationTheme.SYSTEM
 import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.framework.database.entity.UserAccountEntity
 import javax.inject.Inject
 
 internal class UserAccountMapper @Inject constructor() : Mapper<UserAccountEntity, UserAccount> {
 
+    companion object {
+        private const val TAG = "UserAccountMapper"
+    }
+
     override fun invoke(input: UserAccountEntity) = UserAccount(
         id = input.id ?: -1,
-        isCurrentUserAccount = input.isCurrentUserAccount
+        isCurrentUserAccount = input.isCurrentUserAccount,
+        theme = getUserTheme(input.theme)
     )
+
+    private fun getUserTheme(theme: Int): ApplicationTheme =
+        when (theme) {
+            SYSTEM.id -> SYSTEM
+            DARK.id -> DARK
+            LIGHT.id -> LIGHT
+            else -> {
+                Logger.e(TAG, "Theme $theme not supported!")
+                SYSTEM
+            }
+        }
 }

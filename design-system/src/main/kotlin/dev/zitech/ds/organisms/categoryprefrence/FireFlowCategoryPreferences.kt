@@ -20,16 +20,14 @@ package dev.zitech.ds.organisms.categoryprefrence
 import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Analytics
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import dev.zitech.ds.atoms.spacer.FireFlowSpacers
 import dev.zitech.ds.molecules.preference.FireFlowPreferences
 import dev.zitech.ds.theme.FireFlowTheme
 
@@ -48,11 +46,11 @@ object FireFlowCategoryPreferences {
                 .background(FireFlowTheme.colors.background)
         ) {
             FireFlowPreferences.Category(title = categoryName)
-            LazyColumn {
-                items(preferences, key = { it.uniqueId }) { categoryPreference ->
-                    val animateItemPlacementModifier = Modifier.animateItemPlacement()
-                    CategoryPreferenceItem(categoryPreference, animateItemPlacementModifier)
-                    FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.l)
+            Column(
+                verticalArrangement = Arrangement.spacedBy(FireFlowTheme.space.l)
+            ) {
+                preferences.forEach { categoryPreference ->
+                    CategoryPreferenceItem(categoryPreference)
                 }
             }
         }
@@ -61,8 +59,7 @@ object FireFlowCategoryPreferences {
     @ExperimentalMaterial3Api
     @Composable
     private fun CategoryPreferenceItem(
-        categoryPreference: CategoryPreference,
-        modifier: Modifier
+        categoryPreference: CategoryPreference
     ) {
         when (categoryPreference) {
             is CategoryPreference.Checkbox -> {
@@ -85,7 +82,8 @@ object FireFlowCategoryPreferences {
                         modifier = modifier,
                         title = title,
                         icon = icon,
-                        description = description
+                        description = description,
+                        onClick = onClick
                     )
                 }
             }
@@ -94,7 +92,8 @@ object FireFlowCategoryPreferences {
                     FireFlowPreferences.Simple(
                         modifier = modifier,
                         title = title,
-                        description = description
+                        description = description,
+                        onClick = onClick
                     )
                 }
             }
@@ -128,7 +127,7 @@ object FireFlowCategoryPreferences {
 @ExperimentalMaterial3Api
 @ExperimentalFoundationApi
 @Composable
-private fun CategoryPreferences_Preview() {
+private fun Category_Preferences_Preview() {
     FireFlowTheme {
         FireFlowCategoryPreferences.Simple(
             categoryName = "Category Name",

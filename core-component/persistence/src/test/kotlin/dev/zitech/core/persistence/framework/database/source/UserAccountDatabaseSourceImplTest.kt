@@ -17,11 +17,12 @@
 
 package dev.zitech.core.persistence.framework.database.source
 
+import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import dev.zitech.core.persistence.domain.source.database.UserAccountDatabaseSource
-import dev.zitech.core.persistence.framework.database.mapper.UserAccountMapper
 import dev.zitech.core.persistence.framework.database.dao.FakeUserAccountDao
 import dev.zitech.core.persistence.framework.database.entity.UserAccountEntityFactory
+import dev.zitech.core.persistence.framework.database.mapper.UserAccountMapper
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -91,16 +92,6 @@ internal class UserAccountDatabaseSourceImplTest {
     inner class GetCurrentUserAccount {
 
         @Test
-        @DisplayName("WHEN no current user account THEN return null")
-        fun noUserAccount() = runBlocking {
-            // Act
-            val result = sut.getCurrentUserAccount()
-
-            // Assert
-            assertThat(result).isNull()
-        }
-
-        @Test
         @DisplayName("WHEN there is a current user accounts THEN return it")
         fun userAccount() = runBlocking {
             // Arrange
@@ -109,12 +100,14 @@ internal class UserAccountDatabaseSourceImplTest {
             )
             userAccountDao.saveUserAccount(entity1)
 
-            // Act
-            val result = sut.getCurrentUserAccount()
-
-            // Assert
-            assertThat(result?.id).isEqualTo(1)
-            assertThat(result?.isCurrentUserAccount).isTrue()
+            // Act & Assert
+            sut.getCurrentUserAccount().test {
+                with(awaitItem()) {
+                    assertThat(id).isEqualTo(1)
+                    assertThat(isCurrentUserAccount).isTrue()
+                }
+                awaitComplete()
+            }
         }
     }
 

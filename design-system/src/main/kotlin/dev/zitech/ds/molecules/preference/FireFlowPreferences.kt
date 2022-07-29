@@ -88,7 +88,10 @@ object FireFlowPreferences {
         PreferenceItem(modifier = modifier) {
             Row(
                 modifier = Modifier
-                    .clickable(enabled = onClick != null, onClick = { onClick?.second?.invoke() })
+                    .clickable(
+                        enabled = onClick != null,
+                        onClick = { onClick?.second?.invoke() }
+                    )
                     .semantics {
                         stateDescription = onClick?.first.orEmpty()
                     }
@@ -347,7 +350,7 @@ private fun Category_Preview() {
     showBackground = true
 )
 @Composable
-private fun SimpleTitle_Preview() {
+private fun Simple_Title_Preview() {
     FireFlowTheme {
         FireFlowPreferences.Simple(
             title = "Simple Title"
@@ -365,7 +368,7 @@ private fun SimpleTitle_Preview() {
     showBackground = true
 )
 @Composable
-private fun SimpleTitleDescription_Preview() {
+private fun Simple_Title_Description_Preview() {
     FireFlowTheme {
         FireFlowPreferences.Simple(
             title = "Simple Title",
@@ -385,7 +388,7 @@ private fun SimpleTitleDescription_Preview() {
     showBackground = true
 )
 @Composable
-private fun IconTitle_Preview() {
+private fun Icon_Title_Preview() {
     FireFlowTheme {
         FireFlowPreferences.Icon(
             title = "Icon Title",
@@ -404,7 +407,7 @@ private fun IconTitle_Preview() {
     showBackground = true
 )
 @Composable
-private fun IconTitleDescription_Preview() {
+private fun Icon_Title_Description_Preview() {
     FireFlowTheme {
         FireFlowPreferences.Icon(
             title = "Icon Title",
@@ -425,7 +428,7 @@ private fun IconTitleDescription_Preview() {
     showBackground = true
 )
 @Composable
-private fun SwitchTitlePreview() {
+private fun Switch_Title_Preview() {
     FireFlowTheme {
         FireFlowPreferences.Switch(
             title = "Switch Title",
@@ -448,7 +451,7 @@ private fun SwitchTitlePreview() {
     showBackground = true
 )
 @Composable
-private fun SwitchTitleDescription_Preview() {
+private fun Switch_Title_Description_Preview() {
     FireFlowTheme {
         FireFlowPreferences.Switch(
             title = "Switch Title",

@@ -15,8 +15,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.common.presentation.architecture
+package dev.zitech.ds.molecules.dialog
 
-interface MviView<State : MviState> {
-    fun render(state: State)
-}
+data class DialogRadioItem(
+    val id: Int,
+    val text: String,
+    val selected: Boolean,
+    val enabled: Boolean
+)

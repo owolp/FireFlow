@@ -15,12 +15,21 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.persistence.data.cache
+package dev.zitech.ds.atoms.radio
 
-import dev.zitech.core.persistence.domain.model.cache.InMemoryCache
-import dev.zitech.core.persistence.domain.model.database.UserAccount
-import dev.zitech.core.persistence.domain.repository.cache.CacheRepository
-import javax.inject.Inject
+import androidx.compose.material3.RadioButtonColors
+import androidx.compose.material3.RadioButtonDefaults
+import androidx.compose.runtime.Composable
+import dev.zitech.ds.theme.FireFlowTheme
 
-internal class UserAccountInMemoryCache @Inject constructor(cacheRepository: CacheRepository) :
-    InMemoryCache<UserAccount>(cacheRepository)
+internal object FireFlowRadioButtonsColors {
+
+    val primary: RadioButtonColors
+        @Composable
+        get() = RadioButtonDefaults.colors(
+            selectedColor = FireFlowTheme.colors.primary,
+            unselectedColor = FireFlowTheme.colors.primary,
+            disabledSelectedColor = FireFlowTheme.colors.inversePrimary,
+            disabledUnselectedColor = FireFlowTheme.colors.inversePrimary
+        )
+}

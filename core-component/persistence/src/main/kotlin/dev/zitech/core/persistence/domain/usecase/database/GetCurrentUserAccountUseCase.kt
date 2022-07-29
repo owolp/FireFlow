@@ -20,12 +20,13 @@ package dev.zitech.core.persistence.domain.usecase.database
 import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class GetCurrentUserAccountUseCase @Inject constructor(
     private val userAccountRepository: UserAccountRepository
 ) {
 
-    suspend operator fun invoke(): DataResult<UserAccount> =
+    operator fun invoke(): Flow<DataResult<UserAccount>> =
         userAccountRepository.getCurrentUserAccount()
 }

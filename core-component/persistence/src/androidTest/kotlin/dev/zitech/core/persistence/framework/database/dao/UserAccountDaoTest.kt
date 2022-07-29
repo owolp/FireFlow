@@ -20,6 +20,7 @@ package dev.zitech.core.persistence.framework.database.dao
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
+import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import dev.zitech.core.persistence.framework.database.FireFlowDatabase
 import dev.zitech.core.persistence.framework.database.entity.UserAccountEntityFactory
@@ -73,6 +74,54 @@ internal class UserAccountDaoTest {
         assertThat(userAccounts).contains(userAccountEntity1)
         assertThat(userAccounts).contains(userAccountEntity2)
         assertThat(userAccounts).contains(userAccountEntity3)
+    }
+
+    @Nested
+    inner class GetCurrentUserAccountFlow {
+
+        @Test
+        @DisplayName("GIVEN there is 1 current user account THEN return it")
+        fun oneCurrentUserAccount() = runBlocking {
+            // Arrange
+            val userAccountEntity = UserAccountEntityFactory.createUserAccountEntity(
+                isCurrentUserAccount = true
+            )
+            sut.saveUserAccount(userAccountEntity)
+
+            // Act
+            val result = sut.getCurrentUserAccount()
+
+            // Act & Assert
+            sut.getCurrentUserAccountFlow().test {
+                assertThat(awaitItem()).isEqualTo(userAccountEntity)
+            }
+        }
+
+        @Test
+        @DisplayName("GIVEN there are 2 current user account THEN return bigger id")
+        fun multipleCurrentUserAccounts() = runBlocking {
+            // Arrange
+            val userAccountEntity1 = UserAccountEntityFactory.createUserAccountEntity(
+                id = 1,
+                isCurrentUserAccount = true
+            )
+            val userAccountEntity2 = UserAccountEntityFactory.createUserAccountEntity(
+                id = 2,
+                isCurrentUserAccount = true
+            )
+            val userAccountEntity3 = UserAccountEntityFactory.createUserAccountEntity(
+                id = 3,
+                isCurrentUserAccount = true
+            )
+            sut.saveUserAccount(userAccountEntity1)
+            sut.saveUserAccount(userAccountEntity3)
+            sut.saveUserAccount(userAccountEntity2)
+
+            // Act & Assert
+            sut.getCurrentUserAccountFlow().test {
+                assertThat(awaitItem()).isEqualTo(userAccountEntity3)
+            }
+        }
     }
 
     @Nested
@@ -180,5 +229,22 @@ internal class UserAccountDaoTest {
 
         // Assert
         assertThat(currentUserAccount).isNull()
+    }
+
+    @Test
+    fun updateCurrentUserAccountTheme() = runBlocking {
+        // Arrange
+        val userAccountEntity1 = UserAccountEntityFactory.createUserAccountEntity(
+            isCurrentUserAccount = true,
+            theme = 0
+        )
+        sut.saveUserAccount(userAccountEntity1)
+
+        // Act
+        sut.updateCurrentUserAccountTheme(1)
+        val currentUserAccount = sut.getCurrentUserAccount()
+
+        // Assert
+        assertThat(currentUserAccount?.theme).isEqualTo(1)
     }
 }
