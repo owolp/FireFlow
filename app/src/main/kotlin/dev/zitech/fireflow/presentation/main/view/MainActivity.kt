@@ -74,7 +74,9 @@ internal class MainActivity : ComponentActivity() {
                     contentAlignment = Alignment.TopCenter
                 ) {
                     // TODO: Use navigation
-                    Settings()
+                    if (!mainState.value.splash) {
+                        Settings()
+                    }
                 }
                 EventHandler(mainState)
             }

@@ -17,6 +17,8 @@
 
 import com.android.build.api.dsl.ApplicationProductFlavor
 import com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
+import com.google.firebase.perf.plugin.FirebasePerfExtension
+import com.huawei.agconnect.apms.plugin.APMSExtension
 
 apply(from = "$rootDir/config/dependencies/compose-dependencies.gradle")
 
@@ -41,13 +43,11 @@ android {
                 mappingUpload = false
                 debug = true
             }
-            configure<com.huawei.agconnect.apms.plugin.APMSExtension> {
+            configure<APMSExtension> {
                 instrumentationEnabled = false
             }
-            withGroovyBuilder {
-                "FirebasePerformance" {
-                    invokeMethod("setInstrumentationEnabled", false)
-                }
+            configure<FirebasePerfExtension> {
+                setInstrumentationEnabled(false)
             }
         }
     }
@@ -55,17 +55,23 @@ android {
     productFlavors {
         getByName(ProductFlavors.DEV) {
             disableFirebaseCrashlyticsMappingFileUpload()
+            disableFirebasePerformance()
             disableAgConnectCrashMappingFileUpload()
+            disableAPMS()
         }
         getByName(ProductFlavors.FOSS) {
             disableFirebaseCrashlyticsMappingFileUpload()
+            disableFirebasePerformance()
             disableAgConnectCrashMappingFileUpload()
+            disableAPMS()
         }
         getByName(ProductFlavors.PLAY) {
             disableAgConnectCrashMappingFileUpload()
+            disableAPMS()
         }
         getByName(ProductFlavors.GALLERY) {
             disableFirebaseCrashlyticsMappingFileUpload()
+            disableFirebasePerformance()
             agcp {
                 mappingUpload = true
                 debug = false
@@ -110,5 +116,17 @@ fun ApplicationProductFlavor.disableFirebaseCrashlyticsMappingFileUpload() {
 fun disableAgConnectCrashMappingFileUpload() {
     agcp {
         mappingUpload = false
+    }
+}
+
+fun ApplicationProductFlavor.disableFirebasePerformance() {
+    configure<FirebasePerfExtension> {
+        setInstrumentationEnabled(false)
+    }
+}
+
+fun ApplicationProductFlavor.disableAPMS() {
+    configure<APMSExtension> {
+        instrumentationEnabled = false
     }
 }
