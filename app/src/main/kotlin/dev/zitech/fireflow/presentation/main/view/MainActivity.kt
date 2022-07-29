@@ -65,7 +65,7 @@ internal class MainActivity : ComponentActivity() {
         setContent {
             val mainState = mainViewModel.state.collectAsStateWithLifecycle()
             FireFlowTheme(
-                darkTheme = isDarkTheme(mainState.value)
+                darkTheme = isDarkTheme(mainState.value.theme)
             ) {
                 Box(
                     modifier = Modifier
@@ -97,8 +97,8 @@ internal class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    private fun isDarkTheme(mainState: MainState): Boolean =
-        when (mainState.theme) {
+    private fun isDarkTheme(applicationTheme: ApplicationTheme?): Boolean =
+        when (applicationTheme) {
             ApplicationTheme.DARK -> true
             ApplicationTheme.LIGHT -> false
             else -> isSystemInDarkTheme()
