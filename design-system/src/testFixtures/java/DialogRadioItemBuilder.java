@@ -15,39 +15,41 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.persistence.domain.model;
+import dev.zitech.ds.molecules.dialog.DialogRadioItem;
 
-import static dev.zitech.core.common.domain.model.ApplicationTheme.SYSTEM;
+public class DialogRadioItemBuilder {
 
-import dev.zitech.core.common.domain.model.ApplicationTheme;
-import dev.zitech.core.persistence.domain.model.database.UserAccount;
+    private Integer id = 0;
+    private String text = "Text";
+    private Boolean selected = false;
+    private Boolean enabled = false;
 
-public class UserAccountBuilder {
-
-    private Long id = 0L;
-    private Boolean isCurrentUserAccount = false;
-    private ApplicationTheme theme = SYSTEM;
-
-    public UserAccountBuilder setId(Long id) {
+    public DialogRadioItemBuilder setId(Integer id) {
         this.id = id;
         return this;
     }
 
-    public UserAccountBuilder setCurrentUserAccount(Boolean currentUserAccount) {
-        isCurrentUserAccount = currentUserAccount;
+    public DialogRadioItemBuilder setText(String text) {
+        this.text = text;
         return this;
     }
 
-    public UserAccountBuilder setTheme(ApplicationTheme theme) {
-        this.theme = theme;
+    public DialogRadioItemBuilder setSelected(Boolean selected) {
+        this.selected = selected;
         return this;
     }
 
-    public UserAccount build() {
-        return new UserAccount(
+    public DialogRadioItemBuilder setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+        return this;
+    }
+
+    public DialogRadioItem build() {
+        return new DialogRadioItem(
                 id,
-                isCurrentUserAccount,
-                theme
+                text,
+                selected,
+                enabled
         );
     }
 }

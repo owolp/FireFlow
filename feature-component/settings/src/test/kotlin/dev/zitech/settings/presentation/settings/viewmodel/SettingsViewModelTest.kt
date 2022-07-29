@@ -17,11 +17,13 @@
 
 package dev.zitech.settings.presentation.settings.viewmodel
 
+import DialogRadioItemBuilder
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import dev.zitech.core.common.DataFactory
 import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.core.common.domain.model.BuildFlavor
+import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.common.framework.applicationconfig.FakeAppConfigProvider
 import dev.zitech.core.persistence.domain.usecase.database.UpdateCurrentUserAccountUseCase
 import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsAnalyticsCollectionStates
@@ -599,6 +601,149 @@ internal class SettingsViewModelTest {
             settingsAnalyticsCollectionStates.setAnalyticsCollection(false)
             settingsAnalyticsCollectionStates.setAllowPersonalizedAdsValue(true)
             settingsAnalyticsCollectionStates.setAllowPersonalizedAdsValue(false)
+        }
+    }
+
+    @Test
+    fun `WHEN OnThemeSelect GIVEN theme id THEN update user theme and update theme and reset events`() = runTest {
+        // Arrange
+        val defaultIsAnalyticsEnabled = false
+        coEvery { settingsAnalyticsCollectionStates.getAnalyticsCollectionValue() } returns defaultIsAnalyticsEnabled
+
+        val defaultIsPersonalizedAdsEnabled = false
+        coEvery { settingsAnalyticsCollectionStates.getAllowPersonalizedAdsValue() } returns defaultIsPersonalizedAdsEnabled
+
+        val defaultIsCrashReporterEnabled = true
+        coEvery { settingsCrashReporterCollectionStates.getCrashReporterCollectionValue() } returns defaultIsCrashReporterEnabled
+
+        val defaultUserTheme = ApplicationTheme.SYSTEM
+
+        val currentUserTheme = ApplicationTheme.DARK
+        coEvery { settingsThemeProvider.getCurrentUserTheme() } returns currentUserTheme
+
+        val themeId = ApplicationTheme.LIGHT.id
+
+        coEvery { updateCurrentUserAccountUseCase(theme = ApplicationTheme.LIGHT) } returns DataResult.Success(Unit)
+
+        settingsStateHandler.state.test {
+            // Act
+            val sut = SettingsViewModel(
+                settingsStateHandler,
+                updateCurrentUserAccountUseCase,
+                settingsAnalyticsCollectionStates,
+                settingsCrashReporterCollectionStates,
+                settingsErrorProvider,
+                settingsThemeProvider,
+                appConfigProvider
+            )
+
+            sut.sendIntent(OnThemeSelect(themeId))
+
+            // Assert
+            assertThat(awaitItem().isLoading).isFalse()
+            assertThat(awaitItem().isLoading).isTrue()
+            assertThat(awaitItem().telemetry).isEqualTo(defaultIsAnalyticsEnabled)
+            assertThat(awaitItem().personalizedAds).isEqualTo(defaultIsPersonalizedAdsEnabled)
+            assertThat(awaitItem().theme).isEqualTo(defaultUserTheme)
+            assertThat(awaitItem().theme).isEqualTo(currentUserTheme)
+            assertThat(awaitItem().isLoading).isFalse()
+            assertThat(awaitItem().theme).isEqualTo(ApplicationTheme.LIGHT)
+            assertThat(cancelAndConsumeRemainingEvents()).isEmpty()
+            coVerify { updateCurrentUserAccountUseCase(theme = ApplicationTheme.LIGHT) }
+        }
+    }
+
+    @Test
+    fun `WHEN OnThemePreferenceClick THEN send SelectTheme event`() = runTest {
+        // Arrange
+        val defaultIsAnalyticsEnabled = false
+        coEvery { settingsAnalyticsCollectionStates.getAnalyticsCollectionValue() } returns defaultIsAnalyticsEnabled
+
+        val defaultIsPersonalizedAdsEnabled = false
+        coEvery { settingsAnalyticsCollectionStates.getAllowPersonalizedAdsValue() } returns defaultIsPersonalizedAdsEnabled
+
+        val defaultIsCrashReporterEnabled = true
+        coEvery { settingsCrashReporterCollectionStates.getCrashReporterCollectionValue() } returns defaultIsCrashReporterEnabled
+
+        val defaultUserTheme = ApplicationTheme.SYSTEM
+        coEvery { settingsThemeProvider.getCurrentUserTheme() } returns defaultUserTheme
+
+        val dialogTitle = DataFactory.createRandomString()
+        every { settingsThemeProvider.getDialogThemeTitle() } returns dialogTitle
+
+        val dialogThemes = listOf(
+            DialogRadioItemBuilder().setId(DataFactory.createRandomInt()).build(),
+            DialogRadioItemBuilder().setId(DataFactory.createRandomInt()).build(),
+            DialogRadioItemBuilder().setId(DataFactory.createRandomInt()).build()
+        )
+        coEvery { settingsThemeProvider.getDialogThemes() } returns dialogThemes
+
+        settingsStateHandler.state.test {
+            // Act
+            val sut = SettingsViewModel(
+                settingsStateHandler,
+                updateCurrentUserAccountUseCase,
+                settingsAnalyticsCollectionStates,
+                settingsCrashReporterCollectionStates,
+                settingsErrorProvider,
+                settingsThemeProvider,
+                appConfigProvider
+            )
+
+            sut.sendIntent(OnThemePreferenceClick)
+
+            // Assert
+            assertThat(awaitItem().isLoading).isFalse()
+            assertThat(awaitItem().isLoading).isTrue()
+            assertThat(awaitItem().telemetry).isEqualTo(defaultIsAnalyticsEnabled)
+            assertThat(awaitItem().personalizedAds).isEqualTo(defaultIsPersonalizedAdsEnabled)
+            assertThat(awaitItem().theme).isEqualTo(defaultUserTheme)
+            assertThat(awaitItem().isLoading).isFalse()
+            with(awaitItem().event as SelectTheme) {
+                assertThat(title).isEqualTo(dialogTitle)
+                assertThat(themes).isEqualTo(dialogThemes)
+            }
+            assertThat(cancelAndConsumeRemainingEvents()).isEmpty()
+        }
+    }
+
+    @Test
+    fun `WHEN OnThemeDismiss THEN send Idle event`() = runTest {
+        // Arrange
+        val defaultIsAnalyticsEnabled = false
+        coEvery { settingsAnalyticsCollectionStates.getAnalyticsCollectionValue() } returns defaultIsAnalyticsEnabled
+
+        val defaultIsPersonalizedAdsEnabled = false
+        coEvery { settingsAnalyticsCollectionStates.getAllowPersonalizedAdsValue() } returns defaultIsPersonalizedAdsEnabled
+
+        val defaultIsCrashReporterEnabled = true
+        coEvery { settingsCrashReporterCollectionStates.getCrashReporterCollectionValue() } returns defaultIsCrashReporterEnabled
+
+        val defaultUserTheme = ApplicationTheme.SYSTEM
+        coEvery { settingsThemeProvider.getCurrentUserTheme() } returns defaultUserTheme
+
+        settingsStateHandler.state.test {
+            // Act
+            val sut = SettingsViewModel(
+                settingsStateHandler,
+                updateCurrentUserAccountUseCase,
+                settingsAnalyticsCollectionStates,
+                settingsCrashReporterCollectionStates,
+                settingsErrorProvider,
+                settingsThemeProvider,
+                appConfigProvider
+            )
+
+            sut.sendIntent(OnThemeDismiss)
+
+            // Assert
+            assertThat(awaitItem().isLoading).isFalse()
+            assertThat(awaitItem().isLoading).isTrue()
+            assertThat(awaitItem().telemetry).isEqualTo(defaultIsAnalyticsEnabled)
+            assertThat(awaitItem().personalizedAds).isEqualTo(defaultIsPersonalizedAdsEnabled)
+            assertThat(awaitItem().theme).isEqualTo(defaultUserTheme)
+            assertThat(awaitItem().isLoading).isFalse()
+            assertThat(cancelAndConsumeRemainingEvents()).isEmpty()
         }
     }
 }

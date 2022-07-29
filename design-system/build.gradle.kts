@@ -22,6 +22,12 @@ plugins {
     id(BuildPlugins.LIBRARY)
 }
 
+android {
+    testFixtures {
+        enable = true
+    }
+}
+
 dependencies {
     implementation(libs.airbnb.android.lottie.compose)
     implementation(libs.google.accompanist.systemuicontroller)
