@@ -19,6 +19,7 @@ package dev.zitech.settings.presentation.settings.compose
 
 import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
@@ -32,7 +33,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import dev.zitech.ds.atoms.divider.FireFlowDividers
 import dev.zitech.ds.atoms.spacer.FireFlowSpacers
 import dev.zitech.ds.organisms.categoryprefrence.CategoryPreference
 import dev.zitech.ds.organisms.categoryprefrence.FireFlowCategoryPreferences
@@ -53,7 +53,11 @@ internal fun SettingsContent(
     onThemeClick: () -> Unit
 ) {
     LazyColumn(
-        modifier = modifier
+        modifier = modifier.padding(
+            start = FireFlowTheme.space.m,
+            end = FireFlowTheme.space.m
+        ),
+        verticalArrangement = Arrangement.spacedBy(FireFlowTheme.space.s)
     ) {
         item {
             FireFlowCategoryPreferences.Simple(
@@ -65,9 +69,6 @@ internal fun SettingsContent(
                     onPerformanceCheckChange = onPerformanceCheckChange,
                     onCrashReporterCheckChange = onCrashReporterCheckChange
                 )
-            )
-            FireFlowDividers.Simple(
-                modifier = Modifier.padding(top = FireFlowTheme.space.m)
             )
         }
         item {

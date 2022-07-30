@@ -20,6 +20,7 @@ package dev.zitech.ds.atoms.switch
 import androidx.compose.material3.SwitchColors
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import dev.zitech.ds.theme.FireFlowTheme
 
 internal object FireFlowSwitchesColors {
@@ -28,14 +29,14 @@ internal object FireFlowSwitchesColors {
         @Composable
         get() = SwitchDefaults.colors(
             checkedThumbColor = FireFlowTheme.colors.primary,
-            checkedBorderColor = FireFlowTheme.colors.primary,
+            checkedBorderColor = FireFlowTheme.colors.inversePrimary,
             checkedTrackColor = FireFlowTheme.colors.inversePrimary,
             checkedIconColor = FireFlowTheme.colors.inversePrimary,
-            disabledCheckedBorderColor = FireFlowTheme.colors.primary,
+            disabledCheckedBorderColor = Color.Transparent,
             uncheckedThumbColor = FireFlowTheme.colors.secondary,
-            uncheckedBorderColor = FireFlowTheme.colors.secondary,
+            uncheckedBorderColor = FireFlowTheme.colors.inversePrimary,
             uncheckedTrackColor = FireFlowTheme.colors.inversePrimary,
             uncheckedIconColor = FireFlowTheme.colors.inversePrimary,
-            disabledUncheckedBorderColor = FireFlowTheme.colors.secondary
+            disabledUncheckedBorderColor = Color.Transparent
         )
 }
