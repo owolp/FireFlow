@@ -15,7 +15,7 @@ room = "2.4.3"
 test = "1.4.0"
 
 [libraries]
-acra-http = "ch.acra:acra-http:5.9.5"
+acra-http = "ch.acra:acra-http:5.9.6"
 airbnb-android-lottie-compose = "com.airbnb.android:lottie-compose:5.2.0"
 android-build-gradle = "com.android.tools.build:gradle:7.2.1"
 androidx-activity-compose = "androidx.activity:activity-compose:1.5.1"
