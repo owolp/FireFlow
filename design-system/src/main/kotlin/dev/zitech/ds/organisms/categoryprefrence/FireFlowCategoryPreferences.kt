@@ -47,7 +47,7 @@ object FireFlowCategoryPreferences {
         ) {
             FireFlowPreferences.Category(title = categoryName)
             Column(
-                verticalArrangement = Arrangement.spacedBy(FireFlowTheme.space.l)
+                verticalArrangement = Arrangement.spacedBy(FireFlowTheme.space.m)
             ) {
                 preferences.forEach { categoryPreference ->
                     CategoryPreferenceItem(categoryPreference)

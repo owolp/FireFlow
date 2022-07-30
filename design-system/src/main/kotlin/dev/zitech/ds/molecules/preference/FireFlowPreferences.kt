@@ -61,7 +61,10 @@ object FireFlowPreferences {
     ) {
         PreferenceItem(modifier = modifier) {
             Row(
-                modifier = Modifier.padding(FireFlowTheme.space.xs),
+                modifier = Modifier.padding(
+                    start = FireFlowTheme.space.xs,
+                    end = FireFlowTheme.space.xs
+                ),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 FireFlowSpacers.Horizontal(
@@ -95,7 +98,10 @@ object FireFlowPreferences {
                     .semantics {
                         stateDescription = onClick?.first.orEmpty()
                     }
-                    .padding(FireFlowTheme.space.xs),
+                    .padding(
+                        start = FireFlowTheme.space.xs,
+                        end = FireFlowTheme.space.xs
+                    ),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 FireFlowSpacers.Horizontal(
@@ -103,7 +109,7 @@ object FireFlowPreferences {
                 )
                 Column(
                     modifier = Modifier.weight(1.0f),
-                    verticalArrangement = Arrangement.spacedBy(FireFlowTheme.space.s)
+                    verticalArrangement = Arrangement.spacedBy(FireFlowTheme.space.xss)
                 ) {
                     FireFlowTexts.TitleMedium(text = title)
                     if (description != null) {
@@ -137,7 +143,10 @@ object FireFlowPreferences {
                     .semantics {
                         stateDescription = onClick?.first.orEmpty()
                     }
-                    .padding(FireFlowTheme.space.xs),
+                    .padding(
+                        start = FireFlowTheme.space.xs,
+                        end = FireFlowTheme.space.xs
+                    ),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 FireFlowSpacers.Horizontal(
@@ -154,7 +163,7 @@ object FireFlowPreferences {
                 )
                 Column(
                     modifier = Modifier.weight(1.0f),
-                    verticalArrangement = Arrangement.spacedBy(FireFlowTheme.space.s)
+                    verticalArrangement = Arrangement.spacedBy(FireFlowTheme.space.xss)
                 ) {
                     FireFlowTexts.TitleMedium(text = title)
                     if (description != null) {
@@ -199,7 +208,10 @@ object FireFlowPreferences {
                             cdDescriptionDisabled
                         }
                     }
-                    .padding(FireFlowTheme.space.xs),
+                    .padding(
+                        start = FireFlowTheme.space.xs,
+                        end = FireFlowTheme.space.xs
+                    ),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 FireFlowSpacers.Horizontal(
@@ -216,7 +228,7 @@ object FireFlowPreferences {
                 )
                 Column(
                     modifier = Modifier.weight(1.0f),
-                    verticalArrangement = Arrangement.spacedBy(FireFlowTheme.space.s)
+                    verticalArrangement = Arrangement.spacedBy(FireFlowTheme.space.xss)
                 ) {
                     FireFlowTexts.TitleMedium(text = title)
                     if (description != null) {
@@ -266,7 +278,10 @@ object FireFlowPreferences {
                             cdDescriptionDisabled
                         }
                     }
-                    .padding(FireFlowTheme.space.xs),
+                    .padding(
+                        start = FireFlowTheme.space.xs,
+                        end = FireFlowTheme.space.xs
+                    ),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 FireFlowSpacers.Horizontal(
@@ -283,7 +298,7 @@ object FireFlowPreferences {
                 )
                 Column(
                     modifier = Modifier.weight(1.0f),
-                    verticalArrangement = Arrangement.spacedBy(FireFlowTheme.space.s)
+                    verticalArrangement = Arrangement.spacedBy(FireFlowTheme.space.xss)
                 ) {
                     FireFlowTexts.TitleMedium(text = title)
                     if (description != null) {

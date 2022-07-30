@@ -19,8 +19,10 @@ package dev.zitech.settings.presentation.settings.compose
 
 import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.AdsClick
 import androidx.compose.material.icons.outlined.Analytics
 import androidx.compose.material.icons.outlined.Brightness6
 import androidx.compose.material.icons.outlined.BugReport
@@ -29,6 +31,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import dev.zitech.ds.atoms.divider.FireFlowDividers
 import dev.zitech.ds.atoms.spacer.FireFlowSpacers
 import dev.zitech.ds.organisms.categoryprefrence.CategoryPreference
 import dev.zitech.ds.organisms.categoryprefrence.FireFlowCategoryPreferences
@@ -59,6 +62,9 @@ internal fun SettingsContent(
                     onPersonalizedAdsCheckChange = onPersonalizedAdsCheckChange,
                     onCrashReporterCheckChange = onCrashReporterCheckChange
                 )
+            )
+            FireFlowDividers.Simple(
+                modifier = Modifier.padding(top = FireFlowTheme.space.m)
             )
         }
         item {
@@ -121,7 +127,7 @@ private fun getDataChoicesPreferences(
             categoryPreferences.add(
                 CategoryPreference.Switch(
                     title = stringResource(id = R.string.data_choices_personalized_ads_title),
-                    icon = Icons.Outlined.Analytics,
+                    icon = Icons.Outlined.AdsClick,
                     checked = state.personalizedAds,
                     onCheckedChanged = onPersonalizedAdsCheckChange,
                     cdDescriptionEnabled = stringResource(id = R.string.cd_data_choices_personalized_ads_enabled),
