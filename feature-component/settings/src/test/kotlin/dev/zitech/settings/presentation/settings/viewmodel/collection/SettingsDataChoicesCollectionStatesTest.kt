@@ -22,9 +22,11 @@ import dev.zitech.core.common.DataFactory
 import dev.zitech.core.persistence.domain.usecase.preferences.GetAllowPersonalizedAdsValueUseCase
 import dev.zitech.core.persistence.domain.usecase.preferences.GetAnalyticsCollectionValueUseCase
 import dev.zitech.core.persistence.domain.usecase.preferences.GetCrashReporterCollectionValueUseCase
+import dev.zitech.core.persistence.domain.usecase.preferences.GetPerformanceCollectionValueUseCase
 import dev.zitech.core.reporter.analytics.domain.usecase.AllowPersonalizedAdsUseCase
 import dev.zitech.core.reporter.analytics.domain.usecase.SetAnalyticsCollectionUseCase
 import dev.zitech.core.reporter.crash.domain.usecase.SetCrashReporterCollectionUseCase
+import dev.zitech.core.reporter.performance.domain.usecase.SetPerformanceCollectionUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -42,6 +44,8 @@ internal class SettingsDataChoicesCollectionStatesTest {
     private val allowPersonalizedAdsUseCase = mockk<AllowPersonalizedAdsUseCase>(relaxUnitFun = true)
     private val getCrashReporterCollectionValueUseCase = mockk<GetCrashReporterCollectionValueUseCase>()
     private val setCrashReporterCollectionUseCase = mockk<SetCrashReporterCollectionUseCase>(relaxed = true)
+    private val getPerformanceCollectionValueUseCase = mockk<GetPerformanceCollectionValueUseCase>()
+    private val setPerformanceCollectionUseCase = mockk<SetPerformanceCollectionUseCase>(relaxed = true)
 
     private lateinit var sut: SettingsDataChoicesCollectionStates
 
@@ -53,7 +57,9 @@ internal class SettingsDataChoicesCollectionStatesTest {
             getAllowPersonalizedAdsValueUseCase,
             allowPersonalizedAdsUseCase,
             getCrashReporterCollectionValueUseCase,
-            setCrashReporterCollectionUseCase
+            setCrashReporterCollectionUseCase,
+            getPerformanceCollectionValueUseCase,
+            setPerformanceCollectionUseCase
         )
     }
 
@@ -133,5 +139,31 @@ internal class SettingsDataChoicesCollectionStatesTest {
         // Assert
         assertThat(result).isEqualTo(checked)
         coVerify { getCrashReporterCollectionValueUseCase() }
+    }
+
+    @Test
+    fun setPerformanceCollection() = runTest {
+        // Arrange
+        val checked = DataFactory.createRandomBoolean()
+
+        // Act
+        sut.setPerformanceCollection(checked)
+
+        // Assert
+        coVerify { setPerformanceCollectionUseCase(checked) }
+    }
+
+    @Test
+    fun getPerformanceCollectionValue() = runTest {
+        // Arrange
+        val checked = DataFactory.createRandomBoolean()
+        coEvery { getPerformanceCollectionValueUseCase() } returns checked
+
+        // Act
+        val result = sut.getPerformanceCollectionValue()
+
+        // Assert
+        assertThat(result).isEqualTo(checked)
+        coVerify { getPerformanceCollectionValueUseCase() }
     }
 }

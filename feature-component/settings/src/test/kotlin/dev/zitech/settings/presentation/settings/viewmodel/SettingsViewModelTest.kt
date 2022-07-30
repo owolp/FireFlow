@@ -65,6 +65,9 @@ internal class SettingsViewModelTest {
         val isPersonalizedAdsEnabled = false
         coEvery { settingsDataChoicesCollectionStates.getAllowPersonalizedAdsValue() } returns isPersonalizedAdsEnabled
 
+        val isPerformanceEnabled = false
+        coEvery { settingsDataChoicesCollectionStates.getPerformanceCollectionValue() } returns isPerformanceEnabled
+
         val currentUserTheme = ApplicationTheme.SYSTEM
         coEvery { settingsThemeProvider.getCurrentUserTheme() } returns currentUserTheme
 
@@ -82,6 +85,7 @@ internal class SettingsViewModelTest {
             assertThat(awaitItem().isLoading).isTrue()
             assertThat(awaitItem().analytics).isEqualTo(isAnalyticsEnabled)
             assertThat(awaitItem().personalizedAds).isEqualTo(isPersonalizedAdsEnabled)
+            assertThat(awaitItem().performance).isEqualTo(isPerformanceEnabled)
             assertThat(awaitItem().isLoading).isFalse()
             assertThat(awaitItem().crashReporter).isEqualTo(checked)
             assertThat(cancelAndConsumeRemainingEvents()).isEmpty()
@@ -104,6 +108,9 @@ internal class SettingsViewModelTest {
         val isPersonalizedAdsEnabled = false
         coEvery { settingsDataChoicesCollectionStates.getAllowPersonalizedAdsValue() } returns isPersonalizedAdsEnabled
 
+        val isPerformanceEnabled = false
+        coEvery { settingsDataChoicesCollectionStates.getPerformanceCollectionValue() } returns isPerformanceEnabled
+
         val currentUserTheme = ApplicationTheme.SYSTEM
         coEvery { settingsThemeProvider.getCurrentUserTheme() } returns currentUserTheme
 
@@ -121,6 +128,7 @@ internal class SettingsViewModelTest {
             assertThat(awaitItem().isLoading).isTrue()
             assertThat(awaitItem().analytics).isEqualTo(isAnalyticsEnabled)
             assertThat(awaitItem().personalizedAds).isEqualTo(isPersonalizedAdsEnabled)
+            assertThat(awaitItem().performance).isEqualTo(isPerformanceEnabled)
             assertThat(awaitItem().isLoading).isFalse()
             assertThat(cancelAndConsumeRemainingEvents()).isEmpty()
         }
@@ -141,6 +149,9 @@ internal class SettingsViewModelTest {
 
         val defaultIsPersonalizedAdsEnabled = false
         coEvery { settingsDataChoicesCollectionStates.getAllowPersonalizedAdsValue() } returns defaultIsPersonalizedAdsEnabled
+
+        val defaultIsPerformanceEnabled = false
+        coEvery { settingsDataChoicesCollectionStates.getPerformanceCollectionValue() } returns defaultIsPerformanceEnabled
 
         val currentUserTheme = ApplicationTheme.SYSTEM
         coEvery { settingsThemeProvider.getCurrentUserTheme() } returns currentUserTheme
@@ -166,6 +177,7 @@ internal class SettingsViewModelTest {
             assertThat(awaitItem().isLoading).isTrue()
             assertThat(awaitItem().analytics).isEqualTo(defaultIsAnalyticsEnabled)
             assertThat(awaitItem().personalizedAds).isEqualTo(defaultIsPersonalizedAdsEnabled)
+            assertThat(awaitItem().performance).isEqualTo(defaultIsPerformanceEnabled)
             assertThat(awaitItem().isLoading).isFalse()
             with(awaitItem().event as Error) {
                 assertThat(this.message).isEqualTo(message)
@@ -179,7 +191,7 @@ internal class SettingsViewModelTest {
     }
 
     @Test
-    fun `WHEN OnAnalyticsCheck GIVEN checked is true and collection is true THEN analytics and personalisedAds are true`() = runTest {
+    fun `WHEN OnAnalyticsCheck GIVEN checked is true and collection is true THEN analytics and personalisedAds and performance are true`() = runTest {
         // Arrange
         val defaultIsAnalyticsEnabled = false
         val collection = true
@@ -187,6 +199,9 @@ internal class SettingsViewModelTest {
 
         val defaultIsPersonalizedAdsEnabled = false
         coEvery { settingsDataChoicesCollectionStates.getAllowPersonalizedAdsValue() } returnsMany listOf(defaultIsAnalyticsEnabled, true)
+
+        val defaultIsPerformanceEnabled = false
+        coEvery { settingsDataChoicesCollectionStates.getPerformanceCollectionValue() } returnsMany listOf(defaultIsPerformanceEnabled, true)
 
         val isCrashReporterEnabled = false
         coEvery { settingsDataChoicesCollectionStates.getCrashReporterCollectionValue() } returns isCrashReporterEnabled
@@ -197,6 +212,7 @@ internal class SettingsViewModelTest {
         val checked = true
         coEvery { settingsDataChoicesCollectionStates.setAnalyticsCollection(checked) } just Runs
         coEvery { settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked) } just Runs
+        coEvery { settingsDataChoicesCollectionStates.setPerformanceCollection(checked) } just Runs
 
         settingsStateHandler.state.test {
             // Act
@@ -209,9 +225,11 @@ internal class SettingsViewModelTest {
             assertThat(awaitItem().isLoading).isTrue()
             assertThat(awaitItem().analytics).isEqualTo(defaultIsAnalyticsEnabled)
             assertThat(awaitItem().personalizedAds).isEqualTo(defaultIsPersonalizedAdsEnabled)
+            assertThat(awaitItem().performance).isEqualTo(defaultIsPerformanceEnabled)
             assertThat(awaitItem().isLoading).isFalse()
             assertThat(awaitItem().analytics).isEqualTo(checked)
             assertThat(awaitItem().personalizedAds).isEqualTo(checked)
+            assertThat(awaitItem().performance).isEqualTo(checked)
             assertThat(cancelAndConsumeRemainingEvents()).isEmpty()
         }
         coVerify {
@@ -221,7 +239,7 @@ internal class SettingsViewModelTest {
     }
 
     @Test
-    fun `WHEN OnAnalyticsCheck GIVEN checked is false and collection is false THEN analytics and personalisedAds are false`() = runTest {
+    fun `WHEN OnAnalyticsCheck GIVEN checked is false and collection is false THEN analytics and personalisedAds and performance are false`() = runTest {
         // Arrange
         val defaultIsAnalyticsEnabled = false
         val collection = false
@@ -229,6 +247,9 @@ internal class SettingsViewModelTest {
 
         val defaultIsPersonalizedAdsEnabled = false
         coEvery { settingsDataChoicesCollectionStates.getAllowPersonalizedAdsValue() } returns defaultIsAnalyticsEnabled
+
+        val defaultIsPerformanceEnabled = false
+        coEvery { settingsDataChoicesCollectionStates.getPerformanceCollectionValue() } returns defaultIsPerformanceEnabled
 
         val defaultIsCrashReporterEnabled = false
         coEvery { settingsDataChoicesCollectionStates.getCrashReporterCollectionValue() } returns defaultIsCrashReporterEnabled
@@ -239,6 +260,7 @@ internal class SettingsViewModelTest {
         val checked = false
         coEvery { settingsDataChoicesCollectionStates.setAnalyticsCollection(checked) } just Runs
         coEvery { settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked) } just Runs
+        coEvery { settingsDataChoicesCollectionStates.setPerformanceCollection(checked) } just Runs
 
         settingsStateHandler.state.test {
             // Act
@@ -251,12 +273,14 @@ internal class SettingsViewModelTest {
             assertThat(awaitItem().isLoading).isTrue()
             assertThat(awaitItem().analytics).isEqualTo(defaultIsAnalyticsEnabled)
             assertThat(awaitItem().analytics).isEqualTo(defaultIsPersonalizedAdsEnabled)
+            assertThat(awaitItem().analytics).isEqualTo(defaultIsPerformanceEnabled)
             assertThat(awaitItem().isLoading).isFalse()
             assertThat(cancelAndConsumeRemainingEvents()).isEmpty()
         }
         coVerify {
             settingsDataChoicesCollectionStates.setAnalyticsCollection(checked)
             settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked)
+            settingsDataChoicesCollectionStates.setPerformanceCollection(checked)
         }
     }
 
@@ -268,6 +292,9 @@ internal class SettingsViewModelTest {
 
         val defaultIsPersonalizedAdsEnabled = false
         coEvery { settingsDataChoicesCollectionStates.getAllowPersonalizedAdsValue() } returns defaultIsPersonalizedAdsEnabled
+
+        val defaultIsPerformanceEnabled = false
+        coEvery { settingsDataChoicesCollectionStates.getPerformanceCollectionValue() } returns defaultIsPerformanceEnabled
 
         val defaultIsCrashReporterEnabled = false
         coEvery { settingsDataChoicesCollectionStates.getCrashReporterCollectionValue() } returns defaultIsCrashReporterEnabled
@@ -292,10 +319,9 @@ internal class SettingsViewModelTest {
             assertThat(cancelAndConsumeRemainingEvents()).isEmpty()
         }
         coVerify(exactly = 0) {
-            settingsDataChoicesCollectionStates.setAnalyticsCollection(true)
-            settingsDataChoicesCollectionStates.setAnalyticsCollection(false)
-            settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(true)
-            settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(false)
+            settingsDataChoicesCollectionStates.setAnalyticsCollection(any())
+            settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(any())
+            settingsDataChoicesCollectionStates.setPerformanceCollection(any())
         }
     }
 
@@ -308,6 +334,9 @@ internal class SettingsViewModelTest {
 
         val defaultIsPersonalizedAdsEnabled = false
         coEvery { settingsDataChoicesCollectionStates.getAllowPersonalizedAdsValue() } returns defaultIsPersonalizedAdsEnabled
+
+        val defaultIsPerformanceEnabled = false
+        coEvery { settingsDataChoicesCollectionStates.getPerformanceCollectionValue() } returns defaultIsPerformanceEnabled
 
         val defaultsCrashReporterEnabled = false
         coEvery { settingsDataChoicesCollectionStates.getCrashReporterCollectionValue() } returns defaultsCrashReporterEnabled
@@ -336,6 +365,7 @@ internal class SettingsViewModelTest {
             assertThat(awaitItem().isLoading).isTrue()
             assertThat(awaitItem().analytics).isEqualTo(defaultIsAnalyticsEnabled)
             assertThat(awaitItem().analytics).isEqualTo(defaultIsPersonalizedAdsEnabled)
+            assertThat(awaitItem().analytics).isEqualTo(defaultIsPerformanceEnabled)
             assertThat(awaitItem().isLoading).isFalse()
             with(awaitItem().event as Error) {
                 assertThat(this.message).isEqualTo(message)
@@ -344,8 +374,8 @@ internal class SettingsViewModelTest {
             assertThat(cancelAndConsumeRemainingEvents()).isEmpty()
         }
         coVerify(exactly = 0) {
-            settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(true)
-            settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(false)
+            settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(any())
+            settingsDataChoicesCollectionStates.setPerformanceCollection(any())
         }
     }
 
@@ -358,6 +388,9 @@ internal class SettingsViewModelTest {
 
         val isAnalyticsEnabled = false
         coEvery { settingsDataChoicesCollectionStates.getAnalyticsCollectionValue() } returns isAnalyticsEnabled
+
+        val isPerformanceEnabled = false
+        coEvery { settingsDataChoicesCollectionStates.getPerformanceCollectionValue() } returns isPerformanceEnabled
 
         val isCrashReporterEnabled = false
         coEvery { settingsDataChoicesCollectionStates.getCrashReporterCollectionValue() } returns isCrashReporterEnabled
@@ -378,7 +411,8 @@ internal class SettingsViewModelTest {
             assertThat(awaitItem().isLoading).isFalse()
             assertThat(awaitItem().isLoading).isTrue()
             assertThat(awaitItem().analytics).isEqualTo(isAnalyticsEnabled)
-            assertThat(awaitItem().personalizedAds).isEqualTo(isCrashReporterEnabled)
+            assertThat(awaitItem().personalizedAds).isEqualTo(defaultPersonalizedAdsEnabled)
+            assertThat(awaitItem().performance).isEqualTo(isPerformanceEnabled)
             assertThat(awaitItem().isLoading).isFalse()
             assertThat(awaitItem().personalizedAds).isEqualTo(checked)
             assertThat(cancelAndConsumeRemainingEvents()).isEmpty()
@@ -397,6 +431,9 @@ internal class SettingsViewModelTest {
 
         val isAnalyticsEnabled = false
         coEvery { settingsDataChoicesCollectionStates.getAnalyticsCollectionValue() } returns isAnalyticsEnabled
+
+        val isPerformanceEnabled = false
+        coEvery { settingsDataChoicesCollectionStates.getPerformanceCollectionValue() } returns isPerformanceEnabled
 
         val isCrashReporterEnabled = false
         coEvery { settingsDataChoicesCollectionStates.getCrashReporterCollectionValue() } returns isCrashReporterEnabled
@@ -417,7 +454,8 @@ internal class SettingsViewModelTest {
             assertThat(awaitItem().isLoading).isFalse()
             assertThat(awaitItem().isLoading).isTrue()
             assertThat(awaitItem().analytics).isEqualTo(isAnalyticsEnabled)
-            assertThat(awaitItem().personalizedAds).isEqualTo(isCrashReporterEnabled)
+            assertThat(awaitItem().personalizedAds).isEqualTo(defaultPersonalizedAdsEnabled)
+            assertThat(awaitItem().performance).isEqualTo(isPerformanceEnabled)
             assertThat(awaitItem().isLoading).isFalse()
             assertThat(cancelAndConsumeRemainingEvents()).isEmpty()
         }
@@ -435,6 +473,9 @@ internal class SettingsViewModelTest {
 
         val defaultIsAnalyticsEnabled = false
         coEvery { settingsDataChoicesCollectionStates.getAnalyticsCollectionValue() } returns defaultIsAnalyticsEnabled
+
+        val defaultIsPerformanceEnabled = false
+        coEvery { settingsDataChoicesCollectionStates.getPerformanceCollectionValue() } returns defaultIsPerformanceEnabled
 
         val defaultIsCrashReporterEnabled = false
         coEvery { settingsDataChoicesCollectionStates.getCrashReporterCollectionValue() } returns defaultIsCrashReporterEnabled
@@ -463,6 +504,7 @@ internal class SettingsViewModelTest {
             assertThat(awaitItem().isLoading).isTrue()
             assertThat(awaitItem().analytics).isEqualTo(defaultIsAnalyticsEnabled)
             assertThat(awaitItem().personalizedAds).isEqualTo(defaultIsPersonalizedAdsEnabled)
+            assertThat(awaitItem().performance).isEqualTo(defaultIsPerformanceEnabled)
             assertThat(awaitItem().isLoading).isFalse()
             with(awaitItem().event as Error) {
                 assertThat(this.message).isEqualTo(message)
@@ -483,6 +525,9 @@ internal class SettingsViewModelTest {
 
         val defaultIsPersonalizedAdsEnabled = false
         coEvery { settingsDataChoicesCollectionStates.getAllowPersonalizedAdsValue() } returns defaultIsPersonalizedAdsEnabled
+
+        val defaultIsPerformanceEnabled = false
+        coEvery { settingsDataChoicesCollectionStates.getPerformanceCollectionValue() } returns defaultIsPerformanceEnabled
 
         val defaultIsCrashReporterEnabled = false
         coEvery { settingsDataChoicesCollectionStates.getCrashReporterCollectionValue() } returns defaultIsCrashReporterEnabled
@@ -507,10 +552,9 @@ internal class SettingsViewModelTest {
             assertThat(cancelAndConsumeRemainingEvents()).isEmpty()
         }
         coVerify(exactly = 0) {
-            settingsDataChoicesCollectionStates.setAnalyticsCollection(true)
-            settingsDataChoicesCollectionStates.setAnalyticsCollection(false)
-            settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(true)
-            settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(false)
+            settingsDataChoicesCollectionStates.setAnalyticsCollection(any())
+            settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(any())
+            settingsDataChoicesCollectionStates.setPerformanceCollection(any())
         }
     }
 
@@ -522,6 +566,9 @@ internal class SettingsViewModelTest {
 
         val defaultIsPersonalizedAdsEnabled = false
         coEvery { settingsDataChoicesCollectionStates.getAllowPersonalizedAdsValue() } returns defaultIsPersonalizedAdsEnabled
+
+        val defaultIsPerformanceEnabled = false
+        coEvery { settingsDataChoicesCollectionStates.getPerformanceCollectionValue() } returns defaultIsPerformanceEnabled
 
         val defaultIsCrashReporterEnabled = true
         coEvery { settingsDataChoicesCollectionStates.getCrashReporterCollectionValue() } returns defaultIsCrashReporterEnabled
@@ -546,6 +593,7 @@ internal class SettingsViewModelTest {
             assertThat(awaitItem().isLoading).isTrue()
             assertThat(awaitItem().analytics).isEqualTo(defaultIsAnalyticsEnabled)
             assertThat(awaitItem().personalizedAds).isEqualTo(defaultIsPersonalizedAdsEnabled)
+            assertThat(awaitItem().performance).isEqualTo(defaultIsPerformanceEnabled)
             assertThat(awaitItem().theme).isEqualTo(defaultUserTheme)
             assertThat(awaitItem().theme).isEqualTo(currentUserTheme)
             assertThat(awaitItem().isLoading).isFalse()
@@ -563,6 +611,9 @@ internal class SettingsViewModelTest {
 
         val defaultIsPersonalizedAdsEnabled = false
         coEvery { settingsDataChoicesCollectionStates.getAllowPersonalizedAdsValue() } returns defaultIsPersonalizedAdsEnabled
+
+        val defaultIsPerformanceEnabled = false
+        coEvery { settingsDataChoicesCollectionStates.getPerformanceCollectionValue() } returns defaultIsPerformanceEnabled
 
         val defaultIsCrashReporterEnabled = true
         coEvery { settingsDataChoicesCollectionStates.getCrashReporterCollectionValue() } returns defaultIsCrashReporterEnabled
@@ -591,6 +642,7 @@ internal class SettingsViewModelTest {
             assertThat(awaitItem().isLoading).isTrue()
             assertThat(awaitItem().analytics).isEqualTo(defaultIsAnalyticsEnabled)
             assertThat(awaitItem().personalizedAds).isEqualTo(defaultIsPersonalizedAdsEnabled)
+            assertThat(awaitItem().performance).isEqualTo(defaultIsPerformanceEnabled)
             assertThat(awaitItem().theme).isEqualTo(defaultUserTheme)
             assertThat(awaitItem().isLoading).isFalse()
             with(awaitItem().event as SelectTheme) {
@@ -610,6 +662,9 @@ internal class SettingsViewModelTest {
         val defaultIsPersonalizedAdsEnabled = false
         coEvery { settingsDataChoicesCollectionStates.getAllowPersonalizedAdsValue() } returns defaultIsPersonalizedAdsEnabled
 
+        val defaultIsPerformanceEnabled = false
+        coEvery { settingsDataChoicesCollectionStates.getPerformanceCollectionValue() } returns defaultIsPerformanceEnabled
+
         val defaultIsCrashReporterEnabled = true
         coEvery { settingsDataChoicesCollectionStates.getCrashReporterCollectionValue() } returns defaultIsCrashReporterEnabled
 
@@ -627,9 +682,189 @@ internal class SettingsViewModelTest {
             assertThat(awaitItem().isLoading).isTrue()
             assertThat(awaitItem().analytics).isEqualTo(defaultIsAnalyticsEnabled)
             assertThat(awaitItem().personalizedAds).isEqualTo(defaultIsPersonalizedAdsEnabled)
+            assertThat(awaitItem().performance).isEqualTo(defaultIsPerformanceEnabled)
             assertThat(awaitItem().theme).isEqualTo(defaultUserTheme)
             assertThat(awaitItem().isLoading).isFalse()
             assertThat(cancelAndConsumeRemainingEvents()).isEmpty()
+        }
+    }
+
+    @Test
+    fun `WHEN OnPerformanceCheckChange GIVEN checked is true and collection is true THEN performance is true`() = runTest {
+        // Arrange
+        val defaultPerformanceEnabled = false
+        val collection = true
+        coEvery { settingsDataChoicesCollectionStates.getPerformanceCollectionValue() } returnsMany listOf(defaultPerformanceEnabled, collection)
+
+        val isAnalyticsEnabled = false
+        coEvery { settingsDataChoicesCollectionStates.getAnalyticsCollectionValue() } returns isAnalyticsEnabled
+
+        val isPersonalizedAdsEnabled = false
+        coEvery { settingsDataChoicesCollectionStates.getAllowPersonalizedAdsValue() } returns isPersonalizedAdsEnabled
+
+        val isCrashReporterEnabled = false
+        coEvery { settingsDataChoicesCollectionStates.getCrashReporterCollectionValue() } returns isCrashReporterEnabled
+
+        val currentUserTheme = ApplicationTheme.SYSTEM
+        coEvery { settingsThemeProvider.getCurrentUserTheme() } returns currentUserTheme
+
+        val checked = true
+        coEvery { settingsDataChoicesCollectionStates.setPerformanceCollection(checked) } just Runs
+
+        settingsStateHandler.state.test {
+            // Act
+            val sut = getSettingsViewModel()
+
+            sut.sendIntent(OnPerformanceCheckChange(checked))
+
+            // Assert
+            assertThat(awaitItem().isLoading).isFalse()
+            assertThat(awaitItem().isLoading).isTrue()
+            assertThat(awaitItem().analytics).isEqualTo(isAnalyticsEnabled)
+            assertThat(awaitItem().personalizedAds).isEqualTo(isPersonalizedAdsEnabled)
+            assertThat(awaitItem().performance).isEqualTo(defaultPerformanceEnabled)
+            assertThat(awaitItem().isLoading).isFalse()
+            assertThat(awaitItem().performance).isEqualTo(checked)
+            assertThat(cancelAndConsumeRemainingEvents()).isEmpty()
+        }
+        coVerify {
+            settingsDataChoicesCollectionStates.setPerformanceCollection(checked)
+        }
+    }
+
+    @Test
+    fun `WHEN OnPerformanceCheckChange GIVEN checked is false and collection is false THEN show only loading`() = runTest {
+        // Arrange
+        val defaultPerformanceEnabled = false
+        val collection = false
+        coEvery { settingsDataChoicesCollectionStates.getPerformanceCollectionValue() } returnsMany listOf(defaultPerformanceEnabled, collection)
+
+        val isAnalyticsEnabled = false
+        coEvery { settingsDataChoicesCollectionStates.getAnalyticsCollectionValue() } returns isAnalyticsEnabled
+
+        val isPersonalizedAdsEnabled = false
+        coEvery { settingsDataChoicesCollectionStates.getAllowPersonalizedAdsValue() } returns isPersonalizedAdsEnabled
+
+        val isCrashReporterEnabled = false
+        coEvery { settingsDataChoicesCollectionStates.getCrashReporterCollectionValue() } returns isCrashReporterEnabled
+
+        val currentUserTheme = ApplicationTheme.SYSTEM
+        coEvery { settingsThemeProvider.getCurrentUserTheme() } returns currentUserTheme
+
+        val checked = false
+        coEvery { settingsDataChoicesCollectionStates.setPerformanceCollection(checked) } just Runs
+
+        settingsStateHandler.state.test {
+            // Act
+            val sut = getSettingsViewModel()
+
+            sut.sendIntent(OnPerformanceCheckChange(checked))
+
+            // Assert
+            assertThat(awaitItem().isLoading).isFalse()
+            assertThat(awaitItem().isLoading).isTrue()
+            assertThat(awaitItem().analytics).isEqualTo(isAnalyticsEnabled)
+            assertThat(awaitItem().personalizedAds).isEqualTo(isPersonalizedAdsEnabled)
+            assertThat(awaitItem().performance).isEqualTo(defaultPerformanceEnabled)
+            assertThat(awaitItem().isLoading).isFalse()
+            assertThat(cancelAndConsumeRemainingEvents()).isEmpty()
+        }
+        coVerify {
+            settingsDataChoicesCollectionStates.setPerformanceCollection(checked)
+        }
+    }
+
+    @Test
+    fun `WHEN OnPerformanceCheckChange GIVEN checked is true and collection is false THEN event Error`() = runTest {
+        // Arrange
+        val defaultIsPerformanceEnabled = false
+        val collection = false
+        coEvery { settingsDataChoicesCollectionStates.getPerformanceCollectionValue() } returnsMany listOf(defaultIsPerformanceEnabled, collection)
+
+        val defaultIsAnalyticsEnabled = false
+        coEvery { settingsDataChoicesCollectionStates.getAnalyticsCollectionValue() } returns defaultIsAnalyticsEnabled
+
+        val defaultIsPersonalizedAdsEnabled = false
+        coEvery { settingsDataChoicesCollectionStates.getAllowPersonalizedAdsValue() } returns defaultIsPersonalizedAdsEnabled
+
+        val defaultIsCrashReporterEnabled = false
+        coEvery { settingsDataChoicesCollectionStates.getCrashReporterCollectionValue() } returns defaultIsCrashReporterEnabled
+
+        val currentUserTheme = ApplicationTheme.SYSTEM
+        coEvery { settingsThemeProvider.getCurrentUserTheme() } returns currentUserTheme
+
+        val checked = true
+        coEvery { settingsDataChoicesCollectionStates.setPerformanceCollection(checked) } just Runs
+
+        val message = DataFactory.createRandomString()
+        val action = DataFactory.createRandomString()
+        every { settingsErrorProvider.getPerformanceError() } returns Error(
+            message,
+            action
+        )
+
+        settingsStateHandler.state.test {
+            // Act
+            val sut = getSettingsViewModel()
+
+            sut.sendIntent(OnPerformanceCheckChange(checked))
+
+            // Assert
+            assertThat(awaitItem().isLoading).isFalse()
+            assertThat(awaitItem().isLoading).isTrue()
+            assertThat(awaitItem().analytics).isEqualTo(defaultIsAnalyticsEnabled)
+            assertThat(awaitItem().personalizedAds).isEqualTo(defaultIsPersonalizedAdsEnabled)
+            assertThat(awaitItem().performance).isEqualTo(defaultIsPerformanceEnabled)
+            assertThat(awaitItem().isLoading).isFalse()
+            with(awaitItem().event as Error) {
+                assertThat(this.message).isEqualTo(message)
+                assertThat(this.action).isEqualTo(action)
+            }
+            assertThat(cancelAndConsumeRemainingEvents()).isEmpty()
+        }
+        coVerify {
+            settingsDataChoicesCollectionStates.setPerformanceCollection(checked)
+        }
+    }
+
+    @Test
+    fun `WHEN OnPerformanceCheckChange GIVEN build config is FOSS THEN show only loading`() = runTest {
+        // Arrange
+        val defaultIsPerformanceEnabled = false
+        coEvery { settingsDataChoicesCollectionStates.getAnalyticsCollectionValue() } returns defaultIsPerformanceEnabled
+
+        val defaultIsPersonalizedAdsEnabled = false
+        coEvery { settingsDataChoicesCollectionStates.getAllowPersonalizedAdsValue() } returns defaultIsPersonalizedAdsEnabled
+
+        val defaultIsAnalyticsEnabled = false
+        coEvery { settingsDataChoicesCollectionStates.getPerformanceCollectionValue() } returns defaultIsAnalyticsEnabled
+
+        val defaultIsCrashReporterEnabled = false
+        coEvery { settingsDataChoicesCollectionStates.getCrashReporterCollectionValue() } returns defaultIsCrashReporterEnabled
+
+        val currentUserTheme = ApplicationTheme.SYSTEM
+        coEvery { settingsThemeProvider.getCurrentUserTheme() } returns currentUserTheme
+
+        val checked = DataFactory.createRandomBoolean()
+
+        appConfigProvider.setBuildFlavor(BuildFlavor.FOSS)
+
+        settingsStateHandler.state.test {
+            // Act
+            val sut = getSettingsViewModel()
+
+            sut.sendIntent(OnPerformanceCheckChange(checked))
+
+            // Assert
+            assertThat(awaitItem().isLoading).isFalse()
+            assertThat(awaitItem().isLoading).isTrue()
+            assertThat(awaitItem().isLoading).isFalse()
+            assertThat(cancelAndConsumeRemainingEvents()).isEmpty()
+        }
+        coVerify(exactly = 0) {
+            settingsDataChoicesCollectionStates.setAnalyticsCollection(any())
+            settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(any())
+            settingsDataChoicesCollectionStates.setPerformanceCollection(any())
         }
     }
 
