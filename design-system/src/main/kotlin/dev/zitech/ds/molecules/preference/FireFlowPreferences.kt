@@ -22,16 +22,19 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Analytics
+import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -59,25 +62,13 @@ object FireFlowPreferences {
         title: String,
         modifier: Modifier = Modifier
     ) {
-        PreferenceItem(modifier = modifier) {
-            Row(
-                modifier = Modifier.padding(
-                    start = FireFlowTheme.space.xs,
-                    end = FireFlowTheme.space.xs
-                ),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                FireFlowSpacers.Horizontal(
-                    horizontalSpace = FireFlowTheme.space.m + imageSize + FireFlowTheme.space.m
-                )
-                FireFlowTexts.TitleMedium(
-                    text = title,
-                    color = FireFlowTheme.colors.primary
-                )
-                FireFlowSpacers.Horizontal(
-                    horizontalSpace = FireFlowTheme.space.m + actionSize + FireFlowTheme.space.m
-                )
-            }
+        Row(
+            modifier = modifier,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            FireFlowTexts.HeadlineMedium(
+                text = title
+            )
         }
     }
 
@@ -91,6 +82,7 @@ object FireFlowPreferences {
         PreferenceItem(modifier = modifier) {
             Row(
                 modifier = Modifier
+                    .fillMaxHeight()
                     .clickable(
                         enabled = onClick != null,
                         onClick = { onClick?.second?.invoke() }
@@ -98,22 +90,19 @@ object FireFlowPreferences {
                     .semantics {
                         stateDescription = onClick?.first.orEmpty()
                     }
-                    .padding(
-                        start = FireFlowTheme.space.xs,
-                        end = FireFlowTheme.space.xs
-                    ),
+                    .padding(FireFlowTheme.space.xs),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 FireFlowSpacers.Horizontal(
-                    horizontalSpace = FireFlowTheme.space.m + imageSize + FireFlowTheme.space.m
+                    horizontalSpace = FireFlowTheme.space.s + imageSize + FireFlowTheme.space.m
                 )
                 Column(
                     modifier = Modifier.weight(1.0f),
                     verticalArrangement = Arrangement.spacedBy(FireFlowTheme.space.xss)
                 ) {
-                    FireFlowTexts.TitleMedium(text = title)
+                    FireFlowTexts.TitleLarge(text = title)
                     if (description != null) {
-                        FireFlowTexts.TitleSmall(
+                        FireFlowTexts.TitleMedium(
                             text = description,
                             color = FireFlowTheme.colors.onBackground.copy(
                                 alpha = DESCRIPTION_ALPHA
@@ -122,7 +111,7 @@ object FireFlowPreferences {
                     }
                 }
                 FireFlowSpacers.Horizontal(
-                    horizontalSpace = FireFlowTheme.space.m + actionSize + FireFlowTheme.space.m
+                    horizontalSpace = FireFlowTheme.space.m + actionSize + FireFlowTheme.space.s
                 )
             }
         }
@@ -139,18 +128,17 @@ object FireFlowPreferences {
         PreferenceItem(modifier = modifier) {
             Row(
                 modifier = Modifier
+                    .fillMaxHeight()
                     .clickable(enabled = onClick != null, onClick = { onClick?.second?.invoke() })
                     .semantics {
                         stateDescription = onClick?.first.orEmpty()
                     }
-                    .padding(
-                        start = FireFlowTheme.space.xs,
-                        end = FireFlowTheme.space.xs
-                    ),
-                verticalAlignment = Alignment.CenterVertically
+                    .padding(FireFlowTheme.space.xs),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
             ) {
                 FireFlowSpacers.Horizontal(
-                    horizontalSpace = FireFlowTheme.space.m
+                    horizontalSpace = FireFlowTheme.space.s
                 )
                 Image(
                     modifier = Modifier.size(imageSize),
@@ -165,9 +153,9 @@ object FireFlowPreferences {
                     modifier = Modifier.weight(1.0f),
                     verticalArrangement = Arrangement.spacedBy(FireFlowTheme.space.xss)
                 ) {
-                    FireFlowTexts.TitleMedium(text = title)
+                    FireFlowTexts.TitleLarge(text = title)
                     if (description != null) {
-                        FireFlowTexts.TitleSmall(
+                        FireFlowTexts.TitleMedium(
                             text = description,
                             color = FireFlowTheme.colors.onBackground.copy(
                                 alpha = DESCRIPTION_ALPHA
@@ -176,7 +164,7 @@ object FireFlowPreferences {
                     }
                 }
                 FireFlowSpacers.Horizontal(
-                    horizontalSpace = FireFlowTheme.space.m + actionSize + FireFlowTheme.space.m
+                    horizontalSpace = FireFlowTheme.space.m + actionSize + FireFlowTheme.space.s
                 )
             }
         }
@@ -196,6 +184,7 @@ object FireFlowPreferences {
         PreferenceItem(modifier = modifier) {
             Row(
                 modifier = Modifier
+                    .fillMaxHeight()
                     .toggleable(
                         value = checked,
                         onValueChange = onCheckedChanged,
@@ -208,14 +197,11 @@ object FireFlowPreferences {
                             cdDescriptionDisabled
                         }
                     }
-                    .padding(
-                        start = FireFlowTheme.space.xs,
-                        end = FireFlowTheme.space.xs
-                    ),
+                    .padding(FireFlowTheme.space.xs),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 FireFlowSpacers.Horizontal(
-                    horizontalSpace = FireFlowTheme.space.m
+                    horizontalSpace = FireFlowTheme.space.s
                 )
                 Image(
                     modifier = Modifier.size(imageSize),
@@ -230,9 +216,9 @@ object FireFlowPreferences {
                     modifier = Modifier.weight(1.0f),
                     verticalArrangement = Arrangement.spacedBy(FireFlowTheme.space.xss)
                 ) {
-                    FireFlowTexts.TitleMedium(text = title)
+                    FireFlowTexts.TitleLarge(text = title)
                     if (description != null) {
-                        FireFlowTexts.TitleSmall(
+                        FireFlowTexts.TitleMedium(
                             text = description,
                             color = FireFlowTheme.colors.onBackground.copy(
                                 alpha = DESCRIPTION_ALPHA
@@ -246,7 +232,7 @@ object FireFlowPreferences {
                     checked = checked,
                     onCheckedChange = null
                 )
-                FireFlowSpacers.Horizontal(horizontalSpace = FireFlowTheme.space.m)
+                FireFlowSpacers.Horizontal(horizontalSpace = FireFlowTheme.space.s)
             }
         }
     }
@@ -266,6 +252,7 @@ object FireFlowPreferences {
         PreferenceItem(modifier = modifier) {
             Row(
                 modifier = Modifier
+                    .fillMaxHeight()
                     .toggleable(
                         value = checked,
                         onValueChange = onCheckedChanged,
@@ -278,14 +265,11 @@ object FireFlowPreferences {
                             cdDescriptionDisabled
                         }
                     }
-                    .padding(
-                        start = FireFlowTheme.space.xs,
-                        end = FireFlowTheme.space.xs
-                    ),
+                    .padding(FireFlowTheme.space.xs),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 FireFlowSpacers.Horizontal(
-                    horizontalSpace = FireFlowTheme.space.m
+                    horizontalSpace = FireFlowTheme.space.s
                 )
                 Image(
                     modifier = Modifier.size(imageSize),
@@ -300,9 +284,9 @@ object FireFlowPreferences {
                     modifier = Modifier.weight(1.0f),
                     verticalArrangement = Arrangement.spacedBy(FireFlowTheme.space.xss)
                 ) {
-                    FireFlowTexts.TitleMedium(text = title)
+                    FireFlowTexts.TitleLarge(text = title)
                     if (description != null) {
-                        FireFlowTexts.TitleSmall(
+                        FireFlowTexts.TitleMedium(
                             text = description,
                             color = FireFlowTheme.colors.onBackground.copy(
                                 alpha = DESCRIPTION_ALPHA
@@ -316,7 +300,7 @@ object FireFlowPreferences {
                     checked = checked,
                     onCheckedChange = null
                 )
-                FireFlowSpacers.Horizontal(horizontalSpace = FireFlowTheme.space.m)
+                FireFlowSpacers.Horizontal(horizontalSpace = FireFlowTheme.space.s)
             }
         }
     }
@@ -326,11 +310,13 @@ object FireFlowPreferences {
         modifier: Modifier = Modifier,
         content: @Composable () -> Unit
     ) {
-        Surface(
+        // TODO: Extract Card to atom
+        Card(
             modifier = modifier
                 .fillMaxWidth()
-                .heightIn(min = 56.dp),
-            color = FireFlowTheme.colors.background
+                .height(IntrinsicSize.Min)
+                .heightIn(min = 72.dp),
+            shape = FireFlowTheme.shapes.extraLarge
         ) {
             content()
         }

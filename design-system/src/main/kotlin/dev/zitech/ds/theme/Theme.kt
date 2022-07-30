@@ -73,6 +73,7 @@ fun FireFlowTheme(
     ) {
         MaterialTheme(
             colorScheme = colorScheme,
+            shapes = shapes,
             content = content
         )
     }

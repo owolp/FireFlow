@@ -28,6 +28,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import dev.zitech.ds.atoms.spacer.FireFlowSpacers
 import dev.zitech.ds.molecules.preference.FireFlowPreferences
 import dev.zitech.ds.theme.FireFlowTheme
 
@@ -46,6 +47,7 @@ object FireFlowCategoryPreferences {
                 .background(FireFlowTheme.colors.background)
         ) {
             FireFlowPreferences.Category(title = categoryName)
+            FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.s)
             Column(
                 verticalArrangement = Arrangement.spacedBy(FireFlowTheme.space.m)
             ) {
