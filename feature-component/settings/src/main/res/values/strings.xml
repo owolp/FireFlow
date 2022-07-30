@@ -24,7 +24,7 @@
     <string name="cd_data_choices_analytics_enabled">Analytics Enabled</string>
     <string name="cd_data_choices_analytics_disabled">Analytics Disabled</string>
     <string name="data_choices_performance_title">Performance</string>
-    <string name="data_choices_performance_description">Share performance data about the application to increase application speed.</string>
+    <string name="data_choices_performance_description">Share performance data to increase the application speed.</string>
     <string name="data_choices_performance_error">The performance settings were not saved correctly. Please try restarting the app.</string>
     <string name="cd_data_choices_performance_enabled">Performance Enabled</string>
     <string name="cd_data_choices_performance_disabled">Performance Disabled</string>

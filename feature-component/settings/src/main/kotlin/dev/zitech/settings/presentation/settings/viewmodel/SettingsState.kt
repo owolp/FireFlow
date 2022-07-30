@@ -24,6 +24,7 @@ data class SettingsState(
     val isLoading: Boolean = false,
     val analytics: Boolean? = null,
     val personalizedAds: Boolean? = null,
+    val performance: Boolean? = null,
     val crashReporter: Boolean = false,
     val theme: ApplicationTheme = ApplicationTheme.SYSTEM,
     val event: SettingsEvent = Idle

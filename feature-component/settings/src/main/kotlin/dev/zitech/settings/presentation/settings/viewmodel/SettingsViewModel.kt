@@ -61,6 +61,7 @@ class SettingsViewModel @Inject constructor(
                 is OnCrashReporterCheckChange -> handleOnCrashReporterCheckChange(intent.checked)
                 is OnAnalyticsCheckChange -> handleOnAnalyticsCheckChange(intent.checked)
                 is OnPersonalizedAdsCheckChange -> handleOnPersonalizedAdsCheckChange(intent.checked)
+                is OnPerformanceCheckChange -> handleOnPerformanceCheckChange(intent.checked)
                 is OnThemeSelect -> handleOnThemeSelect(intent.id)
                 OnThemePreferenceClick -> handleOnThemeClick()
                 OnThemeDismiss -> handleOnThemeDismiss()
@@ -86,6 +87,8 @@ class SettingsViewModel @Inject constructor(
                 settingsStateHandler.setAnalyticsState(checked, appConfigProvider.buildFlavor)
                 settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked)
                 settingsStateHandler.setPersonalizedAdsState(checked, appConfigProvider.buildFlavor)
+                settingsDataChoicesCollectionStates.setPerformanceCollection(checked)
+                settingsStateHandler.setPerformanceState(checked, appConfigProvider.buildFlavor)
             } else {
                 settingsStateHandler.setErrorState(settingsErrorProvider.getAnalyticsError())
             }
@@ -120,6 +123,20 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    private suspend fun handleOnPerformanceCheckChange(checked: Boolean) {
+        if (appConfigProvider.buildFlavor != BuildFlavor.FOSS) {
+            settingsDataChoicesCollectionStates.setPerformanceCollection(checked)
+            val isEnabled = settingsDataChoicesCollectionStates.getPerformanceCollectionValue()
+            if (checked == isEnabled) {
+                settingsStateHandler.setPerformanceState(checked, appConfigProvider.buildFlavor)
+            } else {
+                settingsStateHandler.setErrorState(settingsErrorProvider.getPerformanceError())
+            }
+        } else {
+            Logger.e(TAG, "Setting performance on FOSS build is not supported")
+        }
+    }
+
     private suspend fun getPreferencesState() {
         settingsStateHandler.run {
             setIsLoadingState(true)
@@ -129,6 +146,10 @@ class SettingsViewModel @Inject constructor(
             )
             setPersonalizedAdsState(
                 settingsDataChoicesCollectionStates.getAllowPersonalizedAdsValue(),
+                appConfigProvider.buildFlavor
+            )
+            setPerformanceState(
+                settingsDataChoicesCollectionStates.getPerformanceCollectionValue(),
                 appConfigProvider.buildFlavor
             )
             setCrashReporterState(settingsDataChoicesCollectionStates.getCrashReporterCollectionValue())

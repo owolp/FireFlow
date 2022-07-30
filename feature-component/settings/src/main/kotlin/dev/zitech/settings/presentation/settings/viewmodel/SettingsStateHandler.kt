@@ -59,6 +59,17 @@ class SettingsStateHandler @Inject constructor() : MviStateHandler<SettingsState
         }
     }
 
+    fun setPerformanceState(
+        value: Boolean,
+        buildFlavor: BuildFlavor
+    ) {
+        if (buildFlavor != BuildFlavor.FOSS) {
+            mutableState.update {
+                it.copy(performance = value)
+            }
+        }
+    }
+
     fun setCrashReporterState(value: Boolean) {
         mutableState.update {
             it.copy(crashReporter = value)

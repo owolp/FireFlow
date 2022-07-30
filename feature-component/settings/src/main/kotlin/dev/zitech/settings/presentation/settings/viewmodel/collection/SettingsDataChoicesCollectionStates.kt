@@ -20,9 +20,11 @@ package dev.zitech.settings.presentation.settings.viewmodel.collection
 import dev.zitech.core.persistence.domain.usecase.preferences.GetAllowPersonalizedAdsValueUseCase
 import dev.zitech.core.persistence.domain.usecase.preferences.GetAnalyticsCollectionValueUseCase
 import dev.zitech.core.persistence.domain.usecase.preferences.GetCrashReporterCollectionValueUseCase
+import dev.zitech.core.persistence.domain.usecase.preferences.GetPerformanceCollectionValueUseCase
 import dev.zitech.core.reporter.analytics.domain.usecase.AllowPersonalizedAdsUseCase
 import dev.zitech.core.reporter.analytics.domain.usecase.SetAnalyticsCollectionUseCase
 import dev.zitech.core.reporter.crash.domain.usecase.SetCrashReporterCollectionUseCase
+import dev.zitech.core.reporter.performance.domain.usecase.SetPerformanceCollectionUseCase
 import javax.inject.Inject
 
 class SettingsDataChoicesCollectionStates @Inject constructor(
@@ -31,7 +33,9 @@ class SettingsDataChoicesCollectionStates @Inject constructor(
     private val getAllowPersonalizedAdsValueUseCase: GetAllowPersonalizedAdsValueUseCase,
     private val allowPersonalizedAdsUseCase: AllowPersonalizedAdsUseCase,
     private val getCrashReporterCollectionValueUseCase: GetCrashReporterCollectionValueUseCase,
-    private val setCrashReporterCollectionUseCase: SetCrashReporterCollectionUseCase
+    private val setCrashReporterCollectionUseCase: SetCrashReporterCollectionUseCase,
+    private val getPerformanceCollectionValueUseCase: GetPerformanceCollectionValueUseCase,
+    private val setPerformanceCollectionUseCase: SetPerformanceCollectionUseCase
 ) {
 
     internal suspend fun setAnalyticsCollection(checked: Boolean) {
@@ -54,4 +58,11 @@ class SettingsDataChoicesCollectionStates @Inject constructor(
 
     internal suspend fun getCrashReporterCollectionValue(): Boolean =
         getCrashReporterCollectionValueUseCase()
+
+    internal suspend fun setPerformanceCollection(checked: Boolean) {
+        setPerformanceCollectionUseCase(checked)
+    }
+
+    internal suspend fun getPerformanceCollectionValue(): Boolean =
+        getPerformanceCollectionValueUseCase()
 }

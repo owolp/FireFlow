@@ -23,6 +23,7 @@ sealed interface SettingsIntent : MviIntent
 
 data class OnAnalyticsCheckChange(val checked: Boolean) : SettingsIntent
 data class OnPersonalizedAdsCheckChange(val checked: Boolean) : SettingsIntent
+data class OnPerformanceCheckChange(val checked: Boolean) : SettingsIntent
 data class OnCrashReporterCheckChange(val checked: Boolean) : SettingsIntent
 object OnThemePreferenceClick : SettingsIntent
 data class OnThemeSelect(val id: Int) : SettingsIntent

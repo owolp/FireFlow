@@ -40,4 +40,9 @@ class SettingsErrorProvider @Inject constructor(
         message = stringsProvider(R.string.data_choices_personalized_ads_error),
         action = stringsProvider(R.string.action_restart)
     )
+
+    internal fun getPerformanceError(): Error = Error(
+        message = stringsProvider(R.string.data_choices_performance_error),
+        action = stringsProvider(R.string.action_restart)
+    )
 }

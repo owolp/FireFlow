@@ -26,6 +26,7 @@ import androidx.compose.material.icons.outlined.AdsClick
 import androidx.compose.material.icons.outlined.Analytics
 import androidx.compose.material.icons.outlined.Brightness6
 import androidx.compose.material.icons.outlined.BugReport
+import androidx.compose.material.icons.outlined.Speed
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -47,6 +48,7 @@ internal fun SettingsContent(
     modifier: Modifier = Modifier,
     onAnalyticsCheckChange: (checked: Boolean) -> Unit,
     onPersonalizedAdsCheckChange: (checked: Boolean) -> Unit,
+    onPerformanceCheckChange: (checked: Boolean) -> Unit,
     onCrashReporterCheckChange: (checked: Boolean) -> Unit,
     onThemeClick: () -> Unit
 ) {
@@ -60,6 +62,7 @@ internal fun SettingsContent(
                     state = state,
                     onAnalyticsCheckChange = onAnalyticsCheckChange,
                     onPersonalizedAdsCheckChange = onPersonalizedAdsCheckChange,
+                    onPerformanceCheckChange = onPerformanceCheckChange,
                     onCrashReporterCheckChange = onCrashReporterCheckChange
                 )
             )
@@ -106,6 +109,7 @@ private fun getDataChoicesPreferences(
     state: SettingsState,
     onAnalyticsCheckChange: (checked: Boolean) -> Unit,
     onPersonalizedAdsCheckChange: (checked: Boolean) -> Unit,
+    onPerformanceCheckChange: (checked: Boolean) -> Unit,
     onCrashReporterCheckChange: (checked: Boolean) -> Unit
 ): List<CategoryPreference> {
     val categoryPreferences = mutableListOf<CategoryPreference>()
@@ -133,6 +137,20 @@ private fun getDataChoicesPreferences(
                     cdDescriptionEnabled = stringResource(id = R.string.cd_data_choices_personalized_ads_enabled),
                     cdDescriptionDisabled = stringResource(id = R.string.cd_data_choices_personalized_ads_disabled),
                     description = stringResource(id = R.string.data_choices_personalized_ads_description)
+                )
+            )
+        }
+
+        if (state.analytics && state.performance != null) {
+            categoryPreferences.add(
+                CategoryPreference.Switch(
+                    title = stringResource(id = R.string.data_choices_performance_title),
+                    icon = Icons.Outlined.Speed,
+                    checked = state.performance,
+                    onCheckedChanged = onPerformanceCheckChange,
+                    cdDescriptionEnabled = stringResource(id = R.string.cd_data_choices_performance_enabled),
+                    cdDescriptionDisabled = stringResource(id = R.string.cd_data_choices_performance_disabled),
+                    description = stringResource(id = R.string.data_choices_performance_description)
                 )
             )
         }
@@ -171,6 +189,7 @@ private fun SettingsContent_Preview() {
             state = SettingsState(),
             onAnalyticsCheckChange = {},
             onPersonalizedAdsCheckChange = {},
+            onPerformanceCheckChange = {},
             onCrashReporterCheckChange = {},
             onThemeClick = {}
         )
