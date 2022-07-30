@@ -18,11 +18,16 @@
 <resources>
 
     <string name="data_choices_category">Data choices</string>
-    <string name="data_choices_telemetry_title">Telemetry</string>
-    <string name="data_choices_telemetry_description">Share performance, usage, hardware and customization data about the application to make it better.</string>
-    <string name="data_choices_telemetry_error">The Telemetry settings were not saved correctly. Please try restarting the app.</string>
-    <string name="cd_data_choices_telemetry_enabled">Telemetry Enabled</string>
-    <string name="cd_data_choices_telemetry_disabled">Telemetry Disabled</string>
+    <string name="data_choices_analytics_title">Analytics</string>
+    <string name="data_choices_analytics_description">Share usage, hardware and customization data about the application to make it better.</string>
+    <string name="data_choices_analytics_error">The analytics settings were not saved correctly. Please try restarting the app.</string>
+    <string name="cd_data_choices_analytics_enabled">Analytics Enabled</string>
+    <string name="cd_data_choices_analytics_disabled">Analytics Disabled</string>
+    <string name="data_choices_performance_title">Performance</string>
+    <string name="data_choices_performance_description">Share performance data to increase the application speed.</string>
+    <string name="data_choices_performance_error">The performance settings were not saved correctly. Please try restarting the app.</string>
+    <string name="cd_data_choices_performance_enabled">Performance Enabled</string>
+    <string name="cd_data_choices_performance_disabled">Performance Disabled</string>
     <string name="data_choices_personalized_ads_title">Personalized Ads</string>
     <string name="data_choices_personalized_ads_description">To deliver personalized ads, the application uses information about you to serve ads that are more relevant to you.</string>
     <string name="data_choices_personalized_ads_error">The Personalized Ads settings were not saved correctly. Please try restarting the app.</string>

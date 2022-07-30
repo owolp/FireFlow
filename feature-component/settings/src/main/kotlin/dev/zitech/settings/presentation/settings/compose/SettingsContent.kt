@@ -19,16 +19,20 @@ package dev.zitech.settings.presentation.settings.compose
 
 import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.AdsClick
 import androidx.compose.material.icons.outlined.Analytics
 import androidx.compose.material.icons.outlined.Brightness6
 import androidx.compose.material.icons.outlined.BugReport
+import androidx.compose.material.icons.outlined.Speed
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import dev.zitech.ds.atoms.divider.FireFlowDividers
 import dev.zitech.ds.atoms.spacer.FireFlowSpacers
 import dev.zitech.ds.organisms.categoryprefrence.CategoryPreference
 import dev.zitech.ds.organisms.categoryprefrence.FireFlowCategoryPreferences
@@ -42,8 +46,9 @@ import dev.zitech.settings.presentation.settings.viewmodel.SettingsState
 internal fun SettingsContent(
     state: SettingsState,
     modifier: Modifier = Modifier,
-    onTelemetryCheckChange: (checked: Boolean) -> Unit,
+    onAnalyticsCheckChange: (checked: Boolean) -> Unit,
     onPersonalizedAdsCheckChange: (checked: Boolean) -> Unit,
+    onPerformanceCheckChange: (checked: Boolean) -> Unit,
     onCrashReporterCheckChange: (checked: Boolean) -> Unit,
     onThemeClick: () -> Unit
 ) {
@@ -55,10 +60,14 @@ internal fun SettingsContent(
                 categoryName = stringResource(id = R.string.data_choices_category),
                 preferences = getDataChoicesPreferences(
                     state = state,
-                    onTelemetryCheckChange = onTelemetryCheckChange,
+                    onAnalyticsCheckChange = onAnalyticsCheckChange,
                     onPersonalizedAdsCheckChange = onPersonalizedAdsCheckChange,
+                    onPerformanceCheckChange = onPerformanceCheckChange,
                     onCrashReporterCheckChange = onCrashReporterCheckChange
                 )
+            )
+            FireFlowDividers.Simple(
+                modifier = Modifier.padding(top = FireFlowTheme.space.m)
             )
         }
         item {
@@ -98,35 +107,50 @@ private fun getAppearancePreferences(
 @Composable
 private fun getDataChoicesPreferences(
     state: SettingsState,
-    onTelemetryCheckChange: (checked: Boolean) -> Unit,
+    onAnalyticsCheckChange: (checked: Boolean) -> Unit,
     onPersonalizedAdsCheckChange: (checked: Boolean) -> Unit,
+    onPerformanceCheckChange: (checked: Boolean) -> Unit,
     onCrashReporterCheckChange: (checked: Boolean) -> Unit
 ): List<CategoryPreference> {
     val categoryPreferences = mutableListOf<CategoryPreference>()
 
-    if (state.telemetry != null) {
+    if (state.analytics != null) {
         categoryPreferences.add(
             CategoryPreference.Switch(
-                title = stringResource(id = R.string.data_choices_telemetry_title),
+                title = stringResource(id = R.string.data_choices_analytics_title),
                 icon = Icons.Outlined.Analytics,
-                checked = state.telemetry,
-                onCheckedChanged = onTelemetryCheckChange,
-                cdDescriptionEnabled = stringResource(id = R.string.cd_data_choices_telemetry_enabled),
-                cdDescriptionDisabled = stringResource(id = R.string.cd_data_choices_telemetry_disabled),
-                description = stringResource(id = R.string.data_choices_telemetry_description)
+                checked = state.analytics,
+                onCheckedChanged = onAnalyticsCheckChange,
+                cdDescriptionEnabled = stringResource(id = R.string.cd_data_choices_analytics_enabled),
+                cdDescriptionDisabled = stringResource(id = R.string.cd_data_choices_analytics_disabled),
+                description = stringResource(id = R.string.data_choices_analytics_description)
             )
         )
 
-        if (state.telemetry && state.personalizedAds != null) {
+        if (state.analytics && state.personalizedAds != null) {
             categoryPreferences.add(
                 CategoryPreference.Switch(
                     title = stringResource(id = R.string.data_choices_personalized_ads_title),
-                    icon = Icons.Outlined.Analytics,
+                    icon = Icons.Outlined.AdsClick,
                     checked = state.personalizedAds,
                     onCheckedChanged = onPersonalizedAdsCheckChange,
                     cdDescriptionEnabled = stringResource(id = R.string.cd_data_choices_personalized_ads_enabled),
                     cdDescriptionDisabled = stringResource(id = R.string.cd_data_choices_personalized_ads_disabled),
                     description = stringResource(id = R.string.data_choices_personalized_ads_description)
+                )
+            )
+        }
+
+        if (state.analytics && state.performance != null) {
+            categoryPreferences.add(
+                CategoryPreference.Switch(
+                    title = stringResource(id = R.string.data_choices_performance_title),
+                    icon = Icons.Outlined.Speed,
+                    checked = state.performance,
+                    onCheckedChanged = onPerformanceCheckChange,
+                    cdDescriptionEnabled = stringResource(id = R.string.cd_data_choices_performance_enabled),
+                    cdDescriptionDisabled = stringResource(id = R.string.cd_data_choices_performance_disabled),
+                    description = stringResource(id = R.string.data_choices_performance_description)
                 )
             )
         }
@@ -163,8 +187,9 @@ private fun SettingsContent_Preview() {
     FireFlowTheme {
         SettingsContent(
             state = SettingsState(),
-            onTelemetryCheckChange = {},
+            onAnalyticsCheckChange = {},
             onPersonalizedAdsCheckChange = {},
+            onPerformanceCheckChange = {},
             onCrashReporterCheckChange = {},
             onThemeClick = {}
         )

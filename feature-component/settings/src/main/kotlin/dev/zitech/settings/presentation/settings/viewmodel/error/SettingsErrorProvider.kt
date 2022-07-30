@@ -26,8 +26,8 @@ class SettingsErrorProvider @Inject constructor(
     private val stringsProvider: StringsProvider
 ) {
 
-    internal fun getTelemetryError(): Error = Error(
-        message = stringsProvider(R.string.data_choices_telemetry_error),
+    internal fun getAnalyticsError(): Error = Error(
+        message = stringsProvider(R.string.data_choices_analytics_error),
         action = stringsProvider(R.string.action_restart)
     )
 
@@ -38,6 +38,11 @@ class SettingsErrorProvider @Inject constructor(
 
     internal fun getPersonalizedAdsError(): Error = Error(
         message = stringsProvider(R.string.data_choices_personalized_ads_error),
+        action = stringsProvider(R.string.action_restart)
+    )
+
+    internal fun getPerformanceError(): Error = Error(
+        message = stringsProvider(R.string.data_choices_performance_error),
         action = stringsProvider(R.string.action_restart)
     )
 }

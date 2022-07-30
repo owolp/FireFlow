@@ -26,8 +26,7 @@ import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.core.common.domain.model.BuildFlavor
 import dev.zitech.core.common.presentation.architecture.MviViewModel
 import dev.zitech.core.persistence.domain.usecase.database.UpdateCurrentUserAccountUseCase
-import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsAnalyticsCollectionStates
-import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsCrashReporterCollectionStates
+import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsDataChoicesCollectionStates
 import dev.zitech.settings.presentation.settings.viewmodel.error.SettingsErrorProvider
 import dev.zitech.settings.presentation.settings.viewmodel.theme.SettingsThemeProvider
 import kotlinx.coroutines.flow.StateFlow
@@ -38,8 +37,7 @@ import javax.inject.Inject
 class SettingsViewModel @Inject constructor(
     private val settingsStateHandler: SettingsStateHandler,
     private val updateCurrentUserAccountUseCase: UpdateCurrentUserAccountUseCase,
-    private val settingsAnalyticsCollectionStates: SettingsAnalyticsCollectionStates,
-    private val settingsCrashReporterCollectionStates: SettingsCrashReporterCollectionStates,
+    private val settingsDataChoicesCollectionStates: SettingsDataChoicesCollectionStates,
     private val settingsErrorProvider: SettingsErrorProvider,
     private val settingsThemeProvider: SettingsThemeProvider,
     private val appConfigProvider: AppConfigProvider
@@ -61,8 +59,9 @@ class SettingsViewModel @Inject constructor(
         viewModelScope.launch {
             when (intent) {
                 is OnCrashReporterCheckChange -> handleOnCrashReporterCheckChange(intent.checked)
-                is OnTelemetryCheckChange -> handleOnTelemetryCheckChange(intent.checked)
+                is OnAnalyticsCheckChange -> handleOnAnalyticsCheckChange(intent.checked)
                 is OnPersonalizedAdsCheckChange -> handleOnPersonalizedAdsCheckChange(intent.checked)
+                is OnPerformanceCheckChange -> handleOnPerformanceCheckChange(intent.checked)
                 is OnThemeSelect -> handleOnThemeSelect(intent.id)
                 OnThemePreferenceClick -> handleOnThemeClick()
                 OnThemeDismiss -> handleOnThemeDismiss()
@@ -71,8 +70,8 @@ class SettingsViewModel @Inject constructor(
     }
 
     private suspend fun handleOnCrashReporterCheckChange(checked: Boolean) {
-        settingsCrashReporterCollectionStates.setCrashReporterCollection(checked)
-        val isEnabled = settingsCrashReporterCollectionStates.getCrashReporterCollectionValue()
+        settingsDataChoicesCollectionStates.setCrashReporterCollection(checked)
+        val isEnabled = settingsDataChoicesCollectionStates.getCrashReporterCollectionValue()
         if (checked == isEnabled) {
             settingsStateHandler.setCrashReporterState(checked)
         } else {
@@ -80,19 +79,21 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    private suspend fun handleOnTelemetryCheckChange(checked: Boolean) {
+    private suspend fun handleOnAnalyticsCheckChange(checked: Boolean) {
         if (appConfigProvider.buildFlavor != BuildFlavor.FOSS) {
-            settingsAnalyticsCollectionStates.setAnalyticsCollection(checked)
-            val isEnabled = settingsAnalyticsCollectionStates.getAnalyticsCollectionValue()
+            settingsDataChoicesCollectionStates.setAnalyticsCollection(checked)
+            val isEnabled = settingsDataChoicesCollectionStates.getAnalyticsCollectionValue()
             if (checked == isEnabled) {
-                settingsStateHandler.setTelemetryState(checked, appConfigProvider.buildFlavor)
-                settingsAnalyticsCollectionStates.setAllowPersonalizedAdsValue(checked)
+                settingsStateHandler.setAnalyticsState(checked, appConfigProvider.buildFlavor)
+                settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked)
                 settingsStateHandler.setPersonalizedAdsState(checked, appConfigProvider.buildFlavor)
+                settingsDataChoicesCollectionStates.setPerformanceCollection(checked)
+                settingsStateHandler.setPerformanceState(checked, appConfigProvider.buildFlavor)
             } else {
-                settingsStateHandler.setErrorState(settingsErrorProvider.getTelemetryError())
+                settingsStateHandler.setErrorState(settingsErrorProvider.getAnalyticsError())
             }
         } else {
-            Logger.e(TAG, "Setting telemetry on FOSS build is not supported")
+            Logger.e(TAG, "Setting analytics on FOSS build is not supported")
         }
     }
 
@@ -110,8 +111,8 @@ class SettingsViewModel @Inject constructor(
 
     private suspend fun handleOnPersonalizedAdsCheckChange(checked: Boolean) {
         if (appConfigProvider.buildFlavor != BuildFlavor.FOSS) {
-            settingsAnalyticsCollectionStates.setAllowPersonalizedAdsValue(checked)
-            val isEnabled = settingsAnalyticsCollectionStates.getAllowPersonalizedAdsValue()
+            settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked)
+            val isEnabled = settingsDataChoicesCollectionStates.getAllowPersonalizedAdsValue()
             if (checked == isEnabled) {
                 settingsStateHandler.setPersonalizedAdsState(checked, appConfigProvider.buildFlavor)
             } else {
@@ -122,18 +123,36 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    private suspend fun handleOnPerformanceCheckChange(checked: Boolean) {
+        if (appConfigProvider.buildFlavor != BuildFlavor.FOSS) {
+            settingsDataChoicesCollectionStates.setPerformanceCollection(checked)
+            val isEnabled = settingsDataChoicesCollectionStates.getPerformanceCollectionValue()
+            if (checked == isEnabled) {
+                settingsStateHandler.setPerformanceState(checked, appConfigProvider.buildFlavor)
+            } else {
+                settingsStateHandler.setErrorState(settingsErrorProvider.getPerformanceError())
+            }
+        } else {
+            Logger.e(TAG, "Setting performance on FOSS build is not supported")
+        }
+    }
+
     private suspend fun getPreferencesState() {
         settingsStateHandler.run {
             setIsLoadingState(true)
-            setTelemetryState(
-                settingsAnalyticsCollectionStates.getAnalyticsCollectionValue(),
+            setAnalyticsState(
+                settingsDataChoicesCollectionStates.getAnalyticsCollectionValue(),
                 appConfigProvider.buildFlavor
             )
             setPersonalizedAdsState(
-                settingsAnalyticsCollectionStates.getAllowPersonalizedAdsValue(),
+                settingsDataChoicesCollectionStates.getAllowPersonalizedAdsValue(),
                 appConfigProvider.buildFlavor
             )
-            setCrashReporterState(settingsCrashReporterCollectionStates.getCrashReporterCollectionValue())
+            setPerformanceState(
+                settingsDataChoicesCollectionStates.getPerformanceCollectionValue(),
+                appConfigProvider.buildFlavor
+            )
+            setCrashReporterState(settingsDataChoicesCollectionStates.getCrashReporterCollectionValue())
             setTheme(settingsThemeProvider.getCurrentUserTheme())
             setIsLoadingState(false)
         }
