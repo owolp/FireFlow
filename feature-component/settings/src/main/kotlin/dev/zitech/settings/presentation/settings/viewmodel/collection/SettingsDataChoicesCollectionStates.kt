@@ -17,14 +17,36 @@
 
 package dev.zitech.settings.presentation.settings.viewmodel.collection
 
+import dev.zitech.core.persistence.domain.usecase.preferences.GetAllowPersonalizedAdsValueUseCase
+import dev.zitech.core.persistence.domain.usecase.preferences.GetAnalyticsCollectionValueUseCase
 import dev.zitech.core.persistence.domain.usecase.preferences.GetCrashReporterCollectionValueUseCase
+import dev.zitech.core.reporter.analytics.domain.usecase.AllowPersonalizedAdsUseCase
+import dev.zitech.core.reporter.analytics.domain.usecase.SetAnalyticsCollectionUseCase
 import dev.zitech.core.reporter.crash.domain.usecase.SetCrashReporterCollectionUseCase
 import javax.inject.Inject
 
-class SettingsCrashReporterCollectionStates @Inject constructor(
+class SettingsDataChoicesCollectionStates @Inject constructor(
+    private val getAnalyticsCollectionValueUseCase: GetAnalyticsCollectionValueUseCase,
+    private val setAnalyticsCollectionUseCase: SetAnalyticsCollectionUseCase,
+    private val getAllowPersonalizedAdsValueUseCase: GetAllowPersonalizedAdsValueUseCase,
+    private val allowPersonalizedAdsUseCase: AllowPersonalizedAdsUseCase,
     private val getCrashReporterCollectionValueUseCase: GetCrashReporterCollectionValueUseCase,
     private val setCrashReporterCollectionUseCase: SetCrashReporterCollectionUseCase
 ) {
+
+    internal suspend fun setAnalyticsCollection(checked: Boolean) {
+        setAnalyticsCollectionUseCase(checked)
+    }
+
+    internal suspend fun getAnalyticsCollectionValue(): Boolean =
+        getAnalyticsCollectionValueUseCase()
+
+    internal suspend fun setAllowPersonalizedAdsValue(checked: Boolean) {
+        allowPersonalizedAdsUseCase(checked)
+    }
+
+    internal suspend fun getAllowPersonalizedAdsValue(): Boolean =
+        getAllowPersonalizedAdsValueUseCase()
 
     internal suspend fun setCrashReporterCollection(checked: Boolean) {
         setCrashReporterCollectionUseCase(checked)

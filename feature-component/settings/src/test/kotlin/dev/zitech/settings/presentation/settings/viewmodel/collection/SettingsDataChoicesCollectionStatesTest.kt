@@ -21,8 +21,10 @@ import com.google.common.truth.Truth.assertThat
 import dev.zitech.core.common.DataFactory
 import dev.zitech.core.persistence.domain.usecase.preferences.GetAllowPersonalizedAdsValueUseCase
 import dev.zitech.core.persistence.domain.usecase.preferences.GetAnalyticsCollectionValueUseCase
+import dev.zitech.core.persistence.domain.usecase.preferences.GetCrashReporterCollectionValueUseCase
 import dev.zitech.core.reporter.analytics.domain.usecase.AllowPersonalizedAdsUseCase
 import dev.zitech.core.reporter.analytics.domain.usecase.SetAnalyticsCollectionUseCase
+import dev.zitech.core.reporter.crash.domain.usecase.SetCrashReporterCollectionUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -32,22 +34,26 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 @ExperimentalCoroutinesApi
-internal class SettingsAnalyticsCollectionStatesTest {
+internal class SettingsDataChoicesCollectionStatesTest {
 
     private val getAnalyticsCollectionValueUseCase = mockk<GetAnalyticsCollectionValueUseCase>()
     private val setAnalyticsCollectionUseCase = mockk<SetAnalyticsCollectionUseCase>(relaxed = true)
     private val getAllowPersonalizedAdsValueUseCase = mockk<GetAllowPersonalizedAdsValueUseCase>()
     private val allowPersonalizedAdsUseCase = mockk<AllowPersonalizedAdsUseCase>(relaxUnitFun = true)
+    private val getCrashReporterCollectionValueUseCase = mockk<GetCrashReporterCollectionValueUseCase>()
+    private val setCrashReporterCollectionUseCase = mockk<SetCrashReporterCollectionUseCase>(relaxed = true)
 
-    private lateinit var sut: SettingsAnalyticsCollectionStates
+    private lateinit var sut: SettingsDataChoicesCollectionStates
 
     @BeforeEach
     fun setup() {
-        sut = SettingsAnalyticsCollectionStates(
+        sut = SettingsDataChoicesCollectionStates(
             getAnalyticsCollectionValueUseCase,
             setAnalyticsCollectionUseCase,
             getAllowPersonalizedAdsValueUseCase,
-            allowPersonalizedAdsUseCase
+            allowPersonalizedAdsUseCase,
+            getCrashReporterCollectionValueUseCase,
+            setCrashReporterCollectionUseCase
         )
     }
 
@@ -101,5 +107,31 @@ internal class SettingsAnalyticsCollectionStatesTest {
         // Assert
         assertThat(result).isEqualTo(checked)
         coVerify { getAllowPersonalizedAdsValueUseCase() }
+    }
+
+    @Test
+    fun setCrashReporterCollection() = runTest {
+        // Arrange
+        val checked = DataFactory.createRandomBoolean()
+
+        // Act
+        sut.setCrashReporterCollection(checked)
+
+        // Assert
+        coVerify { setCrashReporterCollectionUseCase(checked) }
+    }
+
+    @Test
+    fun getCrashReporterCollectionValue() = runTest {
+        // Arrange
+        val checked = DataFactory.createRandomBoolean()
+        coEvery { getCrashReporterCollectionValueUseCase() } returns checked
+
+        // Act
+        val result = sut.getCrashReporterCollectionValue()
+
+        // Assert
+        assertThat(result).isEqualTo(checked)
+        coVerify { getCrashReporterCollectionValueUseCase() }
     }
 }
