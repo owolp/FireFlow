@@ -40,15 +40,15 @@ internal class SettingsErrorProviderTest {
     }
 
     @Test
-    fun getTelemetryError() {
+    fun getAnalyticsError() {
         // Arrange
         val message = DataFactory.createRandomString()
-        every { stringsProvider(R.string.data_choices_telemetry_error) } returns message
+        every { stringsProvider(R.string.data_choices_analytics_error) } returns message
         val action = DataFactory.createRandomString()
         every { stringsProvider(R.string.action_restart) } returns action
 
         // Act
-        val result = sut.getTelemetryError()
+        val result = sut.getAnalyticsError()
 
         // Assert
         assertThat(result.message).isEqualTo(message)

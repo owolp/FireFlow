@@ -45,7 +45,7 @@ import dev.zitech.settings.presentation.settings.viewmodel.SettingsState
 internal fun SettingsContent(
     state: SettingsState,
     modifier: Modifier = Modifier,
-    onTelemetryCheckChange: (checked: Boolean) -> Unit,
+    onAnalyticsCheckChange: (checked: Boolean) -> Unit,
     onPersonalizedAdsCheckChange: (checked: Boolean) -> Unit,
     onCrashReporterCheckChange: (checked: Boolean) -> Unit,
     onThemeClick: () -> Unit
@@ -58,7 +58,7 @@ internal fun SettingsContent(
                 categoryName = stringResource(id = R.string.data_choices_category),
                 preferences = getDataChoicesPreferences(
                     state = state,
-                    onTelemetryCheckChange = onTelemetryCheckChange,
+                    onAnalyticsCheckChange = onAnalyticsCheckChange,
                     onPersonalizedAdsCheckChange = onPersonalizedAdsCheckChange,
                     onCrashReporterCheckChange = onCrashReporterCheckChange
                 )
@@ -104,26 +104,26 @@ private fun getAppearancePreferences(
 @Composable
 private fun getDataChoicesPreferences(
     state: SettingsState,
-    onTelemetryCheckChange: (checked: Boolean) -> Unit,
+    onAnalyticsCheckChange: (checked: Boolean) -> Unit,
     onPersonalizedAdsCheckChange: (checked: Boolean) -> Unit,
     onCrashReporterCheckChange: (checked: Boolean) -> Unit
 ): List<CategoryPreference> {
     val categoryPreferences = mutableListOf<CategoryPreference>()
 
-    if (state.telemetry != null) {
+    if (state.analytics != null) {
         categoryPreferences.add(
             CategoryPreference.Switch(
-                title = stringResource(id = R.string.data_choices_telemetry_title),
+                title = stringResource(id = R.string.data_choices_analytics_title),
                 icon = Icons.Outlined.Analytics,
-                checked = state.telemetry,
-                onCheckedChanged = onTelemetryCheckChange,
-                cdDescriptionEnabled = stringResource(id = R.string.cd_data_choices_telemetry_enabled),
-                cdDescriptionDisabled = stringResource(id = R.string.cd_data_choices_telemetry_disabled),
-                description = stringResource(id = R.string.data_choices_telemetry_description)
+                checked = state.analytics,
+                onCheckedChanged = onAnalyticsCheckChange,
+                cdDescriptionEnabled = stringResource(id = R.string.cd_data_choices_analytics_enabled),
+                cdDescriptionDisabled = stringResource(id = R.string.cd_data_choices_analytics_disabled),
+                description = stringResource(id = R.string.data_choices_analytics_description)
             )
         )
 
-        if (state.telemetry && state.personalizedAds != null) {
+        if (state.analytics && state.personalizedAds != null) {
             categoryPreferences.add(
                 CategoryPreference.Switch(
                     title = stringResource(id = R.string.data_choices_personalized_ads_title),
@@ -169,7 +169,7 @@ private fun SettingsContent_Preview() {
     FireFlowTheme {
         SettingsContent(
             state = SettingsState(),
-            onTelemetryCheckChange = {},
+            onAnalyticsCheckChange = {},
             onPersonalizedAdsCheckChange = {},
             onCrashReporterCheckChange = {},
             onThemeClick = {}

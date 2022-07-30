@@ -59,7 +59,7 @@ class SettingsViewModel @Inject constructor(
         viewModelScope.launch {
             when (intent) {
                 is OnCrashReporterCheckChange -> handleOnCrashReporterCheckChange(intent.checked)
-                is OnTelemetryCheckChange -> handleOnTelemetryCheckChange(intent.checked)
+                is OnAnalyticsCheckChange -> handleOnAnalyticsCheckChange(intent.checked)
                 is OnPersonalizedAdsCheckChange -> handleOnPersonalizedAdsCheckChange(intent.checked)
                 is OnThemeSelect -> handleOnThemeSelect(intent.id)
                 OnThemePreferenceClick -> handleOnThemeClick()
@@ -78,19 +78,19 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    private suspend fun handleOnTelemetryCheckChange(checked: Boolean) {
+    private suspend fun handleOnAnalyticsCheckChange(checked: Boolean) {
         if (appConfigProvider.buildFlavor != BuildFlavor.FOSS) {
             settingsDataChoicesCollectionStates.setAnalyticsCollection(checked)
             val isEnabled = settingsDataChoicesCollectionStates.getAnalyticsCollectionValue()
             if (checked == isEnabled) {
-                settingsStateHandler.setTelemetryState(checked, appConfigProvider.buildFlavor)
+                settingsStateHandler.setAnalyticsState(checked, appConfigProvider.buildFlavor)
                 settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked)
                 settingsStateHandler.setPersonalizedAdsState(checked, appConfigProvider.buildFlavor)
             } else {
-                settingsStateHandler.setErrorState(settingsErrorProvider.getTelemetryError())
+                settingsStateHandler.setErrorState(settingsErrorProvider.getAnalyticsError())
             }
         } else {
-            Logger.e(TAG, "Setting telemetry on FOSS build is not supported")
+            Logger.e(TAG, "Setting analytics on FOSS build is not supported")
         }
     }
 
@@ -123,7 +123,7 @@ class SettingsViewModel @Inject constructor(
     private suspend fun getPreferencesState() {
         settingsStateHandler.run {
             setIsLoadingState(true)
-            setTelemetryState(
+            setAnalyticsState(
                 settingsDataChoicesCollectionStates.getAnalyticsCollectionValue(),
                 appConfigProvider.buildFlavor
             )

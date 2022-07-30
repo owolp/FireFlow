@@ -37,13 +37,13 @@ class SettingsStateHandler @Inject constructor() : MviStateHandler<SettingsState
         }
     }
 
-    fun setTelemetryState(
+    fun setAnalyticsState(
         value: Boolean,
         buildFlavor: BuildFlavor
     ) {
         if (buildFlavor != BuildFlavor.FOSS) {
             mutableState.update {
-                it.copy(telemetry = value)
+                it.copy(analytics = value)
             }
         }
     }

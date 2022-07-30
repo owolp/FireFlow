@@ -21,7 +21,7 @@ import dev.zitech.core.common.presentation.architecture.MviIntent
 
 sealed interface SettingsIntent : MviIntent
 
-data class OnTelemetryCheckChange(val checked: Boolean) : SettingsIntent
+data class OnAnalyticsCheckChange(val checked: Boolean) : SettingsIntent
 data class OnPersonalizedAdsCheckChange(val checked: Boolean) : SettingsIntent
 data class OnCrashReporterCheckChange(val checked: Boolean) : SettingsIntent
 object OnThemePreferenceClick : SettingsIntent

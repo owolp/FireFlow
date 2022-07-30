@@ -31,9 +31,9 @@ import dev.zitech.ds.theme.FireFlowTheme
 import dev.zitech.settings.presentation.settings.viewmodel.Dialog
 import dev.zitech.settings.presentation.settings.viewmodel.Error
 import dev.zitech.settings.presentation.settings.viewmodel.Idle
+import dev.zitech.settings.presentation.settings.viewmodel.OnAnalyticsCheckChange
 import dev.zitech.settings.presentation.settings.viewmodel.OnCrashReporterCheckChange
 import dev.zitech.settings.presentation.settings.viewmodel.OnPersonalizedAdsCheckChange
-import dev.zitech.settings.presentation.settings.viewmodel.OnTelemetryCheckChange
 import dev.zitech.settings.presentation.settings.viewmodel.OnThemeDismiss
 import dev.zitech.settings.presentation.settings.viewmodel.OnThemePreferenceClick
 import dev.zitech.settings.presentation.settings.viewmodel.OnThemeSelect
@@ -53,8 +53,8 @@ fun Settings(
     } else {
         SettingsContent(
             state = state.value,
-            onTelemetryCheckChange = { checked ->
-                viewModel.sendIntent(OnTelemetryCheckChange(checked))
+            onAnalyticsCheckChange = { checked ->
+                viewModel.sendIntent(OnAnalyticsCheckChange(checked))
             },
             onPersonalizedAdsCheckChange = { checked ->
                 viewModel.sendIntent(OnPersonalizedAdsCheckChange(checked))

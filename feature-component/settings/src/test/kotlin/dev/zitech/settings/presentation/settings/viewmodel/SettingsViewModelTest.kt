@@ -80,7 +80,7 @@ internal class SettingsViewModelTest {
             // Assert
             assertThat(awaitItem().isLoading).isFalse()
             assertThat(awaitItem().isLoading).isTrue()
-            assertThat(awaitItem().telemetry).isEqualTo(isAnalyticsEnabled)
+            assertThat(awaitItem().analytics).isEqualTo(isAnalyticsEnabled)
             assertThat(awaitItem().personalizedAds).isEqualTo(isPersonalizedAdsEnabled)
             assertThat(awaitItem().isLoading).isFalse()
             assertThat(awaitItem().crashReporter).isEqualTo(checked)
@@ -119,7 +119,7 @@ internal class SettingsViewModelTest {
             // Assert
             assertThat(awaitItem().isLoading).isFalse()
             assertThat(awaitItem().isLoading).isTrue()
-            assertThat(awaitItem().telemetry).isEqualTo(isAnalyticsEnabled)
+            assertThat(awaitItem().analytics).isEqualTo(isAnalyticsEnabled)
             assertThat(awaitItem().personalizedAds).isEqualTo(isPersonalizedAdsEnabled)
             assertThat(awaitItem().isLoading).isFalse()
             assertThat(cancelAndConsumeRemainingEvents()).isEmpty()
@@ -164,7 +164,7 @@ internal class SettingsViewModelTest {
             // Assert
             assertThat(awaitItem().isLoading).isFalse()
             assertThat(awaitItem().isLoading).isTrue()
-            assertThat(awaitItem().telemetry).isEqualTo(defaultIsAnalyticsEnabled)
+            assertThat(awaitItem().analytics).isEqualTo(defaultIsAnalyticsEnabled)
             assertThat(awaitItem().personalizedAds).isEqualTo(defaultIsPersonalizedAdsEnabled)
             assertThat(awaitItem().isLoading).isFalse()
             with(awaitItem().event as Error) {
@@ -179,7 +179,7 @@ internal class SettingsViewModelTest {
     }
 
     @Test
-    fun `WHEN OnTelemetryCheck GIVEN checked is true and collection is true THEN telemetry and personalisedAds are true`() = runTest {
+    fun `WHEN OnAnalyticsCheck GIVEN checked is true and collection is true THEN analytics and personalisedAds are true`() = runTest {
         // Arrange
         val defaultIsAnalyticsEnabled = false
         val collection = true
@@ -202,15 +202,15 @@ internal class SettingsViewModelTest {
             // Act
             val sut = getSettingsViewModel()
 
-            sut.sendIntent(OnTelemetryCheckChange(checked))
+            sut.sendIntent(OnAnalyticsCheckChange(checked))
 
             // Assert
             assertThat(awaitItem().isLoading).isFalse()
             assertThat(awaitItem().isLoading).isTrue()
-            assertThat(awaitItem().telemetry).isEqualTo(defaultIsAnalyticsEnabled)
+            assertThat(awaitItem().analytics).isEqualTo(defaultIsAnalyticsEnabled)
             assertThat(awaitItem().personalizedAds).isEqualTo(defaultIsPersonalizedAdsEnabled)
             assertThat(awaitItem().isLoading).isFalse()
-            assertThat(awaitItem().telemetry).isEqualTo(checked)
+            assertThat(awaitItem().analytics).isEqualTo(checked)
             assertThat(awaitItem().personalizedAds).isEqualTo(checked)
             assertThat(cancelAndConsumeRemainingEvents()).isEmpty()
         }
@@ -221,7 +221,7 @@ internal class SettingsViewModelTest {
     }
 
     @Test
-    fun `WHEN OnTelemetryCheck GIVEN checked is false and collection is false THEN telemetry and personalisedAds are false`() = runTest {
+    fun `WHEN OnAnalyticsCheck GIVEN checked is false and collection is false THEN analytics and personalisedAds are false`() = runTest {
         // Arrange
         val defaultIsAnalyticsEnabled = false
         val collection = false
@@ -244,13 +244,13 @@ internal class SettingsViewModelTest {
             // Act
             val sut = getSettingsViewModel()
 
-            sut.sendIntent(OnTelemetryCheckChange(checked))
+            sut.sendIntent(OnAnalyticsCheckChange(checked))
 
             // Assert
             assertThat(awaitItem().isLoading).isFalse()
             assertThat(awaitItem().isLoading).isTrue()
-            assertThat(awaitItem().telemetry).isEqualTo(defaultIsAnalyticsEnabled)
-            assertThat(awaitItem().telemetry).isEqualTo(defaultIsPersonalizedAdsEnabled)
+            assertThat(awaitItem().analytics).isEqualTo(defaultIsAnalyticsEnabled)
+            assertThat(awaitItem().analytics).isEqualTo(defaultIsPersonalizedAdsEnabled)
             assertThat(awaitItem().isLoading).isFalse()
             assertThat(cancelAndConsumeRemainingEvents()).isEmpty()
         }
@@ -261,7 +261,7 @@ internal class SettingsViewModelTest {
     }
 
     @Test
-    fun `WHEN OnTelemetryCheck GIVEN build config is FOSS THEN show only loading`() = runTest {
+    fun `WHEN OnAnalyticsCheck GIVEN build config is FOSS THEN show only loading`() = runTest {
         // Arrange
         val defaultIsAnalyticsEnabled = false
         coEvery { settingsDataChoicesCollectionStates.getAnalyticsCollectionValue() } returns defaultIsAnalyticsEnabled
@@ -283,7 +283,7 @@ internal class SettingsViewModelTest {
             // Act
             val sut = getSettingsViewModel()
 
-            sut.sendIntent(OnTelemetryCheckChange(checked))
+            sut.sendIntent(OnAnalyticsCheckChange(checked))
 
             // Assert
             assertThat(awaitItem().isLoading).isFalse()
@@ -300,7 +300,7 @@ internal class SettingsViewModelTest {
     }
 
     @Test
-    fun `WHEN OnTelemetryCheck GIVEN checked is true and collection is false THEN event Error`() = runTest {
+    fun `WHEN OnAnalyticsCheck GIVEN checked is true and collection is false THEN event Error`() = runTest {
         // Arrange
         val defaultIsAnalyticsEnabled = false
         val collection = false
@@ -320,7 +320,7 @@ internal class SettingsViewModelTest {
 
         val message = DataFactory.createRandomString()
         val action = DataFactory.createRandomString()
-        every { settingsErrorProvider.getTelemetryError() } returns Error(
+        every { settingsErrorProvider.getAnalyticsError() } returns Error(
             message,
             action
         )
@@ -329,13 +329,13 @@ internal class SettingsViewModelTest {
             // Act
             val sut = getSettingsViewModel()
 
-            sut.sendIntent(OnTelemetryCheckChange(checked))
+            sut.sendIntent(OnAnalyticsCheckChange(checked))
 
             // Assert
             assertThat(awaitItem().isLoading).isFalse()
             assertThat(awaitItem().isLoading).isTrue()
-            assertThat(awaitItem().telemetry).isEqualTo(defaultIsAnalyticsEnabled)
-            assertThat(awaitItem().telemetry).isEqualTo(defaultIsPersonalizedAdsEnabled)
+            assertThat(awaitItem().analytics).isEqualTo(defaultIsAnalyticsEnabled)
+            assertThat(awaitItem().analytics).isEqualTo(defaultIsPersonalizedAdsEnabled)
             assertThat(awaitItem().isLoading).isFalse()
             with(awaitItem().event as Error) {
                 assertThat(this.message).isEqualTo(message)
@@ -377,7 +377,7 @@ internal class SettingsViewModelTest {
             // Assert
             assertThat(awaitItem().isLoading).isFalse()
             assertThat(awaitItem().isLoading).isTrue()
-            assertThat(awaitItem().telemetry).isEqualTo(isAnalyticsEnabled)
+            assertThat(awaitItem().analytics).isEqualTo(isAnalyticsEnabled)
             assertThat(awaitItem().personalizedAds).isEqualTo(isCrashReporterEnabled)
             assertThat(awaitItem().isLoading).isFalse()
             assertThat(awaitItem().personalizedAds).isEqualTo(checked)
@@ -416,7 +416,7 @@ internal class SettingsViewModelTest {
             // Assert
             assertThat(awaitItem().isLoading).isFalse()
             assertThat(awaitItem().isLoading).isTrue()
-            assertThat(awaitItem().telemetry).isEqualTo(isAnalyticsEnabled)
+            assertThat(awaitItem().analytics).isEqualTo(isAnalyticsEnabled)
             assertThat(awaitItem().personalizedAds).isEqualTo(isCrashReporterEnabled)
             assertThat(awaitItem().isLoading).isFalse()
             assertThat(cancelAndConsumeRemainingEvents()).isEmpty()
@@ -461,7 +461,7 @@ internal class SettingsViewModelTest {
             // Assert
             assertThat(awaitItem().isLoading).isFalse()
             assertThat(awaitItem().isLoading).isTrue()
-            assertThat(awaitItem().telemetry).isEqualTo(defaultIsAnalyticsEnabled)
+            assertThat(awaitItem().analytics).isEqualTo(defaultIsAnalyticsEnabled)
             assertThat(awaitItem().personalizedAds).isEqualTo(defaultIsPersonalizedAdsEnabled)
             assertThat(awaitItem().isLoading).isFalse()
             with(awaitItem().event as Error) {
@@ -544,7 +544,7 @@ internal class SettingsViewModelTest {
             // Assert
             assertThat(awaitItem().isLoading).isFalse()
             assertThat(awaitItem().isLoading).isTrue()
-            assertThat(awaitItem().telemetry).isEqualTo(defaultIsAnalyticsEnabled)
+            assertThat(awaitItem().analytics).isEqualTo(defaultIsAnalyticsEnabled)
             assertThat(awaitItem().personalizedAds).isEqualTo(defaultIsPersonalizedAdsEnabled)
             assertThat(awaitItem().theme).isEqualTo(defaultUserTheme)
             assertThat(awaitItem().theme).isEqualTo(currentUserTheme)
@@ -589,7 +589,7 @@ internal class SettingsViewModelTest {
             // Assert
             assertThat(awaitItem().isLoading).isFalse()
             assertThat(awaitItem().isLoading).isTrue()
-            assertThat(awaitItem().telemetry).isEqualTo(defaultIsAnalyticsEnabled)
+            assertThat(awaitItem().analytics).isEqualTo(defaultIsAnalyticsEnabled)
             assertThat(awaitItem().personalizedAds).isEqualTo(defaultIsPersonalizedAdsEnabled)
             assertThat(awaitItem().theme).isEqualTo(defaultUserTheme)
             assertThat(awaitItem().isLoading).isFalse()
@@ -625,7 +625,7 @@ internal class SettingsViewModelTest {
             // Assert
             assertThat(awaitItem().isLoading).isFalse()
             assertThat(awaitItem().isLoading).isTrue()
-            assertThat(awaitItem().telemetry).isEqualTo(defaultIsAnalyticsEnabled)
+            assertThat(awaitItem().analytics).isEqualTo(defaultIsAnalyticsEnabled)
             assertThat(awaitItem().personalizedAds).isEqualTo(defaultIsPersonalizedAdsEnabled)
             assertThat(awaitItem().theme).isEqualTo(defaultUserTheme)
             assertThat(awaitItem().isLoading).isFalse()
