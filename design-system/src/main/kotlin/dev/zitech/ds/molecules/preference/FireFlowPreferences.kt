@@ -305,6 +305,7 @@ object FireFlowPreferences {
         }
     }
 
+    @SuppressWarnings("ForbiddenComment")
     @Composable
     private fun PreferenceItem(
         modifier: Modifier = Modifier,
