@@ -25,7 +25,7 @@ import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.core.common.domain.model.BuildFlavor
 import dev.zitech.core.common.presentation.architecture.MviViewModel
-import dev.zitech.core.persistence.domain.usecase.database.UpdateCurrentUserAccountUseCase
+import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsAppearanceCollectionStates
 import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsDataChoicesCollectionStates
 import dev.zitech.settings.presentation.settings.viewmodel.error.SettingsErrorProvider
 import dev.zitech.settings.presentation.settings.viewmodel.theme.SettingsThemeProvider
@@ -36,7 +36,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     private val settingsStateHandler: SettingsStateHandler,
-    private val updateCurrentUserAccountUseCase: UpdateCurrentUserAccountUseCase,
+    private val settingsAppearanceCollectionStates: SettingsAppearanceCollectionStates,
     private val settingsDataChoicesCollectionStates: SettingsDataChoicesCollectionStates,
     private val settingsErrorProvider: SettingsErrorProvider,
     private val settingsThemeProvider: SettingsThemeProvider,
@@ -99,7 +99,7 @@ class SettingsViewModel @Inject constructor(
 
     private suspend fun handleOnThemeSelect(id: Int) {
         ApplicationTheme.values().first { it.id == id }.run {
-            updateCurrentUserAccountUseCase(theme = this)
+            settingsAppearanceCollectionStates.saveApplicationThemeValue(this)
             settingsStateHandler.setTheme(this)
             settingsStateHandler.resetEvent()
         }
@@ -153,7 +153,7 @@ class SettingsViewModel @Inject constructor(
                 appConfigProvider.buildFlavor
             )
             setCrashReporterState(settingsDataChoicesCollectionStates.getCrashReporterCollectionValue())
-            setTheme(settingsThemeProvider.getCurrentUserTheme())
+            setTheme(settingsAppearanceCollectionStates.getApplicationThemeValue())
             setIsLoadingState(false)
         }
     }
@@ -162,7 +162,9 @@ class SettingsViewModel @Inject constructor(
         settingsStateHandler.setEvent(
             SelectTheme(
                 title = settingsThemeProvider.getDialogThemeTitle(),
-                themes = settingsThemeProvider.getDialogThemes()
+                themes = settingsThemeProvider.getDialogThemes(
+                    settingsAppearanceCollectionStates.getApplicationThemeValue()
+                )
             )
         )
     }

@@ -17,10 +17,7 @@
 
 package dev.zitech.core.persistence.domain.model.database
 
-import dev.zitech.core.common.domain.model.ApplicationTheme
-
 data class UserAccount(
     val id: Long,
-    val isCurrentUserAccount: Boolean,
-    val theme: ApplicationTheme
+    val isCurrentUserAccount: Boolean
 )

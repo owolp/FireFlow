@@ -15,23 +15,27 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.settings.domain.usecase
+package dev.zitech.core.persistence.framework.preference.mapper
 
+import dev.zitech.core.common.data.mapper.Mapper
+import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.domain.model.ApplicationTheme
-import dev.zitech.core.common.domain.model.DataResult
-import dev.zitech.core.persistence.domain.usecase.database.GetCurrentUserAccountUseCase
-import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
-class GetCurrentUserThemeUseCase @Inject constructor(
-    private val getCurrentUserAccountUseCase: GetCurrentUserAccountUseCase
-) {
+class IntToApplicationThemeMapper @Inject constructor() : Mapper<Int, ApplicationTheme> {
 
-    suspend operator fun invoke(): ApplicationTheme =
-        when (val result = getCurrentUserAccountUseCase().first()) {
-            is DataResult.Success -> {
-                ApplicationTheme.values().first { it.id == result.value.theme.id }
+    companion object {
+        const val TAG = "IntToApplicationThemeMapper"
+    }
+
+    override fun invoke(input: Int): ApplicationTheme =
+        when (input) {
+            ApplicationTheme.SYSTEM.id -> ApplicationTheme.SYSTEM
+            ApplicationTheme.DARK.id -> ApplicationTheme.DARK
+            ApplicationTheme.LIGHT.id -> ApplicationTheme.LIGHT
+            else -> {
+                Logger.e(TAG, "Theme $input not supported!")
+                ApplicationTheme.SYSTEM
             }
-            is DataResult.Error -> ApplicationTheme.SYSTEM
         }
 }

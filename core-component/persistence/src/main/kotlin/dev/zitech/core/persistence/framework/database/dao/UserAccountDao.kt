@@ -41,7 +41,4 @@ internal interface UserAccountDao {
 
     @Query("UPDATE user_accounts SET isCurrentUserAccount=0")
     suspend fun removeCurrentUserAccount(): Int
-
-    @Query("UPDATE user_accounts SET theme=:theme WHERE isCurrentUserAccount = 1")
-    suspend fun updateCurrentUserAccountTheme(theme: Int)
 }
