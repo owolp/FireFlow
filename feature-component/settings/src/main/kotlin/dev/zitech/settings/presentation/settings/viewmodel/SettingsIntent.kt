@@ -28,3 +28,6 @@ data class OnCrashReporterCheckChange(val checked: Boolean) : SettingsIntent
 object OnThemePreferenceClick : SettingsIntent
 data class OnThemeSelect(val id: Int) : SettingsIntent
 object OnThemeDismiss : SettingsIntent
+object OnLanguagePreferenceClick : SettingsIntent
+data class OnLanguageSelect(val id: Int) : SettingsIntent
+object OnLanguageDismiss : SettingsIntent

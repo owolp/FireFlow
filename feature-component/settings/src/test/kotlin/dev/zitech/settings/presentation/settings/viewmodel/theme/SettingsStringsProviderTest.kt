@@ -31,15 +31,15 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 @ExperimentalCoroutinesApi
-internal class SettingsThemeProviderTest {
+internal class SettingsStringsProviderTest {
 
     private val stringsProvider = mockk<StringsProvider>()
 
-    private lateinit var sut: SettingsThemeProvider
+    private lateinit var sut: SettingsStringsProvider
 
     @BeforeEach
     fun setup() {
-        sut = SettingsThemeProvider(
+        sut = SettingsStringsProvider(
             stringsProvider
         )
     }

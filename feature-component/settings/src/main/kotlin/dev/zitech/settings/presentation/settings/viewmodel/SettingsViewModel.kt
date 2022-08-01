@@ -22,13 +22,14 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.zitech.core.common.domain.applicationconfig.AppConfigProvider
 import dev.zitech.core.common.domain.logger.Logger
+import dev.zitech.core.common.domain.model.ApplicationLanguage
 import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.core.common.domain.model.BuildFlavor
 import dev.zitech.core.common.presentation.architecture.MviViewModel
 import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsAppearanceCollectionStates
 import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsDataChoicesCollectionStates
 import dev.zitech.settings.presentation.settings.viewmodel.error.SettingsErrorProvider
-import dev.zitech.settings.presentation.settings.viewmodel.theme.SettingsThemeProvider
+import dev.zitech.settings.presentation.settings.viewmodel.theme.SettingsStringsProvider
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -39,7 +40,7 @@ class SettingsViewModel @Inject constructor(
     private val settingsAppearanceCollectionStates: SettingsAppearanceCollectionStates,
     private val settingsDataChoicesCollectionStates: SettingsDataChoicesCollectionStates,
     private val settingsErrorProvider: SettingsErrorProvider,
-    private val settingsThemeProvider: SettingsThemeProvider,
+    private val settingsStringsProvider: SettingsStringsProvider,
     private val appConfigProvider: AppConfigProvider
 ) : ViewModel(), MviViewModel<SettingsIntent, SettingsState> {
 
@@ -63,8 +64,11 @@ class SettingsViewModel @Inject constructor(
                 is OnPersonalizedAdsCheckChange -> handleOnPersonalizedAdsCheckChange(intent.checked)
                 is OnPerformanceCheckChange -> handleOnPerformanceCheckChange(intent.checked)
                 is OnThemeSelect -> handleOnThemeSelect(intent.id)
+                is OnLanguageSelect -> handleOnLanguageSelect(intent.id)
                 OnThemePreferenceClick -> handleOnThemeClick()
                 OnThemeDismiss -> handleOnThemeDismiss()
+                OnLanguagePreferenceClick -> handleOnLanguagePreferenceClick()
+                OnLanguageDismiss -> handleOnLanguageDismiss()
             }
         }
     }
@@ -105,7 +109,19 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    private fun handleOnLanguageSelect(id: Int) {
+        ApplicationLanguage.values().first { it.id == id }.run {
+            settingsAppearanceCollectionStates.saveApplicationLanguageValue(this)
+            settingsStateHandler.setLanguage(this)
+            settingsStateHandler.resetEvent()
+        }
+    }
+
     private fun handleOnThemeDismiss() {
+        settingsStateHandler.resetEvent()
+    }
+
+    private fun handleOnLanguageDismiss() {
         settingsStateHandler.resetEvent()
     }
 
@@ -161,9 +177,20 @@ class SettingsViewModel @Inject constructor(
     private fun handleOnThemeClick() {
         settingsStateHandler.setEvent(
             SelectTheme(
-                title = settingsThemeProvider.getDialogThemeTitle(),
-                themes = settingsThemeProvider.getDialogThemes(
+                title = settingsStringsProvider.getDialogThemeTitle(),
+                themes = settingsStringsProvider.getDialogThemes(
                     settingsStateHandler.state.value.theme
+                )
+            )
+        )
+    }
+
+    private fun handleOnLanguagePreferenceClick() {
+        settingsStateHandler.setEvent(
+            SelectLanguage(
+                title = settingsStringsProvider.getDialogLanguageTitle(),
+                languages = settingsStringsProvider.getDialogLanguages(
+                    settingsStateHandler.state.value.language
                 )
             )
         )

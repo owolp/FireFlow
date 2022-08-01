@@ -37,3 +37,8 @@ internal data class SelectTheme(
     val title: String,
     val themes: List<DialogRadioItem>
 ) : SettingsEvent
+
+internal data class SelectLanguage(
+    val title: String,
+    val languages: List<DialogRadioItem>
+) : SettingsEvent

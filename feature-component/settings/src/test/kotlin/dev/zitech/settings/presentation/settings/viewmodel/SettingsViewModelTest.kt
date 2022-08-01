@@ -27,7 +27,7 @@ import dev.zitech.core.common.framework.applicationconfig.FakeAppConfigProvider
 import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsAppearanceCollectionStates
 import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsDataChoicesCollectionStates
 import dev.zitech.settings.presentation.settings.viewmodel.error.SettingsErrorProvider
-import dev.zitech.settings.presentation.settings.viewmodel.theme.SettingsThemeProvider
+import dev.zitech.settings.presentation.settings.viewmodel.theme.SettingsStringsProvider
 import dev.zitech.settings.presentation.test.MainDispatcherRule
 import io.mockk.Runs
 import io.mockk.coEvery
@@ -48,7 +48,7 @@ internal class SettingsViewModelTest {
     private val settingsAppearanceCollectionStates = mockk<SettingsAppearanceCollectionStates>()
     private val settingsDataChoicesCollectionStates = mockk<SettingsDataChoicesCollectionStates>()
     private val settingsErrorProvider = mockk<SettingsErrorProvider>()
-    private val settingsThemeProvider = mockk<SettingsThemeProvider>()
+    private val settingsStringsProvider = mockk<SettingsStringsProvider>()
     private val appConfigProvider = FakeAppConfigProvider()
 
     @Test
@@ -621,14 +621,14 @@ internal class SettingsViewModelTest {
         coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns defaultUserTheme
 
         val dialogTitle = DataFactory.createRandomString()
-        every { settingsThemeProvider.getDialogThemeTitle() } returns dialogTitle
+        every { settingsStringsProvider.getDialogThemeTitle() } returns dialogTitle
 
         val dialogThemes = listOf(
             DialogRadioItemBuilder().setId(DataFactory.createRandomInt()).build(),
             DialogRadioItemBuilder().setId(DataFactory.createRandomInt()).build(),
             DialogRadioItemBuilder().setId(DataFactory.createRandomInt()).build()
         )
-        coEvery { settingsThemeProvider.getDialogThemes(defaultUserTheme) } returns dialogThemes
+        coEvery { settingsStringsProvider.getDialogThemes(defaultUserTheme) } returns dialogThemes
 
         settingsStateHandler.state.test {
             // Act
@@ -872,7 +872,7 @@ internal class SettingsViewModelTest {
         settingsAppearanceCollectionStates,
         settingsDataChoicesCollectionStates,
         settingsErrorProvider,
-        settingsThemeProvider,
+        settingsStringsProvider,
         appConfigProvider
     )
 }

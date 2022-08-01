@@ -17,6 +17,7 @@
 
 package dev.zitech.settings.presentation.settings.viewmodel
 
+import dev.zitech.core.common.domain.model.ApplicationLanguage
 import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.core.common.presentation.architecture.MviState
 
@@ -27,5 +28,6 @@ data class SettingsState(
     val performance: Boolean? = null,
     val crashReporter: Boolean = false,
     val theme: ApplicationTheme = ApplicationTheme.SYSTEM,
+    val language: ApplicationLanguage = ApplicationLanguage.SYSTEM,
     val event: SettingsEvent = Idle
 ) : MviState

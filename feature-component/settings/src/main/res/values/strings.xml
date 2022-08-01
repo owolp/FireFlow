@@ -43,6 +43,9 @@
     <string name="appearance_theme">Theme</string>
     <string name="cd_appearance_theme_click">Change application theme</string>
     <string name="appearance_dialog_theme_title">Theme</string>
+    <string name="appearance_language">Language</string>
+    <string name="cd_appearance_language_click">Change application language</string>
+    <string name="appearance_dialog_language_title">Language</string>
 
     <string name="action_restart">Restart</string>
 </resources>

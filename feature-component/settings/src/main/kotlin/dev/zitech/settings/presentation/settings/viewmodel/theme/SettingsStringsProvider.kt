@@ -17,13 +17,14 @@
 
 package dev.zitech.settings.presentation.settings.viewmodel.theme
 
+import dev.zitech.core.common.domain.model.ApplicationLanguage
 import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.core.common.domain.strings.StringsProvider
 import dev.zitech.ds.molecules.dialog.DialogRadioItem
 import dev.zitech.settings.R
 import javax.inject.Inject
 
-class SettingsThemeProvider @Inject constructor(
+class SettingsStringsProvider @Inject constructor(
     private val stringsProvider: StringsProvider
 ) {
 
@@ -37,6 +38,20 @@ class SettingsThemeProvider @Inject constructor(
                     id = it.id,
                     text = stringsProvider(it.text),
                     selected = applicationTheme.id == it.id,
+                    enabled = true
+                )
+            }
+
+    internal fun getDialogLanguageTitle(): String =
+        stringsProvider(R.string.appearance_dialog_language_title)
+
+    internal fun getDialogLanguages(applicationLanguage: ApplicationLanguage): List<DialogRadioItem> =
+        ApplicationLanguage.values().sortedBy { it.id }
+            .map {
+                DialogRadioItem(
+                    id = it.id,
+                    text = stringsProvider(it.text),
+                    selected = applicationLanguage.id == it.id,
                     enabled = true
                 )
             }
