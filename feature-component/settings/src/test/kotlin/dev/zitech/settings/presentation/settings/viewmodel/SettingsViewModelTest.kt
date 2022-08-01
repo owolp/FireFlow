@@ -23,9 +23,8 @@ import com.google.common.truth.Truth.assertThat
 import dev.zitech.core.common.DataFactory
 import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.core.common.domain.model.BuildFlavor
-import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.common.framework.applicationconfig.FakeAppConfigProvider
-import dev.zitech.core.persistence.domain.usecase.database.UpdateCurrentUserAccountUseCase
+import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsAppearanceCollectionStates
 import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsDataChoicesCollectionStates
 import dev.zitech.settings.presentation.settings.viewmodel.error.SettingsErrorProvider
 import dev.zitech.settings.presentation.settings.viewmodel.theme.SettingsThemeProvider
@@ -46,7 +45,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 internal class SettingsViewModelTest {
 
     private val settingsStateHandler = SettingsStateHandler()
-    private val updateCurrentUserAccountUseCase = mockk<UpdateCurrentUserAccountUseCase>()
+    private val settingsAppearanceCollectionStates = mockk<SettingsAppearanceCollectionStates>()
     private val settingsDataChoicesCollectionStates = mockk<SettingsDataChoicesCollectionStates>()
     private val settingsErrorProvider = mockk<SettingsErrorProvider>()
     private val settingsThemeProvider = mockk<SettingsThemeProvider>()
@@ -69,7 +68,7 @@ internal class SettingsViewModelTest {
         coEvery { settingsDataChoicesCollectionStates.getPerformanceCollectionValue() } returns isPerformanceEnabled
 
         val currentUserTheme = ApplicationTheme.SYSTEM
-        coEvery { settingsThemeProvider.getCurrentUserTheme() } returns currentUserTheme
+        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns currentUserTheme
 
         val checked = true
         coEvery { settingsDataChoicesCollectionStates.setCrashReporterCollection(checked) } just Runs
@@ -112,7 +111,7 @@ internal class SettingsViewModelTest {
         coEvery { settingsDataChoicesCollectionStates.getPerformanceCollectionValue() } returns isPerformanceEnabled
 
         val currentUserTheme = ApplicationTheme.SYSTEM
-        coEvery { settingsThemeProvider.getCurrentUserTheme() } returns currentUserTheme
+        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns currentUserTheme
 
         val checked = false
         coEvery { settingsDataChoicesCollectionStates.setCrashReporterCollection(checked) } just Runs
@@ -154,7 +153,7 @@ internal class SettingsViewModelTest {
         coEvery { settingsDataChoicesCollectionStates.getPerformanceCollectionValue() } returns defaultIsPerformanceEnabled
 
         val currentUserTheme = ApplicationTheme.SYSTEM
-        coEvery { settingsThemeProvider.getCurrentUserTheme() } returns currentUserTheme
+        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns currentUserTheme
 
         val checked = true
         coEvery { settingsDataChoicesCollectionStates.setCrashReporterCollection(checked) } just Runs
@@ -207,7 +206,7 @@ internal class SettingsViewModelTest {
         coEvery { settingsDataChoicesCollectionStates.getCrashReporterCollectionValue() } returns isCrashReporterEnabled
 
         val currentUserTheme = ApplicationTheme.SYSTEM
-        coEvery { settingsThemeProvider.getCurrentUserTheme() } returns currentUserTheme
+        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns currentUserTheme
 
         val checked = true
         coEvery { settingsDataChoicesCollectionStates.setAnalyticsCollection(checked) } just Runs
@@ -255,7 +254,7 @@ internal class SettingsViewModelTest {
         coEvery { settingsDataChoicesCollectionStates.getCrashReporterCollectionValue() } returns defaultIsCrashReporterEnabled
 
         val currentUserTheme = ApplicationTheme.SYSTEM
-        coEvery { settingsThemeProvider.getCurrentUserTheme() } returns currentUserTheme
+        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns currentUserTheme
 
         val checked = false
         coEvery { settingsDataChoicesCollectionStates.setAnalyticsCollection(checked) } just Runs
@@ -300,7 +299,7 @@ internal class SettingsViewModelTest {
         coEvery { settingsDataChoicesCollectionStates.getCrashReporterCollectionValue() } returns defaultIsCrashReporterEnabled
 
         val currentUserTheme = ApplicationTheme.SYSTEM
-        coEvery { settingsThemeProvider.getCurrentUserTheme() } returns currentUserTheme
+        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns currentUserTheme
 
         val checked = DataFactory.createRandomBoolean()
 
@@ -342,7 +341,7 @@ internal class SettingsViewModelTest {
         coEvery { settingsDataChoicesCollectionStates.getCrashReporterCollectionValue() } returns defaultsCrashReporterEnabled
 
         val currentUserTheme = ApplicationTheme.SYSTEM
-        coEvery { settingsThemeProvider.getCurrentUserTheme() } returns currentUserTheme
+        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns currentUserTheme
 
         val checked = true
         coEvery { settingsDataChoicesCollectionStates.setAnalyticsCollection(checked) } just Runs
@@ -396,7 +395,7 @@ internal class SettingsViewModelTest {
         coEvery { settingsDataChoicesCollectionStates.getCrashReporterCollectionValue() } returns isCrashReporterEnabled
 
         val currentUserTheme = ApplicationTheme.SYSTEM
-        coEvery { settingsThemeProvider.getCurrentUserTheme() } returns currentUserTheme
+        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns currentUserTheme
 
         val checked = true
         coEvery { settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked) } just Runs
@@ -439,7 +438,7 @@ internal class SettingsViewModelTest {
         coEvery { settingsDataChoicesCollectionStates.getCrashReporterCollectionValue() } returns isCrashReporterEnabled
 
         val currentUserTheme = ApplicationTheme.SYSTEM
-        coEvery { settingsThemeProvider.getCurrentUserTheme() } returns currentUserTheme
+        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns currentUserTheme
 
         val checked = false
         coEvery { settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked) } just Runs
@@ -481,7 +480,7 @@ internal class SettingsViewModelTest {
         coEvery { settingsDataChoicesCollectionStates.getCrashReporterCollectionValue() } returns defaultIsCrashReporterEnabled
 
         val currentUserTheme = ApplicationTheme.SYSTEM
-        coEvery { settingsThemeProvider.getCurrentUserTheme() } returns currentUserTheme
+        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns currentUserTheme
 
         val checked = true
         coEvery { settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked) } just Runs
@@ -533,7 +532,7 @@ internal class SettingsViewModelTest {
         coEvery { settingsDataChoicesCollectionStates.getCrashReporterCollectionValue() } returns defaultIsCrashReporterEnabled
 
         val currentUserTheme = ApplicationTheme.SYSTEM
-        coEvery { settingsThemeProvider.getCurrentUserTheme() } returns currentUserTheme
+        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns currentUserTheme
 
         val checked = DataFactory.createRandomBoolean()
 
@@ -576,11 +575,11 @@ internal class SettingsViewModelTest {
         val defaultUserTheme = ApplicationTheme.SYSTEM
 
         val currentUserTheme = ApplicationTheme.DARK
-        coEvery { settingsThemeProvider.getCurrentUserTheme() } returns currentUserTheme
+        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns currentUserTheme
 
         val themeId = ApplicationTheme.LIGHT.id
 
-        coEvery { updateCurrentUserAccountUseCase(theme = ApplicationTheme.LIGHT) } returns DataResult.Success(Unit)
+        coEvery { settingsAppearanceCollectionStates.saveApplicationThemeValue(ApplicationTheme.LIGHT) } just Runs
 
         settingsStateHandler.state.test {
             // Act
@@ -599,7 +598,7 @@ internal class SettingsViewModelTest {
             assertThat(awaitItem().isLoading).isFalse()
             assertThat(awaitItem().theme).isEqualTo(ApplicationTheme.LIGHT)
             assertThat(cancelAndConsumeRemainingEvents()).isEmpty()
-            coVerify { updateCurrentUserAccountUseCase(theme = ApplicationTheme.LIGHT) }
+            coVerify { settingsAppearanceCollectionStates.saveApplicationThemeValue(ApplicationTheme.LIGHT) }
         }
     }
 
@@ -619,7 +618,7 @@ internal class SettingsViewModelTest {
         coEvery { settingsDataChoicesCollectionStates.getCrashReporterCollectionValue() } returns defaultIsCrashReporterEnabled
 
         val defaultUserTheme = ApplicationTheme.SYSTEM
-        coEvery { settingsThemeProvider.getCurrentUserTheme() } returns defaultUserTheme
+        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns defaultUserTheme
 
         val dialogTitle = DataFactory.createRandomString()
         every { settingsThemeProvider.getDialogThemeTitle() } returns dialogTitle
@@ -629,7 +628,7 @@ internal class SettingsViewModelTest {
             DialogRadioItemBuilder().setId(DataFactory.createRandomInt()).build(),
             DialogRadioItemBuilder().setId(DataFactory.createRandomInt()).build()
         )
-        coEvery { settingsThemeProvider.getDialogThemes() } returns dialogThemes
+        coEvery { settingsThemeProvider.getDialogThemes(defaultUserTheme) } returns dialogThemes
 
         settingsStateHandler.state.test {
             // Act
@@ -669,7 +668,7 @@ internal class SettingsViewModelTest {
         coEvery { settingsDataChoicesCollectionStates.getCrashReporterCollectionValue() } returns defaultIsCrashReporterEnabled
 
         val defaultUserTheme = ApplicationTheme.SYSTEM
-        coEvery { settingsThemeProvider.getCurrentUserTheme() } returns defaultUserTheme
+        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns defaultUserTheme
 
         settingsStateHandler.state.test {
             // Act
@@ -706,7 +705,7 @@ internal class SettingsViewModelTest {
         coEvery { settingsDataChoicesCollectionStates.getCrashReporterCollectionValue() } returns isCrashReporterEnabled
 
         val currentUserTheme = ApplicationTheme.SYSTEM
-        coEvery { settingsThemeProvider.getCurrentUserTheme() } returns currentUserTheme
+        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns currentUserTheme
 
         val checked = true
         coEvery { settingsDataChoicesCollectionStates.setPerformanceCollection(checked) } just Runs
@@ -749,7 +748,7 @@ internal class SettingsViewModelTest {
         coEvery { settingsDataChoicesCollectionStates.getCrashReporterCollectionValue() } returns isCrashReporterEnabled
 
         val currentUserTheme = ApplicationTheme.SYSTEM
-        coEvery { settingsThemeProvider.getCurrentUserTheme() } returns currentUserTheme
+        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns currentUserTheme
 
         val checked = false
         coEvery { settingsDataChoicesCollectionStates.setPerformanceCollection(checked) } just Runs
@@ -791,7 +790,7 @@ internal class SettingsViewModelTest {
         coEvery { settingsDataChoicesCollectionStates.getCrashReporterCollectionValue() } returns defaultIsCrashReporterEnabled
 
         val currentUserTheme = ApplicationTheme.SYSTEM
-        coEvery { settingsThemeProvider.getCurrentUserTheme() } returns currentUserTheme
+        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns currentUserTheme
 
         val checked = true
         coEvery { settingsDataChoicesCollectionStates.setPerformanceCollection(checked) } just Runs
@@ -843,7 +842,7 @@ internal class SettingsViewModelTest {
         coEvery { settingsDataChoicesCollectionStates.getCrashReporterCollectionValue() } returns defaultIsCrashReporterEnabled
 
         val currentUserTheme = ApplicationTheme.SYSTEM
-        coEvery { settingsThemeProvider.getCurrentUserTheme() } returns currentUserTheme
+        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns currentUserTheme
 
         val checked = DataFactory.createRandomBoolean()
 
@@ -870,7 +869,7 @@ internal class SettingsViewModelTest {
 
     private fun getSettingsViewModel() = SettingsViewModel(
         settingsStateHandler,
-        updateCurrentUserAccountUseCase,
+        settingsAppearanceCollectionStates,
         settingsDataChoicesCollectionStates,
         settingsErrorProvider,
         settingsThemeProvider,

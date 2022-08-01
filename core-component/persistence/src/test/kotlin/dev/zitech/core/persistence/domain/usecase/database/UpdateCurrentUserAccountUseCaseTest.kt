@@ -18,25 +18,19 @@
 package dev.zitech.core.persistence.domain.usecase.database
 
 import com.google.common.truth.Truth.assertThat
-import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.persistence.domain.model.UserAccountBuilder
-import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
 import io.mockk.coEvery
-import io.mockk.coVerify
-import io.mockk.confirmVerified
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 @ExperimentalCoroutinesApi
 internal class UpdateCurrentUserAccountUseCaseTest {
 
-    private val userAccountRepository = mockk<UserAccountRepository>(relaxed = true)
     private val getCurrentUserAccountUseCase = mockk<GetCurrentUserAccountUseCase>()
 
     private lateinit var sut: UpdateCurrentUserAccountUseCase
@@ -44,34 +38,22 @@ internal class UpdateCurrentUserAccountUseCaseTest {
     @BeforeEach
     fun setup() {
         sut = UpdateCurrentUserAccountUseCase(
-            userAccountRepository,
             getCurrentUserAccountUseCase
         )
-    }
-
-    @AfterEach
-    fun tearDown() {
-        confirmVerified(userAccountRepository)
     }
 
     @Test
     fun theme() = runTest {
         // Arrange
         val currentUserAccount = UserAccountBuilder()
-            .setTheme(ApplicationTheme.DARK)
             .build()
 
         coEvery {
             getCurrentUserAccountUseCase()
         } returns flowOf(DataResult.Success(currentUserAccount))
 
-        val input: ApplicationTheme = ApplicationTheme.SYSTEM
-
         // Act
-        sut(theme = input)
-
-        // Assert
-        coVerify { userAccountRepository.updateCurrentUserAccountTheme(input) }
+        sut()
     }
 
     @Test
@@ -83,10 +65,8 @@ internal class UpdateCurrentUserAccountUseCaseTest {
             getCurrentUserAccountUseCase()
         } returns flowOf(error)
 
-        val input: ApplicationTheme = ApplicationTheme.SYSTEM
-
         // Act
-        val result = sut(theme = input)
+        val result = sut()
 
         // Assert
         assertThat(result).isEqualTo(error)

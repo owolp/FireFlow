@@ -15,19 +15,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.persistence.domain.model.preferences
+package dev.zitech.core.persistence.framework.preference.mapper
 
-enum class IntPreference(
-    override val key: String,
-    override val title: String,
-    override val explanation: String,
-    override val defaultValue: Int
-) : Preference<Int> {
+import dev.zitech.core.common.data.mapper.Mapper
+import dev.zitech.core.common.domain.model.ApplicationTheme
+import javax.inject.Inject
 
-    APPLICATION_THEME(
-        key = "application_theme",
-        title = "Application Theme",
-        explanation = "Set application theme.",
-        defaultValue = 0
-    )
+class ApplicationThemeToIntMapper @Inject constructor() : Mapper<ApplicationTheme, Int> {
+
+    override fun invoke(input: ApplicationTheme): Int =
+        when (input) {
+            ApplicationTheme.SYSTEM -> ApplicationTheme.SYSTEM.id
+            ApplicationTheme.DARK -> ApplicationTheme.DARK.id
+            ApplicationTheme.LIGHT -> ApplicationTheme.LIGHT.id
+        }
 }

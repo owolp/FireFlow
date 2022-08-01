@@ -23,11 +23,9 @@ internal object UserAccountEntityFactory {
 
     fun createUserAccountEntity(
         id: Long? = DataFactory.createRandomLong(),
-        isCurrentUserAccount: Boolean = false,
-        theme: Int = 0
+        isCurrentUserAccount: Boolean = false
     ) = UserAccountEntity(
         id,
-        isCurrentUserAccount,
-        theme
+        isCurrentUserAccount
     )
 }

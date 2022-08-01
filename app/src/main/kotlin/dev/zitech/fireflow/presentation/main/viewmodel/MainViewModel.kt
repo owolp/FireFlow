@@ -26,6 +26,7 @@ import dev.zitech.core.persistence.domain.model.database.UserLoggedState
 import dev.zitech.core.persistence.domain.usecase.database.GetCurrentUserAccountUseCase
 import dev.zitech.core.persistence.domain.usecase.database.GetUserLoggedStateUseCase
 import dev.zitech.core.persistence.domain.usecase.database.SaveUserAccountUseCase
+import dev.zitech.core.persistence.domain.usecase.preferences.GetApplicationThemeValueUseCase
 import dev.zitech.core.remoteconfig.domain.usecase.InitializeRemoteConfiguratorUseCase
 import dev.zitech.core.reporter.analytics.domain.usecase.event.ApplicationLaunchAnalyticsEvent
 import kotlinx.coroutines.flow.StateFlow
@@ -42,6 +43,7 @@ internal class MainViewModel @Inject constructor(
     private val getUserLoggedStateUseCase: GetUserLoggedStateUseCase,
     private val saveUseAccountUseCase: SaveUserAccountUseCase,
     private val getCurrentUserAccountUseCase: GetCurrentUserAccountUseCase,
+    private val getApplicationThemeValueUseCase: GetApplicationThemeValueUseCase,
     applicationLaunchAnalyticsEvent: ApplicationLaunchAnalyticsEvent
 ) : ViewModel(), MviViewModel<MainIntent, MainState> {
 
@@ -91,13 +93,21 @@ internal class MainViewModel @Inject constructor(
             .onEach { result ->
                 when (result) {
                     is DataResult.Success -> {
-                        mainStateHandler.setTheme(result.value.theme)
-                        mainStateHandler.hideSplashScreen()
+                        collectApplicationTheme()
                     }
                     is DataResult.Error -> {
                         // TODO: Navigate Out?
                     }
                 }
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun collectApplicationTheme() {
+        getApplicationThemeValueUseCase()
+            .onEach {
+                mainStateHandler.setTheme(it)
+                mainStateHandler.hideSplashScreen()
             }
             .launchIn(viewModelScope)
     }

@@ -18,9 +18,11 @@
 package dev.zitech.core.persistence.domain.usecase.preferences
 
 import com.google.common.truth.Truth.assertThat
+import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.core.persistence.data.preferences.repository.FakePreferencesRepository
-import dev.zitech.core.persistence.domain.model.preferences.BooleanPreference
+import dev.zitech.core.persistence.domain.model.preferences.IntPreference
 import dev.zitech.core.persistence.domain.model.preferences.PreferenceType
+import dev.zitech.core.persistence.framework.preference.mapper.ApplicationThemeToIntMapper
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
@@ -28,28 +30,33 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 @ExperimentalCoroutinesApi
-internal class SaveCrashReporterCollectionValueUseCaseTest {
+internal class SaveApplicationThemeValueUseCaseTest {
 
     private val savePreferencesRepository = FakePreferencesRepository()
+    private val applicationThemeToIntMapper = ApplicationThemeToIntMapper()
 
-    private lateinit var sut: SaveCrashReporterCollectionValueUseCase
+    private lateinit var sut: SaveApplicationThemeValueUseCase
 
     @BeforeEach
     fun setup() {
-        sut = SaveCrashReporterCollectionValueUseCase(savePreferencesRepository)
+        sut = SaveApplicationThemeValueUseCase(
+            savePreferencesRepository,
+            applicationThemeToIntMapper
+        )
     }
 
     @Test
     fun invoke() = runTest {
         // Act
-        sut(true)
+        sut(ApplicationTheme.DARK)
 
         // Assert
         assertThat(
-            savePreferencesRepository.getBoolean(
+            savePreferencesRepository.getInt(
                 PreferenceType.STANDARD,
-                BooleanPreference.CRASH_REPORTER_COLLECTION.key,
-                false).first()
-        ).isTrue()
+                IntPreference.APPLICATION_THEME.key,
+                ApplicationTheme.SYSTEM.id
+            ).first()
+        ).isEqualTo(ApplicationTheme.DARK.id)
     }
 }

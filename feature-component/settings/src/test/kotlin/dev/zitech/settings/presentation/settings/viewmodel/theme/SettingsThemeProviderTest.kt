@@ -22,9 +22,6 @@ import dev.zitech.core.common.DataFactory
 import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.core.common.domain.strings.StringsProvider
 import dev.zitech.settings.R
-import dev.zitech.settings.domain.usecase.GetCurrentUserThemeUseCase
-import io.mockk.coEvery
-import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -36,7 +33,6 @@ import org.junit.jupiter.api.Test
 @ExperimentalCoroutinesApi
 internal class SettingsThemeProviderTest {
 
-    private val getCurrentUserThemeUseCase = mockk<GetCurrentUserThemeUseCase>()
     private val stringsProvider = mockk<StringsProvider>()
 
     private lateinit var sut: SettingsThemeProvider
@@ -44,7 +40,6 @@ internal class SettingsThemeProviderTest {
     @BeforeEach
     fun setup() {
         sut = SettingsThemeProvider(
-            getCurrentUserThemeUseCase,
             stringsProvider
         )
     }
@@ -66,14 +61,14 @@ internal class SettingsThemeProviderTest {
     @Test
     fun getDialogThemes() = runTest {
         // Arrange
-        coEvery { getCurrentUserThemeUseCase() } returns ApplicationTheme.DARK
-
         every { stringsProvider(ApplicationTheme.SYSTEM.text) } returns "System"
         every { stringsProvider(ApplicationTheme.DARK.text) } returns "Dark"
         every { stringsProvider(ApplicationTheme.LIGHT.text) } returns "Light"
 
+        val applicationTheme = ApplicationTheme.DARK
+
         // Act
-        val result = sut.getDialogThemes()
+        val result = sut.getDialogThemes(applicationTheme)
 
         // Assert
         assertThat(result.size).isEqualTo(ApplicationTheme.values().size)
@@ -95,18 +90,5 @@ internal class SettingsThemeProviderTest {
             assertThat(selected).isFalse()
             assertThat(enabled).isTrue()
         }
-    }
-
-    @Test
-    fun getCurrentUserTheme() = runTest {
-        // Arrange
-        coEvery { getCurrentUserThemeUseCase() } returns ApplicationTheme.DARK
-
-        // Act
-        val result = sut.getCurrentUserTheme()
-
-        // Assert
-        assertThat(result).isEqualTo(ApplicationTheme.DARK)
-        coVerify { getCurrentUserThemeUseCase() }
     }
 }

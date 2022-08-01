@@ -21,28 +21,23 @@ import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.core.common.domain.strings.StringsProvider
 import dev.zitech.ds.molecules.dialog.DialogRadioItem
 import dev.zitech.settings.R
-import dev.zitech.settings.domain.usecase.GetCurrentUserThemeUseCase
 import javax.inject.Inject
 
 class SettingsThemeProvider @Inject constructor(
-    private val getCurrentUserThemeUseCase: GetCurrentUserThemeUseCase,
     private val stringsProvider: StringsProvider
 ) {
 
     internal fun getDialogThemeTitle(): String =
         stringsProvider(R.string.appearance_dialog_theme_title)
 
-    internal suspend fun getDialogThemes(): List<DialogRadioItem> =
+    internal fun getDialogThemes(applicationTheme: ApplicationTheme): List<DialogRadioItem> =
         ApplicationTheme.values().sortedBy { it.id }
             .map {
                 DialogRadioItem(
                     id = it.id,
                     text = stringsProvider(it.text),
-                    selected = getCurrentUserTheme().id == it.id,
+                    selected = applicationTheme.id == it.id,
                     enabled = true
                 )
             }
-
-    internal suspend fun getCurrentUserTheme(): ApplicationTheme =
-        getCurrentUserThemeUseCase()
 }

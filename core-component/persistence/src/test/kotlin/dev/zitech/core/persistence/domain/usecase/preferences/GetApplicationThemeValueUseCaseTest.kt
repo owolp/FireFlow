@@ -17,53 +17,59 @@
 
 package dev.zitech.core.persistence.domain.usecase.preferences
 
+import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
+import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.core.persistence.data.preferences.repository.FakePreferencesRepository
-import dev.zitech.core.persistence.domain.model.preferences.BooleanPreference
+import dev.zitech.core.persistence.domain.model.preferences.IntPreference
 import dev.zitech.core.persistence.domain.model.preferences.PreferenceType
+import dev.zitech.core.persistence.framework.preference.mapper.IntToApplicationThemeMapper
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
 @ExperimentalCoroutinesApi
-internal class GetCrashReporterCollectionValueUseCaseTest {
+internal class GetApplicationThemeValueUseCaseTest {
 
+    private val intToApplicationThemeMapper = IntToApplicationThemeMapper()
     private val getPreferencesRepository = FakePreferencesRepository()
 
-    private lateinit var sut: GetCrashReporterCollectionValueUseCase
+    private lateinit var sut: GetApplicationThemeValueUseCase
 
     @BeforeEach
     fun setup() {
-        sut = GetCrashReporterCollectionValueUseCase(getPreferencesRepository)
+        sut = GetApplicationThemeValueUseCase(
+            getPreferencesRepository,
+            intToApplicationThemeMapper
+        )
     }
 
     @Test
     @DisplayName("WHEN getPreferencesRepository includes key THEN return correct value")
     fun invoke() = runTest {
         // Arrange
-        getPreferencesRepository.saveBoolean(
+        getPreferencesRepository.saveInt(
             PreferenceType.STANDARD,
-            BooleanPreference.CRASH_REPORTER_COLLECTION.key,
-            true
+            IntPreference.APPLICATION_THEME.key,
+            ApplicationTheme.DARK.id
         )
 
-        // Act
-        val result = sut()
-
-        // Assert
-        assertThat(result).isTrue()
+        sut().test {
+            // Act & Assert
+            assertThat(awaitItem()).isEqualTo(ApplicationTheme.DARK)
+            awaitComplete()
+        }
     }
 
     @Test
-    @DisplayName("WHEN getPreferencesRepository does not include key THEN return defaultValue")
-    fun defaultValue() = runBlocking {
-        // Act & Assert
-        val result = sut()
-
-        // Assert
-        assertThat(result).isFalse()
+    @DisplayName("WHEN getPreferencesRepository does not include key THEN return System")
+    fun defaultValue() = runTest {
+        sut().test {
+            // Act & Assert
+            assertThat(awaitItem()).isEqualTo(ApplicationTheme.SYSTEM)
+            awaitComplete()
+        }
     }
 }

@@ -230,21 +230,4 @@ internal class UserAccountDaoTest {
         // Assert
         assertThat(currentUserAccount).isNull()
     }
-
-    @Test
-    fun updateCurrentUserAccountTheme() = runBlocking {
-        // Arrange
-        val userAccountEntity1 = UserAccountEntityFactory.createUserAccountEntity(
-            isCurrentUserAccount = true,
-            theme = 0
-        )
-        sut.saveUserAccount(userAccountEntity1)
-
-        // Act
-        sut.updateCurrentUserAccountTheme(1)
-        val currentUserAccount = sut.getCurrentUserAccount()
-
-        // Assert
-        assertThat(currentUserAccount?.theme).isEqualTo(1)
-    }
 }

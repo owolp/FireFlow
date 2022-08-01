@@ -18,7 +18,6 @@
 package dev.zitech.core.persistence.data.repository.database
 
 import dev.zitech.core.common.domain.logger.Logger
-import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.domain.model.database.UserLoggedState
@@ -70,14 +69,6 @@ internal class UserAccountRepositoryImpl @Inject constructor(
         try {
             val id = userAccountDatabaseSource.saveUserAccount(isCurrentUserAccount)
             DataResult.Success(id)
-        } catch (exception: Exception) {
-            DataResult.Error(cause = exception)
-        }
-
-    override suspend fun updateCurrentUserAccountTheme(theme: ApplicationTheme): DataResult<Unit> =
-        try {
-            userAccountDatabaseSource.updateCurrentUserAccountTheme(theme)
-            DataResult.Success(Unit)
         } catch (exception: Exception) {
             DataResult.Error(cause = exception)
         }
