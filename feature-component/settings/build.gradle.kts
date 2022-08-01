@@ -29,6 +29,7 @@ dependencies {
     implementation(projects.coreComponent.core)
     implementation(projects.designSystem)
 
+    implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.google.dagger.hilt.android)
