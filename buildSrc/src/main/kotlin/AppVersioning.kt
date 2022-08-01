@@ -21,9 +21,9 @@ object AppVersioning {
     private const val MINOR = 0
     private const val PATCH = 1
 
-    const val COMPILE_SDK = 32
+    const val COMPILE_SDK = 33
     const val MIN_SDK = 29
-    const val TARGET_SDK = 32
+    const val TARGET_SDK = 33
 
     private const val LOCAL_BUILD_VERSION_CODE = 424242
 
