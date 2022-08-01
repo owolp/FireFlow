@@ -158,12 +158,12 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    private suspend fun handleOnThemeClick() {
+    private fun handleOnThemeClick() {
         settingsStateHandler.setEvent(
             SelectTheme(
                 title = settingsThemeProvider.getDialogThemeTitle(),
                 themes = settingsThemeProvider.getDialogThemes(
-                    settingsAppearanceCollectionStates.getApplicationThemeValue()
+                    settingsStateHandler.state.value.theme
                 )
             )
         )
