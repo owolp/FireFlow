@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (C) 2022 Zitech Ltd.
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<resources>
+
+    <string name="data_choices_category">Data choices</string>
+    <string name="data_choices_analytics_title">Analytics</string>
+    <string name="data_choices_analytics_description">Share usage, hardware and customization data about the application to make it better.</string>
+    <string name="data_choices_analytics_error">The analytics settings were not saved correctly. Please try restarting the app.</string>
+    <string name="cd_data_choices_analytics_enabled">Analytics Enabled</string>
+    <string name="cd_data_choices_analytics_disabled">Analytics Disabled</string>
+    <string name="data_choices_performance_title">Performance</string>
+    <string name="data_choices_performance_description">Share performance data to make the application faster.</string>
+    <string name="data_choices_performance_error">The performance settings were not saved correctly. Please try restarting the app.</string>
+    <string name="cd_data_choices_performance_enabled">Performance Enabled</string>
+    <string name="cd_data_choices_performance_disabled">Performance Disabled</string>
+    <string name="data_choices_personalized_ads_title">Personalized Ads</string>
+    <string name="data_choices_personalized_ads_description">To deliver personalized ads, the application uses information about you to serve ads that are more relevant to you.</string>
+    <string name="data_choices_personalized_ads_error">The Personalized Ads settings were not saved correctly. Please try restarting the app.</string>
+    <string name="cd_data_choices_personalized_ads_enabled">Personalized Ads Enabled</string>
+    <string name="cd_data_choices_personalized_ads_disabled">Personalized Ads Disabled</string>
+    <string name="data_choices_crash_reporter_title">Crash Reporter</string>
+    <string name="data_choices_crash_reporter_description">Submit automatic crash reports to help make the application more stable and secure.</string>
+    <string name="data_choices_crash_reporter_error">The Crash Reporter settings were not saved correctly. Please try restarting the app.</string>
+    <string name="cd_data_choices_crash_reporter_enabled">Crash Reporter Enabled</string>
+    <string name="cd_data_choices_crash_reporter_disabled">Crash Reporter Disabled</string>
+
+    <string name="appearance_category">Appearance</string>
+    <string name="appearance_theme">Theme</string>
+    <string name="cd_appearance_theme_click">Change application theme</string>
+    <string name="appearance_dialog_theme_title">Theme</string>
+    <string name="appearance_language">Language</string>
+    <string name="cd_appearance_language_click">Change application language</string>
+    <string name="appearance_dialog_language_title">Language</string>
+
+    <string name="action_restart">Restart</string>
+</resources>

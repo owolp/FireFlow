@@ -170,6 +170,7 @@ class SettingsViewModel @Inject constructor(
             )
             setCrashReporterState(settingsDataChoicesCollectionStates.getCrashReporterCollectionValue())
             setTheme(settingsAppearanceCollectionStates.getApplicationThemeValue())
+            setLanguage(settingsAppearanceCollectionStates.getApplicationLanguageValue())
             setIsLoadingState(false)
         }
     }

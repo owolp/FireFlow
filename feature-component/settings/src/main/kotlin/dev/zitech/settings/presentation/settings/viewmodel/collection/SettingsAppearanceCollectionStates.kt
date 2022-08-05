@@ -17,15 +17,20 @@
 
 package dev.zitech.settings.presentation.settings.viewmodel.collection
 
+import dev.zitech.core.common.domain.model.ApplicationLanguage
 import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.core.persistence.domain.usecase.preferences.GetApplicationThemeValueUseCase
 import dev.zitech.core.persistence.domain.usecase.preferences.SaveApplicationThemeValueUseCase
+import dev.zitech.settings.domain.usecase.GetApplicationLanguageValueUseCase
+import dev.zitech.settings.domain.usecase.SaveApplicationLanguageValueUseCase
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 class SettingsAppearanceCollectionStates @Inject constructor(
     private val getApplicationThemeValueUseCase: GetApplicationThemeValueUseCase,
-    private val saveApplicationThemeValueUseCase: SaveApplicationThemeValueUseCase
+    private val saveApplicationThemeValueUseCase: SaveApplicationThemeValueUseCase,
+    private val getApplicationLanguageValueUseCase: GetApplicationLanguageValueUseCase,
+    private val saveApplicationLanguageValueUseCase: SaveApplicationLanguageValueUseCase
 ) {
 
     internal suspend fun saveApplicationThemeValue(applicationTheme: ApplicationTheme) {
@@ -34,4 +39,11 @@ class SettingsAppearanceCollectionStates @Inject constructor(
 
     internal suspend fun getApplicationThemeValue(): ApplicationTheme =
         getApplicationThemeValueUseCase().first()
+
+    internal fun saveApplicationLanguageValue(applicationLanguage: ApplicationLanguage) {
+        saveApplicationLanguageValueUseCase(applicationLanguage)
+    }
+
+    internal fun getApplicationLanguageValue(): ApplicationLanguage =
+        getApplicationLanguageValueUseCase()
 }

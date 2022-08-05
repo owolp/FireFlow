@@ -18,9 +18,9 @@
 package dev.zitech.fireflow.presentation.main.view
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -49,7 +49,7 @@ import dev.zitech.settings.presentation.settings.compose.Settings
 @ExperimentalMaterial3Api
 @ExperimentalFoundationApi
 @AndroidEntryPoint
-internal class MainActivity : ComponentActivity() {
+internal class MainActivity : AppCompatActivity() {
 
     private val mainViewModel: MainViewModel by viewModels()
 
