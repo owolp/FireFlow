@@ -18,9 +18,12 @@
 package dev.zitech.settings.presentation.settings.viewmodel.collection
 
 import com.google.common.truth.Truth.assertThat
+import dev.zitech.core.common.domain.model.ApplicationLanguage
 import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.core.persistence.domain.usecase.preferences.GetApplicationThemeValueUseCase
-import dev.zitech.core.persistence.domain.usecase.preferences.SaveApplicationThemeValueUseCase
+import dev.zitech.core.persistence.domain.usecase.preferences.SetApplicationThemeValueUseCase
+import dev.zitech.settings.domain.usecase.GetApplicationLanguageValueUseCase
+import dev.zitech.settings.domain.usecase.SetApplicationLanguageValueUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -34,7 +37,9 @@ import org.junit.jupiter.api.Test
 internal class SettingsAppearanceCollectionStatesTest {
 
     private val getApplicationThemeValueUseCase = mockk<GetApplicationThemeValueUseCase>()
-    private val saveApplicationThemeValueUseCase = mockk<SaveApplicationThemeValueUseCase>(relaxed = true)
+    private val setApplicationThemeValueUseCase = mockk<SetApplicationThemeValueUseCase>(relaxed = true)
+    private val getApplicationLanguageValueUseCase = mockk<GetApplicationLanguageValueUseCase>()
+    private val setApplicationLanguageValueUseCase = mockk<SetApplicationLanguageValueUseCase>(relaxed = true)
 
     private lateinit var sut: SettingsAppearanceCollectionStates
 
@@ -42,20 +47,22 @@ internal class SettingsAppearanceCollectionStatesTest {
     fun setup() {
         sut = SettingsAppearanceCollectionStates(
             getApplicationThemeValueUseCase,
-            saveApplicationThemeValueUseCase
+            setApplicationThemeValueUseCase,
+            getApplicationLanguageValueUseCase,
+            setApplicationLanguageValueUseCase
         )
     }
 
     @Test
-    fun saveApplicationThemeValue() = runTest {
+    fun setApplicationThemeValue() = runTest {
         // Arrange
         val applicationTheme = ApplicationTheme.DARK
 
         // Act
-        sut.saveApplicationThemeValue(applicationTheme)
+        sut.setApplicationThemeValue(applicationTheme)
 
         // Assert
-        coVerify { saveApplicationThemeValueUseCase(applicationTheme) }
+        coVerify { setApplicationThemeValueUseCase(applicationTheme) }
     }
 
     @Test
@@ -70,5 +77,31 @@ internal class SettingsAppearanceCollectionStatesTest {
         // Assert
         assertThat(result).isEqualTo(applicationTheme)
         coVerify { getApplicationThemeValueUseCase() }
+    }
+
+    @Test
+    fun setApplicationLanguageValue() {
+        // Arrange
+        val applicationLanguage = ApplicationLanguage.BULGARIAN
+
+        // Act
+        sut.setApplicationLanguageValue(applicationLanguage)
+
+        // Assert
+        coVerify { setApplicationLanguageValueUseCase(applicationLanguage) }
+    }
+
+    @Test
+    fun getApplicationLanguageValue() = runTest {
+        // Arrange
+        val applicationLanguage = ApplicationLanguage.BULGARIAN
+        coEvery { getApplicationLanguageValueUseCase() } returns applicationLanguage
+
+        // Act
+        val result = sut.getApplicationLanguageValue()
+
+        // Assert
+        assertThat(result).isEqualTo(applicationLanguage)
+        coVerify { getApplicationLanguageValueUseCase() }
     }
 }

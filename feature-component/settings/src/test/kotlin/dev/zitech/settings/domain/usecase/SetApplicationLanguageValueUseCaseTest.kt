@@ -15,19 +15,32 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.settings.presentation.settings.viewmodel
+package dev.zitech.settings.domain.usecase
 
 import dev.zitech.core.common.domain.model.ApplicationLanguage
-import dev.zitech.core.common.domain.model.ApplicationTheme
-import dev.zitech.core.common.presentation.architecture.MviState
+import dev.zitech.settings.frawework.locale.ApplicationLocale
+import io.mockk.Runs
+import io.mockk.coVerify
+import io.mockk.every
+import io.mockk.just
+import io.mockk.mockk
+import org.junit.jupiter.api.Test
 
-data class SettingsState(
-    val isLoading: Boolean = false,
-    val analytics: Boolean? = null,
-    val personalizedAds: Boolean? = null,
-    val performance: Boolean? = null,
-    val crashReporter: Boolean = false,
-    val theme: ApplicationTheme = ApplicationTheme.SYSTEM,
-    val language: ApplicationLanguage = ApplicationLanguage.SYSTEM,
-    val event: SettingsEvent = Idle
-) : MviState
+internal class SetApplicationLanguageValueUseCaseTest {
+
+    @Test
+    fun invoke() {
+        // Arrange
+        val language = ApplicationLanguage.BULGARIAN
+        val applicationLocale = mockk<ApplicationLocale>()
+        every { applicationLocale.set(language) } just Runs
+
+        val sut = SetApplicationLanguageValueUseCase(applicationLocale)
+
+        // Act
+        sut(language)
+
+        // Assert
+        coVerify { applicationLocale.set(language) }
+    }
+}

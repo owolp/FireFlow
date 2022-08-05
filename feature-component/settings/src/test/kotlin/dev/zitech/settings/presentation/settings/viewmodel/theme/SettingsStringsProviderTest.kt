@@ -19,27 +19,25 @@ package dev.zitech.settings.presentation.settings.viewmodel.theme
 
 import com.google.common.truth.Truth.assertThat
 import dev.zitech.core.common.DataFactory
+import dev.zitech.core.common.domain.model.ApplicationLanguage
 import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.core.common.domain.strings.StringsProvider
 import dev.zitech.settings.R
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-@ExperimentalCoroutinesApi
-internal class SettingsThemeProviderTest {
+internal class SettingsStringsProviderTest {
 
     private val stringsProvider = mockk<StringsProvider>()
 
-    private lateinit var sut: SettingsThemeProvider
+    private lateinit var sut: SettingsStringsProvider
 
     @BeforeEach
     fun setup() {
-        sut = SettingsThemeProvider(
+        sut = SettingsStringsProvider(
             stringsProvider
         )
     }
@@ -59,7 +57,7 @@ internal class SettingsThemeProviderTest {
     }
 
     @Test
-    fun getDialogThemes() = runTest {
+    fun getDialogThemes() {
         // Arrange
         every { stringsProvider(ApplicationTheme.SYSTEM.text) } returns "System"
         every { stringsProvider(ApplicationTheme.DARK.text) } returns "Dark"
@@ -87,6 +85,54 @@ internal class SettingsThemeProviderTest {
         with(result[ApplicationTheme.LIGHT.id]) {
             assertThat(id).isEqualTo(ApplicationTheme.LIGHT.id)
             assertThat(text).isEqualTo("Light")
+            assertThat(selected).isFalse()
+            assertThat(enabled).isTrue()
+        }
+    }
+
+    @Test
+    fun getDialogLanguageTitle() {
+        // Arrange
+        val text = DataFactory.createRandomString()
+        every { stringsProvider(R.string.appearance_dialog_language_title) } returns text
+
+        // Act
+        val result = sut.getDialogLanguageTitle()
+
+        // Assert
+        assertThat(result).isEqualTo(text)
+        verify { stringsProvider(R.string.appearance_dialog_language_title) }
+    }
+
+    @Test
+    fun getDialogLanguages() {
+        // Arrange
+        every { stringsProvider(ApplicationLanguage.SYSTEM.text) } returns "System"
+        every { stringsProvider(ApplicationLanguage.ENGLISH.text) } returns "English"
+        every { stringsProvider(ApplicationLanguage.BULGARIAN.text) } returns "Bulgarian"
+
+        val applicationLanguage = ApplicationLanguage.ENGLISH
+
+        // Act
+        val result = sut.getDialogLanguages(applicationLanguage)
+
+        // Assert
+        assertThat(result.size).isEqualTo(ApplicationLanguage.values().size)
+        with(result[ApplicationLanguage.SYSTEM.id]) {
+            assertThat(id).isEqualTo(ApplicationLanguage.SYSTEM.id)
+            assertThat(text).isEqualTo("System")
+            assertThat(selected).isFalse()
+            assertThat(enabled).isTrue()
+        }
+        with(result[ApplicationLanguage.ENGLISH.id]) {
+            assertThat(id).isEqualTo(ApplicationLanguage.ENGLISH.id)
+            assertThat(text).isEqualTo("English")
+            assertThat(selected).isTrue()
+            assertThat(enabled).isTrue()
+        }
+        with(result[ApplicationLanguage.BULGARIAN.id]) {
+            assertThat(id).isEqualTo(ApplicationLanguage.BULGARIAN.id)
+            assertThat(text).isEqualTo("Bulgarian")
             assertThat(selected).isFalse()
             assertThat(enabled).isTrue()
         }

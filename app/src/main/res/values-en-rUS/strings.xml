@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<!--
   ~ Copyright (C) 2022 Zitech Ltd.
   ~
   ~ This program is free software: you can redistribute it and/or modify
@@ -16,12 +16,5 @@
   -->
 
 <resources>
-
-    <string name="application_theme_system">System default</string>
-    <string name="application_theme_dark">Dark</string>
-    <string name="application_theme_light">Light</string>
-
-    <string name="application_language_system">System default</string>
-    <string name="application_language_english">English</string>
-    <string name="application_language_bulgarian">Bulgarian Български</string>
+    <string name="app_name">FireFlow</string>
 </resources>

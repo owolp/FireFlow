@@ -17,11 +17,6 @@
 
 <resources>
 
-    <string name="application_theme_system">System default</string>
-    <string name="application_theme_dark">Dark</string>
-    <string name="application_theme_light">Light</string>
+    <string name="dialog_button_ok">Добре</string>
 
-    <string name="application_language_system">System default</string>
-    <string name="application_language_english">English</string>
-    <string name="application_language_bulgarian">Bulgarian Български</string>
 </resources>

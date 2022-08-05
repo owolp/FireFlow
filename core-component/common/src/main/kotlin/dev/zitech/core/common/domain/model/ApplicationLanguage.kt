@@ -15,30 +15,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.settings.presentation.settings.viewmodel
+package dev.zitech.core.common.domain.model
 
-import dev.zitech.core.common.presentation.architecture.MviState
-import dev.zitech.ds.molecules.dialog.DialogRadioItem
+import androidx.annotation.StringRes
+import dev.zitech.core.common.R
+import java.util.*
 
-sealed interface SettingsEvent : MviState.Event
-
-internal object Idle : SettingsEvent
-internal data class Error(
-    val message: String,
-    val action: String? = null
-) : SettingsEvent
-
-internal data class Dialog(
-    val title: String,
-    val text: String
-) : SettingsEvent
-
-internal data class SelectTheme(
-    val title: String,
-    val themes: List<DialogRadioItem>
-) : SettingsEvent
-
-internal data class SelectLanguage(
-    val title: String,
-    val languages: List<DialogRadioItem>
-) : SettingsEvent
+enum class ApplicationLanguage(
+    val id: Int,
+    @StringRes val text: Int,
+    val locale: Locale?
+) {
+    SYSTEM(0, R.string.application_language_system, null),
+    ENGLISH(1, R.string.application_language_english, Locale.ENGLISH),
+    BULGARIAN(2, R.string.application_language_bulgarian, Locale.forLanguageTag("bg-BG"))
+}
