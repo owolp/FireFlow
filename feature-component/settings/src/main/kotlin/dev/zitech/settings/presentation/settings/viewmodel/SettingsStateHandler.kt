@@ -17,6 +17,7 @@
 
 package dev.zitech.settings.presentation.settings.viewmodel
 
+import dev.zitech.core.common.domain.model.ApplicationLanguage
 import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.core.common.domain.model.BuildFlavor
 import dev.zitech.core.common.presentation.architecture.MviStateHandler
@@ -91,6 +92,12 @@ class SettingsStateHandler @Inject constructor() : MviStateHandler<SettingsState
     fun setTheme(value: ApplicationTheme) {
         mutableState.update {
             it.copy(theme = value)
+        }
+    }
+
+    fun setLanguage(value: ApplicationLanguage) {
+        mutableState.update {
+            it.copy(language = value)
         }
     }
 

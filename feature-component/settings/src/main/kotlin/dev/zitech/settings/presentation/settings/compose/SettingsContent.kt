@@ -27,6 +27,7 @@ import androidx.compose.material.icons.outlined.AdsClick
 import androidx.compose.material.icons.outlined.Analytics
 import androidx.compose.material.icons.outlined.Brightness6
 import androidx.compose.material.icons.outlined.BugReport
+import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.Speed
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
@@ -50,7 +51,8 @@ internal fun SettingsContent(
     onPersonalizedAdsCheckChange: (checked: Boolean) -> Unit,
     onPerformanceCheckChange: (checked: Boolean) -> Unit,
     onCrashReporterCheckChange: (checked: Boolean) -> Unit,
-    onThemeClick: () -> Unit
+    onThemeClick: () -> Unit,
+    onLanguageClick: () -> Unit
 ) {
     LazyColumn(
         modifier = modifier.padding(
@@ -76,7 +78,8 @@ internal fun SettingsContent(
                 categoryName = stringResource(id = R.string.appearance_category),
                 preferences = getAppearancePreferences(
                     state = state,
-                    onThemeClick = onThemeClick
+                    onThemeClick = onThemeClick,
+                    onLanguageClick = onLanguageClick
                 )
             )
         }
@@ -89,7 +92,8 @@ internal fun SettingsContent(
 @Composable
 private fun getAppearancePreferences(
     state: SettingsState,
-    onThemeClick: () -> Unit
+    onThemeClick: () -> Unit,
+    onLanguageClick: () -> Unit
 ): List<CategoryPreference> {
     val categoryPreferences = mutableListOf<CategoryPreference>()
 
@@ -99,6 +103,15 @@ private fun getAppearancePreferences(
             icon = Icons.Outlined.Brightness6,
             description = stringResource(id = state.theme.text),
             onClick = Pair(stringResource(id = R.string.cd_appearance_theme_click), onThemeClick)
+        )
+    )
+
+    categoryPreferences.add(
+        CategoryPreference.Icon(
+            title = stringResource(id = R.string.appearance_language),
+            icon = Icons.Outlined.Language,
+            description = stringResource(id = state.language.text),
+            onClick = Pair(stringResource(id = R.string.cd_appearance_language_click), onLanguageClick)
         )
     )
 
@@ -192,7 +205,8 @@ private fun SettingsContent_Preview() {
             onPersonalizedAdsCheckChange = {},
             onPerformanceCheckChange = {},
             onCrashReporterCheckChange = {},
-            onThemeClick = {}
+            onThemeClick = {},
+            onLanguageClick = {}
         )
     }
 }

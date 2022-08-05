@@ -21,13 +21,14 @@ import DialogRadioItemBuilder
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import dev.zitech.core.common.DataFactory
+import dev.zitech.core.common.domain.model.ApplicationLanguage
 import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.core.common.domain.model.BuildFlavor
 import dev.zitech.core.common.framework.applicationconfig.FakeAppConfigProvider
 import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsAppearanceCollectionStates
 import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsDataChoicesCollectionStates
 import dev.zitech.settings.presentation.settings.viewmodel.error.SettingsErrorProvider
-import dev.zitech.settings.presentation.settings.viewmodel.theme.SettingsThemeProvider
+import dev.zitech.settings.presentation.settings.viewmodel.theme.SettingsStringsProvider
 import dev.zitech.settings.presentation.test.MainDispatcherRule
 import io.mockk.Runs
 import io.mockk.coEvery
@@ -48,7 +49,7 @@ internal class SettingsViewModelTest {
     private val settingsAppearanceCollectionStates = mockk<SettingsAppearanceCollectionStates>()
     private val settingsDataChoicesCollectionStates = mockk<SettingsDataChoicesCollectionStates>()
     private val settingsErrorProvider = mockk<SettingsErrorProvider>()
-    private val settingsThemeProvider = mockk<SettingsThemeProvider>()
+    private val settingsStringsProvider = mockk<SettingsStringsProvider>()
     private val appConfigProvider = FakeAppConfigProvider()
 
     @Test
@@ -67,8 +68,11 @@ internal class SettingsViewModelTest {
         val isPerformanceEnabled = false
         coEvery { settingsDataChoicesCollectionStates.getPerformanceCollectionValue() } returns isPerformanceEnabled
 
-        val currentUserTheme = ApplicationTheme.SYSTEM
-        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns currentUserTheme
+        val currentApplicationTheme = ApplicationTheme.SYSTEM
+        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns currentApplicationTheme
+
+        val currentApplicationLanguage = ApplicationLanguage.SYSTEM
+        coEvery { settingsAppearanceCollectionStates.getApplicationLanguageValue() } returns currentApplicationLanguage
 
         val checked = true
         coEvery { settingsDataChoicesCollectionStates.setCrashReporterCollection(checked) } just Runs
@@ -110,8 +114,11 @@ internal class SettingsViewModelTest {
         val isPerformanceEnabled = false
         coEvery { settingsDataChoicesCollectionStates.getPerformanceCollectionValue() } returns isPerformanceEnabled
 
-        val currentUserTheme = ApplicationTheme.SYSTEM
-        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns currentUserTheme
+        val currentApplicationTheme = ApplicationTheme.SYSTEM
+        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns currentApplicationTheme
+
+        val currentApplicationLanguage = ApplicationLanguage.SYSTEM
+        coEvery { settingsAppearanceCollectionStates.getApplicationLanguageValue() } returns currentApplicationLanguage
 
         val checked = false
         coEvery { settingsDataChoicesCollectionStates.setCrashReporterCollection(checked) } just Runs
@@ -152,8 +159,11 @@ internal class SettingsViewModelTest {
         val defaultIsPerformanceEnabled = false
         coEvery { settingsDataChoicesCollectionStates.getPerformanceCollectionValue() } returns defaultIsPerformanceEnabled
 
-        val currentUserTheme = ApplicationTheme.SYSTEM
-        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns currentUserTheme
+        val defaultApplicationTheme = ApplicationTheme.SYSTEM
+        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns defaultApplicationTheme
+
+        val defaultApplicationLanguage = ApplicationLanguage.SYSTEM
+        coEvery { settingsAppearanceCollectionStates.getApplicationLanguageValue() } returns defaultApplicationLanguage
 
         val checked = true
         coEvery { settingsDataChoicesCollectionStates.setCrashReporterCollection(checked) } just Runs
@@ -205,8 +215,11 @@ internal class SettingsViewModelTest {
         val isCrashReporterEnabled = false
         coEvery { settingsDataChoicesCollectionStates.getCrashReporterCollectionValue() } returns isCrashReporterEnabled
 
-        val currentUserTheme = ApplicationTheme.SYSTEM
-        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns currentUserTheme
+        val defaultApplicationTheme = ApplicationTheme.SYSTEM
+        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns defaultApplicationTheme
+
+        val defaultApplicationLanguage = ApplicationLanguage.SYSTEM
+        coEvery { settingsAppearanceCollectionStates.getApplicationLanguageValue() } returns defaultApplicationLanguage
 
         val checked = true
         coEvery { settingsDataChoicesCollectionStates.setAnalyticsCollection(checked) } just Runs
@@ -253,8 +266,11 @@ internal class SettingsViewModelTest {
         val defaultIsCrashReporterEnabled = false
         coEvery { settingsDataChoicesCollectionStates.getCrashReporterCollectionValue() } returns defaultIsCrashReporterEnabled
 
-        val currentUserTheme = ApplicationTheme.SYSTEM
-        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns currentUserTheme
+        val defaultApplicationTheme = ApplicationTheme.SYSTEM
+        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns defaultApplicationTheme
+
+        val defaultApplicationLanguage = ApplicationLanguage.SYSTEM
+        coEvery { settingsAppearanceCollectionStates.getApplicationLanguageValue() } returns defaultApplicationLanguage
 
         val checked = false
         coEvery { settingsDataChoicesCollectionStates.setAnalyticsCollection(checked) } just Runs
@@ -298,8 +314,11 @@ internal class SettingsViewModelTest {
         val defaultIsCrashReporterEnabled = false
         coEvery { settingsDataChoicesCollectionStates.getCrashReporterCollectionValue() } returns defaultIsCrashReporterEnabled
 
-        val currentUserTheme = ApplicationTheme.SYSTEM
-        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns currentUserTheme
+        val defaultApplicationTheme = ApplicationTheme.SYSTEM
+        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns defaultApplicationTheme
+
+        val defaultApplicationLanguage = ApplicationLanguage.SYSTEM
+        coEvery { settingsAppearanceCollectionStates.getApplicationLanguageValue() } returns defaultApplicationLanguage
 
         val checked = DataFactory.createRandomBoolean()
 
@@ -340,8 +359,11 @@ internal class SettingsViewModelTest {
         val defaultsCrashReporterEnabled = false
         coEvery { settingsDataChoicesCollectionStates.getCrashReporterCollectionValue() } returns defaultsCrashReporterEnabled
 
-        val currentUserTheme = ApplicationTheme.SYSTEM
-        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns currentUserTheme
+        val defaultApplicationTheme = ApplicationTheme.SYSTEM
+        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns defaultApplicationTheme
+
+        val defaultApplicationLanguage = ApplicationLanguage.SYSTEM
+        coEvery { settingsAppearanceCollectionStates.getApplicationLanguageValue() } returns defaultApplicationLanguage
 
         val checked = true
         coEvery { settingsDataChoicesCollectionStates.setAnalyticsCollection(checked) } just Runs
@@ -394,8 +416,11 @@ internal class SettingsViewModelTest {
         val isCrashReporterEnabled = false
         coEvery { settingsDataChoicesCollectionStates.getCrashReporterCollectionValue() } returns isCrashReporterEnabled
 
-        val currentUserTheme = ApplicationTheme.SYSTEM
-        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns currentUserTheme
+        val currentApplicationTheme = ApplicationTheme.SYSTEM
+        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns currentApplicationTheme
+
+        val currentApplicationLanguage = ApplicationLanguage.SYSTEM
+        coEvery { settingsAppearanceCollectionStates.getApplicationLanguageValue() } returns currentApplicationLanguage
 
         val checked = true
         coEvery { settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked) } just Runs
@@ -437,8 +462,11 @@ internal class SettingsViewModelTest {
         val isCrashReporterEnabled = false
         coEvery { settingsDataChoicesCollectionStates.getCrashReporterCollectionValue() } returns isCrashReporterEnabled
 
-        val currentUserTheme = ApplicationTheme.SYSTEM
-        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns currentUserTheme
+        val currentApplicationTheme = ApplicationTheme.SYSTEM
+        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns currentApplicationTheme
+
+        val currentApplicationLanguage = ApplicationLanguage.SYSTEM
+        coEvery { settingsAppearanceCollectionStates.getApplicationLanguageValue() } returns currentApplicationLanguage
 
         val checked = false
         coEvery { settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked) } just Runs
@@ -479,8 +507,11 @@ internal class SettingsViewModelTest {
         val defaultIsCrashReporterEnabled = false
         coEvery { settingsDataChoicesCollectionStates.getCrashReporterCollectionValue() } returns defaultIsCrashReporterEnabled
 
-        val currentUserTheme = ApplicationTheme.SYSTEM
-        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns currentUserTheme
+        val defaultApplicationTheme = ApplicationTheme.SYSTEM
+        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns defaultApplicationTheme
+
+        val defaultApplicationLanguage = ApplicationLanguage.SYSTEM
+        coEvery { settingsAppearanceCollectionStates.getApplicationLanguageValue() } returns defaultApplicationLanguage
 
         val checked = true
         coEvery { settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked) } just Runs
@@ -531,8 +562,11 @@ internal class SettingsViewModelTest {
         val defaultIsCrashReporterEnabled = false
         coEvery { settingsDataChoicesCollectionStates.getCrashReporterCollectionValue() } returns defaultIsCrashReporterEnabled
 
-        val currentUserTheme = ApplicationTheme.SYSTEM
-        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns currentUserTheme
+        val defaultApplicationTheme = ApplicationTheme.SYSTEM
+        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns defaultApplicationTheme
+
+        val defaultApplicationLanguage = ApplicationLanguage.SYSTEM
+        coEvery { settingsAppearanceCollectionStates.getApplicationLanguageValue() } returns defaultApplicationLanguage
 
         val checked = DataFactory.createRandomBoolean()
 
@@ -558,7 +592,7 @@ internal class SettingsViewModelTest {
     }
 
     @Test
-    fun `WHEN OnThemeSelect GIVEN theme id THEN update user theme and update theme and reset events`() = runTest {
+    fun `WHEN OnThemeSelect GIVEN theme id THEN update application theme and update theme and reset events`() = runTest {
         // Arrange
         val defaultIsAnalyticsEnabled = false
         coEvery { settingsDataChoicesCollectionStates.getAnalyticsCollectionValue() } returns defaultIsAnalyticsEnabled
@@ -574,12 +608,15 @@ internal class SettingsViewModelTest {
 
         val defaultUserTheme = ApplicationTheme.SYSTEM
 
-        val currentUserTheme = ApplicationTheme.DARK
-        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns currentUserTheme
+        val currentApplicationTheme = ApplicationTheme.DARK
+        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns currentApplicationTheme
+
+        val defaultApplicationLanguage = ApplicationLanguage.SYSTEM
+        coEvery { settingsAppearanceCollectionStates.getApplicationLanguageValue() } returns defaultApplicationLanguage
 
         val themeId = ApplicationTheme.LIGHT.id
 
-        coEvery { settingsAppearanceCollectionStates.saveApplicationThemeValue(ApplicationTheme.LIGHT) } just Runs
+        coEvery { settingsAppearanceCollectionStates.setApplicationThemeValue(ApplicationTheme.LIGHT) } just Runs
 
         settingsStateHandler.state.test {
             // Act
@@ -594,11 +631,11 @@ internal class SettingsViewModelTest {
             assertThat(awaitItem().personalizedAds).isEqualTo(defaultIsPersonalizedAdsEnabled)
             assertThat(awaitItem().performance).isEqualTo(defaultIsPerformanceEnabled)
             assertThat(awaitItem().theme).isEqualTo(defaultUserTheme)
-            assertThat(awaitItem().theme).isEqualTo(currentUserTheme)
+            assertThat(awaitItem().theme).isEqualTo(currentApplicationTheme)
             assertThat(awaitItem().isLoading).isFalse()
             assertThat(awaitItem().theme).isEqualTo(ApplicationTheme.LIGHT)
             assertThat(cancelAndConsumeRemainingEvents()).isEmpty()
-            coVerify { settingsAppearanceCollectionStates.saveApplicationThemeValue(ApplicationTheme.LIGHT) }
+            coVerify { settingsAppearanceCollectionStates.setApplicationThemeValue(ApplicationTheme.LIGHT) }
         }
     }
 
@@ -620,15 +657,18 @@ internal class SettingsViewModelTest {
         val defaultUserTheme = ApplicationTheme.SYSTEM
         coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns defaultUserTheme
 
+        val defaultApplicationLanguage = ApplicationLanguage.SYSTEM
+        coEvery { settingsAppearanceCollectionStates.getApplicationLanguageValue() } returns defaultApplicationLanguage
+
         val dialogTitle = DataFactory.createRandomString()
-        every { settingsThemeProvider.getDialogThemeTitle() } returns dialogTitle
+        every { settingsStringsProvider.getDialogThemeTitle() } returns dialogTitle
 
         val dialogThemes = listOf(
             DialogRadioItemBuilder().setId(DataFactory.createRandomInt()).build(),
             DialogRadioItemBuilder().setId(DataFactory.createRandomInt()).build(),
             DialogRadioItemBuilder().setId(DataFactory.createRandomInt()).build()
         )
-        coEvery { settingsThemeProvider.getDialogThemes(defaultUserTheme) } returns dialogThemes
+        coEvery { settingsStringsProvider.getDialogThemes(defaultUserTheme) } returns dialogThemes
 
         settingsStateHandler.state.test {
             // Act
@@ -670,6 +710,9 @@ internal class SettingsViewModelTest {
         val defaultUserTheme = ApplicationTheme.SYSTEM
         coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns defaultUserTheme
 
+        val defaultApplicationLanguage = ApplicationLanguage.SYSTEM
+        coEvery { settingsAppearanceCollectionStates.getApplicationLanguageValue() } returns defaultApplicationLanguage
+
         settingsStateHandler.state.test {
             // Act
             val sut = getSettingsViewModel()
@@ -682,7 +725,7 @@ internal class SettingsViewModelTest {
             assertThat(awaitItem().analytics).isEqualTo(defaultIsAnalyticsEnabled)
             assertThat(awaitItem().personalizedAds).isEqualTo(defaultIsPersonalizedAdsEnabled)
             assertThat(awaitItem().performance).isEqualTo(defaultIsPerformanceEnabled)
-            assertThat(awaitItem().theme).isEqualTo(defaultUserTheme)
+            assertThat(awaitItem().crashReporter).isEqualTo(defaultIsCrashReporterEnabled)
             assertThat(awaitItem().isLoading).isFalse()
             assertThat(cancelAndConsumeRemainingEvents()).isEmpty()
         }
@@ -704,8 +747,11 @@ internal class SettingsViewModelTest {
         val isCrashReporterEnabled = false
         coEvery { settingsDataChoicesCollectionStates.getCrashReporterCollectionValue() } returns isCrashReporterEnabled
 
-        val currentUserTheme = ApplicationTheme.SYSTEM
-        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns currentUserTheme
+        val currentApplicationTheme = ApplicationTheme.SYSTEM
+        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns currentApplicationTheme
+
+        val currentApplicationLanguage = ApplicationLanguage.SYSTEM
+        coEvery { settingsAppearanceCollectionStates.getApplicationLanguageValue() } returns currentApplicationLanguage
 
         val checked = true
         coEvery { settingsDataChoicesCollectionStates.setPerformanceCollection(checked) } just Runs
@@ -747,8 +793,11 @@ internal class SettingsViewModelTest {
         val isCrashReporterEnabled = false
         coEvery { settingsDataChoicesCollectionStates.getCrashReporterCollectionValue() } returns isCrashReporterEnabled
 
-        val currentUserTheme = ApplicationTheme.SYSTEM
-        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns currentUserTheme
+        val currentApplicationTheme = ApplicationTheme.SYSTEM
+        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns currentApplicationTheme
+
+        val currentApplicationLanguage = ApplicationLanguage.SYSTEM
+        coEvery { settingsAppearanceCollectionStates.getApplicationLanguageValue() } returns currentApplicationLanguage
 
         val checked = false
         coEvery { settingsDataChoicesCollectionStates.setPerformanceCollection(checked) } just Runs
@@ -789,8 +838,11 @@ internal class SettingsViewModelTest {
         val defaultIsCrashReporterEnabled = false
         coEvery { settingsDataChoicesCollectionStates.getCrashReporterCollectionValue() } returns defaultIsCrashReporterEnabled
 
-        val currentUserTheme = ApplicationTheme.SYSTEM
-        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns currentUserTheme
+        val defaultApplicationTheme = ApplicationTheme.SYSTEM
+        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns defaultApplicationTheme
+
+        val defaultApplicationLanguage = ApplicationLanguage.SYSTEM
+        coEvery { settingsAppearanceCollectionStates.getApplicationLanguageValue() } returns defaultApplicationLanguage
 
         val checked = true
         coEvery { settingsDataChoicesCollectionStates.setPerformanceCollection(checked) } just Runs
@@ -841,8 +893,11 @@ internal class SettingsViewModelTest {
         val defaultIsCrashReporterEnabled = false
         coEvery { settingsDataChoicesCollectionStates.getCrashReporterCollectionValue() } returns defaultIsCrashReporterEnabled
 
-        val currentUserTheme = ApplicationTheme.SYSTEM
-        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns currentUserTheme
+        val defaultApplicationTheme = ApplicationTheme.SYSTEM
+        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns defaultApplicationTheme
+
+        val defaultApplicationLanguage = ApplicationLanguage.SYSTEM
+        coEvery { settingsAppearanceCollectionStates.getApplicationLanguageValue() } returns defaultApplicationLanguage
 
         val checked = DataFactory.createRandomBoolean()
 
@@ -867,12 +922,152 @@ internal class SettingsViewModelTest {
         }
     }
 
+    @Test
+    fun `WHEN OnLanguageSelect GIVEN theme id THEN update application language and update language and reset events`() = runTest {
+        // Arrange
+        val defaultIsAnalyticsEnabled = false
+        coEvery { settingsDataChoicesCollectionStates.getAnalyticsCollectionValue() } returns defaultIsAnalyticsEnabled
+
+        val defaultIsPersonalizedAdsEnabled = false
+        coEvery { settingsDataChoicesCollectionStates.getAllowPersonalizedAdsValue() } returns defaultIsPersonalizedAdsEnabled
+
+        val defaultIsPerformanceEnabled = false
+        coEvery { settingsDataChoicesCollectionStates.getPerformanceCollectionValue() } returns defaultIsPerformanceEnabled
+
+        val defaultIsCrashReporterEnabled = true
+        coEvery { settingsDataChoicesCollectionStates.getCrashReporterCollectionValue() } returns defaultIsCrashReporterEnabled
+
+        val defaultUserLanguage = ApplicationLanguage.SYSTEM
+
+        val currentApplicationLanguage = ApplicationLanguage.BULGARIAN
+        coEvery { settingsAppearanceCollectionStates.getApplicationLanguageValue() } returns currentApplicationLanguage
+
+        val defaultApplicationTheme = ApplicationTheme.SYSTEM
+        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns defaultApplicationTheme
+
+        val languageId = ApplicationLanguage.ENGLISH.id
+
+        coEvery { settingsAppearanceCollectionStates.setApplicationLanguageValue(ApplicationLanguage.ENGLISH) } just Runs
+
+        settingsStateHandler.state.test {
+            // Act
+            val sut = getSettingsViewModel()
+
+            sut.sendIntent(OnLanguageSelect(languageId))
+
+            // Assert
+            assertThat(awaitItem().isLoading).isFalse()
+            assertThat(awaitItem().isLoading).isTrue()
+            assertThat(awaitItem().analytics).isEqualTo(defaultIsAnalyticsEnabled)
+            assertThat(awaitItem().personalizedAds).isEqualTo(defaultIsPersonalizedAdsEnabled)
+            assertThat(awaitItem().performance).isEqualTo(defaultIsPerformanceEnabled)
+            assertThat(awaitItem().language).isEqualTo(defaultUserLanguage)
+            assertThat(awaitItem().language).isEqualTo(currentApplicationLanguage)
+            assertThat(awaitItem().isLoading).isFalse()
+            assertThat(awaitItem().language).isEqualTo(ApplicationLanguage.ENGLISH)
+            assertThat(cancelAndConsumeRemainingEvents()).isEmpty()
+//            coVerify { settingsAppearanceCollectionStates.setApplicationLanguageValue(ApplicationLanguage.ENGLISH) }
+        }
+    }
+
+    @Test
+    fun `WHEN OnLanguagePreferenceClick THEN send SelectLanguage event`() = runTest {
+        // Arrange
+        val defaultIsAnalyticsEnabled = false
+        coEvery { settingsDataChoicesCollectionStates.getAnalyticsCollectionValue() } returns defaultIsAnalyticsEnabled
+
+        val defaultIsPersonalizedAdsEnabled = false
+        coEvery { settingsDataChoicesCollectionStates.getAllowPersonalizedAdsValue() } returns defaultIsPersonalizedAdsEnabled
+
+        val defaultIsPerformanceEnabled = false
+        coEvery { settingsDataChoicesCollectionStates.getPerformanceCollectionValue() } returns defaultIsPerformanceEnabled
+
+        val defaultIsCrashReporterEnabled = true
+        coEvery { settingsDataChoicesCollectionStates.getCrashReporterCollectionValue() } returns defaultIsCrashReporterEnabled
+
+        val defaultUserTheme = ApplicationTheme.SYSTEM
+        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns defaultUserTheme
+
+        val defaultApplicationLanguage = ApplicationLanguage.SYSTEM
+        coEvery { settingsAppearanceCollectionStates.getApplicationLanguageValue() } returns defaultApplicationLanguage
+
+        val dialogTitle = DataFactory.createRandomString()
+        every { settingsStringsProvider.getDialogLanguageTitle() } returns dialogTitle
+
+        val dialogLanguages = listOf(
+            DialogRadioItemBuilder().setId(DataFactory.createRandomInt()).build(),
+            DialogRadioItemBuilder().setId(DataFactory.createRandomInt()).build(),
+            DialogRadioItemBuilder().setId(DataFactory.createRandomInt()).build()
+        )
+        coEvery { settingsStringsProvider.getDialogLanguages(defaultApplicationLanguage) } returns dialogLanguages
+
+        settingsStateHandler.state.test {
+            // Act
+            val sut = getSettingsViewModel()
+
+            sut.sendIntent(OnLanguagePreferenceClick)
+
+            // Assert
+            assertThat(awaitItem().isLoading).isFalse()
+            assertThat(awaitItem().isLoading).isTrue()
+            assertThat(awaitItem().analytics).isEqualTo(defaultIsAnalyticsEnabled)
+            assertThat(awaitItem().personalizedAds).isEqualTo(defaultIsPersonalizedAdsEnabled)
+            assertThat(awaitItem().performance).isEqualTo(defaultIsPerformanceEnabled)
+            assertThat(awaitItem().language).isEqualTo(defaultApplicationLanguage)
+            assertThat(awaitItem().isLoading).isFalse()
+            with(awaitItem().event as SelectLanguage) {
+                assertThat(title).isEqualTo(dialogTitle)
+                assertThat(languages).isEqualTo(dialogLanguages)
+            }
+            assertThat(cancelAndConsumeRemainingEvents()).isEmpty()
+        }
+    }
+
+    @Test
+    fun `WHEN OnLanguageDismiss THEN send Idle event`() = runTest {
+        // Arrange
+        val defaultIsAnalyticsEnabled = false
+        coEvery { settingsDataChoicesCollectionStates.getAnalyticsCollectionValue() } returns defaultIsAnalyticsEnabled
+
+        val defaultIsPersonalizedAdsEnabled = false
+        coEvery { settingsDataChoicesCollectionStates.getAllowPersonalizedAdsValue() } returns defaultIsPersonalizedAdsEnabled
+
+        val defaultIsPerformanceEnabled = false
+        coEvery { settingsDataChoicesCollectionStates.getPerformanceCollectionValue() } returns defaultIsPerformanceEnabled
+
+        val defaultIsCrashReporterEnabled = true
+        coEvery { settingsDataChoicesCollectionStates.getCrashReporterCollectionValue() } returns defaultIsCrashReporterEnabled
+
+        val defaultUserTheme = ApplicationTheme.SYSTEM
+        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns defaultUserTheme
+
+        val defaultApplicationLanguage = ApplicationLanguage.SYSTEM
+        coEvery { settingsAppearanceCollectionStates.getApplicationLanguageValue() } returns defaultApplicationLanguage
+
+        settingsStateHandler.state.test {
+            // Act
+            val sut = getSettingsViewModel()
+
+            sut.sendIntent(OnLanguageDismiss)
+
+            // Assert
+            assertThat(awaitItem().isLoading).isFalse()
+            assertThat(awaitItem().isLoading).isTrue()
+            assertThat(awaitItem().analytics).isEqualTo(defaultIsAnalyticsEnabled)
+            assertThat(awaitItem().personalizedAds).isEqualTo(defaultIsPersonalizedAdsEnabled)
+            assertThat(awaitItem().performance).isEqualTo(defaultIsPerformanceEnabled)
+            assertThat(awaitItem().crashReporter).isEqualTo(defaultIsCrashReporterEnabled)
+            assertThat(awaitItem().isLoading).isFalse()
+            assertThat(cancelAndConsumeRemainingEvents()).isEmpty()
+        }
+    }
+
     private fun getSettingsViewModel() = SettingsViewModel(
         settingsStateHandler,
         settingsAppearanceCollectionStates,
         settingsDataChoicesCollectionStates,
         settingsErrorProvider,
-        settingsThemeProvider,
+        settingsStringsProvider,
         appConfigProvider
     )
 }

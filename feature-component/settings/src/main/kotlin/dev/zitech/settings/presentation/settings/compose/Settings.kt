@@ -33,11 +33,15 @@ import dev.zitech.settings.presentation.settings.viewmodel.Error
 import dev.zitech.settings.presentation.settings.viewmodel.Idle
 import dev.zitech.settings.presentation.settings.viewmodel.OnAnalyticsCheckChange
 import dev.zitech.settings.presentation.settings.viewmodel.OnCrashReporterCheckChange
+import dev.zitech.settings.presentation.settings.viewmodel.OnLanguageDismiss
+import dev.zitech.settings.presentation.settings.viewmodel.OnLanguagePreferenceClick
+import dev.zitech.settings.presentation.settings.viewmodel.OnLanguageSelect
 import dev.zitech.settings.presentation.settings.viewmodel.OnPerformanceCheckChange
 import dev.zitech.settings.presentation.settings.viewmodel.OnPersonalizedAdsCheckChange
 import dev.zitech.settings.presentation.settings.viewmodel.OnThemeDismiss
 import dev.zitech.settings.presentation.settings.viewmodel.OnThemePreferenceClick
 import dev.zitech.settings.presentation.settings.viewmodel.OnThemeSelect
+import dev.zitech.settings.presentation.settings.viewmodel.SelectLanguage
 import dev.zitech.settings.presentation.settings.viewmodel.SelectTheme
 import dev.zitech.settings.presentation.settings.viewmodel.SettingsViewModel
 
@@ -68,6 +72,9 @@ fun Settings(
             },
             onThemeClick = {
                 viewModel.sendIntent(OnThemePreferenceClick)
+            },
+            onLanguageClick = {
+                viewModel.sendIntent(OnLanguagePreferenceClick)
             }
         )
     }
@@ -90,6 +97,14 @@ fun Settings(
                 radioItems = event.themes,
                 onItemClick = { viewModel.sendIntent(OnThemeSelect(it)) },
                 onDismissRequest = { viewModel.sendIntent(OnThemeDismiss) }
+            )
+        }
+        is SelectLanguage -> {
+            FireFlowDialogs.Radio(
+                title = event.title,
+                radioItems = event.languages,
+                onItemClick = { viewModel.sendIntent(OnLanguageSelect(it)) },
+                onDismissRequest = { viewModel.sendIntent(OnLanguageDismiss) }
             )
         }
         Idle -> {

@@ -1,0 +1,34 @@
+<resources>
+
+    <string name="data_choices_category">Избор на данни</string>
+    <string name="data_choices_analytics_title">Анализ</string>
+    <string name="data_choices_analytics_description">Споделяйте данни за използването, хардуера и персонализирането на приложението, за да го подобрите.</string>
+    <string name="data_choices_analytics_error">Настройките за анализ не бяха запазени правилно. Моля, опитайте да рестартирате приложението.</string>
+    <string name="cd_data_choices_analytics_enabled">Анализът е активиран</string>
+    <string name="cd_data_choices_analytics_disabled">Анализът е деактивиран</string>
+    <string name="data_choices_performance_title">Производителност</string>
+    <string name="data_choices_performance_description">Споделете данни за производителността, за да направите приложението по-бързо.</string>
+    <string name="data_choices_performance_error">Настройките за производителност не са запазени правилно. Моля, опитайте да рестартирате приложението.</string>
+    <string name="cd_data_choices_performance_enabled">Производителността е активирана</string>
+    <string name="cd_data_choices_performance_disabled">Производителността е деактивирана</string>
+    <string name="data_choices_personalized_ads_title">Персонализирани реклами</string>
+    <string name="data_choices_personalized_ads_description">За да предостави персонализирани реклами, приложението използва информация за вас, за да показва реклами, които са по-подходящи за вас.</string>
+    <string name="data_choices_personalized_ads_error">Настройките за персонализирани реклами не бяха запазени правилно. Моля, опитайте да рестартирате приложението.</string>
+    <string name="cd_data_choices_personalized_ads_enabled">Персонализираните реклами са активирани</string>
+    <string name="cd_data_choices_personalized_ads_disabled">Персонализираните реклами са деактивирани</string>
+    <string name="data_choices_crash_reporter_title">Споделяне на неизправности</string>
+    <string name="data_choices_crash_reporter_description">Изпращайте автоматични доклади за проблеми, за да направите приложението по-стабилно и защитено.</string>
+    <string name="data_choices_crash_reporter_error">Настройките за споделяне на неизправности не бяха запазени правилно. Моля, опитайте да рестартирате приложението.</string>
+    <string name="cd_data_choices_crash_reporter_enabled">Споделяне на неизправности е активирано</string>
+    <string name="cd_data_choices_crash_reporter_disabled">Споделяне на неизправности е деактивирано</string>
+
+    <string name="appearance_category">Външен вид</string>
+    <string name="appearance_theme">Тема</string>
+    <string name="cd_appearance_theme_click">Променете темата на приложението</string>
+    <string name="appearance_dialog_theme_title">Тема</string>
+    <string name="appearance_language">Език</string>
+    <string name="cd_appearance_language_click">Променете езика на приложението</string>
+    <string name="appearance_dialog_language_title">Език</string>
+
+    <string name="action_restart">Рестартирай</string>
+</resources>

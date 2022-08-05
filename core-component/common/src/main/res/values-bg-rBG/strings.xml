@@ -17,11 +17,11 @@
 
 <resources>
 
-    <string name="application_theme_system">System default</string>
-    <string name="application_theme_dark">Dark</string>
-    <string name="application_theme_light">Light</string>
+    <string name="application_theme_system">Ситемни настройки по подразбиране</string>
+    <string name="application_theme_dark">Тъмна</string>
+    <string name="application_theme_light">Светла</string>
 
-    <string name="application_language_system">System default</string>
-    <string name="application_language_english">English</string>
-    <string name="application_language_bulgarian">Bulgarian Български</string>
+    <string name="application_language_system">Ситемни настройки по подразбиране</string>
+    <string name="application_language_english">Английски English</string>
+    <string name="application_language_bulgarian">Български</string>
 </resources>

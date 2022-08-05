@@ -15,30 +15,21 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.settings.presentation.settings.viewmodel
+package dev.zitech.settings.di
 
-import dev.zitech.core.common.presentation.architecture.MviState
-import dev.zitech.ds.molecules.dialog.DialogRadioItem
+import dagger.Binds
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.android.scopes.ViewModelScoped
+import dev.zitech.settings.frawework.locale.ApplicationLocale
+import dev.zitech.settings.frawework.locale.ApplicationLocaleImpl
 
-sealed interface SettingsEvent : MviState.Event
+@InstallIn(ViewModelComponent::class)
+@Module
+interface SettingsViewModelBindsModule {
 
-internal object Idle : SettingsEvent
-internal data class Error(
-    val message: String,
-    val action: String? = null
-) : SettingsEvent
-
-internal data class Dialog(
-    val title: String,
-    val text: String
-) : SettingsEvent
-
-internal data class SelectTheme(
-    val title: String,
-    val themes: List<DialogRadioItem>
-) : SettingsEvent
-
-internal data class SelectLanguage(
-    val title: String,
-    val languages: List<DialogRadioItem>
-) : SettingsEvent
+    @Binds
+    @ViewModelScoped
+    fun applicationLocale(applicationLocaleImpl: ApplicationLocaleImpl): ApplicationLocale
+}

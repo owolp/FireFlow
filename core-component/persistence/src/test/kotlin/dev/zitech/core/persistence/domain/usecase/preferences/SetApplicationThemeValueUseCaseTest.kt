@@ -30,16 +30,16 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 @ExperimentalCoroutinesApi
-internal class SaveApplicationThemeValueUseCaseTest {
+internal class SetApplicationThemeValueUseCaseTest {
 
     private val savePreferencesRepository = FakePreferencesRepository()
     private val applicationThemeToIntMapper = ApplicationThemeToIntMapper()
 
-    private lateinit var sut: SaveApplicationThemeValueUseCase
+    private lateinit var sut: SetApplicationThemeValueUseCase
 
     @BeforeEach
     fun setup() {
-        sut = SaveApplicationThemeValueUseCase(
+        sut = SetApplicationThemeValueUseCase(
             savePreferencesRepository,
             applicationThemeToIntMapper
         )
