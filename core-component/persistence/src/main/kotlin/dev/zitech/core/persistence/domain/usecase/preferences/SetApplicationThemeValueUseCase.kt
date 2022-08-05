@@ -24,7 +24,7 @@ import dev.zitech.core.persistence.domain.repository.preferences.SavePreferences
 import dev.zitech.core.persistence.framework.preference.mapper.ApplicationThemeToIntMapper
 import javax.inject.Inject
 
-class SaveApplicationThemeValueUseCase @Inject constructor(
+class SetApplicationThemeValueUseCase @Inject constructor(
     private val savePreferencesRepository: SavePreferencesRepository,
     private val applicationThemeToIntMapper: ApplicationThemeToIntMapper
 ) {

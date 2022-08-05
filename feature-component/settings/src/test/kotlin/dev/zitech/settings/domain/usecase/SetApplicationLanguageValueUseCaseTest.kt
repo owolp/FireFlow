@@ -19,13 +19,28 @@ package dev.zitech.settings.domain.usecase
 
 import dev.zitech.core.common.domain.model.ApplicationLanguage
 import dev.zitech.settings.frawework.locale.ApplicationLocale
-import javax.inject.Inject
+import io.mockk.Runs
+import io.mockk.coVerify
+import io.mockk.every
+import io.mockk.just
+import io.mockk.mockk
+import org.junit.jupiter.api.Test
 
-class SaveApplicationLanguageValueUseCase @Inject constructor(
-    private val applicationLocale: ApplicationLocale
-) {
+internal class SetApplicationLanguageValueUseCaseTest {
 
-    operator fun invoke(applicationLanguage: ApplicationLanguage) {
-        applicationLocale.set(applicationLanguage)
+    @Test
+    fun invoke() {
+        // Arrange
+        val language = ApplicationLanguage.BULGARIAN
+        val applicationLocale = mockk<ApplicationLocale>()
+        every { applicationLocale.set(language) } just Runs
+
+        val sut = SetApplicationLanguageValueUseCase(applicationLocale)
+
+        // Act
+        sut(language)
+
+        // Assert
+        coVerify { applicationLocale.set(language) }
     }
 }

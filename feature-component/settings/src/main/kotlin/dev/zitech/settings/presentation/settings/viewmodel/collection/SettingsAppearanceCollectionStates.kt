@@ -20,28 +20,28 @@ package dev.zitech.settings.presentation.settings.viewmodel.collection
 import dev.zitech.core.common.domain.model.ApplicationLanguage
 import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.core.persistence.domain.usecase.preferences.GetApplicationThemeValueUseCase
-import dev.zitech.core.persistence.domain.usecase.preferences.SaveApplicationThemeValueUseCase
+import dev.zitech.core.persistence.domain.usecase.preferences.SetApplicationThemeValueUseCase
 import dev.zitech.settings.domain.usecase.GetApplicationLanguageValueUseCase
-import dev.zitech.settings.domain.usecase.SaveApplicationLanguageValueUseCase
+import dev.zitech.settings.domain.usecase.SetApplicationLanguageValueUseCase
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 class SettingsAppearanceCollectionStates @Inject constructor(
     private val getApplicationThemeValueUseCase: GetApplicationThemeValueUseCase,
-    private val saveApplicationThemeValueUseCase: SaveApplicationThemeValueUseCase,
+    private val setApplicationThemeValueUseCase: SetApplicationThemeValueUseCase,
     private val getApplicationLanguageValueUseCase: GetApplicationLanguageValueUseCase,
-    private val saveApplicationLanguageValueUseCase: SaveApplicationLanguageValueUseCase
+    private val setApplicationLanguageValueUseCase: SetApplicationLanguageValueUseCase
 ) {
 
-    internal suspend fun saveApplicationThemeValue(applicationTheme: ApplicationTheme) {
-        saveApplicationThemeValueUseCase(applicationTheme)
+    internal suspend fun setApplicationThemeValue(applicationTheme: ApplicationTheme) {
+        setApplicationThemeValueUseCase(applicationTheme)
     }
 
     internal suspend fun getApplicationThemeValue(): ApplicationTheme =
         getApplicationThemeValueUseCase().first()
 
-    internal fun saveApplicationLanguageValue(applicationLanguage: ApplicationLanguage) {
-        saveApplicationLanguageValueUseCase(applicationLanguage)
+    internal fun setApplicationLanguageValue(applicationLanguage: ApplicationLanguage) {
+        setApplicationLanguageValueUseCase(applicationLanguage)
     }
 
     internal fun getApplicationLanguageValue(): ApplicationLanguage =

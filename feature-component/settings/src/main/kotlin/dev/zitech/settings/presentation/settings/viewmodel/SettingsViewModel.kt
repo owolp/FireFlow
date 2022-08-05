@@ -34,6 +34,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@Suppress("TooManyFunctions")
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     private val settingsStateHandler: SettingsStateHandler,
@@ -103,7 +104,7 @@ class SettingsViewModel @Inject constructor(
 
     private suspend fun handleOnThemeSelect(id: Int) {
         ApplicationTheme.values().first { it.id == id }.run {
-            settingsAppearanceCollectionStates.saveApplicationThemeValue(this)
+            settingsAppearanceCollectionStates.setApplicationThemeValue(this)
             settingsStateHandler.setTheme(this)
             settingsStateHandler.resetEvent()
         }
@@ -111,7 +112,7 @@ class SettingsViewModel @Inject constructor(
 
     private fun handleOnLanguageSelect(id: Int) {
         ApplicationLanguage.values().first { it.id == id }.run {
-            settingsAppearanceCollectionStates.saveApplicationLanguageValue(this)
+            settingsAppearanceCollectionStates.setApplicationLanguageValue(this)
             settingsStateHandler.setLanguage(this)
             settingsStateHandler.resetEvent()
         }
