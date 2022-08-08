@@ -51,7 +51,7 @@ google-accompanist-placeholder-material = { module = "com.google.accompanist:acc
 google-dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "dagger" }
 google-dagger-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "dagger" }
 google-dagger-hilt-gradle = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "dagger" }
-google-firebase-bom = "com.google.firebase:firebase-bom:30.3.1"
+google-firebase-bom = "com.google.firebase:firebase-bom:30.3.2"
 google-firebase-crashlytics-gradle = "com.google.firebase:firebase-crashlytics-gradle:2.9.1"
 google-firebase-performance-gradle = "com.google.firebase:perf-plugin:1.4.1"
 google-material = "com.google.android.material:material:1.6.1"
