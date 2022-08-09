@@ -34,29 +34,32 @@ import dev.zitech.core.common.framework.applicationconfig.AppConfigProviderImpl
 import dev.zitech.core.common.framework.strings.StringsProviderImpl
 import javax.inject.Singleton
 
-@InstallIn(SingletonComponent::class)
-@Module
-internal object CommonSingletonProvidesModule {
+internal interface CommonModule {
 
-    @Singleton
-    @Provides
-    fun stringsProvider(@ApplicationContext applicationContext: Context): StringsProvider =
-        StringsProviderImpl(applicationContext)
-}
+    @InstallIn(SingletonComponent::class)
+    @Module
+    object CommonSingletonProvidesModule {
 
-@InstallIn(SingletonComponent::class)
-@Module
-internal interface CommonSingletonBindsModule {
+        @Singleton
+        @Provides
+        fun stringsProvider(@ApplicationContext applicationContext: Context): StringsProvider =
+            StringsProviderImpl(applicationContext)
+    }
 
-    @Singleton
-    @Binds
-    fun appDispatchers(appDispatchersImpl: AppDispatchersImpl): AppDispatchers
+    @InstallIn(SingletonComponent::class)
+    @Module
+    interface CommonSingletonBindsModule {
 
-    @Singleton
-    @Binds
-    fun appScopes(appScopesImpl: AppScopesImpl): AppScopes
+        @Singleton
+        @Binds
+        fun appDispatchers(appDispatchersImpl: AppDispatchersImpl): AppDispatchers
 
-    @Singleton
-    @Binds
-    fun appConfigProvider(appConfigProviderImpl: AppConfigProviderImpl): AppConfigProvider
+        @Singleton
+        @Binds
+        fun appScopes(appScopesImpl: AppScopesImpl): AppScopes
+
+        @Singleton
+        @Binds
+        fun appConfigProvider(appConfigProviderImpl: AppConfigProviderImpl): AppConfigProvider
+    }
 }

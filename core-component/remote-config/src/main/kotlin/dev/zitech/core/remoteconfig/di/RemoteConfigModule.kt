@@ -30,26 +30,29 @@ import dev.zitech.core.remoteconfig.framework.source.ConfigProviderSourceImpl
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Singleton
 
-@InstallIn(SingletonComponent::class)
-@Module
-internal interface RemoteConfigSingletonBindsModule {
+internal interface RemoteConfigModule {
 
-    @Singleton
-    @Binds
-    fun configProviderSource(
-        configProviderSourceImpl: ConfigProviderSourceImpl
-    ): ConfigProviderSource
+    @InstallIn(SingletonComponent::class)
+    @Module
+    interface SingletonBindsModule {
 
-    @ExperimentalCoroutinesApi
-    @Singleton
-    @Binds
-    fun remoteConfigurator(
-        remoteConfiguratorImpl: RemoteConfiguratorImpl
-    ): RemoteConfigurator
+        @Singleton
+        @Binds
+        fun configProviderSource(
+            configProviderSourceImpl: ConfigProviderSourceImpl
+        ): ConfigProviderSource
 
-    @Singleton
-    @Binds
-    fun configRepository(
-        configRepositoryImpl: ConfigRepositoryImpl
-    ): ConfigRepository
+        @ExperimentalCoroutinesApi
+        @Singleton
+        @Binds
+        fun remoteConfigurator(
+            remoteConfiguratorImpl: RemoteConfiguratorImpl
+        ): RemoteConfigurator
+
+        @Singleton
+        @Binds
+        fun configRepository(
+            configRepositoryImpl: ConfigRepositoryImpl
+        ): ConfigRepository
+    }
 }

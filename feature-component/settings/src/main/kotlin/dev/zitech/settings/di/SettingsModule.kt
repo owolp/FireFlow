@@ -25,11 +25,14 @@ import dagger.hilt.android.scopes.ViewModelScoped
 import dev.zitech.settings.frawework.locale.ApplicationLocale
 import dev.zitech.settings.frawework.locale.ApplicationLocaleImpl
 
-@InstallIn(ViewModelComponent::class)
-@Module
-interface SettingsViewModelBindsModule {
+internal interface SettingsModule {
 
-    @Binds
-    @ViewModelScoped
-    fun applicationLocale(applicationLocaleImpl: ApplicationLocaleImpl): ApplicationLocale
+    @InstallIn(ViewModelComponent::class)
+    @Module
+    interface ViewModelComponentModule {
+
+        @Binds
+        @ViewModelScoped
+        fun applicationLocale(applicationLocaleImpl: ApplicationLocaleImpl): ApplicationLocale
+    }
 }
