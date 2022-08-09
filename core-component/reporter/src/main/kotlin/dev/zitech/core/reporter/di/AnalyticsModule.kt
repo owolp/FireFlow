@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.analytics.di
+package dev.zitech.core.reporter.di
 
 import android.content.Context
 import dagger.Binds
@@ -40,50 +40,53 @@ import dev.zitech.core.reporter.performance.domain.repository.PerformanceReposit
 import dev.zitech.core.reporter.performance.framework.PerformanceReporterImpl
 import javax.inject.Singleton
 
-@InstallIn(SingletonComponent::class)
-@Module
-internal interface AnalyticsSingletonBindsModule {
+internal interface AnalyticsModule {
 
-    @Singleton
-    @Binds
-    fun crashReporter(crashReporterImpl: CrashReporterImpl): CrashReporter
+    @InstallIn(SingletonComponent::class)
+    @Module
+    interface SingletonBindsModule {
 
-    @Singleton
-    @Binds
-    fun performanceReporter(performanceRepositoryImpl: PerformanceReporterImpl): PerformanceReporter
+        @Singleton
+        @Binds
+        fun crashReporter(crashReporterImpl: CrashReporterImpl): CrashReporter
 
-    @Singleton
-    @Binds
-    fun analyticsRepository(
-        analyticsRepositoryImpl: AnalyticsRepositoryImpl
-    ): AnalyticsRepository
+        @Singleton
+        @Binds
+        fun performanceReporter(performanceRepositoryImpl: PerformanceReporterImpl): PerformanceReporter
 
-    @Singleton
-    @Binds
-    fun crashRepository(
-        crashRepositoryImpl: CrashRepositoryImpl
-    ): CrashRepository
+        @Singleton
+        @Binds
+        fun analyticsRepository(
+            analyticsRepositoryImpl: AnalyticsRepositoryImpl
+        ): AnalyticsRepository
 
-    @Singleton
-    @Binds
-    fun performanceRepository(
-        performanceRepositoryImpl: PerformanceRepositoryImpl
-    ): PerformanceRepository
+        @Singleton
+        @Binds
+        fun crashRepository(
+            crashRepositoryImpl: CrashRepositoryImpl
+        ): CrashRepository
 
-    @Singleton
-    @Binds
-    fun errorTree(errorTreeImpl: ErrorTreeImpl): ErrorTree
-}
+        @Singleton
+        @Binds
+        fun performanceRepository(
+            performanceRepositoryImpl: PerformanceRepositoryImpl
+        ): PerformanceRepository
 
-@InstallIn(SingletonComponent::class)
-@Module
-internal object AnalyticsSingletonProvidesModule {
+        @Singleton
+        @Binds
+        fun errorTree(errorTreeImpl: ErrorTreeImpl): ErrorTree
+    }
 
-    @Singleton
-    @Provides
-    fun analyticsReporter(
-        @ApplicationContext context: Context
-    ): AnalyticsReporter = AnalyticsReporterImpl(
-        context = context
-    )
+    @InstallIn(SingletonComponent::class)
+    @Module
+    object SingletonProvidesModule {
+
+        @Singleton
+        @Provides
+        fun analyticsReporter(
+            @ApplicationContext context: Context
+        ): AnalyticsReporter = AnalyticsReporterImpl(
+            context = context
+        )
+    }
 }
