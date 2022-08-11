@@ -47,4 +47,10 @@ public class FakeAppConfigProvider implements AppConfigProvider {
     public void setBuildFlavor(BuildFlavor buildFlavor) {
         this.buildFlavor = buildFlavor;
     }
+
+    @NotNull
+    @Override
+    public String getVersion() {
+        return "4.2";
+    }
 }

@@ -47,5 +47,8 @@
     <string name="cd_appearance_language_click">Change application language</string>
     <string name="appearance_dialog_language_title">Language</string>
 
+    <string name="about_application_category">About FireFlow</string>
+    <string name="about_application_version">Version</string>
+
     <string name="action_restart">Restart</string>
 </resources>

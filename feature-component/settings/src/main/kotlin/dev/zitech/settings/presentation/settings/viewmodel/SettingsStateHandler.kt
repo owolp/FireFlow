@@ -101,6 +101,12 @@ class SettingsStateHandler @Inject constructor() : MviStateHandler<SettingsState
         }
     }
 
+    fun setAppVersion(value: String) {
+        mutableState.update {
+            it.copy(version = value)
+        }
+    }
+
     fun setEvent(event: SettingsEvent) {
         mutableState.update {
             it.copy(event = event)

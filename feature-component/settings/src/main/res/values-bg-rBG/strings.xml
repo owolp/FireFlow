@@ -30,5 +30,8 @@
     <string name="cd_appearance_language_click">Променете езика на приложението</string>
     <string name="appearance_dialog_language_title">Език</string>
 
+    <string name="about_application_category">Относно ФайърФлоу</string>
+    <string name="about_application_version">Версия</string>
+
     <string name="action_restart">Рестартирай</string>
 </resources>

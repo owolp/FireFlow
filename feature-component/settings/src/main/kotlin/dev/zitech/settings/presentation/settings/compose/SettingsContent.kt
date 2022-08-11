@@ -27,6 +27,7 @@ import androidx.compose.material.icons.outlined.AdsClick
 import androidx.compose.material.icons.outlined.Analytics
 import androidx.compose.material.icons.outlined.Brightness6
 import androidx.compose.material.icons.outlined.BugReport
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.Speed
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -80,6 +81,14 @@ internal fun SettingsContent(
                     state = state,
                     onThemeClick = onThemeClick,
                     onLanguageClick = onLanguageClick
+                )
+            )
+        }
+        item {
+            FireFlowCategoryPreferences.Simple(
+                categoryName = stringResource(id = R.string.about_application_category),
+                preferences = getAboutApplicationPreferences(
+                    state = state
                 )
             )
         }
@@ -179,6 +188,23 @@ private fun getDataChoicesPreferences(
             cdDescriptionEnabled = stringResource(id = R.string.cd_data_choices_crash_reporter_enabled),
             cdDescriptionDisabled = stringResource(id = R.string.cd_data_choices_crash_reporter_disabled),
             description = stringResource(id = R.string.data_choices_crash_reporter_description)
+        )
+    )
+
+    return categoryPreferences
+}
+
+@Composable
+private fun getAboutApplicationPreferences(
+    state: SettingsState
+): List<CategoryPreference> {
+    val categoryPreferences = mutableListOf<CategoryPreference>()
+
+    categoryPreferences.add(
+        CategoryPreference.Icon(
+            title = stringResource(id = R.string.about_application_version),
+            icon = Icons.Outlined.Info,
+            description = state.version
         )
     )
 

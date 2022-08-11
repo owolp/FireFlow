@@ -15,12 +15,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.common.framework.applicationconfig
+package dev.zitech.fireflow.framework
 
-import dev.zitech.core.common.BuildConfig
 import dev.zitech.core.common.domain.applicationconfig.AppConfigProvider
 import dev.zitech.core.common.domain.model.BuildFlavor
 import dev.zitech.core.common.domain.model.BuildMode
+import dev.zitech.fireflow.BuildConfig
 import javax.inject.Inject
 
 internal class AppConfigProviderImpl @Inject constructor() : AppConfigProvider {
@@ -40,4 +40,7 @@ internal class AppConfigProviderImpl @Inject constructor() : AppConfigProvider {
             "play" -> BuildFlavor.PLAY
             else -> throw IllegalStateException("Build Config not found!")
         }
+
+    override val version: String
+        get() = BuildConfig.VERSION_NAME
 }
