@@ -24,9 +24,7 @@ import javax.inject.Inject
 
 class IntToApplicationThemeMapper @Inject constructor() : Mapper<Int, ApplicationTheme> {
 
-    companion object {
-        const val TAG = "IntToApplicationThemeMapper"
-    }
+    private val tag = Logger.tag(this::class.java)
 
     override fun invoke(input: Int): ApplicationTheme =
         when (input) {
@@ -34,7 +32,7 @@ class IntToApplicationThemeMapper @Inject constructor() : Mapper<Int, Applicatio
             ApplicationTheme.DARK.id -> ApplicationTheme.DARK
             ApplicationTheme.LIGHT.id -> ApplicationTheme.LIGHT
             else -> {
-                Logger.e(TAG, "Theme $input not supported!")
+                Logger.e(tag, "Theme $input not supported!")
                 ApplicationTheme.SYSTEM
             }
         }

@@ -28,11 +28,13 @@ open class InMemoryCache<T : Any>(
     private val lifetimeMillis: Int = Int.MAX_VALUE
 ) : Cache {
 
+    private val tag = Logger.tag(this::class.java)
+
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     var cacheExpirationTimeMillis: BigInteger? = null
 
     override fun invalidate() {
-        Logger.i(this::class.java.simpleName, "invalidate cache")
+        Logger.i(tag, "invalidate cache")
         clearExpirationTime()
         data = null
         cacheRepository.removeCache(this)
@@ -42,11 +44,11 @@ open class InMemoryCache<T : Any>(
         set(value) {
             field = value
             if (value != null) {
-                Logger.i(this::class.java.simpleName, "set cache")
+                Logger.i(tag, "set cache")
                 setExpirationTime()
                 cacheRepository.addCache(this)
             } else {
-                Logger.i(this::class.java.simpleName, "clear cache")
+                Logger.i(tag, "clear cache")
                 clearExpirationTime()
                 cacheRepository.removeCache(this)
             }

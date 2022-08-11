@@ -32,9 +32,7 @@ internal class UserAccountRepositoryImpl @Inject constructor(
     private val userAccountDatabaseSource: UserAccountDatabaseSource
 ) : UserAccountRepository {
 
-    companion object {
-        private const val TAG = "UserAccountRepository"
-    }
+    private val tag = Logger.tag(this::class.java)
 
     override suspend fun getUserAccounts(): DataResult<List<UserAccount>> =
         try {
@@ -61,7 +59,7 @@ internal class UserAccountRepositoryImpl @Inject constructor(
                 UserLoggedState.LOGGED_OUT
             }
         } catch (exception: Exception) {
-            Logger.e(TAG, exception)
+            Logger.e(tag, exception)
             UserLoggedState.LOGGED_OUT
         }
 
