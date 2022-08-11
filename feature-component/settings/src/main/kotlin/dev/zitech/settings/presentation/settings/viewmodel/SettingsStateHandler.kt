@@ -27,6 +27,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
+@Suppress("TooManyFunctions")
 class SettingsStateHandler @Inject constructor() : MviStateHandler<SettingsState> {
 
     private val mutableState = MutableStateFlow(SettingsState())
