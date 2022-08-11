@@ -45,9 +45,7 @@ class SettingsViewModel @Inject constructor(
     private val appConfigProvider: AppConfigProvider
 ) : ViewModel(), MviViewModel<SettingsIntent, SettingsState> {
 
-    companion object {
-        private const val TAG = "SettingsViewModel"
-    }
+    private val tag = Logger.tag(this::class.java)
 
     override val state: StateFlow<SettingsState> = settingsStateHandler.state
 
@@ -55,6 +53,7 @@ class SettingsViewModel @Inject constructor(
         viewModelScope.launch {
             getPreferencesState()
         }
+        Logger.i(tag, "Hello")
     }
 
     override fun sendIntent(intent: SettingsIntent) {
@@ -98,7 +97,7 @@ class SettingsViewModel @Inject constructor(
                 settingsStateHandler.setErrorState(settingsErrorProvider.getAnalyticsError())
             }
         } else {
-            Logger.e(TAG, "Setting analytics on FOSS build is not supported")
+            Logger.e(tag, "Setting analytics on FOSS build is not supported")
         }
     }
 
@@ -136,7 +135,7 @@ class SettingsViewModel @Inject constructor(
                 settingsStateHandler.setErrorState(settingsErrorProvider.getPersonalizedAdsError())
             }
         } else {
-            Logger.e(TAG, "Setting personalized ads on FOSS build is not supported")
+            Logger.e(tag, "Setting personalized ads on FOSS build is not supported")
         }
     }
 
@@ -150,7 +149,7 @@ class SettingsViewModel @Inject constructor(
                 settingsStateHandler.setErrorState(settingsErrorProvider.getPerformanceError())
             }
         } else {
-            Logger.e(TAG, "Setting performance on FOSS build is not supported")
+            Logger.e(tag, "Setting performance on FOSS build is not supported")
         }
     }
 

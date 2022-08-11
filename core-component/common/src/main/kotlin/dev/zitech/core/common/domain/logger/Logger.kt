@@ -19,6 +19,8 @@ package dev.zitech.core.common.domain.logger
 
 import timber.log.Timber
 
+private const val TIMBER_MAX_TAG_LENGTH = 23
+
 @Suppress("TooManyFunctions")
 object Logger {
 
@@ -68,5 +70,14 @@ object Logger {
 
     fun w(tag: String, throwable: Throwable?, message: String) {
         Timber.tag(tag).w(throwable, message)
+    }
+
+    fun tag(clazz: Class<*>): String {
+        val simpleName = clazz.simpleName
+        return if (simpleName.length > TIMBER_MAX_TAG_LENGTH) {
+            simpleName.substring(0, TIMBER_MAX_TAG_LENGTH)
+        } else {
+            simpleName
+        }
     }
 }
