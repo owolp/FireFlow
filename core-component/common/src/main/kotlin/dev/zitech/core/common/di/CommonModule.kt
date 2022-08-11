@@ -24,13 +24,11 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import dev.zitech.core.common.domain.applicationconfig.AppConfigProvider
 import dev.zitech.core.common.domain.dispatcher.AppDispatchers
 import dev.zitech.core.common.domain.dispatcher.AppDispatchersImpl
 import dev.zitech.core.common.domain.scope.AppScopes
 import dev.zitech.core.common.domain.scope.AppScopesImpl
 import dev.zitech.core.common.domain.strings.StringsProvider
-import dev.zitech.core.common.framework.applicationconfig.AppConfigProviderImpl
 import dev.zitech.core.common.framework.strings.StringsProviderImpl
 import javax.inject.Singleton
 
@@ -57,9 +55,5 @@ internal interface CommonModule {
         @Singleton
         @Binds
         fun appScopes(appScopesImpl: AppScopesImpl): AppScopes
-
-        @Singleton
-        @Binds
-        fun appConfigProvider(appConfigProviderImpl: AppConfigProviderImpl): AppConfigProvider
     }
 }

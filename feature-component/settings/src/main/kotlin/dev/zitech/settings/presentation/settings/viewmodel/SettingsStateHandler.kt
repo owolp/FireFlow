@@ -27,6 +27,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
+@Suppress("TooManyFunctions")
 class SettingsStateHandler @Inject constructor() : MviStateHandler<SettingsState> {
 
     private val mutableState = MutableStateFlow(SettingsState())
@@ -98,6 +99,12 @@ class SettingsStateHandler @Inject constructor() : MviStateHandler<SettingsState
     fun setLanguage(value: ApplicationLanguage) {
         mutableState.update {
             it.copy(language = value)
+        }
+    }
+
+    fun setAppVersion(value: String) {
+        mutableState.update {
+            it.copy(version = value)
         }
     }
 

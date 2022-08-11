@@ -911,6 +911,7 @@ internal class SettingsViewModelTest {
         crashReporter: Boolean = false,
         theme: ApplicationTheme = ApplicationTheme.SYSTEM,
         language: ApplicationLanguage = ApplicationLanguage.SYSTEM,
+        version: String = "4.2",
         event: SettingsEvent = Idle
     ) = SettingsState(
         isLoading,
@@ -920,6 +921,7 @@ internal class SettingsViewModelTest {
         crashReporter,
         theme,
         language,
+        version,
         event
     )
 }

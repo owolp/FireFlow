@@ -15,13 +15,23 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.common.domain.applicationconfig
+package dev.zitech.fireflow.di
 
-import dev.zitech.core.common.domain.model.BuildFlavor
-import dev.zitech.core.common.domain.model.BuildMode
+import dagger.Binds
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import dev.zitech.core.common.domain.applicationconfig.AppConfigProvider
+import dev.zitech.fireflow.framework.AppConfigProviderImpl
+import javax.inject.Singleton
 
-interface AppConfigProvider {
-    val buildMode: BuildMode
-    val buildFlavor: BuildFlavor
-    val version: String
+internal interface AppModule {
+
+    @InstallIn(SingletonComponent::class)
+    @Module
+    interface SingletonBindsModule {
+        @Singleton
+        @Binds
+        fun appConfigProvider(appConfigProviderImpl: AppConfigProviderImpl): AppConfigProvider
+    }
 }

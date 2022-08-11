@@ -29,5 +29,6 @@ data class SettingsState(
     val crashReporter: Boolean = false,
     val theme: ApplicationTheme = ApplicationTheme.SYSTEM,
     val language: ApplicationLanguage = ApplicationLanguage.SYSTEM,
+    val version: String = "",
     val event: SettingsEvent = Idle
 ) : MviState
