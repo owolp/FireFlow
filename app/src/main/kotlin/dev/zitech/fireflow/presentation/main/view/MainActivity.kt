@@ -21,12 +21,10 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
@@ -42,12 +40,10 @@ import dev.zitech.fireflow.presentation.main.viewmodel.MainState
 import dev.zitech.fireflow.presentation.main.viewmodel.MainViewModel
 import dev.zitech.fireflow.presentation.main.viewmodel.ShowError
 import dev.zitech.fireflow.presentation.main.viewmodel.ShowErrorHandled
-import dev.zitech.settings.presentation.settings.compose.Settings
+import dev.zitech.settings.presentation.settings.compose.SettingsRoute
 
 @Suppress("ForbiddenComment")
-@ExperimentalLifecycleComposeApi
-@ExperimentalMaterial3Api
-@ExperimentalFoundationApi
+@OptIn(ExperimentalLifecycleComposeApi::class)
 @AndroidEntryPoint
 internal class MainActivity : AppCompatActivity() {
 
@@ -75,7 +71,7 @@ internal class MainActivity : AppCompatActivity() {
                 ) {
                     // TODO: Use navigation
                     if (!mainState.value.splash) {
-                        Settings()
+                        SettingsRoute()
                     }
                 }
                 EventHandler(mainState)

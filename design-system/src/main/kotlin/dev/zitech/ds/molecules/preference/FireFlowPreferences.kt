@@ -32,7 +32,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.material3.Card
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -236,7 +235,6 @@ object FireFlowPreferences {
         }
     }
 
-    @ExperimentalMaterial3Api
     @Composable
     fun Checkbox(
         title: String,
@@ -476,7 +474,6 @@ private fun Switch_Title_Description_Preview() {
     uiMode = Configuration.UI_MODE_NIGHT_YES,
     showBackground = true
 )
-@ExperimentalMaterial3Api
 @Composable
 private fun Checkbox_Preview() {
     FireFlowTheme {

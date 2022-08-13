@@ -18,14 +18,12 @@
 package dev.zitech.ds.atoms.radio
 
 import android.content.res.Configuration
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.RadioButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import dev.zitech.ds.theme.FireFlowTheme
 
-@ExperimentalMaterial3Api
 object FireFlowRadioButtons {
 
     @Composable
@@ -58,7 +56,6 @@ object FireFlowRadioButtons {
     uiMode = Configuration.UI_MODE_NIGHT_YES,
     showBackground = true
 )
-@ExperimentalMaterial3Api
 @Composable
 private fun Primary_Selected_Enabled_Preview() {
     FireFlowTheme {
@@ -77,7 +74,6 @@ private fun Primary_Selected_Enabled_Preview() {
     uiMode = Configuration.UI_MODE_NIGHT_YES,
     showBackground = true
 )
-@ExperimentalMaterial3Api
 @Composable
 private fun Primary_Selected_Disabled_Preview() {
     FireFlowTheme {
@@ -97,7 +93,6 @@ private fun Primary_Selected_Disabled_Preview() {
     uiMode = Configuration.UI_MODE_NIGHT_YES,
     showBackground = true
 )
-@ExperimentalMaterial3Api
 @Composable
 private fun Primary_NotSelected_Enabled_Preview() {
     FireFlowTheme {
@@ -116,7 +111,6 @@ private fun Primary_NotSelected_Enabled_Preview() {
     uiMode = Configuration.UI_MODE_NIGHT_YES,
     showBackground = true
 )
-@ExperimentalMaterial3Api
 @Composable
 private fun Primary_NotSelected_Disabled_Preview() {
     FireFlowTheme {

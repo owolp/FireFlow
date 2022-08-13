@@ -18,11 +18,9 @@
 package dev.zitech.settings.presentation.settings.compose
 
 import android.content.res.Configuration
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -35,10 +33,8 @@ import dev.zitech.ds.theme.FireFlowTheme
 import dev.zitech.settings.R
 import dev.zitech.settings.presentation.settings.viewmodel.SettingsState
 
-@ExperimentalMaterial3Api
-@ExperimentalFoundationApi
 @Composable
-internal fun SettingsContent(
+internal fun SettingsScreen(
     state: SettingsState,
     modifier: Modifier = Modifier,
     onAnalyticsCheckChange: (checked: Boolean) -> Unit,
@@ -205,20 +201,18 @@ private fun getAboutApplicationPreferences(
 }
 
 @Preview(
-    name = "Settings Content Light Theme",
+    name = "Settings Screen Light Theme",
     showBackground = true
 )
 @Preview(
-    name = "Settings Content Dark Theme",
+    name = "Settings Screen Dark Theme",
     uiMode = Configuration.UI_MODE_NIGHT_YES,
     showBackground = true
 )
-@ExperimentalMaterial3Api
-@ExperimentalFoundationApi
 @Composable
-private fun SettingsContent_Preview() {
+private fun SettingsScreen_Preview() {
     FireFlowTheme {
-        SettingsContent(
+        SettingsScreen(
             state = SettingsState(),
             onAnalyticsCheckChange = {},
             onPersonalizedAdsCheckChange = {},

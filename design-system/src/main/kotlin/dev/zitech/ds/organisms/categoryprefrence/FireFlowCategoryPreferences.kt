@@ -18,11 +18,9 @@
 package dev.zitech.ds.organisms.categoryprefrence
 
 import android.content.res.Configuration
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,10 +29,8 @@ import dev.zitech.ds.atoms.spacer.FireFlowSpacers
 import dev.zitech.ds.molecules.preference.FireFlowPreferences
 import dev.zitech.ds.theme.FireFlowTheme
 
-@ExperimentalFoundationApi
 object FireFlowCategoryPreferences {
 
-    @ExperimentalMaterial3Api
     @Composable
     fun Simple(
         categoryName: String,
@@ -57,7 +53,6 @@ object FireFlowCategoryPreferences {
         }
     }
 
-    @ExperimentalMaterial3Api
     @Composable
     private fun CategoryPreferenceItem(
         categoryPreference: CategoryPreference
@@ -125,8 +120,6 @@ object FireFlowCategoryPreferences {
     uiMode = Configuration.UI_MODE_NIGHT_YES,
     showBackground = true
 )
-@ExperimentalMaterial3Api
-@ExperimentalFoundationApi
 @Composable
 private fun Category_Preferences_Preview() {
     FireFlowTheme {
