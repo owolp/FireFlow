@@ -22,19 +22,12 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.AdsClick
-import androidx.compose.material.icons.outlined.Analytics
-import androidx.compose.material.icons.outlined.Brightness6
-import androidx.compose.material.icons.outlined.BugReport
-import androidx.compose.material.icons.outlined.Info
-import androidx.compose.material.icons.outlined.Language
-import androidx.compose.material.icons.outlined.Speed
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import dev.zitech.ds.atoms.icon.FireFlowIcons
 import dev.zitech.ds.atoms.spacer.FireFlowSpacers
 import dev.zitech.ds.organisms.categoryprefrence.CategoryPreference
 import dev.zitech.ds.organisms.categoryprefrence.FireFlowCategoryPreferences
@@ -109,7 +102,7 @@ private fun getAppearancePreferences(
     categoryPreferences.add(
         CategoryPreference.Icon(
             title = stringResource(id = R.string.appearance_theme),
-            icon = Icons.Outlined.Brightness6,
+            icon = FireFlowIcons.Brightness6,
             description = stringResource(id = state.theme.text),
             onClick = Pair(stringResource(id = R.string.cd_appearance_theme_click), onThemeClick)
         )
@@ -118,7 +111,7 @@ private fun getAppearancePreferences(
     categoryPreferences.add(
         CategoryPreference.Icon(
             title = stringResource(id = R.string.appearance_language),
-            icon = Icons.Outlined.Language,
+            icon = FireFlowIcons.Language,
             description = stringResource(id = state.language.text),
             onClick = Pair(stringResource(id = R.string.cd_appearance_language_click), onLanguageClick)
         )
@@ -141,7 +134,7 @@ private fun getDataChoicesPreferences(
         categoryPreferences.add(
             CategoryPreference.Switch(
                 title = stringResource(id = R.string.data_choices_analytics_title),
-                icon = Icons.Outlined.Analytics,
+                icon = FireFlowIcons.Analytics,
                 checked = state.analytics,
                 onCheckedChanged = onAnalyticsCheckChange,
                 cdDescriptionEnabled = stringResource(id = R.string.cd_data_choices_analytics_enabled),
@@ -154,7 +147,7 @@ private fun getDataChoicesPreferences(
             categoryPreferences.add(
                 CategoryPreference.Switch(
                     title = stringResource(id = R.string.data_choices_personalized_ads_title),
-                    icon = Icons.Outlined.AdsClick,
+                    icon = FireFlowIcons.AdsClick,
                     checked = state.personalizedAds,
                     onCheckedChanged = onPersonalizedAdsCheckChange,
                     cdDescriptionEnabled = stringResource(id = R.string.cd_data_choices_personalized_ads_enabled),
@@ -168,7 +161,7 @@ private fun getDataChoicesPreferences(
             categoryPreferences.add(
                 CategoryPreference.Switch(
                     title = stringResource(id = R.string.data_choices_performance_title),
-                    icon = Icons.Outlined.Speed,
+                    icon = FireFlowIcons.Speed,
                     checked = state.performance,
                     onCheckedChanged = onPerformanceCheckChange,
                     cdDescriptionEnabled = stringResource(id = R.string.cd_data_choices_performance_enabled),
@@ -182,7 +175,7 @@ private fun getDataChoicesPreferences(
     categoryPreferences.add(
         CategoryPreference.Switch(
             title = stringResource(id = R.string.data_choices_crash_reporter_title),
-            icon = Icons.Outlined.BugReport,
+            icon = FireFlowIcons.BugReport,
             checked = state.crashReporter,
             onCheckedChanged = onCrashReporterCheckChange,
             cdDescriptionEnabled = stringResource(id = R.string.cd_data_choices_crash_reporter_enabled),
@@ -203,7 +196,7 @@ private fun getAboutApplicationPreferences(
     categoryPreferences.add(
         CategoryPreference.Icon(
             title = stringResource(id = R.string.about_application_version),
-            icon = Icons.Outlined.Info,
+            icon = FireFlowIcons.Info,
             description = state.version
         )
     )
