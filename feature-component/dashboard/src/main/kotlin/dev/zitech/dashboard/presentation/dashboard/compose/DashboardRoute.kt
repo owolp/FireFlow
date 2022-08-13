@@ -15,20 +15,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.dashboard.presentation.navigation
+package dev.zitech.dashboard.presentation.dashboard.compose
 
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
-import dev.zitech.dashboard.presentation.dashboard.compose.DashboardRoute
-import dev.zitech.navigation.FireFlowNavigationDestination
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
+import dev.zitech.dashboard.presentation.dashboard.viewmodel.DashboardViewModel
 
-object DashboardDestination : FireFlowNavigationDestination {
-    override val route: String = "dashboard_route"
-    override val destination: String = "dashboard_destination"
-}
-
-fun NavGraphBuilder.dashboardGraph() {
-    composable(route = DashboardDestination.route) {
-        DashboardRoute()
-    }
+@Composable
+fun DashboardRoute(
+    modifier: Modifier = Modifier,
+    viewModel: DashboardViewModel = hiltViewModel()
+) {
+    DashboardScreen()
 }

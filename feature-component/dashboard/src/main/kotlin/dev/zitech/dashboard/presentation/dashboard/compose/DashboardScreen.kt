@@ -18,13 +18,12 @@
 package dev.zitech.dashboard.presentation.dashboard.compose
 
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.viewmodel.compose.viewModel
-import dev.zitech.dashboard.presentation.dashboard.viewmodel.DashboardViewModel
+import androidx.compose.ui.Modifier
 import dev.zitech.ds.atoms.text.FireFlowTexts
 
 @Composable
-fun Dashboard(
-    viewModel: DashboardViewModel = viewModel()
+internal fun DashboardScreen(
+    modifier: Modifier = Modifier
 ) {
     FireFlowTexts.HeadlineLarge(text = "Dashboard")
 }

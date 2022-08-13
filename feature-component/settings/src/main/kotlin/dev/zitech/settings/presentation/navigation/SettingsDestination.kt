@@ -20,6 +20,7 @@ package dev.zitech.settings.presentation.navigation
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import dev.zitech.navigation.FireFlowNavigationDestination
+import dev.zitech.settings.presentation.settings.compose.SettingsRoute
 
 object SettingsDestination : FireFlowNavigationDestination {
     override val route: String = "settings_route"
@@ -28,6 +29,6 @@ object SettingsDestination : FireFlowNavigationDestination {
 
 fun NavGraphBuilder.settingsGraph() {
     composable(route = SettingsDestination.route) {
-        // TODO: Add route
+        SettingsRoute()
     }
 }
