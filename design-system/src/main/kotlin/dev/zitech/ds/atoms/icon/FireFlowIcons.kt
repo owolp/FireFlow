@@ -22,8 +22,10 @@ import androidx.compose.material.icons.outlined.AdsClick
 import androidx.compose.material.icons.outlined.Analytics
 import androidx.compose.material.icons.outlined.Brightness6
 import androidx.compose.material.icons.outlined.BugReport
+import androidx.compose.material.icons.outlined.Dashboard
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Language
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.Speed
 
 object FireFlowIcons {
@@ -31,7 +33,9 @@ object FireFlowIcons {
     val Analytics = Icons.Outlined.Analytics
     val Brightness6 = Icons.Outlined.Brightness6
     val BugReport = Icons.Outlined.BugReport
+    val Dashboard = Icons.Outlined.Dashboard
     val Info = Icons.Outlined.Info
     val Language = Icons.Outlined.Language
+    val Settings = Icons.Outlined.Settings
     val Speed = Icons.Outlined.Speed
 }

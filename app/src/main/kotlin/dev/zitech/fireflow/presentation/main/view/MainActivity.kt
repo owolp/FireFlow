@@ -21,82 +21,60 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
-import dev.zitech.core.common.domain.model.ApplicationTheme
-import dev.zitech.ds.theme.FireFlowTheme
+import dev.zitech.fireflow.presentation.FireFlowApp
 import dev.zitech.fireflow.presentation.main.viewmodel.Idle
-import dev.zitech.fireflow.presentation.main.viewmodel.MainState
 import dev.zitech.fireflow.presentation.main.viewmodel.MainViewModel
 import dev.zitech.fireflow.presentation.main.viewmodel.ShowError
 import dev.zitech.fireflow.presentation.main.viewmodel.ShowErrorHandled
-import dev.zitech.settings.presentation.settings.compose.SettingsRoute
 
 @Suppress("ForbiddenComment")
-@OptIn(ExperimentalLifecycleComposeApi::class)
+@OptIn(
+    ExperimentalMaterial3WindowSizeClassApi::class,
+    ExperimentalLifecycleComposeApi::class
+)
 @AndroidEntryPoint
 internal class MainActivity : AppCompatActivity() {
 
-    private val mainViewModel: MainViewModel by viewModels()
+    private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen().apply {
             setKeepOnScreenCondition {
-                mainViewModel.state.value.splash
+                viewModel.state.value.splash
             }
         }
 
         super.onCreate(savedInstanceState)
 
         setContent {
-            val mainState = mainViewModel.state.collectAsStateWithLifecycle()
-            FireFlowTheme(
-                darkTheme = isDarkTheme(mainState.value.theme)
-            ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(FireFlowTheme.colors.background),
-                    contentAlignment = Alignment.TopCenter
-                ) {
-                    // TODO: Use navigation
-                    if (!mainState.value.splash) {
-                        SettingsRoute()
-                    }
-                }
-                EventHandler(mainState)
-            }
+            val mainState = viewModel.state.collectAsStateWithLifecycle()
+
+            FireFlowApp(
+                viewModel.state.value.splash,
+                mainState.value.theme,
+                calculateWindowSizeClass(this)
+            )
+            EventHandler()
         }
     }
 
     @Composable
-    private fun EventHandler(mainState: State<MainState>) {
-        when (mainState.value.event) {
+    private fun EventHandler() {
+        when (viewModel.state.value.event) {
             ShowError -> {
                 // TODO
-                mainViewModel.sendIntent(ShowErrorHandled)
+                viewModel.sendIntent(ShowErrorHandled)
             }
             Idle -> {
                 // NO_OP
             }
         }
     }
-
-    @Composable
-    private fun isDarkTheme(applicationTheme: ApplicationTheme?): Boolean =
-        when (applicationTheme) {
-            ApplicationTheme.DARK -> true
-            ApplicationTheme.LIGHT -> false
-            else -> isSystemInDarkTheme()
-        }
 }
