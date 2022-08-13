@@ -11,6 +11,7 @@ jvmTarget = "11"
 lifecycle = "2.6.0-alpha01"
 ktlint = "0.42.1"
 kotlin = "1.7.10"
+navigation = "2.5.0"
 room = "2.4.3"
 test = "1.4.0"
 
@@ -32,11 +33,13 @@ androidx-core = "androidx.core:core-ktx:1.8.0"
 androidx-core-splash = "androidx.core:core-splashscreen:1.0.0"
 androidx-costraintlayout-compose = "androidx.constraintlayout:constraintlayout-compose:1.0.1"
 androidx-datastore-preferences = "androidx.datastore:datastore-preferences:1.0.0"
+androidx-hilt-navigation-compose = "androidx.hilt:hilt-navigation-compose:1.0.0"
 androidx-lifecycle-compiler = { module = "androidx.lifecycle:lifecycle-compiler", version.ref = "lifecycle" }
 androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
 androidx-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle" }
 androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle" }
+androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
