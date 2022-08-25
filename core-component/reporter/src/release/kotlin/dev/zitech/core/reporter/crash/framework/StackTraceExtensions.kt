@@ -26,7 +26,9 @@ typealias StackTrace = Array<StackTraceElement?>
 internal fun StackTrace.extractCallerClassName(): String? {
     return if (this.size > CALLER_STACK_INDEX) {
         this[CALLER_STACK_INDEX]?.extractClassName()
-    } else null
+    } else {
+        null
+    }
 }
 
 /**
@@ -65,13 +67,17 @@ private fun String.removeLambdaSuffix(): String {
 internal fun StackTrace.extractCallerMethodName(): String? {
     return if (this.size > CALLER_STACK_INDEX) {
         this[CALLER_STACK_INDEX]?.methodName
-    } else null
+    } else {
+        null
+    }
 }
 
 internal fun StackTrace.extractCallerLineNumber(): Int {
     return if (this.size > CALLER_STACK_INDEX) {
         this[CALLER_STACK_INDEX]?.lineNumber ?: -1
-    } else -1
+    } else {
+        -1
+    }
 }
 
 /**
@@ -90,7 +96,9 @@ internal fun StackTrace.filter(topClassNames: Array<Class<out Any>>): Array<Stac
             }
             ) {
                 index++
-            } else break
+            } else {
+                break
+            }
         } else {
             break
         }
