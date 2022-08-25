@@ -15,12 +15,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id(BuildPlugins.KOTLIN_ANDROID)
-    id(BuildPlugins.LIBRARY)
-}
+package dev.zitech.ds.atoms.navigation
 
-dependencies {
-    api(projects.featureComponent.dashboard)
-    api(projects.featureComponent.settings)
+import androidx.compose.runtime.Composable
+import dev.zitech.ds.theme.FireFlowTheme
+
+internal object FireFlowNavigationColors {
+
+    @Composable
+    fun navigationContainerColor() = FireFlowTheme.colors.secondaryContainer
+
+    @Composable
+    fun navigationContentColor() = FireFlowTheme.colors.onSurfaceVariant
+
+    @Composable
+    fun navigationSelectedItemColor() = FireFlowTheme.colors.onPrimaryContainer
+
+    @Composable
+    fun navigationIndicatorColor() = FireFlowTheme.colors.inversePrimary
 }

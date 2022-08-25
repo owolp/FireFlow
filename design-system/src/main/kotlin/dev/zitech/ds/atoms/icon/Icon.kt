@@ -15,12 +15,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id(BuildPlugins.KOTLIN_ANDROID)
-    id(BuildPlugins.LIBRARY)
-}
+package dev.zitech.ds.atoms.icon
 
-dependencies {
-    api(projects.featureComponent.dashboard)
-    api(projects.featureComponent.settings)
+import androidx.annotation.DrawableRes
+import androidx.compose.ui.graphics.vector.ImageVector
+
+sealed class Icon {
+    data class ImageVectorIcon(val imageVector: ImageVector) : Icon()
+    data class DrawableResourceIcon(@DrawableRes val id: Int) : Icon()
 }

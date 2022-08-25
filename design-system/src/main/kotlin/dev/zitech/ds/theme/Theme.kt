@@ -30,37 +30,29 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import dev.zitech.ds.R
 
 @Composable
 fun FireFlowTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    dynamicColor: Boolean = true,
     shapes: Shapes = Shape,
     space: Space = Space(),
     typography: Typography = Typography,
     content: @Composable () -> Unit
 ) {
-    val colorScheme: ColorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
-        darkTheme -> DarkColorScheme.copy(
-            primary = colorResource(id = R.color.md_theme_dark_primary)
-        )
-        else -> LightColorScheme.copy(
-            primary = colorResource(id = R.color.md_theme_light_primary)
-        )
+    val colorScheme = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        val context = LocalContext.current
+        if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+    } else {
+        if (darkTheme) DarkColorScheme else LightColorScheme
     }
 
     val systemUiController = rememberSystemUiController()
     SideEffect {
         systemUiController.setSystemBarsColor(
-            color = colorScheme.background,
+            color = colorScheme.surface,
             darkIcons = !darkTheme
         )
     }
@@ -72,8 +64,7 @@ fun FireFlowTheme(
         typography = typography
     ) {
         MaterialTheme(
-            colorScheme = colorScheme,
-            shapes = shapes,
+            colorScheme = debugColors(),
             content = content
         )
     }
@@ -118,6 +109,44 @@ object FireFlowTheme {
         @ReadOnlyComposable
         get() = LocalTypography.current
 }
+
+/**
+ * A Material [ColorScheme] implementation which sets all colors to [debugColor] to discourage usage of
+ * [MaterialTheme.colors] in preference to [FireFlowTheme.colors].
+ */
+fun debugColors(
+    debugColor: Color = Color.Magenta
+) = ColorScheme(
+    primary = debugColor,
+    surfaceTint = debugColor,
+    onErrorContainer = debugColor,
+    onError = debugColor,
+    errorContainer = debugColor,
+    onTertiaryContainer = debugColor,
+    onTertiary = debugColor,
+    tertiaryContainer = debugColor,
+    tertiary = debugColor,
+    error = debugColor,
+    outline = debugColor,
+    onBackground = debugColor,
+    background = debugColor,
+    inverseOnSurface = debugColor,
+    inverseSurface = debugColor,
+    onSurfaceVariant = debugColor,
+    onSurface = debugColor,
+    surfaceVariant = debugColor,
+    surface = debugColor,
+    onSecondaryContainer = debugColor,
+    onSecondary = debugColor,
+    secondaryContainer = debugColor,
+    secondary = debugColor,
+    inversePrimary = debugColor,
+    onPrimaryContainer = debugColor,
+    onPrimary = debugColor,
+    primaryContainer = debugColor,
+    outlineVariant = debugColor,
+    scrim = debugColor
+)
 
 private val LocalColorScheme = staticCompositionLocalOf<ColorScheme> {
     error("No FireFlow ColorScheme provided, check if Theme Composable is added")

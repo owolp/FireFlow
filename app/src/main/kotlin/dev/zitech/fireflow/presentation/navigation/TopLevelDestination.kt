@@ -15,12 +15,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id(BuildPlugins.KOTLIN_ANDROID)
-    id(BuildPlugins.LIBRARY)
-}
+package dev.zitech.fireflow.presentation.navigation
 
-dependencies {
-    api(projects.featureComponent.dashboard)
-    api(projects.featureComponent.settings)
-}
+import dev.zitech.ds.atoms.icon.Icon
+import dev.zitech.navigation.FireFlowNavigationDestination
+
+internal data class TopLevelDestination(
+    override val route: String,
+    override val destination: String,
+    val selectedIcon: Icon,
+    val unselectedIcon: Icon,
+    val iconTextId: Int
+) : FireFlowNavigationDestination

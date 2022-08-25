@@ -15,12 +15,20 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id(BuildPlugins.KOTLIN_ANDROID)
-    id(BuildPlugins.LIBRARY)
+package dev.zitech.dashboard.presentation.navigation
+
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.compose.composable
+import dev.zitech.dashboard.presentation.dashboard.compose.DashboardRoute
+import dev.zitech.navigation.FireFlowNavigationDestination
+
+object DashboardDestination : FireFlowNavigationDestination {
+    override val route: String = "dashboard_route"
+    override val destination: String = "dashboard_destination"
 }
 
-dependencies {
-    api(projects.featureComponent.dashboard)
-    api(projects.featureComponent.settings)
+fun NavGraphBuilder.dashboardGraph() {
+    composable(route = DashboardDestination.route) {
+        DashboardRoute()
+    }
 }

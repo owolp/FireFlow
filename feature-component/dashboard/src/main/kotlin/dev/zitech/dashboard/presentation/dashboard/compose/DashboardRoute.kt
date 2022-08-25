@@ -15,12 +15,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id(BuildPlugins.KOTLIN_ANDROID)
-    id(BuildPlugins.LIBRARY)
-}
+package dev.zitech.dashboard.presentation.dashboard.compose
 
-dependencies {
-    api(projects.featureComponent.dashboard)
-    api(projects.featureComponent.settings)
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
+import dev.zitech.dashboard.presentation.dashboard.viewmodel.DashboardViewModel
+
+@Composable
+fun DashboardRoute(
+    modifier: Modifier = Modifier,
+    viewModel: DashboardViewModel = hiltViewModel()
+) {
+    DashboardScreen()
 }

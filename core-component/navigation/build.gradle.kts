@@ -18,9 +18,17 @@
 plugins {
     id(BuildPlugins.KOTLIN_ANDROID)
     id(BuildPlugins.LIBRARY)
+    kotlin(BuildPlugins.KAPT)
 }
 
 dependencies {
-    api(projects.featureComponent.dashboard)
-    api(projects.featureComponent.settings)
+    api(libs.androidx.navigation.compose)
+    api(libs.androidx.hilt.navigation.compose)
+
+    implementation(libs.google.dagger.hilt.android)
+    kapt(libs.google.dagger.hilt.compiler)
+}
+
+kapt {
+    correctErrorTypes = true
 }

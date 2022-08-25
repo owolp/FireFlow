@@ -15,12 +15,26 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id(BuildPlugins.KOTLIN_ANDROID)
-    id(BuildPlugins.LIBRARY)
-}
+package dev.zitech.ds.atoms.navigation
 
-dependencies {
-    api(projects.featureComponent.dashboard)
-    api(projects.featureComponent.settings)
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.material3.NavigationBar
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+
+object FireFlowNavigationBar {
+
+    @Composable
+    fun Simple(
+        modifier: Modifier = Modifier,
+        content: @Composable RowScope.() -> Unit
+    ) {
+        NavigationBar(
+            modifier = modifier,
+            containerColor = FireFlowNavigationColors.navigationContainerColor(),
+            tonalElevation = 0.dp,
+            content = content
+        )
+    }
 }
