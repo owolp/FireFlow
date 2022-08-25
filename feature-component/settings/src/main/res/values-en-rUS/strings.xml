@@ -17,6 +17,8 @@
 
 <resources>
 
+    <string name="settings">Settings</string>
+
     <string name="data_choices_category">Data choices</string>
     <string name="data_choices_analytics_title">Analytics</string>
     <string name="data_choices_analytics_description">Share usage, hardware and customization data about the application to make it better.</string>

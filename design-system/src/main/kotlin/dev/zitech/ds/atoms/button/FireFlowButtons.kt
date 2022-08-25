@@ -22,7 +22,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.selectable
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -62,7 +61,6 @@ object FireFlowButtons {
         }
     }
 
-    @ExperimentalMaterial3Api
     @Composable
     fun Radio(
         text: String,
@@ -154,7 +152,6 @@ private fun Text_Disabled_Preview() {
     uiMode = Configuration.UI_MODE_NIGHT_YES,
     showBackground = true
 )
-@ExperimentalMaterial3Api
 @Composable
 private fun Radio_Selected_Enabled_Preview() {
     FireFlowTheme {
@@ -176,7 +173,6 @@ private fun Radio_Selected_Enabled_Preview() {
     uiMode = Configuration.UI_MODE_NIGHT_YES,
     showBackground = true
 )
-@ExperimentalMaterial3Api
 @Composable
 private fun Radio_Selected_Disabled_Preview() {
     FireFlowTheme {
@@ -198,7 +194,6 @@ private fun Radio_Selected_Disabled_Preview() {
     uiMode = Configuration.UI_MODE_NIGHT_YES,
     showBackground = true
 )
-@ExperimentalMaterial3Api
 @Composable
 private fun Radio_NotSelected_Enabled_Preview() {
     FireFlowTheme {
@@ -220,7 +215,6 @@ private fun Radio_NotSelected_Enabled_Preview() {
     uiMode = Configuration.UI_MODE_NIGHT_YES,
     showBackground = true
 )
-@ExperimentalMaterial3Api
 @Composable
 private fun Radio_NotSelected_Disabled_Preview() {
     FireFlowTheme {

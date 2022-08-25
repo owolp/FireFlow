@@ -31,10 +31,8 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.toggleable
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Analytics
 import androidx.compose.material3.Card
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,6 +44,7 @@ import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.zitech.ds.atoms.checkbox.FireFlowCheckboxes
+import dev.zitech.ds.atoms.icon.FireFlowIcons
 import dev.zitech.ds.atoms.spacer.FireFlowSpacers
 import dev.zitech.ds.atoms.switch.FireFlowSwitches
 import dev.zitech.ds.atoms.text.FireFlowTexts
@@ -237,7 +236,6 @@ object FireFlowPreferences {
         }
     }
 
-    @ExperimentalMaterial3Api
     @Composable
     fun Checkbox(
         title: String,
@@ -317,7 +315,10 @@ object FireFlowPreferences {
                 .fillMaxWidth()
                 .height(IntrinsicSize.Min)
                 .heightIn(min = 72.dp),
-            shape = FireFlowTheme.shapes.extraLarge
+            shape = FireFlowTheme.shapes.extraLarge,
+            colors = CardDefaults.cardColors(
+                containerColor = FireFlowTheme.colors.primaryContainer
+            )
         ) {
             content()
         }
@@ -394,7 +395,7 @@ private fun Icon_Title_Preview() {
     FireFlowTheme {
         FireFlowPreferences.Icon(
             title = "Icon Title",
-            icon = Icons.Outlined.Analytics
+            icon = FireFlowIcons.Analytics
         )
     }
 }
@@ -415,7 +416,7 @@ private fun Icon_Title_Description_Preview() {
             title = "Icon Title",
             description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod " +
                 "tempor incididunt ut labore et dolore magna aliqua.",
-            icon = Icons.Outlined.Analytics
+            icon = FireFlowIcons.Analytics
         )
     }
 }
@@ -434,7 +435,7 @@ private fun Switch_Title_Preview() {
     FireFlowTheme {
         FireFlowPreferences.Switch(
             title = "Switch Title",
-            icon = Icons.Outlined.Analytics,
+            icon = FireFlowIcons.Analytics,
             checked = true,
             cdDescriptionEnabled = "",
             cdDescriptionDisabled = "",
@@ -459,7 +460,7 @@ private fun Switch_Title_Description_Preview() {
             title = "Switch Title",
             description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod " +
                 "tempor incididunt ut labore et dolore magna aliqua.",
-            icon = Icons.Outlined.Analytics,
+            icon = FireFlowIcons.Analytics,
             checked = false,
             cdDescriptionEnabled = "",
             cdDescriptionDisabled = "",
@@ -477,7 +478,6 @@ private fun Switch_Title_Description_Preview() {
     uiMode = Configuration.UI_MODE_NIGHT_YES,
     showBackground = true
 )
-@ExperimentalMaterial3Api
 @Composable
 private fun Checkbox_Preview() {
     FireFlowTheme {
@@ -485,7 +485,7 @@ private fun Checkbox_Preview() {
             title = "Checkbox Title",
             description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod " +
                 "tempor incididunt ut labore et dolore magna aliqua.",
-            icon = Icons.Outlined.Analytics,
+            icon = FireFlowIcons.Analytics,
             checked = false,
             cdDescriptionEnabled = "",
             cdDescriptionDisabled = "",

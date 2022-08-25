@@ -23,6 +23,7 @@ plugins {
 dependencies {
     api(projects.coreComponent.common)
     api(projects.coreComponent.featureFlag)
+    api(projects.coreComponent.navigation)
     api(projects.coreComponent.persistence)
     api(projects.coreComponent.remoteConfig)
     api(projects.coreComponent.reporter)

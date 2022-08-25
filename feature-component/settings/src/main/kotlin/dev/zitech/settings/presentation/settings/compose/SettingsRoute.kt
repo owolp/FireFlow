@@ -18,13 +18,12 @@
 package dev.zitech.settings.presentation.settings.compose
 
 import android.content.res.Configuration
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.zitech.ds.atoms.loading.FireFlowProgressIndicators
 import dev.zitech.ds.molecules.dialog.FireFlowDialogs
 import dev.zitech.ds.theme.FireFlowTheme
@@ -45,19 +44,19 @@ import dev.zitech.settings.presentation.settings.viewmodel.SelectLanguage
 import dev.zitech.settings.presentation.settings.viewmodel.SelectTheme
 import dev.zitech.settings.presentation.settings.viewmodel.SettingsViewModel
 
-@ExperimentalLifecycleComposeApi
-@ExperimentalMaterial3Api
-@ExperimentalFoundationApi
+@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
-fun Settings(
-    viewModel: SettingsViewModel = viewModel()
+fun SettingsRoute(
+    modifier: Modifier = Modifier,
+    viewModel: SettingsViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.collectAsStateWithLifecycle()
     if (state.value.isLoading) {
         FireFlowProgressIndicators.Settings()
     } else {
-        SettingsContent(
+        SettingsScreen(
             state = state.value,
+            modifier = modifier,
             onAnalyticsCheckChange = { checked ->
                 viewModel.sendIntent(OnAnalyticsCheckChange(checked))
             },
@@ -114,20 +113,17 @@ fun Settings(
 }
 
 @Preview(
-    name = "Settings Light Theme",
+    name = "Settings Route Light Theme",
     showBackground = true
 )
 @Preview(
-    name = "Settings Dark Theme",
+    name = "Settings Route Dark Theme",
     uiMode = Configuration.UI_MODE_NIGHT_YES,
     showBackground = true
 )
-@ExperimentalLifecycleComposeApi
-@ExperimentalMaterial3Api
-@ExperimentalFoundationApi
 @Composable
-private fun Settings_Preview() {
+private fun SettingsRoute_Preview() {
     FireFlowTheme {
-        Settings()
+        SettingsRoute()
     }
 }

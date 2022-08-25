@@ -15,12 +15,25 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+apply(from = "$rootDir/config/dependencies/compose-dependencies.gradle")
+apply(from = "$rootDir/config/dependencies/test-dependencies.gradle")
+
 plugins {
     id(BuildPlugins.KOTLIN_ANDROID)
     id(BuildPlugins.LIBRARY)
+    id(BuildPlugins.JUNIT5)
+    kotlin(BuildPlugins.KAPT)
 }
 
 dependencies {
-    api(projects.featureComponent.dashboard)
-    api(projects.featureComponent.settings)
+    implementation(projects.coreComponent.core)
+    implementation(projects.designSystem)
+
+    implementation(libs.google.dagger.hilt.android)
+    kapt(libs.google.dagger.hilt.compiler)
+    implementation(libs.jetbrains.kotlin.coroutines.android)
+}
+
+kapt {
+    correctErrorTypes = true
 }

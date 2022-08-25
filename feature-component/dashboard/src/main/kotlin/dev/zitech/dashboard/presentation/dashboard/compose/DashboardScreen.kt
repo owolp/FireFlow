@@ -15,12 +15,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id(BuildPlugins.KOTLIN_ANDROID)
-    id(BuildPlugins.LIBRARY)
-}
+package dev.zitech.dashboard.presentation.dashboard.compose
 
-dependencies {
-    api(projects.featureComponent.dashboard)
-    api(projects.featureComponent.settings)
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import dev.zitech.ds.atoms.text.FireFlowTexts
+
+@Composable
+internal fun DashboardScreen(
+    modifier: Modifier = Modifier
+) {
+    FireFlowTexts.HeadlineLarge(text = "Dashboard")
 }

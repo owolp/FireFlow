@@ -19,13 +19,11 @@ package dev.zitech.ds.atoms.checkbox
 
 import android.content.res.Configuration
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import dev.zitech.ds.theme.FireFlowTheme
 
-@ExperimentalMaterial3Api
 object FireFlowCheckboxes {
 
     @Composable
@@ -54,7 +52,6 @@ object FireFlowCheckboxes {
     uiMode = Configuration.UI_MODE_NIGHT_YES,
     showBackground = true
 )
-@ExperimentalMaterial3Api
 @Composable
 private fun Primary_Checked_Enabled_Preview() {
     FireFlowTheme {
@@ -73,7 +70,6 @@ private fun Primary_Checked_Enabled_Preview() {
     uiMode = Configuration.UI_MODE_NIGHT_YES,
     showBackground = true
 )
-@ExperimentalMaterial3Api
 @Composable
 private fun Primary_Checked_Disabled_Preview() {
     FireFlowTheme {
@@ -93,7 +89,6 @@ private fun Primary_Checked_Disabled_Preview() {
     uiMode = Configuration.UI_MODE_NIGHT_YES,
     showBackground = true
 )
-@ExperimentalMaterial3Api
 @Composable
 private fun Primary_Unchecked_Enabled_Preview() {
     FireFlowTheme {
@@ -112,7 +107,6 @@ private fun Primary_Unchecked_Enabled_Preview() {
     uiMode = Configuration.UI_MODE_NIGHT_YES,
     showBackground = true
 )
-@ExperimentalMaterial3Api
 @Composable
 private fun Primary_Unchecked_Disabled_Preview() {
     FireFlowTheme {

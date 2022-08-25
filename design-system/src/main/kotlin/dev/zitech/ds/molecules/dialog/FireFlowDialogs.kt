@@ -24,7 +24,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -47,6 +46,7 @@ object FireFlowDialogs {
     ) {
         AlertDialog(
             modifier = modifier,
+            containerColor = FireFlowTheme.colors.primaryContainer,
             onDismissRequest = { onDismissRequest?.invoke() },
             confirmButton = {
                 FireFlowButtons.Text(
@@ -68,7 +68,6 @@ object FireFlowDialogs {
         )
     }
 
-    @ExperimentalMaterial3Api
     @Composable
     fun Radio(
         title: String,
@@ -79,6 +78,7 @@ object FireFlowDialogs {
     ) {
         AlertDialog(
             modifier = modifier,
+            containerColor = FireFlowTheme.colors.primaryContainer,
             title = {
                 FireFlowTexts.TitleLarge(
                     text = title
@@ -133,7 +133,6 @@ private fun Alert_Preview() {
     uiMode = Configuration.UI_MODE_NIGHT_YES,
     showBackground = true
 )
-@ExperimentalMaterial3Api
 @Composable
 private fun Radio_Preview() {
     FireFlowTheme {
