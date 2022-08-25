@@ -18,6 +18,7 @@
 package dev.zitech.ds.atoms.divider
 
 import android.content.res.Configuration
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -33,13 +34,16 @@ object FireFlowDividers {
     fun Simple(
         modifier: Modifier = Modifier,
         color: Color = FireFlowTheme.colors.secondary,
-        startIndent: Dp = 0.dp
+        startIndent: Dp = 0.dp,
+        endIndent: Dp = 0.dp
     ) {
         Divider(
-            modifier = modifier,
+            modifier = modifier.padding(
+                start = startIndent,
+                end = endIndent
+            ),
             color = color,
-            thickness = 1.dp,
-            startIndent = startIndent
+            thickness = 1.dp
         )
     }
 }
