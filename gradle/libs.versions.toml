@@ -12,7 +12,7 @@ jvmTarget = "11"
 lifecycle = "2.6.0-alpha01"
 ktlint = "0.42.1"
 kotlin = "1.7.10"
-navigation = "2.5.1"
+navigation = "2.5.2"
 room = "2.4.3"
 test = "1.4.0"
 
