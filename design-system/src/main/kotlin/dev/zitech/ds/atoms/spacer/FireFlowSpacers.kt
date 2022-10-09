@@ -54,6 +54,16 @@ object FireFlowSpacers {
             )
         )
     }
+
+    @Composable
+    fun Square(
+        size: Dp,
+        modifier: Modifier = Modifier
+    ) {
+        Spacer(
+            modifier = modifier.size(size)
+        )
+    }
 }
 
 @Preview(
@@ -85,5 +95,21 @@ private fun Horizontal_Preview() {
 private fun Vertical_Preview() {
     FireFlowTheme {
         FireFlowSpacers.Vertical(10.dp)
+    }
+}
+
+@Preview(
+    name = "Square Light Theme",
+    showBackground = true
+)
+@Preview(
+    name = "Square Dark Theme",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showBackground = true
+)
+@Composable
+private fun Square_Preview() {
+    FireFlowTheme {
+        FireFlowSpacers.Square(10.dp)
     }
 }

@@ -28,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
+import dev.zitech.ds.atoms.loading.FireFlowProgressIndicators
 import dev.zitech.ds.atoms.radio.FireFlowRadioButtons
 import dev.zitech.ds.atoms.text.FireFlowTexts
 import dev.zitech.ds.theme.FireFlowTheme
@@ -99,6 +100,42 @@ object FireFlowButtons {
                     )
                 }
             )
+        }
+    }
+
+    @Composable
+    fun Loading(
+        text: String,
+        modifier: Modifier = Modifier,
+        enabled: Boolean = true,
+        loading: Boolean = false,
+        onClick: () -> Unit
+    ) {
+        TextButton(
+            modifier = modifier,
+            colors = FireFlowButtonsColors.primary,
+            enabled = enabled,
+            shape = FireFlowTheme.shapes.medium,
+            onClick = { onClick() }
+        ) {
+            FireFlowTexts.BodyMedium(
+                text = text,
+                color = if (enabled) {
+                    FireFlowTheme.colors.onPrimary
+                } else {
+                    FireFlowTheme.colors.onPrimary.copy(
+                        alpha = TEXT_NOT_ENABLED_ALPHA
+                    )
+                }
+            )
+
+            if (loading) {
+                FireFlowProgressIndicators.FlashingDots(
+                    modifier = Modifier.padding(
+                        start = FireFlowTheme.space.s
+                    )
+                )
+            }
         }
     }
 }
@@ -222,6 +259,26 @@ private fun Radio_NotSelected_Disabled_Preview() {
             text = "Not Selected Disabled",
             selected = false,
             enabled = false,
+            onClick = {}
+        )
+    }
+}
+
+@Preview(
+    name = "Loading Button Light Theme",
+    showBackground = true
+)
+@Preview(
+    name = "LoadingButton Dark Theme",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showBackground = true
+)
+@Composable
+internal fun Loading_Preview() {
+    FireFlowTheme {
+        FireFlowButtons.Loading(
+            text = "Loading Button",
+            loading = true,
             onClick = {}
         )
     }
