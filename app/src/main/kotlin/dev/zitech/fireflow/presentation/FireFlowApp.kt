@@ -27,19 +27,21 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import dev.zitech.core.common.domain.model.ApplicationTheme
+import dev.zitech.ds.atoms.background.FireFlowBackground
 import dev.zitech.ds.atoms.icon.Icon
 import dev.zitech.ds.atoms.navigation.FireFlowNavigationBar
 import dev.zitech.ds.atoms.navigation.FireFlowNavigationBarItem.Simple
@@ -64,45 +66,49 @@ internal fun FireFlowApp(
     FireFlowTheme(
         darkTheme = isDarkTheme(theme)
     ) {
-        Scaffold(
-            containerColor = FireFlowTheme.colors.background,
-            contentColor = FireFlowTheme.colors.background,
-            bottomBar = {
-                if (!splash && appState.shouldShowBottomBar) {
-                    FireFlowBottomBar(
-                        destinations = appState.topLevelDestinations,
-                        onNavigateToDestination = appState::navigate,
-                        currentDestination = appState.currentDestination
-                    )
-                }
-            }
-        ) { padding ->
-            Row(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .windowInsetsPadding(
-                        WindowInsets.safeDrawing.only(
-                            WindowInsetsSides.Horizontal
-                        )
-                    )
-            ) {
-                if (!splash) {
-                    if (appState.shouldShowNavRail) {
-                        FireFlowBottomBarNavRail(
+        FireFlowBackground.Simple {
+            Scaffold(
+                containerColor = Color.Transparent,
+                contentColor = FireFlowTheme.colors.onBackground,
+                contentWindowInsets = WindowInsets(0, 0, 0, 0),
+                bottomBar = {
+                    if (!splash && appState.shouldShowBottomBar) {
+                        FireFlowBottomBar(
                             destinations = appState.topLevelDestinations,
                             onNavigateToDestination = appState::navigate,
                             currentDestination = appState.currentDestination
                         )
                     }
+                }
+            ) { padding ->
+                Row(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .windowInsetsPadding(
+                            WindowInsets.safeDrawing.only(
+                                WindowInsetsSides.Horizontal
+                            )
+                        )
+                ) {
+                    if (!splash) {
+                        if (appState.shouldShowNavRail) {
+                            FireFlowNavRail(
+                                destinations = appState.topLevelDestinations,
+                                onNavigateToDestination = appState::navigate,
+                                currentDestination = appState.currentDestination,
+                                modifier = Modifier.safeDrawingPadding()
+                            )
+                        }
 
-                    FireFlowNavHost(
-                        navController = appState.navController,
-                        onNavigateToDestination = appState::navigate,
-                        onBackClick = appState::onBackClick,
-                        modifier = Modifier
-                            .padding(padding)
-                            .consumedWindowInsets(padding)
-                    )
+                        FireFlowNavHost(
+                            navController = appState.navController,
+                            onNavigateToDestination = appState::navigate,
+                            onBackClick = appState::onBackClick,
+                            modifier = Modifier
+                                .padding(padding)
+                                .consumedWindowInsets(padding)
+                        )
+                    }
                 }
             }
         }
@@ -115,53 +121,41 @@ private fun FireFlowBottomBar(
     onNavigateToDestination: (TopLevelDestination) -> Unit,
     currentDestination: NavDestination?
 ) {
-    // Wrap the navigation bar in a surface so the color behind the system
-    // navigation is equal to the container color of the navigation bar.
-    Surface(
-        color = FireFlowTheme.colors.surface
-    ) {
-        FireFlowNavigationBar.Simple(
-            modifier = Modifier.windowInsetsPadding(
-                WindowInsets.safeDrawing.only(
-                    WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom
-                )
-            )
-        ) {
-            destinations.forEach { destination ->
-                val selected = currentDestination?.hierarchy?.any { it.route == destination.route } == true
-                Simple(
-                    selected = selected,
-                    onClick = { onNavigateToDestination(destination) },
-                    icon = {
-                        val icon = if (selected) {
-                            destination.selectedIcon
-                        } else {
-                            destination.unselectedIcon
-                        }
-                        when (icon) {
-                            is Icon.ImageVectorIcon -> Icon(
-                                imageVector = icon.imageVector,
-                                contentDescription = null
-                            )
-                            is Icon.DrawableResourceIcon -> Icon(
-                                painter = painterResource(id = icon.id),
-                                contentDescription = null
-                            )
-                        }
-                    },
-                    label = {
-                        FireFlowTexts.TitleSmall(
-                            text = stringResource(id = destination.iconTextId)
+    FireFlowNavigationBar.Simple {
+        destinations.forEach { destination ->
+            val selected = currentDestination?.hierarchy?.any { it.route == destination.route } == true
+            Simple(
+                selected = selected,
+                onClick = { onNavigateToDestination(destination) },
+                icon = {
+                    val icon = if (selected) {
+                        destination.selectedIcon
+                    } else {
+                        destination.unselectedIcon
+                    }
+                    when (icon) {
+                        is Icon.ImageVectorIcon -> Icon(
+                            imageVector = icon.imageVector,
+                            contentDescription = null
+                        )
+                        is Icon.DrawableResourceIcon -> Icon(
+                            painter = painterResource(id = icon.id),
+                            contentDescription = null
                         )
                     }
-                )
-            }
+                },
+                label = {
+                    FireFlowTexts.TitleSmall(
+                        text = stringResource(id = destination.iconTextId)
+                    )
+                }
+            )
         }
     }
 }
 
 @Composable
-private fun FireFlowBottomBarNavRail(
+private fun FireFlowNavRail(
     destinations: List<TopLevelDestination>,
     onNavigateToDestination: (TopLevelDestination) -> Unit,
     currentDestination: NavDestination?,

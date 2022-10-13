@@ -30,6 +30,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
@@ -51,13 +52,13 @@ fun FireFlowTheme(
     val systemUiController = rememberSystemUiController()
     SideEffect {
         systemUiController.setSystemBarsColor(
-            color = colorScheme.surface,
+            color = Color.Transparent,
             darkIcons = !darkTheme
         )
     }
 
-    ProvideFireFlowTheme(
-        space = space
+    CompositionLocalProvider(
+        LocalSpace provides space
     ) {
         MaterialTheme(
             colorScheme = colorScheme,
@@ -66,20 +67,6 @@ fun FireFlowTheme(
             content = content
         )
     }
-}
-
-@Composable
-private fun ProvideFireFlowTheme(
-    space: Space,
-    content: @Composable () -> Unit
-) {
-    CompositionLocalProvider(
-        LocalColorScheme provides MaterialTheme.colorScheme,
-        LocalShapes provides MaterialTheme.shapes,
-        LocalSpace provides space,
-        LocalTypography provides MaterialTheme.typography,
-        content = content
-    )
 }
 
 object FireFlowTheme {
@@ -105,18 +92,6 @@ object FireFlowTheme {
         get() = MaterialTheme.typography
 }
 
-private val LocalColorScheme = staticCompositionLocalOf<ColorScheme> {
-    error("No FireFlow ColorScheme provided, check if Theme Composable is added")
-}
-
-private val LocalShapes = staticCompositionLocalOf<Shapes> {
-    error("No FireFlow Shapes provided, check if Theme Composable is added")
-}
-
 private val LocalSpace = staticCompositionLocalOf<Space> {
     error("No FireFlow Spacing provided, check if Theme Composable is added")
-}
-
-private val LocalTypography = staticCompositionLocalOf<Typography> {
-    error("No FireFlow Typography provided, check if Theme Composable is added")
 }

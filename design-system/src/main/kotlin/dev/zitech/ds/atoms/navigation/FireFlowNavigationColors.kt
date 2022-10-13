@@ -23,14 +23,11 @@ import dev.zitech.ds.theme.FireFlowTheme
 internal object FireFlowNavigationColors {
 
     @Composable
-    fun navigationContainerColor() = FireFlowTheme.colors.secondaryContainer
-
-    @Composable
     fun navigationContentColor() = FireFlowTheme.colors.onSurfaceVariant
 
     @Composable
     fun navigationSelectedItemColor() = FireFlowTheme.colors.onPrimaryContainer
 
     @Composable
-    fun navigationIndicatorColor() = FireFlowTheme.colors.inversePrimary
+    fun navigationIndicatorColor() = FireFlowTheme.colors.primaryContainer
 }

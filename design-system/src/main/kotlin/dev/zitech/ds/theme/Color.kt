@@ -109,6 +109,7 @@ internal val LightColorScheme = lightColorScheme(
     inversePrimary = md_theme_light_inversePrimary,
     onPrimaryContainer = md_theme_light_onPrimaryContainer,
     onPrimary = md_theme_light_onPrimary,
+    primary = md_theme_light_primary,
     primaryContainer = md_theme_light_primaryContainer
 )
 
@@ -138,5 +139,6 @@ internal val DarkColorScheme = darkColorScheme(
     inversePrimary = md_theme_dark_inversePrimary,
     onPrimaryContainer = md_theme_dark_onPrimaryContainer,
     onPrimary = md_theme_dark_onPrimary,
+    primary = md_theme_dark_primary,
     primaryContainer = md_theme_dark_primaryContainer
 )

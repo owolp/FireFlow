@@ -110,7 +110,7 @@ fun BaseExtension.baseConfig() {
         map { it.java.srcDir("src/${it.name}/kotlin") }
     }
 
-    composeOptions.kotlinCompilerExtensionVersion = libs.versions.composeRuntime.get()
+    composeOptions.kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
 
     configureBuildTypes(project)
     configureFlavorDimensions()

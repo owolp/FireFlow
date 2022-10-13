@@ -15,26 +15,32 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.ds.atoms.navigation
+package dev.zitech.ds.atoms.background
 
-import androidx.compose.foundation.layout.RowScope
-import androidx.compose.material3.NavigationBar
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.LocalAbsoluteTonalElevation
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import dev.zitech.ds.theme.FireFlowTheme
 
-object FireFlowNavigationBar {
+object FireFlowBackground {
 
     @Composable
     fun Simple(
         modifier: Modifier = Modifier,
-        content: @Composable RowScope.() -> Unit
+        content: @Composable () -> Unit
     ) {
-        NavigationBar(
-            modifier = modifier,
-            contentColor = FireFlowNavigationColors.navigationContentColor(),
-            tonalElevation = 0.dp,
-            content = content
-        )
+        Surface(
+            color = FireFlowTheme.colors.surface,
+            tonalElevation = 2.dp,
+            modifier = modifier.fillMaxSize()
+        ) {
+            CompositionLocalProvider(LocalAbsoluteTonalElevation provides 0.dp) {
+                content()
+            }
+        }
     }
 }

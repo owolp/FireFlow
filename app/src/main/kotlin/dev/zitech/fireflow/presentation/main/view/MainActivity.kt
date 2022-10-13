@@ -25,9 +25,11 @@ import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSiz
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.core.view.WindowCompat
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
+import dev.zitech.fireflow.R
 import dev.zitech.fireflow.presentation.FireFlowApp
 import dev.zitech.fireflow.presentation.main.viewmodel.Idle
 import dev.zitech.fireflow.presentation.main.viewmodel.MainViewModel
@@ -45,19 +47,29 @@ internal class MainActivity : AppCompatActivity() {
     private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        installSplashScreen().apply {
-            setKeepOnScreenCondition {
-                viewModel.state.value.splash
+        if (savedInstanceState == null) {
+            installSplashScreen().apply {
+                setKeepOnScreenCondition {
+                    viewModel.state.value.splash
+                }
             }
+        } else {
+            // https://stackoverflow.com/a/69846767
+            setTheme(R.style.Theme_FireFlow)
         }
 
         super.onCreate(savedInstanceState)
+
+        // Turn off the decor fitting system windows, which allows us to handle insets,
+        // including IME animations
+        WindowCompat.setDecorFitsSystemWindows(window, false)
 
         setContent {
             val mainState = viewModel.state.collectAsStateWithLifecycle()
 
             FireFlowApp(
                 viewModel.state.value.splash,
+//                false,
                 mainState.value.theme,
                 calculateWindowSizeClass(this)
             )
