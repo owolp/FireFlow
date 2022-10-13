@@ -18,16 +18,24 @@
 package dev.zitech.ds.atoms.button
 
 import android.content.res.Configuration
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.selectable
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import dev.zitech.ds.atoms.loading.FireFlowProgressIndicators
 import dev.zitech.ds.atoms.radio.FireFlowRadioButtons
 import dev.zitech.ds.atoms.text.FireFlowTexts
@@ -113,7 +121,6 @@ object FireFlowButtons {
     ) {
         TextButton(
             modifier = modifier,
-            colors = FireFlowButtonsColors.primary,
             enabled = enabled,
             shape = FireFlowTheme.shapes.medium,
             onClick = { onClick() }
@@ -136,6 +143,57 @@ object FireFlowButtons {
                     )
                 )
             }
+        }
+    }
+
+    @Composable
+    fun Outlined(
+        text: String,
+        modifier: Modifier = Modifier,
+        enabled: Boolean = true,
+        onClick: () -> Unit
+    ) {
+        OutlinedButton(
+            modifier = modifier,
+            shape = FireFlowTheme.shapes.medium,
+            border = BorderStroke(1.dp, FireFlowTheme.colors.onBackground),
+            enabled = enabled,
+            onClick = onClick
+        ) {
+            androidx.compose.material3.Text(
+                modifier = Modifier
+                    .padding(FireFlowTheme.space.xs),
+                text = text,
+                textAlign = TextAlign.Center,
+                color = if (enabled) {
+                    FireFlowTheme.colors.onBackground
+                } else {
+                    FireFlowTheme.colors.onBackground.copy(
+                        alpha = TEXT_NOT_ENABLED_ALPHA
+                    )
+                },
+                style = FireFlowTheme.typography.bodyLarge.copy(
+                    fontWeight = FontWeight.Bold
+                )
+            )
+        }
+    }
+
+    @Composable
+    fun Icon(
+        enabled: Boolean,
+        image: ImageVector,
+        contentDescription: String,
+        onClick: () -> Unit
+    ) {
+        IconButton(
+            enabled = enabled,
+            onClick = onClick
+        ) {
+            Icon(
+                imageVector = image,
+                contentDescription = contentDescription
+            )
         }
     }
 }
@@ -279,6 +337,25 @@ internal fun Loading_Preview() {
         FireFlowButtons.Loading(
             text = "Loading Button",
             loading = true,
+            onClick = {}
+        )
+    }
+}
+
+@Preview(
+    name = "Outlined Button Light Theme",
+    showBackground = true
+)
+@Preview(
+    name = "Outlined Button Dark Theme",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showBackground = true
+)
+@Composable
+internal fun Outline_Preview() {
+    FireFlowTheme {
+        FireFlowButtons.Outlined(
+            text = "Transparent Outlined Button",
             onClick = {}
         )
     }

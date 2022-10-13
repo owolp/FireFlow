@@ -41,8 +41,7 @@ object FireFlowRadioButtons {
             } else {
                 null
             },
-            enabled = enabled,
-            colors = FireFlowRadioButtonsColors.primary
+            enabled = enabled
         )
     }
 }

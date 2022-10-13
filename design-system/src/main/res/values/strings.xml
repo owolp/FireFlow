@@ -18,5 +18,5 @@
 <resources>
 
     <string name="dialog_button_ok">OK</string>
-
+    <string name="cd_arrow_button_back">Button back</string>
 </resources>

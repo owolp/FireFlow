@@ -37,8 +37,7 @@ object FireFlowSwitches {
             checked = checked,
             modifier = modifier,
             onCheckedChange = onCheckedChange,
-            enabled = enabled,
-            colors = FireFlowSwitchesColors.primary
+            enabled = enabled
         )
     }
 }
