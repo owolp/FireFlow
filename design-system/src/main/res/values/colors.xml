@@ -16,6 +16,6 @@
   -->
 
 <resources>
-    <color name="md_theme_light_primary">#6750A4</color>
-    <color name="md_theme_dark_primary">#D0BCFF</color>
+    <color name="md_theme_light_primary">#006876</color>
+    <color name="md_theme_dark_primary">#51D7EE</color>
 </resources>
