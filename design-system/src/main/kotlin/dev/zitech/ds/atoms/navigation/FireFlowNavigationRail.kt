@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.material3.NavigationRail
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 
 object FireFlowNavigationRail {
 
@@ -32,7 +33,8 @@ object FireFlowNavigationRail {
     ) {
         NavigationRail(
             modifier = modifier,
-            containerColor = FireFlowNavigationColors.navigationContainerColor(),
+            containerColor = Color.Transparent,
+            contentColor = FireFlowNavigationColors.navigationContentColor(),
             header = header,
             content = content
         )

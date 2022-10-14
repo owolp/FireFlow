@@ -19,8 +19,15 @@ package dev.zitech.settings.presentation.settings.compose
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.consumedWindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -33,6 +40,7 @@ import dev.zitech.ds.theme.FireFlowTheme
 import dev.zitech.settings.R
 import dev.zitech.settings.presentation.settings.viewmodel.SettingsState
 
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 internal fun SettingsScreen(
     state: SettingsState,
@@ -44,45 +52,55 @@ internal fun SettingsScreen(
     onThemeClick: () -> Unit,
     onLanguageClick: () -> Unit
 ) {
-    LazyColumn(
-        modifier = modifier.padding(
-            start = FireFlowTheme.space.m,
-            end = FireFlowTheme.space.m
-        ),
-        verticalArrangement = Arrangement.spacedBy(FireFlowTheme.space.s)
-    ) {
-        item {
-            FireFlowCategoryPreferences.Simple(
-                categoryName = stringResource(id = R.string.data_choices_category),
-                preferences = getDataChoicesPreferences(
-                    state = state,
-                    onAnalyticsCheckChange = onAnalyticsCheckChange,
-                    onPersonalizedAdsCheckChange = onPersonalizedAdsCheckChange,
-                    onPerformanceCheckChange = onPerformanceCheckChange,
-                    onCrashReporterCheckChange = onCrashReporterCheckChange
+    Scaffold(
+        modifier = modifier,
+        contentWindowInsets = WindowInsets(
+            left = FireFlowTheme.space.m,
+            right = FireFlowTheme.space.m
+        )
+    ) { innerPadding ->
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .systemBarsPadding()
+                .padding(innerPadding)
+                .consumedWindowInsets(innerPadding),
+            verticalArrangement = Arrangement.spacedBy(FireFlowTheme.space.l)
+        ) {
+            item {
+                FireFlowCategoryPreferences.Simple(
+                    modifier = Modifier.padding(top = FireFlowTheme.space.l),
+                    categoryName = stringResource(id = R.string.data_choices_category),
+                    preferences = getDataChoicesPreferences(
+                        state = state,
+                        onAnalyticsCheckChange = onAnalyticsCheckChange,
+                        onPersonalizedAdsCheckChange = onPersonalizedAdsCheckChange,
+                        onPerformanceCheckChange = onPerformanceCheckChange,
+                        onCrashReporterCheckChange = onCrashReporterCheckChange
+                    )
                 )
-            )
-        }
-        item {
-            FireFlowCategoryPreferences.Simple(
-                categoryName = stringResource(id = R.string.appearance_category),
-                preferences = getAppearancePreferences(
-                    state = state,
-                    onThemeClick = onThemeClick,
-                    onLanguageClick = onLanguageClick
+            }
+            item {
+                FireFlowCategoryPreferences.Simple(
+                    categoryName = stringResource(id = R.string.appearance_category),
+                    preferences = getAppearancePreferences(
+                        state = state,
+                        onThemeClick = onThemeClick,
+                        onLanguageClick = onLanguageClick
+                    )
                 )
-            )
-        }
-        item {
-            FireFlowCategoryPreferences.Simple(
-                categoryName = stringResource(id = R.string.about_application_category),
-                preferences = getAboutApplicationPreferences(
-                    state = state
+            }
+            item {
+                FireFlowCategoryPreferences.Simple(
+                    categoryName = stringResource(id = R.string.about_application_category),
+                    preferences = getAboutApplicationPreferences(
+                        state = state
+                    )
                 )
-            )
-        }
-        item {
-            FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.m)
+            }
+            item {
+                FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.m)
+            }
         }
     }
 }

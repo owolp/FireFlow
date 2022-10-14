@@ -32,7 +32,7 @@ object FireFlowNavigationBar {
     ) {
         NavigationBar(
             modifier = modifier,
-            containerColor = FireFlowNavigationColors.navigationContainerColor(),
+            contentColor = FireFlowNavigationColors.navigationContentColor(),
             tonalElevation = 0.dp,
             content = content
         )

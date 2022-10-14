@@ -15,19 +15,32 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.ds.atoms.checkbox
+package dev.zitech.ds.atoms.background
 
-import androidx.compose.material3.CheckboxColors
-import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.LocalAbsoluteTonalElevation
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import dev.zitech.ds.theme.FireFlowTheme
 
-internal object FireFlowCheckboxesColors {
+object FireFlowBackground {
 
-    val primary: CheckboxColors
-        @Composable
-        get() = CheckboxDefaults.colors(
-            checkmarkColor = FireFlowTheme.colors.primary,
-            checkedColor = FireFlowTheme.colors.inversePrimary
-        )
+    @Composable
+    fun Simple(
+        modifier: Modifier = Modifier,
+        content: @Composable () -> Unit
+    ) {
+        Surface(
+            color = FireFlowTheme.colors.surface,
+            tonalElevation = 2.dp,
+            modifier = modifier.fillMaxSize()
+        ) {
+            CompositionLocalProvider(LocalAbsoluteTonalElevation provides 0.dp) {
+                content()
+            }
+        }
+    }
 }

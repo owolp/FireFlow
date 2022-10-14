@@ -15,21 +15,25 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.ds.atoms.radio
+apply(from = "$rootDir/config/dependencies/compose-dependencies.gradle")
+apply(from = "$rootDir/config/dependencies/test-dependencies.gradle")
 
-import androidx.compose.material3.RadioButtonColors
-import androidx.compose.material3.RadioButtonDefaults
-import androidx.compose.runtime.Composable
-import dev.zitech.ds.theme.FireFlowTheme
+plugins {
+    id(BuildPlugins.KOTLIN_ANDROID)
+    id(BuildPlugins.LIBRARY)
+    id(BuildPlugins.JUNIT5)
+    kotlin(BuildPlugins.KAPT)
+}
 
-internal object FireFlowRadioButtonsColors {
+dependencies {
+    implementation(projects.coreComponent.core)
+    implementation(projects.designSystem)
 
-    val primary: RadioButtonColors
-        @Composable
-        get() = RadioButtonDefaults.colors(
-            selectedColor = FireFlowTheme.colors.primary,
-            unselectedColor = FireFlowTheme.colors.primary,
-            disabledSelectedColor = FireFlowTheme.colors.inversePrimary,
-            disabledUnselectedColor = FireFlowTheme.colors.inversePrimary
-        )
+    implementation(libs.google.dagger.hilt.android)
+    kapt(libs.google.dagger.hilt.compiler)
+    implementation(libs.jetbrains.kotlin.coroutines.android)
+}
+
+kapt {
+    correctErrorTypes = true
 }

@@ -20,6 +20,7 @@ package dev.zitech.ds.atoms.icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AdsClick
 import androidx.compose.material.icons.outlined.Analytics
+import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.Brightness6
 import androidx.compose.material.icons.outlined.BugReport
 import androidx.compose.material.icons.outlined.Dashboard
@@ -31,6 +32,7 @@ import androidx.compose.material.icons.outlined.Speed
 object FireFlowIcons {
     val AdsClick = Icons.Outlined.AdsClick
     val Analytics = Icons.Outlined.Analytics
+    val ArrowBack = Icons.Outlined.ArrowBack
     val Brightness6 = Icons.Outlined.Brightness6
     val BugReport = Icons.Outlined.BugReport
     val Dashboard = Icons.Outlined.Dashboard

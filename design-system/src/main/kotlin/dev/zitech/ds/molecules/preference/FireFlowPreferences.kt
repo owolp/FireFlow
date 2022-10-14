@@ -65,8 +65,9 @@ object FireFlowPreferences {
             modifier = modifier,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            FireFlowTexts.HeadlineMedium(
-                text = title
+            FireFlowTexts.TitleLarge(
+                text = title,
+                color = FireFlowTheme.colors.tertiary
             )
         }
     }
@@ -317,7 +318,7 @@ object FireFlowPreferences {
                 .heightIn(min = 72.dp),
             shape = FireFlowTheme.shapes.extraLarge,
             colors = CardDefaults.cardColors(
-                containerColor = FireFlowTheme.colors.primaryContainer
+                containerColor = FireFlowTheme.colors.secondaryContainer
             )
         ) {
             content()

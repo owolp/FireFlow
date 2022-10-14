@@ -1,4 +1,4 @@
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2022 Zitech Ltd.
   ~
   ~ This program is free software: you can redistribute it and/or modify
@@ -15,8 +15,4 @@
   ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<resources>
-
-    <style name="Theme.FireFlow" parent="Theme.Material3.Light.NoActionBar" />
-
-</resources>
+<manifest package="dev.zitech.authentication" />

@@ -52,39 +52,21 @@ fun FireFlowTheme(
     val systemUiController = rememberSystemUiController()
     SideEffect {
         systemUiController.setSystemBarsColor(
-            color = colorScheme.surface,
+            color = Color.Transparent,
             darkIcons = !darkTheme
         )
     }
 
-    ProvideFireFlowTheme(
-        colorScheme = colorScheme,
-        shapes = shapes,
-        space = space,
-        typography = typography
+    CompositionLocalProvider(
+        LocalSpace provides space
     ) {
         MaterialTheme(
-            colorScheme = debugColors(),
+            colorScheme = colorScheme,
+            shapes = shapes,
+            typography = typography,
             content = content
         )
     }
-}
-
-@Composable
-private fun ProvideFireFlowTheme(
-    colorScheme: ColorScheme,
-    shapes: Shapes,
-    space: Space,
-    typography: Typography,
-    content: @Composable () -> Unit
-) {
-    CompositionLocalProvider(
-        LocalColorScheme provides colorScheme,
-        LocalShapes provides shapes,
-        LocalSpace provides space,
-        LocalTypography provides typography,
-        content = content
-    )
 }
 
 object FireFlowTheme {
@@ -92,12 +74,12 @@ object FireFlowTheme {
     val colors: ColorScheme
         @Composable
         @ReadOnlyComposable
-        get() = LocalColorScheme.current
+        get() = MaterialTheme.colorScheme
 
     val shapes: Shapes
         @Composable
         @ReadOnlyComposable
-        get() = LocalShapes.current
+        get() = MaterialTheme.shapes
 
     val space: Space
         @Composable
@@ -107,59 +89,9 @@ object FireFlowTheme {
     val typography: Typography
         @Composable
         @ReadOnlyComposable
-        get() = LocalTypography.current
-}
-
-/**
- * A Material [ColorScheme] implementation which sets all colors to [debugColor] to discourage usage of
- * [MaterialTheme.colors] in preference to [FireFlowTheme.colors].
- */
-fun debugColors(
-    debugColor: Color = Color.Magenta
-) = ColorScheme(
-    primary = debugColor,
-    surfaceTint = debugColor,
-    onErrorContainer = debugColor,
-    onError = debugColor,
-    errorContainer = debugColor,
-    onTertiaryContainer = debugColor,
-    onTertiary = debugColor,
-    tertiaryContainer = debugColor,
-    tertiary = debugColor,
-    error = debugColor,
-    outline = debugColor,
-    onBackground = debugColor,
-    background = debugColor,
-    inverseOnSurface = debugColor,
-    inverseSurface = debugColor,
-    onSurfaceVariant = debugColor,
-    onSurface = debugColor,
-    surfaceVariant = debugColor,
-    surface = debugColor,
-    onSecondaryContainer = debugColor,
-    onSecondary = debugColor,
-    secondaryContainer = debugColor,
-    secondary = debugColor,
-    inversePrimary = debugColor,
-    onPrimaryContainer = debugColor,
-    onPrimary = debugColor,
-    primaryContainer = debugColor,
-    outlineVariant = debugColor,
-    scrim = debugColor
-)
-
-private val LocalColorScheme = staticCompositionLocalOf<ColorScheme> {
-    error("No FireFlow ColorScheme provided, check if Theme Composable is added")
-}
-
-private val LocalShapes = staticCompositionLocalOf<Shapes> {
-    error("No FireFlow Shapes provided, check if Theme Composable is added")
+        get() = MaterialTheme.typography
 }
 
 private val LocalSpace = staticCompositionLocalOf<Space> {
     error("No FireFlow Spacing provided, check if Theme Composable is added")
-}
-
-private val LocalTypography = staticCompositionLocalOf<Typography> {
-    error("No FireFlow Typography provided, check if Theme Composable is added")
 }

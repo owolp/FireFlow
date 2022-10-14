@@ -18,7 +18,6 @@
 package dev.zitech.ds.organisms.categoryprefrence
 
 import android.content.res.Configuration
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
@@ -39,7 +38,6 @@ object FireFlowCategoryPreferences {
     ) {
         Column(
             modifier = modifier
-                .background(FireFlowTheme.colors.background)
         ) {
             FireFlowPreferences.Category(title = categoryName)
             FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.s)
