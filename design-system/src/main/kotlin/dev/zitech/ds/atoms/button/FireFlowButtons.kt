@@ -181,12 +181,14 @@ object FireFlowButtons {
 
     @Composable
     fun Icon(
-        enabled: Boolean,
         image: ImageVector,
         contentDescription: String,
+        modifier: Modifier = Modifier,
+        enabled: Boolean = true,
         onClick: () -> Unit
     ) {
         IconButton(
+            modifier = modifier,
             enabled = enabled,
             onClick = onClick
         ) {
