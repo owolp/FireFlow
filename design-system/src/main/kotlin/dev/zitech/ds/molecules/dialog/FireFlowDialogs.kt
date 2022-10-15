@@ -46,7 +46,6 @@ object FireFlowDialogs {
     ) {
         AlertDialog(
             modifier = modifier,
-            containerColor = FireFlowTheme.colors.primaryContainer,
             onDismissRequest = { onDismissRequest?.invoke() },
             confirmButton = {
                 FireFlowButtons.Text(
@@ -78,7 +77,6 @@ object FireFlowDialogs {
     ) {
         AlertDialog(
             modifier = modifier,
-            containerColor = FireFlowTheme.colors.primaryContainer,
             title = {
                 FireFlowTexts.TitleLarge(
                     text = title
