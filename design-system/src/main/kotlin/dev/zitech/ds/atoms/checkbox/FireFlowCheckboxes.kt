@@ -22,7 +22,7 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import dev.zitech.ds.theme.FireFlowTheme
+import dev.zitech.ds.theme.PreviewFireFlowTheme
 
 object FireFlowCheckboxes {
 
@@ -53,7 +53,7 @@ object FireFlowCheckboxes {
 )
 @Composable
 private fun Primary_Checked_Enabled_Preview() {
-    FireFlowTheme {
+    PreviewFireFlowTheme {
         FireFlowCheckboxes.Primary(
             checked = true
         )
@@ -71,7 +71,7 @@ private fun Primary_Checked_Enabled_Preview() {
 )
 @Composable
 private fun Primary_Checked_Disabled_Preview() {
-    FireFlowTheme {
+    PreviewFireFlowTheme {
         FireFlowCheckboxes.Primary(
             checked = true,
             enabled = false
@@ -90,7 +90,7 @@ private fun Primary_Checked_Disabled_Preview() {
 )
 @Composable
 private fun Primary_Unchecked_Enabled_Preview() {
-    FireFlowTheme {
+    PreviewFireFlowTheme {
         FireFlowCheckboxes.Primary(
             checked = false
         )
@@ -108,7 +108,7 @@ private fun Primary_Unchecked_Enabled_Preview() {
 )
 @Composable
 private fun Primary_Unchecked_Disabled_Preview() {
-    FireFlowTheme {
+    PreviewFireFlowTheme {
         FireFlowCheckboxes.Primary(
             checked = false,
             enabled = false

@@ -26,7 +26,7 @@ import androidx.compose.ui.graphics.Color
 object FireFlowNavigationRail {
 
     @Composable
-    fun Simple(
+    fun Primary(
         modifier: Modifier = Modifier,
         header: @Composable (ColumnScope.() -> Unit)? = null,
         content: @Composable ColumnScope.() -> Unit

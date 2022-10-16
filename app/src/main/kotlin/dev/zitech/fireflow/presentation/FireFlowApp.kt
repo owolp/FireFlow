@@ -31,11 +31,9 @@ import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination
@@ -44,10 +42,11 @@ import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.ds.atoms.background.FireFlowBackground
 import dev.zitech.ds.atoms.icon.Icon
 import dev.zitech.ds.atoms.navigation.FireFlowNavigationBar
-import dev.zitech.ds.atoms.navigation.FireFlowNavigationBarItem.Simple
+import dev.zitech.ds.atoms.navigation.FireFlowNavigationBarItem.Primary
 import dev.zitech.ds.atoms.navigation.FireFlowNavigationRail
-import dev.zitech.ds.atoms.navigation.FireFlowNavigationRailItem.Simple
+import dev.zitech.ds.atoms.navigation.FireFlowNavigationRailItem.Primary
 import dev.zitech.ds.atoms.text.FireFlowTexts
+import dev.zitech.ds.templates.scaffold.FireFlowScaffolds
 import dev.zitech.ds.theme.FireFlowTheme
 import dev.zitech.fireflow.presentation.navigation.FireFlowNavHost
 import dev.zitech.fireflow.presentation.navigation.TopLevelDestination
@@ -66,11 +65,8 @@ internal fun FireFlowApp(
     FireFlowTheme(
         darkTheme = isDarkTheme(theme)
     ) {
-        FireFlowBackground.Simple {
-            Scaffold(
-                containerColor = Color.Transparent,
-                contentColor = FireFlowTheme.colors.onBackground,
-                contentWindowInsets = WindowInsets(0, 0, 0, 0),
+        FireFlowBackground.Primary {
+            FireFlowScaffolds.Primary(
                 bottomBar = {
                     if (!splash && appState.shouldShowBottomBar) {
                         FireFlowBottomBar(
@@ -121,10 +117,10 @@ private fun FireFlowBottomBar(
     onNavigateToDestination: (TopLevelDestination) -> Unit,
     currentDestination: NavDestination?
 ) {
-    FireFlowNavigationBar.Simple {
+    FireFlowNavigationBar.Primary {
         destinations.forEach { destination ->
             val selected = currentDestination?.hierarchy?.any { it.route == destination.route } == true
-            Simple(
+            Primary(
                 selected = selected,
                 onClick = { onNavigateToDestination(destination) },
                 icon = {
@@ -161,11 +157,11 @@ private fun FireFlowNavRail(
     currentDestination: NavDestination?,
     modifier: Modifier = Modifier
 ) {
-    FireFlowNavigationRail.Simple(modifier = modifier) {
+    FireFlowNavigationRail.Primary(modifier = modifier) {
         destinations.forEach { destination ->
             val selected =
                 currentDestination?.hierarchy?.any { it.route == destination.route } == true
-            Simple(
+            Primary(
                 selected = selected,
                 onClick = { onNavigateToDestination(destination) },
                 icon = {

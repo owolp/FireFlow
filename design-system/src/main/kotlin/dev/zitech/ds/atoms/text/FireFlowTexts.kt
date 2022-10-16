@@ -38,6 +38,7 @@ import dev.zitech.ds.atoms.text.FireFlowTexts.TitleLarge
 import dev.zitech.ds.atoms.text.FireFlowTexts.TitleMedium
 import dev.zitech.ds.atoms.text.FireFlowTexts.TitleSmall
 import dev.zitech.ds.theme.FireFlowTheme
+import dev.zitech.ds.theme.PreviewFireFlowTheme
 
 object FireFlowTexts {
 
@@ -45,7 +46,7 @@ object FireFlowTexts {
     fun DisplayLarge(
         text: String,
         modifier: Modifier = Modifier,
-        color: Color = FireFlowTheme.colors.onBackground
+        color: Color = Color.Unspecified
     ) {
         Text(
             modifier = modifier,
@@ -59,7 +60,7 @@ object FireFlowTexts {
     fun DisplayMedium(
         text: String,
         modifier: Modifier = Modifier,
-        color: Color = FireFlowTheme.colors.onBackground
+        color: Color = Color.Unspecified
     ) {
         Text(
             modifier = modifier,
@@ -73,7 +74,7 @@ object FireFlowTexts {
     fun DisplaySmall(
         text: String,
         modifier: Modifier = Modifier,
-        color: Color = FireFlowTheme.colors.onBackground
+        color: Color = Color.Unspecified
     ) {
         Text(
             modifier = modifier,
@@ -87,7 +88,7 @@ object FireFlowTexts {
     fun HeadlineLarge(
         text: String,
         modifier: Modifier = Modifier,
-        color: Color = FireFlowTheme.colors.onBackground
+        color: Color = Color.Unspecified
     ) {
         Text(
             modifier = modifier,
@@ -101,7 +102,7 @@ object FireFlowTexts {
     fun HeadlineMedium(
         text: String,
         modifier: Modifier = Modifier,
-        color: Color = FireFlowTheme.colors.onBackground
+        color: Color = Color.Unspecified
     ) {
         Text(
             modifier = modifier,
@@ -115,7 +116,7 @@ object FireFlowTexts {
     fun TitleLarge(
         text: String,
         modifier: Modifier = Modifier,
-        color: Color = FireFlowTheme.colors.onBackground
+        color: Color = Color.Unspecified
     ) {
         Text(
             modifier = modifier,
@@ -129,7 +130,7 @@ object FireFlowTexts {
     fun TitleMedium(
         text: String,
         modifier: Modifier = Modifier,
-        color: Color = FireFlowTheme.colors.onBackground
+        color: Color = Color.Unspecified
     ) {
         Text(
             modifier = modifier,
@@ -143,7 +144,7 @@ object FireFlowTexts {
     fun TitleSmall(
         text: String,
         modifier: Modifier = Modifier,
-        color: Color = FireFlowTheme.colors.onBackground
+        color: Color = Color.Unspecified
     ) {
         Text(
             modifier = modifier,
@@ -157,7 +158,7 @@ object FireFlowTexts {
     fun HeadlineSmall(
         text: String,
         modifier: Modifier = Modifier,
-        color: Color = FireFlowTheme.colors.onBackground
+        color: Color = Color.Unspecified
     ) {
         Text(
             modifier = modifier,
@@ -171,7 +172,7 @@ object FireFlowTexts {
     fun BodyLarge(
         text: String,
         modifier: Modifier = Modifier,
-        color: Color = FireFlowTheme.colors.onBackground
+        color: Color = Color.Unspecified
     ) {
         Text(
             modifier = modifier,
@@ -185,7 +186,7 @@ object FireFlowTexts {
     fun BodyMedium(
         text: String,
         modifier: Modifier = Modifier,
-        color: Color = FireFlowTheme.colors.onBackground
+        color: Color = Color.Unspecified
     ) {
         Text(
             modifier = modifier,
@@ -199,7 +200,7 @@ object FireFlowTexts {
     fun BodySmall(
         text: String,
         modifier: Modifier = Modifier,
-        color: Color = FireFlowTheme.colors.onBackground
+        color: Color = Color.Unspecified
     ) {
         Text(
             modifier = modifier,
@@ -213,7 +214,7 @@ object FireFlowTexts {
     fun LabelLarge(
         text: String,
         modifier: Modifier = Modifier,
-        color: Color = FireFlowTheme.colors.onBackground
+        color: Color = Color.Unspecified
     ) {
         Text(
             modifier = modifier,
@@ -227,7 +228,7 @@ object FireFlowTexts {
     fun LabelMedium(
         text: String,
         modifier: Modifier = Modifier,
-        color: Color = FireFlowTheme.colors.onBackground
+        color: Color = Color.Unspecified
     ) {
         Text(
             modifier = modifier,
@@ -241,7 +242,7 @@ object FireFlowTexts {
     fun LabelSmall(
         text: String,
         modifier: Modifier = Modifier,
-        color: Color = FireFlowTheme.colors.onBackground
+        color: Color = Color.Unspecified
     ) {
         Text(
             modifier = modifier,
@@ -263,7 +264,7 @@ object FireFlowTexts {
 )
 @Composable
 private fun Display_Large_Preview() {
-    FireFlowTheme {
+    PreviewFireFlowTheme {
         DisplayLarge(
             text = "Display Large Text"
         )
@@ -281,7 +282,7 @@ private fun Display_Large_Preview() {
 )
 @Composable
 private fun Display_Medium_Preview() {
-    FireFlowTheme {
+    PreviewFireFlowTheme {
         DisplayMedium(
             text = "Display Medium Text"
         )
@@ -299,7 +300,7 @@ private fun Display_Medium_Preview() {
 )
 @Composable
 private fun Display_Small_Preview() {
-    FireFlowTheme {
+    PreviewFireFlowTheme {
         DisplaySmall(
             text = "Display Small Text"
         )
@@ -317,7 +318,7 @@ private fun Display_Small_Preview() {
 )
 @Composable
 private fun Headline_Large_Preview() {
-    FireFlowTheme {
+    PreviewFireFlowTheme {
         HeadlineLarge(
             text = "Headline Large Text"
         )
@@ -335,7 +336,7 @@ private fun Headline_Large_Preview() {
 )
 @Composable
 private fun Headline_Medium_Preview() {
-    FireFlowTheme {
+    PreviewFireFlowTheme {
         HeadlineMedium(
             text = "Headline Medium Text"
         )
@@ -353,7 +354,7 @@ private fun Headline_Medium_Preview() {
 )
 @Composable
 private fun Headline_Small_Preview() {
-    FireFlowTheme {
+    PreviewFireFlowTheme {
         HeadlineSmall(
             text = "Headline Small Text"
         )
@@ -371,7 +372,7 @@ private fun Headline_Small_Preview() {
 )
 @Composable
 private fun Title_Large_Preview() {
-    FireFlowTheme {
+    PreviewFireFlowTheme {
         TitleLarge(
             text = "Title Large Text"
         )
@@ -389,7 +390,7 @@ private fun Title_Large_Preview() {
 )
 @Composable
 private fun Title_Medium_Preview() {
-    FireFlowTheme {
+    PreviewFireFlowTheme {
         TitleMedium(
             text = "Title Medium Text"
         )
@@ -407,7 +408,7 @@ private fun Title_Medium_Preview() {
 )
 @Composable
 private fun Title_Small_Preview() {
-    FireFlowTheme {
+    PreviewFireFlowTheme {
         TitleSmall(
             text = "Title Small Text"
         )
@@ -425,7 +426,7 @@ private fun Title_Small_Preview() {
 )
 @Composable
 private fun Body_Large_Preview() {
-    FireFlowTheme {
+    PreviewFireFlowTheme {
         FireFlowTexts.BodyLarge(
             text = "Body Large Text"
         )
@@ -443,7 +444,7 @@ private fun Body_Large_Preview() {
 )
 @Composable
 private fun Body_Medium_Preview() {
-    FireFlowTheme {
+    PreviewFireFlowTheme {
         BodyMedium(
             text = "Body Medium Text"
         )
@@ -461,7 +462,7 @@ private fun Body_Medium_Preview() {
 )
 @Composable
 private fun Body_Small_Preview() {
-    FireFlowTheme {
+    PreviewFireFlowTheme {
         BodySmall(
             text = "Body Small Text"
         )
@@ -479,7 +480,7 @@ private fun Body_Small_Preview() {
 )
 @Composable
 private fun Label_Large_Preview() {
-    FireFlowTheme {
+    PreviewFireFlowTheme {
         LabelLarge(
             text = "Label Large Text"
         )
@@ -497,7 +498,7 @@ private fun Label_Large_Preview() {
 )
 @Composable
 private fun Label_Medium_Preview() {
-    FireFlowTheme {
+    PreviewFireFlowTheme {
         LabelMedium(
             text = "Label Medium Text"
         )
@@ -515,7 +516,7 @@ private fun Label_Medium_Preview() {
 )
 @Composable
 private fun Label_Small_Preview() {
-    FireFlowTheme {
+    PreviewFireFlowTheme {
         LabelSmall(
             text = "Label Small Text"
         )

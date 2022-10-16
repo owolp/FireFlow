@@ -29,7 +29,7 @@ import dev.zitech.ds.theme.FireFlowTheme
 object FireFlowBackground {
 
     @Composable
-    fun Simple(
+    fun Primary(
         modifier: Modifier = Modifier,
         content: @Composable () -> Unit
     ) {

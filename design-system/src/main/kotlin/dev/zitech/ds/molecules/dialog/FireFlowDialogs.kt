@@ -32,6 +32,7 @@ import dev.zitech.ds.R
 import dev.zitech.ds.atoms.button.FireFlowButtons
 import dev.zitech.ds.atoms.text.FireFlowTexts
 import dev.zitech.ds.theme.FireFlowTheme
+import dev.zitech.ds.theme.PreviewFireFlowTheme
 
 object FireFlowDialogs {
 
@@ -48,9 +49,7 @@ object FireFlowDialogs {
             modifier = modifier,
             onDismissRequest = { onDismissRequest?.invoke() },
             confirmButton = {
-                FireFlowButtons.Text(
-                    text = confirmButton
-                ) { onConfirmButtonClick() }
+                FireFlowButtons.Text.OnSurface(confirmButton) { onConfirmButtonClick() }
             },
             title = {
                 FireFlowTexts.TitleMedium(
@@ -113,7 +112,7 @@ object FireFlowDialogs {
 )
 @Composable
 private fun Alert_Preview() {
-    FireFlowTheme {
+    PreviewFireFlowTheme {
         FireFlowDialogs.Alert(
             title = "Alert Title",
             text = "Alert Text",
@@ -133,7 +132,7 @@ private fun Alert_Preview() {
 )
 @Composable
 private fun Radio_Preview() {
-    FireFlowTheme {
+    PreviewFireFlowTheme {
         FireFlowDialogs.Radio(
             title = "Radio Title",
             radioItems = listOf(

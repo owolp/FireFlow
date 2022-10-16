@@ -22,7 +22,7 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import dev.zitech.ds.theme.FireFlowTheme
+import dev.zitech.ds.theme.PreviewFireFlowTheme
 
 object FireFlowRadioButtons {
 
@@ -57,7 +57,7 @@ object FireFlowRadioButtons {
 )
 @Composable
 private fun Primary_Selected_Enabled_Preview() {
-    FireFlowTheme {
+    PreviewFireFlowTheme {
         FireFlowRadioButtons.Primary(
             selected = true
         )
@@ -75,7 +75,7 @@ private fun Primary_Selected_Enabled_Preview() {
 )
 @Composable
 private fun Primary_Selected_Disabled_Preview() {
-    FireFlowTheme {
+    PreviewFireFlowTheme {
         FireFlowRadioButtons.Primary(
             selected = true,
             enabled = false
@@ -94,7 +94,7 @@ private fun Primary_Selected_Disabled_Preview() {
 )
 @Composable
 private fun Primary_NotSelected_Enabled_Preview() {
-    FireFlowTheme {
+    PreviewFireFlowTheme {
         FireFlowRadioButtons.Primary(
             selected = false
         )
@@ -112,7 +112,7 @@ private fun Primary_NotSelected_Enabled_Preview() {
 )
 @Composable
 private fun Primary_NotSelected_Disabled_Preview() {
-    FireFlowTheme {
+    PreviewFireFlowTheme {
         FireFlowRadioButtons.Primary(
             selected = false,
             enabled = false

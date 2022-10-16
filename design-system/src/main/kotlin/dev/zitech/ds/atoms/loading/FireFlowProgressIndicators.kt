@@ -47,6 +47,7 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import dev.zitech.ds.R
 import dev.zitech.ds.atoms.spacer.FireFlowSpacers
 import dev.zitech.ds.theme.FireFlowTheme
+import dev.zitech.ds.theme.PreviewFireFlowTheme
 
 object FireFlowProgressIndicators {
 
@@ -148,7 +149,7 @@ object FireFlowProgressIndicators {
 )
 @Composable
 private fun FlashingDots_Preview() {
-    FireFlowTheme {
+    PreviewFireFlowTheme {
         FireFlowProgressIndicators.FlashingDots()
     }
 }
