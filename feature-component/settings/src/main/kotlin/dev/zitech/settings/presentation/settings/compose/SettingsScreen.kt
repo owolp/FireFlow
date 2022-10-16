@@ -20,13 +20,11 @@ package dev.zitech.settings.presentation.settings.compose
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.consumedWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -37,6 +35,7 @@ import dev.zitech.ds.atoms.spacer.FireFlowSpacers
 import dev.zitech.ds.molecules.topappbar.FireFlowTopAppBars
 import dev.zitech.ds.organisms.categoryprefrence.CategoryPreference
 import dev.zitech.ds.organisms.categoryprefrence.FireFlowCategoryPreferences
+import dev.zitech.ds.templates.scaffold.FireFlowScaffolds
 import dev.zitech.ds.theme.FireFlowTheme
 import dev.zitech.settings.R
 import dev.zitech.settings.presentation.settings.viewmodel.SettingsState
@@ -55,7 +54,7 @@ internal fun SettingsScreen(
 ) {
     val topAppBarState = FireFlowTopAppBars.topAppBarScrollBehavior()
 
-    Scaffold(
+    FireFlowScaffolds.Simple(
         modifier = modifier
             .nestedScroll(topAppBarState.nestedScrollConnection),
         topBar = {
@@ -63,11 +62,7 @@ internal fun SettingsScreen(
                 title = stringResource(id = R.string.settings),
                 scrollBehavior = topAppBarState
             )
-        },
-        contentWindowInsets = WindowInsets(
-            left = FireFlowTheme.space.m,
-            right = FireFlowTheme.space.m
-        )
+        }
     ) { innerPadding ->
         LazyColumn(
             modifier = Modifier
