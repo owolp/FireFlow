@@ -20,8 +20,10 @@ package dev.zitech.ds.theme
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ColorScheme
+import androidx.compose.material3.LocalAbsoluteTonalElevation
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Shapes
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Typography
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
@@ -32,6 +34,7 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
@@ -66,6 +69,22 @@ fun FireFlowTheme(
             typography = typography,
             content = content
         )
+    }
+}
+
+@Composable
+fun PreviewFireFlowTheme(
+    content: @Composable () -> Unit
+) {
+    FireFlowTheme {
+        Surface(
+            color = FireFlowTheme.colors.surface,
+            tonalElevation = 2.dp
+        ) {
+            CompositionLocalProvider(LocalAbsoluteTonalElevation provides 0.dp) {
+                content()
+            }
+        }
     }
 }
 

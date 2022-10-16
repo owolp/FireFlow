@@ -15,26 +15,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.ds.atoms.navigation
+package dev.zitech.ds.molecules.snackbar
 
-import androidx.compose.foundation.layout.RowScope
-import androidx.compose.material3.NavigationBar
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarVisuals
 
-object FireFlowNavigationBar {
-
-    @Composable
-    fun Primary(
-        modifier: Modifier = Modifier,
-        content: @Composable RowScope.() -> Unit
-    ) {
-        NavigationBar(
-            modifier = modifier,
-            contentColor = FireFlowNavigationColors.navigationContentColor(),
-            tonalElevation = 0.dp,
-            content = content
-        )
-    }
-}
+class ErrorSnackbarVisuals(
+    override val duration: SnackbarDuration,
+    override val message: String,
+    override val withDismissAction: Boolean,
+    override val actionLabel: String? = null
+) : SnackbarVisuals

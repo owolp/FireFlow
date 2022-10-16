@@ -24,7 +24,7 @@ sealed class CategoryPreference(
     val uniqueId: String
 ) {
 
-    data class Simple(
+    data class Primary(
         val title: String,
         val modifier: Modifier = Modifier,
         val description: String? = null,

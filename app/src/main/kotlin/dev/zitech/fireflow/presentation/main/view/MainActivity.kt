@@ -69,7 +69,6 @@ internal class MainActivity : AppCompatActivity() {
 
             FireFlowApp(
                 viewModel.state.value.splash,
-//                false,
                 mainState.value.theme,
                 calculateWindowSizeClass(this)
             )

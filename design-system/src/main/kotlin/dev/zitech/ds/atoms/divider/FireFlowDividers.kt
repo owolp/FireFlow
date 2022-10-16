@@ -27,11 +27,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import dev.zitech.ds.theme.FireFlowTheme
+import dev.zitech.ds.theme.PreviewFireFlowTheme
 
 object FireFlowDividers {
 
     @Composable
-    fun Simple(
+    fun Primary(
         modifier: Modifier = Modifier,
         color: Color = FireFlowTheme.colors.secondary,
         startIndent: Dp = 0.dp,
@@ -49,17 +50,17 @@ object FireFlowDividers {
 }
 
 @Preview(
-    name = "Simple Light Theme",
+    name = "Primary Light Theme",
     showBackground = true
 )
 @Preview(
-    name = "Simple Dark Theme",
+    name = "Primary Dark Theme",
     uiMode = Configuration.UI_MODE_NIGHT_YES,
     showBackground = true
 )
 @Composable
-private fun Simple_Preview() {
-    FireFlowTheme {
-        FireFlowDividers.Simple()
+private fun Primary_Preview() {
+    PreviewFireFlowTheme {
+        FireFlowDividers.Primary()
     }
 }

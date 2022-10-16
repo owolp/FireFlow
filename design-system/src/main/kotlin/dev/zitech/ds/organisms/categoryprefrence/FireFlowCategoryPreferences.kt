@@ -27,11 +27,12 @@ import dev.zitech.ds.atoms.icon.FireFlowIcons
 import dev.zitech.ds.atoms.spacer.FireFlowSpacers
 import dev.zitech.ds.molecules.preference.FireFlowPreferences
 import dev.zitech.ds.theme.FireFlowTheme
+import dev.zitech.ds.theme.PreviewFireFlowTheme
 
 object FireFlowCategoryPreferences {
 
     @Composable
-    fun Simple(
+    fun Primary(
         categoryName: String,
         preferences: List<CategoryPreference>,
         modifier: Modifier = Modifier
@@ -81,9 +82,9 @@ object FireFlowCategoryPreferences {
                     )
                 }
             }
-            is CategoryPreference.Simple -> {
+            is CategoryPreference.Primary -> {
                 with(categoryPreference) {
-                    FireFlowPreferences.Simple(
+                    FireFlowPreferences.Primary(
                         modifier = modifier,
                         title = title,
                         description = description,
@@ -120,12 +121,12 @@ object FireFlowCategoryPreferences {
 )
 @Composable
 private fun Category_Preferences_Preview() {
-    FireFlowTheme {
-        FireFlowCategoryPreferences.Simple(
+    PreviewFireFlowTheme {
+        FireFlowCategoryPreferences.Primary(
             categoryName = "Category Name",
             preferences = listOf(
-                CategoryPreference.Simple(
-                    title = "Simple Title",
+                CategoryPreference.Primary(
+                    title = "Primary Title",
                     description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do " +
                         "eiusmod tempor incididunt ut labore et dolore magna aliqua."
                 ),

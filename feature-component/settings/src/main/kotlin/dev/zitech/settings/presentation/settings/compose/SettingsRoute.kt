@@ -26,7 +26,7 @@ import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.zitech.ds.atoms.loading.FireFlowProgressIndicators
 import dev.zitech.ds.molecules.dialog.FireFlowDialogs
-import dev.zitech.ds.theme.FireFlowTheme
+import dev.zitech.ds.theme.PreviewFireFlowTheme
 import dev.zitech.settings.presentation.settings.viewmodel.Dialog
 import dev.zitech.settings.presentation.settings.viewmodel.Error
 import dev.zitech.settings.presentation.settings.viewmodel.Idle
@@ -123,7 +123,7 @@ fun SettingsRoute(
 )
 @Composable
 private fun SettingsRoute_Preview() {
-    FireFlowTheme {
+    PreviewFireFlowTheme {
         SettingsRoute()
     }
 }

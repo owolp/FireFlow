@@ -26,7 +26,7 @@ import androidx.compose.ui.Modifier
 object FireFlowNavigationBarItem {
 
     @Composable
-    fun RowScope.Simple(
+    fun RowScope.Primary(
         selected: Boolean,
         onClick: () -> Unit,
         icon: @Composable () -> Unit,

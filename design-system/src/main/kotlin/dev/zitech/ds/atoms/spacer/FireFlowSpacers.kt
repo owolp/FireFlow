@@ -25,7 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import dev.zitech.ds.theme.FireFlowTheme
+import dev.zitech.ds.theme.PreviewFireFlowTheme
 
 object FireFlowSpacers {
 
@@ -77,7 +77,7 @@ object FireFlowSpacers {
 )
 @Composable
 private fun Horizontal_Preview() {
-    FireFlowTheme {
+    PreviewFireFlowTheme {
         FireFlowSpacers.Horizontal(10.dp)
     }
 }
@@ -93,7 +93,7 @@ private fun Horizontal_Preview() {
 )
 @Composable
 private fun Vertical_Preview() {
-    FireFlowTheme {
+    PreviewFireFlowTheme {
         FireFlowSpacers.Vertical(10.dp)
     }
 }
@@ -109,7 +109,7 @@ private fun Vertical_Preview() {
 )
 @Composable
 private fun Square_Preview() {
-    FireFlowTheme {
+    PreviewFireFlowTheme {
         FireFlowSpacers.Square(10.dp)
     }
 }

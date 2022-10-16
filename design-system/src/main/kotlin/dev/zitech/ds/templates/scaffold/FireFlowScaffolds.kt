@@ -22,36 +22,57 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import dev.zitech.ds.molecules.snackbar.ErrorSnackbarVisuals
+import dev.zitech.ds.molecules.snackbar.FireFlowSnackbarState
+import dev.zitech.ds.molecules.snackbar.FireFlowSnackbars
+import dev.zitech.ds.molecules.snackbar.rememberSnackbarState
 import dev.zitech.ds.theme.FireFlowTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 object FireFlowScaffolds {
 
     @Composable
-    fun Simple(
+    fun Primary(
         modifier: Modifier = Modifier,
+        snackbarState: FireFlowSnackbarState = rememberSnackbarState(),
         topBar: @Composable () -> Unit = {},
         bottomBar: @Composable () -> Unit = {},
-        snackbarHost: @Composable () -> Unit = {},
         floatingActionButton: @Composable () -> Unit = {},
         floatingActionButtonPosition: FabPosition = FabPosition.End,
         containerColor: Color = FireFlowTheme.colors.background,
         contentColor: Color = contentColorFor(containerColor),
-        contentWindowInsets: WindowInsets = WindowInsets(
-            left = FireFlowTheme.space.m,
-            right = FireFlowTheme.space.m
-        ),
+        contentWindowInsets: WindowInsets = WindowInsets(0, 0, 0, 0),
         content: @Composable (PaddingValues) -> Unit
     ) {
         Scaffold(
             modifier = modifier,
+            snackbarHost = {
+                SnackbarHost(snackbarState.snackbarHostState) { snackbarData ->
+                    when (snackbarData.visuals) {
+                        is ErrorSnackbarVisuals -> {
+                            FireFlowSnackbars.Error(
+                                message = snackbarData.visuals.message,
+                                actionLabel = snackbarData.visuals.actionLabel,
+                                onAction = { snackbarData.performAction() }
+                            )
+                        }
+                        else -> {
+                            FireFlowSnackbars.Primary(
+                                message = snackbarData.visuals.message,
+                                actionLabel = snackbarData.visuals.actionLabel,
+                                onAction = { snackbarData.performAction() }
+                            )
+                        }
+                    }
+                }
+            },
             topBar = topBar,
             bottomBar = bottomBar,
-            snackbarHost = snackbarHost,
             floatingActionButton = floatingActionButton,
             floatingActionButtonPosition = floatingActionButtonPosition,
             contentColor = contentColor,

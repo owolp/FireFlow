@@ -42,9 +42,9 @@ import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.ds.atoms.background.FireFlowBackground
 import dev.zitech.ds.atoms.icon.Icon
 import dev.zitech.ds.atoms.navigation.FireFlowNavigationBar
-import dev.zitech.ds.atoms.navigation.FireFlowNavigationBarItem.Simple
+import dev.zitech.ds.atoms.navigation.FireFlowNavigationBarItem.Primary
 import dev.zitech.ds.atoms.navigation.FireFlowNavigationRail
-import dev.zitech.ds.atoms.navigation.FireFlowNavigationRailItem.Simple
+import dev.zitech.ds.atoms.navigation.FireFlowNavigationRailItem.Primary
 import dev.zitech.ds.atoms.text.FireFlowTexts
 import dev.zitech.ds.templates.scaffold.FireFlowScaffolds
 import dev.zitech.ds.theme.FireFlowTheme
@@ -65,8 +65,8 @@ internal fun FireFlowApp(
     FireFlowTheme(
         darkTheme = isDarkTheme(theme)
     ) {
-        FireFlowBackground.Simple {
-            FireFlowScaffolds.Simple(
+        FireFlowBackground.Primary {
+            FireFlowScaffolds.Primary(
                 bottomBar = {
                     if (!splash && appState.shouldShowBottomBar) {
                         FireFlowBottomBar(
@@ -75,8 +75,7 @@ internal fun FireFlowApp(
                             currentDestination = appState.currentDestination
                         )
                     }
-                },
-                contentWindowInsets = WindowInsets(0, 0, 0, 0),
+                }
             ) { padding ->
                 Row(
                     modifier = Modifier
@@ -118,10 +117,10 @@ private fun FireFlowBottomBar(
     onNavigateToDestination: (TopLevelDestination) -> Unit,
     currentDestination: NavDestination?
 ) {
-    FireFlowNavigationBar.Simple {
+    FireFlowNavigationBar.Primary {
         destinations.forEach { destination ->
             val selected = currentDestination?.hierarchy?.any { it.route == destination.route } == true
-            Simple(
+            Primary(
                 selected = selected,
                 onClick = { onNavigateToDestination(destination) },
                 icon = {
@@ -158,11 +157,11 @@ private fun FireFlowNavRail(
     currentDestination: NavDestination?,
     modifier: Modifier = Modifier
 ) {
-    FireFlowNavigationRail.Simple(modifier = modifier) {
+    FireFlowNavigationRail.Primary(modifier = modifier) {
         destinations.forEach { destination ->
             val selected =
                 currentDestination?.hierarchy?.any { it.route == destination.route } == true
-            Simple(
+            Primary(
                 selected = selected,
                 onClick = { onNavigateToDestination(destination) },
                 icon = {

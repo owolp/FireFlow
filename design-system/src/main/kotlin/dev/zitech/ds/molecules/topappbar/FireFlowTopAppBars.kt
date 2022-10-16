@@ -20,6 +20,7 @@ package dev.zitech.ds.molecules.topappbar
 import android.content.res.Configuration
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.TopAppBarState
@@ -31,13 +32,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import dev.zitech.ds.atoms.button.FireFlowButtons
 import dev.zitech.ds.atoms.icon.FireFlowIcons
 import dev.zitech.ds.atoms.text.FireFlowTexts
-import dev.zitech.ds.theme.FireFlowTheme
+import dev.zitech.ds.theme.PreviewFireFlowTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 object FireFlowTopAppBars {
 
     @Composable
-    fun Simple(
+    fun Primary(
         title: String,
         modifier: Modifier = Modifier,
         scrollBehavior: TopAppBarScrollBehavior? = null
@@ -47,6 +48,22 @@ object FireFlowTopAppBars {
             title = { FireFlowTexts.TitleLarge(text = title) },
             scrollBehavior = scrollBehavior
         )
+    }
+
+    object Collapsing {
+
+        @Composable
+        fun Primary(
+            title: String,
+            modifier: Modifier = Modifier,
+            scrollBehavior: TopAppBarScrollBehavior? = null
+        ) {
+            MediumTopAppBar(
+                modifier = modifier,
+                title = { FireFlowTexts.HeadlineSmall(text = title) },
+                scrollBehavior = scrollBehavior
+            )
+        }
     }
 
     @Composable
@@ -103,21 +120,36 @@ object FireFlowTopAppBars {
 }
 
 @Preview(
-    name = "TopAppBar Simple Light Theme",
+    name = "TopAppBar Primary Light Theme",
     showBackground = true
 )
 @Preview(
-    name = "TopAppBar Simple Dark Theme",
+    name = "TopAppBar Primary Dark Theme",
     uiMode = Configuration.UI_MODE_NIGHT_YES,
     showBackground = true
 )
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun TopAppBar_Simple_Preview() {
-    FireFlowTheme {
-        FireFlowTopAppBars.Simple(
-            "Simple"
-        )
+private fun TopAppBar_Primary_Preview() {
+    PreviewFireFlowTheme {
+        FireFlowTopAppBars.Primary("Primary")
+    }
+}
+
+@Preview(
+    name = "Collapsing Primary Primary Light Theme",
+    showBackground = true
+)
+@Preview(
+    name = "Collapsing Primary Primary Dark Theme",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showBackground = true
+)
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun Collapsing_Primary_Primary_Preview() {
+    PreviewFireFlowTheme {
+        FireFlowTopAppBars.Collapsing.Primary("Primary")
     }
 }
 
@@ -133,7 +165,7 @@ private fun TopAppBar_Simple_Preview() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TopAppBar_Navigation_Preview() {
-    FireFlowTheme {
+    PreviewFireFlowTheme {
         FireFlowTopAppBars.Navigation(
             "Navigation",
             true,

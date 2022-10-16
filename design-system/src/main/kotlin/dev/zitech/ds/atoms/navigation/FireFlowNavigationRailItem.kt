@@ -26,7 +26,7 @@ import androidx.compose.ui.Modifier
 object FireFlowNavigationRailItem {
 
     @Composable
-    fun ColumnScope.Simple(
+    fun ColumnScope.Primary(
         selected: Boolean,
         onClick: () -> Unit,
         icon: @Composable () -> Unit,

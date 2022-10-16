@@ -48,6 +48,7 @@ import dev.zitech.ds.atoms.spacer.FireFlowSpacers
 import dev.zitech.ds.atoms.switch.FireFlowSwitches
 import dev.zitech.ds.atoms.text.FireFlowTexts
 import dev.zitech.ds.theme.FireFlowTheme
+import dev.zitech.ds.theme.PreviewFireFlowTheme
 
 private val imageSize = 32.dp
 private val actionSize = 56.dp
@@ -72,7 +73,7 @@ object FireFlowPreferences {
     }
 
     @Composable
-    fun Simple(
+    fun Primary(
         title: String,
         modifier: Modifier = Modifier,
         description: String? = null,
@@ -333,7 +334,7 @@ object FireFlowPreferences {
 )
 @Composable
 private fun Category_Preview() {
-    FireFlowTheme {
+    PreviewFireFlowTheme {
         FireFlowPreferences.Category(
             title = "Category Title"
         )
@@ -341,37 +342,37 @@ private fun Category_Preview() {
 }
 
 @Preview(
-    name = "Simple Title Only Light Theme",
+    name = "Primary Title Only Light Theme",
     showBackground = true
 )
 @Preview(
-    name = "Simple Title Only Dark Theme",
+    name = "Primary Title Only Dark Theme",
     uiMode = Configuration.UI_MODE_NIGHT_YES,
     showBackground = true
 )
 @Composable
-private fun Simple_Title_Preview() {
-    FireFlowTheme {
-        FireFlowPreferences.Simple(
-            title = "Simple Title"
+private fun Primary_Title_Preview() {
+    PreviewFireFlowTheme {
+        FireFlowPreferences.Primary(
+            title = "Primary Title"
         )
     }
 }
 
 @Preview(
-    name = "Simple Title and Description Light Theme",
+    name = "Primary Title and Description Light Theme",
     showBackground = true
 )
 @Preview(
-    name = "Simple Title and Description Dark Theme",
+    name = "Primary Title and Description Dark Theme",
     uiMode = Configuration.UI_MODE_NIGHT_YES,
     showBackground = true
 )
 @Composable
-private fun Simple_Title_Description_Preview() {
-    FireFlowTheme {
-        FireFlowPreferences.Simple(
-            title = "Simple Title",
+private fun Primary_Title_Description_Preview() {
+    PreviewFireFlowTheme {
+        FireFlowPreferences.Primary(
+            title = "Primary Title",
             description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod " +
                 "tempor incididunt ut labore et dolore magna aliqua."
         )
@@ -389,7 +390,7 @@ private fun Simple_Title_Description_Preview() {
 )
 @Composable
 private fun Icon_Title_Preview() {
-    FireFlowTheme {
+    PreviewFireFlowTheme {
         FireFlowPreferences.Icon(
             title = "Icon Title",
             icon = FireFlowIcons.Analytics
@@ -408,7 +409,7 @@ private fun Icon_Title_Preview() {
 )
 @Composable
 private fun Icon_Title_Description_Preview() {
-    FireFlowTheme {
+    PreviewFireFlowTheme {
         FireFlowPreferences.Icon(
             title = "Icon Title",
             description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod " +
@@ -429,7 +430,7 @@ private fun Icon_Title_Description_Preview() {
 )
 @Composable
 private fun Switch_Title_Preview() {
-    FireFlowTheme {
+    PreviewFireFlowTheme {
         FireFlowPreferences.Switch(
             title = "Switch Title",
             icon = FireFlowIcons.Analytics,
@@ -452,7 +453,7 @@ private fun Switch_Title_Preview() {
 )
 @Composable
 private fun Switch_Title_Description_Preview() {
-    FireFlowTheme {
+    PreviewFireFlowTheme {
         FireFlowPreferences.Switch(
             title = "Switch Title",
             description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod " +
@@ -477,7 +478,7 @@ private fun Switch_Title_Description_Preview() {
 )
 @Composable
 private fun Checkbox_Preview() {
-    FireFlowTheme {
+    PreviewFireFlowTheme {
         FireFlowPreferences.Checkbox(
             title = "Checkbox Title",
             description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod " +
