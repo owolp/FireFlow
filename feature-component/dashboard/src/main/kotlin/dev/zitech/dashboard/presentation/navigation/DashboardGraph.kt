@@ -21,7 +21,9 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import dev.zitech.dashboard.presentation.dashboard.compose.DashboardRoute
 
-fun NavGraphBuilder.dashboardGraph() {
+fun NavGraphBuilder.dashboardGraph(
+
+) {
     composable(route = DashboardDestination.route) {
         DashboardRoute()
     }

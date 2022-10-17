@@ -19,7 +19,9 @@ package dev.zitech.dashboard.presentation.navigation
 
 import dev.zitech.navigation.FireFlowNavigationDestination
 
+private const val DESTINATION = "dashboard"
+
 object DashboardDestination : FireFlowNavigationDestination {
     override val route: String = "dashboard_route"
-    override val destination: String = "dashboard_destination"
+    override val destination: String = DESTINATION
 }
