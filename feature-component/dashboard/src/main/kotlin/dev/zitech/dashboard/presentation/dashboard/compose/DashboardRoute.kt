@@ -23,7 +23,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import dev.zitech.dashboard.presentation.dashboard.viewmodel.DashboardViewModel
 
 @Composable
-fun DashboardRoute(
+internal fun DashboardRoute(
     modifier: Modifier = Modifier,
     viewModel: DashboardViewModel = hiltViewModel()
 ) {

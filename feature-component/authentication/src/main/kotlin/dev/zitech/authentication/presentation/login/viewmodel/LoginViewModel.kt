@@ -15,14 +15,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.dashboard.presentation.navigation
+package dev.zitech.authentication.presentation.login.viewmodel
 
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
-import dev.zitech.dashboard.presentation.dashboard.compose.DashboardRoute
+import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-fun NavGraphBuilder.dashboardGraph() {
-    composable(route = DashboardDestination.route) {
-        DashboardRoute()
-    }
-}
+@HiltViewModel
+internal class LoginViewModel @Inject constructor() : ViewModel()

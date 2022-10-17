@@ -36,7 +36,7 @@ import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
 @HiltViewModel
-class SettingsViewModel @Inject constructor(
+internal class SettingsViewModel @Inject constructor(
     private val settingsStateHandler: SettingsStateHandler,
     private val settingsAppearanceCollectionStates: SettingsAppearanceCollectionStates,
     private val settingsDataChoicesCollectionStates: SettingsDataChoicesCollectionStates,

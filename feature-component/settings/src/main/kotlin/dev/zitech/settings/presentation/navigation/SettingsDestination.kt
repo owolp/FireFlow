@@ -19,9 +19,7 @@ package dev.zitech.settings.presentation.navigation
 
 import dev.zitech.navigation.FireFlowNavigationDestination
 
-private const val NAVIGATION_ROUTE = "settings_route"
-
 object SettingsDestination : FireFlowNavigationDestination {
-    override val route: String = NAVIGATION_ROUTE
+    override val route: String = "settings_route"
     override val destination: String = "settings_destination"
 }

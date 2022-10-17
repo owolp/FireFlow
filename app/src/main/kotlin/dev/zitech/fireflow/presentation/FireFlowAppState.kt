@@ -28,7 +28,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import dev.zitech.dashboard.presentation.navigation.DashboardDestinations
+import dev.zitech.dashboard.presentation.navigation.DashboardDestination
 import dev.zitech.ds.atoms.icon.FireFlowIcons
 import dev.zitech.ds.atoms.icon.Icon
 import dev.zitech.fireflow.presentation.navigation.TopLevelDestination
@@ -63,8 +63,8 @@ internal class FireFlowAppState(
 
     val topLevelDestinations: List<TopLevelDestination> = listOf(
         TopLevelDestination(
-            route = DashboardDestinations.route,
-            destination = DashboardDestinations.destination,
+            route = DashboardDestination.route,
+            destination = DashboardDestination.destination,
             selectedIcon = Icon.ImageVectorIcon(FireFlowIcons.Dashboard),
             unselectedIcon = Icon.ImageVectorIcon(FireFlowIcons.Dashboard),
             iconTextId = dashboardR.string.dashboard

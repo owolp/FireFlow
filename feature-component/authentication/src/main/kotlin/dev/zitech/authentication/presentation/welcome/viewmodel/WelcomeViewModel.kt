@@ -15,13 +15,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.dashboard.presentation.navigation
+package dev.zitech.authentication.presentation.welcome.viewmodel
 
-import dev.zitech.navigation.FireFlowNavigationDestination
+import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-private const val NAVIGATION_ROUTE = "dashboard_route"
-
-object DashboardDestinations : FireFlowNavigationDestination {
-    override val route: String = NAVIGATION_ROUTE
-    override val destination: String = "dashboard_destination"
-}
+@HiltViewModel
+internal class WelcomeViewModel @Inject constructor() : ViewModel()

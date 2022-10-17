@@ -19,8 +19,14 @@ package dev.zitech.authentication.presentation.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import dev.zitech.authentication.presentation.login.compose.LoginRoute
+import dev.zitech.authentication.presentation.welcome.compose.WelcomeRoute
 
 fun NavGraphBuilder.authenticationGraph() {
-    composable(route = AuthenticationDestinations.route) {
+    composable(route = LoginDestination.route) {
+        LoginRoute()
+    }
+    composable(route = WelcomeDestination.route) {
+        WelcomeRoute()
     }
 }

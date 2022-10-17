@@ -46,7 +46,7 @@ import dev.zitech.settings.presentation.settings.viewmodel.SettingsViewModel
 
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
-fun SettingsRoute(
+internal fun SettingsRoute(
     modifier: Modifier = Modifier,
     viewModel: SettingsViewModel = hiltViewModel()
 ) {

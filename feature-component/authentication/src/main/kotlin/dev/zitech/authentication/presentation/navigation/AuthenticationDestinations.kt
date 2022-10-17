@@ -19,9 +19,12 @@ package dev.zitech.authentication.presentation.navigation
 
 import dev.zitech.navigation.FireFlowNavigationDestination
 
-private const val NAVIGATION_ROUTE = "authentication_route"
+object LoginDestination : FireFlowNavigationDestination {
+    override val route: String = "login_route"
+    override val destination: String = "login_destination"
+}
 
-object AuthenticationDestinations : FireFlowNavigationDestination {
-    override val route: String = NAVIGATION_ROUTE
+object WelcomeDestination : FireFlowNavigationDestination {
+    override val route: String = "welcome_route"
     override val destination: String = "welcome_destination"
 }

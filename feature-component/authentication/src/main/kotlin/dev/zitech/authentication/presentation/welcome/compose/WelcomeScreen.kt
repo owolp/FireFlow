@@ -15,14 +15,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.dashboard.presentation.navigation
+package dev.zitech.authentication.presentation.welcome.compose
 
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
-import dev.zitech.dashboard.presentation.dashboard.compose.DashboardRoute
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import dev.zitech.ds.atoms.text.FireFlowTexts
+import dev.zitech.ds.theme.FireFlowTheme
 
-fun NavGraphBuilder.dashboardGraph() {
-    composable(route = DashboardDestination.route) {
-        DashboardRoute()
-    }
+@Composable
+internal fun WelcomeScreen(
+    modifier: Modifier = Modifier
+) {
+    FireFlowTexts.HeadlineLarge(
+        text = "Welcome Screen",
+        color = FireFlowTheme.colors.onSurface
+    )
 }
