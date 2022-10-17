@@ -15,13 +15,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.settings.presentation.navigation
+package dev.zitech.dashboard.presentation.navigation
 
-import dev.zitech.navigation.FireFlowNavigationDestination
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.compose.composable
+import dev.zitech.dashboard.presentation.dashboard.compose.DashboardRoute
 
-private const val NAVIGATION_ROUTE = "settings_route"
-
-object SettingsDestination : FireFlowNavigationDestination {
-    override val route: String = NAVIGATION_ROUTE
-    override val destination: String = "settings_destination"
+fun NavGraphBuilder.dashboardGraph() {
+    composable(route = DashboardDestinations.route) {
+        DashboardRoute()
+    }
 }
