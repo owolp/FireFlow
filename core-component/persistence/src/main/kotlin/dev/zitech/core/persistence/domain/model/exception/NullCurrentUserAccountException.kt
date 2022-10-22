@@ -15,15 +15,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.persistence.domain.repository.database
+package dev.zitech.core.persistence.domain.model.exception
 
-import dev.zitech.core.common.domain.model.DataResult
-import dev.zitech.core.persistence.domain.model.database.UserAccount
-import kotlinx.coroutines.flow.Flow
-
-interface UserAccountRepository {
-
-    fun getUserAccounts(): Flow<DataResult<List<UserAccount>>>
-    fun getCurrentUserAccount(): Flow<DataResult<UserAccount>>
-    suspend fun saveUserAccount(isCurrentUserAccount: Boolean): DataResult<Long>
-}
+object NullCurrentUserAccountException : Exception()

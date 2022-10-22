@@ -17,51 +17,40 @@
 
 package dev.zitech.core.persistence.data.repository.database
 
-import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.persistence.domain.model.database.UserAccount
-import dev.zitech.core.persistence.domain.model.database.UserLoggedState
+import dev.zitech.core.persistence.domain.model.exception.NullCurrentUserAccountException
 import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
 import dev.zitech.core.persistence.domain.source.database.UserAccountDatabaseSource
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
 internal class UserAccountRepositoryImpl @Inject constructor(
     private val userAccountDatabaseSource: UserAccountDatabaseSource
 ) : UserAccountRepository {
 
-    private val tag = Logger.tag(this::class.java)
-
-    override suspend fun getUserAccounts(): DataResult<List<UserAccount>> =
-        try {
-            val userAccounts = userAccountDatabaseSource.getUserAccounts()
-            DataResult.Success(userAccounts)
-        } catch (exception: Exception) {
-            DataResult.Error(cause = exception)
-        }
+    override fun getUserAccounts(): Flow<DataResult<List<UserAccount>>> =
+        userAccountDatabaseSource.getUserAccounts()
+            .map { userAccounts ->
+                DataResult.Success(userAccounts)
+            }.catch { throwable ->
+                DataResult.Error(cause = Exception(throwable))
+            }
 
     override fun getCurrentUserAccount(): Flow<DataResult<UserAccount>> =
-        userAccountDatabaseSource.getCurrentUserAccount()
-            .map {
-                DataResult.Success(it)
+        userAccountDatabaseSource.getCurrentUserAccountOrNull()
+            .map { userAccount ->
+                if (userAccount != null) {
+                    DataResult.Success(userAccount)
+                } else {
+                    DataResult.Error(cause = NullCurrentUserAccountException)
+                }
             }
             .catch { throwable ->
                 DataResult.Error(cause = Exception(throwable))
             }
-
-    override suspend fun getUserLoggedState(): UserLoggedState =
-        try {
-            if (userAccountDatabaseSource.isUserLoggedIn()) {
-                UserLoggedState.LOGGED_IN
-            } else {
-                UserLoggedState.LOGGED_OUT
-            }
-        } catch (exception: Exception) {
-            Logger.e(tag, exception)
-            UserLoggedState.LOGGED_OUT
-        }
 
     override suspend fun saveUserAccount(isCurrentUserAccount: Boolean): DataResult<Long> =
         try {

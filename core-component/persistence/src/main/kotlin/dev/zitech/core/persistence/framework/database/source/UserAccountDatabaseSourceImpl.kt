@@ -23,27 +23,30 @@ import dev.zitech.core.persistence.domain.source.database.UserAccountDatabaseSou
 import dev.zitech.core.persistence.framework.database.dao.UserAccountDao
 import dev.zitech.core.persistence.framework.database.entity.UserAccountEntity
 import dev.zitech.core.persistence.framework.database.mapper.UserAccountMapper
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
 internal class UserAccountDatabaseSourceImpl @Inject constructor(
     private val userAccountDao: UserAccountDao,
     private val userAccountMapper: UserAccountMapper
 ) : UserAccountDatabaseSource {
 
-    override suspend fun getUserAccounts(): List<UserAccount> =
-        userAccountDao.getUserAccounts().map { userAccountEntity ->
-            userAccountMapper(userAccountEntity)
+    override fun getUserAccounts(): Flow<List<UserAccount>> =
+        userAccountDao.getUserAccounts().map { userAccountEntities ->
+            userAccountEntities.map {
+                userAccountMapper(it)
+            }
         }
 
-    override fun getCurrentUserAccount(): Flow<UserAccount> =
-        userAccountDao.getCurrentUserAccountFlow().map {
-            userAccountMapper(it)
+    override fun getCurrentUserAccountOrNull(): Flow<UserAccount?> =
+        userAccountDao.getCurrentUserAccount().map { userAccountEntity ->
+            if (userAccountEntity != null) {
+                userAccountMapper(userAccountEntity)
+            } else {
+                null
+            }
         }
-
-    override suspend fun isUserLoggedIn(): Boolean =
-        userAccountDao.getCurrentUserAccount() != null
 
     @Transaction
     override suspend fun saveUserAccount(isCurrentUserAccount: Boolean): Long {

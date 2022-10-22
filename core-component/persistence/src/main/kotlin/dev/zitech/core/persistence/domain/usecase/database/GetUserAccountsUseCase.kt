@@ -21,11 +21,12 @@ import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
 import javax.inject.Inject
+import kotlinx.coroutines.flow.Flow
 
 class GetUserAccountsUseCase @Inject constructor(
     private val userAccountRepository: UserAccountRepository
 ) {
 
-    suspend operator fun invoke(): DataResult<List<UserAccount>> =
+    operator fun invoke(): Flow<DataResult<List<UserAccount>>> =
         userAccountRepository.getUserAccounts()
 }

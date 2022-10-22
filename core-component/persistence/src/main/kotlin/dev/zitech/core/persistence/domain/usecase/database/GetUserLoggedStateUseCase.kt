@@ -17,14 +17,19 @@
 
 package dev.zitech.core.persistence.domain.usecase.database
 
+import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.persistence.domain.model.database.UserLoggedState
 import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
 import javax.inject.Inject
+import kotlinx.coroutines.flow.firstOrNull
 
 class GetUserLoggedStateUseCase @Inject constructor(
     private val userAccountRepository: UserAccountRepository
 ) {
 
     suspend operator fun invoke(): UserLoggedState =
-        userAccountRepository.getUserLoggedState()
+        when (userAccountRepository.getCurrentUserAccount().firstOrNull()) {
+            is DataResult.Success -> UserLoggedState.LOGGED_IN
+            else -> UserLoggedState.LOGGED_OUT
+        }
 }
