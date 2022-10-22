@@ -18,14 +18,54 @@
 package dev.zitech.dashboard.presentation.dashboard.compose
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import dev.zitech.core.common.domain.model.ONBOARD_KEY
+import dev.zitech.core.common.domain.model.OnboardResult
+import dev.zitech.core.persistence.domain.model.database.OnboardingState
 import dev.zitech.dashboard.presentation.dashboard.viewmodel.DashboardViewModel
 
+@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 internal fun DashboardRoute(
+    navigateToWelcome: () -> Unit,
+    onOnboardingCancel: () -> Unit,
+    savedStateHandle: SavedStateHandle,
     modifier: Modifier = Modifier,
     viewModel: DashboardViewModel = hiltViewModel()
 ) {
-    DashboardScreen()
+    val state = viewModel.state.collectAsStateWithLifecycle()
+    val onboardResult = savedStateHandle.getStateFlow(
+        ONBOARD_KEY, OnboardResult.NOT_COMPLETED
+    ).collectAsStateWithLifecycle()
+
+    when (state.value.onboardingState) {
+        OnboardingState.COMPLETED -> {
+            DashboardScreen(
+                state = state.value,
+                modifier = modifier
+            )
+        }
+        OnboardingState.NOT_COMPLETED -> {
+            when (onboardResult.value) {
+                OnboardResult.NOT_COMPLETED -> {
+                    LaunchedEffect(Unit) {
+                        navigateToWelcome()
+                    }
+                }
+                OnboardResult.CANCELLED -> {
+                    LaunchedEffect(Unit) {
+                        onOnboardingCancel()
+                    }
+                }
+            }
+        }
+        null -> {
+            // NO_OP
+        }
+    }
 }

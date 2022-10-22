@@ -17,13 +17,44 @@
 
 package dev.zitech.dashboard.presentation.dashboard.compose
 
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import dev.zitech.ds.atoms.text.FireFlowTexts
+import androidx.compose.ui.res.stringResource
+import dev.zitech.dashboard.R
+import dev.zitech.dashboard.presentation.dashboard.viewmodel.DashboardState
+import dev.zitech.ds.molecules.topappbar.FireFlowTopAppBars
+import dev.zitech.ds.molecules.topappbar.ScrollBehavior
+import dev.zitech.ds.templates.scaffold.FireFlowScaffolds
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun DashboardScreen(
+    state: DashboardState,
     modifier: Modifier = Modifier
 ) {
-    FireFlowTexts.HeadlineLarge(text = "Dashboard")
+    val topAppBarScrollBehavior = FireFlowTopAppBars.topAppBarScrollBehavior(
+        ScrollBehavior.ExitUntilCollapsed
+    )
+
+    FireFlowScaffolds.Primary(
+        modifier = modifier,
+        topBar = {
+            FireFlowTopAppBars.Collapsing.Primary(
+                title = stringResource(id = R.string.dashboard),
+                scrollBehavior = topAppBarScrollBehavior
+            )
+        }
+    ) {
+        DashboardScreenContent(
+            state
+        )
+    }
+}
+
+@Composable
+private fun DashboardScreenContent(
+    state: DashboardState
+) {
+    // NO_OP
 }

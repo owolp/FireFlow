@@ -15,21 +15,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.dashboard.presentation.navigation
+package dev.zitech.dashboard.presentation.dashboard.viewmodel
 
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
-import dev.zitech.dashboard.presentation.dashboard.compose.DashboardRoute
+import dev.zitech.core.common.presentation.architecture.MviState
+import dev.zitech.core.persistence.domain.model.database.OnboardingState
 
-fun NavGraphBuilder.dashboardGraph(
-    navigateToWelcome: () -> Unit,
-    onOnboardingCancel: () -> Unit
-) {
-    composable(route = DashboardDestination.route) { backStackEntry ->
-        DashboardRoute(
-            navigateToWelcome = navigateToWelcome,
-            onOnboardingCancel = onOnboardingCancel,
-            savedStateHandle = backStackEntry.savedStateHandle
-        )
-    }
-}
+internal data class DashboardState(
+    val onboardingState: OnboardingState? = null
+) : MviState
