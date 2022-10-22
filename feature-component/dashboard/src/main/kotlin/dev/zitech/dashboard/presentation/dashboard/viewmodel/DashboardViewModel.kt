@@ -23,17 +23,17 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.common.presentation.architecture.MviViewModel
 import dev.zitech.core.common.presentation.splash.SplashScreenStateController
-import dev.zitech.dashboard.domain.model.OnboardingState
 import dev.zitech.core.persistence.domain.model.exception.NullCurrentUserAccountException
 import dev.zitech.core.persistence.domain.usecase.database.GetCurrentUserAccountUseCase
 import dev.zitech.core.persistence.domain.usecase.database.GetUserAccountsUseCase
 import dev.zitech.core.remoteconfig.domain.usecase.InitializeRemoteConfiguratorUseCase
-import javax.inject.Inject
+import dev.zitech.dashboard.domain.model.OnboardingState
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
+import javax.inject.Inject
 
 @HiltViewModel
 internal class DashboardViewModel @Inject constructor(

@@ -17,11 +17,11 @@
 
 package dev.zitech.core.common.presentation.splash
 
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import javax.inject.Inject
 
 interface SplashScreenStateController {
 

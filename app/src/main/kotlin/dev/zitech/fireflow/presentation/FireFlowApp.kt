@@ -57,7 +57,6 @@ import dev.zitech.fireflow.presentation.navigation.TopLevelDestination
 )
 @Composable
 internal fun FireFlowApp(
-    splash: Boolean,
     theme: ApplicationTheme?,
     windowSizeClass: WindowSizeClass,
     appState: FireFlowAppState = rememberFireFlowAppState(windowSizeClass)
@@ -68,7 +67,7 @@ internal fun FireFlowApp(
         FireFlowBackground.Primary {
             FireFlowScaffolds.Primary(
                 bottomBar = {
-                    if (!splash && appState.shouldShowBottomBar) {
+                    if (appState.shouldShowBottomBar) {
                         FireFlowBottomBar(
                             destinations = appState.topLevelDestinations,
                             onNavigateToDestination = appState::navigate,
@@ -86,25 +85,23 @@ internal fun FireFlowApp(
                             )
                         )
                 ) {
-                    if (!splash) {
-                        if (appState.shouldShowNavRail) {
-                            FireFlowNavRail(
-                                destinations = appState.topLevelDestinations,
-                                onNavigateToDestination = appState::navigate,
-                                currentDestination = appState.currentDestination,
-                                modifier = Modifier.safeDrawingPadding()
-                            )
-                        }
-
-                        FireFlowNavHost(
-                            navController = appState.navController,
+                    if (appState.shouldShowNavRail) {
+                        FireFlowNavRail(
+                            destinations = appState.topLevelDestinations,
                             onNavigateToDestination = appState::navigate,
-                            onBackClick = appState::onBackClick,
-                            modifier = Modifier
-                                .padding(padding)
-                                .consumedWindowInsets(padding)
+                            currentDestination = appState.currentDestination,
+                            modifier = Modifier.safeDrawingPadding()
                         )
                     }
+
+                    FireFlowNavHost(
+                        navController = appState.navController,
+                        onNavigateToDestination = appState::navigate,
+                        onBackClick = appState::onBackClick,
+                        modifier = Modifier
+                            .padding(padding)
+                            .consumedWindowInsets(padding)
+                    )
                 }
             }
         }

@@ -23,9 +23,9 @@ import dev.zitech.core.persistence.domain.source.database.UserAccountDatabaseSou
 import dev.zitech.core.persistence.framework.database.dao.UserAccountDao
 import dev.zitech.core.persistence.framework.database.entity.UserAccountEntity
 import dev.zitech.core.persistence.framework.database.mapper.UserAccountMapper
-import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
 internal class UserAccountDatabaseSourceImpl @Inject constructor(
     private val userAccountDao: UserAccountDao,

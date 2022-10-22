@@ -55,11 +55,16 @@ internal class FireFlowAppState(
             .currentBackStackEntryAsState().value?.destination
 
     val shouldShowBottomBar: Boolean
-        get() = windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact ||
-            windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact
+        @Composable get() = (
+            windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact ||
+                windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact
+            ) && isCurrentDestinationTopLevelDestination()
 
     val shouldShowNavRail: Boolean
-        get() = !shouldShowBottomBar
+        @Composable get() = !(
+            windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact ||
+                windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact
+            ) && isCurrentDestinationTopLevelDestination()
 
     val topLevelDestinations: List<TopLevelDestination> = listOf(
         TopLevelDestination(
@@ -101,4 +106,8 @@ internal class FireFlowAppState(
     fun onBackClick() {
         navController.popBackStack()
     }
+
+    @Composable
+    private fun isCurrentDestinationTopLevelDestination(): Boolean =
+        topLevelDestinations.any { it.route == currentDestination?.route }
 }

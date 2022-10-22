@@ -40,7 +40,8 @@ internal fun DashboardRoute(
 ) {
     val state = viewModel.state.collectAsStateWithLifecycle()
     val onboardResult = savedStateHandle.getStateFlow(
-        ONBOARD_KEY, OnboardResult.UNCOMPLETED
+        ONBOARD_KEY,
+        OnboardResult.UNCOMPLETED
     ).collectAsStateWithLifecycle()
 
     when (state.value.onboardingState) {

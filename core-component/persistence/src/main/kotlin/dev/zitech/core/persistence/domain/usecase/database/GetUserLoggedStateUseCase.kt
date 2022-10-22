@@ -20,8 +20,8 @@ package dev.zitech.core.persistence.domain.usecase.database
 import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.persistence.domain.model.database.UserLoggedState
 import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
-import javax.inject.Inject
 import kotlinx.coroutines.flow.firstOrNull
+import javax.inject.Inject
 
 class GetUserLoggedStateUseCase @Inject constructor(
     private val userAccountRepository: UserAccountRepository
