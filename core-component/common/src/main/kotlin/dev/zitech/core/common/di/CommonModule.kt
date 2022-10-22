@@ -30,6 +30,8 @@ import dev.zitech.core.common.domain.scope.AppScopes
 import dev.zitech.core.common.domain.scope.AppScopesImpl
 import dev.zitech.core.common.domain.strings.StringsProvider
 import dev.zitech.core.common.framework.strings.StringsProviderImpl
+import dev.zitech.core.common.presentation.splash.SplashScreenStateController
+import dev.zitech.core.common.presentation.splash.SplashScreenStateControllerImpl
 import javax.inject.Singleton
 
 internal interface CommonModule {
@@ -55,5 +57,11 @@ internal interface CommonModule {
         @Singleton
         @Binds
         fun appScopes(appScopesImpl: AppScopesImpl): AppScopes
+
+        @Singleton
+        @Binds
+        fun splashScreenStateController(
+            splashScreenStateControllerImpl: SplashScreenStateControllerImpl
+        ): SplashScreenStateController
     }
 }

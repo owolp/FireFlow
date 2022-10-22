@@ -22,7 +22,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.common.presentation.architecture.MviViewModel
-import dev.zitech.core.common.presentation.splash.SplashScreenController
+import dev.zitech.core.common.presentation.splash.SplashScreenStateController
 import dev.zitech.core.persistence.domain.model.database.OnboardingState
 import dev.zitech.core.persistence.domain.model.exception.NullCurrentUserAccount
 import dev.zitech.core.persistence.domain.usecase.database.GetCurrentUserAccountUseCase
@@ -41,7 +41,7 @@ internal class DashboardViewModel @Inject constructor(
     private val initializeRemoteConfiguratorUseCase: InitializeRemoteConfiguratorUseCase,
     private val getCurrentUserAccountUseCase: GetCurrentUserAccountUseCase,
     private val getUserAccountsUseCase: GetUserAccountsUseCase,
-    private val splashScreenController: SplashScreenController
+    private val splashScreenStateController: SplashScreenStateController
 ) : ViewModel(), MviViewModel<DashboardIntent, DashboardState> {
 
     override val state: StateFlow<DashboardState> = dashboardStateHandler.state
@@ -112,6 +112,6 @@ internal class DashboardViewModel @Inject constructor(
     }
 
     private fun hideSplashScreen() {
-        splashScreenController(false)
+        splashScreenStateController(false)
     }
 }
