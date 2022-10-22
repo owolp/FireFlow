@@ -23,8 +23,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.common.presentation.architecture.MviViewModel
 import dev.zitech.core.common.presentation.splash.SplashScreenStateController
-import dev.zitech.core.persistence.domain.model.database.OnboardingState
-import dev.zitech.core.persistence.domain.model.exception.NullCurrentUserAccount
+import dev.zitech.dashboard.domain.model.OnboardingState
+import dev.zitech.core.persistence.domain.model.exception.NullCurrentUserAccountException
 import dev.zitech.core.persistence.domain.usecase.database.GetCurrentUserAccountUseCase
 import dev.zitech.core.persistence.domain.usecase.database.GetUserAccountsUseCase
 import dev.zitech.core.remoteconfig.domain.usecase.InitializeRemoteConfiguratorUseCase
@@ -67,7 +67,7 @@ internal class DashboardViewModel @Inject constructor(
                     is DataResult.Success -> showDashboard()
                     is DataResult.Error -> {
                         when (result.cause) {
-                            NullCurrentUserAccount -> handleNullCurrentUserAccount()
+                            NullCurrentUserAccountException -> handleNullCurrentUserAccount()
                             else -> showError(result)
                         }
                     }
@@ -95,7 +95,7 @@ internal class DashboardViewModel @Inject constructor(
     }
 
     private fun showWelcome() {
-        dashboardStateHandler.setOnboardingState(OnboardingState.NOT_COMPLETED)
+        dashboardStateHandler.setOnboardingState(OnboardingState.UNCOMPLETED)
         hideSplashScreen()
     }
 

@@ -26,7 +26,7 @@ import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.zitech.core.common.domain.model.ONBOARD_KEY
 import dev.zitech.core.common.domain.model.OnboardResult
-import dev.zitech.core.persistence.domain.model.database.OnboardingState
+import dev.zitech.dashboard.domain.model.OnboardingState
 import dev.zitech.dashboard.presentation.dashboard.viewmodel.DashboardViewModel
 
 @OptIn(ExperimentalLifecycleComposeApi::class)
@@ -50,7 +50,7 @@ internal fun DashboardRoute(
                 modifier = modifier
             )
         }
-        OnboardingState.NOT_COMPLETED -> {
+        OnboardingState.UNCOMPLETED -> {
             when (onboardResult.value) {
                 OnboardResult.NOT_COMPLETED -> {
                     LaunchedEffect(Unit) {

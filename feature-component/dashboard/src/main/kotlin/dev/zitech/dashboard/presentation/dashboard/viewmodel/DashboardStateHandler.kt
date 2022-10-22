@@ -18,7 +18,7 @@
 package dev.zitech.dashboard.presentation.dashboard.viewmodel
 
 import dev.zitech.core.common.presentation.architecture.MviStateHandler
-import dev.zitech.core.persistence.domain.model.database.OnboardingState
+import dev.zitech.dashboard.domain.model.OnboardingState
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

@@ -15,11 +15,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.dashboard.presentation.dashboard.viewmodel
+package dev.zitech.dashboard.domain.model
 
-import dev.zitech.core.common.presentation.architecture.MviState
-import dev.zitech.dashboard.domain.model.OnboardingState
-
-internal data class DashboardState(
-    val onboardingState: OnboardingState? = null
-) : MviState
+enum class OnboardingState {
+    COMPLETED,
+    UNCOMPLETED
+}
