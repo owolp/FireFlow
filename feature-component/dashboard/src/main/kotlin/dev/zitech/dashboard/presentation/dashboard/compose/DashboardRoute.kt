@@ -40,7 +40,7 @@ internal fun DashboardRoute(
 ) {
     val state = viewModel.state.collectAsStateWithLifecycle()
     val onboardResult = savedStateHandle.getStateFlow(
-        ONBOARD_KEY, OnboardResult.NOT_COMPLETED
+        ONBOARD_KEY, OnboardResult.UNCOMPLETED
     ).collectAsStateWithLifecycle()
 
     when (state.value.onboardingState) {
@@ -52,7 +52,7 @@ internal fun DashboardRoute(
         }
         OnboardingState.UNCOMPLETED -> {
             when (onboardResult.value) {
-                OnboardResult.NOT_COMPLETED -> {
+                OnboardResult.UNCOMPLETED -> {
                     LaunchedEffect(Unit) {
                         navigateToWelcome()
                     }
