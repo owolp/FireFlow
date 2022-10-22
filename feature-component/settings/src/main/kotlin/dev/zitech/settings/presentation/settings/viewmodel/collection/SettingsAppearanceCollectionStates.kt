@@ -26,24 +26,24 @@ import dev.zitech.settings.domain.usecase.SetApplicationLanguageValueUseCase
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
-class SettingsAppearanceCollectionStates @Inject constructor(
+internal class SettingsAppearanceCollectionStates @Inject constructor(
     private val getApplicationThemeValueUseCase: GetApplicationThemeValueUseCase,
     private val setApplicationThemeValueUseCase: SetApplicationThemeValueUseCase,
     private val getApplicationLanguageValueUseCase: GetApplicationLanguageValueUseCase,
     private val setApplicationLanguageValueUseCase: SetApplicationLanguageValueUseCase
 ) {
 
-    internal suspend fun setApplicationThemeValue(applicationTheme: ApplicationTheme) {
+    suspend fun setApplicationThemeValue(applicationTheme: ApplicationTheme) {
         setApplicationThemeValueUseCase(applicationTheme)
     }
 
-    internal suspend fun getApplicationThemeValue(): ApplicationTheme =
+    suspend fun getApplicationThemeValue(): ApplicationTheme =
         getApplicationThemeValueUseCase().first()
 
-    internal fun setApplicationLanguageValue(applicationLanguage: ApplicationLanguage) {
+    fun setApplicationLanguageValue(applicationLanguage: ApplicationLanguage) {
         setApplicationLanguageValueUseCase(applicationLanguage)
     }
 
-    internal fun getApplicationLanguageValue(): ApplicationLanguage =
+    fun getApplicationLanguageValue(): ApplicationLanguage =
         getApplicationLanguageValueUseCase()
 }

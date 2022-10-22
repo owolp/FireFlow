@@ -19,7 +19,7 @@ package dev.zitech.settings.frawework.locale
 
 import dev.zitech.core.common.domain.model.ApplicationLanguage
 
-interface ApplicationLocale {
+internal interface ApplicationLocale {
 
     fun set(applicationLanguage: ApplicationLanguage)
     fun get(): ApplicationLanguage

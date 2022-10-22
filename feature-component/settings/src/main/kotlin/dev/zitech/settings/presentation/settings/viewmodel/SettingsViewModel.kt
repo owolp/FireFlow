@@ -53,7 +53,6 @@ internal class SettingsViewModel @Inject constructor(
         viewModelScope.launch {
             getPreferencesState()
         }
-        Logger.i(tag, "Hello")
     }
 
     override fun sendIntent(intent: SettingsIntent) {

@@ -48,13 +48,13 @@ import dev.zitech.settings.presentation.settings.viewmodel.SettingsState
 @Composable
 internal fun SettingsScreen(
     state: SettingsState,
-    modifier: Modifier = Modifier,
     onAnalyticsCheckChange: (checked: Boolean) -> Unit,
     onPersonalizedAdsCheckChange: (checked: Boolean) -> Unit,
     onPerformanceCheckChange: (checked: Boolean) -> Unit,
     onCrashReporterCheckChange: (checked: Boolean) -> Unit,
     onThemeClick: () -> Unit,
-    onLanguageClick: () -> Unit
+    onLanguageClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val snackbarState = rememberSnackbarState()
     val topAppBarScrollBehavior = FireFlowTopAppBars.topAppBarScrollBehavior(

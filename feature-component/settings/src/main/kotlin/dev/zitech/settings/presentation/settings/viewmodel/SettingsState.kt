@@ -21,7 +21,7 @@ import dev.zitech.core.common.domain.model.ApplicationLanguage
 import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.core.common.presentation.architecture.MviState
 
-data class SettingsState(
+internal data class SettingsState(
     val isLoading: Boolean = false,
     val analytics: Boolean? = null,
     val personalizedAds: Boolean? = null,
