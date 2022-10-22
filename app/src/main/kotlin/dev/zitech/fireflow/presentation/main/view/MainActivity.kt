@@ -68,7 +68,6 @@ internal class MainActivity : AppCompatActivity() {
             val mainState = viewModel.state.collectAsStateWithLifecycle()
 
             FireFlowApp(
-                viewModel.state.value.splash,
                 mainState.value.theme,
                 calculateWindowSizeClass(this)
             )
