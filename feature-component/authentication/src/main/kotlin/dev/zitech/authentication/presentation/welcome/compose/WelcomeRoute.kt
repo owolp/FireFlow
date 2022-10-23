@@ -20,12 +20,44 @@ package dev.zitech.authentication.presentation.welcome.compose
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import dev.zitech.authentication.presentation.welcome.viewmodel.NavigatedToDemo
+import dev.zitech.authentication.presentation.welcome.viewmodel.NavigatedToOath
+import dev.zitech.authentication.presentation.welcome.viewmodel.NavigatedToPat
+import dev.zitech.authentication.presentation.welcome.viewmodel.OnContinueWithOauthClick
+import dev.zitech.authentication.presentation.welcome.viewmodel.OnContinueWithPatClick
+import dev.zitech.authentication.presentation.welcome.viewmodel.OnDemoClick
 import dev.zitech.authentication.presentation.welcome.viewmodel.WelcomeViewModel
 
+@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 internal fun WelcomeRoute(
+    navigateToOath: () -> Unit,
+    navigateToPat: () -> Unit,
+    navigateToDemo: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: WelcomeViewModel = hiltViewModel()
 ) {
-    WelcomeScreen()
+    val state = viewModel.state.collectAsStateWithLifecycle()
+
+    WelcomeScreen(
+        modifier = modifier,
+        state = state.value,
+        onContinueWithOauthCLick = { viewModel.sendIntent(OnContinueWithOauthClick) },
+        onContinueWithPatClick = { viewModel.sendIntent(OnContinueWithPatClick) },
+        onDemoClick = { viewModel.sendIntent(OnDemoClick) },
+        navigateToOath = {
+            navigateToOath()
+            viewModel.sendIntent(NavigatedToOath)
+        },
+        navigateToPat = {
+            navigateToPat()
+            viewModel.sendIntent(NavigatedToPat)
+        },
+        navigateToDemo = {
+            navigateToDemo()
+            viewModel.sendIntent(NavigatedToDemo)
+        }
+    )
 }

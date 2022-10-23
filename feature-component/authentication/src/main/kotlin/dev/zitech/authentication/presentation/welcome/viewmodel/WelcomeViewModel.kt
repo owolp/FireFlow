@@ -18,8 +18,60 @@
 package dev.zitech.authentication.presentation.welcome.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.zitech.core.common.presentation.architecture.MviViewModel
+import dev.zitech.core.persistence.domain.usecase.database.SaveUserAccountUseCase
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-internal class WelcomeViewModel @Inject constructor() : ViewModel()
+internal class WelcomeViewModel @Inject constructor(
+    private val welcomeStateHandler: WelcomeStateHandler,
+    private val saveUserAccountUseCase: SaveUserAccountUseCase
+) : ViewModel(), MviViewModel<WelcomeIntent, WelcomeState> {
+
+    override val state: StateFlow<WelcomeState> = welcomeStateHandler.state
+
+    override fun sendIntent(intent: WelcomeIntent) {
+        viewModelScope.launch {
+            when (intent) {
+                OnContinueWithOauthClick -> handleOnContinueWithOauthClick()
+                OnContinueWithPatClick -> handleOnContinueWithPatClick()
+                OnDemoClick -> handleOnDemoClick()
+                NavigatedToOath -> handleNavigatedToOath()
+                NavigatedToPat -> handleNavigatedToPat()
+                NavigatedToDemo -> handleNavigatedToDemo()
+            }
+        }
+    }
+
+    private suspend fun handleOnContinueWithOauthClick() {
+        // TODO: Dev usage
+        welcomeStateHandler.setEvent(NavigateToOathScreen)
+        saveUserAccountUseCase(true)
+    }
+
+    private suspend fun handleOnContinueWithPatClick() {
+        // TODO: Dev usage
+        welcomeStateHandler.setEvent(NavigateToPatScreen)
+        saveUserAccountUseCase(true)
+    }
+
+    private suspend fun handleOnDemoClick() {
+        welcomeStateHandler.setEvent(NavigateToDemo)
+    }
+
+    private fun handleNavigatedToOath() {
+        welcomeStateHandler.resetEvent()
+    }
+
+    private fun handleNavigatedToPat() {
+        welcomeStateHandler.resetEvent()
+    }
+
+    private fun handleNavigatedToDemo() {
+        welcomeStateHandler.resetEvent()
+    }
+}
