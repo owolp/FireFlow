@@ -30,9 +30,9 @@ internal class DashboardStateHandler @Inject constructor() : MviStateHandler<Das
     private val mutableState = MutableStateFlow(DashboardState())
     override val state: StateFlow<DashboardState> = mutableState.asStateFlow()
 
-    fun setOnboardingState(onboardingState: OnboardingState) {
+    fun setOnboardingState(value: OnboardingState) {
         mutableState.update {
-            it.copy(onboardingState = onboardingState)
+            it.copy(onboardingState = value)
         }
     }
 }

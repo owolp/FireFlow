@@ -60,7 +60,7 @@ internal class MainViewModel @Inject constructor(
 
     private fun initSplashScreenController() {
         splashScreenController.state
-            .onEach { mainStateHandler.showSplashScreen(it) }
+            .onEach { mainStateHandler.setSplash(it) }
             .launchIn(viewModelScope)
     }
 

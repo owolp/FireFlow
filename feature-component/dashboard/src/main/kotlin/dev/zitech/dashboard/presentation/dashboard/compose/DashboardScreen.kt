@@ -46,9 +46,7 @@ internal fun DashboardScreen(
             )
         }
     ) {
-        DashboardScreenContent(
-            state
-        )
+        DashboardScreenContent(state)
     }
 }
 

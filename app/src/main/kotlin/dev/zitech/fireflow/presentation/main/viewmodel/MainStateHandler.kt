@@ -30,9 +30,9 @@ class MainStateHandler @Inject constructor() : MviStateHandler<MainState> {
     private val mutableState = MutableStateFlow(MainState())
     override val state: StateFlow<MainState> = mutableState.asStateFlow()
 
-    fun showSplashScreen(toShow: Boolean) {
+    fun setSplash(value: Boolean) {
         mutableState.update {
-            it.copy(splash = toShow)
+            it.copy(splash = value)
         }
     }
 
@@ -42,9 +42,9 @@ class MainStateHandler @Inject constructor() : MviStateHandler<MainState> {
         }
     }
 
-    fun setEvent(event: MainEvent) {
+    fun setEvent(value: MainEvent) {
         mutableState.update {
-            it.copy(event = event)
+            it.copy(event = value)
         }
     }
 }
