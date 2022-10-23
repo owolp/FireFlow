@@ -27,7 +27,6 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import dev.zitech.dashboard.presentation.navigation.DashboardDestination
 import dev.zitech.ds.atoms.icon.FireFlowIcons
 import dev.zitech.ds.atoms.icon.Icon
@@ -40,7 +39,7 @@ import dev.zitech.settings.R as settingsR
 @Composable
 internal fun rememberFireFlowAppState(
     windowSizeClass: WindowSizeClass,
-    navController: NavHostController = rememberNavController()
+    navController: NavHostController
 ): FireFlowAppState = remember(navController, windowSizeClass) {
     FireFlowAppState(navController, windowSizeClass)
 }

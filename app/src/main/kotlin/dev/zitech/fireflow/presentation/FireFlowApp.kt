@@ -38,6 +38,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavHostController
 import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.ds.atoms.background.FireFlowBackground
 import dev.zitech.ds.atoms.icon.Icon
@@ -59,7 +60,8 @@ import dev.zitech.fireflow.presentation.navigation.TopLevelDestination
 internal fun FireFlowApp(
     theme: ApplicationTheme?,
     windowSizeClass: WindowSizeClass,
-    appState: FireFlowAppState = rememberFireFlowAppState(windowSizeClass)
+    navController: NavHostController,
+    appState: FireFlowAppState = rememberFireFlowAppState(windowSizeClass, navController)
 ) {
     FireFlowTheme(
         darkTheme = isDarkTheme(theme)

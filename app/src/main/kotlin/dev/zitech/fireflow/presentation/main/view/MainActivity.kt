@@ -28,6 +28,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import dev.zitech.fireflow.R
 import dev.zitech.fireflow.presentation.FireFlowApp
@@ -67,9 +68,11 @@ internal class MainActivity : AppCompatActivity() {
         setContent {
             val mainState = viewModel.state.collectAsStateWithLifecycle()
 
+            val navController = rememberNavController()
             FireFlowApp(
                 mainState.value.theme,
-                calculateWindowSizeClass(this)
+                calculateWindowSizeClass(this),
+                navController
             )
             EventHandler()
         }
