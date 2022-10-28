@@ -30,12 +30,14 @@ import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
+import dev.zitech.core.common.presentation.splash.SplashScreenStateController
 import dev.zitech.fireflow.R
 import dev.zitech.fireflow.presentation.FireFlowApp
 import dev.zitech.fireflow.presentation.main.viewmodel.Idle
 import dev.zitech.fireflow.presentation.main.viewmodel.MainViewModel
 import dev.zitech.fireflow.presentation.main.viewmodel.ShowError
 import dev.zitech.fireflow.presentation.main.viewmodel.ShowErrorHandled
+import javax.inject.Inject
 
 @Suppress("ForbiddenComment")
 @OptIn(
@@ -44,6 +46,9 @@ import dev.zitech.fireflow.presentation.main.viewmodel.ShowErrorHandled
 )
 @AndroidEntryPoint
 internal class MainActivity : AppCompatActivity() {
+
+    @Inject
+    lateinit var splashScreenStateController: SplashScreenStateController
 
     private val viewModel: MainViewModel by viewModels()
 
@@ -72,7 +77,8 @@ internal class MainActivity : AppCompatActivity() {
             FireFlowApp(
                 mainState.value.theme,
                 calculateWindowSizeClass(this),
-                navController
+                navController,
+                splashScreenStateController
             )
             EventHandler()
         }

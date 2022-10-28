@@ -15,21 +15,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.dashboard.presentation.navigation
+package dev.zitech.core.common.domain.model
 
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
-import dev.zitech.dashboard.presentation.dashboard.compose.DashboardRoute
-
-fun NavGraphBuilder.dashboardGraph(
-    navigateToWelcome: () -> Unit,
-    navigateOut: () -> Unit
-) {
-    composable(route = DashboardDestination.route) { backStackEntry ->
-        DashboardRoute(
-            navigateToWelcome = navigateToWelcome,
-            navigateOut = navigateOut,
-            savedStateHandle = backStackEntry.savedStateHandle
-        )
-    }
+enum class OnboardResult {
+    UNCOMPLETED,
+    CANCELLED
 }
+
+const val ONBOARD_KEY = "onboard_key"

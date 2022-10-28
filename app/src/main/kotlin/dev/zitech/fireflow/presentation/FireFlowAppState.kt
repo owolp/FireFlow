@@ -27,9 +27,11 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import dev.zitech.core.common.presentation.splash.SplashScreenStateController
 import dev.zitech.dashboard.presentation.navigation.DashboardDestination
 import dev.zitech.ds.atoms.icon.FireFlowIcons
 import dev.zitech.ds.atoms.icon.Icon
+import dev.zitech.fireflow.presentation.main.view.MainActivity
 import dev.zitech.fireflow.presentation.navigation.TopLevelDestination
 import dev.zitech.navigation.FireFlowNavigationDestination
 import dev.zitech.settings.presentation.navigation.SettingsDestination
@@ -39,15 +41,17 @@ import dev.zitech.settings.R as settingsR
 @Composable
 internal fun rememberFireFlowAppState(
     windowSizeClass: WindowSizeClass,
-    navController: NavHostController
+    navController: NavHostController,
+    splashScreenStateController: SplashScreenStateController
 ): FireFlowAppState = remember(navController, windowSizeClass) {
-    FireFlowAppState(navController, windowSizeClass)
+    FireFlowAppState(navController, windowSizeClass, splashScreenStateController)
 }
 
 @Stable
 internal class FireFlowAppState(
     val navController: NavHostController,
-    val windowSizeClass: WindowSizeClass
+    val windowSizeClass: WindowSizeClass,
+    val splashScreenStateController: SplashScreenStateController
 ) {
     val currentDestination: NavDestination?
         @Composable get() = navController
@@ -104,6 +108,11 @@ internal class FireFlowAppState(
 
     fun onBackClick() {
         navController.popBackStack()
+    }
+
+    fun onNavigateOut() {
+        splashScreenStateController(true)
+        (navController.context as? MainActivity)?.finish()
     }
 
     @Composable

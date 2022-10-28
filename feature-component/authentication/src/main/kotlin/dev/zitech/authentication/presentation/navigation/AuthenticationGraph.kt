@@ -17,16 +17,32 @@
 
 package dev.zitech.authentication.presentation.navigation
 
+import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import dev.zitech.authentication.presentation.login.compose.LoginRoute
 import dev.zitech.authentication.presentation.welcome.compose.WelcomeRoute
+import dev.zitech.core.common.domain.model.ONBOARD_KEY
+import dev.zitech.core.common.domain.model.OnboardResult
 
-fun NavGraphBuilder.authenticationGraph() {
+fun NavGraphBuilder.authenticationGraph(
+    navController: NavController,
+    navigateToOath: () -> Unit,
+    navigateToPat: () -> Unit,
+    navigateToDemo: () -> Unit
+) {
+    composable(route = WelcomeDestination.route) {
+        navController.previousBackStackEntry?.savedStateHandle?.set(
+            ONBOARD_KEY,
+            OnboardResult.CANCELLED
+        )
+        WelcomeRoute(
+            navigateToOath = navigateToOath,
+            navigateToPat = navigateToPat,
+            navigateToDemo = navigateToDemo
+        )
+    }
     composable(route = LoginDestination.route) {
         LoginRoute()
-    }
-    composable(route = WelcomeDestination.route) {
-        WelcomeRoute()
     }
 }

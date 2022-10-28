@@ -33,7 +33,7 @@ import dev.zitech.dashboard.presentation.dashboard.viewmodel.DashboardViewModel
 @Composable
 internal fun DashboardRoute(
     navigateToWelcome: () -> Unit,
-    onOnboardingCancel: () -> Unit,
+    navigateOut: () -> Unit,
     savedStateHandle: SavedStateHandle,
     modifier: Modifier = Modifier,
     viewModel: DashboardViewModel = hiltViewModel()
@@ -60,7 +60,7 @@ internal fun DashboardRoute(
                 }
                 OnboardResult.CANCELLED -> {
                     LaunchedEffect(Unit) {
-                        onOnboardingCancel()
+                        navigateOut()
                     }
                 }
             }

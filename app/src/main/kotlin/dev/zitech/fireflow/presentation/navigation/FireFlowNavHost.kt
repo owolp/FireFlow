@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import dev.zitech.authentication.presentation.navigation.WelcomeDestination
 import dev.zitech.authentication.presentation.navigation.authenticationGraph
 import dev.zitech.dashboard.presentation.navigation.DashboardDestination
 import dev.zitech.dashboard.presentation.navigation.dashboardGraph
@@ -32,6 +33,7 @@ fun FireFlowNavHost(
     navController: NavHostController,
     onNavigateToDestination: (FireFlowNavigationDestination, String) -> Unit,
     onBackClick: () -> Unit,
+    onNavigateOut: () -> Unit,
     modifier: Modifier = Modifier,
     startDestination: String = DashboardDestination.route
 ) {
@@ -40,8 +42,21 @@ fun FireFlowNavHost(
         startDestination = startDestination,
         modifier = modifier
     ) {
-        authenticationGraph()
-        dashboardGraph()
+        authenticationGraph(
+            navController = navController,
+            navigateToOath = onBackClick,
+            navigateToPat = onBackClick,
+            navigateToDemo = onBackClick
+        )
+        dashboardGraph(
+            navigateToWelcome = {
+                onNavigateToDestination(
+                    WelcomeDestination,
+                    WelcomeDestination.route
+                )
+            },
+            navigateOut = onNavigateOut
+        )
         settingsGraph()
     }
 }

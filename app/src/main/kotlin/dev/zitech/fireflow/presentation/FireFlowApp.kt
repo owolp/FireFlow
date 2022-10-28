@@ -40,6 +40,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import dev.zitech.core.common.domain.model.ApplicationTheme
+import dev.zitech.core.common.presentation.splash.SplashScreenStateController
 import dev.zitech.ds.atoms.background.FireFlowBackground
 import dev.zitech.ds.atoms.icon.Icon
 import dev.zitech.ds.atoms.navigation.FireFlowNavigationBar
@@ -61,7 +62,8 @@ internal fun FireFlowApp(
     theme: ApplicationTheme?,
     windowSizeClass: WindowSizeClass,
     navController: NavHostController,
-    appState: FireFlowAppState = rememberFireFlowAppState(windowSizeClass, navController)
+    splashScreenStateController: SplashScreenStateController,
+    appState: FireFlowAppState = rememberFireFlowAppState(windowSizeClass, navController, splashScreenStateController)
 ) {
     FireFlowTheme(
         darkTheme = isDarkTheme(theme)
@@ -100,6 +102,7 @@ internal fun FireFlowApp(
                         navController = appState.navController,
                         onNavigateToDestination = appState::navigate,
                         onBackClick = appState::onBackClick,
+                        onNavigateOut = appState::onNavigateOut,
                         modifier = Modifier
                             .padding(padding)
                             .consumedWindowInsets(padding)
