@@ -1,6 +1,6 @@
 [versions]
 accompanist = "0.25.1"
-agconnect = "1.7.2.300"
+agconnect = "1.7.3.300"
 androidJunit = "1.3.0"
 compose = "1.3.0-rc01"
 composeMaterial3 = "1.0.0-beta03"
