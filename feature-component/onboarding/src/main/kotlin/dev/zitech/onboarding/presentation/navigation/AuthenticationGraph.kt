@@ -15,17 +15,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.authentication.presentation.navigation
+package dev.zitech.onboarding.presentation.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import dev.zitech.authentication.presentation.login.compose.LoginRoute
-import dev.zitech.authentication.presentation.welcome.compose.WelcomeRoute
 import dev.zitech.core.common.domain.model.ONBOARD_KEY
 import dev.zitech.core.common.domain.model.OnboardResult
+import dev.zitech.onboarding.presentation.login.compose.LoginRoute
+import dev.zitech.onboarding.presentation.welcome.compose.WelcomeRoute
 
-fun NavGraphBuilder.authenticationGraph(
+fun NavGraphBuilder.onboardingGraph(
     navController: NavController,
     navigateToOath: () -> Unit,
     navigateToPat: () -> Unit,

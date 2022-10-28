@@ -15,12 +15,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.authentication.presentation.login.compose
+package dev.zitech.onboarding.presentation.login.compose
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import dev.zitech.authentication.presentation.login.viewmodel.LoginViewModel
+import dev.zitech.onboarding.presentation.login.viewmodel.LoginViewModel
 
 @Composable
 internal fun LoginRoute(

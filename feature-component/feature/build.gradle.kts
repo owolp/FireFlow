@@ -21,7 +21,7 @@ plugins {
 }
 
 dependencies {
-    api(projects.featureComponent.authentication)
     api(projects.featureComponent.dashboard)
+    api(projects.featureComponent.onboarding)
     api(projects.featureComponent.settings)
 }

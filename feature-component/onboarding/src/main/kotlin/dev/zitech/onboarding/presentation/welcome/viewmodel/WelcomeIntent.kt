@@ -15,10 +15,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.authentication.presentation.welcome.viewmodel
+package dev.zitech.onboarding.presentation.welcome.viewmodel
 
-import dev.zitech.core.common.presentation.architecture.MviState
+import dev.zitech.core.common.presentation.architecture.MviIntent
 
-internal data class WelcomeState(
-    val event: WelcomeEvent = Idle
-) : MviState
+internal sealed interface WelcomeIntent : MviIntent
+
+internal object OnContinueWithOauthClick : WelcomeIntent
+internal object OnContinueWithPatClick : WelcomeIntent
+internal object OnDemoClick : WelcomeIntent
+internal object NavigatedToOath : WelcomeIntent
+internal object NavigatedToPat : WelcomeIntent
+internal object NavigatedToDemo : WelcomeIntent

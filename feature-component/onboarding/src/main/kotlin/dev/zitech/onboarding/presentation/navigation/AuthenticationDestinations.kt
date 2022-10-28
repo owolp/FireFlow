@@ -15,11 +15,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.authentication.presentation.navigation
+package dev.zitech.onboarding.presentation.navigation
 
 import dev.zitech.navigation.FireFlowNavigationDestination
 
-private const val DESTINATION = "authentication"
+private const val DESTINATION = "onboarding"
 
 object LoginDestination : FireFlowNavigationDestination {
     override val route: String = "login_route"

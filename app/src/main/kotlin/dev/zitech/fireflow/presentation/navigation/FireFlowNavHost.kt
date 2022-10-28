@@ -21,11 +21,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import dev.zitech.authentication.presentation.navigation.WelcomeDestination
-import dev.zitech.authentication.presentation.navigation.authenticationGraph
 import dev.zitech.dashboard.presentation.navigation.DashboardDestination
 import dev.zitech.dashboard.presentation.navigation.dashboardGraph
 import dev.zitech.navigation.FireFlowNavigationDestination
+import dev.zitech.onboarding.presentation.navigation.WelcomeDestination
+import dev.zitech.onboarding.presentation.navigation.onboardingGraph
 import dev.zitech.settings.presentation.navigation.settingsGraph
 
 @Composable
@@ -42,7 +42,7 @@ fun FireFlowNavHost(
         startDestination = startDestination,
         modifier = modifier
     ) {
-        authenticationGraph(
+        onboardingGraph(
             navController = navController,
             navigateToOath = onBackClick,
             navigateToPat = onBackClick,

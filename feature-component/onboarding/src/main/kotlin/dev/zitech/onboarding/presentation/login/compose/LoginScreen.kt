@@ -15,13 +15,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.authentication.presentation.welcome.viewmodel
+package dev.zitech.onboarding.presentation.login.compose
 
-import dev.zitech.core.common.presentation.architecture.MviState
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import dev.zitech.ds.atoms.text.FireFlowTexts
+import dev.zitech.ds.theme.FireFlowTheme
 
-internal sealed interface WelcomeEvent : MviState.Event
-
-internal object Idle : WelcomeEvent
-internal object NavigateToOathScreen : WelcomeEvent
-internal object NavigateToPatScreen : WelcomeEvent
-internal object NavigateToDemo : WelcomeEvent
+@Composable
+internal fun LoginScreen(
+    modifier: Modifier = Modifier
+) {
+    FireFlowTexts.HeadlineLarge(
+        text = "Login Screen",
+        color = FireFlowTheme.colors.onSurface
+    )
+}

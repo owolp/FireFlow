@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.authentication.presentation.welcome.viewmodel
+package dev.zitech.onboarding.presentation.welcome.viewmodel
 
 import dev.zitech.core.common.presentation.architecture.MviStateHandler
 import kotlinx.coroutines.flow.MutableStateFlow
