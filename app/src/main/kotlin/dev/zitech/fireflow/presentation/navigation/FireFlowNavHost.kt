@@ -35,6 +35,7 @@ fun FireFlowNavHost(
     modifier: Modifier = Modifier,
     startDestination: FireFlowNavigationDestination
 ) {
+    @Suppress("ForbiddenComment")
     NavHost(
         navController = navController,
         startDestination = startDestination.route,

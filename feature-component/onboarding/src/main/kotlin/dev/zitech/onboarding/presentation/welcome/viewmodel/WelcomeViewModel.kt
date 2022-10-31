@@ -47,12 +47,14 @@ internal class WelcomeViewModel @Inject constructor(
         }
     }
 
+    @Suppress("ForbiddenComment")
     private suspend fun handleOnContinueWithOauthClick() {
         // TODO: Dev usage
         welcomeStateHandler.setEvent(NavigateToOathScreen)
         saveUserAccountUseCase(true)
     }
 
+    @Suppress("ForbiddenComment")
     private suspend fun handleOnContinueWithPatClick() {
         // TODO: Dev usage
         welcomeStateHandler.setEvent(NavigateToPatScreen)

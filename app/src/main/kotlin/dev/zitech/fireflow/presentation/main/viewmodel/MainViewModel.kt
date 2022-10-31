@@ -38,6 +38,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@Suppress("TooManyFunctions")
 @HiltViewModel
 internal class MainViewModel @Inject constructor(
     private val mainStateHandler: MainStateHandler,
@@ -125,7 +126,7 @@ internal class MainViewModel @Inject constructor(
         hideSplashScreen()
     }
 
-    @Suppress("ForbiddenComment")
+    @Suppress("ForbiddenComment", "UnusedPrivateMember")
     private fun showError(result: DataResult.Error) {
         // TODO: Show error message
         hideSplashScreen()

@@ -102,9 +102,11 @@ internal fun FireFlowApp(
                         FireFlowNavHost(
                             navController = appState.navController,
                             onNavigateToDestination = { destination, inclusive ->
-                                (appState.topLevelDestinations.firstOrNull {
-                                    it.route == destination.route
-                                } ?: startDestination).let {
+                                (
+                                    appState.topLevelDestinations.firstOrNull {
+                                        it.route == destination.route
+                                    } ?: startDestination
+                                    ).let {
                                     appState.navigate(it, it.route, inclusive)
                                 }
                             },
