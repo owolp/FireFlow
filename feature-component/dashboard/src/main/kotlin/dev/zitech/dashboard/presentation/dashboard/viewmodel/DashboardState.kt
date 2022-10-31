@@ -18,8 +18,7 @@
 package dev.zitech.dashboard.presentation.dashboard.viewmodel
 
 import dev.zitech.core.common.presentation.architecture.MviState
-import dev.zitech.dashboard.domain.model.OnboardingState
 
 internal data class DashboardState(
-    val onboardingState: OnboardingState? = null
+    val event: DashboardEvent = Idle
 ) : MviState

@@ -21,42 +21,39 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import dev.zitech.core.common.presentation.navigation.FireFlowNavigationDestination
 import dev.zitech.dashboard.presentation.navigation.DashboardDestination
 import dev.zitech.dashboard.presentation.navigation.dashboardGraph
-import dev.zitech.navigation.FireFlowNavigationDestination
-import dev.zitech.onboarding.presentation.navigation.WelcomeDestination
 import dev.zitech.onboarding.presentation.navigation.onboardingGraph
 import dev.zitech.settings.presentation.navigation.settingsGraph
 
 @Composable
 fun FireFlowNavHost(
     navController: NavHostController,
-    onNavigateToDestination: (FireFlowNavigationDestination, String) -> Unit,
+    onNavigateToDestination: (FireFlowNavigationDestination, Boolean?) -> Unit,
     onBackClick: () -> Unit,
-    onNavigateOut: () -> Unit,
     modifier: Modifier = Modifier,
-    startDestination: String = DashboardDestination.route
+    startDestination: FireFlowNavigationDestination
 ) {
     NavHost(
         navController = navController,
-        startDestination = startDestination,
+        startDestination = startDestination.route,
         modifier = modifier
     ) {
         onboardingGraph(
-            navController = navController,
-            navigateToOath = onBackClick,
-            navigateToPat = onBackClick,
-            navigateToDemo = onBackClick
-        )
-        dashboardGraph(
-            navigateToWelcome = {
-                onNavigateToDestination(
-                    WelcomeDestination,
-                    WelcomeDestination.route
-                )
+            navigateToOath = {
+                // TODO: Navigate to Oath Screen
+                onBackClick()
             },
-            navigateOut = onNavigateOut
+            navigateToPat = {
+                // TODO: Navigate to Pat Screen
+                onBackClick()
+            },
+            navigateToDemo = {
+                onNavigateToDestination(DashboardDestination, true)
+            }
         )
+        dashboardGraph()
         settingsGraph()
     }
 }

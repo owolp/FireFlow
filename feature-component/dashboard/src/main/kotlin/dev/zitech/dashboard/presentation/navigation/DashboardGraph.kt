@@ -21,15 +21,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import dev.zitech.dashboard.presentation.dashboard.compose.DashboardRoute
 
-fun NavGraphBuilder.dashboardGraph(
-    navigateToWelcome: () -> Unit,
-    navigateOut: () -> Unit
-) {
-    composable(route = DashboardDestination.route) { backStackEntry ->
-        DashboardRoute(
-            navigateToWelcome = navigateToWelcome,
-            navigateOut = navigateOut,
-            savedStateHandle = backStackEntry.savedStateHandle
-        )
+fun NavGraphBuilder.dashboardGraph() {
+    composable(route = DashboardDestination.route) {
+        DashboardRoute()
     }
 }

@@ -19,6 +19,7 @@ package dev.zitech.fireflow.presentation.main.viewmodel
 
 import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.core.common.presentation.architecture.MviStateHandler
+import dev.zitech.core.common.presentation.navigation.FireFlowNavigationDestination
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -45,6 +46,12 @@ class MainStateHandler @Inject constructor() : MviStateHandler<MainState> {
     fun setEvent(value: MainEvent) {
         mutableState.update {
             it.copy(event = value)
+        }
+    }
+
+    fun setDestination(value: FireFlowNavigationDestination) {
+        mutableState.update {
+            it.copy(startDestination = value)
         }
     }
 }

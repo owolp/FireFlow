@@ -20,12 +20,20 @@ package dev.zitech.fireflow.presentation.main.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.common.presentation.architecture.MviViewModel
-import dev.zitech.core.common.presentation.splash.SplashScreenStateController
+import dev.zitech.core.persistence.domain.model.exception.NullCurrentUserAccountException
+import dev.zitech.core.persistence.domain.usecase.database.GetCurrentUserAccountUseCase
+import dev.zitech.core.persistence.domain.usecase.database.GetUserAccountsUseCase
 import dev.zitech.core.persistence.domain.usecase.preferences.GetApplicationThemeValueUseCase
+import dev.zitech.core.remoteconfig.domain.usecase.InitializeRemoteConfiguratorUseCase
 import dev.zitech.core.reporter.analytics.domain.usecase.event.ApplicationLaunchAnalyticsEvent
+import dev.zitech.dashboard.presentation.navigation.DashboardDestination
+import dev.zitech.onboarding.presentation.navigation.WelcomeDestination
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -34,7 +42,9 @@ import javax.inject.Inject
 internal class MainViewModel @Inject constructor(
     private val mainStateHandler: MainStateHandler,
     private val getApplicationThemeValueUseCase: GetApplicationThemeValueUseCase,
-    private val splashScreenController: SplashScreenStateController,
+    private val initializeRemoteConfiguratorUseCase: InitializeRemoteConfiguratorUseCase,
+    private val getCurrentUserAccountUseCase: GetCurrentUserAccountUseCase,
+    private val getUserAccountsUseCase: GetUserAccountsUseCase,
     applicationLaunchAnalyticsEvent: ApplicationLaunchAnalyticsEvent
 ) : ViewModel(), MviViewModel<MainIntent, MainState> {
 
@@ -42,8 +52,8 @@ internal class MainViewModel @Inject constructor(
 
     init {
         applicationLaunchAnalyticsEvent()
-        initSplashScreenController()
         initApplicationThemeCollection()
+        initializeRemoteConfigurator()
     }
 
     override fun sendIntent(intent: MainIntent) {
@@ -58,15 +68,70 @@ internal class MainViewModel @Inject constructor(
         mainStateHandler.setEvent(Idle)
     }
 
-    private fun initSplashScreenController() {
-        splashScreenController.state
-            .onEach { mainStateHandler.setSplash(it) }
-            .launchIn(viewModelScope)
-    }
-
     private fun initApplicationThemeCollection() {
         getApplicationThemeValueUseCase()
             .onEach { mainStateHandler.setTheme(it) }
             .launchIn(viewModelScope)
+    }
+
+    private fun initializeRemoteConfigurator() {
+        initializeRemoteConfiguratorUseCase()
+            .onCompletion { collectCurrentUserAccount() }
+            .launchIn(viewModelScope)
+    }
+
+    private fun collectCurrentUserAccount() {
+        getCurrentUserAccountUseCase()
+            .onEach { result ->
+                when (result) {
+                    is DataResult.Success -> showDashboard()
+                    is DataResult.Error -> {
+                        when (result.cause) {
+                            NullCurrentUserAccountException -> handleNullCurrentUserAccount()
+                            else -> showError(result)
+                        }
+                    }
+                }
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun showDashboard() {
+        mainStateHandler.setDestination(DashboardDestination)
+        hideSplashScreen()
+    }
+
+    private suspend fun handleNullCurrentUserAccount() {
+        when (val result = getUserAccountsUseCase().first()) {
+            is DataResult.Success -> {
+                if (result.value.isNotEmpty()) {
+                    showSelectAccount()
+                } else {
+                    showWelcome()
+                }
+            }
+            is DataResult.Error -> showError(result)
+        }
+    }
+
+    @Suppress("ForbiddenComment")
+    private fun showSelectAccount() {
+        // TODO: Add select account screen
+        hideSplashScreen()
+    }
+
+    private fun showWelcome() {
+        mainStateHandler.setDestination(WelcomeDestination)
+        hideSplashScreen()
+    }
+
+    @Suppress("ForbiddenComment")
+    private fun showError(result: DataResult.Error) {
+        // TODO: Show error message
+        hideSplashScreen()
+    }
+
+    private fun hideSplashScreen() {
+        mainStateHandler.setSplash(false)
     }
 }

@@ -30,14 +30,13 @@ import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import dev.zitech.core.common.presentation.splash.SplashScreenStateController
 import dev.zitech.fireflow.R
 import dev.zitech.fireflow.presentation.FireFlowApp
 import dev.zitech.fireflow.presentation.main.viewmodel.Idle
+import dev.zitech.fireflow.presentation.main.viewmodel.MainEvent
 import dev.zitech.fireflow.presentation.main.viewmodel.MainViewModel
 import dev.zitech.fireflow.presentation.main.viewmodel.ShowError
 import dev.zitech.fireflow.presentation.main.viewmodel.ShowErrorHandled
-import javax.inject.Inject
 
 @Suppress("ForbiddenComment")
 @OptIn(
@@ -46,9 +45,6 @@ import javax.inject.Inject
 )
 @AndroidEntryPoint
 internal class MainActivity : AppCompatActivity() {
-
-    @Inject
-    lateinit var splashScreenStateController: SplashScreenStateController
 
     private val viewModel: MainViewModel by viewModels()
 
@@ -75,18 +71,18 @@ internal class MainActivity : AppCompatActivity() {
 
             val navController = rememberNavController()
             FireFlowApp(
-                mainState.value.theme,
-                calculateWindowSizeClass(this),
-                navController,
-                splashScreenStateController
+                theme = mainState.value.theme,
+                windowSizeClass = calculateWindowSizeClass(this),
+                navController = navController,
+                startDestination = mainState.value.startDestination
             )
-            EventHandler()
+            EventHandler(mainState.value.event)
         }
     }
 
     @Composable
-    private fun EventHandler() {
-        when (viewModel.state.value.event) {
+    private fun EventHandler(event: MainEvent) {
+        when (event) {
             ShowError -> {
                 // TODO
                 viewModel.sendIntent(ShowErrorHandled)

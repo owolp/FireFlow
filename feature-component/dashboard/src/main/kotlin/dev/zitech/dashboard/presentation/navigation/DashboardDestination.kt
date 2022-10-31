@@ -17,7 +17,7 @@
 
 package dev.zitech.dashboard.presentation.navigation
 
-import dev.zitech.navigation.FireFlowNavigationDestination
+import dev.zitech.core.common.presentation.navigation.FireFlowNavigationDestination
 
 private const val DESTINATION = "dashboard"
 

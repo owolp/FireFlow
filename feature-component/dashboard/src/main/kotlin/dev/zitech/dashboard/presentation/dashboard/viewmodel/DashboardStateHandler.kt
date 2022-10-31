@@ -18,21 +18,13 @@
 package dev.zitech.dashboard.presentation.dashboard.viewmodel
 
 import dev.zitech.core.common.presentation.architecture.MviStateHandler
-import dev.zitech.dashboard.domain.model.OnboardingState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 internal class DashboardStateHandler @Inject constructor() : MviStateHandler<DashboardState> {
 
     private val mutableState = MutableStateFlow(DashboardState())
     override val state: StateFlow<DashboardState> = mutableState.asStateFlow()
-
-    fun setOnboardingState(value: OnboardingState) {
-        mutableState.update {
-            it.copy(onboardingState = value)
-        }
-    }
 }

@@ -15,9 +15,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.dashboard.domain.model
+package dev.zitech.core.common.presentation.navigation
 
-enum class OnboardingState {
-    COMPLETED,
-    UNCOMPLETED
+interface FireFlowNavigationDestination {
+    val route: String
+    val destination: String
 }

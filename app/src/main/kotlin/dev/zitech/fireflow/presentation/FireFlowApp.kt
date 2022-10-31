@@ -40,7 +40,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import dev.zitech.core.common.domain.model.ApplicationTheme
-import dev.zitech.core.common.presentation.splash.SplashScreenStateController
+import dev.zitech.core.common.presentation.navigation.FireFlowNavigationDestination
 import dev.zitech.ds.atoms.background.FireFlowBackground
 import dev.zitech.ds.atoms.icon.Icon
 import dev.zitech.ds.atoms.navigation.FireFlowNavigationBar
@@ -62,8 +62,8 @@ internal fun FireFlowApp(
     theme: ApplicationTheme?,
     windowSizeClass: WindowSizeClass,
     navController: NavHostController,
-    splashScreenStateController: SplashScreenStateController,
-    appState: FireFlowAppState = rememberFireFlowAppState(windowSizeClass, navController, splashScreenStateController)
+    startDestination: FireFlowNavigationDestination? = null,
+    appState: FireFlowAppState = rememberFireFlowAppState(windowSizeClass, navController, startDestination)
 ) {
     FireFlowTheme(
         darkTheme = isDarkTheme(theme)
@@ -98,15 +98,23 @@ internal fun FireFlowApp(
                         )
                     }
 
-                    FireFlowNavHost(
-                        navController = appState.navController,
-                        onNavigateToDestination = appState::navigate,
-                        onBackClick = appState::onBackClick,
-                        onNavigateOut = appState::onNavigateOut,
-                        modifier = Modifier
-                            .padding(padding)
-                            .consumedWindowInsets(padding)
-                    )
+                    if (startDestination != null) {
+                        FireFlowNavHost(
+                            navController = appState.navController,
+                            onNavigateToDestination = { destination, inclusive ->
+                                (appState.topLevelDestinations.firstOrNull {
+                                    it.route == destination.route
+                                } ?: startDestination).let {
+                                    appState.navigate(it, it.route, inclusive)
+                                }
+                            },
+                            onBackClick = appState::onBackClick,
+                            startDestination = startDestination,
+                            modifier = Modifier
+                                .padding(padding)
+                                .consumedWindowInsets(padding)
+                        )
+                    }
                 }
             }
         }

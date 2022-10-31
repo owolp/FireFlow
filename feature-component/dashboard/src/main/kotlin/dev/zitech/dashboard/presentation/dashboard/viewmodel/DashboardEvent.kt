@@ -15,11 +15,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.common.domain.model
+package dev.zitech.dashboard.presentation.dashboard.viewmodel
 
-enum class OnboardResult {
-    UNCOMPLETED,
-    CANCELLED
-}
+import dev.zitech.core.common.presentation.architecture.MviState
 
-const val ONBOARD_KEY = "onboard_key"
+internal sealed interface DashboardEvent : MviState.Event
+
+internal object Idle : DashboardEvent

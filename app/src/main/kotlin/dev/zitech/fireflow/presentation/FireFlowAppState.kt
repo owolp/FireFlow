@@ -27,13 +27,11 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import dev.zitech.core.common.presentation.splash.SplashScreenStateController
+import dev.zitech.core.common.presentation.navigation.FireFlowNavigationDestination
 import dev.zitech.dashboard.presentation.navigation.DashboardDestination
 import dev.zitech.ds.atoms.icon.FireFlowIcons
 import dev.zitech.ds.atoms.icon.Icon
-import dev.zitech.fireflow.presentation.main.view.MainActivity
 import dev.zitech.fireflow.presentation.navigation.TopLevelDestination
-import dev.zitech.navigation.FireFlowNavigationDestination
 import dev.zitech.settings.presentation.navigation.SettingsDestination
 import dev.zitech.dashboard.R as dashboardR
 import dev.zitech.settings.R as settingsR
@@ -42,16 +40,16 @@ import dev.zitech.settings.R as settingsR
 internal fun rememberFireFlowAppState(
     windowSizeClass: WindowSizeClass,
     navController: NavHostController,
-    splashScreenStateController: SplashScreenStateController
-): FireFlowAppState = remember(navController, windowSizeClass) {
-    FireFlowAppState(navController, windowSizeClass, splashScreenStateController)
+    startDestination: FireFlowNavigationDestination?
+): FireFlowAppState = remember(navController, windowSizeClass, startDestination) {
+    FireFlowAppState(navController, windowSizeClass, startDestination)
 }
 
 @Stable
 internal class FireFlowAppState(
     val navController: NavHostController,
     val windowSizeClass: WindowSizeClass,
-    val splashScreenStateController: SplashScreenStateController
+    private val startDestination: FireFlowNavigationDestination?
 ) {
     val currentDestination: NavDestination?
         @Composable get() = navController
@@ -61,13 +59,13 @@ internal class FireFlowAppState(
         @Composable get() = (
             windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact ||
                 windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact
-            ) && isCurrentDestinationTopLevelDestination()
+            ) && isCurrentDestinationTopLevelDestination() && startDestination != null
 
     val shouldShowNavRail: Boolean
         @Composable get() = !(
             windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact ||
                 windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact
-            ) && isCurrentDestinationTopLevelDestination()
+            ) && isCurrentDestinationTopLevelDestination() && startDestination != null
 
     val topLevelDestinations: List<TopLevelDestination> = listOf(
         TopLevelDestination(
@@ -86,7 +84,7 @@ internal class FireFlowAppState(
         )
     )
 
-    fun navigate(destination: FireFlowNavigationDestination, route: String? = null) {
+    fun navigate(destination: FireFlowNavigationDestination, route: String? = null, inclusive: Boolean? = null) {
         if (destination is TopLevelDestination) {
             navController.navigate(route ?: destination.route) {
                 // Pop up to the start destination of the graph to
@@ -94,6 +92,7 @@ internal class FireFlowAppState(
                 // on the back stack as users select items
                 popUpTo(navController.graph.findStartDestination().id) {
                     saveState = true
+                    this.inclusive = inclusive ?: false
                 }
                 // Avoid multiple copies of the same destination when
                 // reselecting the same item
@@ -102,17 +101,17 @@ internal class FireFlowAppState(
                 restoreState = true
             }
         } else {
-            navController.navigate(route ?: destination.route)
+            val navRoute = route ?: destination.route
+            navController.navigate(navRoute) {
+                popUpTo(navRoute) {
+                    this.inclusive = inclusive ?: false
+                }
+            }
         }
     }
 
     fun onBackClick() {
         navController.popBackStack()
-    }
-
-    fun onNavigateOut() {
-        splashScreenStateController(true)
-        (navController.context as? MainActivity)?.finish()
     }
 
     @Composable
