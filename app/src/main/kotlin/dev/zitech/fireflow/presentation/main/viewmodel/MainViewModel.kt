@@ -20,6 +20,7 @@ package dev.zitech.fireflow.presentation.main.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.zitech.authenticate.presentation.navigation.AccountsDestination
 import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.common.presentation.architecture.MviViewModel
 import dev.zitech.core.persistence.domain.model.exception.NullCurrentUserAccountException
@@ -106,7 +107,7 @@ internal class MainViewModel @Inject constructor(
         when (val result = getUserAccountsUseCase().first()) {
             is DataResult.Success -> {
                 if (result.value.isNotEmpty()) {
-                    showSelectAccount()
+                    showAccounts()
                 } else {
                     showWelcome()
                 }
@@ -115,9 +116,8 @@ internal class MainViewModel @Inject constructor(
         }
     }
 
-    @Suppress("ForbiddenComment")
-    private fun showSelectAccount() {
-        // TODO: Add select account screen
+    private fun showAccounts() {
+        mainStateHandler.setDestination(AccountsDestination)
         hideSplashScreen()
     }
 

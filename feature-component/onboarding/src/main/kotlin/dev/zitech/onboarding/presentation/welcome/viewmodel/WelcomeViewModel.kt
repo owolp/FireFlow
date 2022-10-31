@@ -58,7 +58,7 @@ internal class WelcomeViewModel @Inject constructor(
     private suspend fun handleOnContinueWithPatClick() {
         // TODO: Dev usage
         welcomeStateHandler.setEvent(NavigateToPatScreen)
-        saveUserAccountUseCase(true)
+        saveUserAccountUseCase(false)
     }
 
     private suspend fun handleOnDemoClick() {

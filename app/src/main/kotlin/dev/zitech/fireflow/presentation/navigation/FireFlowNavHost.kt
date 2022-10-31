@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import dev.zitech.authenticate.presentation.navigation.authenticationGraph
 import dev.zitech.core.common.presentation.navigation.FireFlowNavigationDestination
 import dev.zitech.dashboard.presentation.navigation.DashboardDestination
 import dev.zitech.dashboard.presentation.navigation.dashboardGraph
@@ -41,6 +42,11 @@ fun FireFlowNavHost(
         startDestination = startDestination.route,
         modifier = modifier
     ) {
+        authenticationGraph(
+            navigateToDashboard = {
+                onNavigateToDestination(DashboardDestination, true)
+            }
+        )
         onboardingGraph(
             navigateToOath = {
                 // TODO: Navigate to Oath Screen
