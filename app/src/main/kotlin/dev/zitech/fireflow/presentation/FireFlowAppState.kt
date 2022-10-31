@@ -17,6 +17,8 @@
 
 package dev.zitech.fireflow.presentation
 
+import dev.zitech.dashboard.R as dashboardR
+import dev.zitech.settings.R as settingsR
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
@@ -33,8 +35,6 @@ import dev.zitech.ds.atoms.icon.FireFlowIcons
 import dev.zitech.ds.atoms.icon.Icon
 import dev.zitech.fireflow.presentation.navigation.TopLevelDestination
 import dev.zitech.settings.presentation.navigation.SettingsDestination
-import dev.zitech.dashboard.R as dashboardR
-import dev.zitech.settings.R as settingsR
 
 @Composable
 internal fun rememberFireFlowAppState(
@@ -84,7 +84,12 @@ internal class FireFlowAppState(
         )
     )
 
-    fun navigate(destination: FireFlowNavigationDestination, route: String? = null, inclusive: Boolean? = null) {
+    fun navigate(
+        destination: FireFlowNavigationDestination,
+        route: String? = null,
+        inclusive: Boolean? = null,
+        popUpToDestination: FireFlowNavigationDestination? = null
+    ) {
         if (destination is TopLevelDestination) {
             navController.navigate(route ?: destination.route) {
                 // Pop up to the start destination of the graph to
@@ -103,7 +108,7 @@ internal class FireFlowAppState(
         } else {
             val navRoute = route ?: destination.route
             navController.navigate(navRoute) {
-                popUpTo(navRoute) {
+                popUpTo(popUpToDestination?.route ?: navRoute) {
                     this.inclusive = inclusive ?: false
                 }
             }

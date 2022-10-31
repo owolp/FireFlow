@@ -31,7 +31,11 @@ import dev.zitech.settings.presentation.navigation.settingsGraph
 @Composable
 fun FireFlowNavHost(
     navController: NavHostController,
-    onNavigateToDestination: (FireFlowNavigationDestination, Boolean?) -> Unit,
+    onNavigateToDestination: (
+        destination: FireFlowNavigationDestination,
+        inclusive: Boolean?,
+        popUpToDestination: FireFlowNavigationDestination?
+    ) -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
     startDestination: FireFlowNavigationDestination
@@ -44,7 +48,7 @@ fun FireFlowNavHost(
     ) {
         authenticationGraph(
             navigateToDashboard = {
-                onNavigateToDestination(DashboardDestination, true)
+                onNavigateToDestination(DashboardDestination, true, null)
             }
         )
         onboardingGraph(
@@ -57,7 +61,7 @@ fun FireFlowNavHost(
                 onBackClick()
             },
             navigateToDemo = {
-                onNavigateToDestination(DashboardDestination, true)
+                onNavigateToDestination(DashboardDestination, true, null)
             }
         )
         dashboardGraph()
