@@ -30,9 +30,9 @@ import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsAp
 import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsDataChoicesCollectionStates
 import dev.zitech.settings.presentation.settings.viewmodel.error.SettingsErrorProvider
 import dev.zitech.settings.presentation.settings.viewmodel.theme.SettingsStringsProvider
+import javax.inject.Inject
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
 @HiltViewModel
@@ -78,7 +78,7 @@ internal class SettingsViewModel @Inject constructor(
         if (checked == isEnabled) {
             stateHandler.setCrashReporterState(checked)
         } else {
-            stateHandler.setErrorState(settingsErrorProvider.getCrashReporterError())
+            stateHandler.setErrorState(settingsErrorProvider.crashReporterError)
         }
     }
 
@@ -93,7 +93,7 @@ internal class SettingsViewModel @Inject constructor(
                 settingsDataChoicesCollectionStates.setPerformanceCollection(checked)
                 stateHandler.setPerformanceState(checked, appConfigProvider.buildFlavor)
             } else {
-                stateHandler.setErrorState(settingsErrorProvider.getAnalyticsError())
+                stateHandler.setErrorState(settingsErrorProvider.analyticsError)
             }
         } else {
             Logger.e(tag, "Setting analytics on FOSS build is not supported")
@@ -131,7 +131,7 @@ internal class SettingsViewModel @Inject constructor(
             if (checked == isEnabled) {
                 stateHandler.setPersonalizedAdsState(checked, appConfigProvider.buildFlavor)
             } else {
-                stateHandler.setErrorState(settingsErrorProvider.getPersonalizedAdsError())
+                stateHandler.setErrorState(settingsErrorProvider.personalizedAdsError)
             }
         } else {
             Logger.e(tag, "Setting personalized ads on FOSS build is not supported")
@@ -145,7 +145,7 @@ internal class SettingsViewModel @Inject constructor(
             if (checked == isEnabled) {
                 stateHandler.setPerformanceState(checked, appConfigProvider.buildFlavor)
             } else {
-                stateHandler.setErrorState(settingsErrorProvider.getPerformanceError())
+                stateHandler.setErrorState(settingsErrorProvider.performanceError)
             }
         } else {
             Logger.e(tag, "Setting performance on FOSS build is not supported")
