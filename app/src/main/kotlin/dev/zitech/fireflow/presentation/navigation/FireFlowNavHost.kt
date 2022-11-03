@@ -21,7 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import dev.zitech.authenticate.presentation.navigation.authenticationGraph
+import dev.zitech.authenticate.presentation.navigation.authenticateGraph
 import dev.zitech.core.common.presentation.navigation.FireFlowNavigationDestination
 import dev.zitech.dashboard.presentation.navigation.DashboardDestination
 import dev.zitech.dashboard.presentation.navigation.dashboardGraph
@@ -43,13 +43,12 @@ fun FireFlowNavHost(
     modifier: Modifier = Modifier,
     startDestination: FireFlowNavigationDestination
 ) {
-    @Suppress("ForbiddenComment")
     NavHost(
         navController = navController,
         startDestination = startDestination.route,
         modifier = modifier
     ) {
-        authenticationGraph(
+        authenticateGraph(
             navigateToDashboard = {
                 onNavigateToDestination(
                     DashboardDestination,

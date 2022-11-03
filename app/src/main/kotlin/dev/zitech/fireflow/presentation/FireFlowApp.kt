@@ -63,7 +63,7 @@ internal fun FireFlowApp(
     windowSizeClass: WindowSizeClass,
     navController: NavHostController,
     startDestination: FireFlowNavigationDestination? = null,
-    appState: FireFlowAppState = rememberFireFlowAppState(windowSizeClass, navController, startDestination)
+    appState: FireFlowAppState = rememberFireFlowAppState(windowSizeClass, navController)
 ) {
     FireFlowTheme(
         darkTheme = isDarkTheme(theme)
@@ -105,10 +105,10 @@ internal fun FireFlowApp(
                                 (
                                     appState.topLevelDestinations.firstOrNull {
                                         it.route == destination.route
-                                    } ?: startDestination
+                                    } ?: destination
                                     ).let {
-                                    appState.navigate(it, route ?: it.route, inclusive, popUpToDestination)
-                                }
+                                        appState.navigate(it, route ?: it.route, inclusive, popUpToDestination)
+                                    }
                             },
                             onBackClick = appState::onBackClick,
                             startDestination = startDestination,

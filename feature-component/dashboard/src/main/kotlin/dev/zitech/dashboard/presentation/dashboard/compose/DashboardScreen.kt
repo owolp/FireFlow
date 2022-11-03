@@ -50,9 +50,10 @@ internal fun DashboardScreen(
     }
 }
 
+@Suppress("ForbiddenComment")
 @Composable
 private fun DashboardScreenContent(
     state: DashboardState
 ) {
-    // NO_OP
+    // TODO
 }

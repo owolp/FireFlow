@@ -17,6 +17,8 @@
 
 package dev.zitech.fireflow.presentation
 
+import dev.zitech.dashboard.R as dashboardR
+import dev.zitech.settings.R as settingsR
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
@@ -33,23 +35,19 @@ import dev.zitech.ds.atoms.icon.FireFlowIcons
 import dev.zitech.ds.atoms.icon.Icon
 import dev.zitech.fireflow.presentation.navigation.TopLevelDestination
 import dev.zitech.settings.presentation.navigation.SettingsDestination
-import dev.zitech.dashboard.R as dashboardR
-import dev.zitech.settings.R as settingsR
 
 @Composable
 internal fun rememberFireFlowAppState(
     windowSizeClass: WindowSizeClass,
-    navController: NavHostController,
-    startDestination: FireFlowNavigationDestination?
-): FireFlowAppState = remember(navController, windowSizeClass, startDestination) {
-    FireFlowAppState(navController, windowSizeClass, startDestination)
+    navController: NavHostController
+): FireFlowAppState = remember(navController, windowSizeClass) {
+    FireFlowAppState(navController, windowSizeClass)
 }
 
 @Stable
 internal class FireFlowAppState(
     val navController: NavHostController,
-    val windowSizeClass: WindowSizeClass,
-    private val startDestination: FireFlowNavigationDestination?
+    private val windowSizeClass: WindowSizeClass
 ) {
     val currentDestination: NavDestination?
         @Composable get() = navController
@@ -59,13 +57,13 @@ internal class FireFlowAppState(
         @Composable get() = (
             windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact ||
                 windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact
-            ) && isCurrentDestinationTopLevelDestination() && startDestination != null
+            ) && isCurrentDestinationTopLevelDestination()
 
     val shouldShowNavRail: Boolean
         @Composable get() = !(
             windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact ||
                 windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact
-            ) && isCurrentDestinationTopLevelDestination() && startDestination != null
+            ) && isCurrentDestinationTopLevelDestination()
 
     val topLevelDestinations: List<TopLevelDestination> = listOf(
         TopLevelDestination(

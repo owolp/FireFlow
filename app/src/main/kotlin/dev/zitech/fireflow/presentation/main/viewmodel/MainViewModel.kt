@@ -31,13 +31,13 @@ import dev.zitech.core.remoteconfig.domain.usecase.InitializeRemoteConfiguratorU
 import dev.zitech.core.reporter.analytics.domain.usecase.event.ApplicationLaunchAnalyticsEvent
 import dev.zitech.dashboard.presentation.navigation.DashboardDestination
 import dev.zitech.onboarding.presentation.navigation.WelcomeDestination
+import javax.inject.Inject
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
 @HiltViewModel
@@ -53,9 +53,9 @@ internal class MainViewModel @Inject constructor(
     override val state: StateFlow<MainState> = stateHandler.state
 
     init {
-        applicationLaunchAnalyticsEvent()
-        initApplicationThemeCollection()
         initializeRemoteConfigurator()
+        initApplicationThemeCollection()
+        applicationLaunchAnalyticsEvent()
     }
 
     override fun sendIntent(intent: MainIntent) {
@@ -67,7 +67,7 @@ internal class MainViewModel @Inject constructor(
     }
 
     private fun handleShowErrorHandled() {
-        stateHandler.setEvent(Idle)
+        stateHandler.resetEvent()
     }
 
     private fun initApplicationThemeCollection() {

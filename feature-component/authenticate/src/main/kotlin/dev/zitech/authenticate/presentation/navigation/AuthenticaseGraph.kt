@@ -21,7 +21,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import dev.zitech.authenticate.presentation.accounts.compose.AccountsRoute
 
-fun NavGraphBuilder.authenticationGraph(
+fun NavGraphBuilder.authenticateGraph(
     navigateToDashboard: () -> Unit
 ) {
     composable(route = AccountsDestination.route) {

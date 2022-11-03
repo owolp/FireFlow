@@ -30,7 +30,8 @@ internal class DashboardViewModel @Inject constructor(
 
     override val state: StateFlow<DashboardState> = stateHandler.state
 
+    @Suppress("ForbiddenComment")
     override fun sendIntent(intent: DashboardIntent) {
-        // NO_OP
+        // TODO
     }
 }

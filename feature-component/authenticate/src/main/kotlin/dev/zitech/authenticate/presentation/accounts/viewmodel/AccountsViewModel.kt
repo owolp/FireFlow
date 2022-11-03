@@ -30,7 +30,8 @@ internal class AccountsViewModel @Inject constructor(
 
     override val state: StateFlow<AccountsState> = stateHandler.state
 
+    @Suppress("ForbiddenComment")
     override fun sendIntent(intent: AccountsIntent) {
-        // NO_OP
+        // TODO
     }
 }
