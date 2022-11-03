@@ -17,9 +17,59 @@
 
 package dev.zitech.onboarding.presentation.login.viewmodel
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.zitech.core.common.presentation.architecture.MviViewModel
+import dev.zitech.core.persistence.domain.usecase.database.SaveUserAccountUseCase
+import dev.zitech.onboarding.presentation.login.compose.LoginType
+import dev.zitech.onboarding.presentation.navigation.LoginDestination
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-internal class LoginViewModel @Inject constructor() : ViewModel()
+internal class LoginViewModel @Inject constructor(
+    private val stateHandler: LoginStateHandler,
+    private val savedStateHandle: SavedStateHandle,
+    private val saveUserAccountUseCase: SaveUserAccountUseCase
+) : ViewModel(), MviViewModel<LoginIntent, LoginState> {
+
+    init {
+        getLoginType()
+    }
+
+    override val state: StateFlow<LoginState> = stateHandler.state
+
+    override fun sendIntent(intent: LoginIntent) {
+        viewModelScope.launch {
+            when (intent) {
+                OnLoginClick -> handleOnLoginClick()
+                NavigatedToDashboard -> handleNavigatedToDashboard()
+            }
+        }
+    }
+
+    private fun getLoginType() {
+        stateHandler.setLoginType(
+            LoginType.valueOf(
+                savedStateHandle.get<String>(LoginDestination.loginType)
+                    ?: throw UnsupportedOperationException(
+                        "Destination is missing key argument!"
+                    )
+            )
+        )
+    }
+
+    @Suppress("ForbiddenComment")
+    private suspend fun handleOnLoginClick() {
+        // TODO: Dev usage
+        saveUserAccountUseCase(true)
+        stateHandler.setEvent(NavigateToDashboard)
+    }
+
+    private fun handleNavigatedToDashboard() {
+        stateHandler.resetEvent()
+    }
+}

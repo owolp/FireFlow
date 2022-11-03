@@ -21,15 +21,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.zitech.core.common.presentation.architecture.MviViewModel
-import dev.zitech.core.persistence.domain.usecase.database.SaveUserAccountUseCase
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 internal class WelcomeViewModel @Inject constructor(
-    private val welcomeStateHandler: WelcomeStateHandler,
-    private val saveUserAccountUseCase: SaveUserAccountUseCase
+    private val welcomeStateHandler: WelcomeStateHandler
 ) : ViewModel(), MviViewModel<WelcomeIntent, WelcomeState> {
 
     override val state: StateFlow<WelcomeState> = welcomeStateHandler.state
@@ -47,21 +45,15 @@ internal class WelcomeViewModel @Inject constructor(
         }
     }
 
-    @Suppress("ForbiddenComment")
-    private suspend fun handleOnContinueWithOauthClick() {
-        // TODO: Dev usage
+    private fun handleOnContinueWithOauthClick() {
         welcomeStateHandler.setEvent(NavigateToOathScreen)
-        saveUserAccountUseCase(true)
     }
 
-    @Suppress("ForbiddenComment")
-    private suspend fun handleOnContinueWithPatClick() {
-        // TODO: Dev usage
+    private fun handleOnContinueWithPatClick() {
         welcomeStateHandler.setEvent(NavigateToPatScreen)
-        saveUserAccountUseCase(false)
     }
 
-    private suspend fun handleOnDemoClick() {
+    private fun handleOnDemoClick() {
         welcomeStateHandler.setEvent(NavigateToDemo)
     }
 

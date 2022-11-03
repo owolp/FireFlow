@@ -25,6 +25,8 @@ import dev.zitech.authenticate.presentation.navigation.authenticationGraph
 import dev.zitech.core.common.presentation.navigation.FireFlowNavigationDestination
 import dev.zitech.dashboard.presentation.navigation.DashboardDestination
 import dev.zitech.dashboard.presentation.navigation.dashboardGraph
+import dev.zitech.onboarding.presentation.login.compose.LoginType
+import dev.zitech.onboarding.presentation.navigation.LoginDestination
 import dev.zitech.onboarding.presentation.navigation.onboardingGraph
 import dev.zitech.settings.presentation.navigation.settingsGraph
 
@@ -33,6 +35,7 @@ fun FireFlowNavHost(
     navController: NavHostController,
     onNavigateToDestination: (
         destination: FireFlowNavigationDestination,
+        route: String?,
         inclusive: Boolean?,
         popUpToDestination: FireFlowNavigationDestination?
     ) -> Unit,
@@ -48,20 +51,46 @@ fun FireFlowNavHost(
     ) {
         authenticationGraph(
             navigateToDashboard = {
-                onNavigateToDestination(DashboardDestination, true, null)
+                onNavigateToDestination(
+                    DashboardDestination,
+                    null,
+                    true,
+                    null
+                )
             }
         )
         onboardingGraph(
             navigateToOath = {
-                // TODO: Navigate to Oath Screen
-                onBackClick()
+                onNavigateToDestination(
+                    LoginDestination,
+                    LoginDestination.createNavigationRoute(LoginType.OAUTH),
+                    true,
+                    null
+                )
             },
             navigateToPat = {
-                // TODO: Navigate to Pat Screen
-                onBackClick()
+                onNavigateToDestination(
+                    LoginDestination,
+                    LoginDestination.createNavigationRoute(LoginType.PAT),
+                    true,
+                    null
+                )
             },
             navigateToDemo = {
-                onNavigateToDestination(DashboardDestination, true, null)
+                onNavigateToDestination(
+                    DashboardDestination,
+                    null,
+                    true,
+                    null
+                )
+            },
+            navigateToDashboard = {
+                onNavigateToDestination(
+                    DashboardDestination,
+                    null,
+                    true,
+                    null
+                )
             }
         )
         dashboardGraph()

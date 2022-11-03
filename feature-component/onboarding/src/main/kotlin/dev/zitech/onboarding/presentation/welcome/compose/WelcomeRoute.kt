@@ -44,7 +44,7 @@ internal fun WelcomeRoute(
     WelcomeScreen(
         modifier = modifier,
         state = state.value,
-        onContinueWithOauthCLick = { viewModel.sendIntent(OnContinueWithOauthClick) },
+        onContinueWithOauthClick = { viewModel.sendIntent(OnContinueWithOauthClick) },
         onContinueWithPatClick = { viewModel.sendIntent(OnContinueWithPatClick) },
         onDemoClick = { viewModel.sendIntent(OnDemoClick) },
         navigateToOath = {

@@ -15,26 +15,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.onboarding.presentation.navigation
+package dev.zitech.onboarding.presentation.login.viewmodel
 
-import android.net.Uri
-import dev.zitech.core.common.presentation.navigation.FireFlowNavigationDestination
+import dev.zitech.core.common.presentation.architecture.MviState
 import dev.zitech.onboarding.presentation.login.compose.LoginType
 
-private const val DESTINATION = "onboarding"
-
-object LoginDestination : FireFlowNavigationDestination {
-    const val loginType = "loginType"
-    override val route: String = "login_route/{$loginType}"
-    override val destination: String = DESTINATION
-
-    fun createNavigationRoute(loginType: LoginType): String {
-        val encodedLoginType = Uri.encode(loginType.value)
-        return "login_route/$encodedLoginType"
-    }
-}
-
-object WelcomeDestination : FireFlowNavigationDestination {
-    override val route: String = "welcome_route"
-    override val destination: String = DESTINATION
-}
+internal data class LoginState(
+    val loginType: LoginType? = null,
+    val event: LoginEvent = Idle
+) : MviState

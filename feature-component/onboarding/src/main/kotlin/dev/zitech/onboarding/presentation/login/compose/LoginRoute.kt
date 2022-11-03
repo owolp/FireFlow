@@ -20,12 +20,34 @@ package dev.zitech.onboarding.presentation.login.compose
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.zitech.onboarding.presentation.login.viewmodel.LoginViewModel
+import dev.zitech.onboarding.presentation.login.viewmodel.NavigatedToDashboard
+import dev.zitech.onboarding.presentation.login.viewmodel.OnLoginClick
 
+enum class LoginType(val value: String) {
+    OAUTH("OAUTH"),
+    PAT("PAT")
+}
+
+@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 internal fun LoginRoute(
+    navigateToDashboard: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
-    LoginScreen()
+    val state = viewModel.state.collectAsStateWithLifecycle()
+    if (state.value.loginType != null) {
+        LoginScreen(
+            state = state.value,
+            onLoginClick = { viewModel.sendIntent(OnLoginClick) },
+            navigateToDashboard = {
+                navigateToDashboard()
+                viewModel.sendIntent(NavigatedToDashboard)
+            },
+            modifier = modifier
+        )
+    }
 }

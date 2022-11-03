@@ -101,14 +101,14 @@ internal fun FireFlowApp(
                     if (startDestination != null) {
                         FireFlowNavHost(
                             navController = appState.navController,
-                            onNavigateToDestination = { destination, inclusive, popUpToDestination ->
+                            onNavigateToDestination = { destination, route, inclusive, popUpToDestination ->
                                 (
                                     appState.topLevelDestinations.firstOrNull {
                                         it.route == destination.route
                                     } ?: startDestination
                                     ).let {
-                                        appState.navigate(it, it.route, inclusive, popUpToDestination)
-                                    }
+                                    appState.navigate(it, route ?: it.route, inclusive, popUpToDestination)
+                                }
                             },
                             onBackClick = appState::onBackClick,
                             startDestination = startDestination,

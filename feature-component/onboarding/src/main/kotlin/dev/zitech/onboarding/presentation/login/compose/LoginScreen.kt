@@ -17,17 +17,36 @@
 
 package dev.zitech.onboarding.presentation.login.compose
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import dev.zitech.ds.atoms.text.FireFlowTexts
-import dev.zitech.ds.theme.FireFlowTheme
+import dev.zitech.ds.atoms.button.FireFlowButtons
+import dev.zitech.onboarding.presentation.login.viewmodel.Idle
+import dev.zitech.onboarding.presentation.login.viewmodel.LoginState
+import dev.zitech.onboarding.presentation.login.viewmodel.NavigateToDashboard
 
 @Composable
 internal fun LoginScreen(
+    state: LoginState,
+    onLoginClick: () -> Unit,
+    navigateToDashboard: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    FireFlowTexts.HeadlineLarge(
-        text = "Login Screen",
-        color = FireFlowTheme.colors.onSurface
-    )
+    when (state.event) {
+        NavigateToDashboard -> navigateToDashboard()
+        Idle -> {
+            // NO_OP
+        }
+    }
+
+    Column(
+        modifier = modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        FireFlowButtons.Text.OnSurface(text = state.loginType?.value.orEmpty(), onClick = onLoginClick)
+    }
 }

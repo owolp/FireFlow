@@ -36,7 +36,7 @@ import dev.zitech.onboarding.presentation.welcome.viewmodel.WelcomeState
 @Composable
 internal fun WelcomeScreen(
     state: WelcomeState,
-    onContinueWithOauthCLick: () -> Unit,
+    onContinueWithOauthClick: () -> Unit,
     onContinueWithPatClick: () -> Unit,
     onDemoClick: () -> Unit,
     navigateToOath: () -> Unit,
@@ -57,7 +57,7 @@ internal fun WelcomeScreen(
         modifier = modifier
     ) {
         WelcomeScreenContent(
-            onContinueWithOauthCLick = onContinueWithOauthCLick,
+            onContinueWithOauthCLick = onContinueWithOauthClick,
             onContinueWithPatClick = onContinueWithPatClick,
             onDemoClick = onDemoClick
         )
