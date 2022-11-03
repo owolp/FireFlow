@@ -15,12 +15,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.onboarding.presentation.login.viewmodel
+package dev.zitech.onboarding.presentation.login.model
 
-import dev.zitech.core.common.presentation.architecture.MviState
-import dev.zitech.onboarding.presentation.login.model.LoginType
-
-internal data class LoginState(
-    val loginType: LoginType? = null,
-    val event: LoginEvent = Idle
-) : MviState
+enum class LoginType(val value: String) {
+    OAUTH("OAUTH"),
+    PAT("PAT")
+}

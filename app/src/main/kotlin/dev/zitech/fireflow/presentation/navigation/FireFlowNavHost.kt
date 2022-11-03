@@ -25,7 +25,7 @@ import dev.zitech.authenticate.presentation.navigation.authenticateGraph
 import dev.zitech.core.common.presentation.navigation.FireFlowNavigationDestination
 import dev.zitech.dashboard.presentation.navigation.DashboardDestination
 import dev.zitech.dashboard.presentation.navigation.dashboardGraph
-import dev.zitech.onboarding.presentation.login.compose.LoginType
+import dev.zitech.onboarding.presentation.login.model.LoginType
 import dev.zitech.onboarding.presentation.navigation.LoginDestination
 import dev.zitech.onboarding.presentation.navigation.onboardingGraph
 import dev.zitech.settings.presentation.navigation.settingsGraph

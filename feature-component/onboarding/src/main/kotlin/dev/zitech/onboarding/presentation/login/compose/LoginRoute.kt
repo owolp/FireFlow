@@ -26,11 +26,6 @@ import dev.zitech.onboarding.presentation.login.viewmodel.LoginViewModel
 import dev.zitech.onboarding.presentation.login.viewmodel.NavigatedToDashboard
 import dev.zitech.onboarding.presentation.login.viewmodel.OnLoginClick
 
-enum class LoginType(val value: String) {
-    OAUTH("OAUTH"),
-    PAT("PAT")
-}
-
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 internal fun LoginRoute(

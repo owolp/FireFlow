@@ -18,7 +18,7 @@
 package dev.zitech.onboarding.presentation.login.viewmodel
 
 import dev.zitech.core.common.presentation.architecture.MviStateHandler
-import dev.zitech.onboarding.presentation.login.compose.LoginType
+import dev.zitech.onboarding.presentation.login.model.LoginType
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

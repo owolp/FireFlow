@@ -107,8 +107,8 @@ internal fun FireFlowApp(
                                         it.route == destination.route
                                     } ?: destination
                                     ).let {
-                                        appState.navigate(it, route ?: it.route, inclusive, popUpToDestination)
-                                    }
+                                    appState.navigate(it, route ?: it.route, inclusive, popUpToDestination)
+                                }
                             },
                             onBackClick = appState::onBackClick,
                             startDestination = startDestination,

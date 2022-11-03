@@ -30,9 +30,9 @@ import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsAp
 import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsDataChoicesCollectionStates
 import dev.zitech.settings.presentation.settings.viewmodel.error.SettingsErrorProvider
 import dev.zitech.settings.presentation.settings.viewmodel.theme.SettingsStringsProvider
-import javax.inject.Inject
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
 @HiltViewModel

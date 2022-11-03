@@ -19,7 +19,7 @@ package dev.zitech.onboarding.presentation.navigation
 
 import android.net.Uri
 import dev.zitech.core.common.presentation.navigation.FireFlowNavigationDestination
-import dev.zitech.onboarding.presentation.login.compose.LoginType
+import dev.zitech.onboarding.presentation.login.model.LoginType
 
 private const val DESTINATION = "onboarding"
 
