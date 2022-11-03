@@ -25,10 +25,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class DashboardViewModel @Inject constructor(
-    dashboardStateHandler: DashboardStateHandler
+    stateHandler: DashboardStateHandler
 ) : ViewModel(), MviViewModel<DashboardIntent, DashboardState> {
 
-    override val state: StateFlow<DashboardState> = dashboardStateHandler.state
+    override val state: StateFlow<DashboardState> = stateHandler.state
 
     override fun sendIntent(intent: DashboardIntent) {
         // NO_OP

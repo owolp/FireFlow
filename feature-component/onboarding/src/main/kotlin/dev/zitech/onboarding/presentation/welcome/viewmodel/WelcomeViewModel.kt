@@ -27,10 +27,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class WelcomeViewModel @Inject constructor(
-    private val welcomeStateHandler: WelcomeStateHandler
+    private val stateHandler: WelcomeStateHandler
 ) : ViewModel(), MviViewModel<WelcomeIntent, WelcomeState> {
 
-    override val state: StateFlow<WelcomeState> = welcomeStateHandler.state
+    override val state: StateFlow<WelcomeState> = stateHandler.state
 
     override fun sendIntent(intent: WelcomeIntent) {
         viewModelScope.launch {
@@ -46,26 +46,26 @@ internal class WelcomeViewModel @Inject constructor(
     }
 
     private fun handleOnContinueWithOauthClick() {
-        welcomeStateHandler.setEvent(NavigateToOathScreen)
+        stateHandler.setEvent(NavigateToOathScreen)
     }
 
     private fun handleOnContinueWithPatClick() {
-        welcomeStateHandler.setEvent(NavigateToPatScreen)
+        stateHandler.setEvent(NavigateToPatScreen)
     }
 
     private fun handleOnDemoClick() {
-        welcomeStateHandler.setEvent(NavigateToDemo)
+        stateHandler.setEvent(NavigateToDemo)
     }
 
     private fun handleNavigatedToOath() {
-        welcomeStateHandler.resetEvent()
+        stateHandler.resetEvent()
     }
 
     private fun handleNavigatedToPat() {
-        welcomeStateHandler.resetEvent()
+        stateHandler.resetEvent()
     }
 
     private fun handleNavigatedToDemo() {
-        welcomeStateHandler.resetEvent()
+        stateHandler.resetEvent()
     }
 }

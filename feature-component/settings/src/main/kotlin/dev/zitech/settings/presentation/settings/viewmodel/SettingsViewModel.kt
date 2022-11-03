@@ -37,7 +37,7 @@ import javax.inject.Inject
 @Suppress("TooManyFunctions")
 @HiltViewModel
 internal class SettingsViewModel @Inject constructor(
-    private val settingsStateHandler: SettingsStateHandler,
+    private val stateHandler: SettingsStateHandler,
     private val settingsAppearanceCollectionStates: SettingsAppearanceCollectionStates,
     private val settingsDataChoicesCollectionStates: SettingsDataChoicesCollectionStates,
     private val settingsErrorProvider: SettingsErrorProvider,
@@ -47,7 +47,7 @@ internal class SettingsViewModel @Inject constructor(
 
     private val tag = Logger.tag(this::class.java)
 
-    override val state: StateFlow<SettingsState> = settingsStateHandler.state
+    override val state: StateFlow<SettingsState> = stateHandler.state
 
     init {
         viewModelScope.launch {
@@ -76,9 +76,9 @@ internal class SettingsViewModel @Inject constructor(
         settingsDataChoicesCollectionStates.setCrashReporterCollection(checked)
         val isEnabled = settingsDataChoicesCollectionStates.getCrashReporterCollectionValue()
         if (checked == isEnabled) {
-            settingsStateHandler.setCrashReporterState(checked)
+            stateHandler.setCrashReporterState(checked)
         } else {
-            settingsStateHandler.setErrorState(settingsErrorProvider.getCrashReporterError())
+            stateHandler.setErrorState(settingsErrorProvider.getCrashReporterError())
         }
     }
 
@@ -87,13 +87,13 @@ internal class SettingsViewModel @Inject constructor(
             settingsDataChoicesCollectionStates.setAnalyticsCollection(checked)
             val isEnabled = settingsDataChoicesCollectionStates.getAnalyticsCollectionValue()
             if (checked == isEnabled) {
-                settingsStateHandler.setAnalyticsState(checked, appConfigProvider.buildFlavor)
+                stateHandler.setAnalyticsState(checked, appConfigProvider.buildFlavor)
                 settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked)
-                settingsStateHandler.setPersonalizedAdsState(checked, appConfigProvider.buildFlavor)
+                stateHandler.setPersonalizedAdsState(checked, appConfigProvider.buildFlavor)
                 settingsDataChoicesCollectionStates.setPerformanceCollection(checked)
-                settingsStateHandler.setPerformanceState(checked, appConfigProvider.buildFlavor)
+                stateHandler.setPerformanceState(checked, appConfigProvider.buildFlavor)
             } else {
-                settingsStateHandler.setErrorState(settingsErrorProvider.getAnalyticsError())
+                stateHandler.setErrorState(settingsErrorProvider.getAnalyticsError())
             }
         } else {
             Logger.e(tag, "Setting analytics on FOSS build is not supported")
@@ -103,25 +103,25 @@ internal class SettingsViewModel @Inject constructor(
     private suspend fun handleOnThemeSelect(id: Int) {
         ApplicationTheme.values().first { it.id == id }.run {
             settingsAppearanceCollectionStates.setApplicationThemeValue(this)
-            settingsStateHandler.setTheme(this)
-            settingsStateHandler.resetEvent()
+            stateHandler.setTheme(this)
+            stateHandler.resetEvent()
         }
     }
 
     private fun handleOnLanguageSelect(id: Int) {
         ApplicationLanguage.values().first { it.id == id }.run {
             settingsAppearanceCollectionStates.setApplicationLanguageValue(this)
-            settingsStateHandler.setLanguage(this)
-            settingsStateHandler.resetEvent()
+            stateHandler.setLanguage(this)
+            stateHandler.resetEvent()
         }
     }
 
     private fun handleOnThemeDismiss() {
-        settingsStateHandler.resetEvent()
+        stateHandler.resetEvent()
     }
 
     private fun handleOnLanguageDismiss() {
-        settingsStateHandler.resetEvent()
+        stateHandler.resetEvent()
     }
 
     private suspend fun handleOnPersonalizedAdsCheckChange(checked: Boolean) {
@@ -129,9 +129,9 @@ internal class SettingsViewModel @Inject constructor(
             settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked)
             val isEnabled = settingsDataChoicesCollectionStates.getAllowPersonalizedAdsValue()
             if (checked == isEnabled) {
-                settingsStateHandler.setPersonalizedAdsState(checked, appConfigProvider.buildFlavor)
+                stateHandler.setPersonalizedAdsState(checked, appConfigProvider.buildFlavor)
             } else {
-                settingsStateHandler.setErrorState(settingsErrorProvider.getPersonalizedAdsError())
+                stateHandler.setErrorState(settingsErrorProvider.getPersonalizedAdsError())
             }
         } else {
             Logger.e(tag, "Setting personalized ads on FOSS build is not supported")
@@ -143,9 +143,9 @@ internal class SettingsViewModel @Inject constructor(
             settingsDataChoicesCollectionStates.setPerformanceCollection(checked)
             val isEnabled = settingsDataChoicesCollectionStates.getPerformanceCollectionValue()
             if (checked == isEnabled) {
-                settingsStateHandler.setPerformanceState(checked, appConfigProvider.buildFlavor)
+                stateHandler.setPerformanceState(checked, appConfigProvider.buildFlavor)
             } else {
-                settingsStateHandler.setErrorState(settingsErrorProvider.getPerformanceError())
+                stateHandler.setErrorState(settingsErrorProvider.getPerformanceError())
             }
         } else {
             Logger.e(tag, "Setting performance on FOSS build is not supported")
@@ -153,7 +153,7 @@ internal class SettingsViewModel @Inject constructor(
     }
 
     private suspend fun getPreferencesState() {
-        settingsStateHandler.run {
+        stateHandler.run {
             setIsLoadingState(true)
             setAnalyticsState(
                 settingsDataChoicesCollectionStates.getAnalyticsCollectionValue(),
@@ -176,22 +176,22 @@ internal class SettingsViewModel @Inject constructor(
     }
 
     private fun handleOnThemeClick() {
-        settingsStateHandler.setEvent(
+        stateHandler.setEvent(
             SelectTheme(
                 title = settingsStringsProvider.getDialogThemeTitle(),
                 themes = settingsStringsProvider.getDialogThemes(
-                    settingsStateHandler.state.value.theme
+                    stateHandler.state.value.theme
                 )
             )
         )
     }
 
     private fun handleOnLanguagePreferenceClick() {
-        settingsStateHandler.setEvent(
+        stateHandler.setEvent(
             SelectLanguage(
                 title = settingsStringsProvider.getDialogLanguageTitle(),
                 languages = settingsStringsProvider.getDialogLanguages(
-                    settingsStateHandler.state.value.language
+                    stateHandler.state.value.language
                 )
             )
         )

@@ -42,7 +42,7 @@ import javax.inject.Inject
 @Suppress("TooManyFunctions")
 @HiltViewModel
 internal class MainViewModel @Inject constructor(
-    private val mainStateHandler: MainStateHandler,
+    private val stateHandler: MainStateHandler,
     private val getApplicationThemeValueUseCase: GetApplicationThemeValueUseCase,
     private val initializeRemoteConfiguratorUseCase: InitializeRemoteConfiguratorUseCase,
     private val getCurrentUserAccountUseCase: GetCurrentUserAccountUseCase,
@@ -50,7 +50,7 @@ internal class MainViewModel @Inject constructor(
     applicationLaunchAnalyticsEvent: ApplicationLaunchAnalyticsEvent
 ) : ViewModel(), MviViewModel<MainIntent, MainState> {
 
-    override val state: StateFlow<MainState> = mainStateHandler.state
+    override val state: StateFlow<MainState> = stateHandler.state
 
     init {
         applicationLaunchAnalyticsEvent()
@@ -67,12 +67,12 @@ internal class MainViewModel @Inject constructor(
     }
 
     private fun handleShowErrorHandled() {
-        mainStateHandler.setEvent(Idle)
+        stateHandler.setEvent(Idle)
     }
 
     private fun initApplicationThemeCollection() {
         getApplicationThemeValueUseCase()
-            .onEach { mainStateHandler.setTheme(it) }
+            .onEach { stateHandler.setTheme(it) }
             .launchIn(viewModelScope)
     }
 
@@ -99,7 +99,7 @@ internal class MainViewModel @Inject constructor(
     }
 
     private fun showDashboard() {
-        mainStateHandler.setDestination(DashboardDestination)
+        stateHandler.setDestination(DashboardDestination)
         hideSplashScreen()
     }
 
@@ -117,12 +117,12 @@ internal class MainViewModel @Inject constructor(
     }
 
     private fun showAccounts() {
-        mainStateHandler.setDestination(AccountsDestination)
+        stateHandler.setDestination(AccountsDestination)
         hideSplashScreen()
     }
 
     private fun showWelcome() {
-        mainStateHandler.setDestination(WelcomeDestination)
+        stateHandler.setDestination(WelcomeDestination)
         hideSplashScreen()
     }
 
@@ -133,6 +133,6 @@ internal class MainViewModel @Inject constructor(
     }
 
     private fun hideSplashScreen() {
-        mainStateHandler.setSplash(false)
+        stateHandler.setSplash(false)
     }
 }
