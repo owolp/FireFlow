@@ -15,18 +15,23 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.authenticate.presentation.navigation
+package dev.zitech.authentication.presentation.accounts.viewmodel
 
-import dev.zitech.core.common.presentation.navigation.FireFlowNavigationDestination
+import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.zitech.core.common.presentation.architecture.MviViewModel
+import kotlinx.coroutines.flow.StateFlow
+import javax.inject.Inject
 
-private const val DESTINATION = "authenticate"
+@HiltViewModel
+internal class AccountsViewModel @Inject constructor(
+    stateHandler: AccountsStateHandler
+) : ViewModel(), MviViewModel<AccountsIntent, AccountsState> {
 
-object AccountsDestination : FireFlowNavigationDestination {
-    override val route: String = "accounts_route"
-    override val destination: String = DESTINATION
-}
+    override val state: StateFlow<AccountsState> = stateHandler.state
 
-object LoginDestination : FireFlowNavigationDestination {
-    override val route: String = "login_route"
-    override val destination: String = DESTINATION
+    @Suppress("ForbiddenComment")
+    override fun sendIntent(intent: AccountsIntent) {
+        // TODO
+    }
 }

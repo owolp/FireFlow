@@ -15,23 +15,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.authenticate.presentation.accounts.viewmodel
+package dev.zitech.authentication.presentation.accounts.viewmodel
 
-import androidx.lifecycle.ViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.zitech.core.common.presentation.architecture.MviViewModel
+import dev.zitech.core.common.presentation.architecture.MviStateHandler
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
-@HiltViewModel
-internal class AccountsViewModel @Inject constructor(
-    stateHandler: AccountsStateHandler
-) : ViewModel(), MviViewModel<AccountsIntent, AccountsState> {
+internal class AccountsStateHandler @Inject constructor() : MviStateHandler<AccountsState> {
 
-    override val state: StateFlow<AccountsState> = stateHandler.state
-
-    @Suppress("ForbiddenComment")
-    override fun sendIntent(intent: AccountsIntent) {
-        // TODO
-    }
+    private val mutableState = MutableStateFlow(AccountsState())
+    override val state: StateFlow<AccountsState> = mutableState.asStateFlow()
 }

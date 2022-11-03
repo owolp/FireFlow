@@ -20,7 +20,7 @@ package dev.zitech.fireflow.presentation.main.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.zitech.authenticate.presentation.navigation.AccountsDestination
+import dev.zitech.authentication.presentation.navigation.AccountsDestination
 import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.common.presentation.architecture.MviViewModel
 import dev.zitech.core.persistence.domain.model.exception.NullCurrentUserAccountException

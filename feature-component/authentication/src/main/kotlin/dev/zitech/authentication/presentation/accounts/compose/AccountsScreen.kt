@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.authenticate.presentation.accounts.compose
+package dev.zitech.authentication.presentation.accounts.compose
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -26,10 +26,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import dev.zitech.authenticate.R
-import dev.zitech.authenticate.presentation.accounts.viewmodel.AccountsState
-import dev.zitech.authenticate.presentation.accounts.viewmodel.Idle
-import dev.zitech.authenticate.presentation.accounts.viewmodel.NavigateToDashboard
+import dev.zitech.authentication.R
+import dev.zitech.authentication.presentation.accounts.viewmodel.AccountsState
+import dev.zitech.authentication.presentation.accounts.viewmodel.Idle
+import dev.zitech.authentication.presentation.accounts.viewmodel.NavigateToDashboard
 import dev.zitech.ds.atoms.button.FireFlowButtons
 import dev.zitech.ds.molecules.topappbar.FireFlowTopAppBars
 import dev.zitech.ds.molecules.topappbar.ScrollBehavior

@@ -15,14 +15,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.authenticate.presentation.accounts.compose
+package dev.zitech.authentication.presentation.accounts.compose
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import dev.zitech.authenticate.presentation.accounts.viewmodel.AccountsViewModel
+import dev.zitech.authentication.presentation.accounts.viewmodel.AccountsViewModel
 
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable

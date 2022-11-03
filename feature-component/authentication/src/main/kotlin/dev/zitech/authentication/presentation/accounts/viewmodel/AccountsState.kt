@@ -15,8 +15,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.authenticate.presentation.accounts.viewmodel
+package dev.zitech.authentication.presentation.accounts.viewmodel
 
-import dev.zitech.core.common.presentation.architecture.MviIntent
+import dev.zitech.core.common.presentation.architecture.MviState
 
-internal sealed interface AccountsIntent : MviIntent
+internal data class AccountsState(
+    val event: AccountsEvent = Idle
+) : MviState
