@@ -18,22 +18,53 @@
 package dev.zitech.dashboard.presentation.dashboard.compose
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import dev.zitech.dashboard.presentation.dashboard.viewmodel.DashboardState.ViewState.InitScreen
+import dev.zitech.dashboard.presentation.dashboard.viewmodel.DashboardState.ViewState.NotLoggedIn
+import dev.zitech.dashboard.presentation.dashboard.viewmodel.DashboardState.ViewState.Success
 import dev.zitech.dashboard.presentation.dashboard.viewmodel.DashboardViewModel
+import dev.zitech.navigation.domain.usecase.GetScreenDestinationUseCase.Destination.Accounts
+import dev.zitech.navigation.domain.usecase.GetScreenDestinationUseCase.Destination.Current
+import dev.zitech.navigation.domain.usecase.GetScreenDestinationUseCase.Destination.Error
+import dev.zitech.navigation.domain.usecase.GetScreenDestinationUseCase.Destination.Welcome
 
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 internal fun DashboardRoute(
     modifier: Modifier = Modifier,
-    viewModel: DashboardViewModel = hiltViewModel()
+    viewModel: DashboardViewModel = hiltViewModel(),
+    navigateToAccounts: () -> Unit,
+    navigateToError: () -> Unit,
+    navigateToWelcome: () -> Unit
 ) {
-    val state = viewModel.state.collectAsStateWithLifecycle()
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
-    DashboardScreen(
-        state = state.value,
-        modifier = modifier
-    )
+    when (val viewState = state.viewState) {
+        InitScreen -> {
+            // TODO: ShowLoading Screen
+        }
+        Success -> {
+            DashboardScreen(
+                modifier = modifier,
+                state = state
+            )
+        }
+        is NotLoggedIn -> {
+            LaunchedEffect(Unit) {
+                when (viewState.destination) {
+                    Accounts -> navigateToAccounts()
+                    Error -> navigateToError()
+                    Welcome -> navigateToWelcome()
+                    Current -> {
+                        // NO_OP
+                    }
+                }
+            }
+        }
+    }
 }

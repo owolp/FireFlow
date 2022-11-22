@@ -31,20 +31,14 @@ internal class LoginStateHandler @Inject constructor() : MviStateHandler<LoginSt
     override val state: StateFlow<LoginState> = mutableState.asStateFlow()
 
     fun setEvent(event: LoginEvent) {
-        mutableState.update {
-            it.copy(event = event)
-        }
+        mutableState.update { it.copy(event = event) }
     }
 
     fun resetEvent() {
-        mutableState.update {
-            it.copy(event = Idle)
-        }
+        setEvent(Idle)
     }
 
     fun setLoginType(value: LoginType) {
-        mutableState.update {
-            it.copy(loginType = value)
-        }
+        mutableState.update { it.copy(loginType = value) }
     }
 }

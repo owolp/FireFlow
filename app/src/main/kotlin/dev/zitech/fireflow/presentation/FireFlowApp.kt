@@ -40,7 +40,6 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import dev.zitech.core.common.domain.model.ApplicationTheme
-import dev.zitech.core.common.presentation.navigation.FireFlowNavigationDestination
 import dev.zitech.ds.atoms.background.FireFlowBackground
 import dev.zitech.ds.atoms.icon.Icon
 import dev.zitech.ds.atoms.navigation.FireFlowNavigationBar
@@ -51,7 +50,7 @@ import dev.zitech.ds.atoms.text.FireFlowTexts
 import dev.zitech.ds.templates.scaffold.FireFlowScaffolds
 import dev.zitech.ds.theme.FireFlowTheme
 import dev.zitech.fireflow.presentation.navigation.FireFlowNavHost
-import dev.zitech.fireflow.presentation.navigation.TopLevelDestination
+import dev.zitech.navigation.presentation.model.TopLevelDestination
 
 @OptIn(
     ExperimentalMaterial3Api::class,
@@ -62,7 +61,6 @@ internal fun FireFlowApp(
     theme: ApplicationTheme?,
     windowSizeClass: WindowSizeClass,
     navController: NavHostController,
-    startDestination: FireFlowNavigationDestination? = null,
     appState: FireFlowAppState = rememberFireFlowAppState(windowSizeClass, navController)
 ) {
     FireFlowTheme(
@@ -98,25 +96,29 @@ internal fun FireFlowApp(
                         )
                     }
 
-                    if (startDestination != null) {
-                        FireFlowNavHost(
-                            navController = appState.navController,
-                            onNavigateToDestination = { destination, route, inclusive, popUpToDestination ->
-                                (
-                                    appState.topLevelDestinations.firstOrNull {
-                                        it.route == destination.route
-                                    } ?: destination
-                                    ).let {
-                                    appState.navigate(it, route ?: it.route, inclusive, popUpToDestination)
-                                }
-                            },
-                            onBackClick = appState::onBackClick,
-                            startDestination = startDestination,
-                            modifier = Modifier
-                                .padding(padding)
-                                .consumedWindowInsets(padding)
-                        )
-                    }
+                    FireFlowNavHost(
+                        navController = appState.navController,
+                        onNavigateToDestination = { navDirection ->
+                            (
+                                appState.topLevelDestinations.firstOrNull {
+                                    it.route == navDirection.destination.route
+                                } ?: navDirection.destination
+                                ).let { destination ->
+                                appState.navigate(
+                                    destination,
+                                    navDirection.route ?: destination.route,
+                                    navDirection.inclusive,
+                                    navDirection.popUpToDestination,
+                                    navDirection.restoreState
+                                )
+                            }
+                        },
+                        onBackClick = appState::onBackClick,
+                        onCloseApplication = appState::onCloseApplication,
+                        modifier = Modifier
+                            .padding(padding)
+                            .consumedWindowInsets(padding)
+                    )
                 }
             }
         }

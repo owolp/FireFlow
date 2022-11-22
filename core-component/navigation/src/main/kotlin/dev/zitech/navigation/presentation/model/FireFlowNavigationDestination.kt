@@ -15,18 +15,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.authentication.presentation.navigation
+package dev.zitech.navigation.presentation.model
 
-import dev.zitech.core.common.presentation.navigation.FireFlowNavigationDestination
-
-private const val DESTINATION = "authentication"
-
-object AccountsDestination : FireFlowNavigationDestination {
-    override val route: String = "accounts_route"
-    override val destination: String = DESTINATION
-}
-
-object LoginDestination : FireFlowNavigationDestination {
-    override val route: String = "login_route"
-    override val destination: String = DESTINATION
+interface FireFlowNavigationDestination {
+    val route: String
+    val destination: String
 }

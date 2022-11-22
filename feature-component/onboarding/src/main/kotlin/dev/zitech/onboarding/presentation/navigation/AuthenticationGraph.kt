@@ -28,13 +28,15 @@ fun NavGraphBuilder.onboardingGraph(
     navigateToOath: () -> Unit,
     navigateToPat: () -> Unit,
     navigateToDemo: () -> Unit,
-    navigateToDashboard: () -> Unit
+    navigateToDashboard: () -> Unit,
+    navigateOutOfApp: () -> Unit
 ) {
     composable(route = WelcomeDestination.route) {
         WelcomeRoute(
             navigateToOath = navigateToOath,
             navigateToPat = navigateToPat,
-            navigateToDemo = navigateToDemo
+            navigateToDemo = navigateToDemo,
+            navigateOutOfApp = navigateOutOfApp
         )
     }
     composable(

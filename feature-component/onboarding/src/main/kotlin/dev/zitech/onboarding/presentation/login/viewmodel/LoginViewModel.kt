@@ -46,7 +46,7 @@ internal class LoginViewModel @Inject constructor(
         viewModelScope.launch {
             when (intent) {
                 OnLoginClick -> handleOnLoginClick()
-                NavigatedToDashboard -> handleNavigatedToDashboard()
+                NavigationHandled -> handleNavigationHandled()
             }
         }
     }
@@ -69,7 +69,7 @@ internal class LoginViewModel @Inject constructor(
         stateHandler.setEvent(NavigateToDashboard)
     }
 
-    private fun handleNavigatedToDashboard() {
+    private fun handleNavigationHandled() {
         stateHandler.resetEvent()
     }
 }

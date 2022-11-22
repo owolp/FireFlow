@@ -22,4 +22,4 @@ import dev.zitech.core.common.presentation.architecture.MviIntent
 internal sealed interface LoginIntent : MviIntent
 
 internal object OnLoginClick : LoginIntent
-internal object NavigatedToDashboard : LoginIntent
+internal object NavigationHandled : LoginIntent

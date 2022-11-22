@@ -18,12 +18,16 @@
 package dev.zitech.onboarding.presentation.login.compose
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import dev.zitech.onboarding.presentation.login.viewmodel.Idle
 import dev.zitech.onboarding.presentation.login.viewmodel.LoginViewModel
-import dev.zitech.onboarding.presentation.login.viewmodel.NavigatedToDashboard
+import dev.zitech.onboarding.presentation.login.viewmodel.NavigateToDashboard
+import dev.zitech.onboarding.presentation.login.viewmodel.NavigationHandled
 import dev.zitech.onboarding.presentation.login.viewmodel.OnLoginClick
 
 @OptIn(ExperimentalLifecycleComposeApi::class)
@@ -33,15 +37,24 @@ internal fun LoginRoute(
     modifier: Modifier = Modifier,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
-    val state = viewModel.state.collectAsStateWithLifecycle()
-    if (state.value.loginType != null) {
-        LoginScreen(
-            state = state.value,
-            onLoginClick = { viewModel.sendIntent(OnLoginClick) },
-            navigateToDashboard = {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    when (state.event) {
+        NavigateToDashboard -> {
+            LaunchedEffect(Unit) {
                 navigateToDashboard()
-                viewModel.sendIntent(NavigatedToDashboard)
-            },
+                viewModel.sendIntent(NavigationHandled)
+            }
+        }
+        Idle -> {
+            // NO_OP
+        }
+    }
+
+    if (state.loginType != null) {
+        LoginScreen(
+            state = state,
+            onLoginClick = { viewModel.sendIntent(OnLoginClick) },
             modifier = modifier
         )
     }

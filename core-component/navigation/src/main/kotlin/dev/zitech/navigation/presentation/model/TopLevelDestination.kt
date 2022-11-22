@@ -15,13 +15,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.settings.presentation.navigation
+package dev.zitech.navigation.presentation.model
 
-import dev.zitech.navigation.presentation.model.FireFlowNavigationDestination
+import dev.zitech.ds.atoms.icon.Icon
 
-private const val DESTINATION = "settings"
-
-object SettingsDestination : FireFlowNavigationDestination {
-    override val route: String = "settings_route"
-    override val destination: String = DESTINATION
-}
+data class TopLevelDestination(
+    override val route: String,
+    override val destination: String,
+    val selectedIcon: Icon,
+    val unselectedIcon: Icon,
+    val iconTextId: Int
+) : FireFlowNavigationDestination

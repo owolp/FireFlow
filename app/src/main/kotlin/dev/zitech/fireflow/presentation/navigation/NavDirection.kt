@@ -17,13 +17,17 @@
 
 package dev.zitech.fireflow.presentation.navigation
 
-import dev.zitech.core.common.presentation.navigation.FireFlowNavigationDestination
-import dev.zitech.ds.atoms.icon.Icon
+import dev.zitech.navigation.presentation.model.FireFlowNavigationDestination
 
-internal data class TopLevelDestination(
-    override val route: String,
-    override val destination: String,
-    val selectedIcon: Icon,
-    val unselectedIcon: Icon,
-    val iconTextId: Int
-) : FireFlowNavigationDestination
+internal data class NavDirection(
+    val destination: FireFlowNavigationDestination,
+    val route: String? = null,
+    val inclusive: Boolean = DEFAULT_STATE_INCLUSIVE,
+    val popUpToDestination: FireFlowNavigationDestination? = null,
+    val restoreState: Boolean = DEFAULT_STATE_RESTORE_STATE
+) {
+    companion object {
+        const val DEFAULT_STATE_INCLUSIVE = false
+        const val DEFAULT_STATE_RESTORE_STATE = true
+    }
+}

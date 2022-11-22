@@ -73,8 +73,7 @@ internal class MainActivity : AppCompatActivity() {
             FireFlowApp(
                 theme = mainState.value.theme,
                 windowSizeClass = calculateWindowSizeClass(this),
-                navController = navController,
-                startDestination = mainState.value.startDestination
+                navController = navController
             )
             EventHandler(mainState.value.event)
         }

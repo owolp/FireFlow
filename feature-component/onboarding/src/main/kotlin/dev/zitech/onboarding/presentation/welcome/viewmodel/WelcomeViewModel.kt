@@ -21,13 +21,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.zitech.core.common.presentation.architecture.MviViewModel
+import dev.zitech.core.persistence.domain.usecase.database.SaveUserAccountUseCase
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 internal class WelcomeViewModel @Inject constructor(
-    private val stateHandler: WelcomeStateHandler
+    private val stateHandler: WelcomeStateHandler,
+    private val saveUserAccountUseCase: SaveUserAccountUseCase
 ) : ViewModel(), MviViewModel<WelcomeIntent, WelcomeState> {
 
     override val state: StateFlow<WelcomeState> = stateHandler.state
@@ -38,34 +40,31 @@ internal class WelcomeViewModel @Inject constructor(
                 OnContinueWithOauthClick -> handleOnContinueWithOauthClick()
                 OnContinueWithPatClick -> handleOnContinueWithPatClick()
                 OnDemoClick -> handleOnDemoClick()
-                NavigatedToOath -> handleNavigatedToOath()
-                NavigatedToPat -> handleNavigatedToPat()
-                NavigatedToDemo -> handleNavigatedToDemo()
+                OnBackClick -> handleOnBackClick()
+                NavigationHandled -> handleNavigationHandled()
             }
         }
     }
 
     private fun handleOnContinueWithOauthClick() {
-        stateHandler.setEvent(NavigateToOathScreen)
+        stateHandler.setEvent(NavigateToOath)
     }
 
     private fun handleOnContinueWithPatClick() {
-        stateHandler.setEvent(NavigateToPatScreen)
+        stateHandler.setEvent(NavigateToPat)
     }
 
-    private fun handleOnDemoClick() {
+    private suspend fun handleOnDemoClick() {
+        // TODO: Dev usage
+        saveUserAccountUseCase(true)
         stateHandler.setEvent(NavigateToDemo)
     }
 
-    private fun handleNavigatedToOath() {
-        stateHandler.resetEvent()
+    private fun handleOnBackClick() {
+        stateHandler.setEvent(NavigateOutOfApp)
     }
 
-    private fun handleNavigatedToPat() {
-        stateHandler.resetEvent()
-    }
-
-    private fun handleNavigatedToDemo() {
+    private fun handleNavigationHandled() {
         stateHandler.resetEvent()
     }
 }

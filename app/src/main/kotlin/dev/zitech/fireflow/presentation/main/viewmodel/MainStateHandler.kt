@@ -19,7 +19,6 @@ package dev.zitech.fireflow.presentation.main.viewmodel
 
 import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.core.common.presentation.architecture.MviStateHandler
-import dev.zitech.core.common.presentation.navigation.FireFlowNavigationDestination
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -31,33 +30,19 @@ class MainStateHandler @Inject constructor() : MviStateHandler<MainState> {
     private val mutableState = MutableStateFlow(MainState())
     override val state: StateFlow<MainState> = mutableState.asStateFlow()
 
-    fun setSplash(value: Boolean) {
-        mutableState.update {
-            it.copy(splash = value)
-        }
-    }
-
-    fun setTheme(value: ApplicationTheme) {
-        mutableState.update {
-            it.copy(theme = value)
-        }
-    }
-
     fun setEvent(value: MainEvent) {
-        mutableState.update {
-            it.copy(event = value)
-        }
+        mutableState.update { it.copy(event = value) }
     }
 
     fun resetEvent() {
-        mutableState.update {
-            it.copy(event = Idle)
-        }
+        setEvent(Idle)
     }
 
-    fun setDestination(value: FireFlowNavigationDestination) {
-        mutableState.update {
-            it.copy(startDestination = value)
-        }
+    fun setSplash(value: Boolean) {
+        mutableState.update { it.copy(splash = value) }
+    }
+
+    fun setTheme(value: ApplicationTheme) {
+        mutableState.update { it.copy(theme = value) }
     }
 }

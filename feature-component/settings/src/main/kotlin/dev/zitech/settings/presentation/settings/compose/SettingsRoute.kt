@@ -17,16 +17,14 @@
 
 package dev.zitech.settings.presentation.settings.compose
 
-import android.content.res.Configuration
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.zitech.ds.atoms.loading.FireFlowProgressIndicators
 import dev.zitech.ds.molecules.dialog.FireFlowDialogs
-import dev.zitech.ds.theme.PreviewFireFlowTheme
 import dev.zitech.settings.presentation.settings.viewmodel.Dialog
 import dev.zitech.settings.presentation.settings.viewmodel.Error
 import dev.zitech.settings.presentation.settings.viewmodel.Idle
@@ -42,6 +40,8 @@ import dev.zitech.settings.presentation.settings.viewmodel.OnThemePreferenceClic
 import dev.zitech.settings.presentation.settings.viewmodel.OnThemeSelect
 import dev.zitech.settings.presentation.settings.viewmodel.SelectLanguage
 import dev.zitech.settings.presentation.settings.viewmodel.SelectTheme
+import dev.zitech.settings.presentation.settings.viewmodel.SettingsState.ViewState.InitScreen
+import dev.zitech.settings.presentation.settings.viewmodel.SettingsState.ViewState.Success
 import dev.zitech.settings.presentation.settings.viewmodel.SettingsViewModel
 
 @OptIn(ExperimentalLifecycleComposeApi::class)
@@ -50,36 +50,10 @@ internal fun SettingsRoute(
     modifier: Modifier = Modifier,
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
-    val state = viewModel.state.collectAsStateWithLifecycle()
-    if (state.value.isLoading) {
-        FireFlowProgressIndicators.Settings()
-    } else {
-        SettingsScreen(
-            state = state.value,
-            modifier = modifier,
-            onAnalyticsCheckChange = { checked ->
-                viewModel.sendIntent(OnAnalyticsCheckChange(checked))
-            },
-            onPersonalizedAdsCheckChange = { checked ->
-                viewModel.sendIntent(OnPersonalizedAdsCheckChange(checked))
-            },
-            onPerformanceCheckChange = { checked ->
-                viewModel.sendIntent(OnPerformanceCheckChange(checked))
-            },
-            onCrashReporterCheckChange = { checked ->
-                viewModel.sendIntent(OnCrashReporterCheckChange(checked))
-            },
-            onThemeClick = {
-                viewModel.sendIntent(OnThemePreferenceClick)
-            },
-            onLanguageClick = {
-                viewModel.sendIntent(OnLanguagePreferenceClick)
-            }
-        )
-    }
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
     @Suppress("ForbiddenComment")
-    when (val event = state.value.event) {
+    when (val event = state.event) {
         is Error -> {
             // TODO: Show error SnackBar with restart button
         }
@@ -110,20 +84,34 @@ internal fun SettingsRoute(
             // NO_OP
         }
     }
-}
 
-@Preview(
-    name = "Settings Route Light Theme",
-    showBackground = true
-)
-@Preview(
-    name = "Settings Route Dark Theme",
-    uiMode = Configuration.UI_MODE_NIGHT_YES,
-    showBackground = true
-)
-@Composable
-private fun SettingsRoute_Preview() {
-    PreviewFireFlowTheme {
-        SettingsRoute()
+    when (state.viewState) {
+        InitScreen -> {
+            FireFlowProgressIndicators.Settings()
+        }
+        Success -> {
+            SettingsScreen(
+                state = state,
+                modifier = modifier,
+                onAnalyticsCheckChange = { checked ->
+                    viewModel.sendIntent(OnAnalyticsCheckChange(checked))
+                },
+                onPersonalizedAdsCheckChange = { checked ->
+                    viewModel.sendIntent(OnPersonalizedAdsCheckChange(checked))
+                },
+                onPerformanceCheckChange = { checked ->
+                    viewModel.sendIntent(OnPerformanceCheckChange(checked))
+                },
+                onCrashReporterCheckChange = { checked ->
+                    viewModel.sendIntent(OnCrashReporterCheckChange(checked))
+                },
+                onThemeClick = {
+                    viewModel.sendIntent(OnThemePreferenceClick)
+                },
+                onLanguageClick = {
+                    viewModel.sendIntent(OnLanguagePreferenceClick)
+                }
+            )
+        }
     }
 }

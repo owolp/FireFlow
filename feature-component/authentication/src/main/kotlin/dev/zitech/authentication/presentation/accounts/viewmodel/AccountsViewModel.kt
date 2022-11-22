@@ -18,20 +18,34 @@
 package dev.zitech.authentication.presentation.accounts.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.zitech.core.common.presentation.architecture.MviViewModel
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 internal class AccountsViewModel @Inject constructor(
-    stateHandler: AccountsStateHandler
+    private val stateHandler: AccountsStateHandler
 ) : ViewModel(), MviViewModel<AccountsIntent, AccountsState> {
 
     override val state: StateFlow<AccountsState> = stateHandler.state
 
-    @Suppress("ForbiddenComment")
     override fun sendIntent(intent: AccountsIntent) {
-        // TODO
+        viewModelScope.launch {
+            when (intent) {
+                OnLoginClick -> handleOnLoginClick()
+                NavigationHandled -> handleNavigationHandled()
+            }
+        }
+    }
+
+    private fun handleOnLoginClick() {
+        stateHandler.setEvent(NavigateToDashboard)
+    }
+
+    private fun handleNavigationHandled() {
+        stateHandler.resetEvent()
     }
 }

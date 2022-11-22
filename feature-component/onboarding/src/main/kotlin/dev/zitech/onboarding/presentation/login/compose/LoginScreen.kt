@@ -24,24 +24,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import dev.zitech.ds.atoms.button.FireFlowButtons
-import dev.zitech.onboarding.presentation.login.viewmodel.Idle
 import dev.zitech.onboarding.presentation.login.viewmodel.LoginState
-import dev.zitech.onboarding.presentation.login.viewmodel.NavigateToDashboard
 
 @Composable
 internal fun LoginScreen(
     state: LoginState,
     onLoginClick: () -> Unit,
-    navigateToDashboard: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    when (state.event) {
-        NavigateToDashboard -> navigateToDashboard()
-        Idle -> {
-            // NO_OP
-        }
-    }
-
     Column(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,

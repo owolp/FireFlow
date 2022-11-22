@@ -50,9 +50,7 @@ internal class SettingsViewModel @Inject constructor(
     override val state: StateFlow<SettingsState> = stateHandler.state
 
     init {
-        viewModelScope.launch {
-            getPreferencesState()
-        }
+        getPreferencesState()
     }
 
     override fun sendIntent(intent: SettingsIntent) {
@@ -103,7 +101,7 @@ internal class SettingsViewModel @Inject constructor(
     private suspend fun handleOnThemeSelect(id: Int) {
         ApplicationTheme.values().first { it.id == id }.run {
             settingsAppearanceCollectionStates.setApplicationThemeValue(this)
-            stateHandler.setTheme(this)
+            stateHandler.setThemeState(this)
             stateHandler.resetEvent()
         }
     }
@@ -111,7 +109,7 @@ internal class SettingsViewModel @Inject constructor(
     private fun handleOnLanguageSelect(id: Int) {
         ApplicationLanguage.values().first { it.id == id }.run {
             settingsAppearanceCollectionStates.setApplicationLanguageValue(this)
-            stateHandler.setLanguage(this)
+            stateHandler.setLanguageState(this)
             stateHandler.resetEvent()
         }
     }
@@ -152,9 +150,8 @@ internal class SettingsViewModel @Inject constructor(
         }
     }
 
-    private suspend fun getPreferencesState() {
+    private fun getPreferencesState() = viewModelScope.launch {
         stateHandler.run {
-            setIsLoadingState(true)
             setAnalyticsState(
                 settingsDataChoicesCollectionStates.getAnalyticsCollectionValue(),
                 appConfigProvider.buildFlavor
@@ -168,10 +165,10 @@ internal class SettingsViewModel @Inject constructor(
                 appConfigProvider.buildFlavor
             )
             setCrashReporterState(settingsDataChoicesCollectionStates.getCrashReporterCollectionValue())
-            setTheme(settingsAppearanceCollectionStates.getApplicationThemeValue())
-            setLanguage(settingsAppearanceCollectionStates.getApplicationLanguageValue())
-            setAppVersion(appConfigProvider.version)
-            setIsLoadingState(false)
+            setThemeState(settingsAppearanceCollectionStates.getApplicationThemeValue())
+            setLanguageState(settingsAppearanceCollectionStates.getApplicationLanguageValue())
+            setAppVersionState(appConfigProvider.version)
+            setViewState(SettingsState.ViewState.Success)
         }
     }
 

@@ -15,13 +15,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.settings.presentation.navigation
+package dev.zitech.authentication.presentation.navigation
 
 import dev.zitech.navigation.presentation.model.FireFlowNavigationDestination
 
-private const val DESTINATION = "settings"
+private const val DESTINATION = "authentication"
 
-object SettingsDestination : FireFlowNavigationDestination {
-    override val route: String = "settings_route"
+object AccountsDestination : FireFlowNavigationDestination {
+    override val route: String = "accounts_route"
     override val destination: String = DESTINATION
 }

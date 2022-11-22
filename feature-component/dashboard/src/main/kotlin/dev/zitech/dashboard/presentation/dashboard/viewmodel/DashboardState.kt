@@ -18,7 +18,19 @@
 package dev.zitech.dashboard.presentation.dashboard.viewmodel
 
 import dev.zitech.core.common.presentation.architecture.MviState
+import dev.zitech.navigation.domain.usecase.GetScreenDestinationUseCase
 
 internal data class DashboardState(
+    val viewState: ViewState = ViewState.InitScreen,
     val event: DashboardEvent = Idle
-) : MviState
+) : MviState {
+
+    sealed class ViewState {
+        object InitScreen : ViewState()
+        object Success : ViewState()
+
+        data class NotLoggedIn(
+            val destination: GetScreenDestinationUseCase.Destination
+        ) : ViewState()
+    }
+}

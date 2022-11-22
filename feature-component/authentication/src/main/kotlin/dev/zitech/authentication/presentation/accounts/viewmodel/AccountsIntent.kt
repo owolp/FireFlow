@@ -20,3 +20,5 @@ package dev.zitech.authentication.presentation.accounts.viewmodel
 import dev.zitech.core.common.presentation.architecture.MviIntent
 
 internal sealed interface AccountsIntent : MviIntent
+internal object OnLoginClick : AccountsIntent
+internal object NavigationHandled : AccountsIntent

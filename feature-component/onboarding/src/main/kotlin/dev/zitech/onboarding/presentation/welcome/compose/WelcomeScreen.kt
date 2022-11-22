@@ -17,6 +17,7 @@
 
 package dev.zitech.onboarding.presentation.welcome.compose
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,10 +27,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import dev.zitech.ds.atoms.button.FireFlowButtons
 import dev.zitech.ds.templates.scaffold.FireFlowScaffolds
-import dev.zitech.onboarding.presentation.welcome.viewmodel.Idle
-import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigateToDemo
-import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigateToOathScreen
-import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigateToPatScreen
 import dev.zitech.onboarding.presentation.welcome.viewmodel.WelcomeState
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -39,18 +36,11 @@ internal fun WelcomeScreen(
     onContinueWithOauthClick: () -> Unit,
     onContinueWithPatClick: () -> Unit,
     onDemoClick: () -> Unit,
-    navigateToOath: () -> Unit,
-    navigateToPat: () -> Unit,
-    navigateToDemo: () -> Unit,
+    onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    when (state.event) {
-        NavigateToOathScreen -> navigateToOath()
-        NavigateToPatScreen -> navigateToPat()
-        NavigateToDemo -> navigateToDemo()
-        Idle -> {
-            // NO_OP
-        }
+    BackHandler(enabled = true) {
+        onBackClick()
     }
 
     FireFlowScaffolds.Primary(

@@ -30,14 +30,10 @@ internal class WelcomeStateHandler @Inject constructor() : MviStateHandler<Welco
     override val state: StateFlow<WelcomeState> = mutableState.asStateFlow()
 
     fun setEvent(event: WelcomeEvent) {
-        mutableState.update {
-            it.copy(event = event)
-        }
+        mutableState.update { it.copy(event = event) }
     }
 
     fun resetEvent() {
-        mutableState.update {
-            it.copy(event = Idle)
-        }
+        mutableState.update { it.copy(event = Idle) }
     }
 }

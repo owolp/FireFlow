@@ -28,8 +28,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import dev.zitech.authentication.R
 import dev.zitech.authentication.presentation.accounts.viewmodel.AccountsState
-import dev.zitech.authentication.presentation.accounts.viewmodel.Idle
-import dev.zitech.authentication.presentation.accounts.viewmodel.NavigateToDashboard
 import dev.zitech.ds.atoms.button.FireFlowButtons
 import dev.zitech.ds.molecules.topappbar.FireFlowTopAppBars
 import dev.zitech.ds.molecules.topappbar.ScrollBehavior
@@ -39,16 +37,9 @@ import dev.zitech.ds.templates.scaffold.FireFlowScaffolds
 @Composable
 internal fun AccountsScreen(
     state: AccountsState,
-    navigateToDashboard: () -> Unit,
+    onLoginClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    when (state.event) {
-        NavigateToDashboard -> navigateToDashboard()
-        Idle -> {
-            // NO_OP
-        }
-    }
-
     val topAppBarScrollBehavior = FireFlowTopAppBars.topAppBarScrollBehavior(
         ScrollBehavior.Pinned
     )
@@ -65,7 +56,7 @@ internal fun AccountsScreen(
         AccountsContent(
             innerPadding,
             state,
-            navigateToDashboard
+            onLoginClick
         )
     }
 }

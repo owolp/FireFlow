@@ -24,6 +24,5 @@ internal sealed interface WelcomeIntent : MviIntent
 internal object OnContinueWithOauthClick : WelcomeIntent
 internal object OnContinueWithPatClick : WelcomeIntent
 internal object OnDemoClick : WelcomeIntent
-internal object NavigatedToOath : WelcomeIntent
-internal object NavigatedToPat : WelcomeIntent
-internal object NavigatedToDemo : WelcomeIntent
+internal object OnBackClick : WelcomeIntent
+internal object NavigationHandled : WelcomeIntent

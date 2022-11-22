@@ -18,13 +18,18 @@
 package dev.zitech.onboarding.presentation.welcome.compose
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigatedToDemo
-import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigatedToOath
-import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigatedToPat
+import dev.zitech.onboarding.presentation.welcome.viewmodel.Idle
+import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigateOutOfApp
+import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigateToDemo
+import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigateToOath
+import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigateToPat
+import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigationHandled
+import dev.zitech.onboarding.presentation.welcome.viewmodel.OnBackClick
 import dev.zitech.onboarding.presentation.welcome.viewmodel.OnContinueWithOauthClick
 import dev.zitech.onboarding.presentation.welcome.viewmodel.OnContinueWithPatClick
 import dev.zitech.onboarding.presentation.welcome.viewmodel.OnDemoClick
@@ -36,28 +41,40 @@ internal fun WelcomeRoute(
     navigateToOath: () -> Unit,
     navigateToPat: () -> Unit,
     navigateToDemo: () -> Unit,
+    navigateOutOfApp: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: WelcomeViewModel = hiltViewModel()
 ) {
-    val state = viewModel.state.collectAsStateWithLifecycle()
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    when (state.event) {
+        NavigateToOath -> {
+            navigateToOath()
+            viewModel.sendIntent(NavigationHandled)
+        }
+        NavigateToPat -> {
+            navigateToPat()
+            viewModel.sendIntent(NavigationHandled)
+        }
+        NavigateToDemo -> {
+            navigateToDemo()
+            viewModel.sendIntent(NavigationHandled)
+        }
+        NavigateOutOfApp -> {
+            navigateOutOfApp()
+            viewModel.sendIntent(NavigationHandled)
+        }
+        Idle -> {
+            // NO_OP
+        }
+    }
 
     WelcomeScreen(
         modifier = modifier,
-        state = state.value,
+        state = state,
         onContinueWithOauthClick = { viewModel.sendIntent(OnContinueWithOauthClick) },
         onContinueWithPatClick = { viewModel.sendIntent(OnContinueWithPatClick) },
         onDemoClick = { viewModel.sendIntent(OnDemoClick) },
-        navigateToOath = {
-            navigateToOath()
-            viewModel.sendIntent(NavigatedToOath)
-        },
-        navigateToPat = {
-            navigateToPat()
-            viewModel.sendIntent(NavigatedToPat)
-        },
-        navigateToDemo = {
-            navigateToDemo()
-            viewModel.sendIntent(NavigatedToDemo)
-        }
+        onBackClick = { viewModel.sendIntent(OnBackClick) }
     )
 }

@@ -21,10 +21,19 @@ import dev.zitech.core.common.presentation.architecture.MviStateHandler
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 internal class AccountsStateHandler @Inject constructor() : MviStateHandler<AccountsState> {
 
     private val mutableState = MutableStateFlow(AccountsState())
     override val state: StateFlow<AccountsState> = mutableState.asStateFlow()
+
+    fun setEvent(event: AccountsEvent) {
+        mutableState.update { it.copy(event = event) }
+    }
+
+    fun resetEvent() {
+        setEvent(Idle)
+    }
 }

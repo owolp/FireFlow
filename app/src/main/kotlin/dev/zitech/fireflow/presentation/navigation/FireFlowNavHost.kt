@@ -21,78 +21,93 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import dev.zitech.authentication.presentation.navigation.AccountsDestination
 import dev.zitech.authentication.presentation.navigation.authenticationGraph
-import dev.zitech.core.common.presentation.navigation.FireFlowNavigationDestination
 import dev.zitech.dashboard.presentation.navigation.DashboardDestination
 import dev.zitech.dashboard.presentation.navigation.dashboardGraph
 import dev.zitech.onboarding.presentation.login.model.LoginType
 import dev.zitech.onboarding.presentation.navigation.LoginDestination
+import dev.zitech.onboarding.presentation.navigation.WelcomeDestination
 import dev.zitech.onboarding.presentation.navigation.onboardingGraph
 import dev.zitech.settings.presentation.navigation.settingsGraph
 
 @Composable
-fun FireFlowNavHost(
+internal fun FireFlowNavHost(
     navController: NavHostController,
-    onNavigateToDestination: (
-        destination: FireFlowNavigationDestination,
-        route: String?,
-        inclusive: Boolean?,
-        popUpToDestination: FireFlowNavigationDestination?
-    ) -> Unit,
+    onNavigateToDestination: (NavDirection) -> Unit,
     onBackClick: () -> Unit,
+    onCloseApplication: () -> Unit,
     modifier: Modifier = Modifier,
-    startDestination: FireFlowNavigationDestination
+    startDestination: String = DashboardDestination.route
 ) {
     NavHost(
         navController = navController,
-        startDestination = startDestination.route,
+        startDestination = startDestination,
         modifier = modifier
     ) {
         authenticationGraph(
             navigateToDashboard = {
                 onNavigateToDestination(
-                    DashboardDestination,
-                    null,
-                    true,
-                    null
+                    NavDirection(
+                        destination = DashboardDestination,
+                        inclusive = true
+                    )
                 )
             }
         )
         onboardingGraph(
             navigateToOath = {
                 onNavigateToDestination(
-                    LoginDestination,
-                    LoginDestination.createNavigationRoute(LoginType.OAUTH),
-                    true,
-                    null
+                    NavDirection(
+                        destination = LoginDestination,
+                        route = LoginDestination.createNavigationRoute(LoginType.OAUTH)
+                    )
                 )
             },
             navigateToPat = {
                 onNavigateToDestination(
-                    LoginDestination,
-                    LoginDestination.createNavigationRoute(LoginType.PAT),
-                    true,
-                    null
+                    NavDirection(
+                        destination = LoginDestination,
+                        route = LoginDestination.createNavigationRoute(LoginType.PAT)
+                    )
                 )
             },
             navigateToDemo = {
-                onNavigateToDestination(
-                    DashboardDestination,
-                    null,
-                    true,
-                    null
-                )
+                onBackClick()
             },
             navigateToDashboard = {
                 onNavigateToDestination(
-                    DashboardDestination,
-                    null,
-                    true,
-                    null
+                    NavDirection(
+                        destination = DashboardDestination,
+                        restoreState = false
+                    )
+                )
+            },
+            navigateOutOfApp = {
+                onCloseApplication()
+            }
+        )
+        dashboardGraph(
+            navigateToAccounts = {
+                onNavigateToDestination(
+                    NavDirection(
+                        destination = AccountsDestination,
+                        inclusive = true
+                    )
+                )
+            },
+            navigateToError = {
+                TODO()
+            },
+            navigateToWelcome = {
+                onNavigateToDestination(
+                    NavDirection(
+                        destination = WelcomeDestination,
+                        inclusive = true
+                    )
                 )
             }
         )
-        dashboardGraph()
         settingsGraph()
     }
 }

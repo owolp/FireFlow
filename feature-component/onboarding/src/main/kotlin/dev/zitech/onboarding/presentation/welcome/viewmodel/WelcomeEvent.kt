@@ -22,6 +22,7 @@ import dev.zitech.core.common.presentation.architecture.MviState
 internal sealed interface WelcomeEvent : MviState.Event
 
 internal object Idle : WelcomeEvent
-internal object NavigateToOathScreen : WelcomeEvent
-internal object NavigateToPatScreen : WelcomeEvent
+internal object NavigateToOath : WelcomeEvent
+internal object NavigateToPat : WelcomeEvent
 internal object NavigateToDemo : WelcomeEvent
+internal object NavigateOutOfApp : WelcomeEvent

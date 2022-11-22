@@ -22,13 +22,19 @@ import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.core.common.presentation.architecture.MviState
 
 internal data class SettingsState(
-    val isLoading: Boolean = false,
+    val viewState: ViewState = ViewState.InitScreen,
+    val event: SettingsEvent = Idle,
     val analytics: Boolean? = null,
     val personalizedAds: Boolean? = null,
     val performance: Boolean? = null,
     val crashReporter: Boolean = false,
     val theme: ApplicationTheme = ApplicationTheme.SYSTEM,
     val language: ApplicationLanguage = ApplicationLanguage.SYSTEM,
-    val version: String = "",
-    val event: SettingsEvent = Idle
-) : MviState
+    val version: String = ""
+) : MviState {
+
+    sealed class ViewState {
+        object InitScreen : ViewState()
+        object Success : ViewState()
+    }
+}
