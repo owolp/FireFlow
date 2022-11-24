@@ -104,14 +104,14 @@ internal fun FireFlowApp(
                                     it.route == navDirection.destination.route
                                 } ?: navDirection.destination
                                 ).let { destination ->
-                                    appState.navigate(
-                                        destination,
-                                        navDirection.route ?: destination.route,
-                                        navDirection.inclusive,
-                                        navDirection.popUpToDestination,
-                                        navDirection.restoreState
-                                    )
-                                }
+                                appState.navigate(
+                                    destination,
+                                    navDirection.route ?: destination.route,
+                                    navDirection.inclusive,
+                                    navDirection.popUpToDestination,
+                                    navDirection.restoreState
+                                )
+                            }
                         },
                         onBackClick = appState::onBackClick,
                         onCloseApplication = appState::onCloseApplication,

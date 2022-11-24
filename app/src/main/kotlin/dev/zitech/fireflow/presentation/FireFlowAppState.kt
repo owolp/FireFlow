@@ -17,8 +17,6 @@
 
 package dev.zitech.fireflow.presentation
 
-import dev.zitech.dashboard.R as dashboardR
-import dev.zitech.settings.R as settingsR
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
@@ -38,11 +36,13 @@ import dev.zitech.fireflow.presentation.navigation.NavDirection.Companion.DEFAUL
 import dev.zitech.navigation.presentation.model.FireFlowNavigationDestination
 import dev.zitech.navigation.presentation.model.TopLevelDestination
 import dev.zitech.settings.presentation.navigation.SettingsDestination
+import dev.zitech.dashboard.R as dashboardR
+import dev.zitech.settings.R as settingsR
 
 @Composable
 internal fun rememberFireFlowAppState(
     windowSizeClass: WindowSizeClass,
-    navController: NavHostController,
+    navController: NavHostController
 ): FireFlowAppState = remember(navController, windowSizeClass) {
     FireFlowAppState(navController, windowSizeClass)
 }
