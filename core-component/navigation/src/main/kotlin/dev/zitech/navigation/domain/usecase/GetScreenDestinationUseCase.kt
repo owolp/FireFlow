@@ -18,56 +18,52 @@
 package dev.zitech.navigation.domain.usecase
 
 import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.navigation.DeepLinkScreenDestination
 import dev.zitech.core.persistence.domain.model.exception.NullCurrentUserAccountException
 import dev.zitech.core.persistence.domain.usecase.database.GetCurrentUserAccountUseCase
 import dev.zitech.core.persistence.domain.usecase.database.GetUserAccountsUseCase
+import javax.inject.Inject
+import javax.inject.Singleton
+import kotlinx.coroutines.channels.ProducerScope
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.FlowCollector
+import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.onEach
-import javax.inject.Inject
 
+@Singleton
 class GetScreenDestinationUseCase @Inject constructor(
     private val getCurrentUserAccountUseCase: GetCurrentUserAccountUseCase,
     private val getUserAccountsUseCase: GetUserAccountsUseCase
 ) {
 
-    sealed class Destination {
-        object Accounts : Destination()
-        object Error : Destination()
-        object Current : Destination()
-        object Welcome : Destination()
-    }
-
-    operator fun invoke(): Flow<Destination> = flow {
+    operator fun invoke(): Flow<DeepLinkScreenDestination> = channelFlow {
         getCurrentUserAccountUseCase()
             .onEach { result ->
                 when (result) {
-                    is DataResult.Success -> emit(Destination.Current)
+                    is DataResult.Success -> send(DeepLinkScreenDestination.Current)
                     is DataResult.Error -> {
                         when (result.cause) {
                             NullCurrentUserAccountException -> {
                                 handleNullCurrentUserAccount()
                             }
-                            else -> emit(Destination.Error)
+                            else -> send(DeepLinkScreenDestination.Error)
                         }
                     }
                 }
             }.collect()
     }
 
-    private suspend fun FlowCollector<Destination>.handleNullCurrentUserAccount() {
+    private suspend fun ProducerScope<DeepLinkScreenDestination>.handleNullCurrentUserAccount() {
         when (val result = getUserAccountsUseCase().first()) {
             is DataResult.Success -> {
                 if (result.value.isNotEmpty()) {
-                    emit(Destination.Accounts)
+                    send(DeepLinkScreenDestination.Accounts)
                 } else {
-                    emit(Destination.Welcome)
+                    send(DeepLinkScreenDestination.Welcome)
                 }
             }
-            is DataResult.Error -> emit(Destination.Error)
+            is DataResult.Error -> send(DeepLinkScreenDestination.Error)
         }
     }
 }

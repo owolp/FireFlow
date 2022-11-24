@@ -20,36 +20,29 @@ package dev.zitech.dashboard.presentation.dashboard.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.zitech.core.common.domain.navigation.LoggedInState
+import dev.zitech.core.common.presentation.architecture.DeepLinkViewModel
 import dev.zitech.core.common.presentation.architecture.MviViewModel
+import dev.zitech.core.common.presentation.splash.SplashScreenStateHandler
 import dev.zitech.navigation.domain.usecase.GetScreenDestinationUseCase
-import dev.zitech.navigation.domain.usecase.GetScreenDestinationUseCase.Destination.Current
+import dev.zitech.navigation.presentation.extension.loggedInState
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @HiltViewModel
 internal class DashboardViewModel @Inject constructor(
-    private val stateHandler: DashboardStateHandler,
-    private val getScreenDestinationUseCase: GetScreenDestinationUseCase
-) : ViewModel(), MviViewModel<DashboardIntent, DashboardState> {
+    stateHandler: DashboardStateHandler,
+    splashScreenState: SplashScreenStateHandler,
+    getScreenDestinationUseCase: GetScreenDestinationUseCase
+) : ViewModel(), MviViewModel<DashboardIntent, DashboardState>, DeepLinkViewModel {
 
-    override val state: StateFlow<DashboardState> = stateHandler.state
+    override val screenState: StateFlow<DashboardState> = stateHandler.state
 
-    init {
-        getScreenDestination()
-    }
-
-    private fun getScreenDestination() {
-        getScreenDestinationUseCase().onEach { destination ->
-            when (destination) {
-                Current -> {
-                    stateHandler.setViewState(DashboardState.ViewState.Success)
-                }
-                else -> stateHandler.setViewState(DashboardState.ViewState.NotLoggedIn(destination))
-            }
-        }.launchIn(viewModelScope)
-    }
+    override val loggedInState: StateFlow<LoggedInState> by loggedInState(
+        getScreenDestinationUseCase,
+        splashScreenState,
+        viewModelScope
+    )
 
     @Suppress("ForbiddenComment")
     override fun sendIntent(intent: DashboardIntent) {

@@ -45,9 +45,9 @@ internal fun WelcomeRoute(
     modifier: Modifier = Modifier,
     viewModel: WelcomeViewModel = hiltViewModel()
 ) {
-    val state by viewModel.state.collectAsStateWithLifecycle()
+    val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
-    when (state.event) {
+    when (screenState.event) {
         NavigateToOath -> {
             navigateToOath()
             viewModel.sendIntent(NavigationHandled)
@@ -71,7 +71,7 @@ internal fun WelcomeRoute(
 
     WelcomeScreen(
         modifier = modifier,
-        state = state,
+        state = screenState,
         onContinueWithOauthClick = { viewModel.sendIntent(OnContinueWithOauthClick) },
         onContinueWithPatClick = { viewModel.sendIntent(OnContinueWithPatClick) },
         onDemoClick = { viewModel.sendIntent(OnDemoClick) },

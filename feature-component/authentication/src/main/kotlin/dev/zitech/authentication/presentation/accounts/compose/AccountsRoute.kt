@@ -37,9 +37,9 @@ internal fun AccountsRoute(
     modifier: Modifier = Modifier,
     viewModel: AccountsViewModel = hiltViewModel()
 ) {
-    val state by viewModel.state.collectAsStateWithLifecycle()
+    val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
-    when (state.event) {
+    when (screenState.event) {
         NavigateToDashboard -> {
             LaunchedEffect(Unit) {
                 navigateToDashboard()
@@ -53,7 +53,7 @@ internal fun AccountsRoute(
 
     AccountsScreen(
         modifier = modifier,
-        state = state,
+        state = screenState,
         onLoginClick = { viewModel.sendIntent(OnLoginClick) }
     )
 }

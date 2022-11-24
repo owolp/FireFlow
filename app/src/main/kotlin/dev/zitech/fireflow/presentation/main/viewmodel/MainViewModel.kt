@@ -21,25 +21,29 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.zitech.core.common.presentation.architecture.MviViewModel
+import dev.zitech.core.common.presentation.splash.SplashScreenStateHandler
 import dev.zitech.core.persistence.domain.usecase.preferences.GetApplicationThemeValueUseCase
 import dev.zitech.core.remoteconfig.domain.usecase.InitializeRemoteConfiguratorUseCase
 import dev.zitech.core.reporter.analytics.domain.usecase.event.ApplicationLaunchAnalyticsEvent
+import javax.inject.Inject
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 internal class MainViewModel @Inject constructor(
     private val stateHandler: MainStateHandler,
+    splashScreenStateHandler: SplashScreenStateHandler,
     private val getApplicationThemeValueUseCase: GetApplicationThemeValueUseCase,
     private val initializeRemoteConfiguratorUseCase: InitializeRemoteConfiguratorUseCase,
     applicationLaunchAnalyticsEvent: ApplicationLaunchAnalyticsEvent
 ) : ViewModel(), MviViewModel<MainIntent, MainState> {
 
-    override val state: StateFlow<MainState> = stateHandler.state
+    override val screenState: StateFlow<MainState> = stateHandler.state
+
+    val splashState: StateFlow<Boolean> = splashScreenStateHandler.splashState
 
     init {
         initializeRemoteConfigurator()
@@ -67,11 +71,9 @@ internal class MainViewModel @Inject constructor(
 
     private fun initializeRemoteConfigurator() {
         initializeRemoteConfiguratorUseCase()
-            .onCompletion { hideSplashScreen() }
+            .onCompletion {
+                stateHandler.setRemoteConfig(true)
+            }
             .launchIn(viewModelScope)
-    }
-
-    private fun hideSplashScreen() {
-        stateHandler.setSplash(false)
     }
 }

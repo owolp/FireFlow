@@ -18,11 +18,14 @@
 package dev.zitech.settings.presentation.settings.compose
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import dev.zitech.core.common.domain.navigation.DeepLinkScreenDestination
+import dev.zitech.core.common.domain.navigation.LoggedInState
 import dev.zitech.ds.atoms.loading.FireFlowProgressIndicators
 import dev.zitech.ds.molecules.dialog.FireFlowDialogs
 import dev.zitech.settings.presentation.settings.viewmodel.Dialog
@@ -40,20 +43,65 @@ import dev.zitech.settings.presentation.settings.viewmodel.OnThemePreferenceClic
 import dev.zitech.settings.presentation.settings.viewmodel.OnThemeSelect
 import dev.zitech.settings.presentation.settings.viewmodel.SelectLanguage
 import dev.zitech.settings.presentation.settings.viewmodel.SelectTheme
-import dev.zitech.settings.presentation.settings.viewmodel.SettingsState.ViewState.InitScreen
-import dev.zitech.settings.presentation.settings.viewmodel.SettingsState.ViewState.Success
 import dev.zitech.settings.presentation.settings.viewmodel.SettingsViewModel
 
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 internal fun SettingsRoute(
     modifier: Modifier = Modifier,
-    viewModel: SettingsViewModel = hiltViewModel()
+    viewModel: SettingsViewModel = hiltViewModel(),
+    navigateToAccounts: () -> Unit,
+    navigateToError: () -> Unit,
+    navigateToWelcome: () -> Unit
 ) {
-    val state by viewModel.state.collectAsStateWithLifecycle()
+    val screenState by viewModel.screenState.collectAsStateWithLifecycle()
+    val loggedInState by viewModel.loggedInState.collectAsStateWithLifecycle()
+
+    when (val state = loggedInState) {
+        LoggedInState.InitScreen -> {
+            FireFlowProgressIndicators.Magnifier()
+        }
+        LoggedInState.Logged -> {
+            SettingsScreen(
+                state = screenState,
+                modifier = modifier,
+                onAnalyticsCheckChange = { checked ->
+                    viewModel.sendIntent(OnAnalyticsCheckChange(checked))
+                },
+                onPersonalizedAdsCheckChange = { checked ->
+                    viewModel.sendIntent(OnPersonalizedAdsCheckChange(checked))
+                },
+                onPerformanceCheckChange = { checked ->
+                    viewModel.sendIntent(OnPerformanceCheckChange(checked))
+                },
+                onCrashReporterCheckChange = { checked ->
+                    viewModel.sendIntent(OnCrashReporterCheckChange(checked))
+                },
+                onThemeClick = {
+                    viewModel.sendIntent(OnThemePreferenceClick)
+                },
+                onLanguageClick = {
+                    viewModel.sendIntent(OnLanguagePreferenceClick)
+                }
+            )
+        }
+        is LoggedInState.NotLogged -> {
+            LaunchedEffect(Unit) {
+                when (state.destination) {
+                    DeepLinkScreenDestination.Accounts -> navigateToAccounts()
+                    DeepLinkScreenDestination.Error -> navigateToError()
+                    DeepLinkScreenDestination.Welcome -> navigateToWelcome()
+                    DeepLinkScreenDestination.Current,
+                    DeepLinkScreenDestination.Init -> {
+                        // NO_OP
+                    }
+                }
+            }
+        }
+    }
 
     @Suppress("ForbiddenComment")
-    when (val event = state.event) {
+    when (val event = screenState.event) {
         is Error -> {
             // TODO: Show error SnackBar with restart button
         }
@@ -82,36 +130,6 @@ internal fun SettingsRoute(
         }
         Idle -> {
             // NO_OP
-        }
-    }
-
-    when (state.viewState) {
-        InitScreen -> {
-            FireFlowProgressIndicators.Magnifier()
-        }
-        Success -> {
-            SettingsScreen(
-                state = state,
-                modifier = modifier,
-                onAnalyticsCheckChange = { checked ->
-                    viewModel.sendIntent(OnAnalyticsCheckChange(checked))
-                },
-                onPersonalizedAdsCheckChange = { checked ->
-                    viewModel.sendIntent(OnPersonalizedAdsCheckChange(checked))
-                },
-                onPerformanceCheckChange = { checked ->
-                    viewModel.sendIntent(OnPerformanceCheckChange(checked))
-                },
-                onCrashReporterCheckChange = { checked ->
-                    viewModel.sendIntent(OnCrashReporterCheckChange(checked))
-                },
-                onThemeClick = {
-                    viewModel.sendIntent(OnThemePreferenceClick)
-                },
-                onLanguageClick = {
-                    viewModel.sendIntent(OnLanguagePreferenceClick)
-                }
-            )
         }
     }
 }

@@ -25,29 +25,42 @@ import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.domain.model.ApplicationLanguage
 import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.core.common.domain.model.BuildFlavor
+import dev.zitech.core.common.domain.navigation.LoggedInState
+import dev.zitech.core.common.presentation.architecture.DeepLinkViewModel
 import dev.zitech.core.common.presentation.architecture.MviViewModel
+import dev.zitech.core.common.presentation.splash.SplashScreenStateHandler
+import dev.zitech.navigation.domain.usecase.GetScreenDestinationUseCase
+import dev.zitech.navigation.presentation.extension.loggedInState
 import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsAppearanceCollectionStates
 import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsDataChoicesCollectionStates
 import dev.zitech.settings.presentation.settings.viewmodel.error.SettingsErrorProvider
 import dev.zitech.settings.presentation.settings.viewmodel.theme.SettingsStringsProvider
+import javax.inject.Inject
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
 @HiltViewModel
 internal class SettingsViewModel @Inject constructor(
     private val stateHandler: SettingsStateHandler,
+    splashScreenStateHandler: SplashScreenStateHandler,
+    getScreenDestinationUseCase: GetScreenDestinationUseCase,
     private val settingsAppearanceCollectionStates: SettingsAppearanceCollectionStates,
     private val settingsDataChoicesCollectionStates: SettingsDataChoicesCollectionStates,
     private val settingsErrorProvider: SettingsErrorProvider,
     private val settingsStringsProvider: SettingsStringsProvider,
     private val appConfigProvider: AppConfigProvider
-) : ViewModel(), MviViewModel<SettingsIntent, SettingsState> {
+) : ViewModel(), MviViewModel<SettingsIntent, SettingsState>, DeepLinkViewModel {
 
     private val tag = Logger.tag(this::class.java)
 
-    override val state: StateFlow<SettingsState> = stateHandler.state
+    override val screenState: StateFlow<SettingsState> = stateHandler.state
+
+    override val loggedInState: StateFlow<LoggedInState> by loggedInState(
+        getScreenDestinationUseCase,
+        splashScreenStateHandler,
+        viewModelScope
+    )
 
     init {
         getPreferencesState()

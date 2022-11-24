@@ -38,11 +38,11 @@ class MainStateHandler @Inject constructor() : MviStateHandler<MainState> {
         setEvent(Idle)
     }
 
-    fun setSplash(value: Boolean) {
-        mutableState.update { it.copy(splash = value) }
-    }
-
     fun setTheme(value: ApplicationTheme) {
         mutableState.update { it.copy(theme = value) }
+    }
+
+    fun setRemoteConfig(value: Boolean) {
+        mutableState.update { it.copy(remoteConfig = value) }
     }
 }

@@ -15,10 +15,21 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.dashboard.presentation.dashboard.viewmodel
+package dev.zitech.core.common.presentation.splash
 
-import dev.zitech.core.common.presentation.architecture.MviState
+import javax.inject.Inject
+import javax.inject.Singleton
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
-internal data class DashboardState(
-    val event: DashboardEvent = Idle
-) : MviState
+@Singleton
+class SplashScreenStateHandler @Inject constructor() {
+
+    private val mutableSplashState = MutableStateFlow(true)
+    val splashState: StateFlow<Boolean> = mutableSplashState.asStateFlow()
+
+    suspend operator fun invoke(show: Boolean) {
+        mutableSplashState.emit(show)
+    }
+}

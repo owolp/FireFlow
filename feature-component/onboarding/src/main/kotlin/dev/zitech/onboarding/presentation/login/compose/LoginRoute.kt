@@ -37,9 +37,9 @@ internal fun LoginRoute(
     modifier: Modifier = Modifier,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
-    val state by viewModel.state.collectAsStateWithLifecycle()
+    val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
-    when (state.event) {
+    when (screenState.event) {
         NavigateToDashboard -> {
             LaunchedEffect(Unit) {
                 navigateToDashboard()
@@ -51,9 +51,9 @@ internal fun LoginRoute(
         }
     }
 
-    if (state.loginType != null) {
+    if (screenState.loginType != null) {
         LoginScreen(
-            state = state,
+            state = screenState,
             onLoginClick = { viewModel.sendIntent(OnLoginClick) },
             modifier = modifier
         )

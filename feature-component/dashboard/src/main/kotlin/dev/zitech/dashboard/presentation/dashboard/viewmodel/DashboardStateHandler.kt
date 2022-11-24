@@ -21,15 +21,10 @@ import dev.zitech.core.common.presentation.architecture.MviStateHandler
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 internal class DashboardStateHandler @Inject constructor() : MviStateHandler<DashboardState> {
 
     private val mutableState = MutableStateFlow(DashboardState())
     override val state: StateFlow<DashboardState> = mutableState.asStateFlow()
-
-    fun setViewState(value: DashboardState.ViewState) {
-        mutableState.update { it.copy(viewState = value) }
-    }
 }

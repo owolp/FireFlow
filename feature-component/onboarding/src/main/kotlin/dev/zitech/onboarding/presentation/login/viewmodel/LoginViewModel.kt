@@ -40,7 +40,7 @@ internal class LoginViewModel @Inject constructor(
         getLoginType()
     }
 
-    override val state: StateFlow<LoginState> = stateHandler.state
+    override val screenState: StateFlow<LoginState> = stateHandler.state
 
     override fun sendIntent(intent: LoginIntent) {
         viewModelScope.launch {

@@ -15,10 +15,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.dashboard.presentation.dashboard.viewmodel
+package dev.zitech.core.common.presentation.architecture
 
-import dev.zitech.core.common.presentation.architecture.MviState
+import dev.zitech.core.common.domain.navigation.LoggedInState
+import kotlinx.coroutines.flow.StateFlow
 
-internal data class DashboardState(
-    val event: DashboardEvent = Idle
-) : MviState
+interface DeepLinkViewModel {
+    val loggedInState: StateFlow<LoggedInState>
+}

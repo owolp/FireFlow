@@ -15,10 +15,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.dashboard.presentation.dashboard.viewmodel
+package dev.zitech.core.common.domain.navigation
 
-import dev.zitech.core.common.presentation.architecture.MviState
+sealed class LoggedInState {
+    object InitScreen : LoggedInState()
+    object Logged : LoggedInState()
 
-internal data class DashboardState(
-    val event: DashboardEvent = Idle
-) : MviState
+    data class NotLogged(
+        val destination: DeepLinkScreenDestination
+    ) : LoggedInState()
+}

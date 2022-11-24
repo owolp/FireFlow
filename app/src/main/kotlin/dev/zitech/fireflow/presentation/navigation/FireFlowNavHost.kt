@@ -108,6 +108,26 @@ internal fun FireFlowNavHost(
                 )
             }
         )
-        settingsGraph()
+        settingsGraph(
+            navigateToAccounts = {
+                onNavigateToDestination(
+                    NavDirection(
+                        destination = AccountsDestination,
+                        inclusive = true
+                    )
+                )
+            },
+            navigateToError = {
+                TODO()
+            },
+            navigateToWelcome = {
+                onNavigateToDestination(
+                    NavDirection(
+                        destination = WelcomeDestination,
+                        inclusive = true
+                    )
+                )
+            }
+        )
     }
 }

@@ -59,10 +59,9 @@ import dev.zitech.navigation.presentation.model.TopLevelDestination
 @Composable
 internal fun FireFlowApp(
     theme: ApplicationTheme?,
-    splashClosed: Boolean,
     windowSizeClass: WindowSizeClass,
     navController: NavHostController,
-    appState: FireFlowAppState = rememberFireFlowAppState(windowSizeClass, navController, splashClosed)
+    appState: FireFlowAppState = rememberFireFlowAppState(windowSizeClass, navController)
 ) {
     FireFlowTheme(
         darkTheme = isDarkTheme(theme)
@@ -105,14 +104,14 @@ internal fun FireFlowApp(
                                     it.route == navDirection.destination.route
                                 } ?: navDirection.destination
                                 ).let { destination ->
-                                appState.navigate(
-                                    destination,
-                                    navDirection.route ?: destination.route,
-                                    navDirection.inclusive,
-                                    navDirection.popUpToDestination,
-                                    navDirection.restoreState
-                                )
-                            }
+                                    appState.navigate(
+                                        destination,
+                                        navDirection.route ?: destination.route,
+                                        navDirection.inclusive,
+                                        navDirection.popUpToDestination,
+                                        navDirection.restoreState
+                                    )
+                                }
                         },
                         onBackClick = appState::onBackClick,
                         onCloseApplication = appState::onCloseApplication,

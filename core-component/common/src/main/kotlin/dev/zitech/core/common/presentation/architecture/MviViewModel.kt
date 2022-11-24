@@ -20,6 +20,6 @@ package dev.zitech.core.common.presentation.architecture
 import kotlinx.coroutines.flow.StateFlow
 
 interface MviViewModel<Intent : MviIntent, State : MviState> {
-    val state: StateFlow<State>
+    val screenState: StateFlow<State>
     fun sendIntent(intent: Intent)
 }

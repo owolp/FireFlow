@@ -32,7 +32,7 @@ internal class WelcomeViewModel @Inject constructor(
     private val saveUserAccountUseCase: SaveUserAccountUseCase
 ) : ViewModel(), MviViewModel<WelcomeIntent, WelcomeState> {
 
-    override val state: StateFlow<WelcomeState> = stateHandler.state
+    override val screenState: StateFlow<WelcomeState> = stateHandler.state
 
     override fun sendIntent(intent: WelcomeIntent) {
         viewModelScope.launch {

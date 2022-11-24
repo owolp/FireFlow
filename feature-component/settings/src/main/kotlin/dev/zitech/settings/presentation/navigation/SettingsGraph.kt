@@ -21,8 +21,16 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import dev.zitech.settings.presentation.settings.compose.SettingsRoute
 
-fun NavGraphBuilder.settingsGraph() {
+fun NavGraphBuilder.settingsGraph(
+    navigateToAccounts: () -> Unit,
+    navigateToError: () -> Unit,
+    navigateToWelcome: () -> Unit
+) {
     composable(route = SettingsDestination.route) {
-        SettingsRoute()
+        SettingsRoute(
+            navigateToAccounts = navigateToAccounts,
+            navigateToError = navigateToError,
+            navigateToWelcome = navigateToWelcome
+        )
     }
 }

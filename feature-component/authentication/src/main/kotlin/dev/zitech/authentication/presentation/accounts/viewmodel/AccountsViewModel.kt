@@ -30,7 +30,7 @@ internal class AccountsViewModel @Inject constructor(
     private val stateHandler: AccountsStateHandler
 ) : ViewModel(), MviViewModel<AccountsIntent, AccountsState> {
 
-    override val state: StateFlow<AccountsState> = stateHandler.state
+    override val screenState: StateFlow<AccountsState> = stateHandler.state
 
     override fun sendIntent(intent: AccountsIntent) {
         viewModelScope.launch {

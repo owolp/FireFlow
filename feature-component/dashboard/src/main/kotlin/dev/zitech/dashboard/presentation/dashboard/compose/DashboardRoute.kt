@@ -24,15 +24,10 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import dev.zitech.dashboard.presentation.dashboard.viewmodel.DashboardState.ViewState.InitScreen
-import dev.zitech.dashboard.presentation.dashboard.viewmodel.DashboardState.ViewState.NotLoggedIn
-import dev.zitech.dashboard.presentation.dashboard.viewmodel.DashboardState.ViewState.Success
+import dev.zitech.core.common.domain.navigation.DeepLinkScreenDestination
+import dev.zitech.core.common.domain.navigation.LoggedInState
 import dev.zitech.dashboard.presentation.dashboard.viewmodel.DashboardViewModel
 import dev.zitech.ds.atoms.loading.FireFlowProgressIndicators
-import dev.zitech.navigation.domain.usecase.GetScreenDestinationUseCase.Destination.Accounts
-import dev.zitech.navigation.domain.usecase.GetScreenDestinationUseCase.Destination.Current
-import dev.zitech.navigation.domain.usecase.GetScreenDestinationUseCase.Destination.Error
-import dev.zitech.navigation.domain.usecase.GetScreenDestinationUseCase.Destination.Welcome
 
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
@@ -43,25 +38,27 @@ internal fun DashboardRoute(
     navigateToError: () -> Unit,
     navigateToWelcome: () -> Unit
 ) {
-    val state by viewModel.state.collectAsStateWithLifecycle()
+    val screenState by viewModel.screenState.collectAsStateWithLifecycle()
+    val loggedInState by viewModel.loggedInState.collectAsStateWithLifecycle()
 
-    when (val viewState = state.viewState) {
-        InitScreen -> {
+    when (val state = loggedInState) {
+        LoggedInState.InitScreen -> {
             FireFlowProgressIndicators.Magnifier()
         }
-        Success -> {
+        LoggedInState.Logged -> {
             DashboardScreen(
                 modifier = modifier,
-                state = state
+                state = screenState
             )
         }
-        is NotLoggedIn -> {
+        is LoggedInState.NotLogged -> {
             LaunchedEffect(Unit) {
-                when (viewState.destination) {
-                    Accounts -> navigateToAccounts()
-                    Error -> navigateToError()
-                    Welcome -> navigateToWelcome()
-                    Current -> {
+                when (state.destination) {
+                    DeepLinkScreenDestination.Accounts -> navigateToAccounts()
+                    DeepLinkScreenDestination.Error -> navigateToError()
+                    DeepLinkScreenDestination.Welcome -> navigateToWelcome()
+                    DeepLinkScreenDestination.Current,
+                    DeepLinkScreenDestination.Init -> {
                         // NO_OP
                     }
                 }

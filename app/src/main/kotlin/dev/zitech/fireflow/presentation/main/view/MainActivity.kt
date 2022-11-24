@@ -53,7 +53,7 @@ internal class MainActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
             installSplashScreen().apply {
                 setKeepOnScreenCondition {
-                    viewModel.state.value.splash
+                    viewModel.splashState.value
                 }
             }
         } else {
@@ -68,16 +68,18 @@ internal class MainActivity : AppCompatActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         setContent {
-            val mainState by viewModel.state.collectAsStateWithLifecycle()
+            val mainState by viewModel.screenState.collectAsStateWithLifecycle()
 
             val navController = rememberNavController()
-            FireFlowApp(
-                theme = mainState.theme,
-                splashClosed = mainState.splash,
-                windowSizeClass = calculateWindowSizeClass(this),
-                navController = navController
-            )
-            EventHandler(mainState.event)
+
+            if (mainState.remoteConfig) {
+                FireFlowApp(
+                    theme = mainState.theme,
+                    windowSizeClass = calculateWindowSizeClass(this),
+                    navController = navController
+                )
+                EventHandler(mainState.event)
+            }
         }
     }
 
