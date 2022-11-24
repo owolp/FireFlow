@@ -31,6 +31,7 @@ import dev.zitech.onboarding.presentation.navigation.WelcomeDestination
 import dev.zitech.onboarding.presentation.navigation.onboardingGraph
 import dev.zitech.settings.presentation.navigation.settingsGraph
 
+@Suppress("ForbiddenComment")
 @Composable
 internal fun FireFlowNavHost(
     navController: NavHostController,
@@ -76,12 +77,17 @@ internal fun FireFlowNavHost(
                 onBackClick()
             },
             navigateToDashboard = {
-                onNavigateToDestination(
-                    NavDirection(
-                        destination = DashboardDestination,
-                        restoreState = false
-                    )
-                )
+//                onNavigateToDestination(
+//                    NavDirection(
+//                        destination = DashboardDestination,
+//                        restoreState = false,
+//                        popUpToDestination = DashboardDestination
+//                    )
+//                )
+                // TODO: Hack, otherwise when navigating in click on Settings, Click on Dashboard,
+                //  goes to Onbarding. Should be fixed
+                onBackClick()
+                onBackClick()
             },
             navigateOutOfApp = {
                 onCloseApplication()
