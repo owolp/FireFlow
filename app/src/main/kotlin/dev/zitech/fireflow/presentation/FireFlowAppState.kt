@@ -42,15 +42,17 @@ import dev.zitech.settings.R as settingsR
 @Composable
 internal fun rememberFireFlowAppState(
     windowSizeClass: WindowSizeClass,
-    navController: NavHostController
-): FireFlowAppState = remember(navController, windowSizeClass) {
-    FireFlowAppState(navController, windowSizeClass)
+    navController: NavHostController,
+    splashClosed: Boolean
+): FireFlowAppState = remember(navController, windowSizeClass, splashClosed) {
+    FireFlowAppState(navController, windowSizeClass, splashClosed)
 }
 
 @Stable
 internal class FireFlowAppState(
     val navController: NavHostController,
-    private val windowSizeClass: WindowSizeClass
+    private val windowSizeClass: WindowSizeClass,
+    private val splashClosed: Boolean
 ) {
     val currentDestination: NavDestination?
         @Composable get() = navController
@@ -60,13 +62,13 @@ internal class FireFlowAppState(
         @Composable get() = (
             windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact ||
                 windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact
-            ) && isCurrentDestinationTopLevelDestination()
+            ) && isCurrentDestinationTopLevelDestination() && splashClosed
 
     val shouldShowNavRail: Boolean
         @Composable get() = !(
             windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact ||
                 windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact
-            ) && isCurrentDestinationTopLevelDestination()
+            ) && isCurrentDestinationTopLevelDestination() && splashClosed
 
     val topLevelDestinations: List<TopLevelDestination> = listOf(
         TopLevelDestination(

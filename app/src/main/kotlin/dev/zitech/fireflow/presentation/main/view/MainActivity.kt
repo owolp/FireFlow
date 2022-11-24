@@ -24,6 +24,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
@@ -67,15 +68,16 @@ internal class MainActivity : AppCompatActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         setContent {
-            val mainState = viewModel.state.collectAsStateWithLifecycle()
+            val mainState by viewModel.state.collectAsStateWithLifecycle()
 
             val navController = rememberNavController()
             FireFlowApp(
-                theme = mainState.value.theme,
+                theme = mainState.theme,
+                splashClosed = mainState.splash,
                 windowSizeClass = calculateWindowSizeClass(this),
                 navController = navController
             )
-            EventHandler(mainState.value.event)
+            EventHandler(mainState.event)
         }
     }
 
