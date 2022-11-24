@@ -28,6 +28,7 @@ import dev.zitech.dashboard.presentation.dashboard.viewmodel.DashboardState.View
 import dev.zitech.dashboard.presentation.dashboard.viewmodel.DashboardState.ViewState.NotLoggedIn
 import dev.zitech.dashboard.presentation.dashboard.viewmodel.DashboardState.ViewState.Success
 import dev.zitech.dashboard.presentation.dashboard.viewmodel.DashboardViewModel
+import dev.zitech.ds.atoms.loading.FireFlowProgressIndicators
 import dev.zitech.navigation.domain.usecase.GetScreenDestinationUseCase.Destination.Accounts
 import dev.zitech.navigation.domain.usecase.GetScreenDestinationUseCase.Destination.Current
 import dev.zitech.navigation.domain.usecase.GetScreenDestinationUseCase.Destination.Error
@@ -46,7 +47,7 @@ internal fun DashboardRoute(
 
     when (val viewState = state.viewState) {
         InitScreen -> {
-            // TODO: ShowLoading Screen
+            FireFlowProgressIndicators.Magnifier()
         }
         Success -> {
             DashboardScreen(

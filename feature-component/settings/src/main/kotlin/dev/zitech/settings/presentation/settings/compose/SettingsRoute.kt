@@ -87,7 +87,7 @@ internal fun SettingsRoute(
 
     when (state.viewState) {
         InitScreen -> {
-            FireFlowProgressIndicators.Settings()
+            FireFlowProgressIndicators.Magnifier()
         }
         Success -> {
             SettingsScreen(
