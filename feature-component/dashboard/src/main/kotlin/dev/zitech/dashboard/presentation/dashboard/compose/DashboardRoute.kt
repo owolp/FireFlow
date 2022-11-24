@@ -25,7 +25,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.zitech.core.common.domain.navigation.DeepLinkScreenDestination
-import dev.zitech.core.common.domain.navigation.LoggedInState
+import dev.zitech.core.common.domain.navigation.LogInState
 import dev.zitech.dashboard.presentation.dashboard.viewmodel.DashboardViewModel
 import dev.zitech.ds.atoms.loading.FireFlowProgressIndicators
 
@@ -39,19 +39,19 @@ internal fun DashboardRoute(
     navigateToWelcome: () -> Unit
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
-    val loggedInState by viewModel.loggedInState.collectAsStateWithLifecycle()
+    val logInState by viewModel.logInState.collectAsStateWithLifecycle()
 
-    when (val state = loggedInState) {
-        LoggedInState.InitScreen -> {
+    when (val state = logInState) {
+        LogInState.InitScreen -> {
             FireFlowProgressIndicators.Magnifier()
         }
-        LoggedInState.Logged -> {
+        LogInState.Logged -> {
             DashboardScreen(
                 modifier = modifier,
                 state = screenState
             )
         }
-        is LoggedInState.NotLogged -> {
+        is LogInState.NotLogged -> {
             LaunchedEffect(Unit) {
                 when (state.destination) {
                     DeepLinkScreenDestination.Accounts -> navigateToAccounts()

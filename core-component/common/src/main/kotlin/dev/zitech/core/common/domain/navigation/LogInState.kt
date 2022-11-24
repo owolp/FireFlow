@@ -17,11 +17,11 @@
 
 package dev.zitech.core.common.domain.navigation
 
-sealed class LoggedInState {
-    object InitScreen : LoggedInState()
-    object Logged : LoggedInState()
+sealed class LogInState {
+    object InitScreen : LogInState()
+    object Logged : LogInState()
 
     data class NotLogged(
         val destination: DeepLinkScreenDestination
-    ) : LoggedInState()
+    ) : LogInState()
 }

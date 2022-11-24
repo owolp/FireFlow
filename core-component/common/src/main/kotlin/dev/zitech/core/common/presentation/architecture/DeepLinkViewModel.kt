@@ -17,9 +17,9 @@
 
 package dev.zitech.core.common.presentation.architecture
 
-import dev.zitech.core.common.domain.navigation.LoggedInState
+import dev.zitech.core.common.domain.navigation.LogInState
 import kotlinx.coroutines.flow.StateFlow
 
 interface DeepLinkViewModel {
-    val loggedInState: StateFlow<LoggedInState>
+    val logInState: StateFlow<LogInState>
 }

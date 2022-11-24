@@ -20,12 +20,12 @@ package dev.zitech.dashboard.presentation.dashboard.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.zitech.core.common.domain.navigation.LoggedInState
+import dev.zitech.core.common.domain.navigation.LogInState
 import dev.zitech.core.common.presentation.architecture.DeepLinkViewModel
 import dev.zitech.core.common.presentation.architecture.MviViewModel
 import dev.zitech.core.common.presentation.splash.SplashScreenStateHandler
 import dev.zitech.navigation.domain.usecase.GetScreenDestinationUseCase
-import dev.zitech.navigation.presentation.extension.loggedInState
+import dev.zitech.navigation.presentation.extension.logInState
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
@@ -38,7 +38,7 @@ internal class DashboardViewModel @Inject constructor(
 
     override val screenState: StateFlow<DashboardState> = stateHandler.state
 
-    override val loggedInState: StateFlow<LoggedInState> by loggedInState(
+    override val logInState: StateFlow<LogInState> by logInState(
         getScreenDestinationUseCase,
         splashScreenState,
         viewModelScope

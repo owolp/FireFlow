@@ -18,7 +18,7 @@
 package dev.zitech.navigation.presentation.extension
 
 import dev.zitech.core.common.domain.navigation.DeepLinkScreenDestination
-import dev.zitech.core.common.domain.navigation.LoggedInState
+import dev.zitech.core.common.domain.navigation.LogInState
 import dev.zitech.core.common.presentation.splash.SplashScreenStateHandler
 import dev.zitech.navigation.domain.usecase.GetScreenDestinationUseCase
 import kotlin.properties.ReadOnlyProperty
@@ -31,34 +31,34 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
-fun loggedInState(
+fun logInState(
     getScreenDestinationUseCase: GetScreenDestinationUseCase,
     splashScreenStateHandler: SplashScreenStateHandler,
     coroutineScope: CoroutineScope
-): ReadOnlyProperty<Any, StateFlow<LoggedInState>> =
-    object : ReadOnlyProperty<Any, StateFlow<LoggedInState>> {
+): ReadOnlyProperty<Any, StateFlow<LogInState>> =
+    object : ReadOnlyProperty<Any, StateFlow<LogInState>> {
 
         init {
             getScreenDestination()
         }
 
-        private val loggedInState = MutableStateFlow<LoggedInState>(LoggedInState.InitScreen)
+        private val logInState = MutableStateFlow<LogInState>(LogInState.InitScreen)
 
-        override fun getValue(thisRef: Any, property: KProperty<*>): StateFlow<LoggedInState> =
-            loggedInState.asStateFlow()
+        override fun getValue(thisRef: Any, property: KProperty<*>): StateFlow<LogInState> =
+            logInState.asStateFlow()
 
         private fun getScreenDestination() {
             getScreenDestinationUseCase().onEach { destination ->
-                loggedInState.emit(
+                logInState.emit(
                     when (destination) {
                         DeepLinkScreenDestination.Accounts,
                         DeepLinkScreenDestination.Error,
                         DeepLinkScreenDestination.Welcome ->
-                            LoggedInState.NotLogged(destination)
+                            LogInState.NotLogged(destination)
                         DeepLinkScreenDestination.Current ->
-                            LoggedInState.Logged
+                            LogInState.Logged
                         DeepLinkScreenDestination.Init ->
-                            LoggedInState.InitScreen
+                            LogInState.InitScreen
                     }.also {
                         hideSplashScreen()
                     }

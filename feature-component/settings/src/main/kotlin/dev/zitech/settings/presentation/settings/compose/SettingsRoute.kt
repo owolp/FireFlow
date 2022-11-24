@@ -25,7 +25,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.zitech.core.common.domain.navigation.DeepLinkScreenDestination
-import dev.zitech.core.common.domain.navigation.LoggedInState
+import dev.zitech.core.common.domain.navigation.LogInState
 import dev.zitech.ds.atoms.loading.FireFlowProgressIndicators
 import dev.zitech.ds.molecules.dialog.FireFlowDialogs
 import dev.zitech.settings.presentation.settings.viewmodel.Dialog
@@ -55,13 +55,13 @@ internal fun SettingsRoute(
     navigateToWelcome: () -> Unit
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
-    val loggedInState by viewModel.loggedInState.collectAsStateWithLifecycle()
+    val logInState by viewModel.logInState.collectAsStateWithLifecycle()
 
-    when (val state = loggedInState) {
-        LoggedInState.InitScreen -> {
+    when (val state = logInState) {
+        LogInState.InitScreen -> {
             FireFlowProgressIndicators.Magnifier()
         }
-        LoggedInState.Logged -> {
+        LogInState.Logged -> {
             SettingsScreen(
                 state = screenState,
                 modifier = modifier,
@@ -85,7 +85,7 @@ internal fun SettingsRoute(
                 }
             )
         }
-        is LoggedInState.NotLogged -> {
+        is LogInState.NotLogged -> {
             LaunchedEffect(Unit) {
                 when (state.destination) {
                     DeepLinkScreenDestination.Accounts -> navigateToAccounts()

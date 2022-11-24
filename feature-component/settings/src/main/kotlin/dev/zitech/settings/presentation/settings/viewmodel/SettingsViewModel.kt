@@ -25,12 +25,12 @@ import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.domain.model.ApplicationLanguage
 import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.core.common.domain.model.BuildFlavor
-import dev.zitech.core.common.domain.navigation.LoggedInState
+import dev.zitech.core.common.domain.navigation.LogInState
 import dev.zitech.core.common.presentation.architecture.DeepLinkViewModel
 import dev.zitech.core.common.presentation.architecture.MviViewModel
 import dev.zitech.core.common.presentation.splash.SplashScreenStateHandler
 import dev.zitech.navigation.domain.usecase.GetScreenDestinationUseCase
-import dev.zitech.navigation.presentation.extension.loggedInState
+import dev.zitech.navigation.presentation.extension.logInState
 import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsAppearanceCollectionStates
 import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsDataChoicesCollectionStates
 import dev.zitech.settings.presentation.settings.viewmodel.error.SettingsErrorProvider
@@ -56,7 +56,7 @@ internal class SettingsViewModel @Inject constructor(
 
     override val screenState: StateFlow<SettingsState> = stateHandler.state
 
-    override val loggedInState: StateFlow<LoggedInState> by loggedInState(
+    override val logInState: StateFlow<LogInState> by logInState(
         getScreenDestinationUseCase,
         splashScreenStateHandler,
         viewModelScope
