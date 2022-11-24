@@ -28,6 +28,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.dashboard.presentation.navigation.DashboardDestination
 import dev.zitech.ds.atoms.icon.FireFlowIcons
 import dev.zitech.ds.atoms.icon.Icon
@@ -111,14 +112,27 @@ internal class FireFlowAppState(
             val navRoute = route ?: destination.route
             navController.navigate(navRoute) {
                 popUpTo(popUpToDestination?.route ?: navRoute) {
-                    this.inclusive = inclusive ?: false
+                    this.inclusive = inclusive
                 }
             }
         }
     }
 
-    fun onBackClick() {
-        navController.popBackStack()
+    fun onBackClick(
+        destination: FireFlowNavigationDestination?,
+        inclusive: Boolean? = DEFAULT_STATE_INCLUSIVE
+    ) {
+        if (destination != null && inclusive != null) {
+            try {
+                val id = navController.getBackStackEntry(destination.route).destination.id
+                navController.popBackStack(id, inclusive)
+            } catch (e: IllegalArgumentException) {
+                Logger.e("FireFlowAppState", e)
+                navController.popBackStack()
+            }
+        } else {
+            navController.popBackStack()
+        }
     }
 
     fun onCloseApplication() {

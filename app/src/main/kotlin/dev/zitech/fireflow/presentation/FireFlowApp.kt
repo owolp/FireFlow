@@ -113,7 +113,12 @@ internal fun FireFlowApp(
                                 )
                             }
                         },
-                        onBackClick = appState::onBackClick,
+                        onBackClick = { navDirection ->
+                            appState.onBackClick(
+                                destination = navDirection?.destination,
+                                inclusive = navDirection?.inclusive
+                            )
+                        },
                         onCloseApplication = appState::onCloseApplication,
                         modifier = Modifier
                             .padding(padding)

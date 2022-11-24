@@ -36,7 +36,7 @@ import dev.zitech.settings.presentation.navigation.settingsGraph
 internal fun FireFlowNavHost(
     navController: NavHostController,
     onNavigateToDestination: (NavDirection) -> Unit,
-    onBackClick: () -> Unit,
+    onBackClick: (NavDirection?) -> Unit,
     onCloseApplication: () -> Unit,
     modifier: Modifier = Modifier,
     startDestination: String = DashboardDestination.route
@@ -74,20 +74,14 @@ internal fun FireFlowNavHost(
                 )
             },
             navigateToDemo = {
-                onBackClick()
+                onBackClick(null)
             },
             navigateToDashboard = {
-//                onNavigateToDestination(
-//                    NavDirection(
-//                        destination = DashboardDestination,
-//                        restoreState = false,
-//                        popUpToDestination = DashboardDestination
-//                    )
-//                )
-                // TODO: Hack, otherwise when navigating in click on Settings, Click on Dashboard,
-                //  goes to Onbarding. Should be fixed
-                onBackClick()
-                onBackClick()
+                onBackClick(
+                    NavDirection(
+                        destination = DashboardDestination
+                    )
+                )
             },
             navigateOutOfApp = {
                 onCloseApplication()
