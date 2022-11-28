@@ -38,6 +38,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavHostController
 import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.ds.atoms.background.FireFlowBackground
 import dev.zitech.ds.atoms.icon.Icon
@@ -49,7 +50,7 @@ import dev.zitech.ds.atoms.text.FireFlowTexts
 import dev.zitech.ds.templates.scaffold.FireFlowScaffolds
 import dev.zitech.ds.theme.FireFlowTheme
 import dev.zitech.fireflow.presentation.navigation.FireFlowNavHost
-import dev.zitech.fireflow.presentation.navigation.TopLevelDestination
+import dev.zitech.navigation.presentation.model.TopLevelDestination
 
 @OptIn(
     ExperimentalMaterial3Api::class,
@@ -57,10 +58,10 @@ import dev.zitech.fireflow.presentation.navigation.TopLevelDestination
 )
 @Composable
 internal fun FireFlowApp(
-    splash: Boolean,
     theme: ApplicationTheme?,
     windowSizeClass: WindowSizeClass,
-    appState: FireFlowAppState = rememberFireFlowAppState(windowSizeClass)
+    navController: NavHostController,
+    appState: FireFlowAppState = rememberFireFlowAppState(windowSizeClass, navController)
 ) {
     FireFlowTheme(
         darkTheme = isDarkTheme(theme)
@@ -68,7 +69,7 @@ internal fun FireFlowApp(
         FireFlowBackground.Primary {
             FireFlowScaffolds.Primary(
                 bottomBar = {
-                    if (!splash && appState.shouldShowBottomBar) {
+                    if (appState.shouldShowBottomBar) {
                         FireFlowBottomBar(
                             destinations = appState.topLevelDestinations,
                             onNavigateToDestination = appState::navigate,
@@ -86,25 +87,43 @@ internal fun FireFlowApp(
                             )
                         )
                 ) {
-                    if (!splash) {
-                        if (appState.shouldShowNavRail) {
-                            FireFlowNavRail(
-                                destinations = appState.topLevelDestinations,
-                                onNavigateToDestination = appState::navigate,
-                                currentDestination = appState.currentDestination,
-                                modifier = Modifier.safeDrawingPadding()
-                            )
-                        }
-
-                        FireFlowNavHost(
-                            navController = appState.navController,
+                    if (appState.shouldShowNavRail) {
+                        FireFlowNavRail(
+                            destinations = appState.topLevelDestinations,
                             onNavigateToDestination = appState::navigate,
-                            onBackClick = appState::onBackClick,
-                            modifier = Modifier
-                                .padding(padding)
-                                .consumedWindowInsets(padding)
+                            currentDestination = appState.currentDestination,
+                            modifier = Modifier.safeDrawingPadding()
                         )
                     }
+
+                    FireFlowNavHost(
+                        navController = appState.navController,
+                        onNavigateToDestination = { navDirection ->
+                            (
+                                appState.topLevelDestinations.firstOrNull {
+                                    it.route == navDirection.destination.route
+                                } ?: navDirection.destination
+                                ).let { destination ->
+                                appState.navigate(
+                                    destination,
+                                    navDirection.route ?: destination.route,
+                                    navDirection.inclusive,
+                                    navDirection.popUpToDestination,
+                                    navDirection.restoreState
+                                )
+                            }
+                        },
+                        onBackClick = { navDirection ->
+                            appState.onBackClick(
+                                destination = navDirection?.destination,
+                                inclusive = navDirection?.inclusive
+                            )
+                        },
+                        onCloseApplication = appState::onCloseApplication,
+                        modifier = Modifier
+                            .padding(padding)
+                            .consumedWindowInsets(padding)
+                    )
                 }
             }
         }

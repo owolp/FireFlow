@@ -24,14 +24,14 @@ import dev.zitech.ds.molecules.dialog.DialogRadioItem
 import dev.zitech.settings.R
 import javax.inject.Inject
 
-class SettingsStringsProvider @Inject constructor(
+internal class SettingsStringsProvider @Inject constructor(
     private val stringsProvider: StringsProvider
 ) {
 
-    internal fun getDialogThemeTitle(): String =
+    fun getDialogThemeTitle(): String =
         stringsProvider(R.string.appearance_dialog_theme_title)
 
-    internal fun getDialogThemes(applicationTheme: ApplicationTheme): List<DialogRadioItem> =
+    fun getDialogThemes(applicationTheme: ApplicationTheme): List<DialogRadioItem> =
         ApplicationTheme.values().sortedBy { it.id }
             .map {
                 DialogRadioItem(
@@ -42,10 +42,10 @@ class SettingsStringsProvider @Inject constructor(
                 )
             }
 
-    internal fun getDialogLanguageTitle(): String =
+    fun getDialogLanguageTitle(): String =
         stringsProvider(R.string.appearance_dialog_language_title)
 
-    internal fun getDialogLanguages(applicationLanguage: ApplicationLanguage): List<DialogRadioItem> =
+    fun getDialogLanguages(applicationLanguage: ApplicationLanguage): List<DialogRadioItem> =
         ApplicationLanguage.values().sortedBy { it.id }
             .map {
                 DialogRadioItem(

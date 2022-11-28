@@ -20,12 +20,8 @@ package dev.zitech.fireflow.presentation.main.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.common.presentation.architecture.MviViewModel
-import dev.zitech.core.persistence.domain.model.database.UserLoggedState
-import dev.zitech.core.persistence.domain.usecase.database.GetCurrentUserAccountUseCase
-import dev.zitech.core.persistence.domain.usecase.database.GetUserLoggedStateUseCase
-import dev.zitech.core.persistence.domain.usecase.database.SaveUserAccountUseCase
+import dev.zitech.core.common.presentation.splash.SplashScreenStateHandler
 import dev.zitech.core.persistence.domain.usecase.preferences.GetApplicationThemeValueUseCase
 import dev.zitech.core.remoteconfig.domain.usecase.InitializeRemoteConfiguratorUseCase
 import dev.zitech.core.reporter.analytics.domain.usecase.event.ApplicationLaunchAnalyticsEvent
@@ -38,19 +34,20 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class MainViewModel @Inject constructor(
-    private val mainStateHandler: MainStateHandler,
-    private val initializeRemoteConfiguratorUseCase: InitializeRemoteConfiguratorUseCase,
-    private val getUserLoggedStateUseCase: GetUserLoggedStateUseCase,
-    private val saveUseAccountUseCase: SaveUserAccountUseCase,
-    private val getCurrentUserAccountUseCase: GetCurrentUserAccountUseCase,
+    private val stateHandler: MainStateHandler,
+    splashScreenStateHandler: SplashScreenStateHandler,
     private val getApplicationThemeValueUseCase: GetApplicationThemeValueUseCase,
+    private val initializeRemoteConfiguratorUseCase: InitializeRemoteConfiguratorUseCase,
     applicationLaunchAnalyticsEvent: ApplicationLaunchAnalyticsEvent
 ) : ViewModel(), MviViewModel<MainIntent, MainState> {
 
-    override val state: StateFlow<MainState> = mainStateHandler.state
+    override val screenState: StateFlow<MainState> = stateHandler.state
+
+    val splashState: StateFlow<Boolean> = splashScreenStateHandler.splashState
 
     init {
         initializeRemoteConfigurator()
+        initApplicationThemeCollection()
         applicationLaunchAnalyticsEvent()
     }
 
@@ -63,51 +60,19 @@ internal class MainViewModel @Inject constructor(
     }
 
     private fun handleShowErrorHandled() {
-        mainStateHandler.setEvent(Idle)
+        stateHandler.resetEvent()
+    }
+
+    private fun initApplicationThemeCollection() {
+        getApplicationThemeValueUseCase()
+            .onEach { stateHandler.setTheme(it) }
+            .launchIn(viewModelScope)
     }
 
     private fun initializeRemoteConfigurator() {
         initializeRemoteConfiguratorUseCase()
-            .onCompletion { checkUserLoggedState() }
-            .launchIn(viewModelScope)
-    }
-
-    /*
-        Development solution to log in user, to be removed for first release
-     */
-    private suspend fun checkUserLoggedState() {
-        when (getUserLoggedStateUseCase()) {
-            UserLoggedState.LOGGED_IN -> {
-                collectCurrentUserAccount()
-            }
-            UserLoggedState.LOGGED_OUT -> {
-                saveUseAccountUseCase(true)
-                collectCurrentUserAccount()
-            }
-        }
-    }
-
-    @Suppress("ForbiddenComment")
-    private fun collectCurrentUserAccount() {
-        getCurrentUserAccountUseCase()
-            .onEach { result ->
-                when (result) {
-                    is DataResult.Success -> {
-                        collectApplicationTheme()
-                    }
-                    is DataResult.Error -> {
-                        // TODO: Navigate Out?
-                    }
-                }
-            }
-            .launchIn(viewModelScope)
-    }
-
-    private fun collectApplicationTheme() {
-        getApplicationThemeValueUseCase()
-            .onEach {
-                mainStateHandler.setTheme(it)
-                mainStateHandler.hideSplashScreen()
+            .onCompletion {
+                stateHandler.setRemoteConfig(true)
             }
             .launchIn(viewModelScope)
     }

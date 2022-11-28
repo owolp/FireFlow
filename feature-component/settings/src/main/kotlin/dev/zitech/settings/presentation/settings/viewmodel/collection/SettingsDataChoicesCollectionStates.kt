@@ -27,7 +27,7 @@ import dev.zitech.core.reporter.crash.domain.usecase.SetCrashReporterCollectionU
 import dev.zitech.core.reporter.performance.domain.usecase.SetPerformanceCollectionUseCase
 import javax.inject.Inject
 
-class SettingsDataChoicesCollectionStates @Inject constructor(
+internal class SettingsDataChoicesCollectionStates @Inject constructor(
     private val getAnalyticsCollectionValueUseCase: GetAnalyticsCollectionValueUseCase,
     private val setAnalyticsCollectionUseCase: SetAnalyticsCollectionUseCase,
     private val getAllowPersonalizedAdsValueUseCase: GetAllowPersonalizedAdsValueUseCase,
@@ -38,31 +38,31 @@ class SettingsDataChoicesCollectionStates @Inject constructor(
     private val setPerformanceCollectionUseCase: SetPerformanceCollectionUseCase
 ) {
 
-    internal suspend fun setAnalyticsCollection(checked: Boolean) {
+    suspend fun setAnalyticsCollection(checked: Boolean) {
         setAnalyticsCollectionUseCase(checked)
     }
 
-    internal suspend fun getAnalyticsCollectionValue(): Boolean =
+    suspend fun getAnalyticsCollectionValue(): Boolean =
         getAnalyticsCollectionValueUseCase()
 
-    internal suspend fun setAllowPersonalizedAdsValue(checked: Boolean) {
+    suspend fun setAllowPersonalizedAdsValue(checked: Boolean) {
         allowPersonalizedAdsUseCase(checked)
     }
 
-    internal suspend fun getAllowPersonalizedAdsValue(): Boolean =
+    suspend fun getAllowPersonalizedAdsValue(): Boolean =
         getAllowPersonalizedAdsValueUseCase()
 
-    internal suspend fun setCrashReporterCollection(checked: Boolean) {
+    suspend fun setCrashReporterCollection(checked: Boolean) {
         setCrashReporterCollectionUseCase(checked)
     }
 
-    internal suspend fun getCrashReporterCollectionValue(): Boolean =
+    suspend fun getCrashReporterCollectionValue(): Boolean =
         getCrashReporterCollectionValueUseCase()
 
-    internal suspend fun setPerformanceCollection(checked: Boolean) {
+    suspend fun setPerformanceCollection(checked: Boolean) {
         setPerformanceCollectionUseCase(checked)
     }
 
-    internal suspend fun getPerformanceCollectionValue(): Boolean =
+    suspend fun getPerformanceCollectionValue(): Boolean =
         getPerformanceCollectionValueUseCase()
 }

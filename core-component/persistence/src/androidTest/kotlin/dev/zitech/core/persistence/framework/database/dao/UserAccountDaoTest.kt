@@ -92,7 +92,7 @@ internal class UserAccountDaoTest {
             val result = sut.getCurrentUserAccount()
 
             // Act & Assert
-            sut.getCurrentUserAccountFlow().test {
+            sut.getCurrentUserAccount().test {
                 assertThat(awaitItem()).isEqualTo(userAccountEntity)
             }
         }
@@ -118,7 +118,7 @@ internal class UserAccountDaoTest {
             sut.saveUserAccount(userAccountEntity2)
 
             // Act & Assert
-            sut.getCurrentUserAccountFlow().test {
+            sut.getCurrentUserAccount().test {
                 assertThat(awaitItem()).isEqualTo(userAccountEntity3)
             }
         }

@@ -30,21 +30,19 @@ class MainStateHandler @Inject constructor() : MviStateHandler<MainState> {
     private val mutableState = MutableStateFlow(MainState())
     override val state: StateFlow<MainState> = mutableState.asStateFlow()
 
-    fun hideSplashScreen() {
-        mutableState.update {
-            it.copy(splash = false)
-        }
+    fun setEvent(value: MainEvent) {
+        mutableState.update { it.copy(event = value) }
+    }
+
+    fun resetEvent() {
+        setEvent(Idle)
     }
 
     fun setTheme(value: ApplicationTheme) {
-        mutableState.update {
-            it.copy(theme = value)
-        }
+        mutableState.update { it.copy(theme = value) }
     }
 
-    fun setEvent(event: MainEvent) {
-        mutableState.update {
-            it.copy(event = event)
-        }
+    fun setRemoteConfig(value: Boolean) {
+        mutableState.update { it.copy(remoteConfig = value) }
     }
 }

@@ -24,7 +24,7 @@ import androidx.core.os.LocaleListCompat.getEmptyLocaleList
 import dev.zitech.core.common.domain.model.ApplicationLanguage
 import javax.inject.Inject
 
-class ApplicationLocaleImpl @Inject constructor() : ApplicationLocale {
+internal class ApplicationLocaleImpl @Inject constructor() : ApplicationLocale {
 
     override fun set(applicationLanguage: ApplicationLanguage) {
         val appLocale = applicationLanguage.locale?.run {

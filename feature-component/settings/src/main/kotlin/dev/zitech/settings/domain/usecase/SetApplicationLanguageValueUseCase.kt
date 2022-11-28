@@ -21,7 +21,7 @@ import dev.zitech.core.common.domain.model.ApplicationLanguage
 import dev.zitech.settings.frawework.locale.ApplicationLocale
 import javax.inject.Inject
 
-class SetApplicationLanguageValueUseCase @Inject constructor(
+internal class SetApplicationLanguageValueUseCase @Inject constructor(
     private val applicationLocale: ApplicationLocale
 ) {
 

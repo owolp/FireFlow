@@ -17,18 +17,11 @@
 
 package dev.zitech.dashboard.presentation.navigation
 
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
-import dev.zitech.dashboard.presentation.dashboard.compose.DashboardRoute
-import dev.zitech.navigation.FireFlowNavigationDestination
+import dev.zitech.navigation.presentation.model.FireFlowNavigationDestination
+
+private const val DESTINATION = "dashboard"
 
 object DashboardDestination : FireFlowNavigationDestination {
     override val route: String = "dashboard_route"
-    override val destination: String = "dashboard_destination"
-}
-
-fun NavGraphBuilder.dashboardGraph() {
-    composable(route = DashboardDestination.route) {
-        DashboardRoute()
-    }
+    override val destination: String = DESTINATION
 }

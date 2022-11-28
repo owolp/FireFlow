@@ -18,8 +18,34 @@
 package dev.zitech.dashboard.presentation.dashboard.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.zitech.core.common.domain.navigation.LogInState
+import dev.zitech.core.common.presentation.architecture.DeepLinkViewModel
+import dev.zitech.core.common.presentation.architecture.MviViewModel
+import dev.zitech.core.common.presentation.splash.SplashScreenStateHandler
+import dev.zitech.navigation.domain.usecase.GetScreenDestinationUseCase
+import dev.zitech.navigation.presentation.extension.logInState
+import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class DashboardViewModel @Inject constructor() : ViewModel()
+internal class DashboardViewModel @Inject constructor(
+    stateHandler: DashboardStateHandler,
+    splashScreenState: SplashScreenStateHandler,
+    getScreenDestinationUseCase: GetScreenDestinationUseCase
+) : ViewModel(), MviViewModel<DashboardIntent, DashboardState>, DeepLinkViewModel {
+
+    override val screenState: StateFlow<DashboardState> = stateHandler.state
+
+    override val logInState: StateFlow<LogInState> by logInState(
+        getScreenDestinationUseCase,
+        splashScreenState,
+        viewModelScope
+    )
+
+    @Suppress("ForbiddenComment")
+    override fun sendIntent(intent: DashboardIntent) {
+        // TODO
+    }
+}

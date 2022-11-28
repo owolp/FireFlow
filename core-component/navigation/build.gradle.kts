@@ -15,18 +15,25 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+apply(from = "$rootDir/config/dependencies/test-dependencies.gradle")
+
 plugins {
     id(BuildPlugins.KOTLIN_ANDROID)
     id(BuildPlugins.LIBRARY)
+    id(BuildPlugins.JUNIT5)
     kotlin(BuildPlugins.KAPT)
 }
 
 dependencies {
-    api(libs.androidx.navigation.compose)
-    api(libs.androidx.hilt.navigation.compose)
+    implementation(projects.coreComponent.common)
+    implementation(projects.coreComponent.persistence)
+    implementation(projects.designSystem)
 
+    implementation(libs.androidx.compose.runtime)
     implementation(libs.google.dagger.hilt.android)
     kapt(libs.google.dagger.hilt.compiler)
+    implementation(libs.jetbrains.kotlin.coroutines.android)
+    implementation(libs.jakewharton.timber)
 }
 
 kapt {

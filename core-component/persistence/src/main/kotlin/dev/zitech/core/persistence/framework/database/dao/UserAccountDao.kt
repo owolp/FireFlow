@@ -28,13 +28,10 @@ import kotlinx.coroutines.flow.Flow
 internal interface UserAccountDao {
 
     @Query("SELECT * FROM user_accounts")
-    suspend fun getUserAccounts(): List<UserAccountEntity>
+    fun getUserAccounts(): Flow<List<UserAccountEntity>>
 
     @Query("SELECT * FROM user_accounts WHERE isCurrentUserAccount = 1 ORDER BY id DESC LIMIT 1")
-    fun getCurrentUserAccountFlow(): Flow<UserAccountEntity>
-
-    @Query("SELECT * FROM user_accounts WHERE isCurrentUserAccount = 1 ORDER BY id DESC LIMIT 1")
-    suspend fun getCurrentUserAccount(): UserAccountEntity?
+    fun getCurrentUserAccount(): Flow<UserAccountEntity?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveUserAccount(userAccountEntity: UserAccountEntity): Long

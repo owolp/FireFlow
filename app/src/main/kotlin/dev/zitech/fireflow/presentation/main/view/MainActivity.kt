@@ -24,14 +24,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import dev.zitech.fireflow.R
 import dev.zitech.fireflow.presentation.FireFlowApp
 import dev.zitech.fireflow.presentation.main.viewmodel.Idle
+import dev.zitech.fireflow.presentation.main.viewmodel.MainEvent
 import dev.zitech.fireflow.presentation.main.viewmodel.MainViewModel
 import dev.zitech.fireflow.presentation.main.viewmodel.ShowError
 import dev.zitech.fireflow.presentation.main.viewmodel.ShowErrorHandled
@@ -50,7 +53,7 @@ internal class MainActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
             installSplashScreen().apply {
                 setKeepOnScreenCondition {
-                    viewModel.state.value.splash
+                    viewModel.splashState.value
                 }
             }
         } else {
@@ -65,20 +68,24 @@ internal class MainActivity : AppCompatActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         setContent {
-            val mainState = viewModel.state.collectAsStateWithLifecycle()
+            val mainState by viewModel.screenState.collectAsStateWithLifecycle()
 
-            FireFlowApp(
-                viewModel.state.value.splash,
-                mainState.value.theme,
-                calculateWindowSizeClass(this)
-            )
-            EventHandler()
+            val navController = rememberNavController()
+
+            if (mainState.remoteConfig) {
+                FireFlowApp(
+                    theme = mainState.theme,
+                    windowSizeClass = calculateWindowSizeClass(this),
+                    navController = navController
+                )
+                EventHandler(mainState.event)
+            }
         }
     }
 
     @Composable
-    private fun EventHandler() {
-        when (viewModel.state.value.event) {
+    private fun EventHandler(event: MainEvent) {
+        when (event) {
             ShowError -> {
                 // TODO
                 viewModel.sendIntent(ShowErrorHandled)

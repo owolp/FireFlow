@@ -25,7 +25,12 @@ import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.domain.model.ApplicationLanguage
 import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.core.common.domain.model.BuildFlavor
+import dev.zitech.core.common.domain.navigation.LogInState
+import dev.zitech.core.common.presentation.architecture.DeepLinkViewModel
 import dev.zitech.core.common.presentation.architecture.MviViewModel
+import dev.zitech.core.common.presentation.splash.SplashScreenStateHandler
+import dev.zitech.navigation.domain.usecase.GetScreenDestinationUseCase
+import dev.zitech.navigation.presentation.extension.logInState
 import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsAppearanceCollectionStates
 import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsDataChoicesCollectionStates
 import dev.zitech.settings.presentation.settings.viewmodel.error.SettingsErrorProvider
@@ -36,24 +41,29 @@ import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
 @HiltViewModel
-class SettingsViewModel @Inject constructor(
-    private val settingsStateHandler: SettingsStateHandler,
+internal class SettingsViewModel @Inject constructor(
+    private val stateHandler: SettingsStateHandler,
+    splashScreenStateHandler: SplashScreenStateHandler,
+    getScreenDestinationUseCase: GetScreenDestinationUseCase,
     private val settingsAppearanceCollectionStates: SettingsAppearanceCollectionStates,
     private val settingsDataChoicesCollectionStates: SettingsDataChoicesCollectionStates,
     private val settingsErrorProvider: SettingsErrorProvider,
     private val settingsStringsProvider: SettingsStringsProvider,
     private val appConfigProvider: AppConfigProvider
-) : ViewModel(), MviViewModel<SettingsIntent, SettingsState> {
+) : ViewModel(), MviViewModel<SettingsIntent, SettingsState>, DeepLinkViewModel {
 
     private val tag = Logger.tag(this::class.java)
 
-    override val state: StateFlow<SettingsState> = settingsStateHandler.state
+    override val screenState: StateFlow<SettingsState> = stateHandler.state
+
+    override val logInState: StateFlow<LogInState> by logInState(
+        getScreenDestinationUseCase,
+        splashScreenStateHandler,
+        viewModelScope
+    )
 
     init {
-        viewModelScope.launch {
-            getPreferencesState()
-        }
-        Logger.i(tag, "Hello")
+        getPreferencesState()
     }
 
     override fun sendIntent(intent: SettingsIntent) {
@@ -77,9 +87,9 @@ class SettingsViewModel @Inject constructor(
         settingsDataChoicesCollectionStates.setCrashReporterCollection(checked)
         val isEnabled = settingsDataChoicesCollectionStates.getCrashReporterCollectionValue()
         if (checked == isEnabled) {
-            settingsStateHandler.setCrashReporterState(checked)
+            stateHandler.setCrashReporterState(checked)
         } else {
-            settingsStateHandler.setErrorState(settingsErrorProvider.getCrashReporterError())
+            stateHandler.setErrorState(settingsErrorProvider.crashReporterError)
         }
     }
 
@@ -88,13 +98,13 @@ class SettingsViewModel @Inject constructor(
             settingsDataChoicesCollectionStates.setAnalyticsCollection(checked)
             val isEnabled = settingsDataChoicesCollectionStates.getAnalyticsCollectionValue()
             if (checked == isEnabled) {
-                settingsStateHandler.setAnalyticsState(checked, appConfigProvider.buildFlavor)
+                stateHandler.setAnalyticsState(checked, appConfigProvider.buildFlavor)
                 settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked)
-                settingsStateHandler.setPersonalizedAdsState(checked, appConfigProvider.buildFlavor)
+                stateHandler.setPersonalizedAdsState(checked, appConfigProvider.buildFlavor)
                 settingsDataChoicesCollectionStates.setPerformanceCollection(checked)
-                settingsStateHandler.setPerformanceState(checked, appConfigProvider.buildFlavor)
+                stateHandler.setPerformanceState(checked, appConfigProvider.buildFlavor)
             } else {
-                settingsStateHandler.setErrorState(settingsErrorProvider.getAnalyticsError())
+                stateHandler.setErrorState(settingsErrorProvider.analyticsError)
             }
         } else {
             Logger.e(tag, "Setting analytics on FOSS build is not supported")
@@ -104,25 +114,25 @@ class SettingsViewModel @Inject constructor(
     private suspend fun handleOnThemeSelect(id: Int) {
         ApplicationTheme.values().first { it.id == id }.run {
             settingsAppearanceCollectionStates.setApplicationThemeValue(this)
-            settingsStateHandler.setTheme(this)
-            settingsStateHandler.resetEvent()
+            stateHandler.setThemeState(this)
+            stateHandler.resetEvent()
         }
     }
 
     private fun handleOnLanguageSelect(id: Int) {
         ApplicationLanguage.values().first { it.id == id }.run {
             settingsAppearanceCollectionStates.setApplicationLanguageValue(this)
-            settingsStateHandler.setLanguage(this)
-            settingsStateHandler.resetEvent()
+            stateHandler.setLanguageState(this)
+            stateHandler.resetEvent()
         }
     }
 
     private fun handleOnThemeDismiss() {
-        settingsStateHandler.resetEvent()
+        stateHandler.resetEvent()
     }
 
     private fun handleOnLanguageDismiss() {
-        settingsStateHandler.resetEvent()
+        stateHandler.resetEvent()
     }
 
     private suspend fun handleOnPersonalizedAdsCheckChange(checked: Boolean) {
@@ -130,9 +140,9 @@ class SettingsViewModel @Inject constructor(
             settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked)
             val isEnabled = settingsDataChoicesCollectionStates.getAllowPersonalizedAdsValue()
             if (checked == isEnabled) {
-                settingsStateHandler.setPersonalizedAdsState(checked, appConfigProvider.buildFlavor)
+                stateHandler.setPersonalizedAdsState(checked, appConfigProvider.buildFlavor)
             } else {
-                settingsStateHandler.setErrorState(settingsErrorProvider.getPersonalizedAdsError())
+                stateHandler.setErrorState(settingsErrorProvider.personalizedAdsError)
             }
         } else {
             Logger.e(tag, "Setting personalized ads on FOSS build is not supported")
@@ -144,18 +154,17 @@ class SettingsViewModel @Inject constructor(
             settingsDataChoicesCollectionStates.setPerformanceCollection(checked)
             val isEnabled = settingsDataChoicesCollectionStates.getPerformanceCollectionValue()
             if (checked == isEnabled) {
-                settingsStateHandler.setPerformanceState(checked, appConfigProvider.buildFlavor)
+                stateHandler.setPerformanceState(checked, appConfigProvider.buildFlavor)
             } else {
-                settingsStateHandler.setErrorState(settingsErrorProvider.getPerformanceError())
+                stateHandler.setErrorState(settingsErrorProvider.performanceError)
             }
         } else {
             Logger.e(tag, "Setting performance on FOSS build is not supported")
         }
     }
 
-    private suspend fun getPreferencesState() {
-        settingsStateHandler.run {
-            setIsLoadingState(true)
+    private fun getPreferencesState() = viewModelScope.launch {
+        stateHandler.run {
             setAnalyticsState(
                 settingsDataChoicesCollectionStates.getAnalyticsCollectionValue(),
                 appConfigProvider.buildFlavor
@@ -169,30 +178,30 @@ class SettingsViewModel @Inject constructor(
                 appConfigProvider.buildFlavor
             )
             setCrashReporterState(settingsDataChoicesCollectionStates.getCrashReporterCollectionValue())
-            setTheme(settingsAppearanceCollectionStates.getApplicationThemeValue())
-            setLanguage(settingsAppearanceCollectionStates.getApplicationLanguageValue())
-            setAppVersion(appConfigProvider.version)
-            setIsLoadingState(false)
+            setThemeState(settingsAppearanceCollectionStates.getApplicationThemeValue())
+            setLanguageState(settingsAppearanceCollectionStates.getApplicationLanguageValue())
+            setAppVersionState(appConfigProvider.version)
+            setViewState(SettingsState.ViewState.Success)
         }
     }
 
     private fun handleOnThemeClick() {
-        settingsStateHandler.setEvent(
+        stateHandler.setEvent(
             SelectTheme(
                 title = settingsStringsProvider.getDialogThemeTitle(),
                 themes = settingsStringsProvider.getDialogThemes(
-                    settingsStateHandler.state.value.theme
+                    stateHandler.state.value.theme
                 )
             )
         )
     }
 
     private fun handleOnLanguagePreferenceClick() {
-        settingsStateHandler.setEvent(
+        stateHandler.setEvent(
             SelectLanguage(
                 title = settingsStringsProvider.getDialogLanguageTitle(),
                 languages = settingsStringsProvider.getDialogLanguages(
-                    settingsStateHandler.state.value.language
+                    stateHandler.state.value.language
                 )
             )
         )

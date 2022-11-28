@@ -20,7 +20,7 @@ package dev.zitech.settings.presentation.settings.viewmodel
 import dev.zitech.core.common.presentation.architecture.MviState
 import dev.zitech.ds.molecules.dialog.DialogRadioItem
 
-sealed interface SettingsEvent : MviState.Event
+internal sealed interface SettingsEvent : MviState.Event
 
 internal object Idle : SettingsEvent
 internal data class Error(

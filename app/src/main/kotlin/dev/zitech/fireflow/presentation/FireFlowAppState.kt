@@ -17,6 +17,7 @@
 
 package dev.zitech.fireflow.presentation
 
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
@@ -27,12 +28,14 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
+import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.dashboard.presentation.navigation.DashboardDestination
 import dev.zitech.ds.atoms.icon.FireFlowIcons
 import dev.zitech.ds.atoms.icon.Icon
-import dev.zitech.fireflow.presentation.navigation.TopLevelDestination
-import dev.zitech.navigation.FireFlowNavigationDestination
+import dev.zitech.fireflow.presentation.navigation.NavDirection.Companion.DEFAULT_STATE_INCLUSIVE
+import dev.zitech.fireflow.presentation.navigation.NavDirection.Companion.DEFAULT_STATE_RESTORE_STATE
+import dev.zitech.navigation.presentation.model.FireFlowNavigationDestination
+import dev.zitech.navigation.presentation.model.TopLevelDestination
 import dev.zitech.settings.presentation.navigation.SettingsDestination
 import dev.zitech.dashboard.R as dashboardR
 import dev.zitech.settings.R as settingsR
@@ -40,7 +43,7 @@ import dev.zitech.settings.R as settingsR
 @Composable
 internal fun rememberFireFlowAppState(
     windowSizeClass: WindowSizeClass,
-    navController: NavHostController = rememberNavController()
+    navController: NavHostController
 ): FireFlowAppState = remember(navController, windowSizeClass) {
     FireFlowAppState(navController, windowSizeClass)
 }
@@ -48,18 +51,23 @@ internal fun rememberFireFlowAppState(
 @Stable
 internal class FireFlowAppState(
     val navController: NavHostController,
-    val windowSizeClass: WindowSizeClass
+    private val windowSizeClass: WindowSizeClass
 ) {
     val currentDestination: NavDestination?
         @Composable get() = navController
             .currentBackStackEntryAsState().value?.destination
 
     val shouldShowBottomBar: Boolean
-        get() = windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact ||
-            windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact
+        @Composable get() = (
+            windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact ||
+                windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact
+            ) && isCurrentDestinationTopLevelDestination()
 
     val shouldShowNavRail: Boolean
-        get() = !shouldShowBottomBar
+        @Composable get() = !(
+            windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact ||
+                windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact
+            ) && isCurrentDestinationTopLevelDestination()
 
     val topLevelDestinations: List<TopLevelDestination> = listOf(
         TopLevelDestination(
@@ -78,7 +86,13 @@ internal class FireFlowAppState(
         )
     )
 
-    fun navigate(destination: FireFlowNavigationDestination, route: String? = null) {
+    fun navigate(
+        destination: FireFlowNavigationDestination,
+        route: String? = null,
+        inclusive: Boolean = DEFAULT_STATE_INCLUSIVE,
+        popUpToDestination: FireFlowNavigationDestination? = null,
+        restoreState: Boolean = DEFAULT_STATE_RESTORE_STATE
+    ) {
         if (destination is TopLevelDestination) {
             navController.navigate(route ?: destination.route) {
                 // Pop up to the start destination of the graph to
@@ -86,19 +100,46 @@ internal class FireFlowAppState(
                 // on the back stack as users select items
                 popUpTo(navController.graph.findStartDestination().id) {
                     saveState = true
+                    this.inclusive = inclusive
                 }
                 // Avoid multiple copies of the same destination when
                 // reselecting the same item
                 launchSingleTop = true
                 // Restore state when reselecting a previously selected item
-                restoreState = true
+                this.restoreState = restoreState
             }
         } else {
-            navController.navigate(route ?: destination.route)
+            val navRoute = route ?: destination.route
+            navController.navigate(navRoute) {
+                popUpTo(popUpToDestination?.route ?: navRoute) {
+                    this.inclusive = inclusive
+                }
+            }
         }
     }
 
-    fun onBackClick() {
-        navController.popBackStack()
+    fun onBackClick(
+        destination: FireFlowNavigationDestination?,
+        inclusive: Boolean? = DEFAULT_STATE_INCLUSIVE
+    ) {
+        if (destination != null && inclusive != null) {
+            try {
+                val id = navController.getBackStackEntry(destination.route).destination.id
+                navController.popBackStack(id, inclusive)
+            } catch (e: IllegalArgumentException) {
+                Logger.e("FireFlowAppState", e)
+                navController.popBackStack()
+            }
+        } else {
+            navController.popBackStack()
+        }
     }
+
+    fun onCloseApplication() {
+        (navController.context as? AppCompatActivity)?.finish()
+    }
+
+    @Composable
+    private fun isCurrentDestinationTopLevelDestination(): Boolean =
+        topLevelDestinations.any { it.route == currentDestination?.route }
 }

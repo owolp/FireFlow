@@ -22,7 +22,10 @@ import dev.zitech.core.common.DataFactory
 import dev.zitech.core.common.domain.model.ApplicationLanguage
 import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.core.common.domain.model.BuildFlavor
+import dev.zitech.core.common.domain.navigation.DeepLinkScreenDestination
 import dev.zitech.core.common.framework.applicationconfig.FakeAppConfigProvider
+import dev.zitech.core.common.presentation.splash.SplashScreenStateHandler
+import dev.zitech.navigation.domain.usecase.GetScreenDestinationUseCase
 import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsAppearanceCollectionStates
 import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsDataChoicesCollectionStates
 import dev.zitech.settings.presentation.settings.viewmodel.error.SettingsErrorProvider
@@ -37,6 +40,7 @@ import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -46,6 +50,10 @@ import org.junit.jupiter.api.extension.ExtendWith
 internal class SettingsViewModelTest {
 
     private val settingsStateHandler = SettingsStateHandler()
+    private val splashScreenStateHandler = mockk<SplashScreenStateHandler>(relaxUnitFun = true)
+    private val getScreenDestinationUseCase = mockk<GetScreenDestinationUseCase> {
+        every { this@mockk.invoke() } returns flowOf(DeepLinkScreenDestination.Current)
+    }
     private val settingsAppearanceCollectionStates = mockk<SettingsAppearanceCollectionStates>()
     private val settingsDataChoicesCollectionStates = mockk<SettingsDataChoicesCollectionStates>()
     private val settingsErrorProvider = mockk<SettingsErrorProvider>()
@@ -134,7 +142,7 @@ internal class SettingsViewModelTest {
 
         val message = DataFactory.createRandomString()
         val action = DataFactory.createRandomString()
-        every { settingsErrorProvider.getCrashReporterError() } returns Error(
+        every { settingsErrorProvider.crashReporterError } returns Error(
             message,
             action
         )
@@ -315,7 +323,7 @@ internal class SettingsViewModelTest {
 
         val message = DataFactory.createRandomString()
         val action = DataFactory.createRandomString()
-        every { settingsErrorProvider.getAnalyticsError() } returns Error(
+        every { settingsErrorProvider.analyticsError } returns Error(
             message,
             action
         )
@@ -425,7 +433,7 @@ internal class SettingsViewModelTest {
 
         val message = DataFactory.createRandomString()
         val action = DataFactory.createRandomString()
-        every { settingsErrorProvider.getPersonalizedAdsError() } returns Error(
+        every { settingsErrorProvider.personalizedAdsError } returns Error(
             message,
             action
         )
@@ -685,7 +693,7 @@ internal class SettingsViewModelTest {
 
         val message = DataFactory.createRandomString()
         val action = DataFactory.createRandomString()
-        every { settingsErrorProvider.getPerformanceError() } returns Error(
+        every { settingsErrorProvider.performanceError } returns Error(
             message,
             action
         )
@@ -868,6 +876,8 @@ internal class SettingsViewModelTest {
 
     private fun getSettingsViewModel() = SettingsViewModel(
         settingsStateHandler,
+        splashScreenStateHandler,
+        getScreenDestinationUseCase,
         settingsAppearanceCollectionStates,
         settingsDataChoicesCollectionStates,
         settingsErrorProvider,
@@ -904,24 +914,24 @@ internal class SettingsViewModelTest {
     }
 
     private fun getInitState(
-        isLoading: Boolean = false,
+        viewState: SettingsState.ViewState = SettingsState.ViewState.Success,
+        event: SettingsEvent = Idle,
         analytics: Boolean? = false,
         personalizedAds: Boolean? = false,
         performance: Boolean? = false,
         crashReporter: Boolean = false,
         theme: ApplicationTheme = ApplicationTheme.SYSTEM,
         language: ApplicationLanguage = ApplicationLanguage.SYSTEM,
-        version: String = "4.2",
-        event: SettingsEvent = Idle
+        version: String = "4.2"
     ) = SettingsState(
-        isLoading,
+        viewState,
+        event,
         analytics,
         personalizedAds,
         performance,
         crashReporter,
         theme,
         language,
-        version,
-        event
+        version
     )
 }

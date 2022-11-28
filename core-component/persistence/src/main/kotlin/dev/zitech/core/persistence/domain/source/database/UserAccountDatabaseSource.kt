@@ -22,8 +22,7 @@ import kotlinx.coroutines.flow.Flow
 
 internal interface UserAccountDatabaseSource {
 
-    suspend fun getUserAccounts(): List<UserAccount>
-    fun getCurrentUserAccount(): Flow<UserAccount>
-    suspend fun isUserLoggedIn(): Boolean
+    fun getUserAccounts(): Flow<List<UserAccount>>
+    fun getCurrentUserAccountOrNull(): Flow<UserAccount?>
     suspend fun saveUserAccount(isCurrentUserAccount: Boolean): Long
 }

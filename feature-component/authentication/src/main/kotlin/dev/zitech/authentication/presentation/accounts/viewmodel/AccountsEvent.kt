@@ -15,9 +15,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.navigation
+package dev.zitech.authentication.presentation.accounts.viewmodel
 
-interface FireFlowNavigationDestination {
-    val route: String
-    val destination: String
-}
+import dev.zitech.core.common.presentation.architecture.MviState
+
+internal sealed interface AccountsEvent : MviState.Event
+
+internal object Idle : AccountsEvent
+internal object NavigateToDashboard : AccountsEvent

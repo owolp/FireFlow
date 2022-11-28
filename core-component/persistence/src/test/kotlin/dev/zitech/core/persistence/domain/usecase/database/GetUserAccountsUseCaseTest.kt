@@ -17,6 +17,7 @@
 
 package dev.zitech.core.persistence.domain.usecase.database
 
+import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import dev.zitech.core.common.DataFactory
 import dev.zitech.core.common.domain.model.DataResult
@@ -25,6 +26,7 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.confirmVerified
 import io.mockk.mockk
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -45,15 +47,18 @@ internal class GetUserAccountsUseCaseTest {
     @DisplayName("WHEN there is no exception THEN return Success")
     fun success() = runBlocking {
         // Arrange
-        coEvery { userAccountRepository.getUserAccounts() } returns DataResult.Success(
-            listOf(mockk(), mockk(), mockk())
+        coEvery { userAccountRepository.getUserAccounts() } returns flowOf(
+            DataResult.Success(
+                listOf(mockk(), mockk(), mockk())
+            )
         )
 
-        // Act
-        val result = sut()
+        // Act & Assert
+        sut().test {
+            assertThat((awaitItem() as DataResult.Success).value).hasSize(3)
+            awaitComplete()
 
-        // Assert
-        assertThat((result as DataResult.Success).value).hasSize(3)
+        }
         coVerify { userAccountRepository.getUserAccounts() }
         confirmVerified(userAccountRepository)
     }
@@ -63,15 +68,17 @@ internal class GetUserAccountsUseCaseTest {
     fun error() = runBlocking {
         // Arrange
         val exception = DataFactory.createException()
-        coEvery { userAccountRepository.getUserAccounts() } returns DataResult.Error(
-            cause = exception
+        coEvery { userAccountRepository.getUserAccounts() } returns flowOf(
+            DataResult.Error(
+                cause = exception
+            )
         )
 
-        // Act
-        val result = sut()
-
-        // Assert
-        assertThat((result as DataResult.Error).cause).isEqualTo(exception)
+        // Act & Assert
+        sut().test {
+            assertThat((awaitItem() as DataResult.Error).cause).isEqualTo(exception)
+            awaitComplete()
+        }
         coVerify { userAccountRepository.getUserAccounts() }
         confirmVerified(userAccountRepository)
     }

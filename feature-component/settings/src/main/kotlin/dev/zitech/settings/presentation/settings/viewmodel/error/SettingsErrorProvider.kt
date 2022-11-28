@@ -22,26 +22,26 @@ import dev.zitech.settings.R
 import dev.zitech.settings.presentation.settings.viewmodel.Error
 import javax.inject.Inject
 
-class SettingsErrorProvider @Inject constructor(
-    private val stringsProvider: StringsProvider
+internal class SettingsErrorProvider @Inject constructor(
+    stringsProvider: StringsProvider
 ) {
 
-    internal fun getAnalyticsError(): Error = Error(
+    val analyticsError = Error(
         message = stringsProvider(R.string.data_choices_analytics_error),
         action = stringsProvider(R.string.action_restart)
     )
 
-    internal fun getCrashReporterError(): Error = Error(
+    val crashReporterError = Error(
         message = stringsProvider(R.string.data_choices_crash_reporter_error),
         action = stringsProvider(R.string.action_restart)
     )
 
-    internal fun getPersonalizedAdsError(): Error = Error(
+    val personalizedAdsError = Error(
         message = stringsProvider(R.string.data_choices_personalized_ads_error),
         action = stringsProvider(R.string.action_restart)
     )
 
-    internal fun getPerformanceError(): Error = Error(
+    val performanceError = Error(
         message = stringsProvider(R.string.data_choices_performance_error),
         action = stringsProvider(R.string.action_restart)
     )

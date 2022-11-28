@@ -19,15 +19,15 @@ package dev.zitech.settings.presentation.settings.viewmodel
 
 import dev.zitech.core.common.presentation.architecture.MviIntent
 
-sealed interface SettingsIntent : MviIntent
+internal sealed interface SettingsIntent : MviIntent
 
-data class OnAnalyticsCheckChange(val checked: Boolean) : SettingsIntent
-data class OnPersonalizedAdsCheckChange(val checked: Boolean) : SettingsIntent
-data class OnPerformanceCheckChange(val checked: Boolean) : SettingsIntent
-data class OnCrashReporterCheckChange(val checked: Boolean) : SettingsIntent
-object OnThemePreferenceClick : SettingsIntent
-data class OnThemeSelect(val id: Int) : SettingsIntent
-object OnThemeDismiss : SettingsIntent
-object OnLanguagePreferenceClick : SettingsIntent
-data class OnLanguageSelect(val id: Int) : SettingsIntent
-object OnLanguageDismiss : SettingsIntent
+internal data class OnAnalyticsCheckChange(val checked: Boolean) : SettingsIntent
+internal data class OnPersonalizedAdsCheckChange(val checked: Boolean) : SettingsIntent
+internal data class OnPerformanceCheckChange(val checked: Boolean) : SettingsIntent
+internal data class OnCrashReporterCheckChange(val checked: Boolean) : SettingsIntent
+internal object OnThemePreferenceClick : SettingsIntent
+internal data class OnThemeSelect(val id: Int) : SettingsIntent
+internal object OnThemeDismiss : SettingsIntent
+internal object OnLanguagePreferenceClick : SettingsIntent
+internal data class OnLanguageSelect(val id: Int) : SettingsIntent
+internal object OnLanguageDismiss : SettingsIntent

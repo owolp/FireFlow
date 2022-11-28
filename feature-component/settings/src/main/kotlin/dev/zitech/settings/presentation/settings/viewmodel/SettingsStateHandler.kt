@@ -28,15 +28,21 @@ import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
-class SettingsStateHandler @Inject constructor() : MviStateHandler<SettingsState> {
+internal class SettingsStateHandler @Inject constructor() : MviStateHandler<SettingsState> {
 
     private val mutableState = MutableStateFlow(SettingsState())
     override val state: StateFlow<SettingsState> = mutableState.asStateFlow()
 
-    fun setIsLoadingState(value: Boolean) {
-        mutableState.update {
-            it.copy(isLoading = value)
-        }
+    fun setViewState(value: SettingsState.ViewState) {
+        mutableState.update { it.copy(viewState = value) }
+    }
+
+    fun setEvent(event: SettingsEvent) {
+        mutableState.update { it.copy(event = event) }
+    }
+
+    fun resetEvent() {
+        setEvent(Idle)
     }
 
     fun setAnalyticsState(
@@ -44,9 +50,7 @@ class SettingsStateHandler @Inject constructor() : MviStateHandler<SettingsState
         buildFlavor: BuildFlavor
     ) {
         if (buildFlavor != BuildFlavor.FOSS) {
-            mutableState.update {
-                it.copy(analytics = value)
-            }
+            mutableState.update { it.copy(analytics = value) }
         }
     }
 
@@ -55,9 +59,7 @@ class SettingsStateHandler @Inject constructor() : MviStateHandler<SettingsState
         buildFlavor: BuildFlavor
     ) {
         if (buildFlavor != BuildFlavor.FOSS) {
-            mutableState.update {
-                it.copy(personalizedAds = value)
-            }
+            mutableState.update { it.copy(personalizedAds = value) }
         }
     }
 
@@ -66,51 +68,27 @@ class SettingsStateHandler @Inject constructor() : MviStateHandler<SettingsState
         buildFlavor: BuildFlavor
     ) {
         if (buildFlavor != BuildFlavor.FOSS) {
-            mutableState.update {
-                it.copy(performance = value)
-            }
+            mutableState.update { it.copy(performance = value) }
         }
     }
 
     fun setCrashReporterState(value: Boolean) {
-        mutableState.update {
-            it.copy(crashReporter = value)
-        }
+        mutableState.update { it.copy(crashReporter = value) }
     }
 
     fun setErrorState(value: SettingsEvent) {
-        mutableState.update {
-            it.copy(event = value)
-        }
+        mutableState.update { it.copy(event = value) }
     }
 
-    fun resetEvent() {
-        mutableState.update {
-            it.copy(event = Idle)
-        }
+    fun setThemeState(value: ApplicationTheme) {
+        mutableState.update { it.copy(theme = value) }
     }
 
-    fun setTheme(value: ApplicationTheme) {
-        mutableState.update {
-            it.copy(theme = value)
-        }
+    fun setLanguageState(value: ApplicationLanguage) {
+        mutableState.update { it.copy(language = value) }
     }
 
-    fun setLanguage(value: ApplicationLanguage) {
-        mutableState.update {
-            it.copy(language = value)
-        }
-    }
-
-    fun setAppVersion(value: String) {
-        mutableState.update {
-            it.copy(version = value)
-        }
-    }
-
-    fun setEvent(event: SettingsEvent) {
-        mutableState.update {
-            it.copy(event = event)
-        }
+    fun setAppVersionState(value: String) {
+        mutableState.update { it.copy(version = value) }
     }
 }

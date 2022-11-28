@@ -17,18 +17,11 @@
 
 package dev.zitech.settings.presentation.navigation
 
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
-import dev.zitech.navigation.FireFlowNavigationDestination
-import dev.zitech.settings.presentation.settings.compose.SettingsRoute
+import dev.zitech.navigation.presentation.model.FireFlowNavigationDestination
+
+private const val DESTINATION = "settings"
 
 object SettingsDestination : FireFlowNavigationDestination {
     override val route: String = "settings_route"
-    override val destination: String = "settings_destination"
-}
-
-fun NavGraphBuilder.settingsGraph() {
-    composable(route = SettingsDestination.route) {
-        SettingsRoute()
-    }
+    override val destination: String = DESTINATION
 }

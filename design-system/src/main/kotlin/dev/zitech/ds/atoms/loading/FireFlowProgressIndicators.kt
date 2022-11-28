@@ -52,10 +52,10 @@ import dev.zitech.ds.theme.PreviewFireFlowTheme
 object FireFlowProgressIndicators {
 
     @Composable
-    fun Settings(modifier: Modifier = Modifier) {
+    fun Magnifier(modifier: Modifier = Modifier) {
         ProgressIndicatorItem(
             modifier = modifier,
-            resId = R.raw.animation_settings
+            resId = R.raw.animation_magnifier
         )
     }
 

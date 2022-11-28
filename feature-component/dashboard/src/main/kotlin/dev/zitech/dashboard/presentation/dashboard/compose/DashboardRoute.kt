@@ -18,14 +18,51 @@
 package dev.zitech.dashboard.presentation.dashboard.compose
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import dev.zitech.core.common.domain.navigation.DeepLinkScreenDestination
+import dev.zitech.core.common.domain.navigation.LogInState
 import dev.zitech.dashboard.presentation.dashboard.viewmodel.DashboardViewModel
+import dev.zitech.ds.atoms.loading.FireFlowProgressIndicators
 
+@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
-fun DashboardRoute(
+internal fun DashboardRoute(
     modifier: Modifier = Modifier,
-    viewModel: DashboardViewModel = hiltViewModel()
+    viewModel: DashboardViewModel = hiltViewModel(),
+    navigateToAccounts: () -> Unit,
+    navigateToError: () -> Unit,
+    navigateToWelcome: () -> Unit
 ) {
-    DashboardScreen()
+    val screenState by viewModel.screenState.collectAsStateWithLifecycle()
+    val logInState by viewModel.logInState.collectAsStateWithLifecycle()
+
+    when (val state = logInState) {
+        LogInState.InitScreen -> {
+            FireFlowProgressIndicators.Magnifier()
+        }
+        LogInState.Logged -> {
+            DashboardScreen(
+                modifier = modifier,
+                state = screenState
+            )
+        }
+        is LogInState.NotLogged -> {
+            LaunchedEffect(Unit) {
+                when (state.destination) {
+                    DeepLinkScreenDestination.Accounts -> navigateToAccounts()
+                    DeepLinkScreenDestination.Error -> navigateToError()
+                    DeepLinkScreenDestination.Welcome -> navigateToWelcome()
+                    DeepLinkScreenDestination.Current,
+                    DeepLinkScreenDestination.Init -> {
+                        // NO_OP
+                    }
+                }
+            }
+        }
+    }
 }

@@ -15,15 +15,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.fireflow.presentation.navigation
+package dev.zitech.core.common.presentation.architecture
 
-import dev.zitech.ds.atoms.icon.Icon
-import dev.zitech.navigation.FireFlowNavigationDestination
+import dev.zitech.core.common.domain.navigation.LogInState
+import kotlinx.coroutines.flow.StateFlow
 
-internal data class TopLevelDestination(
-    override val route: String,
-    override val destination: String,
-    val selectedIcon: Icon,
-    val unselectedIcon: Icon,
-    val iconTextId: Int
-) : FireFlowNavigationDestination
+interface DeepLinkViewModel {
+    val logInState: StateFlow<LogInState>
+}

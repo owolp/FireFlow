@@ -32,18 +32,21 @@ internal class UserAccountDatabaseSourceImpl @Inject constructor(
     private val userAccountMapper: UserAccountMapper
 ) : UserAccountDatabaseSource {
 
-    override suspend fun getUserAccounts(): List<UserAccount> =
-        userAccountDao.getUserAccounts().map { userAccountEntity ->
-            userAccountMapper(userAccountEntity)
+    override fun getUserAccounts(): Flow<List<UserAccount>> =
+        userAccountDao.getUserAccounts().map { userAccountEntities ->
+            userAccountEntities.map {
+                userAccountMapper(it)
+            }
         }
 
-    override fun getCurrentUserAccount(): Flow<UserAccount> =
-        userAccountDao.getCurrentUserAccountFlow().map {
-            userAccountMapper(it)
+    override fun getCurrentUserAccountOrNull(): Flow<UserAccount?> =
+        userAccountDao.getCurrentUserAccount().map { userAccountEntity ->
+            if (userAccountEntity != null) {
+                userAccountMapper(userAccountEntity)
+            } else {
+                null
+            }
         }
-
-    override suspend fun isUserLoggedIn(): Boolean =
-        userAccountDao.getCurrentUserAccount() != null
 
     @Transaction
     override suspend fun saveUserAccount(isCurrentUserAccount: Boolean): Long {

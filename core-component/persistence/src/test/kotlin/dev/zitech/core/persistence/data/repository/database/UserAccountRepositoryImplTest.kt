@@ -30,12 +30,9 @@ import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.runTest
-import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.function.Executable
 
 @ExperimentalCoroutinesApi
 internal class UserAccountRepositoryImplTest {
@@ -61,28 +58,11 @@ internal class UserAccountRepositoryImplTest {
             userAccountDatabaseSource.saveUserAccount(false)
             userAccountDatabaseSource.saveUserAccount(true)
 
-            // Act
-            val result = sut.getUserAccounts()
-
-            // Assert
-            assertThat((result as DataResult.Success).value).hasSize(3)
-        }
-
-        @Test
-        @DisplayName("WHEN exception THEN return Error")
-        fun error() = runBlocking {
-            // Arrange
-            val exception = DataFactory.createException()
-            coEvery { mockedUserAccountDatabaseSource.getUserAccounts() } throws exception
-            val sut: UserAccountRepository = UserAccountRepositoryImpl(
-                mockedUserAccountDatabaseSource
-            )
-
-            // Act
-            val result = sut.getUserAccounts()
-
-            // Assert
-            assertThat((result as DataResult.Error).cause).isEqualTo(exception)
+            // Act & Assert
+            sut.getUserAccounts().test {
+                assertThat((awaitItem() as DataResult.Success).value).hasSize(3)
+                awaitComplete()
+            }
         }
     }
 
@@ -107,25 +87,6 @@ internal class UserAccountRepositoryImplTest {
                 }
                 awaitComplete()
             }
-        }
-
-        @Test
-        @DisplayName("WHEN exception THEN return Error")
-        fun exception() = runBlocking {
-            // Arrange
-            val sut: UserAccountRepository = UserAccountRepositoryImpl(
-                userAccountDatabaseSource
-            )
-
-            // Act
-            val thrown: NoSuchElementException = assertThrows(NoSuchElementException::class.java, Executable {
-                runTest {
-                    sut.getCurrentUserAccount().test {}
-                }
-            })
-
-            // Assert
-            assertThat(thrown).isInstanceOf(NoSuchElementException::class.java)
         }
     }
 
