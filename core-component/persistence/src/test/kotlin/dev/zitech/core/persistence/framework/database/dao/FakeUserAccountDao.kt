@@ -24,13 +24,13 @@ import kotlinx.coroutines.flow.flowOf
 
 internal class FakeUserAccountDao : UserAccountDao {
 
-    private val userAccountEntityList = mutableListOf<UserAccountEntity>()
+    val userAccountEntityList = mutableListOf<UserAccountEntity>()
 
     override fun getUserAccounts(): Flow<List<UserAccountEntity>> =
         flowOf(userAccountEntityList)
 
-    override fun getCurrentUserAccount(): Flow<UserAccountEntity> =
-        flowOf(userAccountEntityList.first { it.isCurrentUserAccount })
+    override fun getCurrentUserAccount(): Flow<UserAccountEntity?> =
+        flowOf(userAccountEntityList.firstOrNull { it.isCurrentUserAccount })
 
     override suspend fun saveUserAccount(userAccountEntity: UserAccountEntity): Long {
         userAccountEntityList.add(userAccountEntity)

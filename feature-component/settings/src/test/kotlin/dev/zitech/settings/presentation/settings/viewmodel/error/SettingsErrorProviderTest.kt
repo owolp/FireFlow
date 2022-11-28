@@ -26,6 +26,9 @@ import io.mockk.mockk
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
+private val message = DataFactory.createRandomString()
+private val action = DataFactory.createRandomString()
+
 internal class SettingsErrorProviderTest {
 
     private val stringsProvider = mockk<StringsProvider>()
@@ -34,6 +37,15 @@ internal class SettingsErrorProviderTest {
 
     @BeforeEach
     fun setup() {
+        every { stringsProvider(R.string.data_choices_analytics_error) } returns message
+        every { stringsProvider(R.string.action_restart) } returns action
+        every { stringsProvider(R.string.data_choices_crash_reporter_error) } returns message
+        every { stringsProvider(R.string.action_restart) } returns action
+        every { stringsProvider(R.string.data_choices_personalized_ads_error) } returns message
+        every { stringsProvider(R.string.action_restart) } returns action
+        every { stringsProvider(R.string.data_choices_performance_error) } returns message
+        every { stringsProvider(R.string.action_restart) } returns action
+
         sut = SettingsErrorProvider(
             stringsProvider
         )
@@ -41,14 +53,8 @@ internal class SettingsErrorProviderTest {
 
     @Test
     fun getAnalyticsError() {
-        // Arrange
-        val message = DataFactory.createRandomString()
-        every { stringsProvider(R.string.data_choices_analytics_error) } returns message
-        val action = DataFactory.createRandomString()
-        every { stringsProvider(R.string.action_restart) } returns action
-
         // Act
-        val result = sut.getAnalyticsError()
+        val result = sut.analyticsError
 
         // Assert
         assertThat(result.message).isEqualTo(message)
@@ -57,14 +63,8 @@ internal class SettingsErrorProviderTest {
 
     @Test
     fun getCrashReporterError() {
-        // Arrange
-        val message = DataFactory.createRandomString()
-        every { stringsProvider(R.string.data_choices_crash_reporter_error) } returns message
-        val action = DataFactory.createRandomString()
-        every { stringsProvider(R.string.action_restart) } returns action
-
         // Act
-        val result = sut.getCrashReporterError()
+        val result = sut.crashReporterError
 
         // Assert
         assertThat(result.message).isEqualTo(message)
@@ -73,14 +73,8 @@ internal class SettingsErrorProviderTest {
 
     @Test
     fun getPersonalizedAdsError() {
-        // Arrange
-        val message = DataFactory.createRandomString()
-        every { stringsProvider(R.string.data_choices_personalized_ads_error) } returns message
-        val action = DataFactory.createRandomString()
-        every { stringsProvider(R.string.action_restart) } returns action
-
         // Act
-        val result = sut.getPersonalizedAdsError()
+        val result = sut.personalizedAdsError
 
         // Assert
         assertThat(result.message).isEqualTo(message)
@@ -89,14 +83,8 @@ internal class SettingsErrorProviderTest {
 
     @Test
     fun getPerformanceError() {
-        // Arrange
-        val message = DataFactory.createRandomString()
-        every { stringsProvider(R.string.data_choices_performance_error) } returns message
-        val action = DataFactory.createRandomString()
-        every { stringsProvider(R.string.action_restart) } returns action
-
         // Act
-        val result = sut.getPerformanceError()
+        val result = sut.performanceError
 
         // Assert
         assertThat(result.message).isEqualTo(message)

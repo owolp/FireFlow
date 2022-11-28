@@ -23,7 +23,6 @@ import dev.zitech.core.persistence.domain.model.exception.NullCurrentUserAccount
 import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
 import dev.zitech.core.persistence.domain.source.database.UserAccountDatabaseSource
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -35,8 +34,6 @@ internal class UserAccountRepositoryImpl @Inject constructor(
         userAccountDatabaseSource.getUserAccounts()
             .map { userAccounts ->
                 DataResult.Success(userAccounts)
-            }.catch { throwable ->
-                DataResult.Error(cause = Exception(throwable))
             }
 
     override fun getCurrentUserAccount(): Flow<DataResult<UserAccount>> =
@@ -47,9 +44,6 @@ internal class UserAccountRepositoryImpl @Inject constructor(
                 } else {
                     DataResult.Error(cause = NullCurrentUserAccountException)
                 }
-            }
-            .catch { throwable ->
-                DataResult.Error(cause = Exception(throwable))
             }
 
     override suspend fun saveUserAccount(isCurrentUserAccount: Boolean): DataResult<Long> =

@@ -46,17 +46,6 @@ internal class UserAccountDatabaseSourceImplTest {
 
     @Nested
     inner class GetUserAccounts {
-
-        @Test
-        @DisplayName("WHEN no user accounts THEN return empty list")
-        fun emptyList() = runBlocking {
-            // Act
-            val result = sut.getUserAccounts()
-
-            // Assert
-            assertThat(result).isEmpty()
-        }
-
         @Test
         @DisplayName("WHEN user accounts THEN return correct list")
         fun notEmptyList() = runBlocking {
@@ -74,17 +63,18 @@ internal class UserAccountDatabaseSourceImplTest {
             userAccountDao.saveUserAccount(entity2)
             userAccountDao.saveUserAccount(entity3)
 
-            // Act
-            val result = sut.getUserAccounts()
-
-            // Assert
-            assertThat(result).hasSize(3)
-            assertThat(result[0].id).isEqualTo(1)
-            assertThat(result[0].isCurrentUserAccount).isTrue()
-            assertThat(result[1].id).isEqualTo(2)
-            assertThat(result[1].isCurrentUserAccount).isFalse()
-            assertThat(result[2].id).isEqualTo(3)
-            assertThat(result[2].isCurrentUserAccount).isFalse()
+            // Act & Assert
+            sut.getUserAccounts().test {
+                val result = awaitItem()
+                assertThat(result).hasSize(3)
+                assertThat(result[0].id).isEqualTo(1)
+                assertThat(result[0].isCurrentUserAccount).isTrue()
+                assertThat(result[1].id).isEqualTo(2)
+                assertThat(result[1].isCurrentUserAccount).isFalse()
+                assertThat(result[2].id).isEqualTo(3)
+                assertThat(result[2].isCurrentUserAccount).isFalse()
+                awaitComplete()
+            }
         }
     }
 
@@ -101,11 +91,21 @@ internal class UserAccountDatabaseSourceImplTest {
             userAccountDao.saveUserAccount(entity1)
 
             // Act & Assert
-            sut.getCurrentUserAccount().test {
-                with(awaitItem()) {
+            sut.getCurrentUserAccountOrNull().test {
+                with(awaitItem()!!) {
                     assertThat(id).isEqualTo(1)
                     assertThat(isCurrentUserAccount).isTrue()
                 }
+                awaitComplete()
+            }
+        }
+
+        @Test
+        @DisplayName("WHEN there is no current user accounts THEN return null")
+        fun userAccount_null() = runBlocking {
+            // Act & Assert
+            sut.getCurrentUserAccountOrNull().test {
+                assertThat(awaitItem()).isNull()
                 awaitComplete()
             }
         }
@@ -145,7 +145,7 @@ internal class UserAccountDatabaseSourceImplTest {
             // Assert
             assertThat(result).isEqualTo(1)
             assertThat(userAccountDao.containsCurrentUserAccountEntity()).isTrue()
-            assertThat(userAccountDao.getUserAccounts()).hasSize(1)
+            assertThat(userAccountDao.userAccountEntityList).hasSize(1)
         }
     }
 }
