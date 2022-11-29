@@ -28,6 +28,6 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.ben-manes:gradle-versions-plugin:0.43.0")
-    implementation("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.21.0")
+    implementation("com.github.ben-manes:gradle-versions-plugin:0.44.0")
+    implementation("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.22.0")
 }
