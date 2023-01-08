@@ -37,6 +37,9 @@ internal fun LoginScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        FireFlowButtons.Text.OnSurface(text = state.loginType?.value.orEmpty(), onClick = onLoginClick)
+        FireFlowButtons.Text.OnSurface(
+            text = state.loginType?.value.orEmpty(),
+            onClick = onLoginClick
+        )
     }
 }

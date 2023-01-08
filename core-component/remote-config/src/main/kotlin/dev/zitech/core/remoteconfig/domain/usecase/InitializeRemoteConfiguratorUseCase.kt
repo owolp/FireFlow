@@ -19,8 +19,8 @@ package dev.zitech.core.remoteconfig.domain.usecase
 
 import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.remoteconfig.framework.configurator.RemoteConfigurator
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
+import kotlinx.coroutines.flow.Flow
 
 class InitializeRemoteConfiguratorUseCase @Inject constructor(
     private val remoteConfigurator: RemoteConfigurator

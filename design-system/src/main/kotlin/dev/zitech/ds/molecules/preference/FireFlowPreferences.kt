@@ -373,7 +373,7 @@ private fun Primary_Title_Description_Preview() {
     PreviewFireFlowTheme {
         FireFlowPreferences.Primary(
             title = "Primary Title",
-            description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod " +
+            description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do " +
                 "tempor incididunt ut labore et dolore magna aliqua."
         )
     }
@@ -412,7 +412,7 @@ private fun Icon_Title_Description_Preview() {
     PreviewFireFlowTheme {
         FireFlowPreferences.Icon(
             title = "Icon Title",
-            description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod " +
+            description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do " +
                 "tempor incididunt ut labore et dolore magna aliqua.",
             icon = FireFlowIcons.Analytics
         )
@@ -456,7 +456,7 @@ private fun Switch_Title_Description_Preview() {
     PreviewFireFlowTheme {
         FireFlowPreferences.Switch(
             title = "Switch Title",
-            description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod " +
+            description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do " +
                 "tempor incididunt ut labore et dolore magna aliqua.",
             icon = FireFlowIcons.Analytics,
             checked = false,
@@ -481,7 +481,7 @@ private fun Checkbox_Preview() {
     PreviewFireFlowTheme {
         FireFlowPreferences.Checkbox(
             title = "Checkbox Title",
-            description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod " +
+            description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do " +
                 "tempor incididunt ut labore et dolore magna aliqua.",
             icon = FireFlowIcons.Analytics,
             checked = false,

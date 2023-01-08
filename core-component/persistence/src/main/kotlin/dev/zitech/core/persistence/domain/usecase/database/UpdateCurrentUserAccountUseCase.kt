@@ -18,8 +18,8 @@
 package dev.zitech.core.persistence.domain.usecase.database
 
 import dev.zitech.core.common.domain.model.DataResult
-import kotlinx.coroutines.flow.first
 import javax.inject.Inject
+import kotlinx.coroutines.flow.first
 
 class UpdateCurrentUserAccountUseCase @Inject constructor(
     private val getCurrentUserAccountUseCase: GetCurrentUserAccountUseCase

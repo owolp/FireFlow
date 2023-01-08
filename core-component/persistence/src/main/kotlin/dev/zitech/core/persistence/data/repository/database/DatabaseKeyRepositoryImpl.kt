@@ -24,8 +24,8 @@ import dev.zitech.core.persistence.domain.repository.database.DatabaseKeyReposit
 import dev.zitech.core.persistence.domain.repository.preferences.ContainsPreferencesRepository
 import dev.zitech.core.persistence.domain.repository.preferences.GetPreferencesRepository
 import dev.zitech.core.persistence.domain.repository.preferences.SavePreferencesRepository
-import kotlinx.coroutines.flow.first
 import javax.inject.Inject
+import kotlinx.coroutines.flow.first
 
 class DatabaseKeyRepositoryImpl @Inject constructor(
     private val containsPreferencesRepository: ContainsPreferencesRepository,

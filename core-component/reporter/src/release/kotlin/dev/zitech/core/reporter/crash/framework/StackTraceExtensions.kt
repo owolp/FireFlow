@@ -92,8 +92,8 @@ internal fun StackTrace.filter(topClassNames: Array<Class<out Any>>): Array<Stac
     for (element in this) {
         if (element?.className != null) {
             if (topClassNames.any {
-                element.className.removeLambdaSuffix().startsWith(it.name.removeLambdaSuffix())
-            }
+                    element.className.removeLambdaSuffix().startsWith(it.name.removeLambdaSuffix())
+                }
             ) {
                 index++
             } else {

@@ -19,11 +19,11 @@ package dev.zitech.onboarding.presentation.login.viewmodel
 
 import dev.zitech.core.common.presentation.architecture.MviStateHandler
 import dev.zitech.onboarding.presentation.login.model.LoginType
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import javax.inject.Inject
 
 internal class LoginStateHandler @Inject constructor() : MviStateHandler<LoginState> {
 

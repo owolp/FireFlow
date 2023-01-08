@@ -127,18 +127,18 @@ private fun Category_Preferences_Preview() {
             preferences = listOf(
                 CategoryPreference.Primary(
                     title = "Primary Title",
-                    description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do " +
+                    description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed " +
                         "eiusmod tempor incididunt ut labore et dolore magna aliqua."
                 ),
                 CategoryPreference.Icon(
                     title = "Icon Title",
-                    description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do " +
+                    description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed " +
                         "eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                     icon = FireFlowIcons.Analytics
                 ),
                 CategoryPreference.Switch(
                     title = "Switch Title",
-                    description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do " +
+                    description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed " +
                         "eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                     icon = FireFlowIcons.Analytics,
                     checked = false,
@@ -148,7 +148,7 @@ private fun Category_Preferences_Preview() {
                 ),
                 CategoryPreference.Checkbox(
                     title = "Checkbox Title",
-                    description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do " +
+                    description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed " +
                         "eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                     icon = FireFlowIcons.Analytics,
                     checked = false,

@@ -24,8 +24,8 @@ import dev.zitech.core.remoteconfig.domain.model.LongConfig
 import dev.zitech.core.remoteconfig.domain.model.StringConfig
 import dev.zitech.core.remoteconfig.domain.repository.ConfigRepository
 import dev.zitech.core.remoteconfig.domain.source.ConfigProviderSource
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
+import kotlinx.coroutines.flow.Flow
 
 internal class ConfigRepositoryImpl @Inject constructor(
     private val configProviderSource: ConfigProviderSource

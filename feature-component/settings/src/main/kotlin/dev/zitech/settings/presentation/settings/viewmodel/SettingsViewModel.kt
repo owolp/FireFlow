@@ -35,9 +35,9 @@ import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsAp
 import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsDataChoicesCollectionStates
 import dev.zitech.settings.presentation.settings.viewmodel.error.SettingsErrorProvider
 import dev.zitech.settings.presentation.settings.viewmodel.theme.SettingsStringsProvider
+import javax.inject.Inject
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
 @HiltViewModel
@@ -71,7 +71,9 @@ internal class SettingsViewModel @Inject constructor(
             when (intent) {
                 is OnCrashReporterCheckChange -> handleOnCrashReporterCheckChange(intent.checked)
                 is OnAnalyticsCheckChange -> handleOnAnalyticsCheckChange(intent.checked)
-                is OnPersonalizedAdsCheckChange -> handleOnPersonalizedAdsCheckChange(intent.checked)
+                is OnPersonalizedAdsCheckChange -> handleOnPersonalizedAdsCheckChange(
+                    intent.checked
+                )
                 is OnPerformanceCheckChange -> handleOnPerformanceCheckChange(intent.checked)
                 is OnThemeSelect -> handleOnThemeSelect(intent.id)
                 is OnLanguageSelect -> handleOnLanguageSelect(intent.id)
@@ -177,7 +179,9 @@ internal class SettingsViewModel @Inject constructor(
                 settingsDataChoicesCollectionStates.getPerformanceCollectionValue(),
                 appConfigProvider.buildFlavor
             )
-            setCrashReporterState(settingsDataChoicesCollectionStates.getCrashReporterCollectionValue())
+            setCrashReporterState(
+                settingsDataChoicesCollectionStates.getCrashReporterCollectionValue()
+            )
             setThemeState(settingsAppearanceCollectionStates.getApplicationThemeValue())
             setLanguageState(settingsAppearanceCollectionStates.getApplicationLanguageValue())
             setAppVersionState(appConfigProvider.version)

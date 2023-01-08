@@ -22,14 +22,14 @@ import dev.zitech.core.common.domain.navigation.DeepLinkScreenDestination
 import dev.zitech.core.persistence.domain.model.exception.NullCurrentUserAccountException
 import dev.zitech.core.persistence.domain.usecase.database.GetCurrentUserAccountUseCase
 import dev.zitech.core.persistence.domain.usecase.database.GetUserAccountsUseCase
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlinx.coroutines.channels.ProducerScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.onEach
-import javax.inject.Inject
-import javax.inject.Singleton
 
 @Singleton
 class GetScreenDestinationUseCase @Inject constructor(

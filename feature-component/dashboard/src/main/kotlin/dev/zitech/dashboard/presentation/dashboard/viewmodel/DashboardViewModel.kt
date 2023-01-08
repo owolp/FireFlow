@@ -26,8 +26,8 @@ import dev.zitech.core.common.presentation.architecture.MviViewModel
 import dev.zitech.core.common.presentation.splash.SplashScreenStateHandler
 import dev.zitech.navigation.domain.usecase.GetScreenDestinationUseCase
 import dev.zitech.navigation.presentation.extension.logInState
-import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
+import kotlinx.coroutines.flow.StateFlow
 
 @HiltViewModel
 internal class DashboardViewModel @Inject constructor(

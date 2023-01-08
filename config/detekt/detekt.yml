@@ -312,7 +312,7 @@ formatting:
     autoCorrect: true
     layout: '*,java.**,javax.**,kotlin.**,org.gradle.**,^'
   Indentation:
-    active: true
+    active: false
     autoCorrect: true
     indentSize: 4
     continuationIndentSize: 4

@@ -21,11 +21,11 @@ import dev.zitech.core.common.domain.model.ApplicationLanguage
 import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.core.common.domain.model.BuildFlavor
 import dev.zitech.core.common.presentation.architecture.MviStateHandler
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
 internal class SettingsStateHandler @Inject constructor() : MviStateHandler<SettingsState> {

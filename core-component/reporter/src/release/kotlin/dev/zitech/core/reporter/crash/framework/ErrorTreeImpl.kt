@@ -21,7 +21,6 @@ import android.util.Log
 import dev.zitech.core.common.domain.logger.ErrorTree
 import dev.zitech.core.reporter.crash.domain.usecase.LogDebugInfoUseCase
 import dev.zitech.core.reporter.crash.domain.usecase.RecordCrashExceptionUseCase
-import timber.log.Timber
 import java.io.IOException
 import java.net.SocketException
 import java.net.SocketTimeoutException
@@ -30,6 +29,7 @@ import javax.inject.Inject
 import javax.net.ssl.SSLException
 import javax.net.ssl.SSLHandshakeException
 import kotlin.coroutines.cancellation.CancellationException
+import timber.log.Timber
 
 class ErrorTreeImpl @Inject constructor(
     private val logDebugInfoUseCase: LogDebugInfoUseCase,
@@ -57,8 +57,8 @@ class ErrorTreeImpl @Inject constructor(
                 if (tagValue == null || tagValue.isEmpty()) {
                     tagValue =
                         logStackTrace
-                        .extractCallerClassName() + ":" + logStackTrace
-                        .extractCallerLineNumber()
+                            .extractCallerClassName() + ":" + logStackTrace
+                            .extractCallerLineNumber()
                 }
 
                 if (!messageValue.contains("#")) {

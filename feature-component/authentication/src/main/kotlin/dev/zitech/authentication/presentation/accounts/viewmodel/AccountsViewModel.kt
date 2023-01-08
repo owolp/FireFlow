@@ -21,9 +21,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.zitech.core.common.presentation.architecture.MviViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 internal class AccountsViewModel @Inject constructor(

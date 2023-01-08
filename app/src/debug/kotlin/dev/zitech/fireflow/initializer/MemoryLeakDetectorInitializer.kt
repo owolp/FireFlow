@@ -24,8 +24,8 @@ import dev.zitech.core.featureflag.domain.model.DevFeature
 import dev.zitech.core.featureflag.domain.usecase.IsFeatureEnabledUseCase
 import dev.zitech.fireflow.di.DebugInitializerEntryPoint
 import dev.zitech.fireflow.framework.leak.MemoryLeakDetector
-import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 internal class MemoryLeakDetectorInitializer : Initializer<Unit> {
 

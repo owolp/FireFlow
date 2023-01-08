@@ -20,8 +20,8 @@ package dev.zitech.core.persistence.domain.usecase.preferences
 import dev.zitech.core.persistence.domain.model.preferences.BooleanPreference
 import dev.zitech.core.persistence.domain.model.preferences.PreferenceType
 import dev.zitech.core.persistence.domain.repository.preferences.GetPreferencesRepository
-import kotlinx.coroutines.flow.first
 import javax.inject.Inject
+import kotlinx.coroutines.flow.first
 
 class GetAllowPersonalizedAdsValueUseCase @Inject constructor(
     private val getPreferencesRepository: GetPreferencesRepository
