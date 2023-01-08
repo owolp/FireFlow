@@ -52,8 +52,8 @@ import dev.zitech.core.persistence.framework.database.factory.DatabaseFactory
 import dev.zitech.core.persistence.framework.database.mapper.UserAccountMapper
 import dev.zitech.core.persistence.framework.database.source.UserAccountDatabaseSourceImpl
 import dev.zitech.core.persistence.framework.preference.factory.PreferencesFactory
-import kotlinx.coroutines.runBlocking
 import javax.inject.Singleton
+import kotlinx.coroutines.runBlocking
 
 internal interface PersistenceModule {
 
@@ -100,7 +100,8 @@ internal interface PersistenceModule {
         @Singleton
         @Provides
         fun containsPreferencesRepository(
-            @DevelopmentPreferencesDataSource developmentPreferencesDataSource: PreferencesDataSource,
+            @DevelopmentPreferencesDataSource
+            developmentPreferencesDataSource: PreferencesDataSource,
             @SecuredPreferencesDataSource securedPreferencesDataSource: PreferencesDataSource,
             @StandardPreferencesDataSource standardPreferencesDataSource: PreferencesDataSource
         ): ContainsPreferencesRepository = ContainsPreferencesRepositoryImpl(
@@ -112,7 +113,8 @@ internal interface PersistenceModule {
         @Singleton
         @Provides
         fun getPreferencesRepository(
-            @DevelopmentPreferencesDataSource developmentPreferencesDataSource: PreferencesDataSource,
+            @DevelopmentPreferencesDataSource
+            developmentPreferencesDataSource: PreferencesDataSource,
             @SecuredPreferencesDataSource securedPreferencesDataSource: PreferencesDataSource,
             @StandardPreferencesDataSource standardPreferencesDataSource: PreferencesDataSource
         ): GetPreferencesRepository = GetPreferencesRepositoryImpl(
@@ -124,7 +126,8 @@ internal interface PersistenceModule {
         @Singleton
         @Provides
         fun removePreferencesRepository(
-            @DevelopmentPreferencesDataSource developmentPreferencesDataSource: PreferencesDataSource,
+            @DevelopmentPreferencesDataSource
+            developmentPreferencesDataSource: PreferencesDataSource,
             @SecuredPreferencesDataSource securedPreferencesDataSource: PreferencesDataSource,
             @StandardPreferencesDataSource standardPreferencesDataSource: PreferencesDataSource
         ): RemovePreferencesRepository = RemovePreferencesRepositoryImpl(
@@ -136,7 +139,8 @@ internal interface PersistenceModule {
         @Singleton
         @Provides
         fun savePreferencesRepository(
-            @DevelopmentPreferencesDataSource developmentPreferencesDataSource: PreferencesDataSource,
+            @DevelopmentPreferencesDataSource
+            developmentPreferencesDataSource: PreferencesDataSource,
             @SecuredPreferencesDataSource securedPreferencesDataSource: PreferencesDataSource,
             @StandardPreferencesDataSource standardPreferencesDataSource: PreferencesDataSource
         ): SavePreferencesRepository = SavePreferencesRepositoryImpl(

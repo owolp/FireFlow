@@ -163,7 +163,10 @@ private fun getAppearancePreferences(
             title = stringResource(id = R.string.appearance_language),
             icon = FireFlowIcons.Language,
             description = stringResource(id = state.language.text),
-            onClick = Pair(stringResource(id = R.string.cd_appearance_language_click), onLanguageClick)
+            onClick = Pair(
+                stringResource(id = R.string.cd_appearance_language_click),
+                onLanguageClick
+            )
         )
     )
 
@@ -187,8 +190,12 @@ private fun getDataChoicesPreferences(
                 icon = FireFlowIcons.Analytics,
                 checked = state.analytics,
                 onCheckedChanged = onAnalyticsCheckChange,
-                cdDescriptionEnabled = stringResource(id = R.string.cd_data_choices_analytics_enabled),
-                cdDescriptionDisabled = stringResource(id = R.string.cd_data_choices_analytics_disabled),
+                cdDescriptionEnabled = stringResource(
+                    id = R.string.cd_data_choices_analytics_enabled
+                ),
+                cdDescriptionDisabled = stringResource(
+                    id = R.string.cd_data_choices_analytics_disabled
+                ),
                 description = stringResource(id = R.string.data_choices_analytics_description)
             )
         )
@@ -200,9 +207,15 @@ private fun getDataChoicesPreferences(
                     icon = FireFlowIcons.AdsClick,
                     checked = state.personalizedAds,
                     onCheckedChanged = onPersonalizedAdsCheckChange,
-                    cdDescriptionEnabled = stringResource(id = R.string.cd_data_choices_personalized_ads_enabled),
-                    cdDescriptionDisabled = stringResource(id = R.string.cd_data_choices_personalized_ads_disabled),
-                    description = stringResource(id = R.string.data_choices_personalized_ads_description)
+                    cdDescriptionEnabled = stringResource(
+                        id = R.string.cd_data_choices_personalized_ads_enabled
+                    ),
+                    cdDescriptionDisabled = stringResource(
+                        id = R.string.cd_data_choices_personalized_ads_disabled
+                    ),
+                    description = stringResource(
+                        id = R.string.data_choices_personalized_ads_description
+                    )
                 )
             )
         }
@@ -214,8 +227,12 @@ private fun getDataChoicesPreferences(
                     icon = FireFlowIcons.Speed,
                     checked = state.performance,
                     onCheckedChanged = onPerformanceCheckChange,
-                    cdDescriptionEnabled = stringResource(id = R.string.cd_data_choices_performance_enabled),
-                    cdDescriptionDisabled = stringResource(id = R.string.cd_data_choices_performance_disabled),
+                    cdDescriptionEnabled = stringResource(
+                        id = R.string.cd_data_choices_performance_enabled
+                    ),
+                    cdDescriptionDisabled = stringResource(
+                        id = R.string.cd_data_choices_performance_disabled
+                    ),
                     description = stringResource(id = R.string.data_choices_performance_description)
                 )
             )
@@ -228,8 +245,12 @@ private fun getDataChoicesPreferences(
             icon = FireFlowIcons.BugReport,
             checked = state.crashReporter,
             onCheckedChanged = onCrashReporterCheckChange,
-            cdDescriptionEnabled = stringResource(id = R.string.cd_data_choices_crash_reporter_enabled),
-            cdDescriptionDisabled = stringResource(id = R.string.cd_data_choices_crash_reporter_disabled),
+            cdDescriptionEnabled = stringResource(
+                id = R.string.cd_data_choices_crash_reporter_enabled
+            ),
+            cdDescriptionDisabled = stringResource(
+                id = R.string.cd_data_choices_crash_reporter_disabled
+            ),
             description = stringResource(id = R.string.data_choices_crash_reporter_description)
         )
     )

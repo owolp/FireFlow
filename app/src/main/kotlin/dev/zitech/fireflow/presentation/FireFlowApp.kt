@@ -138,7 +138,9 @@ private fun FireFlowBottomBar(
 ) {
     FireFlowNavigationBar.Primary {
         destinations.forEach { destination ->
-            val selected = currentDestination?.hierarchy?.any { it.route == destination.route } == true
+            val selected = currentDestination?.hierarchy?.any {
+                it.route == destination.route
+            } == true
             Primary(
                 selected = selected,
                 onClick = { onNavigateToDestination(destination) },

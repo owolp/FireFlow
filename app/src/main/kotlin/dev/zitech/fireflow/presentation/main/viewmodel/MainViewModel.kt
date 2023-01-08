@@ -25,12 +25,12 @@ import dev.zitech.core.common.presentation.splash.SplashScreenStateHandler
 import dev.zitech.core.persistence.domain.usecase.preferences.GetApplicationThemeValueUseCase
 import dev.zitech.core.remoteconfig.domain.usecase.InitializeRemoteConfiguratorUseCase
 import dev.zitech.core.reporter.analytics.domain.usecase.event.ApplicationLaunchAnalyticsEvent
+import javax.inject.Inject
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 internal class MainViewModel @Inject constructor(

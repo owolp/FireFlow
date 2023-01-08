@@ -23,8 +23,8 @@ import dev.zitech.core.persistence.domain.usecase.preferences.GetApplicationThem
 import dev.zitech.core.persistence.domain.usecase.preferences.SetApplicationThemeValueUseCase
 import dev.zitech.settings.domain.usecase.GetApplicationLanguageValueUseCase
 import dev.zitech.settings.domain.usecase.SetApplicationLanguageValueUseCase
-import kotlinx.coroutines.flow.first
 import javax.inject.Inject
+import kotlinx.coroutines.flow.first
 
 internal class SettingsAppearanceCollectionStates @Inject constructor(
     private val getApplicationThemeValueUseCase: GetApplicationThemeValueUseCase,

@@ -25,9 +25,9 @@ import dev.zitech.core.common.presentation.architecture.MviViewModel
 import dev.zitech.core.persistence.domain.usecase.database.SaveUserAccountUseCase
 import dev.zitech.onboarding.presentation.login.model.LoginType
 import dev.zitech.onboarding.presentation.navigation.LoginDestination
+import javax.inject.Inject
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 internal class LoginViewModel @Inject constructor(

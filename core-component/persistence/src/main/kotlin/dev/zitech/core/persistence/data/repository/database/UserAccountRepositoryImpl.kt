@@ -22,9 +22,9 @@ import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.domain.model.exception.NullCurrentUserAccountException
 import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
 import dev.zitech.core.persistence.domain.source.database.UserAccountDatabaseSource
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
 internal class UserAccountRepositoryImpl @Inject constructor(
     private val userAccountDatabaseSource: UserAccountDatabaseSource

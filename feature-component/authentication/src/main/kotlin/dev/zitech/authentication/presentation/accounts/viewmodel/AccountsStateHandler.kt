@@ -18,11 +18,11 @@
 package dev.zitech.authentication.presentation.accounts.viewmodel
 
 import dev.zitech.core.common.presentation.architecture.MviStateHandler
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import javax.inject.Inject
 
 internal class AccountsStateHandler @Inject constructor() : MviStateHandler<AccountsState> {
 

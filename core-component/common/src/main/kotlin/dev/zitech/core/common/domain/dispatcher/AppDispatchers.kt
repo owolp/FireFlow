@@ -17,9 +17,9 @@
 
 package dev.zitech.core.common.domain.dispatcher
 
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import javax.inject.Inject
 
 interface AppDispatchers {
     val default: CoroutineDispatcher

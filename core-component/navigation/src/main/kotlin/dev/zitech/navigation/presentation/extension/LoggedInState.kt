@@ -21,6 +21,8 @@ import dev.zitech.core.common.domain.navigation.DeepLinkScreenDestination
 import dev.zitech.core.common.domain.navigation.LogInState
 import dev.zitech.core.common.presentation.splash.SplashScreenStateHandler
 import dev.zitech.navigation.domain.usecase.GetScreenDestinationUseCase
+import kotlin.properties.ReadOnlyProperty
+import kotlin.reflect.KProperty
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -28,8 +30,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import kotlin.properties.ReadOnlyProperty
-import kotlin.reflect.KProperty
 
 fun logInState(
     getScreenDestinationUseCase: GetScreenDestinationUseCase,

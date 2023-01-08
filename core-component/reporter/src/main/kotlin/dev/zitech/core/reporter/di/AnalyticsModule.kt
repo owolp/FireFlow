@@ -52,7 +52,9 @@ internal interface AnalyticsModule {
 
         @Singleton
         @Binds
-        fun performanceReporter(performanceRepositoryImpl: PerformanceReporterImpl): PerformanceReporter
+        fun performanceReporter(
+            performanceRepositoryImpl: PerformanceReporterImpl
+        ): PerformanceReporter
 
         @Singleton
         @Binds

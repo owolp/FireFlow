@@ -22,9 +22,9 @@ import dev.zitech.core.persistence.domain.model.preferences.IntPreference
 import dev.zitech.core.persistence.domain.model.preferences.PreferenceType
 import dev.zitech.core.persistence.domain.repository.preferences.GetPreferencesRepository
 import dev.zitech.core.persistence.framework.preference.mapper.IntToApplicationThemeMapper
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
 class GetApplicationThemeValueUseCase @Inject constructor(
     private val getPreferencesRepository: GetPreferencesRepository,

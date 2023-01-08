@@ -18,10 +18,10 @@
 package dev.zitech.dashboard.presentation.dashboard.viewmodel
 
 import dev.zitech.core.common.presentation.architecture.MviStateHandler
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import javax.inject.Inject
 
 internal class DashboardStateHandler @Inject constructor() : MviStateHandler<DashboardState> {
 
