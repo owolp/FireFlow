@@ -27,7 +27,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
-import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
@@ -41,8 +40,7 @@ import dev.zitech.fireflow.presentation.main.viewmodel.ShowErrorHandled
 
 @Suppress("ForbiddenComment")
 @OptIn(
-    ExperimentalMaterial3WindowSizeClassApi::class,
-    ExperimentalLifecycleComposeApi::class
+    ExperimentalMaterial3WindowSizeClassApi::class
 )
 @AndroidEntryPoint
 internal class MainActivity : AppCompatActivity() {

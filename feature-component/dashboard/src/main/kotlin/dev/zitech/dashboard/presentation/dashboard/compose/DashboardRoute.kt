@@ -22,14 +22,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.zitech.core.common.domain.navigation.DeepLinkScreenDestination
 import dev.zitech.core.common.domain.navigation.LogInState
 import dev.zitech.dashboard.presentation.dashboard.viewmodel.DashboardViewModel
 import dev.zitech.ds.atoms.loading.FireFlowProgressIndicators
 
-@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 internal fun DashboardRoute(
     modifier: Modifier = Modifier,
