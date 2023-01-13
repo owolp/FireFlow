@@ -12,7 +12,7 @@ jvmTarget = "11"
 lifecycle = "2.6.0-alpha04"
 kotlin = "1.7.21"
 navigation = "2.5.3"
-room = "2.4.3"
+room = "2.5.0"
 test = "1.5.2"
 
 [libraries]
