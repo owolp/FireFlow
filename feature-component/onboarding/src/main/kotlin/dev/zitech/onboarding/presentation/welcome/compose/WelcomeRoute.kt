@@ -21,7 +21,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.zitech.onboarding.presentation.welcome.viewmodel.Idle
 import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigateOutOfApp
@@ -35,7 +34,6 @@ import dev.zitech.onboarding.presentation.welcome.viewmodel.OnContinueWithPatCli
 import dev.zitech.onboarding.presentation.welcome.viewmodel.OnDemoClick
 import dev.zitech.onboarding.presentation.welcome.viewmodel.WelcomeViewModel
 
-@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 internal fun WelcomeRoute(
     navigateToOath: () -> Unit,

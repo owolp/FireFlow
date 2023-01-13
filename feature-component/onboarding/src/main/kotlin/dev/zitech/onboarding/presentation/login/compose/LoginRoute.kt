@@ -22,7 +22,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.zitech.onboarding.presentation.login.viewmodel.Idle
 import dev.zitech.onboarding.presentation.login.viewmodel.LoginViewModel
@@ -30,7 +29,6 @@ import dev.zitech.onboarding.presentation.login.viewmodel.NavigateToDashboard
 import dev.zitech.onboarding.presentation.login.viewmodel.NavigationHandled
 import dev.zitech.onboarding.presentation.login.viewmodel.OnLoginClick
 
-@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 internal fun LoginRoute(
     navigateToDashboard: () -> Unit,
