@@ -67,7 +67,7 @@ object FireFlowPreferences {
         ) {
             FireFlowTexts.TitleLarge(
                 text = title,
-                color = FireFlowTheme.colors.tertiary
+                color = FireFlowTheme.colors.onPrimaryContainer
             )
         }
     }

@@ -21,7 +21,7 @@ import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.consumedWindowInsets
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -102,7 +102,7 @@ private fun SettingsScreenContent(
             .fillMaxSize()
             .padding(start = FireFlowTheme.space.m, end = FireFlowTheme.space.m)
             .padding(innerPadding)
-            .consumedWindowInsets(innerPadding),
+            .consumeWindowInsets(innerPadding),
         verticalArrangement = Arrangement.spacedBy(FireFlowTheme.space.l)
     ) {
         item {
