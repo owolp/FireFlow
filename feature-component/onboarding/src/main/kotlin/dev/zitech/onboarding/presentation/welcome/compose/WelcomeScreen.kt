@@ -38,7 +38,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import dev.zitech.ds.atoms.animation.FireFlowAnimations
 import dev.zitech.ds.atoms.button.FireFlowButtons
-import dev.zitech.ds.atoms.spacer.FireFlowSpacers
 import dev.zitech.ds.atoms.text.FireFlowTexts
 import dev.zitech.ds.templates.scaffold.FireFlowScaffolds
 import dev.zitech.ds.theme.FireFlowTheme
@@ -112,7 +111,6 @@ private fun WelcomeScreenContent(
             onClick = onContinueWithPatClick
         )
         FireFlowButtons.Text.OnSurface(
-            modifier = Modifier.fillMaxWidth(),
             text = stringResource(id = R.string.welcome_button_demo),
             onClick = onDemoClick
         )
