@@ -17,8 +17,8 @@
 
 package dev.zitech.onboarding.presentation.welcome.compose
 
+import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.PaddingValues
@@ -31,10 +31,17 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import dev.zitech.ds.atoms.animation.FireFlowAnimations
 import dev.zitech.ds.atoms.button.FireFlowButtons
+import dev.zitech.ds.atoms.spacer.FireFlowSpacers
+import dev.zitech.ds.atoms.text.FireFlowTexts
 import dev.zitech.ds.templates.scaffold.FireFlowScaffolds
 import dev.zitech.ds.theme.FireFlowTheme
+import dev.zitech.ds.theme.PreviewFireFlowTheme
+import dev.zitech.onboarding.R
 import dev.zitech.onboarding.presentation.welcome.viewmodel.WelcomeState
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -79,14 +86,44 @@ private fun WelcomeScreenContent(
             .consumeWindowInsets(innerPadding)
             .navigationBarsPadding()
             .systemBarsPadding(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         FireFlowAnimations.MoneyTree(
             modifier = Modifier.weight(1F)
         )
+        FireFlowSpacers.Horizontal(horizontalSpace = FireFlowTheme.space.s)
+        FireFlowTexts.DisplayMedium(
+            modifier = Modifier.weight(1F),
+            text = stringResource(id = R.string.welcome_slogan),
+            style = FireFlowTheme.typography.displayMedium.copy(
+                textAlign = TextAlign.Center
+            )
+        )
+        FireFlowSpacers.Horizontal(horizontalSpace = FireFlowTheme.space.s)
         FireFlowButtons.Text.OnSurface(text = "Oath", onClick = onContinueWithOauthCLick)
         FireFlowButtons.Text.OnSurface(text = "Pat", onClick = onContinueWithPatClick)
         FireFlowButtons.Text.OnSurface(text = "Demo", onClick = onDemoClick)
+    }
+}
+
+@Preview(
+    name = "Welcome Screen Light Theme",
+    showBackground = true
+)
+@Preview(
+    name = "Welcome Screen Dark Theme",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showBackground = true
+)
+@Composable
+private fun WelcomeScreen_Preview() {
+    PreviewFireFlowTheme {
+        WelcomeScreen(
+            state = WelcomeState(),
+            onContinueWithOauthClick = {},
+            onContinueWithPatClick = {},
+            onDemoClick = {},
+            onBackClick = {},
+        )
     }
 }
