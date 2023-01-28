@@ -18,10 +18,14 @@
 package dev.zitech.ds.atoms.switch
 
 import android.content.res.Configuration
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Switch
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import dev.zitech.ds.atoms.icon.FireFlowIcons
+import dev.zitech.ds.theme.FireFlowTheme
 import dev.zitech.ds.theme.PreviewFireFlowTheme
 
 object FireFlowSwitches {
@@ -37,7 +41,16 @@ object FireFlowSwitches {
             checked = checked,
             modifier = modifier,
             onCheckedChange = onCheckedChange,
-            enabled = enabled
+            enabled = enabled,
+            thumbContent = {
+                if (checked) {
+                    Icon(
+                        modifier = modifier.padding(FireFlowTheme.space.xss),
+                        imageVector = FireFlowIcons.Check,
+                        contentDescription = null
+                    )
+                }
+            }
         )
     }
 }

@@ -23,6 +23,7 @@ import androidx.compose.material.icons.outlined.Analytics
 import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.Brightness6
 import androidx.compose.material.icons.outlined.BugReport
+import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.icons.outlined.Dashboard
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Language
@@ -35,6 +36,7 @@ object FireFlowIcons {
     val ArrowBack = Icons.Outlined.ArrowBack
     val Brightness6 = Icons.Outlined.Brightness6
     val BugReport = Icons.Outlined.BugReport
+    val Check = Icons.Outlined.Check
     val Dashboard = Icons.Outlined.Dashboard
     val Info = Icons.Outlined.Info
     val Language = Icons.Outlined.Language
