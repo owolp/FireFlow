@@ -19,25 +19,32 @@ package dev.zitech.onboarding.presentation.welcome.compose
 
 import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import dev.zitech.ds.atoms.animation.FireFlowAnimations
 import dev.zitech.ds.atoms.button.FireFlowButtons
+import dev.zitech.ds.atoms.spacer.FireFlowSpacers
 import dev.zitech.ds.atoms.text.FireFlowTexts
 import dev.zitech.ds.templates.scaffold.FireFlowScaffolds
 import dev.zitech.ds.theme.FireFlowTheme
@@ -79,41 +86,60 @@ private fun WelcomeScreenContent(
     onContinueWithPatClick: () -> Unit,
     onDemoClick: () -> Unit
 ) {
-    Column(
+    Box(
         modifier = Modifier
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(
+                        FireFlowTheme.colors.primary,
+                        FireFlowTheme.colors.surface
+                    )
+                )
+            )
             .fillMaxSize()
-            .padding(FireFlowTheme.space.m)
             .padding(innerPadding)
             .consumeWindowInsets(innerPadding)
             .navigationBarsPadding()
-            .systemBarsPadding(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(FireFlowTheme.space.s)
+            .systemBarsPadding()
+            .verticalScroll(rememberScrollState())
     ) {
-        FireFlowAnimations.MoneyTree(
-            modifier = Modifier.weight(1F)
-        )
-        FireFlowTexts.DisplayMedium(
-            modifier = Modifier.weight(1F),
-            text = stringResource(id = R.string.welcome_slogan),
-            style = FireFlowTheme.typography.displayMedium.copy(
-                textAlign = TextAlign.Center
+        Column(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(FireFlowTheme.space.m),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            FireFlowAnimations.MoneyTree(
+                modifier = Modifier
+                    .heightIn(max = 192.dp)
             )
-        )
-        FireFlowButtons.Outlined.OnSurface(
-            modifier = Modifier.fillMaxWidth(),
-            text = stringResource(id = R.string.welcome_button_continue_with_oauth),
-            onClick = onContinueWithOauthCLick
-        )
-        FireFlowButtons.Outlined.OnSurface(
-            modifier = Modifier.fillMaxWidth(),
-            text = stringResource(id = R.string.welcome_button_continue_with_personal_access_token),
-            onClick = onContinueWithPatClick
-        )
-        FireFlowButtons.Text.OnSurface(
-            text = stringResource(id = R.string.welcome_button_demo),
-            onClick = onDemoClick
-        )
+            FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.s)
+            FireFlowTexts.DisplayMedium(
+                text = stringResource(id = R.string.welcome_slogan),
+                style = FireFlowTheme.typography.displayMedium.copy(
+                    textAlign = TextAlign.Center
+                )
+            )
+            FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.m)
+            FireFlowButtons.Outlined.OnSurface(
+                modifier = Modifier.fillMaxWidth(),
+                text = stringResource(id = R.string.welcome_button_continue_with_oauth),
+                onClick = onContinueWithOauthCLick
+            )
+            FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.xs)
+            FireFlowButtons.Outlined.OnSurface(
+                modifier = Modifier.fillMaxWidth(),
+                text = stringResource(
+                    id = R.string.welcome_button_continue_with_personal_access_token
+                ),
+                onClick = onContinueWithPatClick
+            )
+            FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.xs)
+            FireFlowButtons.Text.OnSurface(
+                text = stringResource(id = R.string.welcome_button_demo),
+                onClick = onDemoClick
+            )
+        }
     }
 }
 
@@ -134,7 +160,7 @@ private fun WelcomeScreen_Preview() {
             onContinueWithOauthClick = {},
             onContinueWithPatClick = {},
             onDemoClick = {},
-            onBackClick = {},
+            onBackClick = {}
         )
     }
 }

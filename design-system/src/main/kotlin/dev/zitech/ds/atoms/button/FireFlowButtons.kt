@@ -139,7 +139,7 @@ object FireFlowButtons {
             )
             FireFlowTexts.TitleMedium(
                 modifier = Modifier.padding(
-                    start = FireFlowTheme.space.s,
+                    start = FireFlowTheme.space.s
                 ),
                 text = text,
                 style = FireFlowTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
