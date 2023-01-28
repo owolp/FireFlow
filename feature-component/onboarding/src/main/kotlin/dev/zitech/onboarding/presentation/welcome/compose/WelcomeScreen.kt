@@ -50,12 +50,10 @@ import dev.zitech.ds.templates.scaffold.FireFlowScaffolds
 import dev.zitech.ds.theme.FireFlowTheme
 import dev.zitech.ds.theme.PreviewFireFlowTheme
 import dev.zitech.onboarding.R
-import dev.zitech.onboarding.presentation.welcome.viewmodel.WelcomeState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun WelcomeScreen(
-    state: WelcomeState,
     onContinueWithOauthClick: () -> Unit,
     onContinueWithPatClick: () -> Unit,
     onDemoClick: () -> Unit,
@@ -156,7 +154,6 @@ private fun WelcomeScreenContent(
 private fun WelcomeScreen_Preview() {
     PreviewFireFlowTheme {
         WelcomeScreen(
-            state = WelcomeState(),
             onContinueWithOauthClick = {},
             onContinueWithPatClick = {},
             onDemoClick = {},
