@@ -17,6 +17,7 @@
 
 package dev.zitech.settings.presentation.settings.compose
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -57,7 +58,9 @@ internal fun SettingsRoute(
 
     when (val state = logInState) {
         LogInState.InitScreen -> {
-            FireFlowProgressIndicators.Magnifier()
+            FireFlowProgressIndicators.Magnifier(
+                modifier = Modifier.fillMaxSize()
+            )
         }
         LogInState.Logged -> {
             SettingsScreen(

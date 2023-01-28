@@ -20,13 +20,21 @@ package dev.zitech.onboarding.presentation.welcome.compose
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import dev.zitech.ds.atoms.animation.FireFlowAnimations
 import dev.zitech.ds.atoms.button.FireFlowButtons
 import dev.zitech.ds.templates.scaffold.FireFlowScaffolds
+import dev.zitech.ds.theme.FireFlowTheme
 import dev.zitech.onboarding.presentation.welcome.viewmodel.WelcomeState
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -45,26 +53,38 @@ internal fun WelcomeScreen(
 
     FireFlowScaffolds.Primary(
         modifier = modifier
-    ) {
+    ) { innerPadding ->
         WelcomeScreenContent(
-            onContinueWithOauthCLick = onContinueWithOauthClick,
-            onContinueWithPatClick = onContinueWithPatClick,
-            onDemoClick = onDemoClick
+            innerPadding,
+            onContinueWithOauthClick,
+            onContinueWithPatClick,
+            onDemoClick
         )
     }
 }
 
 @Composable
+@OptIn(ExperimentalLayoutApi::class)
 private fun WelcomeScreenContent(
+    innerPadding: PaddingValues,
     onContinueWithOauthCLick: () -> Unit,
     onContinueWithPatClick: () -> Unit,
     onDemoClick: () -> Unit
 ) {
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(FireFlowTheme.space.m)
+            .padding(innerPadding)
+            .consumeWindowInsets(innerPadding)
+            .navigationBarsPadding()
+            .systemBarsPadding(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+        FireFlowAnimations.MoneyTree(
+            modifier = Modifier.weight(1F)
+        )
         FireFlowButtons.Text.OnSurface(text = "Oath", onClick = onContinueWithOauthCLick)
         FireFlowButtons.Text.OnSurface(text = "Pat", onClick = onContinueWithPatClick)
         FireFlowButtons.Text.OnSurface(text = "Demo", onClick = onDemoClick)

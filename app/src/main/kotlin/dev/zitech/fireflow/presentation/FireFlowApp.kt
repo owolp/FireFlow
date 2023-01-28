@@ -81,6 +81,8 @@ internal fun FireFlowApp(
                 Row(
                     modifier = Modifier
                         .fillMaxSize()
+                        .padding(padding)
+                        .consumeWindowInsets(padding)
                         .windowInsetsPadding(
                             WindowInsets.safeDrawing.only(
                                 WindowInsetsSides.Horizontal
@@ -119,10 +121,7 @@ internal fun FireFlowApp(
                                 inclusive = navDirection?.inclusive
                             )
                         },
-                        onCloseApplication = appState::onCloseApplication,
-                        modifier = Modifier
-                            .padding(padding)
-                            .consumeWindowInsets(padding)
+                        onCloseApplication = appState::onCloseApplication
                     )
                 }
             }

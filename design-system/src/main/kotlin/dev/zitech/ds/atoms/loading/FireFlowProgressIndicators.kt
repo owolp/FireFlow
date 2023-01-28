@@ -19,7 +19,6 @@
 package dev.zitech.ds.atoms.loading
 
 import android.content.res.Configuration
-import androidx.annotation.RawRes
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -28,7 +27,7 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
@@ -40,11 +39,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.LottieConstants
-import com.airbnb.lottie.compose.rememberLottieComposition
-import dev.zitech.ds.R
+import dev.zitech.ds.atoms.animation.FireFlowAnimations
 import dev.zitech.ds.atoms.spacer.FireFlowSpacers
 import dev.zitech.ds.theme.FireFlowTheme
 import dev.zitech.ds.theme.PreviewFireFlowTheme
@@ -55,30 +50,25 @@ object FireFlowProgressIndicators {
     fun Magnifier(modifier: Modifier = Modifier) {
         ProgressIndicatorItem(
             modifier = modifier,
-            resId = R.raw.animation_magnifier
+            content = {
+                FireFlowAnimations.Magnifier(
+                    modifier = Modifier.size(128.dp)
+                )
+            }
         )
     }
 
     @Composable
     private fun ProgressIndicatorItem(
         modifier: Modifier = Modifier,
-        @RawRes resId: Int
+        content: @Composable RowScope.() -> Unit
     ) {
         Row(
-            modifier = modifier.fillMaxSize(),
+            modifier = modifier,
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
-        ) {
-            val composition by rememberLottieComposition(
-                spec = LottieCompositionSpec.RawRes(resId)
-            )
-            LottieAnimation(
-                modifier = Modifier.size(128.dp),
-                composition = composition,
-                isPlaying = true,
-                iterations = LottieConstants.IterateForever
-            )
-        }
+            horizontalArrangement = Arrangement.Center,
+            content = content
+        )
     }
 
     @Composable
