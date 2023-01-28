@@ -19,11 +19,13 @@ package dev.zitech.onboarding.presentation.welcome.compose
 
 import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
@@ -86,12 +88,12 @@ private fun WelcomeScreenContent(
             .consumeWindowInsets(innerPadding)
             .navigationBarsPadding()
             .systemBarsPadding(),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(FireFlowTheme.space.s)
     ) {
         FireFlowAnimations.MoneyTree(
             modifier = Modifier.weight(1F)
         )
-        FireFlowSpacers.Horizontal(horizontalSpace = FireFlowTheme.space.s)
         FireFlowTexts.DisplayMedium(
             modifier = Modifier.weight(1F),
             text = stringResource(id = R.string.welcome_slogan),
@@ -99,10 +101,21 @@ private fun WelcomeScreenContent(
                 textAlign = TextAlign.Center
             )
         )
-        FireFlowSpacers.Horizontal(horizontalSpace = FireFlowTheme.space.s)
-        FireFlowButtons.Text.OnSurface(text = "Oath", onClick = onContinueWithOauthCLick)
-        FireFlowButtons.Text.OnSurface(text = "Pat", onClick = onContinueWithPatClick)
-        FireFlowButtons.Text.OnSurface(text = "Demo", onClick = onDemoClick)
+        FireFlowButtons.Outlined.OnSurface(
+            modifier = Modifier.fillMaxWidth(),
+            text = stringResource(id = R.string.welcome_button_continue_with_oauth),
+            onClick = onContinueWithOauthCLick
+        )
+        FireFlowButtons.Outlined.OnSurface(
+            modifier = Modifier.fillMaxWidth(),
+            text = stringResource(id = R.string.welcome_button_continue_with_personal_access_token),
+            onClick = onContinueWithPatClick
+        )
+        FireFlowButtons.Text.OnSurface(
+            modifier = Modifier.fillMaxWidth(),
+            text = stringResource(id = R.string.welcome_button_demo),
+            onClick = onDemoClick
+        )
     }
 }
 
