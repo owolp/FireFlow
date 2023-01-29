@@ -124,7 +124,7 @@ private fun WelcomeScreenContent(
                 text = stringResource(id = R.string.welcome_button_continue_with_oauth),
                 onClick = onContinueWithOauthCLick
             )
-            FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.xs)
+            FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.s)
             FireFlowButtons.Outlined.OnSurface(
                 modifier = Modifier.fillMaxWidth(),
                 text = stringResource(
@@ -132,7 +132,7 @@ private fun WelcomeScreenContent(
                 ),
                 onClick = onContinueWithPatClick
             )
-            FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.xs)
+            FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.s)
             FireFlowButtons.Text.OnSurface(
                 text = stringResource(id = R.string.welcome_button_demo),
                 onClick = onDemoClick

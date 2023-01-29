@@ -21,6 +21,7 @@ import android.content.res.Configuration
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.material3.ButtonColors
@@ -46,6 +47,8 @@ import dev.zitech.ds.theme.PreviewFireFlowTheme
 
 object FireFlowButtons {
 
+    private val MIN_BUTTON_HEIGHT = 48.dp
+
     object Text {
 
         @Composable
@@ -56,7 +59,7 @@ object FireFlowButtons {
             onClick: () -> Unit
         ) {
             TextButton(
-                modifier = modifier,
+                modifier = modifier.heightIn(min = MIN_BUTTON_HEIGHT),
                 enabled = enabled,
                 shape = FireFlowTheme.shapes.extraLarge,
                 onClick = { onClick() }
@@ -77,7 +80,7 @@ object FireFlowButtons {
             onClick: () -> Unit
         ) {
             TextButton(
-                modifier = modifier,
+                modifier = modifier.heightIn(min = MIN_BUTTON_HEIGHT),
                 enabled = enabled,
                 shape = FireFlowTheme.shapes.extraLarge,
                 onClick = { onClick() }
@@ -98,7 +101,7 @@ object FireFlowButtons {
             onClick: () -> Unit
         ) {
             TextButton(
-                modifier = modifier,
+                modifier = modifier.heightIn(min = MIN_BUTTON_HEIGHT),
                 enabled = enabled,
                 shape = FireFlowTheme.shapes.extraLarge,
                 onClick = { onClick() }
@@ -122,6 +125,7 @@ object FireFlowButtons {
     ) {
         Row(
             modifier = modifier
+                .heightIn(min = MIN_BUTTON_HEIGHT)
                 .selectable(
                     selected = selected,
                     onClick = { onClick() },
@@ -158,7 +162,7 @@ object FireFlowButtons {
             onClick: () -> Unit
         ) {
             TextButton(
-                modifier = modifier,
+                modifier = modifier.heightIn(min = MIN_BUTTON_HEIGHT),
                 enabled = enabled,
                 shape = FireFlowTheme.shapes.extraLarge,
                 onClick = { onClick() }
@@ -191,7 +195,7 @@ object FireFlowButtons {
             onClick: () -> Unit
         ) {
             OutlinedButton(
-                modifier = modifier,
+                modifier = modifier.heightIn(min = MIN_BUTTON_HEIGHT),
                 colors = buttonColors,
                 shape = FireFlowTheme.shapes.extraLarge,
                 border = BorderStroke(1.dp, FireFlowTheme.colors.onSurface),
@@ -216,7 +220,7 @@ object FireFlowButtons {
         onClick: () -> Unit
     ) {
         IconButton(
-            modifier = modifier,
+            modifier = modifier.heightIn(min = MIN_BUTTON_HEIGHT),
             enabled = enabled,
             onClick = onClick
         ) {
