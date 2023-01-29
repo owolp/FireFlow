@@ -118,11 +118,18 @@ private fun WelcomeScreenContent(
             )
             FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.s)
             FireFlowTexts.DisplayMedium(
-                text = getWelcomeSloganAnnotatedString(),
+                text = stringResource(R.string.welcome_slogan),
                 style = FireFlowTheme.typography.displayMedium.copy(
                     textAlign = TextAlign.Center
                 )
             )
+            FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.s)
+            FireFlowClickableTexts.BodySmall(
+                text = getFireflyInfoAnnotatedString(),
+                color = FireFlowTheme.colors.onSurface
+            ) {
+                // TODO: Open ChromeTab/WebView etc
+            }
             FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.l)
             FireFlowButtons.Filled.OnSurfaceTint(
                 modifier = Modifier.fillMaxWidth(),
@@ -141,35 +148,12 @@ private fun WelcomeScreenContent(
                 text = stringResource(R.string.welcome_button_demo),
                 onClick = onDemoClick
             )
-
-            FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.l)
-            FireFlowClickableTexts.BodySmall(
-                text = getFireflyInfoAnnotatedString(),
-                color = FireFlowTheme.colors.onSurface
-            ) {
-                // TODO: Open ChromeTab/WebView etc
-            }
         }
     }
 }
 
 @Composable
-private fun getWelcomeSloganAnnotatedString() = buildAnnotatedString {
-    append(stringResource(R.string.welcome_slogan))
-    withStyle(SpanStyle(color = FireFlowTheme.colors.surfaceTint)) {
-        append(stringResource(R.string.welcome_asterisk))
-    }
-}
-
-@Composable
 private fun getFireflyInfoAnnotatedString() = buildAnnotatedString {
-    withStyle(
-        style = SpanStyle(color = FireFlowTheme.colors.surfaceTint)
-    ) {
-        append(stringResource(R.string.welcome_asterisk))
-    }
-
-    append(" ")
     append(
         stringResource(R.string.welcome_firefly_iii_companion_app_before_annotated_text)
     )
