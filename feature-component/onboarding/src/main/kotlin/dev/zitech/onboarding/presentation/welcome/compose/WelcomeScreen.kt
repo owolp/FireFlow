@@ -118,7 +118,7 @@ private fun WelcomeScreenContent(
             )
             FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.s)
             FireFlowTexts.DisplayMedium(
-                text = stringResource(R.string.welcome_slogan),
+                text = getWelcomeSloganAnnotatedString(),
                 style = FireFlowTheme.typography.displayMedium.copy(
                     textAlign = TextAlign.Center
                 )
@@ -143,9 +143,8 @@ private fun WelcomeScreenContent(
             )
 
             FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.l)
-            val text = getFireflyAnnotatedString()
             FireFlowClickableTexts.BodySmall(
-                text = text,
+                text = getFireflyInfoAnnotatedString(),
                 color = FireFlowTheme.colors.onSurface
             ) {
                 // TODO: Open ChromeTab/WebView etc
@@ -155,7 +154,15 @@ private fun WelcomeScreenContent(
 }
 
 @Composable
-private fun getFireflyAnnotatedString() = buildAnnotatedString {
+private fun getWelcomeSloganAnnotatedString() = buildAnnotatedString {
+    append(stringResource(R.string.welcome_slogan))
+    withStyle(SpanStyle(color = FireFlowTheme.colors.surfaceTint)) {
+        append(stringResource(R.string.welcome_asterisk))
+    }
+}
+
+@Composable
+private fun getFireflyInfoAnnotatedString() = buildAnnotatedString {
     withStyle(
         style = SpanStyle(color = FireFlowTheme.colors.surfaceTint)
     ) {
