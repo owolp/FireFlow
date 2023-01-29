@@ -18,7 +18,11 @@
 <resources>
 
     <string name="welcome_slogan">Control your finance with FireFlow</string>
+    <string name="welcome_asterisk">*</string>
+    <string name="welcome_firefly_iii_companion_app_before_annotated_text">a</string>
+    <string name="welcome_firefly_iii_companion_app_annotated_text">Firefly III</string>
+    <string name="welcome_firefly_iii_companion_app_after_annotated_text">personal finance manager companion app</string>
     <string name="welcome_button_continue_with_oauth">Continue with OAuth</string>
     <string name="welcome_button_continue_with_personal_access_token">Continue with Personal Access Token</string>
-    <string name="welcome_button_demo">Demo</string>
+    <string name="welcome_button_demo">Continue with Demo account</string>
 </resources>

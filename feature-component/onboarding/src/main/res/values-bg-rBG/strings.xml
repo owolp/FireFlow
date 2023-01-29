@@ -18,7 +18,11 @@
 <resources>
 
     <string name="welcome_slogan">Управлявайте финансите си с FireFlow</string>
+    <string name="welcome_asterisk">*</string>
+    <string name="welcome_firefly_iii_companion_app_before_annotated_text">a</string>
+    <string name="welcome_firefly_iii_companion_app_annotated_text">Firefly III</string>
+    <string name="welcome_firefly_iii_companion_app_after_annotated_text">personal finance manager companion app</string>
     <string name="welcome_button_continue_with_oauth">Продължете с OAuth</string>
     <string name="welcome_button_continue_with_personal_access_token">Продължете с персонален токен за достъп</string>
-    <string name="welcome_button_demo">Демо</string>
+    <string name="welcome_button_demo">Продължете с Демо акаунт</string>
 </resources>

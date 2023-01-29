@@ -40,11 +40,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.zitech.ds.atoms.animation.FireFlowAnimations
 import dev.zitech.ds.atoms.button.FireFlowButtons
+import dev.zitech.ds.atoms.text.FireFlowClickableTexts
 import dev.zitech.ds.atoms.text.FireFlowTexts
 import dev.zitech.ds.templates.scaffold.FireFlowScaffolds
 import dev.zitech.ds.theme.FireFlowTheme
@@ -106,7 +111,7 @@ private fun WelcomeScreenContent(
                 .align(Alignment.BottomCenter)
                 .padding(FireFlowTheme.space.m),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(FireFlowTheme.space.m)
+            verticalArrangement = Arrangement.spacedBy(FireFlowTheme.space.s)
         ) {
             FireFlowAnimations.MoneyTree(
                 modifier = Modifier
@@ -118,6 +123,7 @@ private fun WelcomeScreenContent(
                     textAlign = TextAlign.Center
                 )
             )
+
             FireFlowButtons.Filled.OnSurfaceTint(
                 modifier = Modifier.fillMaxWidth(),
                 text = stringResource(id = R.string.welcome_button_continue_with_oauth),
@@ -130,10 +136,44 @@ private fun WelcomeScreenContent(
                 ),
                 onClick = onContinueWithPatClick
             )
-            FireFlowButtons.Text.OnSurface(
+            FireFlowButtons.Outlined.OnSurface(
+                modifier = Modifier.fillMaxWidth(),
                 text = stringResource(id = R.string.welcome_button_demo),
                 onClick = onDemoClick
             )
+
+            val text = buildAnnotatedString {
+                withStyle(style = SpanStyle(color = FireFlowTheme.colors.surfaceTint)) {
+                    append(stringResource(id = R.string.welcome_asterisk))
+                }
+
+                append(
+                    stringResource(
+                        id = R.string.welcome_firefly_iii_companion_app_before_annotated_text
+                    )
+                )
+                append(" ")
+
+                pushStringAnnotation(tag = "URL", annotation = "https://www.firefly-iii.org/")
+                withStyle(style = SpanStyle(textDecoration = TextDecoration.Underline)) {
+                    append(
+                        stringResource(
+                            id = R.string.welcome_firefly_iii_companion_app_annotated_text
+                        )
+                    )
+                }
+
+                append(" ")
+                append(
+                    stringResource(
+                        id = R.string.welcome_firefly_iii_companion_app_after_annotated_text
+                    )
+                )
+
+                pop()
+            }
+            FireFlowClickableTexts.BodySmall(text = text) {
+            }
         }
     }
 }
