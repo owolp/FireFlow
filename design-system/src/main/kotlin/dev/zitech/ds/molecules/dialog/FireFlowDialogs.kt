@@ -42,7 +42,7 @@ object FireFlowDialogs {
         text: String,
         onConfirmButtonClick: () -> Unit,
         modifier: Modifier = Modifier,
-        confirmButton: String = stringResource(id = R.string.dialog_button_ok),
+        confirmButton: String = stringResource(R.string.dialog_button_ok),
         onDismissRequest: (() -> Unit)? = null
     ) {
         AlertDialog(

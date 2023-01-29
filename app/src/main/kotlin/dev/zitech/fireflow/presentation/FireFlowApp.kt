@@ -162,7 +162,7 @@ private fun FireFlowBottomBar(
                 },
                 label = {
                     FireFlowTexts.TitleSmall(
-                        text = stringResource(id = destination.iconTextId)
+                        text = stringResource(destination.iconTextId)
                     )
                 }
             )
@@ -203,7 +203,7 @@ private fun FireFlowNavRail(
                 },
                 label = {
                     FireFlowTexts.TitleSmall(
-                        text = stringResource(id = destination.iconTextId)
+                        text = stringResource(destination.iconTextId)
                     )
                 }
             )

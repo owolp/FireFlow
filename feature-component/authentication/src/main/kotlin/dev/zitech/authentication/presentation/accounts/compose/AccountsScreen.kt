@@ -48,7 +48,7 @@ internal fun AccountsScreen(
         modifier = modifier,
         topBar = {
             FireFlowTopAppBars.Primary(
-                title = stringResource(id = R.string.accounts),
+                title = stringResource(R.string.accounts),
                 scrollBehavior = topAppBarScrollBehavior
             )
         }

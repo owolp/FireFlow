@@ -20,7 +20,6 @@ package dev.zitech.onboarding.presentation.welcome.compose
 import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -49,6 +48,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.zitech.ds.atoms.animation.FireFlowAnimations
 import dev.zitech.ds.atoms.button.FireFlowButtons
+import dev.zitech.ds.atoms.spacer.FireFlowSpacers
 import dev.zitech.ds.atoms.text.FireFlowClickableTexts
 import dev.zitech.ds.atoms.text.FireFlowTexts
 import dev.zitech.ds.templates.scaffold.FireFlowScaffolds
@@ -110,72 +110,82 @@ private fun WelcomeScreenContent(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(FireFlowTheme.space.m),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(FireFlowTheme.space.s)
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             FireFlowAnimations.MoneyTree(
                 modifier = Modifier
                     .heightIn(max = 192.dp)
             )
+            FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.s)
             FireFlowTexts.DisplayMedium(
-                text = stringResource(id = R.string.welcome_slogan),
+                text = stringResource(R.string.welcome_slogan),
                 style = FireFlowTheme.typography.displayMedium.copy(
                     textAlign = TextAlign.Center
                 )
             )
-
+            FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.l)
             FireFlowButtons.Filled.OnSurfaceTint(
                 modifier = Modifier.fillMaxWidth(),
-                text = stringResource(id = R.string.welcome_button_continue_with_oauth),
+                text = stringResource(R.string.welcome_button_continue_with_oauth),
                 onClick = onContinueWithOauthCLick
             )
+            FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.s)
             FireFlowButtons.Outlined.OnSurface(
                 modifier = Modifier.fillMaxWidth(),
-                text = stringResource(
-                    id = R.string.welcome_button_continue_with_personal_access_token
-                ),
+                text = stringResource(R.string.welcome_button_continue_with_personal_access_token),
                 onClick = onContinueWithPatClick
             )
+            FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.s)
             FireFlowButtons.Outlined.OnSurface(
                 modifier = Modifier.fillMaxWidth(),
-                text = stringResource(id = R.string.welcome_button_demo),
+                text = stringResource(R.string.welcome_button_demo),
                 onClick = onDemoClick
             )
 
-            val text = buildAnnotatedString {
-                withStyle(style = SpanStyle(color = FireFlowTheme.colors.surfaceTint)) {
-                    append(stringResource(id = R.string.welcome_asterisk))
-                }
-
-                append(
-                    stringResource(
-                        id = R.string.welcome_firefly_iii_companion_app_before_annotated_text
-                    )
-                )
-                append(" ")
-
-                pushStringAnnotation(tag = "URL", annotation = "https://www.firefly-iii.org/")
-                withStyle(style = SpanStyle(textDecoration = TextDecoration.Underline)) {
-                    append(
-                        stringResource(
-                            id = R.string.welcome_firefly_iii_companion_app_annotated_text
-                        )
-                    )
-                }
-
-                append(" ")
-                append(
-                    stringResource(
-                        id = R.string.welcome_firefly_iii_companion_app_after_annotated_text
-                    )
-                )
-
-                pop()
-            }
-            FireFlowClickableTexts.BodySmall(text = text) {
+            FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.l)
+            val text = getFireflyAnnotatedString()
+            FireFlowClickableTexts.BodySmall(
+                text = text,
+                color = FireFlowTheme.colors.onSurface
+            ) {
+                // TODO: Open ChromeTab/WebView etc
             }
         }
     }
+}
+
+@Composable
+private fun getFireflyAnnotatedString() = buildAnnotatedString {
+    withStyle(
+        style = SpanStyle(color = FireFlowTheme.colors.surfaceTint)
+    ) {
+        append(stringResource(R.string.welcome_asterisk))
+    }
+
+    append(" ")
+    append(
+        stringResource(R.string.welcome_firefly_iii_companion_app_before_annotated_text)
+    )
+    append(" ")
+
+    pushStringAnnotation(
+        tag = "URL",
+        annotation = stringResource(R.string.welcome_firefly_iii_website)
+    )
+    withStyle(style = SpanStyle(textDecoration = TextDecoration.Underline)) {
+        append(
+            stringResource(
+                id = R.string.welcome_firefly_iii_companion_app_annotated_text
+            )
+        )
+    }
+
+    append(" ")
+    append(
+        stringResource(R.string.welcome_firefly_iii_companion_app_after_annotated_text)
+    )
+
+    pop()
 }
 
 @Preview(

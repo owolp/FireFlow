@@ -67,7 +67,7 @@ internal fun SettingsScreen(
         snackbarState = snackbarState,
         topBar = {
             FireFlowTopAppBars.Collapsing.Primary(
-                title = stringResource(id = R.string.settings),
+                title = stringResource(R.string.settings),
                 scrollBehavior = topAppBarScrollBehavior
             )
         }
@@ -107,7 +107,7 @@ private fun SettingsScreenContent(
     ) {
         item {
             FireFlowCategoryPreferences.Primary(
-                categoryName = stringResource(id = R.string.data_choices_category),
+                categoryName = stringResource(R.string.data_choices_category),
                 preferences = getDataChoicesPreferences(
                     state = state,
                     onAnalyticsCheckChange = onAnalyticsCheckChange,
@@ -119,7 +119,7 @@ private fun SettingsScreenContent(
         }
         item {
             FireFlowCategoryPreferences.Primary(
-                categoryName = stringResource(id = R.string.appearance_category),
+                categoryName = stringResource(R.string.appearance_category),
                 preferences = getAppearancePreferences(
                     state = state,
                     onThemeClick = onThemeClick,
@@ -129,7 +129,7 @@ private fun SettingsScreenContent(
         }
         item {
             FireFlowCategoryPreferences.Primary(
-                categoryName = stringResource(id = R.string.about_application_category),
+                categoryName = stringResource(R.string.about_application_category),
                 preferences = getAboutApplicationPreferences(
                     state = state
                 )
@@ -151,20 +151,20 @@ private fun getAppearancePreferences(
 
     categoryPreferences.add(
         CategoryPreference.Icon(
-            title = stringResource(id = R.string.appearance_theme),
+            title = stringResource(R.string.appearance_theme),
             icon = FireFlowIcons.Brightness6,
-            description = stringResource(id = state.theme.text),
-            onClick = Pair(stringResource(id = R.string.cd_appearance_theme_click), onThemeClick)
+            description = stringResource(state.theme.text),
+            onClick = Pair(stringResource(R.string.cd_appearance_theme_click), onThemeClick)
         )
     )
 
     categoryPreferences.add(
         CategoryPreference.Icon(
-            title = stringResource(id = R.string.appearance_language),
+            title = stringResource(R.string.appearance_language),
             icon = FireFlowIcons.Language,
-            description = stringResource(id = state.language.text),
+            description = stringResource(state.language.text),
             onClick = Pair(
-                stringResource(id = R.string.cd_appearance_language_click),
+                stringResource(R.string.cd_appearance_language_click),
                 onLanguageClick
             )
         )
@@ -186,36 +186,30 @@ private fun getDataChoicesPreferences(
     if (state.analytics != null) {
         categoryPreferences.add(
             CategoryPreference.Switch(
-                title = stringResource(id = R.string.data_choices_analytics_title),
+                title = stringResource(R.string.data_choices_analytics_title),
                 icon = FireFlowIcons.Analytics,
                 checked = state.analytics,
                 onCheckedChanged = onAnalyticsCheckChange,
-                cdDescriptionEnabled = stringResource(
-                    id = R.string.cd_data_choices_analytics_enabled
-                ),
-                cdDescriptionDisabled = stringResource(
-                    id = R.string.cd_data_choices_analytics_disabled
-                ),
-                description = stringResource(id = R.string.data_choices_analytics_description)
+                cdDescriptionEnabled = stringResource(R.string.cd_data_choices_analytics_enabled),
+                cdDescriptionDisabled = stringResource(R.string.cd_data_choices_analytics_disabled),
+                description = stringResource(R.string.data_choices_analytics_description)
             )
         )
 
         if (state.analytics && state.personalizedAds != null) {
             categoryPreferences.add(
                 CategoryPreference.Switch(
-                    title = stringResource(id = R.string.data_choices_personalized_ads_title),
+                    title = stringResource(R.string.data_choices_personalized_ads_title),
                     icon = FireFlowIcons.AdsClick,
                     checked = state.personalizedAds,
                     onCheckedChanged = onPersonalizedAdsCheckChange,
                     cdDescriptionEnabled = stringResource(
-                        id = R.string.cd_data_choices_personalized_ads_enabled
+                        R.string.cd_data_choices_personalized_ads_enabled
                     ),
                     cdDescriptionDisabled = stringResource(
-                        id = R.string.cd_data_choices_personalized_ads_disabled
+                        R.string.cd_data_choices_personalized_ads_disabled
                     ),
-                    description = stringResource(
-                        id = R.string.data_choices_personalized_ads_description
-                    )
+                    description = stringResource(R.string.data_choices_personalized_ads_description)
                 )
             )
         }
@@ -223,17 +217,17 @@ private fun getDataChoicesPreferences(
         if (state.analytics && state.performance != null) {
             categoryPreferences.add(
                 CategoryPreference.Switch(
-                    title = stringResource(id = R.string.data_choices_performance_title),
+                    title = stringResource(R.string.data_choices_performance_title),
                     icon = FireFlowIcons.Speed,
                     checked = state.performance,
                     onCheckedChanged = onPerformanceCheckChange,
                     cdDescriptionEnabled = stringResource(
-                        id = R.string.cd_data_choices_performance_enabled
+                        R.string.cd_data_choices_performance_enabled
                     ),
                     cdDescriptionDisabled = stringResource(
-                        id = R.string.cd_data_choices_performance_disabled
+                        R.string.cd_data_choices_performance_disabled
                     ),
-                    description = stringResource(id = R.string.data_choices_performance_description)
+                    description = stringResource(R.string.data_choices_performance_description)
                 )
             )
         }
@@ -241,17 +235,15 @@ private fun getDataChoicesPreferences(
 
     categoryPreferences.add(
         CategoryPreference.Switch(
-            title = stringResource(id = R.string.data_choices_crash_reporter_title),
+            title = stringResource(R.string.data_choices_crash_reporter_title),
             icon = FireFlowIcons.BugReport,
             checked = state.crashReporter,
             onCheckedChanged = onCrashReporterCheckChange,
-            cdDescriptionEnabled = stringResource(
-                id = R.string.cd_data_choices_crash_reporter_enabled
-            ),
+            cdDescriptionEnabled = stringResource(R.string.cd_data_choices_crash_reporter_enabled),
             cdDescriptionDisabled = stringResource(
-                id = R.string.cd_data_choices_crash_reporter_disabled
+                R.string.cd_data_choices_crash_reporter_disabled
             ),
-            description = stringResource(id = R.string.data_choices_crash_reporter_description)
+            description = stringResource(R.string.data_choices_crash_reporter_description)
         )
     )
 
@@ -266,7 +258,7 @@ private fun getAboutApplicationPreferences(
 
     categoryPreferences.add(
         CategoryPreference.Icon(
-            title = stringResource(id = R.string.about_application_version),
+            title = stringResource(R.string.about_application_version),
             icon = FireFlowIcons.Info,
             description = state.version
         )
