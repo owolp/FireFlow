@@ -20,6 +20,7 @@ package dev.zitech.onboarding.presentation.welcome.compose
 import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -44,7 +45,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.zitech.ds.atoms.animation.FireFlowAnimations
 import dev.zitech.ds.atoms.button.FireFlowButtons
-import dev.zitech.ds.atoms.spacer.FireFlowSpacers
 import dev.zitech.ds.atoms.text.FireFlowTexts
 import dev.zitech.ds.templates.scaffold.FireFlowScaffolds
 import dev.zitech.ds.theme.FireFlowTheme
@@ -105,26 +105,24 @@ private fun WelcomeScreenContent(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(FireFlowTheme.space.m),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(FireFlowTheme.space.m)
         ) {
             FireFlowAnimations.MoneyTree(
                 modifier = Modifier
                     .heightIn(max = 192.dp)
             )
-            FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.s)
             FireFlowTexts.DisplayMedium(
                 text = stringResource(id = R.string.welcome_slogan),
                 style = FireFlowTheme.typography.displayMedium.copy(
                     textAlign = TextAlign.Center
                 )
             )
-            FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.m)
             FireFlowButtons.Filled.OnSurfaceTint(
                 modifier = Modifier.fillMaxWidth(),
                 text = stringResource(id = R.string.welcome_button_continue_with_oauth),
                 onClick = onContinueWithOauthCLick
             )
-            FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.s)
             FireFlowButtons.Outlined.OnSurface(
                 modifier = Modifier.fillMaxWidth(),
                 text = stringResource(
@@ -132,7 +130,6 @@ private fun WelcomeScreenContent(
                 ),
                 onClick = onContinueWithPatClick
             )
-            FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.s)
             FireFlowButtons.Text.OnSurface(
                 text = stringResource(id = R.string.welcome_button_demo),
                 onClick = onDemoClick
