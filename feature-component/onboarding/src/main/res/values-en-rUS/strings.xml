@@ -23,6 +23,6 @@
     <string name="welcome_firefly_iii_companion_app_annotated_text">Firefly III</string>
     <string name="welcome_firefly_iii_companion_app_after_annotated_text">personal finance manager unofficial client app</string>
     <string name="welcome_button_continue_with_oauth">Continue with OAuth</string>
-    <string name="welcome_button_continue_with_personal_access_token">Continue with Personal Access Token</string>
-    <string name="welcome_button_demo">Continue with Demo account</string>
+    <string name="welcome_button_continue_with_personal_access_token">Continue with personal access token</string>
+    <string name="welcome_button_demo">Continue with demo account</string>
 </resources>
