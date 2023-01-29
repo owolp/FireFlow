@@ -22,6 +22,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.zitech.core.common.presentation.architecture.MviViewModel
 import dev.zitech.core.persistence.domain.usecase.database.SaveUserAccountUseCase
+import dev.zitech.onboarding.presentation.welcome.viewmodel.resoure.WelcomeStringsProvider
 import javax.inject.Inject
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -29,6 +30,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 internal class WelcomeViewModel @Inject constructor(
     private val stateHandler: WelcomeStateHandler,
+    private val welcomeStringsProvider: WelcomeStringsProvider,
     private val saveUserAccountUseCase: SaveUserAccountUseCase
 ) : ViewModel(), MviViewModel<WelcomeIntent, WelcomeState> {
 
@@ -42,6 +44,8 @@ internal class WelcomeViewModel @Inject constructor(
                 OnDemoClick -> handleOnDemoClick()
                 OnBackClick -> handleOnBackClick()
                 NavigationHandled -> handleNavigationHandled()
+                OnShowDemoDismiss -> handleOnShowDemoDismiss()
+                OnShowDemoPositive -> handleOnShowDemoPositive()
             }
         }
     }
@@ -54,11 +58,14 @@ internal class WelcomeViewModel @Inject constructor(
         stateHandler.setEvent(NavigateToPat)
     }
 
-    @Suppress("ForbiddenComment")
-    private suspend fun handleOnDemoClick() {
-        // TODO: Dev usage
-        saveUserAccountUseCase(true)
-        stateHandler.setEvent(NavigateToDemo)
+    private fun handleOnDemoClick() {
+        stateHandler.setEvent(
+            ShowDemoWarning(
+                title = welcomeStringsProvider.getDemoDialogTitle(),
+                text = welcomeStringsProvider.getDemoDialogText(),
+                confirm = welcomeStringsProvider.getDemoDialogConfirm()
+            )
+        )
     }
 
     private fun handleOnBackClick() {
@@ -67,5 +74,16 @@ internal class WelcomeViewModel @Inject constructor(
 
     private fun handleNavigationHandled() {
         stateHandler.resetEvent()
+    }
+
+    private fun handleOnShowDemoDismiss() {
+        stateHandler.resetEvent()
+    }
+
+    @Suppress("ForbiddenComment")
+    private suspend fun handleOnShowDemoPositive() {
+        // TODO: Dev usage
+        saveUserAccountUseCase(true)
+        stateHandler.setEvent(NavigateToDemo)
     }
 }

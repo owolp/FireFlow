@@ -26,4 +26,7 @@
     <string name="welcome_button_continue_with_oauth">Continue with OAuth</string>
     <string name="welcome_button_continue_with_personal_access_token">Continue with personal access token</string>
     <string name="welcome_button_demo">Continue with demo account</string>
+    <string name="welcome_demo_dialog_title">Demo Account Information</string>
+    <string name="welcome_demo_dialog_text">Please note that all data entered during this session will be lost upon application restart. If you\'d like to save your progress, please log in with a regular account.</string>
+    <string name="welcome_demo_dialog_confirm">Acknowledge</string>
 </resources>

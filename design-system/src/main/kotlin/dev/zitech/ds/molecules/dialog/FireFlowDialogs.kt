@@ -43,6 +43,7 @@ object FireFlowDialogs {
         onConfirmButtonClick: () -> Unit,
         modifier: Modifier = Modifier,
         confirmButton: String = stringResource(R.string.dialog_button_ok),
+        dismissButton: String = stringResource(R.string.dialog_button_cancel),
         onDismissRequest: (() -> Unit)? = null
     ) {
         AlertDialog(
@@ -50,6 +51,11 @@ object FireFlowDialogs {
             onDismissRequest = { onDismissRequest?.invoke() },
             confirmButton = {
                 FireFlowButtons.Text.OnSurface(confirmButton) { onConfirmButtonClick() }
+            },
+            dismissButton = {
+                if (onDismissRequest != null) {
+                    FireFlowButtons.Text.OnSurface(dismissButton) { onDismissRequest() }
+                }
             },
             title = {
                 FireFlowTexts.TitleMedium(

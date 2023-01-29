@@ -22,6 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import dev.zitech.ds.molecules.dialog.FireFlowDialogs
 import dev.zitech.onboarding.presentation.welcome.viewmodel.Idle
 import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigateOutOfApp
 import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigateToDemo
@@ -32,6 +33,9 @@ import dev.zitech.onboarding.presentation.welcome.viewmodel.OnBackClick
 import dev.zitech.onboarding.presentation.welcome.viewmodel.OnContinueWithOauthClick
 import dev.zitech.onboarding.presentation.welcome.viewmodel.OnContinueWithPatClick
 import dev.zitech.onboarding.presentation.welcome.viewmodel.OnDemoClick
+import dev.zitech.onboarding.presentation.welcome.viewmodel.OnShowDemoDismiss
+import dev.zitech.onboarding.presentation.welcome.viewmodel.OnShowDemoPositive
+import dev.zitech.onboarding.presentation.welcome.viewmodel.ShowDemoWarning
 import dev.zitech.onboarding.presentation.welcome.viewmodel.WelcomeViewModel
 
 @Composable
@@ -45,7 +49,7 @@ internal fun WelcomeRoute(
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
-    when (screenState.event) {
+    when (val event = screenState.event) {
         NavigateToOath -> {
             navigateToOath()
             viewModel.sendIntent(NavigationHandled)
@@ -61,6 +65,15 @@ internal fun WelcomeRoute(
         NavigateOutOfApp -> {
             navigateOutOfApp()
             viewModel.sendIntent(NavigationHandled)
+        }
+        is ShowDemoWarning -> {
+            FireFlowDialogs.Alert(
+                title = event.title,
+                text = event.text,
+                confirmButton = event.confirm,
+                onConfirmButtonClick = { viewModel.sendIntent(OnShowDemoPositive) },
+                onDismissRequest = { viewModel.sendIntent(OnShowDemoDismiss) }
+            )
         }
         Idle -> {
             // NO_OP

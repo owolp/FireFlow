@@ -15,16 +15,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.onboarding.presentation.welcome.viewmodel
+package dev.zitech.onboarding.presentation.welcome.viewmodel.resoure
 
-import dev.zitech.core.common.presentation.architecture.MviIntent
+import dev.zitech.core.common.domain.strings.StringsProvider
+import dev.zitech.onboarding.R
+import javax.inject.Inject
 
-internal sealed interface WelcomeIntent : MviIntent
+internal class WelcomeStringsProvider @Inject constructor(
+    private val stringsProvider: StringsProvider
+) {
 
-internal object OnContinueWithOauthClick : WelcomeIntent
-internal object OnContinueWithPatClick : WelcomeIntent
-internal object OnDemoClick : WelcomeIntent
-internal object OnBackClick : WelcomeIntent
-internal object NavigationHandled : WelcomeIntent
-internal object OnShowDemoPositive : WelcomeIntent
-internal object OnShowDemoDismiss : WelcomeIntent
+    fun getDemoDialogTitle(): String =
+        stringsProvider(R.string.welcome_demo_dialog_title)
+
+    fun getDemoDialogText(): String =
+        stringsProvider(R.string.welcome_demo_dialog_text)
+
+    fun getDemoDialogConfirm(): String =
+        stringsProvider(R.string.welcome_demo_dialog_confirm)
+}

@@ -26,3 +26,8 @@ internal object NavigateToOath : WelcomeEvent
 internal object NavigateToPat : WelcomeEvent
 internal object NavigateToDemo : WelcomeEvent
 internal object NavigateOutOfApp : WelcomeEvent
+internal data class ShowDemoWarning(
+    val title: String,
+    val text: String,
+    val confirm: String
+) : WelcomeEvent
