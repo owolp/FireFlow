@@ -34,6 +34,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.zitech.ds.atoms.icon.FireFlowIcons
@@ -62,7 +63,8 @@ object FireFlowButtons {
             ) {
                 FireFlowTexts.TitleMedium(
                     text = text,
-                    color = FireFlowTheme.colors.onSurface
+                    color = FireFlowTheme.colors.onSurface,
+                    style = FireFlowTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
                 )
             }
         }
@@ -82,7 +84,8 @@ object FireFlowButtons {
             ) {
                 FireFlowTexts.TitleMedium(
                     text = text,
-                    color = FireFlowTheme.colors.inverseOnSurface
+                    color = FireFlowTheme.colors.inverseOnSurface,
+                    style = FireFlowTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
                 )
             }
         }
@@ -102,7 +105,8 @@ object FireFlowButtons {
             ) {
                 FireFlowTexts.TitleMedium(
                     text = text,
-                    color = FireFlowTheme.colors.onErrorContainer
+                    color = FireFlowTheme.colors.onErrorContainer,
+                    style = FireFlowTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
                 )
             }
         }
@@ -137,7 +141,8 @@ object FireFlowButtons {
                 modifier = Modifier.padding(
                     start = FireFlowTheme.space.s
                 ),
-                text = text
+                text = text,
+                style = FireFlowTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
             )
         }
     }
@@ -160,7 +165,8 @@ object FireFlowButtons {
             ) {
                 FireFlowTexts.TitleMedium(
                     text = text,
-                    color = FireFlowTheme.colors.onSurface
+                    color = FireFlowTheme.colors.onSurface,
+                    style = FireFlowTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
                 )
 
                 if (loading) {
@@ -194,7 +200,8 @@ object FireFlowButtons {
             ) {
                 FireFlowTexts.TitleMedium(
                     text = text,
-                    color = FireFlowTheme.colors.onSurface
+                    color = FireFlowTheme.colors.onSurface,
+                    style = FireFlowTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
                 )
             }
         }

@@ -69,7 +69,6 @@ internal fun WelcomeRoute(
 
     WelcomeScreen(
         modifier = modifier,
-        state = screenState,
         onContinueWithOauthClick = { viewModel.sendIntent(OnContinueWithOauthClick) },
         onContinueWithPatClick = { viewModel.sendIntent(OnContinueWithPatClick) },
         onDemoClick = { viewModel.sendIntent(OnDemoClick) },

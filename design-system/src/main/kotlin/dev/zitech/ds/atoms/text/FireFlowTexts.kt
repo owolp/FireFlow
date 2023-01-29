@@ -22,6 +22,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import dev.zitech.ds.atoms.text.FireFlowTexts.BodyMedium
 import dev.zitech.ds.atoms.text.FireFlowTexts.BodySmall
@@ -46,13 +47,14 @@ object FireFlowTexts {
     fun DisplayLarge(
         text: String,
         modifier: Modifier = Modifier,
-        color: Color = Color.Unspecified
+        color: Color = Color.Unspecified,
+        style: TextStyle = FireFlowTheme.typography.displayLarge
     ) {
         Text(
             modifier = modifier,
             text = text,
             color = color,
-            style = FireFlowTheme.typography.displayLarge
+            style = style
         )
     }
 
@@ -60,13 +62,14 @@ object FireFlowTexts {
     fun DisplayMedium(
         text: String,
         modifier: Modifier = Modifier,
-        color: Color = Color.Unspecified
+        color: Color = Color.Unspecified,
+        style: TextStyle = FireFlowTheme.typography.displayMedium
     ) {
         Text(
             modifier = modifier,
             text = text,
             color = color,
-            style = FireFlowTheme.typography.displayMedium
+            style = style
         )
     }
 
@@ -74,13 +77,14 @@ object FireFlowTexts {
     fun DisplaySmall(
         text: String,
         modifier: Modifier = Modifier,
-        color: Color = Color.Unspecified
+        color: Color = Color.Unspecified,
+        style: TextStyle = FireFlowTheme.typography.displaySmall
     ) {
         Text(
             modifier = modifier,
             text = text,
             color = color,
-            style = FireFlowTheme.typography.displaySmall
+            style = style
         )
     }
 
@@ -88,13 +92,14 @@ object FireFlowTexts {
     fun HeadlineLarge(
         text: String,
         modifier: Modifier = Modifier,
-        color: Color = Color.Unspecified
+        color: Color = Color.Unspecified,
+        style: TextStyle = FireFlowTheme.typography.headlineLarge
     ) {
         Text(
             modifier = modifier,
             text = text,
             color = color,
-            style = FireFlowTheme.typography.headlineLarge
+            style = style
         )
     }
 
@@ -102,13 +107,14 @@ object FireFlowTexts {
     fun HeadlineMedium(
         text: String,
         modifier: Modifier = Modifier,
-        color: Color = Color.Unspecified
+        color: Color = Color.Unspecified,
+        style: TextStyle = FireFlowTheme.typography.headlineMedium
     ) {
         Text(
             modifier = modifier,
             text = text,
             color = color,
-            style = FireFlowTheme.typography.headlineMedium
+            style = style
         )
     }
 
@@ -116,13 +122,14 @@ object FireFlowTexts {
     fun TitleLarge(
         text: String,
         modifier: Modifier = Modifier,
-        color: Color = Color.Unspecified
+        color: Color = Color.Unspecified,
+        style: TextStyle = FireFlowTheme.typography.titleLarge
     ) {
         Text(
             modifier = modifier,
             text = text,
             color = color,
-            style = FireFlowTheme.typography.titleLarge
+            style = style
         )
     }
 
@@ -130,13 +137,14 @@ object FireFlowTexts {
     fun TitleMedium(
         text: String,
         modifier: Modifier = Modifier,
-        color: Color = Color.Unspecified
+        color: Color = Color.Unspecified,
+        style: TextStyle = FireFlowTheme.typography.titleMedium
     ) {
         Text(
             modifier = modifier,
             text = text,
             color = color,
-            style = FireFlowTheme.typography.titleMedium
+            style = style
         )
     }
 
@@ -144,13 +152,14 @@ object FireFlowTexts {
     fun TitleSmall(
         text: String,
         modifier: Modifier = Modifier,
-        color: Color = Color.Unspecified
+        color: Color = Color.Unspecified,
+        style: TextStyle = FireFlowTheme.typography.titleSmall
     ) {
         Text(
             modifier = modifier,
             text = text,
             color = color,
-            style = FireFlowTheme.typography.titleSmall
+            style = style
         )
     }
 
@@ -158,13 +167,14 @@ object FireFlowTexts {
     fun HeadlineSmall(
         text: String,
         modifier: Modifier = Modifier,
-        color: Color = Color.Unspecified
+        color: Color = Color.Unspecified,
+        style: TextStyle = FireFlowTheme.typography.headlineSmall
     ) {
         Text(
             modifier = modifier,
             text = text,
             color = color,
-            style = FireFlowTheme.typography.headlineSmall
+            style = style
         )
     }
 
@@ -172,13 +182,14 @@ object FireFlowTexts {
     fun BodyLarge(
         text: String,
         modifier: Modifier = Modifier,
-        color: Color = Color.Unspecified
+        color: Color = Color.Unspecified,
+        style: TextStyle = FireFlowTheme.typography.bodyLarge
     ) {
         Text(
             modifier = modifier,
             text = text,
             color = color,
-            style = FireFlowTheme.typography.bodyLarge
+            style = style
         )
     }
 
@@ -186,13 +197,14 @@ object FireFlowTexts {
     fun BodyMedium(
         text: String,
         modifier: Modifier = Modifier,
-        color: Color = Color.Unspecified
+        color: Color = Color.Unspecified,
+        style: TextStyle = FireFlowTheme.typography.bodyMedium
     ) {
         Text(
             modifier = modifier,
             text = text,
             color = color,
-            style = FireFlowTheme.typography.bodyMedium
+            style = style
         )
     }
 
@@ -200,13 +212,14 @@ object FireFlowTexts {
     fun BodySmall(
         text: String,
         modifier: Modifier = Modifier,
-        color: Color = Color.Unspecified
+        color: Color = Color.Unspecified,
+        style: TextStyle = FireFlowTheme.typography.bodySmall
     ) {
         Text(
             modifier = modifier,
             text = text,
             color = color,
-            style = FireFlowTheme.typography.bodySmall
+            style = style
         )
     }
 
@@ -214,13 +227,14 @@ object FireFlowTexts {
     fun LabelLarge(
         text: String,
         modifier: Modifier = Modifier,
-        color: Color = Color.Unspecified
+        color: Color = Color.Unspecified,
+        style: TextStyle = FireFlowTheme.typography.labelLarge
     ) {
         Text(
             modifier = modifier,
             text = text,
             color = color,
-            style = FireFlowTheme.typography.labelLarge
+            style = style
         )
     }
 
@@ -228,13 +242,14 @@ object FireFlowTexts {
     fun LabelMedium(
         text: String,
         modifier: Modifier = Modifier,
-        color: Color = Color.Unspecified
+        color: Color = Color.Unspecified,
+        style: TextStyle = FireFlowTheme.typography.labelMedium
     ) {
         Text(
             modifier = modifier,
             text = text,
             color = color,
-            style = FireFlowTheme.typography.labelMedium
+            style = style
         )
     }
 
@@ -242,13 +257,14 @@ object FireFlowTexts {
     fun LabelSmall(
         text: String,
         modifier: Modifier = Modifier,
-        color: Color = Color.Unspecified
+        color: Color = Color.Unspecified,
+        style: TextStyle = FireFlowTheme.typography.labelSmall
     ) {
         Text(
             modifier = modifier,
             text = text,
             color = color,
-            style = FireFlowTheme.typography.labelSmall
+            style = style
         )
     }
 }
