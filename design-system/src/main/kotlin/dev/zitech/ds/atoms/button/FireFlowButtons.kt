@@ -24,6 +24,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.selectable
+import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -48,6 +49,148 @@ import dev.zitech.ds.theme.PreviewFireFlowTheme
 object FireFlowButtons {
 
     private val MIN_BUTTON_HEIGHT = 48.dp
+
+    object Filled {
+        @Composable
+        fun OnSurfaceTint(
+            text: String,
+            modifier: Modifier = Modifier,
+            enabled: Boolean = true,
+            onClick: () -> Unit
+        ) {
+            Button(
+                modifier = modifier.heightIn(min = MIN_BUTTON_HEIGHT),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = FireFlowTheme.colors.surfaceTint
+                ),
+                enabled = enabled,
+                shape = FireFlowTheme.shapes.extraLarge,
+                onClick = { onClick() }
+            ) {
+                FireFlowTexts.TitleMedium(
+                    text = text,
+                    color = FireFlowTheme.colors.surface,
+                    style = FireFlowTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
+                )
+            }
+        }
+    }
+
+    @Composable
+    fun Icon(
+        image: ImageVector,
+        contentDescription: String,
+        modifier: Modifier = Modifier,
+        enabled: Boolean = true,
+        onClick: () -> Unit
+    ) {
+        IconButton(
+            modifier = modifier.heightIn(min = MIN_BUTTON_HEIGHT),
+            enabled = enabled,
+            onClick = onClick
+        ) {
+            Icon(
+                imageVector = image,
+                contentDescription = contentDescription
+            )
+        }
+    }
+
+    object Loading {
+
+        @Composable
+        fun OnSurface(
+            text: String,
+            modifier: Modifier = Modifier,
+            enabled: Boolean = true,
+            loading: Boolean = false,
+            onClick: () -> Unit
+        ) {
+            TextButton(
+                modifier = modifier.heightIn(min = MIN_BUTTON_HEIGHT),
+                enabled = enabled,
+                shape = FireFlowTheme.shapes.extraLarge,
+                onClick = { onClick() }
+            ) {
+                FireFlowTexts.TitleMedium(
+                    text = text,
+                    color = FireFlowTheme.colors.onSurface,
+                    style = FireFlowTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
+                )
+
+                if (loading) {
+                    FireFlowProgressIndicators.FlashingDots(
+                        modifier = Modifier.padding(
+                            start = FireFlowTheme.space.s
+                        )
+                    )
+                }
+            }
+        }
+    }
+
+    object Outlined {
+
+        @Composable
+        fun OnSurface(
+            text: String,
+            modifier: Modifier = Modifier,
+            buttonColors: ButtonColors = ButtonDefaults.outlinedButtonColors(),
+            enabled: Boolean = true,
+            onClick: () -> Unit
+        ) {
+            OutlinedButton(
+                modifier = modifier.heightIn(min = MIN_BUTTON_HEIGHT),
+                colors = buttonColors,
+                shape = FireFlowTheme.shapes.extraLarge,
+                border = BorderStroke(1.dp, FireFlowTheme.colors.onSurface),
+                enabled = enabled,
+                onClick = onClick
+            ) {
+                FireFlowTexts.TitleMedium(
+                    text = text,
+                    color = FireFlowTheme.colors.onSurface,
+                    style = FireFlowTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
+                )
+            }
+        }
+    }
+
+    @Composable
+    fun Radio(
+        text: String,
+        selected: Boolean,
+        modifier: Modifier = Modifier,
+        enabled: Boolean = true,
+        onClick: () -> Unit
+    ) {
+        Row(
+            modifier = modifier
+                .heightIn(min = MIN_BUTTON_HEIGHT)
+                .selectable(
+                    selected = selected,
+                    onClick = { onClick() },
+                    role = Role.RadioButton,
+                    enabled = enabled
+                )
+                .padding(FireFlowTheme.space.s)
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            FireFlowRadioButtons.Primary(
+                selected = selected,
+                onClick = null,
+                enabled = enabled
+            )
+            FireFlowTexts.TitleMedium(
+                modifier = Modifier.padding(
+                    start = FireFlowTheme.space.s
+                ),
+                text = text,
+                style = FireFlowTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
+            )
+        }
+    }
 
     object Text {
 
@@ -114,121 +257,169 @@ object FireFlowButtons {
             }
         }
     }
+}
 
-    @Composable
-    fun Radio(
-        text: String,
-        selected: Boolean,
-        modifier: Modifier = Modifier,
-        enabled: Boolean = true,
-        onClick: () -> Unit
-    ) {
-        Row(
-            modifier = modifier
-                .heightIn(min = MIN_BUTTON_HEIGHT)
-                .selectable(
-                    selected = selected,
-                    onClick = { onClick() },
-                    role = Role.RadioButton,
-                    enabled = enabled
-                )
-                .padding(FireFlowTheme.space.s)
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            FireFlowRadioButtons.Primary(
-                selected = selected,
-                onClick = null,
-                enabled = enabled
-            )
-            FireFlowTexts.TitleMedium(
-                modifier = Modifier.padding(
-                    start = FireFlowTheme.space.s
-                ),
-                text = text,
-                style = FireFlowTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
-            )
-        }
+@Preview(
+    name = "Filled OnSurfaceTint Button Light Theme Enabled",
+    showBackground = true
+)
+@Preview(
+    name = "Filled OnSurfaceTint Button Dark Theme Enabled",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showBackground = true
+)
+@Composable
+private fun Filled_OnSurfaceTint_Enabled_Preview() {
+    PreviewFireFlowTheme {
+        FireFlowButtons.Filled.OnSurfaceTint(
+            text = "Filled OnSurfaceTint Enabled Button",
+            enabled = true,
+            onClick = {}
+        )
     }
+}
 
-    object Loading {
-
-        @Composable
-        fun OnSurface(
-            text: String,
-            modifier: Modifier = Modifier,
-            enabled: Boolean = true,
-            loading: Boolean = false,
-            onClick: () -> Unit
-        ) {
-            TextButton(
-                modifier = modifier.heightIn(min = MIN_BUTTON_HEIGHT),
-                enabled = enabled,
-                shape = FireFlowTheme.shapes.extraLarge,
-                onClick = { onClick() }
-            ) {
-                FireFlowTexts.TitleMedium(
-                    text = text,
-                    color = FireFlowTheme.colors.onSurface,
-                    style = FireFlowTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
-                )
-
-                if (loading) {
-                    FireFlowProgressIndicators.FlashingDots(
-                        modifier = Modifier.padding(
-                            start = FireFlowTheme.space.s
-                        )
-                    )
-                }
-            }
-        }
+@Preview(
+    name = "Filled OnSurfaceTint Button Light Theme Disabled",
+    showBackground = true
+)
+@Preview(
+    name = "Filled OnSurfaceTint Button Dark Theme Disabled",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showBackground = true
+)
+@Composable
+private fun Filled_OnSurfaceTint_Disabled_Preview() {
+    PreviewFireFlowTheme {
+        FireFlowButtons.Filled.OnSurfaceTint(
+            text = "Filled OnSurfaceTint Disabled Button",
+            enabled = false,
+            onClick = {}
+        )
     }
+}
 
-    object Outlined {
-
-        @Composable
-        fun OnSurface(
-            text: String,
-            modifier: Modifier = Modifier,
-            buttonColors: ButtonColors = ButtonDefaults.outlinedButtonColors(),
-            enabled: Boolean = true,
-            onClick: () -> Unit
-        ) {
-            OutlinedButton(
-                modifier = modifier.heightIn(min = MIN_BUTTON_HEIGHT),
-                colors = buttonColors,
-                shape = FireFlowTheme.shapes.extraLarge,
-                border = BorderStroke(1.dp, FireFlowTheme.colors.onSurface),
-                enabled = enabled,
-                onClick = onClick
-            ) {
-                FireFlowTexts.TitleMedium(
-                    text = text,
-                    color = FireFlowTheme.colors.onSurface,
-                    style = FireFlowTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
-                )
-            }
-        }
+@Preview(
+    name = "Icon Button Light Theme Enabled",
+    showBackground = true
+)
+@Preview(
+    name = "Icon Button Dark Theme Enabled",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showBackground = true
+)
+@Composable
+private fun Icon_Enabled_Preview() {
+    PreviewFireFlowTheme {
+        FireFlowButtons.Icon(
+            image = FireFlowIcons.ArrowBack,
+            contentDescription = "",
+            enabled = true,
+            onClick = {}
+        )
     }
+}
 
-    @Composable
-    fun Icon(
-        image: ImageVector,
-        contentDescription: String,
-        modifier: Modifier = Modifier,
-        enabled: Boolean = true,
-        onClick: () -> Unit
-    ) {
-        IconButton(
-            modifier = modifier.heightIn(min = MIN_BUTTON_HEIGHT),
-            enabled = enabled,
-            onClick = onClick
-        ) {
-            Icon(
-                imageVector = image,
-                contentDescription = contentDescription
-            )
-        }
+@Preview(
+    name = "Icon Button Light Theme Disabled",
+    showBackground = true
+)
+@Preview(
+    name = "Icon Button Dark Theme Disabled",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showBackground = true
+)
+@Composable
+private fun Icon_Disabled_Preview() {
+    PreviewFireFlowTheme {
+        FireFlowButtons.Icon(
+            image = FireFlowIcons.ArrowBack,
+            contentDescription = "",
+            enabled = false,
+            onClick = {}
+        )
+    }
+}
+
+@Preview(
+    name = "Loading OnSurface Button Light Theme Enabled",
+    showBackground = true
+)
+@Preview(
+    name = "Loading OnSurface Button Dark Theme Enabled",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showBackground = true
+)
+@Composable
+private fun Loading_OnSurface_Enabled_Preview() {
+    PreviewFireFlowTheme {
+        FireFlowButtons.Loading.OnSurface(
+            text = "Loading OnSurface Enabled Button",
+            enabled = true,
+            loading = true,
+            onClick = {}
+        )
+    }
+}
+
+@Preview(
+    name = "Loading OnSurface Button Light Theme Disabled",
+    showBackground = true
+)
+@Preview(
+    name = "Loading OnSurface Button Dark Theme Disabled",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showBackground = true
+)
+@Composable
+private fun Loading_OnSurface_Disabled_Preview() {
+    PreviewFireFlowTheme {
+        FireFlowButtons.Loading.OnSurface(
+            text = "Loading OnSurface Disabled Button",
+            enabled = false,
+            loading = true,
+            onClick = {}
+        )
+    }
+}
+
+@Preview(
+    name = "Outlined OnSurface Button Light Theme Enabled",
+    showBackground = true
+)
+@Preview(
+    name = "Outlined OnSurface Button Dark Theme Enabled",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showBackground = true
+)
+@Composable
+private fun Outlined_OnSurface_Enabled_Preview() {
+    PreviewFireFlowTheme {
+        FireFlowButtons.Outlined.OnSurface(
+            text = "Outlined OnSurface Enabled Button",
+            enabled = true,
+            onClick = {}
+        )
+    }
+}
+
+@Preview(
+    name = "Outlined OnSurface Button Light Theme Disabled",
+    showBackground = true
+)
+@Preview(
+    name = "Outlined OnSurface Button Dark Theme Disabled",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showBackground = true
+)
+@Composable
+private fun Outlined_OnSurface_Disabled_Preview() {
+    PreviewFireFlowTheme {
+        FireFlowButtons.Outlined.OnSurface(
+            text = "Outlined OnSurface Disabled Button",
+            enabled = false,
+            onClick = {}
+        )
     }
 }
 
@@ -317,27 +508,6 @@ private fun Radio_NotSelected_Disabled_Preview() {
 }
 
 @Preview(
-    name = "Loading OnSurface Button Light Theme Enabled",
-    showBackground = true
-)
-@Preview(
-    name = "Loading OnSurface Button Dark Theme Enabled",
-    uiMode = Configuration.UI_MODE_NIGHT_YES,
-    showBackground = true
-)
-@Composable
-internal fun Loading_OnSurface_Enabled_Preview() {
-    PreviewFireFlowTheme {
-        FireFlowButtons.Loading.OnSurface(
-            text = "Loading OnSurface Enabled Button",
-            enabled = true,
-            loading = true,
-            onClick = {}
-        )
-    }
-}
-
-@Preview(
     name = "Text OnSurface Button Light Theme Disabled",
     showBackground = true
 )
@@ -347,7 +517,7 @@ internal fun Loading_OnSurface_Enabled_Preview() {
     showBackground = true
 )
 @Composable
-internal fun Text_OnSurface_Disabled_Preview() {
+private fun Text_OnSurface_Disabled_Preview() {
     PreviewFireFlowTheme {
         FireFlowButtons.Text.OnSurface(
             text = "Text OnSurface Disabled Button",
@@ -367,7 +537,7 @@ internal fun Text_OnSurface_Disabled_Preview() {
     showBackground = true
 )
 @Composable
-internal fun Text_OnSurface_Enabled_Preview() {
+private fun Text_OnSurface_Enabled_Preview() {
     PreviewFireFlowTheme {
         FireFlowButtons.Text.OnSurface(
             text = "Text OnSurface Enabled Button",
@@ -387,7 +557,7 @@ internal fun Text_OnSurface_Enabled_Preview() {
     showBackground = true
 )
 @Composable
-internal fun Text_OnSurfaceInverse_Disabled_Preview() {
+private fun Text_OnSurfaceInverse_Disabled_Preview() {
     PreviewFireFlowTheme {
         FireFlowButtons.Text.OnSurfaceInverse(
             text = "Text OnSurfaceInverse Disabled Button",
@@ -407,7 +577,7 @@ internal fun Text_OnSurfaceInverse_Disabled_Preview() {
     showBackground = true
 )
 @Composable
-internal fun Text_OnSurfaceInverse_Enabled_Preview() {
+private fun Text_OnSurfaceInverse_Enabled_Preview() {
     PreviewFireFlowTheme {
         FireFlowButtons.Text.OnSurface(
             text = "Text OnSurfaceInverse Enabled Button",
@@ -427,7 +597,7 @@ internal fun Text_OnSurfaceInverse_Enabled_Preview() {
     showBackground = true
 )
 @Composable
-internal fun Text_OnError_Disabled_Preview() {
+private fun Text_OnError_Disabled_Preview() {
     PreviewFireFlowTheme {
         FireFlowButtons.Text.OnError(
             text = "Text OnError Disabled Button",
@@ -447,115 +617,11 @@ internal fun Text_OnError_Disabled_Preview() {
     showBackground = true
 )
 @Composable
-internal fun Text_OnError_Enabled_Preview() {
+private fun Text_OnError_Enabled_Preview() {
     PreviewFireFlowTheme {
         FireFlowButtons.Text.OnSurface(
             text = "Text OnError Enabled Button",
             enabled = true,
-            onClick = {}
-        )
-    }
-}
-
-@Preview(
-    name = "Loading OnSurface Button Light Theme Disabled",
-    showBackground = true
-)
-@Preview(
-    name = "Loading OnSurface Button Dark Theme Disabled",
-    uiMode = Configuration.UI_MODE_NIGHT_YES,
-    showBackground = true
-)
-@Composable
-internal fun Loading_OnSurface_Disabled_Preview() {
-    PreviewFireFlowTheme {
-        FireFlowButtons.Loading.OnSurface(
-            text = "Loading OnSurface Disabled Button",
-            enabled = false,
-            loading = true,
-            onClick = {}
-        )
-    }
-}
-
-@Preview(
-    name = "Outlined OnSurface Button Light Theme Enabled",
-    showBackground = true
-)
-@Preview(
-    name = "Outlined OnSurface Button Dark Theme Enabled",
-    uiMode = Configuration.UI_MODE_NIGHT_YES,
-    showBackground = true
-)
-@Composable
-internal fun Outlined_OnSurface_Enabled_Preview() {
-    PreviewFireFlowTheme {
-        FireFlowButtons.Outlined.OnSurface(
-            text = "Outlined OnSurface Enabled Button",
-            enabled = true,
-            onClick = {}
-        )
-    }
-}
-
-@Preview(
-    name = "Outlined OnSurface Button Light Theme Disabled",
-    showBackground = true
-)
-@Preview(
-    name = "Outlined OnSurface Button Dark Theme Disabled",
-    uiMode = Configuration.UI_MODE_NIGHT_YES,
-    showBackground = true
-)
-@Composable
-internal fun Outlined_OnSurface_Disabled_Preview() {
-    PreviewFireFlowTheme {
-        FireFlowButtons.Loading.OnSurface(
-            text = "Outlined OnSurface Disabled Button",
-            enabled = false,
-            loading = true,
-            onClick = {}
-        )
-    }
-}
-
-@Preview(
-    name = "Icon Button Light Theme Enabled",
-    showBackground = true
-)
-@Preview(
-    name = "Icon Button Dark Theme Enabled",
-    uiMode = Configuration.UI_MODE_NIGHT_YES,
-    showBackground = true
-)
-@Composable
-internal fun Icon_Enabled_Preview() {
-    PreviewFireFlowTheme {
-        FireFlowButtons.Icon(
-            image = FireFlowIcons.ArrowBack,
-            contentDescription = "",
-            enabled = true,
-            onClick = {}
-        )
-    }
-}
-
-@Preview(
-    name = "Icon Button Light Theme Disabled",
-    showBackground = true
-)
-@Preview(
-    name = "Icon Button Dark Theme Disabled",
-    uiMode = Configuration.UI_MODE_NIGHT_YES,
-    showBackground = true
-)
-@Composable
-internal fun Icon_Disabled_Preview() {
-    PreviewFireFlowTheme {
-        FireFlowButtons.Icon(
-            image = FireFlowIcons.ArrowBack,
-            contentDescription = "",
-            enabled = false,
             onClick = {}
         )
     }

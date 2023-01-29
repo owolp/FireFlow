@@ -119,7 +119,7 @@ private fun WelcomeScreenContent(
                 )
             )
             FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.m)
-            FireFlowButtons.Outlined.OnSurface(
+            FireFlowButtons.Filled.OnSurfaceTint(
                 modifier = Modifier.fillMaxWidth(),
                 text = stringResource(id = R.string.welcome_button_continue_with_oauth),
                 onClick = onContinueWithOauthCLick
