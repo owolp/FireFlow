@@ -58,12 +58,12 @@ object FireFlowDialogs {
                 }
             },
             title = {
-                FireFlowTexts.TitleMedium(
+                FireFlowTexts.TitleLarge(
                     text = title
                 )
             },
             text = {
-                FireFlowTexts.BodyMedium(
+                FireFlowTexts.TitleMedium(
                     modifier = Modifier
                         .verticalScroll(rememberScrollState()),
                     text = text
