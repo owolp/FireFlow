@@ -28,6 +28,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import dev.zitech.core.common.domain.browser.Browser
 import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.dashboard.R as dashboardR
 import dev.zitech.dashboard.presentation.navigation.DashboardDestination
@@ -43,15 +44,17 @@ import dev.zitech.settings.presentation.navigation.SettingsDestination
 @Composable
 internal fun rememberFireFlowAppState(
     windowSizeClass: WindowSizeClass,
-    navController: NavHostController
+    navController: NavHostController,
+    browser: Browser
 ): FireFlowAppState = remember(navController, windowSizeClass) {
-    FireFlowAppState(navController, windowSizeClass)
+    FireFlowAppState(navController, windowSizeClass, browser)
 }
 
 @Stable
 internal class FireFlowAppState(
     val navController: NavHostController,
-    private val windowSizeClass: WindowSizeClass
+    private val windowSizeClass: WindowSizeClass,
+    private val browser: Browser
 ) {
     val currentDestination: NavDestination?
         @Composable get() = navController
@@ -137,6 +140,10 @@ internal class FireFlowAppState(
 
     fun onCloseApplication() {
         (navController.context as? AppCompatActivity)?.finish()
+    }
+
+    fun openBrowser(url: String) {
+        browser.invoke(url)
     }
 
     @Composable

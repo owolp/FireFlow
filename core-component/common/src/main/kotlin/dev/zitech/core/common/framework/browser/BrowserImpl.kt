@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,22 +15,21 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.onboarding.presentation.welcome.viewmodel.resoure
+package dev.zitech.core.common.framework.browser
 
-import dev.zitech.core.common.domain.strings.StringsProvider
-import dev.zitech.onboarding.R
+import android.content.Context
+import androidx.browser.customtabs.CustomTabsIntent
+import androidx.core.net.toUri
+import dev.zitech.core.common.domain.browser.Browser
 import javax.inject.Inject
 
-internal class WelcomeStringsProvider @Inject constructor(
-    private val stringsProvider: StringsProvider
-) {
+internal class BrowserImpl @Inject constructor(
+    private val context: Context
+) : Browser {
 
-    fun getDemoDialogText(): String =
-        stringsProvider(R.string.welcome_demo_dialog_text)
-
-    fun getDemoDialogConfirm(): String =
-        stringsProvider(R.string.welcome_demo_dialog_confirm)
-
-    fun getFireflyUrl(): String =
-        stringsProvider(R.string.welcome_firefly_iii_website)
+    override fun invoke(url: String) {
+        CustomTabsIntent.Builder()
+            .build()
+            .launchUrl(context, url.toUri())
+    }
 }

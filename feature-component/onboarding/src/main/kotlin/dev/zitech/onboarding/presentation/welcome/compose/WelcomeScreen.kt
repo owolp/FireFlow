@@ -45,7 +45,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.ds.atoms.animation.FireFlowAnimations
 import dev.zitech.ds.atoms.button.FireFlowButtons
 import dev.zitech.ds.atoms.spacer.FireFlowSpacers
@@ -63,6 +62,7 @@ internal fun WelcomeScreen(
     onContinueWithPatClick: () -> Unit,
     onDemoClick: () -> Unit,
     onBackClick: () -> Unit,
+    onFireflyClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     BackHandler(enabled = true) {
@@ -76,7 +76,8 @@ internal fun WelcomeScreen(
             innerPadding,
             onContinueWithOauthClick,
             onContinueWithPatClick,
-            onDemoClick
+            onDemoClick,
+            onFireflyClick
         )
     }
 }
@@ -87,7 +88,8 @@ private fun WelcomeScreenContent(
     innerPadding: PaddingValues,
     onContinueWithOauthCLick: () -> Unit,
     onContinueWithPatClick: () -> Unit,
-    onDemoClick: () -> Unit
+    onDemoClick: () -> Unit,
+    onFireflyClick: () -> Unit
 ) {
     Box(
         modifier = Modifier
@@ -131,9 +133,7 @@ private fun WelcomeScreenContent(
                 style = FireFlowTheme.typography.labelSmall.copy(
                     textAlign = TextAlign.Center
                 )
-            ) {
-                // TODO: Open ChromeTab/WebView etc
-            }
+            ) { onFireflyClick() }
             FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.l)
             FireFlowButtons.Filled.OnSurfaceTint(
                 modifier = Modifier.fillMaxWidth(),
@@ -189,7 +189,8 @@ private fun WelcomeScreen_Preview() {
             onContinueWithOauthClick = {},
             onContinueWithPatClick = {},
             onDemoClick = {},
-            onBackClick = {}
+            onBackClick = {},
+            onFireflyClick = {}
         )
     }
 }

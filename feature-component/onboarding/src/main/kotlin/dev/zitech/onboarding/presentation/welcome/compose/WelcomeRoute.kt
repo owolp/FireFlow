@@ -26,6 +26,7 @@ import dev.zitech.ds.molecules.dialog.FireFlowDialogs
 import dev.zitech.onboarding.presentation.welcome.viewmodel.Idle
 import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigateOutOfApp
 import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigateToDemo
+import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigateToFirefly
 import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigateToOath
 import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigateToPat
 import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigationHandled
@@ -33,6 +34,7 @@ import dev.zitech.onboarding.presentation.welcome.viewmodel.OnBackClick
 import dev.zitech.onboarding.presentation.welcome.viewmodel.OnContinueWithOauthClick
 import dev.zitech.onboarding.presentation.welcome.viewmodel.OnContinueWithPatClick
 import dev.zitech.onboarding.presentation.welcome.viewmodel.OnDemoClick
+import dev.zitech.onboarding.presentation.welcome.viewmodel.OnFireflyClick
 import dev.zitech.onboarding.presentation.welcome.viewmodel.OnShowDemoDismiss
 import dev.zitech.onboarding.presentation.welcome.viewmodel.OnShowDemoPositive
 import dev.zitech.onboarding.presentation.welcome.viewmodel.ShowDemoWarning
@@ -43,6 +45,7 @@ internal fun WelcomeRoute(
     navigateToOath: () -> Unit,
     navigateToPat: () -> Unit,
     navigateToDemo: () -> Unit,
+    navigateToBrowser: (url: String) -> Unit,
     navigateOutOfApp: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: WelcomeViewModel = hiltViewModel()
@@ -66,6 +69,10 @@ internal fun WelcomeRoute(
             navigateOutOfApp()
             viewModel.sendIntent(NavigationHandled)
         }
+        is NavigateToFirefly -> {
+            navigateToBrowser(event.url)
+            viewModel.sendIntent(NavigationHandled)
+        }
         is ShowDemoWarning -> {
             FireFlowDialogs.Alert(
                 text = event.text,
@@ -84,6 +91,7 @@ internal fun WelcomeRoute(
         onContinueWithOauthClick = { viewModel.sendIntent(OnContinueWithOauthClick) },
         onContinueWithPatClick = { viewModel.sendIntent(OnContinueWithPatClick) },
         onDemoClick = { viewModel.sendIntent(OnDemoClick) },
-        onBackClick = { viewModel.sendIntent(OnBackClick) }
+        onBackClick = { viewModel.sendIntent(OnBackClick) },
+        onFireflyClick = { viewModel.sendIntent(OnFireflyClick) }
     )
 }

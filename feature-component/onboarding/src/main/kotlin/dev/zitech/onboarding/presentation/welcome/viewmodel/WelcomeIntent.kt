@@ -25,6 +25,7 @@ internal object OnContinueWithOauthClick : WelcomeIntent
 internal object OnContinueWithPatClick : WelcomeIntent
 internal object OnDemoClick : WelcomeIntent
 internal object OnBackClick : WelcomeIntent
+internal object OnFireflyClick : WelcomeIntent
 internal object NavigationHandled : WelcomeIntent
 internal object OnShowDemoPositive : WelcomeIntent
 internal object OnShowDemoDismiss : WelcomeIntent

@@ -37,6 +37,7 @@ internal fun FireFlowNavHost(
     navController: NavHostController,
     onNavigateToDestination: (NavDirection) -> Unit,
     onBackClick: (NavDirection?) -> Unit,
+    onNavigateToBrowser: (url: String) -> Unit,
     onCloseApplication: () -> Unit,
     modifier: Modifier = Modifier,
     startDestination: String = DashboardDestination.route
@@ -82,6 +83,9 @@ internal fun FireFlowNavHost(
                         destination = DashboardDestination
                     )
                 )
+            },
+            navigateToBrowser = { url ->
+                onNavigateToBrowser(url)
             },
             navigateOutOfApp = {
                 onCloseApplication()

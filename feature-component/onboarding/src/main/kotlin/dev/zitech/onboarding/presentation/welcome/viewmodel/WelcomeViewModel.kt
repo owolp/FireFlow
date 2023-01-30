@@ -43,6 +43,7 @@ internal class WelcomeViewModel @Inject constructor(
                 OnContinueWithPatClick -> handleOnContinueWithPatClick()
                 OnDemoClick -> handleOnDemoClick()
                 OnBackClick -> handleOnBackClick()
+                OnFireflyClick -> handleOnFireflyClick()
                 NavigationHandled -> handleNavigationHandled()
                 OnShowDemoDismiss -> handleOnShowDemoDismiss()
                 OnShowDemoPositive -> handleOnShowDemoPositive()
@@ -69,6 +70,10 @@ internal class WelcomeViewModel @Inject constructor(
 
     private fun handleOnBackClick() {
         stateHandler.setEvent(NavigateOutOfApp)
+    }
+
+    private fun handleOnFireflyClick() {
+        stateHandler.setEvent(NavigateToFirefly(welcomeStringsProvider.getFireflyUrl()))
     }
 
     private fun handleNavigationHandled() {
