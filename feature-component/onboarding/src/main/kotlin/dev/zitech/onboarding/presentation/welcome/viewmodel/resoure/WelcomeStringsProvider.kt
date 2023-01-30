@@ -25,9 +25,6 @@ internal class WelcomeStringsProvider @Inject constructor(
     private val stringsProvider: StringsProvider
 ) {
 
-    fun getDemoDialogTitle(): String =
-        stringsProvider(R.string.welcome_demo_dialog_title)
-
     fun getDemoDialogText(): String =
         stringsProvider(R.string.welcome_demo_dialog_text)
 

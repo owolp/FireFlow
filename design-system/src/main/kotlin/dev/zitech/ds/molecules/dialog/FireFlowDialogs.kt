@@ -38,10 +38,10 @@ object FireFlowDialogs {
 
     @Composable
     fun Alert(
-        title: String,
         text: String,
         onConfirmButtonClick: () -> Unit,
         modifier: Modifier = Modifier,
+        title: String? = null,
         confirmButton: String = stringResource(R.string.dialog_button_ok),
         dismissButton: String = stringResource(R.string.dialog_button_cancel),
         onDismissRequest: (() -> Unit)? = null
@@ -58,9 +58,11 @@ object FireFlowDialogs {
                 }
             },
             title = {
-                FireFlowTexts.TitleLarge(
-                    text = title
-                )
+                if (title != null) {
+                    FireFlowTexts.TitleLarge(
+                        text = title
+                    )
+                }
             },
             text = {
                 FireFlowTexts.TitleMedium(

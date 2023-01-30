@@ -61,7 +61,6 @@ internal class WelcomeViewModel @Inject constructor(
     private fun handleOnDemoClick() {
         stateHandler.setEvent(
             ShowDemoWarning(
-                title = welcomeStringsProvider.getDemoDialogTitle(),
                 text = welcomeStringsProvider.getDemoDialogText(),
                 confirm = welcomeStringsProvider.getDemoDialogConfirm()
             )

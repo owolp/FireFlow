@@ -68,7 +68,6 @@ internal fun WelcomeRoute(
         }
         is ShowDemoWarning -> {
             FireFlowDialogs.Alert(
-                title = event.title,
                 text = event.text,
                 confirmButton = event.confirm,
                 onConfirmButtonClick = { viewModel.sendIntent(OnShowDemoPositive) },

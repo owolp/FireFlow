@@ -23,7 +23,6 @@
     <string name="welcome_button_continue_with_oauth">Продължете с OAuth</string>
     <string name="welcome_button_continue_with_personal_access_token">Продължете с персонален токен за достъп</string>
     <string name="welcome_button_demo">Продължете с демо акаунт</string>
-    <string name="welcome_demo_dialog_title">Информация за демо акаунта</string>
     <string name="welcome_demo_dialog_text">Моля, обърнете внимание, че всички данни, въведени по време на тази сесия, ще бъдат загубени при рестартиране на приложението. Ако искате да запазите напредъка си, моля, влезте с реален акаунт.</string>
     <string name="welcome_demo_dialog_confirm">Разбирам</string>
 </resources>
