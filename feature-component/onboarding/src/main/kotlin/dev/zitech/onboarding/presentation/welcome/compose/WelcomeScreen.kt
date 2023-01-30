@@ -43,9 +43,9 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.ds.atoms.animation.FireFlowAnimations
 import dev.zitech.ds.atoms.button.FireFlowButtons
 import dev.zitech.ds.atoms.spacer.FireFlowSpacers
@@ -108,6 +108,7 @@ private fun WelcomeScreenContent(
     ) {
         Column(
             modifier = Modifier
+                .fillMaxWidth()
                 .align(Alignment.BottomCenter)
                 .padding(FireFlowTheme.space.m),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -124,9 +125,12 @@ private fun WelcomeScreenContent(
                 )
             )
             FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.s)
-            FireFlowClickableTexts.BodySmall(
+            FireFlowClickableTexts.LabelSmall(
                 text = getFireflyInfoAnnotatedString(),
-                color = FireFlowTheme.colors.onSurface
+                color = FireFlowTheme.colors.onSurface,
+                style = FireFlowTheme.typography.labelSmall.copy(
+                    textAlign = TextAlign.Center
+                )
             ) {
                 // TODO: Open ChromeTab/WebView etc
             }
@@ -154,29 +158,19 @@ private fun WelcomeScreenContent(
 
 @Composable
 private fun getFireflyInfoAnnotatedString() = buildAnnotatedString {
-    append(
-        stringResource(R.string.welcome_firefly_iii_companion_app_before_annotated_text)
-    )
-    append(" ")
+    val fireFlyText = stringResource(R.string.welcome_firefly_iii_text)
+    val fireFlyAnnotatedText = stringResource(R.string.welcome_firefly_iii_annotated_text)
+    val startPosition = fireFlyText.indexOf(fireFlyAnnotatedText)
+    val lastPosition = startPosition + fireFlyAnnotatedText.length
 
-    pushStringAnnotation(
+    append(fireFlyText)
+    addStringAnnotation(
         tag = "URL",
-        annotation = stringResource(R.string.welcome_firefly_iii_website)
+        annotation = stringResource(R.string.welcome_firefly_iii_website),
+        start = startPosition,
+        end = lastPosition
     )
-    withStyle(style = SpanStyle(textDecoration = TextDecoration.Underline)) {
-        append(
-            stringResource(
-                id = R.string.welcome_firefly_iii_companion_app_annotated_text
-            )
-        )
-    }
-
-    append(" ")
-    append(
-        stringResource(R.string.welcome_firefly_iii_companion_app_after_annotated_text)
-    )
-
-    pop()
+    addStyle(SpanStyle(textDecoration = TextDecoration.Underline), startPosition, lastPosition)
 }
 
 @Preview(
