@@ -20,17 +20,27 @@ package dev.zitech.onboarding.presentation.welcome.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.zitech.core.common.domain.logger.Logger
+import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.model.exception.NoBrowserInstalledException
 import dev.zitech.core.common.presentation.architecture.MviViewModel
 import dev.zitech.core.persistence.domain.usecase.database.SaveUserAccountUseCase
+import dev.zitech.onboarding.presentation.welcome.viewmodel.resoure.WelcomeStringsProvider
 import javax.inject.Inject
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 @HiltViewModel
 internal class WelcomeViewModel @Inject constructor(
     private val stateHandler: WelcomeStateHandler,
+    private val welcomeStringsProvider: WelcomeStringsProvider,
     private val saveUserAccountUseCase: SaveUserAccountUseCase
 ) : ViewModel(), MviViewModel<WelcomeIntent, WelcomeState> {
+
+    private val tag = Logger.tag(this::class.java)
 
     override val screenState: StateFlow<WelcomeState> = stateHandler.state
 
@@ -41,7 +51,11 @@ internal class WelcomeViewModel @Inject constructor(
                 OnContinueWithPatClick -> handleOnContinueWithPatClick()
                 OnDemoClick -> handleOnDemoClick()
                 OnBackClick -> handleOnBackClick()
+                OnFireflyClick -> handleOnFireflyClick()
                 NavigationHandled -> handleNavigationHandled()
+                OnShowDemoDismiss -> handleOnShowDemoDismiss()
+                OnShowDemoPositive -> handleOnShowDemoPositive()
+                is NavigatedToFireflyResult -> handleNavigatedToFireflyResult(intent.dataResultFlow)
             }
         }
     }
@@ -54,18 +68,53 @@ internal class WelcomeViewModel @Inject constructor(
         stateHandler.setEvent(NavigateToPat)
     }
 
-    @Suppress("ForbiddenComment")
-    private suspend fun handleOnDemoClick() {
-        // TODO: Dev usage
-        saveUserAccountUseCase(true)
-        stateHandler.setEvent(NavigateToDemo)
+    private fun handleOnDemoClick() {
+        stateHandler.setEvent(
+            ShowDemoWarning(
+                text = welcomeStringsProvider.getDemoDialogText(),
+                confirm = welcomeStringsProvider.getDemoDialogConfirm()
+            )
+        )
     }
 
     private fun handleOnBackClick() {
         stateHandler.setEvent(NavigateOutOfApp)
     }
 
+    private fun handleOnFireflyClick() {
+        stateHandler.setEvent(NavigateToFirefly(welcomeStringsProvider.getFireflyUrl()))
+    }
+
     private fun handleNavigationHandled() {
         stateHandler.resetEvent()
+    }
+
+    private fun handleOnShowDemoDismiss() {
+        stateHandler.resetEvent()
+    }
+
+    @Suppress("ForbiddenComment")
+    private suspend fun handleOnShowDemoPositive() {
+        // TODO: Dev usage
+        saveUserAccountUseCase(true)
+        stateHandler.setEvent(NavigateToDemo)
+    }
+
+    private suspend fun handleNavigatedToFireflyResult(dataResultFlow: Flow<DataResult<Unit>>) {
+        dataResultFlow.onEach { result ->
+            when (result) {
+                is DataResult.Success -> stateHandler.resetEvent()
+                is DataResult.Error -> {
+                    when (result.cause) {
+                        is NoBrowserInstalledException -> {
+                            stateHandler.setEvent(
+                                ShowError(welcomeStringsProvider.getNoSupportedBrowserInstalled())
+                            )
+                        }
+                        else -> Logger.e(tag, result.cause)
+                    }
+                }
+            }
+        }.stateIn(viewModelScope)
     }
 }

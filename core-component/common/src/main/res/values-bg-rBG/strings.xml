@@ -24,4 +24,6 @@
     <string name="application_language_system">Ситемни настройки по подразбиране</string>
     <string name="application_language_english">Английски English</string>
     <string name="application_language_bulgarian">Български</string>
+
+    <string name="no_supported_browser_installed">No supported browser found. Please install a browser and try again.</string>
 </resources>

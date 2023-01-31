@@ -17,6 +17,7 @@
 
 package dev.zitech.fireflow.presentation
 
+import android.content.ActivityNotFoundException
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
@@ -28,7 +29,10 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import dev.zitech.core.common.domain.browser.Browser
 import dev.zitech.core.common.domain.logger.Logger
+import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.model.exception.NoBrowserInstalledException
 import dev.zitech.dashboard.R as dashboardR
 import dev.zitech.dashboard.presentation.navigation.DashboardDestination
 import dev.zitech.ds.atoms.icon.FireFlowIcons
@@ -39,19 +43,23 @@ import dev.zitech.navigation.presentation.model.FireFlowNavigationDestination
 import dev.zitech.navigation.presentation.model.TopLevelDestination
 import dev.zitech.settings.R as settingsR
 import dev.zitech.settings.presentation.navigation.SettingsDestination
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.callbackFlow
 
 @Composable
 internal fun rememberFireFlowAppState(
     windowSizeClass: WindowSizeClass,
-    navController: NavHostController
+    navController: NavHostController,
+    browser: Browser
 ): FireFlowAppState = remember(navController, windowSizeClass) {
-    FireFlowAppState(navController, windowSizeClass)
+    FireFlowAppState(navController, windowSizeClass, browser)
 }
 
 @Stable
 internal class FireFlowAppState(
     val navController: NavHostController,
-    private val windowSizeClass: WindowSizeClass
+    private val windowSizeClass: WindowSizeClass,
+    private val browser: Browser
 ) {
     val currentDestination: NavDestination?
         @Composable get() = navController
@@ -137,6 +145,23 @@ internal class FireFlowAppState(
 
     fun onCloseApplication() {
         (navController.context as? AppCompatActivity)?.finish()
+    }
+
+    @Suppress("TooGenericExceptionCaught", "SwallowedException")
+    fun openBrowser(url: String) = callbackFlow {
+        try {
+            browser.invoke(url)
+            trySend(DataResult.Success(Unit))
+            close()
+        } catch (e: ActivityNotFoundException) {
+            trySend(DataResult.Error(cause = NoBrowserInstalledException))
+            close()
+        } catch (e: Exception) {
+            trySend(DataResult.Error(cause = e))
+            close()
+        }
+
+        awaitClose()
     }
 
     @Composable

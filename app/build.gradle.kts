@@ -91,7 +91,6 @@ dependencies {
     implementation(libs.androidx.compose.material3.windowsizeclass)
     implementation(libs.androidx.core)
     implementation(libs.androidx.core.splash)
-    implementation(libs.androidx.costraintlayout.compose)
     implementation(libs.androidx.lifecycle.runtime)
     kapt(libs.androidx.lifecycle.compiler)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)

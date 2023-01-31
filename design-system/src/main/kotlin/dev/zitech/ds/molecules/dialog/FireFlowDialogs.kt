@@ -38,11 +38,12 @@ object FireFlowDialogs {
 
     @Composable
     fun Alert(
-        title: String,
         text: String,
         onConfirmButtonClick: () -> Unit,
         modifier: Modifier = Modifier,
-        confirmButton: String = stringResource(id = R.string.dialog_button_ok),
+        title: String? = null,
+        confirmButton: String = stringResource(R.string.dialog_button_ok),
+        dismissButton: String = stringResource(R.string.dialog_button_cancel),
         onDismissRequest: (() -> Unit)? = null
     ) {
         AlertDialog(
@@ -51,13 +52,20 @@ object FireFlowDialogs {
             confirmButton = {
                 FireFlowButtons.Text.OnSurface(confirmButton) { onConfirmButtonClick() }
             },
+            dismissButton = {
+                if (onDismissRequest != null) {
+                    FireFlowButtons.Text.OnSurface(dismissButton) { onDismissRequest() }
+                }
+            },
             title = {
-                FireFlowTexts.TitleMedium(
-                    text = title
-                )
+                if (title != null) {
+                    FireFlowTexts.TitleLarge(
+                        text = title
+                    )
+                }
             },
             text = {
-                FireFlowTexts.BodyMedium(
+                FireFlowTexts.TitleMedium(
                     modifier = Modifier
                         .verticalScroll(rememberScrollState()),
                     text = text

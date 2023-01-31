@@ -41,7 +41,7 @@ internal fun DashboardScreen(
         modifier = modifier,
         topBar = {
             FireFlowTopAppBars.Collapsing.Primary(
-                title = stringResource(id = R.string.dashboard),
+                title = stringResource(R.string.dashboard),
                 scrollBehavior = topAppBarScrollBehavior
             )
         }

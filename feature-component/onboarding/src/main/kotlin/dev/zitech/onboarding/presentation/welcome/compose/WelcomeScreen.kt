@@ -39,12 +39,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.zitech.ds.atoms.animation.FireFlowAnimations
 import dev.zitech.ds.atoms.button.FireFlowButtons
 import dev.zitech.ds.atoms.spacer.FireFlowSpacers
+import dev.zitech.ds.atoms.text.FireFlowClickableTexts
 import dev.zitech.ds.atoms.text.FireFlowTexts
 import dev.zitech.ds.templates.scaffold.FireFlowScaffolds
 import dev.zitech.ds.theme.FireFlowTheme
@@ -58,6 +62,7 @@ internal fun WelcomeScreen(
     onContinueWithPatClick: () -> Unit,
     onDemoClick: () -> Unit,
     onBackClick: () -> Unit,
+    onFireflyClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     BackHandler(enabled = true) {
@@ -71,7 +76,8 @@ internal fun WelcomeScreen(
             innerPadding,
             onContinueWithOauthClick,
             onContinueWithPatClick,
-            onDemoClick
+            onDemoClick,
+            onFireflyClick
         )
     }
 }
@@ -82,7 +88,8 @@ private fun WelcomeScreenContent(
     innerPadding: PaddingValues,
     onContinueWithOauthCLick: () -> Unit,
     onContinueWithPatClick: () -> Unit,
-    onDemoClick: () -> Unit
+    onDemoClick: () -> Unit,
+    onFireflyClick: () -> Unit
 ) {
     Box(
         modifier = Modifier
@@ -103,6 +110,7 @@ private fun WelcomeScreenContent(
     ) {
         Column(
             modifier = Modifier
+                .fillMaxWidth()
                 .align(Alignment.BottomCenter)
                 .padding(FireFlowTheme.space.m),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -113,32 +121,56 @@ private fun WelcomeScreenContent(
             )
             FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.s)
             FireFlowTexts.DisplayMedium(
-                text = stringResource(id = R.string.welcome_slogan),
+                text = stringResource(R.string.welcome_slogan),
                 style = FireFlowTheme.typography.displayMedium.copy(
                     textAlign = TextAlign.Center
                 )
             )
-            FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.m)
-            FireFlowButtons.Outlined.OnSurface(
+            FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.s)
+            FireFlowClickableTexts.LabelSmall(
+                text = getFireflyInfoAnnotatedString(),
+                color = FireFlowTheme.colors.onSurface,
+                style = FireFlowTheme.typography.labelSmall.copy(
+                    textAlign = TextAlign.Center
+                )
+            ) { onFireflyClick() }
+            FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.l)
+            FireFlowButtons.Filled.OnSurfaceTint(
                 modifier = Modifier.fillMaxWidth(),
-                text = stringResource(id = R.string.welcome_button_continue_with_oauth),
+                text = stringResource(R.string.welcome_button_continue_with_oauth),
                 onClick = onContinueWithOauthCLick
             )
-            FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.xs)
+            FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.s)
             FireFlowButtons.Outlined.OnSurface(
                 modifier = Modifier.fillMaxWidth(),
-                text = stringResource(
-                    id = R.string.welcome_button_continue_with_personal_access_token
-                ),
+                text = stringResource(R.string.welcome_button_continue_with_personal_access_token),
                 onClick = onContinueWithPatClick
             )
-            FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.xs)
-            FireFlowButtons.Text.OnSurface(
-                text = stringResource(id = R.string.welcome_button_demo),
+            FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.s)
+            FireFlowButtons.Outlined.OnSurface(
+                modifier = Modifier.fillMaxWidth(),
+                text = stringResource(R.string.welcome_button_demo),
                 onClick = onDemoClick
             )
         }
     }
+}
+
+@Composable
+private fun getFireflyInfoAnnotatedString() = buildAnnotatedString {
+    val fireFlyText = stringResource(R.string.welcome_firefly_iii_text)
+    val fireFlyAnnotatedText = stringResource(R.string.welcome_firefly_iii_annotated_text)
+    val startPosition = fireFlyText.indexOf(fireFlyAnnotatedText)
+    val lastPosition = startPosition + fireFlyAnnotatedText.length
+
+    append(fireFlyText)
+    addStringAnnotation(
+        tag = "URL",
+        annotation = stringResource(R.string.welcome_firefly_iii_url),
+        start = startPosition,
+        end = lastPosition
+    )
+    addStyle(SpanStyle(textDecoration = TextDecoration.Underline), startPosition, lastPosition)
 }
 
 @Preview(
@@ -157,7 +189,8 @@ private fun WelcomeScreen_Preview() {
             onContinueWithOauthClick = {},
             onContinueWithPatClick = {},
             onDemoClick = {},
-            onBackClick = {}
+            onBackClick = {},
+            onFireflyClick = {}
         )
     }
 }

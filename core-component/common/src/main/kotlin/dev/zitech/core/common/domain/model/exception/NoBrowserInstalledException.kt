@@ -15,26 +15,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.onboarding.presentation.welcome.viewmodel
+package dev.zitech.core.common.domain.model.exception
 
-import dev.zitech.core.common.presentation.architecture.MviState
-
-internal sealed interface WelcomeEvent : MviState.Event
-
-internal object Idle : WelcomeEvent
-internal object NavigateToOath : WelcomeEvent
-internal object NavigateToPat : WelcomeEvent
-internal object NavigateToDemo : WelcomeEvent
-internal data class NavigateToFirefly(
-    val url: String
-) : WelcomeEvent
-
-internal object NavigateOutOfApp : WelcomeEvent
-internal data class ShowDemoWarning(
-    val text: String,
-    val confirm: String
-) : WelcomeEvent
-
-internal data class ShowError(
-    val text: String
-) : WelcomeEvent
+object NoBrowserInstalledException : Exception()

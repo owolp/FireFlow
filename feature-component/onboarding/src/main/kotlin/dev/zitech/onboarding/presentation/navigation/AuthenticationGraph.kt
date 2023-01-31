@@ -21,14 +21,18 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.onboarding.presentation.login.compose.LoginRoute
 import dev.zitech.onboarding.presentation.welcome.compose.WelcomeRoute
+import kotlinx.coroutines.flow.Flow
 
+@Suppress("LongParameterList")
 fun NavGraphBuilder.onboardingGraph(
     navigateToOath: () -> Unit,
     navigateToPat: () -> Unit,
     navigateToDemo: () -> Unit,
     navigateToDashboard: () -> Unit,
+    navigateToBrowser: (url: String) -> Flow<DataResult<Unit>>,
     navigateOutOfApp: () -> Unit
 ) {
     composable(route = WelcomeDestination.route) {
@@ -36,6 +40,7 @@ fun NavGraphBuilder.onboardingGraph(
             navigateToOath = navigateToOath,
             navigateToPat = navigateToPat,
             navigateToDemo = navigateToDemo,
+            navigateToBrowser = navigateToBrowser,
             navigateOutOfApp = navigateOutOfApp
         )
     }

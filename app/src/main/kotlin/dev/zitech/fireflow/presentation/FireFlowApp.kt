@@ -39,6 +39,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
+import dev.zitech.core.common.domain.browser.Browser
 import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.ds.atoms.background.FireFlowBackground
 import dev.zitech.ds.atoms.icon.Icon
@@ -61,7 +62,8 @@ internal fun FireFlowApp(
     theme: ApplicationTheme?,
     windowSizeClass: WindowSizeClass,
     navController: NavHostController,
-    appState: FireFlowAppState = rememberFireFlowAppState(windowSizeClass, navController)
+    browser: Browser,
+    appState: FireFlowAppState = rememberFireFlowAppState(windowSizeClass, navController, browser)
 ) {
     FireFlowTheme(
         darkTheme = isDarkTheme(theme)
@@ -121,6 +123,9 @@ internal fun FireFlowApp(
                                 inclusive = navDirection?.inclusive
                             )
                         },
+                        onNavigateToBrowser = { url ->
+                            appState.openBrowser(url)
+                        },
                         onCloseApplication = appState::onCloseApplication
                     )
                 }
@@ -162,7 +167,7 @@ private fun FireFlowBottomBar(
                 },
                 label = {
                     FireFlowTexts.TitleSmall(
-                        text = stringResource(id = destination.iconTextId)
+                        text = stringResource(destination.iconTextId)
                     )
                 }
             )
@@ -203,7 +208,7 @@ private fun FireFlowNavRail(
                 },
                 label = {
                     FireFlowTexts.TitleSmall(
-                        text = stringResource(id = destination.iconTextId)
+                        text = stringResource(destination.iconTextId)
                     )
                 }
             )

@@ -22,13 +22,18 @@ import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ActivityComponent
+import dagger.hilt.android.qualifiers.ActivityContext
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.android.scopes.ActivityScoped
 import dagger.hilt.components.SingletonComponent
+import dev.zitech.core.common.domain.browser.Browser
 import dev.zitech.core.common.domain.dispatcher.AppDispatchers
 import dev.zitech.core.common.domain.dispatcher.AppDispatchersImpl
 import dev.zitech.core.common.domain.scope.AppScopes
 import dev.zitech.core.common.domain.scope.AppScopesImpl
 import dev.zitech.core.common.domain.strings.StringsProvider
+import dev.zitech.core.common.framework.browser.BrowserImpl
 import dev.zitech.core.common.framework.strings.StringsProviderImpl
 import javax.inject.Singleton
 
@@ -55,5 +60,15 @@ internal interface CommonModule {
         @Singleton
         @Binds
         fun appScopes(appScopesImpl: AppScopesImpl): AppScopes
+    }
+
+    @InstallIn(ActivityComponent::class)
+    @Module
+    object CommonActivityProvidesModule {
+
+        @ActivityScoped
+        @Provides
+        fun browser(@ActivityContext activityContext: Context): Browser =
+            BrowserImpl(activityContext)
     }
 }

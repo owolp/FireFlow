@@ -17,7 +17,9 @@
 
 package dev.zitech.onboarding.presentation.welcome.viewmodel
 
+import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.common.presentation.architecture.MviIntent
+import kotlinx.coroutines.flow.Flow
 
 internal sealed interface WelcomeIntent : MviIntent
 
@@ -25,4 +27,11 @@ internal object OnContinueWithOauthClick : WelcomeIntent
 internal object OnContinueWithPatClick : WelcomeIntent
 internal object OnDemoClick : WelcomeIntent
 internal object OnBackClick : WelcomeIntent
+internal object OnFireflyClick : WelcomeIntent
+internal data class NavigatedToFireflyResult(
+    val dataResultFlow: Flow<DataResult<Unit>>
+) : WelcomeIntent
+
 internal object NavigationHandled : WelcomeIntent
+internal object OnShowDemoPositive : WelcomeIntent
+internal object OnShowDemoDismiss : WelcomeIntent

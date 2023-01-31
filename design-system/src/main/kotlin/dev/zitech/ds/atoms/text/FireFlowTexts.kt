@@ -22,6 +22,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import dev.zitech.ds.atoms.text.FireFlowTexts.BodyMedium
@@ -59,8 +60,38 @@ object FireFlowTexts {
     }
 
     @Composable
+    fun DisplayLarge(
+        text: AnnotatedString,
+        modifier: Modifier = Modifier,
+        color: Color = Color.Unspecified,
+        style: TextStyle = FireFlowTheme.typography.displayLarge
+    ) {
+        Text(
+            modifier = modifier,
+            text = text,
+            color = color,
+            style = style
+        )
+    }
+
+    @Composable
     fun DisplayMedium(
         text: String,
+        modifier: Modifier = Modifier,
+        color: Color = Color.Unspecified,
+        style: TextStyle = FireFlowTheme.typography.displayMedium
+    ) {
+        Text(
+            modifier = modifier,
+            text = text,
+            color = color,
+            style = style
+        )
+    }
+
+    @Composable
+    fun DisplayMedium(
+        text: AnnotatedString,
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
         style: TextStyle = FireFlowTheme.typography.displayMedium
@@ -89,8 +120,38 @@ object FireFlowTexts {
     }
 
     @Composable
+    fun DisplaySmall(
+        text: AnnotatedString,
+        modifier: Modifier = Modifier,
+        color: Color = Color.Unspecified,
+        style: TextStyle = FireFlowTheme.typography.displaySmall
+    ) {
+        Text(
+            modifier = modifier,
+            text = text,
+            color = color,
+            style = style
+        )
+    }
+
+    @Composable
     fun HeadlineLarge(
         text: String,
+        modifier: Modifier = Modifier,
+        color: Color = Color.Unspecified,
+        style: TextStyle = FireFlowTheme.typography.headlineLarge
+    ) {
+        Text(
+            modifier = modifier,
+            text = text,
+            color = color,
+            style = style
+        )
+    }
+
+    @Composable
+    fun HeadlineLarge(
+        text: AnnotatedString,
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
         style: TextStyle = FireFlowTheme.typography.headlineLarge
@@ -119,8 +180,38 @@ object FireFlowTexts {
     }
 
     @Composable
+    fun HeadlineMedium(
+        text: AnnotatedString,
+        modifier: Modifier = Modifier,
+        color: Color = Color.Unspecified,
+        style: TextStyle = FireFlowTheme.typography.headlineMedium
+    ) {
+        Text(
+            modifier = modifier,
+            text = text,
+            color = color,
+            style = style
+        )
+    }
+
+    @Composable
     fun TitleLarge(
         text: String,
+        modifier: Modifier = Modifier,
+        color: Color = Color.Unspecified,
+        style: TextStyle = FireFlowTheme.typography.titleLarge
+    ) {
+        Text(
+            modifier = modifier,
+            text = text,
+            color = color,
+            style = style
+        )
+    }
+
+    @Composable
+    fun TitleLarge(
+        text: AnnotatedString,
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
         style: TextStyle = FireFlowTheme.typography.titleLarge
@@ -149,8 +240,38 @@ object FireFlowTexts {
     }
 
     @Composable
+    fun TitleMedium(
+        text: AnnotatedString,
+        modifier: Modifier = Modifier,
+        color: Color = Color.Unspecified,
+        style: TextStyle = FireFlowTheme.typography.titleMedium
+    ) {
+        Text(
+            modifier = modifier,
+            text = text,
+            color = color,
+            style = style
+        )
+    }
+
+    @Composable
     fun TitleSmall(
         text: String,
+        modifier: Modifier = Modifier,
+        color: Color = Color.Unspecified,
+        style: TextStyle = FireFlowTheme.typography.titleSmall
+    ) {
+        Text(
+            modifier = modifier,
+            text = text,
+            color = color,
+            style = style
+        )
+    }
+
+    @Composable
+    fun TitleSmall(
+        text: AnnotatedString,
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
         style: TextStyle = FireFlowTheme.typography.titleSmall
@@ -179,8 +300,38 @@ object FireFlowTexts {
     }
 
     @Composable
+    fun HeadlineSmall(
+        text: AnnotatedString,
+        modifier: Modifier = Modifier,
+        color: Color = Color.Unspecified,
+        style: TextStyle = FireFlowTheme.typography.headlineSmall
+    ) {
+        Text(
+            modifier = modifier,
+            text = text,
+            color = color,
+            style = style
+        )
+    }
+
+    @Composable
     fun BodyLarge(
         text: String,
+        modifier: Modifier = Modifier,
+        color: Color = Color.Unspecified,
+        style: TextStyle = FireFlowTheme.typography.bodyLarge
+    ) {
+        Text(
+            modifier = modifier,
+            text = text,
+            color = color,
+            style = style
+        )
+    }
+
+    @Composable
+    fun BodyLarge(
+        text: AnnotatedString,
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
         style: TextStyle = FireFlowTheme.typography.bodyLarge
@@ -209,8 +360,38 @@ object FireFlowTexts {
     }
 
     @Composable
+    fun BodyMedium(
+        text: AnnotatedString,
+        modifier: Modifier = Modifier,
+        color: Color = Color.Unspecified,
+        style: TextStyle = FireFlowTheme.typography.bodyMedium
+    ) {
+        Text(
+            modifier = modifier,
+            text = text,
+            color = color,
+            style = style
+        )
+    }
+
+    @Composable
     fun BodySmall(
         text: String,
+        modifier: Modifier = Modifier,
+        color: Color = Color.Unspecified,
+        style: TextStyle = FireFlowTheme.typography.bodySmall
+    ) {
+        Text(
+            modifier = modifier,
+            text = text,
+            color = color,
+            style = style
+        )
+    }
+
+    @Composable
+    fun BodySmall(
+        text: AnnotatedString,
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
         style: TextStyle = FireFlowTheme.typography.bodySmall
@@ -239,6 +420,21 @@ object FireFlowTexts {
     }
 
     @Composable
+    fun LabelLarge(
+        text: AnnotatedString,
+        modifier: Modifier = Modifier,
+        color: Color = Color.Unspecified,
+        style: TextStyle = FireFlowTheme.typography.labelLarge
+    ) {
+        Text(
+            modifier = modifier,
+            text = text,
+            color = color,
+            style = style
+        )
+    }
+
+    @Composable
     fun LabelMedium(
         text: String,
         modifier: Modifier = Modifier,
@@ -254,8 +450,38 @@ object FireFlowTexts {
     }
 
     @Composable
+    fun LabelMedium(
+        text: AnnotatedString,
+        modifier: Modifier = Modifier,
+        color: Color = Color.Unspecified,
+        style: TextStyle = FireFlowTheme.typography.labelMedium
+    ) {
+        Text(
+            modifier = modifier,
+            text = text,
+            color = color,
+            style = style
+        )
+    }
+
+    @Composable
     fun LabelSmall(
         text: String,
+        modifier: Modifier = Modifier,
+        color: Color = Color.Unspecified,
+        style: TextStyle = FireFlowTheme.typography.labelSmall
+    ) {
+        Text(
+            modifier = modifier,
+            text = text,
+            color = color,
+            style = style
+        )
+    }
+
+    @Composable
+    fun LabelSmall(
+        text: AnnotatedString,
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
         style: TextStyle = FireFlowTheme.typography.labelSmall
