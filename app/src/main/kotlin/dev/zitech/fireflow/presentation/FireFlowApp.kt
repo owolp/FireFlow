@@ -69,7 +69,7 @@ internal fun FireFlowApp(
     FireFlowTheme(
         darkTheme = isDarkTheme(theme)
     ) {
-        val backgroundColor = FireFlowTheme.colors.background.toArgb()
+        val backgroundColor = FireFlowTheme.colors.primary.toArgb()
 
         FireFlowBackground.Primary {
             FireFlowScaffolds.Primary(

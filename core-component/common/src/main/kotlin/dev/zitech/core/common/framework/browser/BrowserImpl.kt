@@ -33,6 +33,7 @@ internal class BrowserImpl @Inject constructor(
         val customTabBarColor = CustomTabColorSchemeParams.Builder()
             .setToolbarColor(toolbarColor).build()
         CustomTabsIntent.Builder()
+            .setShowTitle(true)
             .setDefaultColorSchemeParams(customTabBarColor)
             .build()
             .launchUrl(context, url.toUri())
