@@ -31,3 +31,5 @@ internal object OnThemeDismiss : SettingsIntent
 internal object OnLanguagePreferenceClick : SettingsIntent
 internal data class OnLanguageSelect(val id: Int) : SettingsIntent
 internal object OnLanguageDismiss : SettingsIntent
+internal object ErrorHandled : SettingsIntent
+internal object RestartApplication : SettingsIntent

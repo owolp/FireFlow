@@ -28,8 +28,11 @@ import dev.zitech.core.common.domain.navigation.DeepLinkScreenDestination
 import dev.zitech.core.common.domain.navigation.LogInState
 import dev.zitech.ds.atoms.loading.FireFlowProgressIndicators
 import dev.zitech.ds.molecules.dialog.FireFlowDialogs
+import dev.zitech.ds.molecules.snackbar.BottomNotifierMessage
+import dev.zitech.ds.molecules.snackbar.rememberSnackbarState
 import dev.zitech.settings.presentation.settings.viewmodel.Dialog
 import dev.zitech.settings.presentation.settings.viewmodel.Error
+import dev.zitech.settings.presentation.settings.viewmodel.ErrorHandled
 import dev.zitech.settings.presentation.settings.viewmodel.Idle
 import dev.zitech.settings.presentation.settings.viewmodel.OnAnalyticsCheckChange
 import dev.zitech.settings.presentation.settings.viewmodel.OnCrashReporterCheckChange
@@ -41,6 +44,8 @@ import dev.zitech.settings.presentation.settings.viewmodel.OnPersonalizedAdsChec
 import dev.zitech.settings.presentation.settings.viewmodel.OnThemeDismiss
 import dev.zitech.settings.presentation.settings.viewmodel.OnThemePreferenceClick
 import dev.zitech.settings.presentation.settings.viewmodel.OnThemeSelect
+import dev.zitech.settings.presentation.settings.viewmodel.Restart
+import dev.zitech.settings.presentation.settings.viewmodel.RestartApplication
 import dev.zitech.settings.presentation.settings.viewmodel.SelectLanguage
 import dev.zitech.settings.presentation.settings.viewmodel.SelectTheme
 import dev.zitech.settings.presentation.settings.viewmodel.SettingsViewModel
@@ -51,10 +56,12 @@ internal fun SettingsRoute(
     viewModel: SettingsViewModel = hiltViewModel(),
     navigateToAccounts: () -> Unit,
     navigateToError: () -> Unit,
-    navigateToWelcome: () -> Unit
+    navigateToWelcome: () -> Unit,
+    restartApplication: () -> Unit
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
     val logInState by viewModel.logInState.collectAsStateWithLifecycle()
+    val snackbarState = rememberSnackbarState()
 
     when (val state = logInState) {
         LogInState.InitScreen -> {
@@ -64,8 +71,9 @@ internal fun SettingsRoute(
         }
         LogInState.Logged -> {
             SettingsScreen(
-                state = screenState,
                 modifier = modifier,
+                state = screenState,
+                snackbarState = snackbarState,
                 onAnalyticsCheckChange = { checked ->
                     viewModel.sendIntent(OnAnalyticsCheckChange(checked))
                 },
@@ -101,10 +109,20 @@ internal fun SettingsRoute(
         }
     }
 
-    @Suppress("ForbiddenComment")
     when (val event = screenState.event) {
         is Error -> {
-            // TODO: Show error SnackBar with restart button
+            snackbarState.showMessage(
+                BottomNotifierMessage(
+                    text = event.message,
+                    state = BottomNotifierMessage.State.ERROR,
+                    duration = BottomNotifierMessage.Duration.SHORT,
+                    action = BottomNotifierMessage.Action(
+                        label = event.action,
+                        onAction = { viewModel.sendIntent(RestartApplication) }
+                    )
+                )
+            )
+            viewModel.sendIntent(ErrorHandled)
         }
         is Dialog -> {
             FireFlowDialogs.Alert(
@@ -129,6 +147,7 @@ internal fun SettingsRoute(
                 onDismissRequest = { viewModel.sendIntent(OnLanguageDismiss) }
             )
         }
+        Restart -> restartApplication()
         Idle -> {
             // NO_OP
         }

@@ -98,6 +98,7 @@ dependencies {
     implementation(libs.google.material)
     implementation(libs.google.dagger.hilt.android)
     kapt(libs.google.dagger.hilt.compiler)
+    implementation(libs.jakewharton.process.phoenix)
     implementation(libs.jetbrains.kotlin.coroutines.android)
 
     debugImplementation(libs.squareup.leakcanary.android)

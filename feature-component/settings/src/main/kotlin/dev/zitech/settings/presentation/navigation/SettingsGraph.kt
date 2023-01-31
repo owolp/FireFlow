@@ -24,13 +24,15 @@ import dev.zitech.settings.presentation.settings.compose.SettingsRoute
 fun NavGraphBuilder.settingsGraph(
     navigateToAccounts: () -> Unit,
     navigateToError: () -> Unit,
-    navigateToWelcome: () -> Unit
+    navigateToWelcome: () -> Unit,
+    restartApplication: () -> Unit
 ) {
     composable(route = SettingsDestination.route) {
         SettingsRoute(
             navigateToAccounts = navigateToAccounts,
             navigateToError = navigateToError,
-            navigateToWelcome = navigateToWelcome
+            navigateToWelcome = navigateToWelcome,
+            restartApplication = restartApplication
         )
     }
 }

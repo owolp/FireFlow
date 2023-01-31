@@ -81,6 +81,8 @@ internal class SettingsViewModel @Inject constructor(
                 OnThemeDismiss -> handleOnThemeDismiss()
                 OnLanguagePreferenceClick -> handleOnLanguagePreferenceClick()
                 OnLanguageDismiss -> handleOnLanguageDismiss()
+                ErrorHandled -> handleErrorHandled()
+                RestartApplication -> handleRestartApplication()
             }
         }
     }
@@ -209,5 +211,13 @@ internal class SettingsViewModel @Inject constructor(
                 )
             )
         )
+    }
+
+    private fun handleErrorHandled() {
+        stateHandler.resetEvent()
+    }
+
+    private fun handleRestartApplication() {
+        stateHandler.setEvent(Restart)
     }
 }

@@ -33,7 +33,8 @@ fun NavGraphBuilder.onboardingGraph(
     navigateToDemo: () -> Unit,
     navigateToDashboard: () -> Unit,
     navigateToBrowser: (url: String) -> Flow<DataResult<Unit>>,
-    navigateOutOfApp: () -> Unit
+    navigateOutOfApp: () -> Unit,
+    navigateToError: () -> Unit
 ) {
     composable(route = WelcomeDestination.route) {
         WelcomeRoute(
@@ -41,7 +42,8 @@ fun NavGraphBuilder.onboardingGraph(
             navigateToPat = navigateToPat,
             navigateToDemo = navigateToDemo,
             navigateToBrowser = navigateToBrowser,
-            navigateOutOfApp = navigateOutOfApp
+            navigateOutOfApp = navigateOutOfApp,
+            navigateToError = navigateToError
         )
     }
     composable(

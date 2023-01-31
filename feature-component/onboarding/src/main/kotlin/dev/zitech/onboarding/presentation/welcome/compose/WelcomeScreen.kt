@@ -67,7 +67,6 @@ internal fun WelcomeScreen(
     modifier: Modifier = Modifier,
     snackbarState: FireFlowSnackbarState = rememberSnackbarState()
 ) {
-
     BackHandler(enabled = true) {
         onBackClick()
     }

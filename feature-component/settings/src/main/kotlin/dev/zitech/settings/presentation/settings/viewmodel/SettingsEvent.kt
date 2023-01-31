@@ -25,7 +25,7 @@ internal sealed interface SettingsEvent : MviState.Event
 internal object Idle : SettingsEvent
 internal data class Error(
     val message: String,
-    val action: String? = null
+    val action: String
 ) : SettingsEvent
 
 internal data class Dialog(
@@ -42,3 +42,5 @@ internal data class SelectLanguage(
     val title: String,
     val languages: List<DialogRadioItem>
 ) : SettingsEvent
+
+internal object Restart : SettingsEvent

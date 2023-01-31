@@ -41,6 +41,7 @@ internal fun FireFlowNavHost(
     onBackClick: (NavDirection?) -> Unit,
     onNavigateToBrowser: (url: String) -> Flow<DataResult<Unit>>,
     onCloseApplication: () -> Unit,
+    onRestartApplication: () -> Unit,
     modifier: Modifier = Modifier,
     startDestination: String = DashboardDestination.route
 ) {
@@ -91,6 +92,9 @@ internal fun FireFlowNavHost(
             },
             navigateOutOfApp = {
                 onCloseApplication()
+            },
+            navigateToError = {
+                TODO()
             }
         )
         dashboardGraph(
@@ -133,7 +137,8 @@ internal fun FireFlowNavHost(
                         inclusive = true
                     )
                 )
-            }
+            },
+            restartApplication = onRestartApplication
         )
     }
 }

@@ -109,10 +109,10 @@ internal class WelcomeViewModel @Inject constructor(
                     when (result.cause) {
                         is NoBrowserInstalledException -> {
                             stateHandler.setEvent(
-                                ShowError(welcomeStringsProvider.getNoSupportedBrowserInstalled())
+                                Error(welcomeStringsProvider.getNoSupportedBrowserInstalled())
                             )
                         }
-                        else -> Logger.e(tag, result.cause)
+                        else -> stateHandler.setEvent(NavigateToError)
                     }
                 }
             }

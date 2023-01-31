@@ -26,10 +26,12 @@ import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.ds.molecules.dialog.FireFlowDialogs
 import dev.zitech.ds.molecules.snackbar.BottomNotifierMessage
 import dev.zitech.ds.molecules.snackbar.rememberSnackbarState
+import dev.zitech.onboarding.presentation.welcome.viewmodel.Error
 import dev.zitech.onboarding.presentation.welcome.viewmodel.ErrorHandled
 import dev.zitech.onboarding.presentation.welcome.viewmodel.Idle
 import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigateOutOfApp
 import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigateToDemo
+import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigateToError
 import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigateToFirefly
 import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigateToOath
 import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigateToPat
@@ -43,7 +45,6 @@ import dev.zitech.onboarding.presentation.welcome.viewmodel.OnFireflyClick
 import dev.zitech.onboarding.presentation.welcome.viewmodel.OnShowDemoDismiss
 import dev.zitech.onboarding.presentation.welcome.viewmodel.OnShowDemoPositive
 import dev.zitech.onboarding.presentation.welcome.viewmodel.ShowDemoWarning
-import dev.zitech.onboarding.presentation.welcome.viewmodel.ShowError
 import dev.zitech.onboarding.presentation.welcome.viewmodel.WelcomeViewModel
 import kotlinx.coroutines.flow.Flow
 
@@ -54,6 +55,7 @@ internal fun WelcomeRoute(
     navigateToDemo: () -> Unit,
     navigateToBrowser: (url: String) -> Flow<DataResult<Unit>>,
     navigateOutOfApp: () -> Unit,
+    navigateToError: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: WelcomeViewModel = hiltViewModel()
 ) {
@@ -77,6 +79,10 @@ internal fun WelcomeRoute(
             navigateOutOfApp()
             viewModel.sendIntent(NavigationHandled)
         }
+        NavigateToError -> {
+            navigateToError()
+            viewModel.sendIntent(NavigationHandled)
+        }
         is NavigateToFirefly -> {
             viewModel.sendIntent(
                 NavigatedToFireflyResult(navigateToBrowser(event.url))
@@ -90,7 +96,7 @@ internal fun WelcomeRoute(
                 onDismissRequest = { viewModel.sendIntent(OnShowDemoDismiss) }
             )
         }
-        is ShowError -> {
+        is Error -> {
             snackbarState.showMessage(
                 BottomNotifierMessage(
                     text = event.message,

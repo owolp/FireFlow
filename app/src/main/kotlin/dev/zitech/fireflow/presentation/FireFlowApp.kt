@@ -123,10 +123,9 @@ internal fun FireFlowApp(
                                 inclusive = navDirection?.inclusive
                             )
                         },
-                        onNavigateToBrowser = { url ->
-                            appState.openBrowser(url)
-                        },
-                        onCloseApplication = appState::onCloseApplication
+                        onNavigateToBrowser = appState::openBrowser,
+                        onCloseApplication = appState::onCloseApplication,
+                        onRestartApplication = appState::onRestartApplication
                     )
                 }
             }

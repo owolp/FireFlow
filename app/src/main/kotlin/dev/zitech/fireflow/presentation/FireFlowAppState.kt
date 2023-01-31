@@ -29,6 +29,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.jakewharton.processphoenix.ProcessPhoenix
 import dev.zitech.core.common.domain.browser.Browser
 import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.domain.model.DataResult
@@ -145,6 +146,10 @@ internal class FireFlowAppState(
 
     fun onCloseApplication() {
         (navController.context as? AppCompatActivity)?.finish()
+    }
+
+    fun onRestartApplication() {
+        ProcessPhoenix.triggerRebirth(navController.context)
     }
 
     @Suppress("TooGenericExceptionCaught", "SwallowedException")
