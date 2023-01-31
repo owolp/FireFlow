@@ -26,7 +26,6 @@ import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.ds.molecules.dialog.FireFlowDialogs
 import dev.zitech.ds.molecules.snackbar.BottomNotifierMessage
 import dev.zitech.ds.molecules.snackbar.rememberSnackbarState
-import dev.zitech.onboarding.presentation.welcome.viewmodel.Error
 import dev.zitech.onboarding.presentation.welcome.viewmodel.ErrorHandled
 import dev.zitech.onboarding.presentation.welcome.viewmodel.Idle
 import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigateOutOfApp
@@ -45,6 +44,7 @@ import dev.zitech.onboarding.presentation.welcome.viewmodel.OnFireflyClick
 import dev.zitech.onboarding.presentation.welcome.viewmodel.OnShowDemoDismiss
 import dev.zitech.onboarding.presentation.welcome.viewmodel.OnShowDemoPositive
 import dev.zitech.onboarding.presentation.welcome.viewmodel.ShowDemoWarning
+import dev.zitech.onboarding.presentation.welcome.viewmodel.ShowError
 import dev.zitech.onboarding.presentation.welcome.viewmodel.WelcomeViewModel
 import kotlinx.coroutines.flow.Flow
 
@@ -96,7 +96,7 @@ internal fun WelcomeRoute(
                 onDismissRequest = { viewModel.sendIntent(OnShowDemoDismiss) }
             )
         }
-        is Error -> {
+        is ShowError -> {
             snackbarState.showMessage(
                 BottomNotifierMessage(
                     text = event.message,

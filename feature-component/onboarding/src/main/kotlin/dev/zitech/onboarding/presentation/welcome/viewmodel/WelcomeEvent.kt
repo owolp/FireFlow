@@ -25,9 +25,7 @@ internal object Idle : WelcomeEvent
 internal object NavigateToOath : WelcomeEvent
 internal object NavigateToPat : WelcomeEvent
 internal object NavigateToDemo : WelcomeEvent
-internal data class NavigateToFirefly(
-    val url: String
-) : WelcomeEvent
+internal data class NavigateToFirefly(val url: String) : WelcomeEvent
 
 internal object NavigateOutOfApp : WelcomeEvent
 internal data class ShowDemoWarning(
@@ -35,8 +33,6 @@ internal data class ShowDemoWarning(
     val confirm: String
 ) : WelcomeEvent
 
-internal data class Error(
-    val message: String
-) : WelcomeEvent
+internal data class ShowError(val message: String) : WelcomeEvent
 
 internal object NavigateToError : WelcomeEvent
