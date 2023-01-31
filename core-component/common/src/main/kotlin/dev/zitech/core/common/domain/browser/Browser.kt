@@ -17,6 +17,8 @@
 
 package dev.zitech.core.common.domain.browser
 
+import androidx.annotation.ColorInt
+
 interface Browser {
-    operator fun invoke(url: String)
+    operator fun invoke(url: String, @ColorInt toolbarColor: Int)
 }

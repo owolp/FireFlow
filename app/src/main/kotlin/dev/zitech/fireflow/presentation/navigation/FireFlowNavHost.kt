@@ -87,12 +87,8 @@ internal fun FireFlowNavHost(
                     )
                 )
             },
-            navigateToBrowser = { url ->
-                onNavigateToBrowser(url)
-            },
-            navigateOutOfApp = {
-                onCloseApplication()
-            },
+            navigateToBrowser = onNavigateToBrowser,
+            navigateOutOfApp = onCloseApplication,
             navigateToError = {
                 TODO()
             }

@@ -34,6 +34,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination
@@ -68,6 +69,8 @@ internal fun FireFlowApp(
     FireFlowTheme(
         darkTheme = isDarkTheme(theme)
     ) {
+        val backgroundColor = FireFlowTheme.colors.background.toArgb()
+
         FireFlowBackground.Primary {
             FireFlowScaffolds.Primary(
                 bottomBar = {
@@ -123,7 +126,9 @@ internal fun FireFlowApp(
                                 inclusive = navDirection?.inclusive
                             )
                         },
-                        onNavigateToBrowser = appState::openBrowser,
+                        onNavigateToBrowser = { url ->
+                            appState.openBrowser(url, backgroundColor)
+                        },
                         onCloseApplication = appState::onCloseApplication,
                         onRestartApplication = appState::onRestartApplication
                     )
