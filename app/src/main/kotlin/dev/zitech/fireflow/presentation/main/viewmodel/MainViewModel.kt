@@ -20,7 +20,6 @@ package dev.zitech.fireflow.presentation.main.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.zitech.core.common.presentation.architecture.MviViewModel
 import dev.zitech.core.common.presentation.splash.SplashScreenStateHandler
 import dev.zitech.core.persistence.domain.usecase.preferences.GetApplicationThemeValueUseCase
 import dev.zitech.core.remoteconfig.domain.usecase.InitializeRemoteConfiguratorUseCase
@@ -30,7 +29,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 
 @HiltViewModel
 internal class MainViewModel @Inject constructor(
@@ -39,28 +37,15 @@ internal class MainViewModel @Inject constructor(
     private val getApplicationThemeValueUseCase: GetApplicationThemeValueUseCase,
     private val initializeRemoteConfiguratorUseCase: InitializeRemoteConfiguratorUseCase,
     applicationLaunchAnalyticsEvent: ApplicationLaunchAnalyticsEvent
-) : ViewModel(), MviViewModel<MainIntent, MainState> {
+) : ViewModel() {
 
-    override val screenState: StateFlow<MainState> = stateHandler.state
-
+    val screenState: StateFlow<MainState> = stateHandler.state
     val splashState: StateFlow<Boolean> = splashScreenStateHandler.splashState
 
     init {
         initializeRemoteConfigurator()
         initApplicationThemeCollection()
         applicationLaunchAnalyticsEvent()
-    }
-
-    override fun sendIntent(intent: MainIntent) {
-        viewModelScope.launch {
-            when (intent) {
-                ShowErrorHandled -> handleShowErrorHandled()
-            }
-        }
-    }
-
-    private fun handleShowErrorHandled() {
-        stateHandler.resetEvent()
     }
 
     private fun initApplicationThemeCollection() {

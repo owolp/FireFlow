@@ -47,25 +47,18 @@ internal class WelcomeViewModel @Inject constructor(
     override fun sendIntent(intent: WelcomeIntent) {
         viewModelScope.launch {
             when (intent) {
-                OnContinueWithOauthClick -> handleOnContinueWithOauthClick()
-                OnContinueWithPatClick -> handleOnContinueWithPatClick()
+                OnContinueWithOauthClick -> stateHandler.setEvent(NavigateToOath)
+                OnContinueWithPatClick -> stateHandler.setEvent(NavigateToPat)
                 OnDemoClick -> handleOnDemoClick()
-                OnBackClick -> handleOnBackClick()
+                OnBackClick -> stateHandler.setEvent(NavigateOutOfApp)
                 OnFireflyClick -> handleOnFireflyClick()
-                NavigationHandled -> handleNavigationHandled()
-                OnShowDemoDismiss -> handleOnShowDemoDismiss()
                 OnShowDemoPositive -> handleOnShowDemoPositive()
                 is NavigatedToFireflyResult -> handleNavigatedToFireflyResult(intent.dataResultFlow)
+                NavigationHandled,
+                OnShowDemoDismiss,
+                ErrorHandled -> stateHandler.resetEvent()
             }
         }
-    }
-
-    private fun handleOnContinueWithOauthClick() {
-        stateHandler.setEvent(NavigateToOath)
-    }
-
-    private fun handleOnContinueWithPatClick() {
-        stateHandler.setEvent(NavigateToPat)
     }
 
     private fun handleOnDemoClick() {
@@ -77,20 +70,8 @@ internal class WelcomeViewModel @Inject constructor(
         )
     }
 
-    private fun handleOnBackClick() {
-        stateHandler.setEvent(NavigateOutOfApp)
-    }
-
     private fun handleOnFireflyClick() {
         stateHandler.setEvent(NavigateToFirefly(welcomeStringsProvider.getFireflyUrl()))
-    }
-
-    private fun handleNavigationHandled() {
-        stateHandler.resetEvent()
-    }
-
-    private fun handleOnShowDemoDismiss() {
-        stateHandler.resetEvent()
     }
 
     @Suppress("ForbiddenComment")
@@ -111,7 +92,10 @@ internal class WelcomeViewModel @Inject constructor(
                                 ShowError(welcomeStringsProvider.getNoSupportedBrowserInstalled())
                             )
                         }
-                        else -> Logger.e(tag, result.cause)
+                        else -> {
+                            Logger.e(tag, exception = result.cause)
+                            stateHandler.setEvent(NavigateToError)
+                        }
                     }
                 }
             }

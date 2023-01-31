@@ -18,6 +18,7 @@
 package dev.zitech.fireflow.presentation
 
 import android.content.ActivityNotFoundException
+import androidx.annotation.ColorInt
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
@@ -29,6 +30,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.jakewharton.processphoenix.ProcessPhoenix
 import dev.zitech.core.common.domain.browser.Browser
 import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.domain.model.DataResult
@@ -147,10 +149,14 @@ internal class FireFlowAppState(
         (navController.context as? AppCompatActivity)?.finish()
     }
 
+    fun onRestartApplication() {
+        ProcessPhoenix.triggerRebirth(navController.context)
+    }
+
     @Suppress("TooGenericExceptionCaught", "SwallowedException")
-    fun openBrowser(url: String) = callbackFlow {
+    fun openBrowser(url: String, @ColorInt toolbarColor: Int) = callbackFlow {
         try {
-            browser.invoke(url)
+            browser.invoke(url, toolbarColor)
             trySend(DataResult.Success(Unit))
             close()
         } catch (e: ActivityNotFoundException) {

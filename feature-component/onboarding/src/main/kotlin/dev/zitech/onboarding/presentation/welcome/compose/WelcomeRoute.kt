@@ -22,12 +22,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.ds.molecules.dialog.FireFlowDialogs
+import dev.zitech.ds.molecules.snackbar.BottomNotifierMessage
+import dev.zitech.ds.molecules.snackbar.rememberSnackbarState
+import dev.zitech.onboarding.presentation.welcome.viewmodel.ErrorHandled
 import dev.zitech.onboarding.presentation.welcome.viewmodel.Idle
 import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigateOutOfApp
 import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigateToDemo
+import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigateToError
 import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigateToFirefly
 import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigateToOath
 import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigateToPat
@@ -52,10 +55,12 @@ internal fun WelcomeRoute(
     navigateToDemo: () -> Unit,
     navigateToBrowser: (url: String) -> Flow<DataResult<Unit>>,
     navigateOutOfApp: () -> Unit,
+    navigateToError: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: WelcomeViewModel = hiltViewModel()
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
+    val snackbarState = rememberSnackbarState()
 
     when (val event = screenState.event) {
         NavigateToOath -> {
@@ -74,6 +79,10 @@ internal fun WelcomeRoute(
             navigateOutOfApp()
             viewModel.sendIntent(NavigationHandled)
         }
+        NavigateToError -> {
+            navigateToError()
+            viewModel.sendIntent(NavigationHandled)
+        }
         is NavigateToFirefly -> {
             viewModel.sendIntent(
                 NavigatedToFireflyResult(navigateToBrowser(event.url))
@@ -88,9 +97,14 @@ internal fun WelcomeRoute(
             )
         }
         is ShowError -> {
-            @Suppress("ForbiddenComment")
-            // TODO: Show Snackbar
-            Logger.d("WelcomeScreen", event.text)
+            snackbarState.showMessage(
+                BottomNotifierMessage(
+                    text = event.message,
+                    state = BottomNotifierMessage.State.ERROR,
+                    duration = BottomNotifierMessage.Duration.SHORT
+                )
+            )
+            viewModel.sendIntent(ErrorHandled)
         }
         Idle -> {
             // NO_OP
@@ -99,6 +113,7 @@ internal fun WelcomeRoute(
 
     WelcomeScreen(
         modifier = modifier,
+        snackbarState = snackbarState,
         onContinueWithOauthClick = { viewModel.sendIntent(OnContinueWithOauthClick) },
         onContinueWithPatClick = { viewModel.sendIntent(OnContinueWithPatClick) },
         onDemoClick = { viewModel.sendIntent(OnDemoClick) },

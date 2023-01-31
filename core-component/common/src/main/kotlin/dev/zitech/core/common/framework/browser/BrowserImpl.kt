@@ -18,6 +18,8 @@
 package dev.zitech.core.common.framework.browser
 
 import android.content.Context
+import androidx.annotation.ColorInt
+import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.net.toUri
 import dev.zitech.core.common.domain.browser.Browser
@@ -27,8 +29,12 @@ internal class BrowserImpl @Inject constructor(
     private val context: Context
 ) : Browser {
 
-    override fun invoke(url: String) {
+    override fun invoke(url: String, @ColorInt toolbarColor: Int) {
+        val customTabBarColor = CustomTabColorSchemeParams.Builder()
+            .setToolbarColor(toolbarColor).build()
         CustomTabsIntent.Builder()
+            .setShowTitle(true)
+            .setDefaultColorSchemeParams(customTabBarColor)
             .build()
             .launchUrl(context, url.toUri())
     }

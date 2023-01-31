@@ -29,11 +29,11 @@ import org.junit.jupiter.api.Test
 private val message = DataFactory.createRandomString()
 private val action = DataFactory.createRandomString()
 
-internal class SettingsErrorProviderTest {
+internal class SettingsShowErrorProviderTest {
 
     private val stringsProvider = mockk<StringsProvider>()
 
-    private lateinit var sut: SettingsErrorProvider
+    private lateinit var sut: SettingsShowErrorProvider
 
     @BeforeEach
     fun setup() {
@@ -46,7 +46,7 @@ internal class SettingsErrorProviderTest {
         every { stringsProvider(R.string.data_choices_performance_error) } returns message
         every { stringsProvider(R.string.action_restart) } returns action
 
-        sut = SettingsErrorProvider(
+        sut = SettingsShowErrorProvider(
             stringsProvider
         )
     }

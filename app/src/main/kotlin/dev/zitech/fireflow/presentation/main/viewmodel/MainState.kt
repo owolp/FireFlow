@@ -22,6 +22,5 @@ import dev.zitech.core.common.presentation.architecture.MviState
 
 data class MainState(
     val theme: ApplicationTheme? = null,
-    val remoteConfig: Boolean = false,
-    val event: MainEvent = Idle
+    val remoteConfig: Boolean = false
 ) : MviState

@@ -23,7 +23,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
@@ -33,17 +32,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import dev.zitech.core.common.domain.browser.Browser
 import dev.zitech.fireflow.R
 import dev.zitech.fireflow.presentation.FireFlowApp
-import dev.zitech.fireflow.presentation.main.viewmodel.Idle
-import dev.zitech.fireflow.presentation.main.viewmodel.MainEvent
 import dev.zitech.fireflow.presentation.main.viewmodel.MainViewModel
-import dev.zitech.fireflow.presentation.main.viewmodel.ShowError
-import dev.zitech.fireflow.presentation.main.viewmodel.ShowErrorHandled
 import javax.inject.Inject
 
-@Suppress("ForbiddenComment")
-@OptIn(
-    ExperimentalMaterial3WindowSizeClassApi::class
-)
+@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @AndroidEntryPoint
 internal class MainActivity : AppCompatActivity() {
 
@@ -82,20 +74,6 @@ internal class MainActivity : AppCompatActivity() {
                     navController = navController,
                     browser = browser
                 )
-                EventHandler(mainState.event)
-            }
-        }
-    }
-
-    @Composable
-    private fun EventHandler(event: MainEvent) {
-        when (event) {
-            ShowError -> {
-                // TODO
-                viewModel.sendIntent(ShowErrorHandled)
-            }
-            Idle -> {
-                // NO_OP
             }
         }
     }

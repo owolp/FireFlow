@@ -35,17 +35,9 @@ internal class AccountsViewModel @Inject constructor(
     override fun sendIntent(intent: AccountsIntent) {
         viewModelScope.launch {
             when (intent) {
-                OnLoginClick -> handleOnLoginClick()
-                NavigationHandled -> handleNavigationHandled()
+                OnLoginClick -> stateHandler.setEvent(NavigateToDashboard)
+                NavigationHandled -> stateHandler.resetEvent()
             }
         }
-    }
-
-    private fun handleOnLoginClick() {
-        stateHandler.setEvent(NavigateToDashboard)
-    }
-
-    private fun handleNavigationHandled() {
-        stateHandler.resetEvent()
     }
 }

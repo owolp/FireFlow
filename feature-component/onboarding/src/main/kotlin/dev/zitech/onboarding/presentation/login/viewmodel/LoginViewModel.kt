@@ -36,17 +36,17 @@ internal class LoginViewModel @Inject constructor(
     private val saveUserAccountUseCase: SaveUserAccountUseCase
 ) : ViewModel(), MviViewModel<LoginIntent, LoginState> {
 
+    override val screenState: StateFlow<LoginState> = stateHandler.state
+
     init {
         getLoginType()
     }
-
-    override val screenState: StateFlow<LoginState> = stateHandler.state
 
     override fun sendIntent(intent: LoginIntent) {
         viewModelScope.launch {
             when (intent) {
                 OnLoginClick -> handleOnLoginClick()
-                NavigationHandled -> handleNavigationHandled()
+                NavigationHandled -> stateHandler.resetEvent()
             }
         }
     }
@@ -67,9 +67,5 @@ internal class LoginViewModel @Inject constructor(
         // TODO: Dev usage
         saveUserAccountUseCase(true)
         stateHandler.setEvent(NavigateToDashboard)
-    }
-
-    private fun handleNavigationHandled() {
-        stateHandler.resetEvent()
     }
 }

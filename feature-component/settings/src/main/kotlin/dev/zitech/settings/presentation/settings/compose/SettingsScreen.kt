@@ -33,6 +33,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import dev.zitech.ds.atoms.icon.FireFlowIcons
 import dev.zitech.ds.atoms.spacer.FireFlowSpacers
+import dev.zitech.ds.molecules.snackbar.FireFlowSnackbarState
 import dev.zitech.ds.molecules.snackbar.rememberSnackbarState
 import dev.zitech.ds.molecules.topappbar.FireFlowTopAppBars
 import dev.zitech.ds.molecules.topappbar.ScrollBehavior
@@ -54,9 +55,9 @@ internal fun SettingsScreen(
     onCrashReporterCheckChange: (checked: Boolean) -> Unit,
     onThemeClick: () -> Unit,
     onLanguageClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    snackbarState: FireFlowSnackbarState = rememberSnackbarState()
 ) {
-    val snackbarState = rememberSnackbarState()
     val topAppBarScrollBehavior = FireFlowTopAppBars.topAppBarScrollBehavior(
         ScrollBehavior.ExitUntilCollapsed
     )
