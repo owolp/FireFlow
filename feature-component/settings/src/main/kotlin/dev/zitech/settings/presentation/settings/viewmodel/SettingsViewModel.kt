@@ -78,11 +78,11 @@ internal class SettingsViewModel @Inject constructor(
                 is OnThemeSelect -> handleOnThemeSelect(intent.id)
                 is OnLanguageSelect -> handleOnLanguageSelect(intent.id)
                 OnThemePreferenceClick -> handleOnThemeClick()
-                OnThemeDismiss -> handleOnThemeDismiss()
                 OnLanguagePreferenceClick -> handleOnLanguagePreferenceClick()
-                OnLanguageDismiss -> handleOnLanguageDismiss()
-                ErrorHandled -> handleErrorHandled()
-                RestartApplication -> handleRestartApplication()
+                OnThemeDismiss,
+                OnLanguageDismiss,
+                ErrorHandled -> stateHandler.resetEvent()
+                RestartApplication -> stateHandler.setEvent(Restart)
             }
         }
     }
@@ -129,14 +129,6 @@ internal class SettingsViewModel @Inject constructor(
             stateHandler.setLanguageState(this)
             stateHandler.resetEvent()
         }
-    }
-
-    private fun handleOnThemeDismiss() {
-        stateHandler.resetEvent()
-    }
-
-    private fun handleOnLanguageDismiss() {
-        stateHandler.resetEvent()
     }
 
     private suspend fun handleOnPersonalizedAdsCheckChange(checked: Boolean) {
@@ -211,13 +203,5 @@ internal class SettingsViewModel @Inject constructor(
                 )
             )
         )
-    }
-
-    private fun handleErrorHandled() {
-        stateHandler.resetEvent()
-    }
-
-    private fun handleRestartApplication() {
-        stateHandler.setEvent(Restart)
     }
 }

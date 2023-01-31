@@ -37,7 +37,6 @@ internal class DashboardViewModel @Inject constructor(
 ) : ViewModel(), MviViewModel<DashboardIntent, DashboardState>, DeepLinkViewModel {
 
     override val screenState: StateFlow<DashboardState> = stateHandler.state
-
     override val logInState: StateFlow<LogInState> by logInState(
         getScreenDestinationUseCase,
         splashScreenState,
