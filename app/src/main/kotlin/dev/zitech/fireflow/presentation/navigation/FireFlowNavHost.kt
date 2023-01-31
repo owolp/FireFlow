@@ -23,6 +23,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import dev.zitech.authentication.presentation.navigation.AccountsDestination
 import dev.zitech.authentication.presentation.navigation.authenticationGraph
+import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.dashboard.presentation.navigation.DashboardDestination
 import dev.zitech.dashboard.presentation.navigation.dashboardGraph
 import dev.zitech.onboarding.presentation.login.model.LoginType
@@ -37,7 +38,10 @@ internal fun FireFlowNavHost(
     navController: NavHostController,
     onNavigateToDestination: (NavDirection) -> Unit,
     onBackClick: (NavDirection?) -> Unit,
-    onNavigateToBrowser: (url: String) -> Unit,
+    onNavigateToBrowser: (
+        url: String,
+        callback: (result: DataResult<Unit>) -> Unit
+    ) -> Unit,
     onCloseApplication: () -> Unit,
     modifier: Modifier = Modifier,
     startDestination: String = DashboardDestination.route
@@ -84,8 +88,8 @@ internal fun FireFlowNavHost(
                     )
                 )
             },
-            navigateToBrowser = { url ->
-                onNavigateToBrowser(url)
+            navigateToBrowser = { url, callback ->
+                onNavigateToBrowser(url, callback)
             },
             navigateOutOfApp = {
                 onCloseApplication()

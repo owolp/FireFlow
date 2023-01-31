@@ -33,4 +33,7 @@ internal class WelcomeStringsProvider @Inject constructor(
 
     fun getFireflyUrl(): String =
         stringsProvider(R.string.welcome_firefly_iii_website)
+
+    fun getNoSupportedBrowserText(): String =
+        stringsProvider(dev.zitech.core.common.R.string.no_supported_browser_installed)
 }

@@ -34,3 +34,7 @@ internal data class ShowDemoWarning(
     val text: String,
     val confirm: String
 ) : WelcomeEvent
+
+internal data class ShowError(
+    val text: String
+) : WelcomeEvent

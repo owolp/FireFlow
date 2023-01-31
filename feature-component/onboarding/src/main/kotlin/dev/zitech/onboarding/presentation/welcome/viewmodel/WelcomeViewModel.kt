@@ -20,6 +20,7 @@ package dev.zitech.onboarding.presentation.welcome.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.common.presentation.architecture.MviViewModel
 import dev.zitech.core.persistence.domain.usecase.database.SaveUserAccountUseCase
 import dev.zitech.onboarding.presentation.welcome.viewmodel.resoure.WelcomeStringsProvider
@@ -47,6 +48,7 @@ internal class WelcomeViewModel @Inject constructor(
                 NavigationHandled -> handleNavigationHandled()
                 OnShowDemoDismiss -> handleOnShowDemoDismiss()
                 OnShowDemoPositive -> handleOnShowDemoPositive()
+                is NavigatedToFireflyResult -> handleNavigatedToFireflyResult(intent.result)
             }
         }
     }
@@ -89,5 +91,14 @@ internal class WelcomeViewModel @Inject constructor(
         // TODO: Dev usage
         saveUserAccountUseCase(true)
         stateHandler.setEvent(NavigateToDemo)
+    }
+
+    private fun handleNavigatedToFireflyResult(result: DataResult<Unit>) {
+        when (result) {
+            is DataResult.Success -> stateHandler.resetEvent()
+            is DataResult.Error -> {
+                stateHandler.setEvent(ShowError(welcomeStringsProvider.getNoSupportedBrowserText()))
+            }
+        }
     }
 }

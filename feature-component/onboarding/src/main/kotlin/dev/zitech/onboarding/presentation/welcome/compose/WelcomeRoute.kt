@@ -22,6 +22,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import dev.zitech.core.common.domain.logger.Logger
+import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.ds.molecules.dialog.FireFlowDialogs
 import dev.zitech.onboarding.presentation.welcome.viewmodel.Idle
 import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigateOutOfApp
@@ -29,6 +31,7 @@ import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigateToDemo
 import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigateToFirefly
 import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigateToOath
 import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigateToPat
+import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigatedToFireflyResult
 import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigationHandled
 import dev.zitech.onboarding.presentation.welcome.viewmodel.OnBackClick
 import dev.zitech.onboarding.presentation.welcome.viewmodel.OnContinueWithOauthClick
@@ -38,6 +41,7 @@ import dev.zitech.onboarding.presentation.welcome.viewmodel.OnFireflyClick
 import dev.zitech.onboarding.presentation.welcome.viewmodel.OnShowDemoDismiss
 import dev.zitech.onboarding.presentation.welcome.viewmodel.OnShowDemoPositive
 import dev.zitech.onboarding.presentation.welcome.viewmodel.ShowDemoWarning
+import dev.zitech.onboarding.presentation.welcome.viewmodel.ShowError
 import dev.zitech.onboarding.presentation.welcome.viewmodel.WelcomeViewModel
 
 @Composable
@@ -45,7 +49,10 @@ internal fun WelcomeRoute(
     navigateToOath: () -> Unit,
     navigateToPat: () -> Unit,
     navigateToDemo: () -> Unit,
-    navigateToBrowser: (url: String) -> Unit,
+    navigateToBrowser: (
+        url: String,
+        callback: (result: DataResult<Unit>) -> Unit
+    ) -> Unit,
     navigateOutOfApp: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: WelcomeViewModel = hiltViewModel()
@@ -70,8 +77,9 @@ internal fun WelcomeRoute(
             viewModel.sendIntent(NavigationHandled)
         }
         is NavigateToFirefly -> {
-            navigateToBrowser(event.url)
-            viewModel.sendIntent(NavigationHandled)
+            navigateToBrowser(event.url) { result ->
+                viewModel.sendIntent(NavigatedToFireflyResult(result))
+            }
         }
         is ShowDemoWarning -> {
             FireFlowDialogs.Alert(
@@ -80,6 +88,11 @@ internal fun WelcomeRoute(
                 onConfirmButtonClick = { viewModel.sendIntent(OnShowDemoPositive) },
                 onDismissRequest = { viewModel.sendIntent(OnShowDemoDismiss) }
             )
+        }
+        is ShowError -> {
+            @Suppress("ForbiddenComment")
+            // TODO: Show Snackbar
+            Logger.d("WelcomeScreen", event.text)
         }
         Idle -> {
             // NO_OP

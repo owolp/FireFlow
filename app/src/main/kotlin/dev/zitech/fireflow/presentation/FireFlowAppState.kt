@@ -17,6 +17,7 @@
 
 package dev.zitech.fireflow.presentation
 
+import android.content.ActivityNotFoundException
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
@@ -30,6 +31,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import dev.zitech.core.common.domain.browser.Browser
 import dev.zitech.core.common.domain.logger.Logger
+import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.dashboard.R as dashboardR
 import dev.zitech.dashboard.presentation.navigation.DashboardDestination
 import dev.zitech.ds.atoms.icon.FireFlowIcons
@@ -142,8 +144,13 @@ internal class FireFlowAppState(
         (navController.context as? AppCompatActivity)?.finish()
     }
 
-    fun openBrowser(url: String) {
-        browser.invoke(url)
+    fun openBrowser(url: String, callback: (result: DataResult<Unit>) -> Unit) {
+        try {
+            browser.invoke(url)
+            callback(DataResult.Success(Unit))
+        } catch (e: ActivityNotFoundException) {
+            callback(DataResult.Error(cause = e))
+        }
     }
 
     @Composable

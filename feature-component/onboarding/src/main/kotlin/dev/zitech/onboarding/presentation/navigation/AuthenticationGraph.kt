@@ -21,15 +21,20 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.onboarding.presentation.login.compose.LoginRoute
 import dev.zitech.onboarding.presentation.welcome.compose.WelcomeRoute
 
+@Suppress("LongParameterList")
 fun NavGraphBuilder.onboardingGraph(
     navigateToOath: () -> Unit,
     navigateToPat: () -> Unit,
     navigateToDemo: () -> Unit,
     navigateToDashboard: () -> Unit,
-    navigateToBrowser: (url: String) -> Unit,
+    navigateToBrowser: (
+        url: String,
+        callback: (result: DataResult<Unit>) -> Unit
+    ) -> Unit,
     navigateOutOfApp: () -> Unit
 ) {
     composable(route = WelcomeDestination.route) {
