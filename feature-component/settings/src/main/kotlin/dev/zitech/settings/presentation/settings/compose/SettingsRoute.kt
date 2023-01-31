@@ -30,8 +30,7 @@ import dev.zitech.ds.atoms.loading.FireFlowProgressIndicators
 import dev.zitech.ds.molecules.dialog.FireFlowDialogs
 import dev.zitech.ds.molecules.snackbar.BottomNotifierMessage
 import dev.zitech.ds.molecules.snackbar.rememberSnackbarState
-import dev.zitech.settings.presentation.settings.viewmodel.Dialog
-import dev.zitech.settings.presentation.settings.viewmodel.Error
+import dev.zitech.settings.presentation.settings.viewmodel.ShowError
 import dev.zitech.settings.presentation.settings.viewmodel.ErrorHandled
 import dev.zitech.settings.presentation.settings.viewmodel.Idle
 import dev.zitech.settings.presentation.settings.viewmodel.OnAnalyticsCheckChange
@@ -44,8 +43,8 @@ import dev.zitech.settings.presentation.settings.viewmodel.OnPersonalizedAdsChec
 import dev.zitech.settings.presentation.settings.viewmodel.OnThemeDismiss
 import dev.zitech.settings.presentation.settings.viewmodel.OnThemePreferenceClick
 import dev.zitech.settings.presentation.settings.viewmodel.OnThemeSelect
-import dev.zitech.settings.presentation.settings.viewmodel.Restart
 import dev.zitech.settings.presentation.settings.viewmodel.RestartApplication
+import dev.zitech.settings.presentation.settings.viewmodel.OnRestartApplication
 import dev.zitech.settings.presentation.settings.viewmodel.SelectLanguage
 import dev.zitech.settings.presentation.settings.viewmodel.SelectTheme
 import dev.zitech.settings.presentation.settings.viewmodel.SettingsViewModel
@@ -110,7 +109,7 @@ internal fun SettingsRoute(
     }
 
     when (val event = screenState.event) {
-        is Error -> {
+        is ShowError -> {
             snackbarState.showMessage(
                 BottomNotifierMessage(
                     text = event.message,
@@ -118,18 +117,11 @@ internal fun SettingsRoute(
                     duration = BottomNotifierMessage.Duration.SHORT,
                     action = BottomNotifierMessage.Action(
                         label = event.action,
-                        onAction = { viewModel.sendIntent(RestartApplication) }
+                        onAction = { viewModel.sendIntent(OnRestartApplication) }
                     )
                 )
             )
             viewModel.sendIntent(ErrorHandled)
-        }
-        is Dialog -> {
-            FireFlowDialogs.Alert(
-                title = event.title,
-                text = event.text,
-                onConfirmButtonClick = { /*TODO*/ }
-            )
         }
         is SelectTheme -> {
             FireFlowDialogs.Radio(
@@ -147,7 +139,7 @@ internal fun SettingsRoute(
                 onDismissRequest = { viewModel.sendIntent(OnLanguageDismiss) }
             )
         }
-        Restart -> restartApplication()
+        RestartApplication -> restartApplication()
         Idle -> {
             // NO_OP
         }

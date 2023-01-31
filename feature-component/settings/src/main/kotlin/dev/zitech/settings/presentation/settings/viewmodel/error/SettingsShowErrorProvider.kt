@@ -19,29 +19,29 @@ package dev.zitech.settings.presentation.settings.viewmodel.error
 
 import dev.zitech.core.common.domain.strings.StringsProvider
 import dev.zitech.settings.R
-import dev.zitech.settings.presentation.settings.viewmodel.Error
+import dev.zitech.settings.presentation.settings.viewmodel.ShowError
 import javax.inject.Inject
 
-internal class SettingsErrorProvider @Inject constructor(
+internal class SettingsShowErrorProvider @Inject constructor(
     stringsProvider: StringsProvider
 ) {
 
-    val analyticsError = Error(
+    val analyticsError = ShowError(
         message = stringsProvider(R.string.data_choices_analytics_error),
         action = stringsProvider(R.string.action_restart)
     )
 
-    val crashReporterError = Error(
+    val crashReporterError = ShowError(
         message = stringsProvider(R.string.data_choices_crash_reporter_error),
         action = stringsProvider(R.string.action_restart)
     )
 
-    val personalizedAdsError = Error(
+    val personalizedAdsError = ShowError(
         message = stringsProvider(R.string.data_choices_personalized_ads_error),
         action = stringsProvider(R.string.action_restart)
     )
 
-    val performanceError = Error(
+    val performanceError = ShowError(
         message = stringsProvider(R.string.data_choices_performance_error),
         action = stringsProvider(R.string.action_restart)
     )

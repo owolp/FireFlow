@@ -23,14 +23,9 @@ import dev.zitech.ds.molecules.dialog.DialogRadioItem
 internal sealed interface SettingsEvent : MviState.Event
 
 internal object Idle : SettingsEvent
-internal data class Error(
+internal data class ShowError(
     val message: String,
     val action: String
-) : SettingsEvent
-
-internal data class Dialog(
-    val title: String,
-    val text: String
 ) : SettingsEvent
 
 internal data class SelectTheme(
@@ -43,4 +38,4 @@ internal data class SelectLanguage(
     val languages: List<DialogRadioItem>
 ) : SettingsEvent
 
-internal object Restart : SettingsEvent
+internal object RestartApplication : SettingsEvent

@@ -28,7 +28,7 @@ import dev.zitech.core.common.presentation.splash.SplashScreenStateHandler
 import dev.zitech.navigation.domain.usecase.GetScreenDestinationUseCase
 import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsAppearanceCollectionStates
 import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsDataChoicesCollectionStates
-import dev.zitech.settings.presentation.settings.viewmodel.error.SettingsErrorProvider
+import dev.zitech.settings.presentation.settings.viewmodel.error.SettingsShowErrorProvider
 import dev.zitech.settings.presentation.settings.viewmodel.theme.SettingsStringsProvider
 import dev.zitech.settings.presentation.test.MainDispatcherRule
 import dev.zitech.settings.presentation.test.TestObserver
@@ -56,7 +56,7 @@ internal class SettingsViewModelTest {
     }
     private val settingsAppearanceCollectionStates = mockk<SettingsAppearanceCollectionStates>()
     private val settingsDataChoicesCollectionStates = mockk<SettingsDataChoicesCollectionStates>()
-    private val settingsErrorProvider = mockk<SettingsErrorProvider>()
+    private val settingsShowErrorProvider = mockk<SettingsShowErrorProvider>()
     private val settingsStringsProvider = mockk<SettingsStringsProvider>()
     private val appConfigProvider = FakeAppConfigProvider()
 
@@ -142,7 +142,7 @@ internal class SettingsViewModelTest {
 
         val message = DataFactory.createRandomString()
         val action = DataFactory.createRandomString()
-        every { settingsErrorProvider.crashReporterError } returns Error(
+        every { settingsShowErrorProvider.crashReporterError } returns ShowError(
             message,
             action
         )
@@ -164,7 +164,7 @@ internal class SettingsViewModelTest {
         // Assert
         testObserver.assertValues(
             getInitState(),
-            getInitState(event = Error(message, action))
+            getInitState(event = ShowError(message, action))
         )
         coVerify {
             settingsDataChoicesCollectionStates.setCrashReporterCollection(checked)
@@ -323,7 +323,7 @@ internal class SettingsViewModelTest {
 
         val message = DataFactory.createRandomString()
         val action = DataFactory.createRandomString()
-        every { settingsErrorProvider.analyticsError } returns Error(
+        every { settingsShowErrorProvider.analyticsError } returns ShowError(
             message,
             action
         )
@@ -343,7 +343,7 @@ internal class SettingsViewModelTest {
         // Assert
         testObserver.assertValues(
             getInitState(),
-            getInitState(event = Error(message, action))
+            getInitState(event = ShowError(message, action))
         )
         coVerify(exactly = 0) {
             settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(any())
@@ -433,7 +433,7 @@ internal class SettingsViewModelTest {
 
         val message = DataFactory.createRandomString()
         val action = DataFactory.createRandomString()
-        every { settingsErrorProvider.personalizedAdsError } returns Error(
+        every { settingsShowErrorProvider.personalizedAdsError } returns ShowError(
             message,
             action
         )
@@ -455,7 +455,7 @@ internal class SettingsViewModelTest {
         // Assert
         testObserver.assertValues(
             getInitState(),
-            getInitState(event = Error(message, action))
+            getInitState(event = ShowError(message, action))
         )
         coVerify {
             settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked)
@@ -693,7 +693,7 @@ internal class SettingsViewModelTest {
 
         val message = DataFactory.createRandomString()
         val action = DataFactory.createRandomString()
-        every { settingsErrorProvider.performanceError } returns Error(
+        every { settingsShowErrorProvider.performanceError } returns ShowError(
             message,
             action
         )
@@ -715,7 +715,7 @@ internal class SettingsViewModelTest {
         // Assert
         testObserver.assertValues(
             getInitState(),
-            getInitState(event = Error(message, action))
+            getInitState(event = ShowError(message, action))
         )
         coVerify {
             settingsDataChoicesCollectionStates.setPerformanceCollection(checked)
@@ -880,7 +880,7 @@ internal class SettingsViewModelTest {
         getScreenDestinationUseCase,
         settingsAppearanceCollectionStates,
         settingsDataChoicesCollectionStates,
-        settingsErrorProvider,
+        settingsShowErrorProvider,
         settingsStringsProvider,
         appConfigProvider
     )

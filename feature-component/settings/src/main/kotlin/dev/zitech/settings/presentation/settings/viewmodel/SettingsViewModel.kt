@@ -33,7 +33,7 @@ import dev.zitech.navigation.domain.usecase.GetScreenDestinationUseCase
 import dev.zitech.navigation.presentation.extension.logInState
 import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsAppearanceCollectionStates
 import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsDataChoicesCollectionStates
-import dev.zitech.settings.presentation.settings.viewmodel.error.SettingsErrorProvider
+import dev.zitech.settings.presentation.settings.viewmodel.error.SettingsShowErrorProvider
 import dev.zitech.settings.presentation.settings.viewmodel.theme.SettingsStringsProvider
 import javax.inject.Inject
 import kotlinx.coroutines.flow.StateFlow
@@ -47,7 +47,7 @@ internal class SettingsViewModel @Inject constructor(
     getScreenDestinationUseCase: GetScreenDestinationUseCase,
     private val settingsAppearanceCollectionStates: SettingsAppearanceCollectionStates,
     private val settingsDataChoicesCollectionStates: SettingsDataChoicesCollectionStates,
-    private val settingsErrorProvider: SettingsErrorProvider,
+    private val settingsShowErrorProvider: SettingsShowErrorProvider,
     private val settingsStringsProvider: SettingsStringsProvider,
     private val appConfigProvider: AppConfigProvider
 ) : ViewModel(), MviViewModel<SettingsIntent, SettingsState>, DeepLinkViewModel {
@@ -82,7 +82,7 @@ internal class SettingsViewModel @Inject constructor(
                 OnThemeDismiss,
                 OnLanguageDismiss,
                 ErrorHandled -> stateHandler.resetEvent()
-                RestartApplication -> stateHandler.setEvent(Restart)
+                OnRestartApplication -> stateHandler.setEvent(RestartApplication)
             }
         }
     }
@@ -93,7 +93,7 @@ internal class SettingsViewModel @Inject constructor(
         if (checked == isEnabled) {
             stateHandler.setCrashReporterState(checked)
         } else {
-            stateHandler.setErrorState(settingsErrorProvider.crashReporterError)
+            stateHandler.setErrorState(settingsShowErrorProvider.crashReporterError)
         }
     }
 
@@ -108,7 +108,7 @@ internal class SettingsViewModel @Inject constructor(
                 settingsDataChoicesCollectionStates.setPerformanceCollection(checked)
                 stateHandler.setPerformanceState(checked, appConfigProvider.buildFlavor)
             } else {
-                stateHandler.setErrorState(settingsErrorProvider.analyticsError)
+                stateHandler.setErrorState(settingsShowErrorProvider.analyticsError)
             }
         } else {
             Logger.e(tag, "Setting analytics on FOSS build is not supported")
@@ -138,7 +138,7 @@ internal class SettingsViewModel @Inject constructor(
             if (checked == isEnabled) {
                 stateHandler.setPersonalizedAdsState(checked, appConfigProvider.buildFlavor)
             } else {
-                stateHandler.setErrorState(settingsErrorProvider.personalizedAdsError)
+                stateHandler.setErrorState(settingsShowErrorProvider.personalizedAdsError)
             }
         } else {
             Logger.e(tag, "Setting personalized ads on FOSS build is not supported")
@@ -152,7 +152,7 @@ internal class SettingsViewModel @Inject constructor(
             if (checked == isEnabled) {
                 stateHandler.setPerformanceState(checked, appConfigProvider.buildFlavor)
             } else {
-                stateHandler.setErrorState(settingsErrorProvider.performanceError)
+                stateHandler.setErrorState(settingsShowErrorProvider.performanceError)
             }
         } else {
             Logger.e(tag, "Setting performance on FOSS build is not supported")
