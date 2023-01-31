@@ -30,14 +30,6 @@ class MainStateHandler @Inject constructor() : MviStateHandler<MainState> {
     private val mutableState = MutableStateFlow(MainState())
     override val state: StateFlow<MainState> = mutableState.asStateFlow()
 
-    fun setEvent(value: MainEvent) {
-        mutableState.update { it.copy(event = value) }
-    }
-
-    fun resetEvent() {
-        setEvent(Idle)
-    }
-
     fun setTheme(value: ApplicationTheme) {
         mutableState.update { it.copy(theme = value) }
     }
