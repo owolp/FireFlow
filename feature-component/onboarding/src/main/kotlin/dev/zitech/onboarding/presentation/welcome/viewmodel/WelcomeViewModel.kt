@@ -56,6 +56,7 @@ internal class WelcomeViewModel @Inject constructor(
                 OnShowDemoDismiss -> handleOnShowDemoDismiss()
                 OnShowDemoPositive -> handleOnShowDemoPositive()
                 is NavigatedToFireflyResult -> handleNavigatedToFireflyResult(intent.dataResultFlow)
+                ErrorHandled -> handleErrorHandled()
             }
         }
     }
@@ -116,5 +117,9 @@ internal class WelcomeViewModel @Inject constructor(
                 }
             }
         }.stateIn(viewModelScope)
+    }
+
+    private fun handleErrorHandled() {
+        stateHandler.resetEvent()
     }
 }

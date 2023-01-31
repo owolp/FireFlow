@@ -30,7 +30,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -50,6 +49,8 @@ import dev.zitech.ds.atoms.button.FireFlowButtons
 import dev.zitech.ds.atoms.spacer.FireFlowSpacers
 import dev.zitech.ds.atoms.text.FireFlowClickableTexts
 import dev.zitech.ds.atoms.text.FireFlowTexts
+import dev.zitech.ds.molecules.snackbar.FireFlowSnackbarState
+import dev.zitech.ds.molecules.snackbar.rememberSnackbarState
 import dev.zitech.ds.templates.scaffold.FireFlowScaffolds
 import dev.zitech.ds.theme.FireFlowTheme
 import dev.zitech.ds.theme.PreviewFireFlowTheme
@@ -63,14 +64,18 @@ internal fun WelcomeScreen(
     onDemoClick: () -> Unit,
     onBackClick: () -> Unit,
     onFireflyClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    snackbarState: FireFlowSnackbarState = rememberSnackbarState()
 ) {
+
     BackHandler(enabled = true) {
         onBackClick()
     }
 
     FireFlowScaffolds.Primary(
         modifier = modifier
+            .navigationBarsPadding(),
+        snackbarState = snackbarState
     ) { innerPadding ->
         WelcomeScreenContent(
             innerPadding,
@@ -104,8 +109,6 @@ private fun WelcomeScreenContent(
             .fillMaxSize()
             .padding(innerPadding)
             .consumeWindowInsets(innerPadding)
-            .navigationBarsPadding()
-            .systemBarsPadding()
             .verticalScroll(rememberScrollState())
     ) {
         Column(

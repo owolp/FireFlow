@@ -36,5 +36,5 @@ internal data class ShowDemoWarning(
 ) : WelcomeEvent
 
 internal data class ShowError(
-    val text: String
+    val message: String
 ) : WelcomeEvent

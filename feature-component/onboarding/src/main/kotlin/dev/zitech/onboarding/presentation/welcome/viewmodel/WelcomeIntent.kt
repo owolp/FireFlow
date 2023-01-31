@@ -35,3 +35,5 @@ internal data class NavigatedToFireflyResult(
 internal object NavigationHandled : WelcomeIntent
 internal object OnShowDemoPositive : WelcomeIntent
 internal object OnShowDemoDismiss : WelcomeIntent
+internal object ErrorHandled : WelcomeIntent
+

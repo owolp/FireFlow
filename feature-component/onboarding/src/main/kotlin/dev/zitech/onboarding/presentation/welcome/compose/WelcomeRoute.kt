@@ -22,9 +22,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.ds.molecules.dialog.FireFlowDialogs
+import dev.zitech.ds.molecules.snackbar.BottomNotifierMessage
+import dev.zitech.ds.molecules.snackbar.rememberSnackbarState
+import dev.zitech.onboarding.presentation.welcome.viewmodel.ErrorHandled
 import dev.zitech.onboarding.presentation.welcome.viewmodel.Idle
 import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigateOutOfApp
 import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigateToDemo
@@ -56,6 +58,7 @@ internal fun WelcomeRoute(
     viewModel: WelcomeViewModel = hiltViewModel()
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
+    val snackbarState = rememberSnackbarState()
 
     when (val event = screenState.event) {
         NavigateToOath -> {
@@ -88,9 +91,14 @@ internal fun WelcomeRoute(
             )
         }
         is ShowError -> {
-            @Suppress("ForbiddenComment")
-            // TODO: Show Snackbar
-            Logger.d("WelcomeScreen", event.text)
+            snackbarState.showMessage(
+                BottomNotifierMessage(
+                    text = event.message,
+                    state = BottomNotifierMessage.State.ERROR,
+                    duration = BottomNotifierMessage.Duration.SHORT
+                )
+            )
+            viewModel.sendIntent(ErrorHandled)
         }
         Idle -> {
             // NO_OP
@@ -99,6 +107,7 @@ internal fun WelcomeRoute(
 
     WelcomeScreen(
         modifier = modifier,
+        snackbarState = snackbarState,
         onContinueWithOauthClick = { viewModel.sendIntent(OnContinueWithOauthClick) },
         onContinueWithPatClick = { viewModel.sendIntent(OnContinueWithPatClick) },
         onDemoClick = { viewModel.sendIntent(OnDemoClick) },
