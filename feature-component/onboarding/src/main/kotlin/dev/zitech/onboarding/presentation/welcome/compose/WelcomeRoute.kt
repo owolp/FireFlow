@@ -43,16 +43,14 @@ import dev.zitech.onboarding.presentation.welcome.viewmodel.OnShowDemoPositive
 import dev.zitech.onboarding.presentation.welcome.viewmodel.ShowDemoWarning
 import dev.zitech.onboarding.presentation.welcome.viewmodel.ShowError
 import dev.zitech.onboarding.presentation.welcome.viewmodel.WelcomeViewModel
+import kotlinx.coroutines.flow.Flow
 
 @Composable
 internal fun WelcomeRoute(
     navigateToOath: () -> Unit,
     navigateToPat: () -> Unit,
     navigateToDemo: () -> Unit,
-    navigateToBrowser: (
-        url: String,
-        callback: (result: DataResult<Unit>) -> Unit
-    ) -> Unit,
+    navigateToBrowser: (url: String) -> Flow<DataResult<Unit>>,
     navigateOutOfApp: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: WelcomeViewModel = hiltViewModel()
@@ -77,9 +75,9 @@ internal fun WelcomeRoute(
             viewModel.sendIntent(NavigationHandled)
         }
         is NavigateToFirefly -> {
-            navigateToBrowser(event.url) { result ->
-                viewModel.sendIntent(NavigatedToFireflyResult(result))
-            }
+            viewModel.sendIntent(
+                NavigatedToFireflyResult(navigateToBrowser(event.url))
+            )
         }
         is ShowDemoWarning -> {
             FireFlowDialogs.Alert(

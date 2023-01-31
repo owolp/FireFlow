@@ -25,7 +25,10 @@ import dev.zitech.core.common.presentation.architecture.MviViewModel
 import dev.zitech.core.persistence.domain.usecase.database.SaveUserAccountUseCase
 import dev.zitech.onboarding.presentation.welcome.viewmodel.resoure.WelcomeStringsProvider
 import javax.inject.Inject
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -48,7 +51,7 @@ internal class WelcomeViewModel @Inject constructor(
                 NavigationHandled -> handleNavigationHandled()
                 OnShowDemoDismiss -> handleOnShowDemoDismiss()
                 OnShowDemoPositive -> handleOnShowDemoPositive()
-                is NavigatedToFireflyResult -> handleNavigatedToFireflyResult(intent.result)
+                is NavigatedToFireflyResult -> handleNavigatedToFireflyResult(intent.dataResultFlow)
             }
         }
     }
@@ -93,12 +96,14 @@ internal class WelcomeViewModel @Inject constructor(
         stateHandler.setEvent(NavigateToDemo)
     }
 
-    private fun handleNavigatedToFireflyResult(result: DataResult<Unit>) {
-        when (result) {
-            is DataResult.Success -> stateHandler.resetEvent()
-            is DataResult.Error -> {
-                stateHandler.setEvent(ShowError(welcomeStringsProvider.getNoSupportedBrowserText()))
+    private suspend fun handleNavigatedToFireflyResult(dataResultFlow: Flow<DataResult<Unit>>) {
+        dataResultFlow.onEach { result ->
+            when (result) {
+                is DataResult.Success -> stateHandler.resetEvent()
+                is DataResult.Error -> {
+                    stateHandler.setEvent(ShowError(welcomeStringsProvider.getNoSupportedBrowserText()))
+                }
             }
-        }
+        }.stateIn(viewModelScope)
     }
 }

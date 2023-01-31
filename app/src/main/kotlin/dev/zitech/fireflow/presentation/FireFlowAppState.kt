@@ -17,6 +17,8 @@
 
 package dev.zitech.fireflow.presentation
 
+import dev.zitech.dashboard.R as dashboardR
+import dev.zitech.settings.R as settingsR
 import android.content.ActivityNotFoundException
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
@@ -32,7 +34,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import dev.zitech.core.common.domain.browser.Browser
 import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.domain.model.DataResult
-import dev.zitech.dashboard.R as dashboardR
 import dev.zitech.dashboard.presentation.navigation.DashboardDestination
 import dev.zitech.ds.atoms.icon.FireFlowIcons
 import dev.zitech.ds.atoms.icon.Icon
@@ -40,8 +41,9 @@ import dev.zitech.fireflow.presentation.navigation.NavDirection.Companion.DEFAUL
 import dev.zitech.fireflow.presentation.navigation.NavDirection.Companion.DEFAULT_STATE_RESTORE_STATE
 import dev.zitech.navigation.presentation.model.FireFlowNavigationDestination
 import dev.zitech.navigation.presentation.model.TopLevelDestination
-import dev.zitech.settings.R as settingsR
 import dev.zitech.settings.presentation.navigation.SettingsDestination
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.callbackFlow
 
 @Composable
 internal fun rememberFireFlowAppState(
@@ -144,13 +146,17 @@ internal class FireFlowAppState(
         (navController.context as? AppCompatActivity)?.finish()
     }
 
-    fun openBrowser(url: String, callback: (result: DataResult<Unit>) -> Unit) {
+    fun openBrowser(url: String) = callbackFlow {
         try {
             browser.invoke(url)
-            callback(DataResult.Success(Unit))
+            trySend(DataResult.Success(Unit))
+            close()
         } catch (e: ActivityNotFoundException) {
-            callback(DataResult.Error(cause = e))
+            trySend(DataResult.Error(cause = e))
+            close()
         }
+
+        awaitClose()
     }
 
     @Composable
