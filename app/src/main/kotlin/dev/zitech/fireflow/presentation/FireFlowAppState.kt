@@ -17,8 +17,6 @@
 
 package dev.zitech.fireflow.presentation
 
-import dev.zitech.dashboard.R as dashboardR
-import dev.zitech.settings.R as settingsR
 import android.content.ActivityNotFoundException
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
@@ -34,6 +32,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import dev.zitech.core.common.domain.browser.Browser
 import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.model.exception.NoBrowserInstalledException
+import dev.zitech.dashboard.R as dashboardR
 import dev.zitech.dashboard.presentation.navigation.DashboardDestination
 import dev.zitech.ds.atoms.icon.FireFlowIcons
 import dev.zitech.ds.atoms.icon.Icon
@@ -41,6 +41,7 @@ import dev.zitech.fireflow.presentation.navigation.NavDirection.Companion.DEFAUL
 import dev.zitech.fireflow.presentation.navigation.NavDirection.Companion.DEFAULT_STATE_RESTORE_STATE
 import dev.zitech.navigation.presentation.model.FireFlowNavigationDestination
 import dev.zitech.navigation.presentation.model.TopLevelDestination
+import dev.zitech.settings.R as settingsR
 import dev.zitech.settings.presentation.navigation.SettingsDestination
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
@@ -146,12 +147,16 @@ internal class FireFlowAppState(
         (navController.context as? AppCompatActivity)?.finish()
     }
 
+    @Suppress("TooGenericExceptionCaught", "SwallowedException")
     fun openBrowser(url: String) = callbackFlow {
         try {
             browser.invoke(url)
             trySend(DataResult.Success(Unit))
             close()
         } catch (e: ActivityNotFoundException) {
+            trySend(DataResult.Error(cause = NoBrowserInstalledException))
+            close()
+        } catch (e: Exception) {
             trySend(DataResult.Error(cause = e))
             close()
         }

@@ -20,7 +20,9 @@ package dev.zitech.onboarding.presentation.welcome.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.model.exception.NoBrowserInstalledException
 import dev.zitech.core.common.presentation.architecture.MviViewModel
 import dev.zitech.core.persistence.domain.usecase.database.SaveUserAccountUseCase
 import dev.zitech.onboarding.presentation.welcome.viewmodel.resoure.WelcomeStringsProvider
@@ -37,6 +39,8 @@ internal class WelcomeViewModel @Inject constructor(
     private val welcomeStringsProvider: WelcomeStringsProvider,
     private val saveUserAccountUseCase: SaveUserAccountUseCase
 ) : ViewModel(), MviViewModel<WelcomeIntent, WelcomeState> {
+
+    private val tag = Logger.tag(this::class.java)
 
     override val screenState: StateFlow<WelcomeState> = stateHandler.state
 
@@ -101,7 +105,14 @@ internal class WelcomeViewModel @Inject constructor(
             when (result) {
                 is DataResult.Success -> stateHandler.resetEvent()
                 is DataResult.Error -> {
-                    stateHandler.setEvent(ShowError(welcomeStringsProvider.getNoSupportedBrowserText()))
+                    when (result.cause) {
+                        is NoBrowserInstalledException -> {
+                            stateHandler.setEvent(
+                                ShowError(welcomeStringsProvider.getNoSupportedBrowserText())
+                            )
+                        }
+                        else -> Logger.e(tag, result.cause)
+                    }
                 }
             }
         }.stateIn(viewModelScope)
