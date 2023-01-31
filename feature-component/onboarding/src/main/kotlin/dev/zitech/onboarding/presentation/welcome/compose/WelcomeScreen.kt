@@ -166,7 +166,7 @@ private fun getFireflyInfoAnnotatedString() = buildAnnotatedString {
     append(fireFlyText)
     addStringAnnotation(
         tag = "URL",
-        annotation = stringResource(R.string.welcome_firefly_iii_website),
+        annotation = stringResource(R.string.welcome_firefly_iii_url),
         start = startPosition,
         end = lastPosition
     )
