@@ -27,10 +27,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import dev.zitech.ds.molecules.input.FireFlowInputForm
 import dev.zitech.ds.molecules.snackbar.FireFlowSnackbarState
@@ -60,7 +65,8 @@ internal fun LoginScreen(
         }
     ) { innerPadding ->
         LoginScreenContent(
-            innerPadding
+            innerPadding,
+            onLoginClick
         )
     }
 }
@@ -68,8 +74,11 @@ internal fun LoginScreen(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun LoginScreenContent(
-    innerPadding: PaddingValues
+    innerPadding: PaddingValues,
+    onLoginClick: () -> Unit
 ) {
+    val focusManager = LocalFocusManager.current
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -83,18 +92,39 @@ private fun LoginScreenContent(
             modifier = Modifier.fillMaxWidth(),
             headlineText = "Server Address",
             value = "http://",
+            keyboardOptions = KeyboardOptions.Default.copy(
+                imeAction = ImeAction.Next
+            ),
+            keyboardActions = KeyboardActions(
+                onNext = { focusManager.moveFocus(FocusDirection.Down) }
+            ),
             onValueChanged = {}
         )
         FireFlowInputForm.TitleAndInput(
             modifier = Modifier.fillMaxWidth(),
             headlineText = "Client Id",
             value = "",
+            keyboardOptions = KeyboardOptions.Default.copy(
+                imeAction = ImeAction.Next
+            ),
+            keyboardActions = KeyboardActions(
+                onNext = { focusManager.moveFocus(FocusDirection.Down) }
+            ),
             onValueChanged = {}
         )
         FireFlowInputForm.TitleAndInput(
             modifier = Modifier.fillMaxWidth(),
             headlineText = "Client Secret",
             value = "",
+            keyboardOptions = KeyboardOptions.Default.copy(
+                imeAction = ImeAction.Done
+            ),
+            keyboardActions = KeyboardActions(
+                onDone = {
+                    focusManager.clearFocus()
+                    onLoginClick()
+                }
+            ),
             onValueChanged = {}
         )
     }
