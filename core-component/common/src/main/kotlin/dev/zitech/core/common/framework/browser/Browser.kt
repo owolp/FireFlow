@@ -19,6 +19,8 @@ package dev.zitech.core.common.framework.browser
 
 import android.content.ActivityNotFoundException
 import android.content.Context
+import android.content.Intent
+import androidx.activity.result.ActivityResultLauncher
 import androidx.annotation.ColorInt
 import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsIntent
@@ -34,16 +36,28 @@ object Browser {
     fun openUrl(
         context: Context,
         url: String,
-        @ColorInt toolbarColor: Int
+        @ColorInt toolbarColor: Int,
+        activityResultLauncher: ActivityResultLauncher<Intent>? = null
     ) = callbackFlow {
         try {
             val customTabBarColor = CustomTabColorSchemeParams.Builder()
                 .setToolbarColor(toolbarColor).build()
-            CustomTabsIntent.Builder()
+            val customTabsIntent = CustomTabsIntent.Builder()
                 .setShowTitle(true)
                 .setDefaultColorSchemeParams(customTabBarColor)
                 .build()
-                .launchUrl(context, url.toUri())
+
+            if (activityResultLauncher == null) {
+                customTabsIntent.launchUrl(context, url.toUri())
+            } else {
+                customTabsIntent.intent
+                    .setAction(Intent.ACTION_VIEW)
+                    .addCategory(Intent.CATEGORY_BROWSABLE)
+                    .data = url.toUri()
+
+                activityResultLauncher.launch(customTabsIntent.intent)
+            }
+
             trySend(DataResult.Success(Unit))
             close()
         } catch (e: ActivityNotFoundException) {
