@@ -40,7 +40,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
-import dev.zitech.core.common.domain.browser.Browser
 import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.ds.atoms.background.FireFlowBackground
 import dev.zitech.ds.atoms.icon.Icon
@@ -63,8 +62,7 @@ internal fun FireFlowApp(
     theme: ApplicationTheme?,
     windowSizeClass: WindowSizeClass,
     navController: NavHostController,
-    browser: Browser,
-    appState: FireFlowAppState = rememberFireFlowAppState(windowSizeClass, navController, browser)
+    appState: FireFlowAppState = rememberFireFlowAppState(windowSizeClass, navController)
 ) {
     FireFlowTheme(
         darkTheme = isDarkTheme(theme)
@@ -125,9 +123,6 @@ internal fun FireFlowApp(
                                 destination = navDirection?.destination,
                                 inclusive = navDirection?.inclusive
                             )
-                        },
-                        onNavigateToBrowser = { url ->
-                            appState.openBrowser(url, backgroundColor)
                         },
                         onCloseApplication = appState::onCloseApplication,
                         onRestartApplication = appState::onRestartApplication

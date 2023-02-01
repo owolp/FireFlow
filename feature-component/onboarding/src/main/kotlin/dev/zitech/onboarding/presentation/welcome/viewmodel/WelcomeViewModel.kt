@@ -27,10 +27,7 @@ import dev.zitech.core.common.presentation.architecture.MviViewModel
 import dev.zitech.core.persistence.domain.usecase.database.SaveUserAccountUseCase
 import dev.zitech.onboarding.presentation.welcome.viewmodel.resoure.WelcomeStringsProvider
 import javax.inject.Inject
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -53,7 +50,7 @@ internal class WelcomeViewModel @Inject constructor(
                 OnBackClick -> stateHandler.setEvent(NavigateOutOfApp)
                 OnFireflyClick -> handleOnFireflyClick()
                 OnShowDemoPositive -> handleOnShowDemoPositive()
-                is NavigatedToFireflyResult -> handleNavigatedToFireflyResult(intent.dataResultFlow)
+                is NavigatedToFireflyResult -> handleNavigatedToFireflyResult(intent.dataResult)
                 NavigationHandled,
                 OnShowDemoDismiss,
                 ErrorHandled -> stateHandler.resetEvent()
@@ -81,24 +78,22 @@ internal class WelcomeViewModel @Inject constructor(
         stateHandler.setEvent(NavigateToDemo)
     }
 
-    private suspend fun handleNavigatedToFireflyResult(dataResultFlow: Flow<DataResult<Unit>>) {
-        dataResultFlow.onEach { result ->
-            when (result) {
-                is DataResult.Success -> stateHandler.resetEvent()
-                is DataResult.Error -> {
-                    when (result.cause) {
-                        is NoBrowserInstalledException -> {
-                            stateHandler.setEvent(
-                                ShowError(welcomeStringsProvider.getNoSupportedBrowserInstalled())
-                            )
-                        }
-                        else -> {
-                            Logger.e(tag, exception = result.cause)
-                            stateHandler.setEvent(NavigateToError)
-                        }
+    private fun handleNavigatedToFireflyResult(dataResult: DataResult<Unit>) {
+        when (dataResult) {
+            is DataResult.Success -> stateHandler.resetEvent()
+            is DataResult.Error -> {
+                when (dataResult.cause) {
+                    is NoBrowserInstalledException -> {
+                        stateHandler.setEvent(
+                            ShowError(welcomeStringsProvider.getNoSupportedBrowserInstalled())
+                        )
+                    }
+                    else -> {
+                        Logger.e(tag, exception = dataResult.cause)
+                        stateHandler.setEvent(NavigateToError)
                     }
                 }
             }
-        }.stateIn(viewModelScope)
+        }
     }
 }
