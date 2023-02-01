@@ -29,18 +29,13 @@ import androidx.core.view.WindowCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import dev.zitech.core.common.domain.browser.Browser
 import dev.zitech.fireflow.R
 import dev.zitech.fireflow.presentation.FireFlowApp
 import dev.zitech.fireflow.presentation.main.viewmodel.MainViewModel
-import javax.inject.Inject
 
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @AndroidEntryPoint
 internal class MainActivity : AppCompatActivity() {
-
-    @Inject
-    internal lateinit var browser: Browser
 
     private val viewModel: MainViewModel by viewModels()
 
@@ -71,8 +66,7 @@ internal class MainActivity : AppCompatActivity() {
                 FireFlowApp(
                     theme = mainState.theme,
                     windowSizeClass = calculateWindowSizeClass(this),
-                    navController = navController,
-                    browser = browser
+                    navController = navController
                 )
             }
         }

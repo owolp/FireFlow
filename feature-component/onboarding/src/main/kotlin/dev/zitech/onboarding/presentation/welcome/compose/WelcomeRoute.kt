@@ -18,14 +18,20 @@
 package dev.zitech.onboarding.presentation.welcome.compose
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import dev.zitech.core.common.domain.model.DataResult
+import androidx.lifecycle.coroutineScope
+import dev.zitech.core.common.framework.browser.Browser
 import dev.zitech.ds.molecules.dialog.FireFlowDialogs
 import dev.zitech.ds.molecules.snackbar.BottomNotifierMessage
 import dev.zitech.ds.molecules.snackbar.rememberSnackbarState
+import dev.zitech.ds.theme.FireFlowTheme
 import dev.zitech.onboarding.presentation.welcome.viewmodel.ErrorHandled
 import dev.zitech.onboarding.presentation.welcome.viewmodel.Idle
 import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigateOutOfApp
@@ -46,14 +52,14 @@ import dev.zitech.onboarding.presentation.welcome.viewmodel.OnShowDemoPositive
 import dev.zitech.onboarding.presentation.welcome.viewmodel.ShowDemoWarning
 import dev.zitech.onboarding.presentation.welcome.viewmodel.ShowError
 import dev.zitech.onboarding.presentation.welcome.viewmodel.WelcomeViewModel
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.stateIn
 
 @Composable
 internal fun WelcomeRoute(
     navigateToOath: () -> Unit,
     navigateToPat: () -> Unit,
     navigateToDemo: () -> Unit,
-    navigateToBrowser: (url: String) -> Flow<DataResult<Unit>>,
     navigateOutOfApp: () -> Unit,
     navigateToError: () -> Unit,
     modifier: Modifier = Modifier,
@@ -61,6 +67,9 @@ internal fun WelcomeRoute(
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
     val snackbarState = rememberSnackbarState()
+    val backgroundColorResource = FireFlowTheme.colors.background.toArgb()
+    val context = LocalContext.current
+    val coroutineScope = LocalLifecycleOwner.current.lifecycle.coroutineScope
 
     when (val event = screenState.event) {
         NavigateToOath -> {
@@ -84,9 +93,15 @@ internal fun WelcomeRoute(
             viewModel.sendIntent(NavigationHandled)
         }
         is NavigateToFirefly -> {
-            viewModel.sendIntent(
-                NavigatedToFireflyResult(navigateToBrowser(event.url))
-            )
+            LaunchedEffect(Unit) {
+                Browser.openUrl(
+                    context,
+                    event.url,
+                    backgroundColorResource
+                ).onEach { event ->
+                    viewModel.sendIntent(NavigatedToFireflyResult(event))
+                }.stateIn(coroutineScope)
+            }
         }
         is ShowDemoWarning -> {
             FireFlowDialogs.Alert(

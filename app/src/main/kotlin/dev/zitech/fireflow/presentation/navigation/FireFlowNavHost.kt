@@ -23,7 +23,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import dev.zitech.authentication.presentation.navigation.AccountsDestination
 import dev.zitech.authentication.presentation.navigation.authenticationGraph
-import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.dashboard.presentation.navigation.DashboardDestination
 import dev.zitech.dashboard.presentation.navigation.dashboardGraph
 import dev.zitech.onboarding.presentation.login.model.LoginType
@@ -31,7 +30,6 @@ import dev.zitech.onboarding.presentation.navigation.LoginDestination
 import dev.zitech.onboarding.presentation.navigation.WelcomeDestination
 import dev.zitech.onboarding.presentation.navigation.onboardingGraph
 import dev.zitech.settings.presentation.navigation.settingsGraph
-import kotlinx.coroutines.flow.Flow
 
 @Suppress("ForbiddenComment")
 @Composable
@@ -39,7 +37,6 @@ internal fun FireFlowNavHost(
     navController: NavHostController,
     onNavigateToDestination: (NavDirection) -> Unit,
     onBackClick: (NavDirection?) -> Unit,
-    onNavigateToBrowser: (url: String) -> Flow<DataResult<Unit>>,
     onCloseApplication: () -> Unit,
     onRestartApplication: () -> Unit,
     modifier: Modifier = Modifier,
@@ -87,7 +84,6 @@ internal fun FireFlowNavHost(
                     )
                 )
             },
-            navigateToBrowser = onNavigateToBrowser,
             navigateOutOfApp = onCloseApplication,
             navigateToError = {
                 TODO()
