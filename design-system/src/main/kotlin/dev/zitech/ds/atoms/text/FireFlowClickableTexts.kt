@@ -111,6 +111,22 @@ object FireFlowClickableTexts {
     }
 
     @Composable
+    fun HeadlineSmall(
+        text: AnnotatedString,
+        modifier: Modifier = Modifier,
+        color: Color = Color.Unspecified,
+        style: TextStyle = FireFlowTheme.typography.headlineSmall,
+        onClick: (Int) -> Unit
+    ) {
+        ClickableText(
+            modifier = modifier,
+            text = text,
+            style = style.copy(color = color),
+            onClick = onClick
+        )
+    }
+
+    @Composable
     fun TitleLarge(
         text: AnnotatedString,
         modifier: Modifier = Modifier,
@@ -148,22 +164,6 @@ object FireFlowClickableTexts {
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
         style: TextStyle = FireFlowTheme.typography.titleSmall,
-        onClick: (Int) -> Unit
-    ) {
-        ClickableText(
-            modifier = modifier,
-            text = text,
-            style = style.copy(color = color),
-            onClick = onClick
-        )
-    }
-
-    @Composable
-    fun HeadlineSmall(
-        text: AnnotatedString,
-        modifier: Modifier = Modifier,
-        color: Color = Color.Unspecified,
-        style: TextStyle = FireFlowTheme.typography.headlineSmall,
         onClick: (Int) -> Unit
     ) {
         ClickableText(
