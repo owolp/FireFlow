@@ -23,3 +23,4 @@ internal sealed interface LoginEvent : MviState.Event
 
 internal object Idle : LoginEvent
 internal object NavigateToDashboard : LoginEvent
+internal object NavigateBack : LoginEvent

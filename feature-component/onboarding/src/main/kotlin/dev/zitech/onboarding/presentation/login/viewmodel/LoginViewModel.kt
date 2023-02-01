@@ -47,6 +47,7 @@ internal class LoginViewModel @Inject constructor(
             when (intent) {
                 OnLoginClick -> handleOnLoginClick()
                 NavigationHandled -> stateHandler.resetEvent()
+                OnBackClick -> stateHandler.setEvent(NavigateBack)
             }
         }
     }

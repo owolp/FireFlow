@@ -74,9 +74,7 @@ internal fun FireFlowNavHost(
                     )
                 )
             },
-            navigateToDemo = {
-                onBackClick(null)
-            },
+            navigateToDemo = { onBackClick(null) },
             navigateToDashboard = {
                 onBackClick(
                     NavDirection(
@@ -85,9 +83,8 @@ internal fun FireFlowNavHost(
                 )
             },
             navigateOutOfApp = onCloseApplication,
-            navigateToError = {
-                TODO()
-            }
+            navigateToError = { TODO() },
+            navigateBack = { onBackClick(null) }
         )
         dashboardGraph(
             navigateToAccounts = {
@@ -98,9 +95,7 @@ internal fun FireFlowNavHost(
                     )
                 )
             },
-            navigateToError = {
-                TODO()
-            },
+            navigateToError = { TODO() },
             navigateToWelcome = {
                 onNavigateToDestination(
                     NavDirection(
@@ -119,9 +114,7 @@ internal fun FireFlowNavHost(
                     )
                 )
             },
-            navigateToError = {
-                TODO()
-            },
+            navigateToError = { TODO() },
             navigateToWelcome = {
                 onNavigateToDestination(
                     NavDirection(

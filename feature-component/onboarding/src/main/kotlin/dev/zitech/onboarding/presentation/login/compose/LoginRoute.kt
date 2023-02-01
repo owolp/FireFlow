@@ -23,19 +23,24 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import dev.zitech.ds.molecules.snackbar.rememberSnackbarState
 import dev.zitech.onboarding.presentation.login.viewmodel.Idle
 import dev.zitech.onboarding.presentation.login.viewmodel.LoginViewModel
+import dev.zitech.onboarding.presentation.login.viewmodel.NavigateBack
 import dev.zitech.onboarding.presentation.login.viewmodel.NavigateToDashboard
 import dev.zitech.onboarding.presentation.login.viewmodel.NavigationHandled
+import dev.zitech.onboarding.presentation.login.viewmodel.OnBackClick
 import dev.zitech.onboarding.presentation.login.viewmodel.OnLoginClick
 
 @Composable
 internal fun LoginRoute(
     navigateToDashboard: () -> Unit,
+    navigateBack: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
+    val snackbarState = rememberSnackbarState()
 
     when (screenState.event) {
         NavigateToDashboard -> {
@@ -44,6 +49,10 @@ internal fun LoginRoute(
                 viewModel.sendIntent(NavigationHandled)
             }
         }
+        NavigateBack -> {
+            navigateBack()
+            viewModel.sendIntent(NavigationHandled)
+        }
         Idle -> {
             // NO_OP
         }
@@ -51,9 +60,11 @@ internal fun LoginRoute(
 
     if (screenState.loginType != null) {
         LoginScreen(
-            state = screenState,
+            modifier = modifier,
+            loginState = screenState,
+            snackbarState = snackbarState,
             onLoginClick = { viewModel.sendIntent(OnLoginClick) },
-            modifier = modifier
+            onBackClick = { viewModel.sendIntent(OnBackClick) }
         )
     }
 }
