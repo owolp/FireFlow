@@ -32,5 +32,5 @@ internal class ClientIdValidator @Inject constructor() : Validator<String> {
     }
 
     override fun invoke(input: String): Boolean =
-        Pattern.compile(NUMBER_REGEX).matcher(input).matches() || input.isEmpty()
+        Pattern.compile(NUMBER_REGEX).matcher(input).matches()
 }

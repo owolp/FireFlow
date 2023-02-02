@@ -44,14 +44,7 @@ internal class OauthViewModel @Inject constructor(
                 OnLoginClick -> handleOnLoginClick()
                 NavigationHandled -> stateHandler.resetEvent()
                 OnBackClick -> stateHandler.setEvent(NavigateBack)
-                is OnClientIdChange -> {
-                    with(intent.clientId.trim()) {
-                        if (clientIdValidator(this)) {
-                            stateHandler.setClientId(this)
-                            setLoginEnabled()
-                        }
-                    }
-                }
+                is OnClientIdChange -> handleOnClientIdChange(intent)
                 is OnClientSecretChange -> {
                     stateHandler.setClientSecret(intent.clientSecret.trim())
                     setLoginEnabled()
@@ -69,6 +62,15 @@ internal class OauthViewModel @Inject constructor(
         // TODO: Dev usage
         saveUserAccountUseCase(true)
         stateHandler.setEvent(NavigateToDashboard)
+    }
+
+    private fun handleOnClientIdChange(intent: OnClientIdChange) {
+        with(intent.clientId.trim()) {
+            if (clientIdValidator(this) || this.isEmpty()) {
+                stateHandler.setClientId(this)
+                setLoginEnabled()
+            }
+        }
     }
 
     private fun setLoginEnabled() {
