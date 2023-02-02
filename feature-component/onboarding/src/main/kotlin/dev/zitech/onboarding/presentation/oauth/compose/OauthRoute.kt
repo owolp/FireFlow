@@ -30,7 +30,10 @@ import dev.zitech.onboarding.presentation.oauth.viewmodel.NavigateToDashboard
 import dev.zitech.onboarding.presentation.oauth.viewmodel.NavigationHandled
 import dev.zitech.onboarding.presentation.oauth.viewmodel.OauthViewModel
 import dev.zitech.onboarding.presentation.oauth.viewmodel.OnBackClick
+import dev.zitech.onboarding.presentation.oauth.viewmodel.OnClientIdChange
+import dev.zitech.onboarding.presentation.oauth.viewmodel.OnClientSecretChange
 import dev.zitech.onboarding.presentation.oauth.viewmodel.OnLoginClick
+import dev.zitech.onboarding.presentation.oauth.viewmodel.OnServerAddressChange
 
 @Composable
 internal fun OauthRoute(
@@ -62,6 +65,9 @@ internal fun OauthRoute(
         oauthState = screenState,
         snackbarState = snackbarState,
         onLoginClick = { viewModel.sendIntent(OnLoginClick) },
-        onBackClick = { viewModel.sendIntent(OnBackClick) }
+        onBackClick = { viewModel.sendIntent(OnBackClick) },
+        onServerAddressChange = { viewModel.sendIntent(OnServerAddressChange(it)) },
+        onClientIdChange = { viewModel.sendIntent(OnClientIdChange(it)) },
+        onClientSecretChange = { viewModel.sendIntent(OnClientSecretChange(it)) }
     )
 }

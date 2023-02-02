@@ -40,6 +40,9 @@ internal class OauthViewModel @Inject constructor(
                 OnLoginClick -> handleOnLoginClick()
                 NavigationHandled -> stateHandler.resetEvent()
                 OnBackClick -> stateHandler.setEvent(NavigateBack)
+                is OnClientIdChange -> stateHandler.setClientId(intent.clientId)
+                is OnClientSecretChange -> stateHandler.setClientSecret(intent.clientSecret)
+                is OnServerAddressChange -> stateHandler.setServerAddress(intent.serverAddress)
             }
         }
     }

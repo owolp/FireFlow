@@ -23,4 +23,7 @@ internal sealed interface OauthIntent : MviIntent
 
 internal object OnLoginClick : OauthIntent
 internal object OnBackClick : OauthIntent
+internal data class OnServerAddressChange(val serverAddress: String) : OauthIntent
+internal data class OnClientIdChange(val clientId: String) : OauthIntent
+internal data class OnClientSecretChange(val clientSecret: String) : OauthIntent
 internal object NavigationHandled : OauthIntent

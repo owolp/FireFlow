@@ -144,6 +144,7 @@ private fun WelcomeScreenContent(
                 text = stringResource(R.string.welcome_button_demo),
                 onClick = onDemoClick
             )
+            FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.s)
         }
     }
 }
