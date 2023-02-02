@@ -20,5 +20,4 @@
     <string name="pat_server_address">Server Address</string>
     <string name="pat_personal_access_token">Personal Access Token</string>
     <string name="pat_login">Log in</string>
-    <string name="pat_server_address_support_text">The URL should start with either "http://" or "https://"</string>
 </resources>

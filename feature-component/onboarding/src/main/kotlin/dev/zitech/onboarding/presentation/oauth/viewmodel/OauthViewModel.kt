@@ -23,6 +23,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.zitech.core.common.presentation.architecture.MviViewModel
 import dev.zitech.core.persistence.domain.usecase.database.SaveUserAccountUseCase
 import dev.zitech.onboarding.domain.usecase.IsOauthLoginInputValidUseCase
+import dev.zitech.onboarding.domain.validator.ClientIdValidator
 import javax.inject.Inject
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -31,7 +32,8 @@ import kotlinx.coroutines.launch
 internal class OauthViewModel @Inject constructor(
     private val stateHandler: OauthStateHandler,
     private val saveUserAccountUseCase: SaveUserAccountUseCase,
-    private val isOauthLoginInputValidUseCase: IsOauthLoginInputValidUseCase
+    private val isOauthLoginInputValidUseCase: IsOauthLoginInputValidUseCase,
+    private val clientIdValidator: ClientIdValidator
 ) : ViewModel(), MviViewModel<OauthIntent, OauthState> {
 
     override val screenState: StateFlow<OauthState> = stateHandler.state
@@ -43,8 +45,12 @@ internal class OauthViewModel @Inject constructor(
                 NavigationHandled -> stateHandler.resetEvent()
                 OnBackClick -> stateHandler.setEvent(NavigateBack)
                 is OnClientIdChange -> {
-                    stateHandler.setClientId(intent.clientId.trim())
-                    setLoginEnabled()
+                    with(intent.clientId.trim()) {
+                        if (clientIdValidator(this)) {
+                            stateHandler.setClientId(this)
+                            setLoginEnabled()
+                        }
+                    }
                 }
                 is OnClientSecretChange -> {
                     stateHandler.setClientSecret(intent.clientSecret.trim())

@@ -18,10 +18,19 @@
 package dev.zitech.onboarding.domain.validator
 
 import dev.zitech.core.common.domain.validator.Validator
+import java.util.regex.Pattern
 import javax.inject.Inject
 
 internal class ClientIdValidator @Inject constructor() : Validator<String> {
 
+    companion object {
+        /*
+            The number must start with a digit between 1 and 9 and
+            then it might be followed by digit
+         */
+        private const val NUMBER_REGEX = "^[1-9]\\d*\$"
+    }
+
     override fun invoke(input: String): Boolean =
-        input.isNotBlank() && input.isNotEmpty()
+        Pattern.compile(NUMBER_REGEX).matcher(input).matches() || input.isEmpty()
 }

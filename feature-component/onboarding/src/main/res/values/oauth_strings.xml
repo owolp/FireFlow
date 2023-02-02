@@ -21,5 +21,4 @@
     <string name="oauth_client_id">Client ID</string>
     <string name="oauth_client_secret">Client Secret</string>
     <string name="oauth_login">Log in</string>
-    <string name="oauth_server_address_support_text">The URL should start with either "http://" or "https://"</string>
 </resources>

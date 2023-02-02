@@ -21,5 +21,4 @@
     <string name="oauth_client_id">ID на клиента</string>
     <string name="oauth_client_secret">Тайна на клиента</string>
     <string name="oauth_login">Влизане</string>
-    <string name="oauth_server_address_support_text">Адресът трябва да започне с "http://" или "https://".</string>
 </resources>

@@ -18,19 +18,10 @@
 package dev.zitech.onboarding.domain.validator
 
 import dev.zitech.core.common.domain.validator.Validator
-import java.util.regex.Pattern
 import javax.inject.Inject
 
 internal class ClientSecretValidator @Inject constructor() : Validator<String> {
 
-    companion object {
-        /*
-            The URL number must start with a digit between 1 and 9 and
-            then it might be followed by digit
-         */
-        private const val NUMBER_REGEX = "^[1-9]\\d*\$"
-    }
-
     override fun invoke(input: String): Boolean =
-        Pattern.compile(NUMBER_REGEX).matcher(input).matches()
+        input.isNotBlank() && input.isNotEmpty()
 }
