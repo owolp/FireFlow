@@ -68,7 +68,11 @@ internal class OauthViewModel @Inject constructor(
     private fun setLoginEnabled() {
         stateHandler.setLoginEnabled(
             with(screenState.value) {
-                isOauthLoginInputValidUseCase(serverAddress, clientId, clientSecret)
+                isOauthLoginInputValidUseCase(
+                    clientId = clientId,
+                    clientSecret = clientSecret,
+                    serverAddress = serverAddress
+                )
             }
         )
     }

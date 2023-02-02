@@ -25,9 +25,11 @@ import dagger.hilt.android.scopes.ViewModelScoped
 import dev.zitech.core.common.domain.validator.Validator
 import dev.zitech.onboarding.di.annotation.ValidatorClientId
 import dev.zitech.onboarding.di.annotation.ValidatorClientSecret
+import dev.zitech.onboarding.di.annotation.ValidatorPat
 import dev.zitech.onboarding.di.annotation.ValidatorServerAddress
 import dev.zitech.onboarding.domain.validator.ClientIdValidator
 import dev.zitech.onboarding.domain.validator.ClientSecretValidator
+import dev.zitech.onboarding.domain.validator.PatValidator
 import dev.zitech.onboarding.domain.validator.ServerAddressValidator
 
 internal interface OnboardingModule {
@@ -45,6 +47,11 @@ internal interface OnboardingModule {
         @ViewModelScoped
         @Binds
         fun clientSecretValidator(clientSecretValidator: ClientSecretValidator): Validator<String>
+
+        @ValidatorPat
+        @ViewModelScoped
+        @Binds
+        fun patValidator(patValidator: PatValidator): Validator<String>
 
         @ValidatorServerAddress
         @ViewModelScoped

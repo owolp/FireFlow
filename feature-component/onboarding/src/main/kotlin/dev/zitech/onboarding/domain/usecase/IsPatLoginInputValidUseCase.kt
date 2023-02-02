@@ -18,22 +18,18 @@
 package dev.zitech.onboarding.domain.usecase
 
 import dev.zitech.core.common.domain.validator.Validator
-import dev.zitech.onboarding.di.annotation.ValidatorClientId
-import dev.zitech.onboarding.di.annotation.ValidatorClientSecret
+import dev.zitech.onboarding.di.annotation.ValidatorPat
 import dev.zitech.onboarding.di.annotation.ValidatorServerAddress
 import javax.inject.Inject
 
-internal class IsOauthLoginInputValidUseCase @Inject constructor(
-    @ValidatorClientId private val clientIdValidator: Validator<String>,
-    @ValidatorClientSecret private val clientSecretValidator: Validator<String>,
+internal class IsPatLoginInputValidUseCase @Inject constructor(
+    @ValidatorPat private val patValidator: Validator<String>,
     @ValidatorServerAddress private val serverAddressValidator: Validator<String>
 ) {
 
     operator fun invoke(
-        clientId: String,
-        clientSecret: String,
+        personalAccessToken: String,
         serverAddress: String
-    ): Boolean = clientIdValidator(clientId) &&
-        clientSecretValidator(clientSecret) &&
+    ): Boolean = patValidator(personalAccessToken) &&
         serverAddressValidator(serverAddress)
 }
