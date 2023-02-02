@@ -22,6 +22,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.zitech.core.common.presentation.architecture.MviViewModel
 import dev.zitech.core.persistence.domain.usecase.database.SaveUserAccountUseCase
+import dev.zitech.onboarding.domain.usecase.IsOauthLoginInputValidUseCase
 import javax.inject.Inject
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -29,7 +30,8 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 internal class OauthViewModel @Inject constructor(
     private val stateHandler: OauthStateHandler,
-    private val saveUserAccountUseCase: SaveUserAccountUseCase
+    private val saveUserAccountUseCase: SaveUserAccountUseCase,
+    private val isOauthLoginInputValidUseCase: IsOauthLoginInputValidUseCase
 ) : ViewModel(), MviViewModel<OauthIntent, OauthState> {
 
     override val screenState: StateFlow<OauthState> = stateHandler.state
@@ -40,9 +42,18 @@ internal class OauthViewModel @Inject constructor(
                 OnLoginClick -> handleOnLoginClick()
                 NavigationHandled -> stateHandler.resetEvent()
                 OnBackClick -> stateHandler.setEvent(NavigateBack)
-                is OnClientIdChange -> stateHandler.setClientId(intent.clientId)
-                is OnClientSecretChange -> stateHandler.setClientSecret(intent.clientSecret)
-                is OnServerAddressChange -> stateHandler.setServerAddress(intent.serverAddress)
+                is OnClientIdChange -> {
+                    stateHandler.setClientId(intent.clientId.trim())
+                    setLoginEnabled()
+                }
+                is OnClientSecretChange -> {
+                    stateHandler.setClientSecret(intent.clientSecret.trim())
+                    setLoginEnabled()
+                }
+                is OnServerAddressChange -> {
+                    stateHandler.setServerAddress(intent.serverAddress.trim())
+                    setLoginEnabled()
+                }
             }
         }
     }
@@ -52,5 +63,13 @@ internal class OauthViewModel @Inject constructor(
         // TODO: Dev usage
         saveUserAccountUseCase(true)
         stateHandler.setEvent(NavigateToDashboard)
+    }
+
+    private fun setLoginEnabled() {
+        stateHandler.setLoginEnabled(
+            with(screenState.value) {
+                isOauthLoginInputValidUseCase(serverAddress, clientId, clientSecret)
+            }
+        )
     }
 }

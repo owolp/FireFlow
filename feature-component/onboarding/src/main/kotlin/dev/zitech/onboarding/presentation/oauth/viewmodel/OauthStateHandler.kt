@@ -48,4 +48,8 @@ internal class OauthStateHandler @Inject constructor() : MviStateHandler<OauthSt
     fun setServerAddress(serverAddress: String) {
         mutableState.update { it.copy(serverAddress = serverAddress) }
     }
+
+    fun setLoginEnabled(loginEnabled: Boolean) {
+        mutableState.update { it.copy(loginEnabled = loginEnabled) }
+    }
 }

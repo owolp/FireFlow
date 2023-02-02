@@ -89,7 +89,7 @@ private fun PatScreenContent(
     state: PatState,
     onLoginClick: () -> Unit,
     onServerAddressChange: (String) -> Unit,
-    onPersonalAccessTokenChange: (String) -> Unit,
+    onPersonalAccessTokenChange: (String) -> Unit
 ) {
     val focusManager = LocalFocusManager.current
 
