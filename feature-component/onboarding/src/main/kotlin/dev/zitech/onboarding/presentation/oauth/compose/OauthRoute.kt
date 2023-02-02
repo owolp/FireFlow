@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.onboarding.presentation.login.compose
+package dev.zitech.onboarding.presentation.oauth.compose
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -24,20 +24,20 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.zitech.ds.molecules.snackbar.rememberSnackbarState
-import dev.zitech.onboarding.presentation.login.viewmodel.Idle
-import dev.zitech.onboarding.presentation.login.viewmodel.LoginViewModel
-import dev.zitech.onboarding.presentation.login.viewmodel.NavigateBack
-import dev.zitech.onboarding.presentation.login.viewmodel.NavigateToDashboard
-import dev.zitech.onboarding.presentation.login.viewmodel.NavigationHandled
-import dev.zitech.onboarding.presentation.login.viewmodel.OnBackClick
-import dev.zitech.onboarding.presentation.login.viewmodel.OnLoginClick
+import dev.zitech.onboarding.presentation.oauth.viewmodel.Idle
+import dev.zitech.onboarding.presentation.oauth.viewmodel.NavigateBack
+import dev.zitech.onboarding.presentation.oauth.viewmodel.NavigateToDashboard
+import dev.zitech.onboarding.presentation.oauth.viewmodel.NavigationHandled
+import dev.zitech.onboarding.presentation.oauth.viewmodel.OauthViewModel
+import dev.zitech.onboarding.presentation.oauth.viewmodel.OnBackClick
+import dev.zitech.onboarding.presentation.oauth.viewmodel.OnLoginClick
 
 @Composable
-internal fun LoginRoute(
+internal fun OauthRoute(
     navigateToDashboard: () -> Unit,
     navigateBack: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: LoginViewModel = hiltViewModel()
+    viewModel: OauthViewModel = hiltViewModel()
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
     val snackbarState = rememberSnackbarState()
@@ -57,14 +57,11 @@ internal fun LoginRoute(
             // NO_OP
         }
     }
-
-    if (screenState.loginType != null) {
-        LoginScreen(
-            modifier = modifier,
-            loginState = screenState,
-            snackbarState = snackbarState,
-            onLoginClick = { viewModel.sendIntent(OnLoginClick) },
-            onBackClick = { viewModel.sendIntent(OnBackClick) }
-        )
-    }
+    OauthScreen(
+        modifier = modifier,
+        oauthState = screenState,
+        snackbarState = snackbarState,
+        onLoginClick = { viewModel.sendIntent(OnLoginClick) },
+        onBackClick = { viewModel.sendIntent(OnBackClick) }
+    )
 }

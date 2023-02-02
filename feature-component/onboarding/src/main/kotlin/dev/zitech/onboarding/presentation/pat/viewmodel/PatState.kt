@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,12 +15,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.onboarding.presentation.login.viewmodel
+package dev.zitech.onboarding.presentation.pat.viewmodel
 
-import dev.zitech.core.common.presentation.architecture.MviIntent
+import dev.zitech.core.common.presentation.architecture.MviState
 
-internal sealed interface LoginIntent : MviIntent
-
-internal object OnLoginClick : LoginIntent
-internal object OnBackClick : LoginIntent
-internal object NavigationHandled : LoginIntent
+internal data class PatState(
+    val event: PatEvent = Idle
+) : MviState

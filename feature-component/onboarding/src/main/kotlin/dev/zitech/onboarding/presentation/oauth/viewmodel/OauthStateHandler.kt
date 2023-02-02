@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,30 +15,25 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.onboarding.presentation.login.viewmodel
+package dev.zitech.onboarding.presentation.oauth.viewmodel
 
 import dev.zitech.core.common.presentation.architecture.MviStateHandler
-import dev.zitech.onboarding.presentation.login.model.LoginType
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-internal class LoginStateHandler @Inject constructor() : MviStateHandler<LoginState> {
+internal class OauthStateHandler @Inject constructor() : MviStateHandler<OauthState> {
 
-    private val mutableState = MutableStateFlow(LoginState())
-    override val state: StateFlow<LoginState> = mutableState.asStateFlow()
+    private val mutableState = MutableStateFlow(OauthState())
+    override val state: StateFlow<OauthState> = mutableState.asStateFlow()
 
-    fun setEvent(event: LoginEvent) {
+    fun setEvent(event: OauthEvent) {
         mutableState.update { it.copy(event = event) }
     }
 
     fun resetEvent() {
         setEvent(Idle)
-    }
-
-    fun setLoginType(value: LoginType) {
-        mutableState.update { it.copy(loginType = value) }
     }
 }

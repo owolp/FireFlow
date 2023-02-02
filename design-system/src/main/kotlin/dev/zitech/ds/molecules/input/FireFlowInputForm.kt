@@ -42,7 +42,7 @@ object FireFlowInputForm {
         supportingText: String? = null,
         isError: Boolean = false,
         keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
-        keyboardActions: KeyboardActions = KeyboardActions.Default,
+        keyboardActions: KeyboardActions = KeyboardActions.Default
     ) {
         Column(
             modifier = modifier,

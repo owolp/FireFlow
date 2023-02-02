@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,8 +25,8 @@ import dev.zitech.authentication.presentation.navigation.AccountsDestination
 import dev.zitech.authentication.presentation.navigation.authenticationGraph
 import dev.zitech.dashboard.presentation.navigation.DashboardDestination
 import dev.zitech.dashboard.presentation.navigation.dashboardGraph
-import dev.zitech.onboarding.presentation.login.model.LoginType
-import dev.zitech.onboarding.presentation.navigation.LoginDestination
+import dev.zitech.onboarding.presentation.navigation.OauthDestination
+import dev.zitech.onboarding.presentation.navigation.PatDestination
 import dev.zitech.onboarding.presentation.navigation.WelcomeDestination
 import dev.zitech.onboarding.presentation.navigation.onboardingGraph
 import dev.zitech.settings.presentation.navigation.settingsGraph
@@ -61,16 +61,14 @@ internal fun FireFlowNavHost(
             navigateToOath = {
                 onNavigateToDestination(
                     NavDirection(
-                        destination = LoginDestination,
-                        route = LoginDestination.createNavigationRoute(LoginType.OAUTH)
+                        destination = OauthDestination
                     )
                 )
             },
             navigateToPat = {
                 onNavigateToDestination(
                     NavDirection(
-                        destination = LoginDestination,
-                        route = LoginDestination.createNavigationRoute(LoginType.PAT)
+                        destination = PatDestination
                     )
                 )
             },

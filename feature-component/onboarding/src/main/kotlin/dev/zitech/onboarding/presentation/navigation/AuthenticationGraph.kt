@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,10 +18,9 @@
 package dev.zitech.onboarding.presentation.navigation
 
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavType
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
-import dev.zitech.onboarding.presentation.login.compose.LoginRoute
+import dev.zitech.onboarding.presentation.oauth.compose.OauthRoute
+import dev.zitech.onboarding.presentation.pat.compose.PatRoute
 import dev.zitech.onboarding.presentation.welcome.compose.WelcomeRoute
 
 @Suppress("LongParameterList")
@@ -34,6 +33,18 @@ fun NavGraphBuilder.onboardingGraph(
     navigateToError: () -> Unit,
     navigateBack: () -> Unit
 ) {
+    composable(route = OauthDestination.route) {
+        OauthRoute(
+            navigateToDashboard = navigateToDashboard,
+            navigateBack = navigateBack
+        )
+    }
+    composable(route = PatDestination.route) {
+        PatRoute(
+            navigateToDashboard = navigateToDashboard,
+            navigateBack = navigateBack
+        )
+    }
     composable(route = WelcomeDestination.route) {
         WelcomeRoute(
             navigateToOath = navigateToOath,
@@ -41,19 +52,6 @@ fun NavGraphBuilder.onboardingGraph(
             navigateToDemo = navigateToDemo,
             navigateOutOfApp = navigateOutOfApp,
             navigateToError = navigateToError
-        )
-    }
-    composable(
-        route = LoginDestination.route,
-        arguments = listOf(
-            navArgument(LoginDestination.loginType) {
-                type = NavType.StringType
-            }
-        )
-    ) {
-        LoginRoute(
-            navigateToDashboard = navigateToDashboard,
-            navigateBack = navigateBack
         )
     }
 }
