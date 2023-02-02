@@ -30,6 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import dev.zitech.ds.theme.FireFlowTheme
 import dev.zitech.ds.theme.PreviewFireFlowTheme
 
+@Suppress("LargeClass")
 @OptIn(ExperimentalMaterial3Api::class)
 object FireFlowInputTexts {
 
