@@ -88,7 +88,7 @@ private fun PatScreenContent(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(start = FireFlowTheme.space.m, end = FireFlowTheme.space.m)
+            .padding(horizontal = FireFlowTheme.space.gutter)
             .padding(innerPadding)
             .consumeWindowInsets(innerPadding)
             .verticalScroll(rememberScrollState()),

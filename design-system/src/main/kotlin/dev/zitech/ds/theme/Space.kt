@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 
 @Immutable
 class Space(
+    val gutter: Dp = 16.dp,
     val xss: Dp = 2.dp,
     val xs: Dp = 4.dp,
     val s: Dp = 8.dp,
@@ -33,6 +34,7 @@ class Space(
 ) {
 
     fun copy(
+        gutter: Dp = this.gutter,
         xss: Dp = this.xss,
         xs: Dp = this.xs,
         s: Dp = this.s,
@@ -53,6 +55,7 @@ class Space(
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is Space) return false
+        if (gutter != other.gutter) return false
         if (xss != other.xss) return false
         if (xs != other.xs) return false
         if (s != other.s) return false
@@ -64,7 +67,8 @@ class Space(
     }
 
     override fun hashCode(): Int {
-        var result = xss.hashCode()
+        var result = gutter.hashCode()
+        result = 31 * result + xss.hashCode()
         result = 31 * result + xs.hashCode()
         result = 31 * result + s.hashCode()
         result = 31 * result + m.hashCode()
@@ -76,6 +80,7 @@ class Space(
 
     override fun toString(): String {
         return "Space(" +
+            "gutter=$gutter, " +
             "xss=$xss, " +
             "xs=$xs, " +
             "s=$s, " +

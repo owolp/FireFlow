@@ -103,8 +103,8 @@ private fun WelcomeScreenContent(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .align(Alignment.BottomCenter)
-                .padding(start = FireFlowTheme.space.m, end = FireFlowTheme.space.m),
+                .padding(horizontal = FireFlowTheme.space.gutter)
+                .align(Alignment.BottomCenter),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             FireFlowAnimations.MoneyTree(
