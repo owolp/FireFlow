@@ -109,6 +109,7 @@ private fun OauthScreenContent(
             modifier = Modifier.fillMaxWidth(),
             headlineText = stringResource(R.string.oauth_server_address),
             value = state.serverAddress,
+            supportingText = stringResource(R.string.oauth_server_address_support_text),
             keyboardOptions = KeyboardOptions.Default.copy(
                 imeAction = ImeAction.Next
             ),
