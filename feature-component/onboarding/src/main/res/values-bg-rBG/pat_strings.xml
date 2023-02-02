@@ -19,4 +19,5 @@
 
     <string name="pat_server_address">Адрес на сървъра</string>
     <string name="pat_personal_access_token">Личен токен за достъп</string>
+    <string name="pat_login">Влизане</string>
 </resources>

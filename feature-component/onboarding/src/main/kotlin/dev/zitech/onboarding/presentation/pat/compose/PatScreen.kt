@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
@@ -38,6 +39,8 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
+import dev.zitech.ds.atoms.button.FireFlowButtons
+import dev.zitech.ds.atoms.spacer.FireFlowSpacers
 import dev.zitech.ds.molecules.input.FireFlowInputForm
 import dev.zitech.ds.molecules.snackbar.FireFlowSnackbarState
 import dev.zitech.ds.molecules.snackbar.rememberSnackbarState
@@ -58,7 +61,8 @@ internal fun PatScreen(
     snackbarState: FireFlowSnackbarState = rememberSnackbarState()
 ) {
     FireFlowScaffolds.Primary(
-        modifier = modifier,
+        modifier = modifier
+            .navigationBarsPadding(),
         snackbarState = snackbarState,
         topBar = {
             FireFlowTopAppBars.BackNavigation(
@@ -117,6 +121,13 @@ private fun PatScreenContent(
             ),
             onValueChanged = {}
         )
+        FireFlowSpacers.Vertical(modifier = Modifier.weight(1F))
+        FireFlowButtons.Filled.OnSurfaceTint(
+            modifier = Modifier.fillMaxWidth(),
+            text = stringResource(R.string.pat_login),
+            onClick = onLoginClick
+        )
+        FireFlowSpacers.Vertical()
     }
 }
 

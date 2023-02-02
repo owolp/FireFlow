@@ -104,7 +104,7 @@ private fun WelcomeScreenContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.BottomCenter)
-                .padding(FireFlowTheme.space.m),
+                .padding(start = FireFlowTheme.space.m, end = FireFlowTheme.space.m),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             FireFlowAnimations.MoneyTree(
