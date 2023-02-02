@@ -27,8 +27,9 @@ import androidx.compose.material3.TopAppBarState
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import dev.zitech.ds.R
 import dev.zitech.ds.atoms.button.FireFlowButtons
 import dev.zitech.ds.atoms.icon.FireFlowIcons
 import dev.zitech.ds.atoms.text.FireFlowTexts
@@ -67,23 +68,19 @@ object FireFlowTopAppBars {
     }
 
     @Composable
-    fun Navigation(
-        title: String,
-        navigationEnabled: Boolean,
-        navigationIcon: ImageVector,
-        navigationIconContentDescription: String,
+    fun BackNavigation(
         modifier: Modifier = Modifier,
+        title: String? = null,
         onNavigationClick: () -> Unit = {},
         scrollBehavior: TopAppBarScrollBehavior? = null
     ) {
         CenterAlignedTopAppBar(
             modifier = modifier,
-            title = { FireFlowTexts.TitleLarge(text = title) },
+            title = { title?.let { FireFlowTexts.TitleLarge(text = title) } },
             navigationIcon = {
                 FireFlowButtons.Icon(
-                    enabled = navigationEnabled,
-                    image = navigationIcon,
-                    contentDescription = navigationIconContentDescription,
+                    image = FireFlowIcons.ArrowBack,
+                    contentDescription = stringResource(id = R.string.cd_arrow_button_back),
                     onClick = onNavigationClick
                 )
             },
@@ -166,11 +163,8 @@ private fun Collapsing_Primary_Primary_Preview() {
 @Composable
 private fun TopAppBar_Navigation_Preview() {
     PreviewFireFlowTheme {
-        FireFlowTopAppBars.Navigation(
-            "Navigation",
-            true,
-            FireFlowIcons.ArrowBack,
-            ""
+        FireFlowTopAppBars.BackNavigation(
+            title = "Navigation"
         )
     }
 }

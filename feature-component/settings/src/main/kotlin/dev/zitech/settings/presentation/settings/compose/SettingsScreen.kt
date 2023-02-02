@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -101,7 +101,7 @@ private fun SettingsScreenContent(
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .padding(start = FireFlowTheme.space.m, end = FireFlowTheme.space.m)
+            .padding(horizontal = FireFlowTheme.space.gutter)
             .padding(innerPadding)
             .consumeWindowInsets(innerPadding),
         verticalArrangement = Arrangement.spacedBy(FireFlowTheme.space.l)

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,8 +31,8 @@ object FireFlowSpacers {
 
     @Composable
     fun Horizontal(
-        horizontalSpace: Dp,
-        modifier: Modifier = Modifier
+        modifier: Modifier = Modifier,
+        horizontalSpace: Dp = 0.dp
     ) {
         Spacer(
             modifier = modifier.size(
@@ -44,8 +44,8 @@ object FireFlowSpacers {
 
     @Composable
     fun Vertical(
-        verticalSpace: Dp,
-        modifier: Modifier = Modifier
+        modifier: Modifier = Modifier,
+        verticalSpace: Dp = 0.dp
     ) {
         Spacer(
             modifier = modifier.size(
@@ -78,7 +78,7 @@ object FireFlowSpacers {
 @Composable
 private fun Horizontal_Preview() {
     PreviewFireFlowTheme {
-        FireFlowSpacers.Horizontal(10.dp)
+        FireFlowSpacers.Horizontal(horizontalSpace = 10.dp)
     }
 }
 
@@ -94,7 +94,7 @@ private fun Horizontal_Preview() {
 @Composable
 private fun Vertical_Preview() {
     PreviewFireFlowTheme {
-        FireFlowSpacers.Vertical(10.dp)
+        FireFlowSpacers.Vertical(verticalSpace = 10.dp)
     }
 }
 

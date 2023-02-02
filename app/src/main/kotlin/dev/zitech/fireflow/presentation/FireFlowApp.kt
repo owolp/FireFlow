@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,7 +34,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination
@@ -67,8 +66,6 @@ internal fun FireFlowApp(
     FireFlowTheme(
         darkTheme = isDarkTheme(theme)
     ) {
-        val backgroundColor = FireFlowTheme.colors.primary.toArgb()
-
         FireFlowBackground.Primary {
             FireFlowScaffolds.Primary(
                 bottomBar = {

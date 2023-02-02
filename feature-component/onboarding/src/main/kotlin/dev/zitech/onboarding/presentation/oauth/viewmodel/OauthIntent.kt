@@ -15,23 +15,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.onboarding.presentation.navigation
+package dev.zitech.onboarding.presentation.oauth.viewmodel
 
-import dev.zitech.navigation.presentation.model.FireFlowNavigationDestination
+import dev.zitech.core.common.presentation.architecture.MviIntent
 
-private const val DESTINATION = "onboarding"
+internal sealed interface OauthIntent : MviIntent
 
-object OauthDestination : FireFlowNavigationDestination {
-    override val route: String = "oauth_route"
-    override val destination: String = DESTINATION
-}
-
-object PatDestination : FireFlowNavigationDestination {
-    override val route: String = "pat_route"
-    override val destination: String = DESTINATION
-}
-
-object WelcomeDestination : FireFlowNavigationDestination {
-    override val route: String = "welcome_route"
-    override val destination: String = DESTINATION
-}
+internal object OnLoginClick : OauthIntent
+internal object OnBackClick : OauthIntent
+internal object NavigationHandled : OauthIntent

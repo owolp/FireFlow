@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,9 +15,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.onboarding.presentation.login.model
+package dev.zitech.onboarding.presentation.pat.viewmodel
 
-enum class LoginType(val value: String) {
-    OAUTH("OAUTH"),
-    PAT("PAT")
-}
+import dev.zitech.core.common.presentation.architecture.MviState
+
+internal sealed interface PatEvent : MviState.Event
+
+internal object Idle : PatEvent
+internal object NavigateToDashboard : PatEvent
+internal object NavigateBack : PatEvent

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,51 +15,33 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.onboarding.presentation.login.viewmodel
+package dev.zitech.onboarding.presentation.oauth.viewmodel
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.zitech.core.common.presentation.architecture.MviViewModel
 import dev.zitech.core.persistence.domain.usecase.database.SaveUserAccountUseCase
-import dev.zitech.onboarding.presentation.login.model.LoginType
-import dev.zitech.onboarding.presentation.navigation.LoginDestination
 import javax.inject.Inject
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 @HiltViewModel
-internal class LoginViewModel @Inject constructor(
-    private val stateHandler: LoginStateHandler,
-    private val savedStateHandle: SavedStateHandle,
+internal class OauthViewModel @Inject constructor(
+    private val stateHandler: OauthStateHandler,
     private val saveUserAccountUseCase: SaveUserAccountUseCase
-) : ViewModel(), MviViewModel<LoginIntent, LoginState> {
+) : ViewModel(), MviViewModel<OauthIntent, OauthState> {
 
-    override val screenState: StateFlow<LoginState> = stateHandler.state
+    override val screenState: StateFlow<OauthState> = stateHandler.state
 
-    init {
-        getLoginType()
-    }
-
-    override fun sendIntent(intent: LoginIntent) {
+    override fun sendIntent(intent: OauthIntent) {
         viewModelScope.launch {
             when (intent) {
                 OnLoginClick -> handleOnLoginClick()
                 NavigationHandled -> stateHandler.resetEvent()
+                OnBackClick -> stateHandler.setEvent(NavigateBack)
             }
         }
-    }
-
-    private fun getLoginType() {
-        stateHandler.setLoginType(
-            LoginType.valueOf(
-                savedStateHandle.get<String>(LoginDestination.loginType)
-                    ?: throw UnsupportedOperationException(
-                        "Destination is missing key argument!"
-                    )
-            )
-        )
     }
 
     @Suppress("ForbiddenComment")
