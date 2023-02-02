@@ -36,4 +36,12 @@ internal class PatStateHandler @Inject constructor() : MviStateHandler<PatState>
     fun resetEvent() {
         setEvent(Idle)
     }
+
+    fun setPersonalAccessToken(pat: String) {
+        mutableState.update { it.copy(pat = pat) }
+    }
+
+    fun setServerAddress(serverAddress: String) {
+        mutableState.update { it.copy(serverAddress = serverAddress) }
+    }
 }

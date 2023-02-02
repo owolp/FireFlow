@@ -23,4 +23,6 @@ internal sealed interface PatIntent : MviIntent
 
 internal object OnLoginClick : PatIntent
 internal object OnBackClick : PatIntent
+internal data class OnServerAddressChange(val serverAddress: String) : PatIntent
+internal data class OnPersonalAccessTokenChange(val pat: String) : PatIntent
 internal object NavigationHandled : PatIntent

@@ -40,6 +40,8 @@ internal class PatViewModel @Inject constructor(
                 OnLoginClick -> handleOnLoginClick()
                 NavigationHandled -> stateHandler.resetEvent()
                 OnBackClick -> stateHandler.setEvent(NavigateBack)
+                is OnPersonalAccessTokenChange -> stateHandler.setPersonalAccessToken(intent.pat)
+                is OnServerAddressChange -> stateHandler.setServerAddress(intent.serverAddress)
             }
         }
     }

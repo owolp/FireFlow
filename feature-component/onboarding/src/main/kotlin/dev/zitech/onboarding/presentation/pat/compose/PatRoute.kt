@@ -30,6 +30,8 @@ import dev.zitech.onboarding.presentation.pat.viewmodel.NavigateToDashboard
 import dev.zitech.onboarding.presentation.pat.viewmodel.NavigationHandled
 import dev.zitech.onboarding.presentation.pat.viewmodel.OnBackClick
 import dev.zitech.onboarding.presentation.pat.viewmodel.OnLoginClick
+import dev.zitech.onboarding.presentation.pat.viewmodel.OnPersonalAccessTokenChange
+import dev.zitech.onboarding.presentation.pat.viewmodel.OnServerAddressChange
 import dev.zitech.onboarding.presentation.pat.viewmodel.PatViewModel
 
 @Composable
@@ -62,6 +64,8 @@ internal fun PatRoute(
         patState = screenState,
         snackbarState = snackbarState,
         onLoginClick = { viewModel.sendIntent(OnLoginClick) },
-        onBackClick = { viewModel.sendIntent(OnBackClick) }
+        onBackClick = { viewModel.sendIntent(OnBackClick) },
+        onServerAddressChange = { viewModel.sendIntent(OnServerAddressChange(it)) },
+        onPersonalAccessTokenChange = { viewModel.sendIntent(OnPersonalAccessTokenChange(it)) }
     )
 }
