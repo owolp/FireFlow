@@ -15,20 +15,21 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.common.framework.strings
+package dev.zitech.onboarding.presentation.oauth.viewmodel.resource
 
-import android.content.Context
-import androidx.annotation.StringRes
 import dev.zitech.core.common.domain.strings.StringsProvider
+import dev.zitech.core.common.presentation.resource.CommonStringsProvider
+import dev.zitech.onboarding.R
 import javax.inject.Inject
 
-internal class StringsProviderImpl @Inject constructor(
-    private val context: Context
-) : StringsProvider {
+internal class OauthStringsProvider @Inject constructor(
+    private val stringsProvider: StringsProvider,
+    private val commonStringsProvider: CommonStringsProvider
+) {
 
-    override fun invoke(@StringRes resId: Int): String =
-        context.getString(resId)
+    fun getNewAccessTokenUrl(serverAddress: String, clientId: String): String =
+        stringsProvider(R.string.firefly_iii_new_access_token_url, serverAddress, clientId)
 
-    override fun invoke(@StringRes resId: Int, vararg args: String): String =
-        context.getString(resId, *args)
+    fun getNoSupportedBrowserInstalled(): String =
+        commonStringsProvider.getNoSupportedBrowserInstalled()
 }

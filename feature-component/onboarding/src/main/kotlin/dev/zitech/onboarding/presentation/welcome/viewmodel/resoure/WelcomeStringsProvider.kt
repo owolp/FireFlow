@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,8 +33,8 @@ internal class WelcomeStringsProvider @Inject constructor(
     fun getDemoDialogConfirm(): String =
         stringsProvider(R.string.welcome_demo_dialog_confirm)
 
-    fun getFireflyUrl(): String =
-        stringsProvider(R.string.welcome_firefly_iii_url)
+    fun getFireflyHomePageUrl(): String =
+        stringsProvider(R.string.firefly_iii_home_page_url)
 
     fun getNoSupportedBrowserInstalled(): String =
         commonStringsProvider.getNoSupportedBrowserInstalled()

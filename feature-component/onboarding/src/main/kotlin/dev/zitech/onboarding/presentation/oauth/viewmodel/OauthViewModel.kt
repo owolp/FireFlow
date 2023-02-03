@@ -20,10 +20,13 @@ package dev.zitech.onboarding.presentation.oauth.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.zitech.core.common.domain.logger.Logger
+import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.model.exception.NoBrowserInstalledException
 import dev.zitech.core.common.presentation.architecture.MviViewModel
-import dev.zitech.core.persistence.domain.usecase.database.SaveUserAccountUseCase
 import dev.zitech.onboarding.domain.usecase.IsOauthLoginInputValidUseCase
 import dev.zitech.onboarding.domain.validator.ClientIdValidator
+import dev.zitech.onboarding.presentation.oauth.viewmodel.resource.OauthStringsProvider
 import javax.inject.Inject
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -31,10 +34,12 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 internal class OauthViewModel @Inject constructor(
     private val stateHandler: OauthStateHandler,
-    private val saveUserAccountUseCase: SaveUserAccountUseCase,
     private val isOauthLoginInputValidUseCase: IsOauthLoginInputValidUseCase,
-    private val clientIdValidator: ClientIdValidator
+    private val clientIdValidator: ClientIdValidator,
+    private val oauthStringsProvider: OauthStringsProvider
 ) : ViewModel(), MviViewModel<OauthIntent, OauthState> {
+
+    private val tag = Logger.tag(this::class.java)
 
     override val screenState: StateFlow<OauthState> = stateHandler.state
 
@@ -53,15 +58,21 @@ internal class OauthViewModel @Inject constructor(
                     stateHandler.setServerAddress(intent.serverAddress.trim())
                     setLoginEnabled()
                 }
+                is NavigatedToFireflyResult -> handleNavigatedToFireflyResult(intent.dataResult)
+                ErrorHandled -> stateHandler.resetEvent()
             }
         }
     }
 
-    @Suppress("ForbiddenComment")
-    private suspend fun handleOnLoginClick() {
-        // TODO: Dev usage
-        saveUserAccountUseCase(true)
-        stateHandler.setEvent(NavigateToDashboard)
+    private fun handleOnLoginClick() {
+        stateHandler.setEvent(
+            NavigateToFirefly(
+                oauthStringsProvider.getNewAccessTokenUrl(
+                    screenState.value.serverAddress,
+                    screenState.value.clientId
+                )
+            )
+        )
     }
 
     private fun handleOnClientIdChange(intent: OnClientIdChange) {
@@ -83,5 +94,24 @@ internal class OauthViewModel @Inject constructor(
                 )
             }
         )
+    }
+
+    private fun handleNavigatedToFireflyResult(dataResult: DataResult<Unit>) {
+        when (dataResult) {
+            is DataResult.Success -> stateHandler.resetEvent()
+            is DataResult.Error -> {
+                when (dataResult.cause) {
+                    is NoBrowserInstalledException -> {
+                        stateHandler.setEvent(
+                            ShowError(oauthStringsProvider.getNoSupportedBrowserInstalled())
+                        )
+                    }
+                    else -> {
+                        Logger.e(tag, exception = dataResult.cause)
+                        stateHandler.setEvent(NavigateToError)
+                    }
+                }
+            }
+        }
     }
 }

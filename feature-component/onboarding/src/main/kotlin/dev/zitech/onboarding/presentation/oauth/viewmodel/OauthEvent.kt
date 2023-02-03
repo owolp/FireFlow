@@ -24,3 +24,6 @@ internal sealed interface OauthEvent : MviState.Event
 internal object Idle : OauthEvent
 internal object NavigateToDashboard : OauthEvent
 internal object NavigateBack : OauthEvent
+internal data class NavigateToFirefly(val url: String) : OauthEvent
+internal data class ShowError(val message: String) : OauthEvent
+internal object NavigateToError : OauthEvent

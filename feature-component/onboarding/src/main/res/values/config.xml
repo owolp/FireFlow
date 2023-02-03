@@ -16,5 +16,6 @@
   -->
 
 <resources>
-    <string name="welcome_firefly_iii_url" translatable="false">https://www.firefly-iii.org/</string>
+    <string name="firefly_iii_home_page_url" translatable="false">https://www.firefly-iii.org/</string>
+    <string name="firefly_iii_new_access_token_url" translatable="false">%1s/oauth/authorize?client_id=%2s&amp;redirect_uri=http://fireflow&amp;response_type=code</string>
 </resources>
