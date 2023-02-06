@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,6 +16,8 @@
  */
 
 package dev.zitech.core.common.framework.strings;
+
+import android.annotation.SuppressLint;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -39,10 +41,11 @@ public class FakeStringsProvider implements StringsProvider {
 
     @NotNull
     @Override
-    public String invoke(int resId, @NotNull CharSequence... args) {
+    public String invoke(int resId, @NotNull String... args) {
         return Objects.requireNonNull(strings.get(resId));
     }
 
+    @SuppressLint("NewApi")
     public void addString(int resId, @Nullable String value) {
         strings.put(resId, Objects.requireNonNullElseGet(
                 value, () -> DataFactory.INSTANCE.createRandomString(null))
