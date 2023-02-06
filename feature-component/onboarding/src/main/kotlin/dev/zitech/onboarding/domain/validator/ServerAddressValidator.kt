@@ -29,6 +29,7 @@ internal class ServerAddressValidator @Inject constructor() : Validator<String> 
             and then followed by :// and
             then it might contain www. and
             then followed by subdomain of length (1, 256)
+            e.g. http://www.example.com, https://192.168.1.1
          */
         private const val ADDRESS_REGEX = "((http|https)://)(www.)?[a-zA-Z0-9@:%._+~#?&//=]{1,256}"
     }
