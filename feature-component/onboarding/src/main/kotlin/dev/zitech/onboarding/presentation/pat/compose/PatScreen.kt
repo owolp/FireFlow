@@ -38,6 +38,7 @@ import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import dev.zitech.ds.atoms.button.FireFlowButtons
 import dev.zitech.ds.atoms.spacer.FireFlowSpacers
@@ -57,6 +58,8 @@ internal fun PatScreen(
     patState: PatState,
     onLoginClick: () -> Unit,
     onBackClick: () -> Unit,
+    onServerAddressChange: (String) -> Unit,
+    onPersonalAccessTokenChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     snackbarState: FireFlowSnackbarState = rememberSnackbarState()
 ) {
@@ -72,7 +75,10 @@ internal fun PatScreen(
     ) { innerPadding ->
         PatScreenContent(
             innerPadding,
-            onLoginClick
+            patState,
+            onLoginClick,
+            onServerAddressChange,
+            onPersonalAccessTokenChange
         )
     }
 }
@@ -81,7 +87,10 @@ internal fun PatScreen(
 @Composable
 private fun PatScreenContent(
     innerPadding: PaddingValues,
-    onLoginClick: () -> Unit
+    state: PatState,
+    onLoginClick: () -> Unit,
+    onServerAddressChange: (String) -> Unit,
+    onPersonalAccessTokenChange: (String) -> Unit
 ) {
     val focusManager = LocalFocusManager.current
 
@@ -97,34 +106,38 @@ private fun PatScreenContent(
         FireFlowInputForm.TitleAndInput(
             modifier = Modifier.fillMaxWidth(),
             headlineText = stringResource(R.string.pat_server_address),
-            value = "http://",
+            value = state.serverAddress,
             keyboardOptions = KeyboardOptions.Default.copy(
-                imeAction = ImeAction.Next
+                imeAction = ImeAction.Next,
+                keyboardType = KeyboardType.Uri
             ),
             keyboardActions = KeyboardActions(
                 onNext = { focusManager.moveFocus(FocusDirection.Down) }
             ),
-            onValueChanged = {}
+            onValueChanged = onServerAddressChange
         )
         FireFlowInputForm.TitleAndInput(
             modifier = Modifier.fillMaxWidth(),
             headlineText = stringResource(R.string.pat_personal_access_token),
-            value = "",
+            value = state.pat,
             keyboardOptions = KeyboardOptions.Default.copy(
                 imeAction = ImeAction.Done
             ),
             keyboardActions = KeyboardActions(
                 onDone = {
                     focusManager.clearFocus()
-                    onLoginClick()
+                    if (state.loginEnabled) {
+                        onLoginClick()
+                    }
                 }
             ),
-            onValueChanged = {}
+            onValueChanged = onPersonalAccessTokenChange
         )
         FireFlowSpacers.Vertical(modifier = Modifier.weight(1F))
         FireFlowButtons.Filled.OnSurfaceTint(
             modifier = Modifier.fillMaxWidth(),
             text = stringResource(R.string.pat_login),
+            enabled = state.loginEnabled,
             onClick = onLoginClick
         )
         FireFlowSpacers.Vertical()
@@ -146,7 +159,9 @@ private fun PatScreen_Preview() {
         PatScreen(
             patState = PatState(),
             onLoginClick = {},
-            onBackClick = {}
+            onBackClick = {},
+            onServerAddressChange = {},
+            onPersonalAccessTokenChange = {}
         )
     }
 }

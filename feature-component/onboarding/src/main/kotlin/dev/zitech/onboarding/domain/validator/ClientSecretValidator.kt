@@ -15,14 +15,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.onboarding.presentation.oauth.viewmodel
+package dev.zitech.onboarding.domain.validator
 
-import dev.zitech.core.common.presentation.architecture.MviState
+import dev.zitech.core.common.domain.validator.Validator
+import javax.inject.Inject
 
-internal data class OauthState(
-    val clientId: String = "",
-    val clientSecret: String = "",
-    val loginEnabled: Boolean = false,
-    val serverAddress: String = "",
-    val event: OauthEvent = Idle
-) : MviState
+internal class ClientSecretValidator @Inject constructor() : Validator<String> {
+
+    override fun invoke(input: String): Boolean =
+        input.isNotBlank() && input.isNotEmpty()
+}

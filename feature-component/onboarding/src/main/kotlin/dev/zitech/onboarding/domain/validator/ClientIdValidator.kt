@@ -15,14 +15,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.onboarding.presentation.oauth.viewmodel
+package dev.zitech.onboarding.domain.validator
 
-import dev.zitech.core.common.presentation.architecture.MviState
+import dev.zitech.core.common.domain.validator.Validator
+import java.util.regex.Pattern
+import javax.inject.Inject
 
-internal data class OauthState(
-    val clientId: String = "",
-    val clientSecret: String = "",
-    val loginEnabled: Boolean = false,
-    val serverAddress: String = "",
-    val event: OauthEvent = Idle
-) : MviState
+internal class ClientIdValidator @Inject constructor() : Validator<String> {
+
+    companion object {
+        /*
+            The number must start with a digit between 1 and 9 and
+            then it might be followed by digit(s)
+         */
+        private const val NUMBER_REGEX = "^[1-9]\\d*\$"
+    }
+
+    override fun invoke(input: String): Boolean =
+        Pattern.compile(NUMBER_REGEX).matcher(input).matches()
+}

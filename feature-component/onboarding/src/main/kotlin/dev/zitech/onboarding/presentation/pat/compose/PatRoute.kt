@@ -18,7 +18,6 @@
 package dev.zitech.onboarding.presentation.pat.compose
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -30,6 +29,8 @@ import dev.zitech.onboarding.presentation.pat.viewmodel.NavigateToDashboard
 import dev.zitech.onboarding.presentation.pat.viewmodel.NavigationHandled
 import dev.zitech.onboarding.presentation.pat.viewmodel.OnBackClick
 import dev.zitech.onboarding.presentation.pat.viewmodel.OnLoginClick
+import dev.zitech.onboarding.presentation.pat.viewmodel.OnPersonalAccessTokenChange
+import dev.zitech.onboarding.presentation.pat.viewmodel.OnServerAddressChange
 import dev.zitech.onboarding.presentation.pat.viewmodel.PatViewModel
 
 @Composable
@@ -44,10 +45,8 @@ internal fun PatRoute(
 
     when (screenState.event) {
         NavigateToDashboard -> {
-            LaunchedEffect(Unit) {
-                navigateToDashboard()
-                viewModel.sendIntent(NavigationHandled)
-            }
+            navigateToDashboard()
+            viewModel.sendIntent(NavigationHandled)
         }
         NavigateBack -> {
             navigateBack()
@@ -62,6 +61,8 @@ internal fun PatRoute(
         patState = screenState,
         snackbarState = snackbarState,
         onLoginClick = { viewModel.sendIntent(OnLoginClick) },
-        onBackClick = { viewModel.sendIntent(OnBackClick) }
+        onBackClick = { viewModel.sendIntent(OnBackClick) },
+        onServerAddressChange = { viewModel.sendIntent(OnServerAddressChange(it)) },
+        onPersonalAccessTokenChange = { viewModel.sendIntent(OnPersonalAccessTokenChange(it)) }
     )
 }

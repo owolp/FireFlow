@@ -20,7 +20,6 @@
     <string name="welcome_slogan">Control your finance with FireFlow</string>
     <string name="welcome_firefly_iii_annotated_text">Firefly III</string>
     <string name="welcome_firefly_iii_text">and Firefly III personal finance manager</string>
-    <string name="welcome_firefly_iii_url" translatable="false">https://www.firefly-iii.org/</string>
     <string name="welcome_button_continue_with_oauth">Continue with OAuth</string>
     <string name="welcome_button_continue_with_personal_access_token">Continue with personal access token</string>
     <string name="welcome_button_demo">Continue with demo account</string>

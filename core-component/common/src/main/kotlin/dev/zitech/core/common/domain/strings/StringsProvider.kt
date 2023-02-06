@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,5 +21,5 @@ import androidx.annotation.StringRes
 
 interface StringsProvider {
     operator fun invoke(@StringRes resId: Int): String
-    operator fun invoke(@StringRes resId: Int, vararg args: CharSequence): String
+    operator fun invoke(@StringRes resId: Int, vararg args: String): String
 }

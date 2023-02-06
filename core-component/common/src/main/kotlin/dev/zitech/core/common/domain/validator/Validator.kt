@@ -15,14 +15,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.onboarding.presentation.oauth.viewmodel
+package dev.zitech.core.common.domain.validator
 
-import dev.zitech.core.common.presentation.architecture.MviState
-
-internal data class OauthState(
-    val clientId: String = "",
-    val clientSecret: String = "",
-    val loginEnabled: Boolean = false,
-    val serverAddress: String = "",
-    val event: OauthEvent = Idle
-) : MviState
+interface Validator<T> {
+    operator fun invoke(input: T): Boolean
+}

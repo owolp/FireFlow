@@ -36,4 +36,20 @@ internal class OauthStateHandler @Inject constructor() : MviStateHandler<OauthSt
     fun resetEvent() {
         setEvent(Idle)
     }
+
+    fun setClientId(clientId: String) {
+        mutableState.update { it.copy(clientId = clientId) }
+    }
+
+    fun setClientSecret(clientSecret: String) {
+        mutableState.update { it.copy(clientSecret = clientSecret) }
+    }
+
+    fun setServerAddress(serverAddress: String) {
+        mutableState.update { it.copy(serverAddress = serverAddress) }
+    }
+
+    fun setLoginEnabled(loginEnabled: Boolean) {
+        mutableState.update { it.copy(loginEnabled = loginEnabled) }
+    }
 }

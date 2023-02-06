@@ -22,6 +22,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.zitech.core.common.presentation.architecture.MviViewModel
 import dev.zitech.core.persistence.domain.usecase.database.SaveUserAccountUseCase
+import dev.zitech.onboarding.domain.usecase.IsPatLoginInputValidUseCase
 import javax.inject.Inject
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -29,7 +30,8 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 internal class PatViewModel @Inject constructor(
     private val stateHandler: PatStateHandler,
-    private val saveUserAccountUseCase: SaveUserAccountUseCase
+    private val saveUserAccountUseCase: SaveUserAccountUseCase,
+    private val isPatLoginInputValidUseCase: IsPatLoginInputValidUseCase
 ) : ViewModel(), MviViewModel<PatIntent, PatState> {
 
     override val screenState: StateFlow<PatState> = stateHandler.state
@@ -40,6 +42,14 @@ internal class PatViewModel @Inject constructor(
                 OnLoginClick -> handleOnLoginClick()
                 NavigationHandled -> stateHandler.resetEvent()
                 OnBackClick -> stateHandler.setEvent(NavigateBack)
+                is OnPersonalAccessTokenChange -> {
+                    stateHandler.setPersonalAccessToken(intent.pat)
+                    setLoginEnabled()
+                }
+                is OnServerAddressChange -> {
+                    stateHandler.setServerAddress(intent.serverAddress)
+                    setLoginEnabled()
+                }
             }
         }
     }
@@ -49,5 +59,16 @@ internal class PatViewModel @Inject constructor(
         // TODO: Dev usage
         saveUserAccountUseCase(true)
         stateHandler.setEvent(NavigateToDashboard)
+    }
+
+    private fun setLoginEnabled() {
+        stateHandler.setLoginEnabled(
+            with(screenState.value) {
+                isPatLoginInputValidUseCase(
+                    personalAccessToken = pat,
+                    serverAddress = serverAddress
+                )
+            }
+        )
     }
 }

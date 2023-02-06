@@ -15,14 +15,21 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.onboarding.presentation.oauth.viewmodel
+package dev.zitech.onboarding.domain.usecase
 
-import dev.zitech.core.common.presentation.architecture.MviState
+import dev.zitech.core.common.domain.validator.Validator
+import dev.zitech.onboarding.di.annotation.ValidatorPat
+import dev.zitech.onboarding.di.annotation.ValidatorServerAddress
+import javax.inject.Inject
 
-internal data class OauthState(
-    val clientId: String = "",
-    val clientSecret: String = "",
-    val loginEnabled: Boolean = false,
-    val serverAddress: String = "",
-    val event: OauthEvent = Idle
-) : MviState
+internal class IsPatLoginInputValidUseCase @Inject constructor(
+    @ValidatorPat private val patValidator: Validator<String>,
+    @ValidatorServerAddress private val serverAddressValidator: Validator<String>
+) {
+
+    operator fun invoke(
+        personalAccessToken: String,
+        serverAddress: String
+    ): Boolean = patValidator(personalAccessToken) &&
+        serverAddressValidator(serverAddress)
+}

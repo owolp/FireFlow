@@ -144,6 +144,7 @@ private fun WelcomeScreenContent(
                 text = stringResource(R.string.welcome_button_demo),
                 onClick = onDemoClick
             )
+            FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.s)
         }
     }
 }
@@ -158,7 +159,7 @@ private fun getFireflyInfoAnnotatedString() = buildAnnotatedString {
     append(fireFlyText)
     addStringAnnotation(
         tag = "URL",
-        annotation = stringResource(R.string.welcome_firefly_iii_url),
+        annotation = stringResource(R.string.firefly_iii_home_page_url),
         start = startPosition,
         end = lastPosition
     )

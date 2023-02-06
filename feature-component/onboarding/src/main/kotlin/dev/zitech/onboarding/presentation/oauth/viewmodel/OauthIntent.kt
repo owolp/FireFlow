@@ -17,10 +17,16 @@
 
 package dev.zitech.onboarding.presentation.oauth.viewmodel
 
+import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.common.presentation.architecture.MviIntent
 
 internal sealed interface OauthIntent : MviIntent
 
 internal object OnLoginClick : OauthIntent
 internal object OnBackClick : OauthIntent
+internal data class OnServerAddressChange(val serverAddress: String) : OauthIntent
+internal data class OnClientIdChange(val clientId: String) : OauthIntent
+internal data class OnClientSecretChange(val clientSecret: String) : OauthIntent
+internal data class NavigatedToFireflyResult(val dataResult: DataResult<Unit>) : OauthIntent
 internal object NavigationHandled : OauthIntent
+internal object ErrorHandled : OauthIntent

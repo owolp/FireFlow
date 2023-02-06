@@ -38,6 +38,7 @@ import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import dev.zitech.ds.atoms.button.FireFlowButtons
 import dev.zitech.ds.atoms.spacer.FireFlowSpacers
@@ -57,6 +58,9 @@ internal fun OauthScreen(
     oauthState: OauthState,
     onLoginClick: () -> Unit,
     onBackClick: () -> Unit,
+    onServerAddressChange: (String) -> Unit,
+    onClientIdChange: (String) -> Unit,
+    onClientSecretChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     snackbarState: FireFlowSnackbarState = rememberSnackbarState()
 ) {
@@ -72,7 +76,11 @@ internal fun OauthScreen(
     ) { innerPadding ->
         OauthScreenContent(
             innerPadding,
-            onLoginClick
+            oauthState,
+            onLoginClick,
+            onServerAddressChange,
+            onClientIdChange,
+            onClientSecretChange
         )
     }
 }
@@ -81,7 +89,11 @@ internal fun OauthScreen(
 @Composable
 private fun OauthScreenContent(
     innerPadding: PaddingValues,
-    onLoginClick: () -> Unit
+    state: OauthState,
+    onLoginClick: () -> Unit,
+    onServerAddressChange: (String) -> Unit,
+    onClientIdChange: (String) -> Unit,
+    onClientSecretChange: (String) -> Unit
 ) {
     val focusManager = LocalFocusManager.current
 
@@ -97,46 +109,51 @@ private fun OauthScreenContent(
         FireFlowInputForm.TitleAndInput(
             modifier = Modifier.fillMaxWidth(),
             headlineText = stringResource(R.string.oauth_server_address),
-            value = "http://",
+            value = state.serverAddress,
             keyboardOptions = KeyboardOptions.Default.copy(
-                imeAction = ImeAction.Next
+                imeAction = ImeAction.Next,
+                keyboardType = KeyboardType.Uri
             ),
             keyboardActions = KeyboardActions(
                 onNext = { focusManager.moveFocus(FocusDirection.Down) }
             ),
-            onValueChanged = {}
+            onValueChanged = onServerAddressChange
         )
         FireFlowInputForm.TitleAndInput(
             modifier = Modifier.fillMaxWidth(),
             headlineText = stringResource(R.string.oauth_client_id),
-            value = "",
+            value = state.clientId,
             keyboardOptions = KeyboardOptions.Default.copy(
-                imeAction = ImeAction.Next
+                imeAction = ImeAction.Next,
+                keyboardType = KeyboardType.Number
             ),
             keyboardActions = KeyboardActions(
                 onNext = { focusManager.moveFocus(FocusDirection.Down) }
             ),
-            onValueChanged = {}
+            onValueChanged = onClientIdChange
         )
         FireFlowInputForm.TitleAndInput(
             modifier = Modifier.fillMaxWidth(),
             headlineText = stringResource(R.string.oauth_client_secret),
-            value = "",
+            value = state.clientSecret,
             keyboardOptions = KeyboardOptions.Default.copy(
                 imeAction = ImeAction.Done
             ),
             keyboardActions = KeyboardActions(
                 onDone = {
                     focusManager.clearFocus()
-                    onLoginClick()
+                    if (state.loginEnabled) {
+                        onLoginClick()
+                    }
                 }
             ),
-            onValueChanged = {}
+            onValueChanged = onClientSecretChange
         )
         FireFlowSpacers.Vertical(modifier = Modifier.weight(1F))
         FireFlowButtons.Filled.OnSurfaceTint(
             modifier = Modifier.fillMaxWidth(),
             text = stringResource(R.string.oauth_login),
+            enabled = state.loginEnabled,
             onClick = onLoginClick
         )
         FireFlowSpacers.Vertical()
@@ -158,7 +175,10 @@ private fun OauthScreen_Preview() {
         OauthScreen(
             oauthState = OauthState(),
             onLoginClick = {},
-            onBackClick = {}
+            onBackClick = {},
+            onClientSecretChange = {},
+            onClientIdChange = {},
+            onServerAddressChange = {}
         )
     }
 }

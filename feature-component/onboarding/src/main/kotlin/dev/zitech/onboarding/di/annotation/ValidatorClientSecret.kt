@@ -15,14 +15,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.onboarding.presentation.oauth.viewmodel
+package dev.zitech.onboarding.di.annotation
 
-import dev.zitech.core.common.presentation.architecture.MviState
+import javax.inject.Qualifier
 
-internal data class OauthState(
-    val clientId: String = "",
-    val clientSecret: String = "",
-    val loginEnabled: Boolean = false,
-    val serverAddress: String = "",
-    val event: OauthEvent = Idle
-) : MviState
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+internal annotation class ValidatorClientSecret
