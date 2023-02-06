@@ -65,10 +65,8 @@ internal fun OauthRoute(
 
     when (val event = screenState.event) {
         NavigateToDashboard -> {
-            LaunchedEffect(Unit) {
-                navigateToDashboard()
-                viewModel.sendIntent(NavigationHandled)
-            }
+            navigateToDashboard()
+            viewModel.sendIntent(NavigationHandled)
         }
         NavigateBack -> {
             navigateBack()

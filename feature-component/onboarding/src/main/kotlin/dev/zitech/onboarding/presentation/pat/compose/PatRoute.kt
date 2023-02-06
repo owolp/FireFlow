@@ -18,7 +18,6 @@
 package dev.zitech.onboarding.presentation.pat.compose
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -46,10 +45,8 @@ internal fun PatRoute(
 
     when (screenState.event) {
         NavigateToDashboard -> {
-            LaunchedEffect(Unit) {
-                navigateToDashboard()
-                viewModel.sendIntent(NavigationHandled)
-            }
+            navigateToDashboard()
+            viewModel.sendIntent(NavigationHandled)
         }
         NavigateBack -> {
             navigateBack()
