@@ -18,7 +18,11 @@
 package dev.zitech.onboarding.presentation.navigation
 
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
+import androidx.navigation.navDeepLink
+import dev.zitech.onboarding.BuildConfig
 import dev.zitech.onboarding.presentation.oauth.compose.OauthRoute
 import dev.zitech.onboarding.presentation.pat.compose.PatRoute
 import dev.zitech.onboarding.presentation.welcome.compose.WelcomeRoute
@@ -33,8 +37,29 @@ fun NavGraphBuilder.onboardingGraph(
     navigateToError: () -> Unit,
     navigateBack: () -> Unit
 ) {
-    composable(route = OauthDestination.route) {
+    composable(
+        route = OauthDestination.route,
+        arguments = listOf(
+            navArgument(OauthDestination.oauthCode) {
+                type = NavType.StringType
+                defaultValue = null
+                nullable = true
+            }
+        ),
+        deepLinks = listOf(
+            navDeepLink {
+                uriPattern = BuildConfig.data_scheme +
+                    "://" +
+                    BuildConfig.data_host_authentication +
+                    "?code={" +
+                    OauthDestination.oauthCode +
+                    "}"
+            }
+        )
+    ) { navBackStackEntry ->
+        val oauthCode = navBackStackEntry.arguments?.getString(OauthDestination.oauthCode)
         OauthRoute(
+            oauthCode = oauthCode,
             navigateToDashboard = navigateToDashboard,
             navigateBack = navigateBack,
             navigateToError = navigateToError

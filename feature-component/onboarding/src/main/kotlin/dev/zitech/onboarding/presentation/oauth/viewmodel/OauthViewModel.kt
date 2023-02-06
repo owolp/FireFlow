@@ -60,6 +60,9 @@ internal class OauthViewModel @Inject constructor(
                 }
                 is NavigatedToFireflyResult -> handleNavigatedToFireflyResult(intent.dataResult)
                 ErrorHandled -> stateHandler.resetEvent()
+                is OnOauthCode -> {
+                    // TODO: Use secret + authcode to generate token
+                }
             }
         }
     }

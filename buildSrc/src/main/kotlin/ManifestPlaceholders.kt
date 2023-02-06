@@ -15,24 +15,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.onboarding.presentation.navigation
-
-import dev.zitech.navigation.presentation.model.FireFlowNavigationDestination
-
-private const val DESTINATION = "onboarding"
-
-object OauthDestination : FireFlowNavigationDestination {
-    override val route: String = "oauth_route"
-    override val destination: String = DESTINATION
-    const val oauthCode = "oauth_code"
-}
-
-object PatDestination : FireFlowNavigationDestination {
-    override val route: String = "pat_route"
-    override val destination: String = DESTINATION
-}
-
-object WelcomeDestination : FireFlowNavigationDestination {
-    override val route: String = "welcome_route"
-    override val destination: String = DESTINATION
+object ManifestPlaceholders {
+    val stringPlaceHolders = mapOf(
+        "data_host_authentication" to "authentication",
+        "data_scheme" to "fireflow"
+    )
 }
