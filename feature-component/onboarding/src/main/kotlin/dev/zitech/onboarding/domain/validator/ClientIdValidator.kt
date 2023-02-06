@@ -26,7 +26,7 @@ internal class ClientIdValidator @Inject constructor() : Validator<String> {
     companion object {
         /*
             The number must start with a digit between 1 and 9 and
-            then it might be followed by digit
+            then it might be followed by digit(s)
          */
         private const val NUMBER_REGEX = "^[1-9]\\d*\$"
     }
