@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "0dc6f7717207bc8f67fc44a468eebd48",
+    "identityHash": "0cc70d9ff33b1b39be3570a2fc0e5c66",
     "entities": [
       {
         "tableName": "user_accounts",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `isCurrentUserAccount` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `clientId` TEXT NOT NULL, `clientSecret` TEXT NOT NULL, `isCurrentUserAccount` INTEGER NOT NULL, `serverAddress` TEXT NOT NULL, `state` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -15,17 +15,41 @@
             "notNull": false
           },
           {
+            "fieldPath": "clientId",
+            "columnName": "clientId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "clientSecret",
+            "columnName": "clientSecret",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
             "fieldPath": "isCurrentUserAccount",
             "columnName": "isCurrentUserAccount",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "serverAddress",
+            "columnName": "serverAddress",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "state",
+            "columnName": "state",
+            "affinity": "TEXT",
+            "notNull": true
           }
         ],
         "primaryKey": {
+          "autoGenerate": true,
           "columnNames": [
             "id"
-          ],
-          "autoGenerate": true
+          ]
         },
         "indices": [],
         "foreignKeys": []
@@ -34,7 +58,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0dc6f7717207bc8f67fc44a468eebd48')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0cc70d9ff33b1b39be3570a2fc0e5c66')"
     ]
   }
 }

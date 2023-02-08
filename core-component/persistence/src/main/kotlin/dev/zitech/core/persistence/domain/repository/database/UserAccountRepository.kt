@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,5 +25,11 @@ interface UserAccountRepository {
 
     fun getUserAccounts(): Flow<DataResult<List<UserAccount>>>
     fun getCurrentUserAccount(): Flow<DataResult<UserAccount>>
-    suspend fun saveUserAccount(isCurrentUserAccount: Boolean): DataResult<Long>
+    suspend fun saveUserAccount(
+        clientId: String,
+        clientSecret: String,
+        isCurrentUserAccount: Boolean,
+        serverAddress: String,
+        state: String
+    ): DataResult<Long>
 }

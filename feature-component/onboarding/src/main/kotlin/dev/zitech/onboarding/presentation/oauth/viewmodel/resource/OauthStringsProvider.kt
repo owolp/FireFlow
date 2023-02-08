@@ -27,8 +27,8 @@ internal class OauthStringsProvider @Inject constructor(
     private val commonStringsProvider: CommonStringsProvider
 ) {
 
-    fun getNewAccessTokenUrl(serverAddress: String, clientId: String): String =
-        stringsProvider(R.string.firefly_iii_new_access_token_url, serverAddress, clientId)
+    fun getNewAccessTokenUrl(serverAddress: String, clientId: String, state: String): String =
+        stringsProvider(R.string.firefly_iii_new_access_token_url, serverAddress, clientId, state)
 
     fun getNoSupportedBrowserInstalled(): String =
         commonStringsProvider.getNoSupportedBrowserInstalled()

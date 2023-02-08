@@ -57,7 +57,7 @@ internal class PatViewModel @Inject constructor(
     @Suppress("ForbiddenComment")
     private suspend fun handleOnLoginClick() {
         // TODO: Dev usage
-        saveUserAccountUseCase(true)
+//        saveUserAccountUseCase(true)
         stateHandler.setEvent(NavigateToDashboard)
     }
 

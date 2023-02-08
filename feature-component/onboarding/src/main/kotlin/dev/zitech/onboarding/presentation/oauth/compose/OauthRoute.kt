@@ -17,7 +17,6 @@
 
 package dev.zitech.onboarding.presentation.oauth.compose
 
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -29,10 +28,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.coroutineScope
 import dev.zitech.core.common.framework.browser.Browser
-import dev.zitech.ds.atoms.loading.FireFlowProgressIndicators
 import dev.zitech.ds.molecules.snackbar.BottomNotifierMessage
 import dev.zitech.ds.molecules.snackbar.rememberSnackbarState
 import dev.zitech.ds.theme.FireFlowTheme
+import dev.zitech.onboarding.presentation.oauth.model.OauthAuthentication
 import dev.zitech.onboarding.presentation.oauth.viewmodel.ErrorHandled
 import dev.zitech.onboarding.presentation.oauth.viewmodel.Idle
 import dev.zitech.onboarding.presentation.oauth.viewmodel.NavigateBack
@@ -54,7 +53,7 @@ import kotlinx.coroutines.flow.stateIn
 
 @Composable
 internal fun OauthRoute(
-    oauthCode: String?,
+    oauthAuthentication: OauthAuthentication,
     navigateToDashboard: () -> Unit,
     navigateBack: () -> Unit,
     navigateToError: () -> Unit,
@@ -106,21 +105,16 @@ internal fun OauthRoute(
         }
     }
 
-    if (oauthCode == null) {
-        OauthScreen(
-            modifier = modifier,
-            oauthState = screenState,
-            snackbarState = snackbarState,
-            onLoginClick = { viewModel.sendIntent(OnLoginClick) },
-            onBackClick = { viewModel.sendIntent(OnBackClick) },
-            onServerAddressChange = { viewModel.sendIntent(OnServerAddressChange(it)) },
-            onClientIdChange = { viewModel.sendIntent(OnClientIdChange(it)) },
-            onClientSecretChange = { viewModel.sendIntent(OnClientSecretChange(it)) }
-        )
-    } else {
-        FireFlowProgressIndicators.Magnifier(
-            modifier = Modifier.fillMaxSize()
-        )
-        viewModel.sendIntent(OnOauthCode(oauthCode))
-    }
+    OauthScreen(
+        modifier = modifier,
+        oauthState = screenState,
+        snackbarState = snackbarState,
+        onLoginClick = { viewModel.sendIntent(OnLoginClick) },
+        onBackClick = { viewModel.sendIntent(OnBackClick) },
+        onServerAddressChange = { viewModel.sendIntent(OnServerAddressChange(it)) },
+        onClientIdChange = { viewModel.sendIntent(OnClientIdChange(it)) },
+        onClientSecretChange = { viewModel.sendIntent(OnClientSecretChange(it)) }
+    )
+
+    viewModel.sendIntent(OnOauthCode(oauthAuthentication))
 }

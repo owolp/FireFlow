@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,9 +46,21 @@ internal class UserAccountRepositoryImpl @Inject constructor(
                 }
             }
 
-    override suspend fun saveUserAccount(isCurrentUserAccount: Boolean): DataResult<Long> =
+    override suspend fun saveUserAccount(
+        clientId: String,
+        clientSecret: String,
+        isCurrentUserAccount: Boolean,
+        serverAddress: String,
+        state: String
+    ): DataResult<Long> =
         try {
-            val id = userAccountDatabaseSource.saveUserAccount(isCurrentUserAccount)
+            val id = userAccountDatabaseSource.saveUserAccount(
+                clientId = clientId,
+                clientSecret = clientSecret,
+                isCurrentUserAccount = isCurrentUserAccount,
+                serverAddress = serverAddress,
+                state = state
+            )
             DataResult.Success(id)
         } catch (exception: Exception) {
             DataResult.Error(cause = exception)

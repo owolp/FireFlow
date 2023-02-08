@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,8 +25,18 @@ class SaveUserAccountUseCase @Inject constructor(
     private val userAccountRepository: UserAccountRepository
 ) {
 
-    suspend operator fun invoke(isCurrentUserAccount: Boolean): DataResult<Long> =
+    suspend operator fun invoke(
+        clientId: String,
+        clientSecret: String,
+        isCurrentUserAccount: Boolean,
+        serverAddress: String,
+        state: String
+    ): DataResult<Long> =
         userAccountRepository.saveUserAccount(
-            isCurrentUserAccount = isCurrentUserAccount
+            clientId = clientId,
+            clientSecret = clientSecret,
+            isCurrentUserAccount = isCurrentUserAccount,
+            serverAddress = serverAddress,
+            state = state
         )
 }

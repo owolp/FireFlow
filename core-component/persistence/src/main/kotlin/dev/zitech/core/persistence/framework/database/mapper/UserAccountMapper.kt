@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,15 +17,31 @@
 
 package dev.zitech.core.persistence.framework.database.mapper
 
-import dev.zitech.core.common.data.mapper.Mapper
+import dev.zitech.core.common.data.mapper.DomainMapper
+import dev.zitech.core.common.data.mapper.EntityMapper
 import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.framework.database.entity.UserAccountEntity
 import javax.inject.Inject
 
-internal class UserAccountMapper @Inject constructor() : Mapper<UserAccountEntity, UserAccount> {
+internal class UserAccountMapper @Inject constructor() :
+    DomainMapper<UserAccountEntity, UserAccount>,
+    EntityMapper<UserAccount, UserAccountEntity> {
 
-    override fun invoke(input: UserAccountEntity) = UserAccount(
-        id = input.id ?: -1,
-        isCurrentUserAccount = input.isCurrentUserAccount
+    override fun toDomain(input: UserAccountEntity) = UserAccount(
+        id = input.id!!,
+        clientId = input.clientId,
+        clientSecret = input.clientSecret,
+        isCurrentUserAccount = input.isCurrentUserAccount,
+        serverAddress = input.serverAddress,
+        state = input.state
+    )
+
+    override fun toEntity(input: UserAccount) = UserAccountEntity(
+        id = input.id,
+        clientId = input.clientId,
+        clientSecret = input.clientSecret,
+        isCurrentUserAccount = input.isCurrentUserAccount,
+        serverAddress = input.serverAddress,
+        state = input.state
     )
 }

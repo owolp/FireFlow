@@ -19,6 +19,7 @@ package dev.zitech.onboarding.presentation.oauth.viewmodel
 
 import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.common.presentation.architecture.MviIntent
+import dev.zitech.onboarding.presentation.oauth.model.OauthAuthentication
 
 internal sealed interface OauthIntent : MviIntent
 
@@ -27,7 +28,7 @@ internal object OnBackClick : OauthIntent
 internal data class OnServerAddressChange(val serverAddress: String) : OauthIntent
 internal data class OnClientIdChange(val clientId: String) : OauthIntent
 internal data class OnClientSecretChange(val clientSecret: String) : OauthIntent
-internal data class OnOauthCode(val oauthCode: String) : OauthIntent
+internal data class OnOauthCode(val authentication: OauthAuthentication) : OauthIntent
 internal data class NavigatedToFireflyResult(val dataResult: DataResult<Unit>) : OauthIntent
 internal object NavigationHandled : OauthIntent
 internal object ErrorHandled : OauthIntent

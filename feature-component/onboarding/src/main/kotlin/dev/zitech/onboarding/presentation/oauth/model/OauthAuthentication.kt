@@ -15,20 +15,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.persistence.domain.source.database
+package dev.zitech.onboarding.presentation.oauth.model
 
-import dev.zitech.core.persistence.domain.model.database.UserAccount
-import kotlinx.coroutines.flow.Flow
+data class OauthAuthentication(
+    val code: String?,
+    val state: String?
+) {
 
-internal interface UserAccountDatabaseSource {
-
-    fun getUserAccounts(): Flow<List<UserAccount>>
-    fun getCurrentUserAccountOrNull(): Flow<UserAccount?>
-    suspend fun saveUserAccount(
-        clientId: String,
-        clientSecret: String,
-        isCurrentUserAccount: Boolean,
-        serverAddress: String,
-        state: String
-    ): Long
+    fun isComplete() = code != null && state != null
 }

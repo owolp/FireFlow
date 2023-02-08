@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,14 +21,10 @@ interface Mapper<in I, out O> {
     operator fun invoke(input: I): O
 }
 
-interface NullInputMapper<in I, out O> {
-    operator fun invoke(input: I?): O
+interface DomainMapper<in E, out D> {
+    fun toDomain(input: E): D
 }
 
-interface NullOutputMapper<in I, out O> {
-    operator fun invoke(input: I): O?
-}
-
-interface NullInputNullOutputMapper<in I, out O> {
-    operator fun invoke(input: I?): O?
+interface EntityMapper<in D, out E> {
+    fun toEntity(input: D): E
 }

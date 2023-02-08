@@ -74,7 +74,7 @@ internal class WelcomeViewModel @Inject constructor(
     @Suppress("ForbiddenComment")
     private suspend fun handleOnShowDemoPositive() {
         // TODO: Dev usage
-        saveUserAccountUseCase(true)
+        saveUserAccountUseCase("", "", true, "", "")
         stateHandler.setEvent(NavigateToDemo)
     }
 

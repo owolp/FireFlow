@@ -20,6 +20,7 @@ package dev.zitech.onboarding.presentation.oauth.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.zitech.core.common.DataFactory
 import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.common.domain.model.exception.NoBrowserInstalledException
@@ -38,6 +39,10 @@ internal class OauthViewModel @Inject constructor(
     private val clientIdValidator: ClientIdValidator,
     private val oauthStringsProvider: OauthStringsProvider
 ) : ViewModel(), MviViewModel<OauthIntent, OauthState> {
+
+    private companion object {
+        const val STATE_LENGTH = 10
+    }
 
     private val tag = Logger.tag(this::class.java)
 
@@ -61,6 +66,8 @@ internal class OauthViewModel @Inject constructor(
                 is NavigatedToFireflyResult -> handleNavigatedToFireflyResult(intent.dataResult)
                 ErrorHandled -> stateHandler.resetEvent()
                 is OnOauthCode -> {
+                    Logger.d(tag, "code=" + intent.authentication.code)
+                    Logger.d(tag, "state=" + intent.authentication.state)
                     // TODO: Use secret + authcode to generate token
                 }
             }
@@ -68,11 +75,14 @@ internal class OauthViewModel @Inject constructor(
     }
 
     private fun handleOnLoginClick() {
+        // TODO: Save user in db first
+        val state = DataFactory.createRandomString(STATE_LENGTH)
         stateHandler.setEvent(
             NavigateToFirefly(
                 oauthStringsProvider.getNewAccessTokenUrl(
                     screenState.value.serverAddress,
-                    screenState.value.clientId
+                    screenState.value.clientId,
+                    state
                 )
             )
         )
