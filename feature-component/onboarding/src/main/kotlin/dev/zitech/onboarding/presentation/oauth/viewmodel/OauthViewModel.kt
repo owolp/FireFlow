@@ -82,7 +82,7 @@ internal class OauthViewModel @Inject constructor(
         val serverAddress = screenState.value.serverAddress
         val state = DataFactory.createRandomString(STATE_LENGTH)
 
-        // TODO: Show Loading (Disable input, show login loading button)
+        stateHandler.setLoading(true)
         when (
             val result = saveUserAccountUseCase(
                 clientId,
@@ -154,7 +154,6 @@ internal class OauthViewModel @Inject constructor(
         val code = authentication.code
         val state = authentication.state
         if (code != null && state != null) {
-            // TODO: show loading button
             stateHandler.setLoading(true)
             when (val result = getUserAccountByStateUseCase(state)) {
                 is DataResult.Success -> {

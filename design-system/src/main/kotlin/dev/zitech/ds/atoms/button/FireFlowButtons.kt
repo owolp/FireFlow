@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -57,6 +57,7 @@ object FireFlowButtons {
             text: String,
             modifier: Modifier = Modifier,
             enabled: Boolean = true,
+            loading: Boolean = false,
             onClick: () -> Unit
         ) {
             Button(
@@ -76,6 +77,14 @@ object FireFlowButtons {
                         textAlign = TextAlign.Center
                     )
                 )
+
+                if (loading) {
+                    FireFlowProgressIndicators.FlashingDots(
+                        modifier = Modifier.padding(
+                            start = FireFlowTheme.space.s
+                        )
+                    )
+                }
             }
         }
     }
@@ -100,7 +109,7 @@ object FireFlowButtons {
         }
     }
 
-    object Loading {
+    object TextButton {
 
         @Composable
         fun OnSurface(
@@ -364,19 +373,19 @@ private fun Icon_Disabled_Preview() {
 }
 
 @Preview(
-    name = "Loading OnSurface Button Light Theme Enabled",
+    name = "TextButton OnSurface Button Light Theme Enabled",
     showBackground = true
 )
 @Preview(
-    name = "Loading OnSurface Button Dark Theme Enabled",
+    name = "TextButton OnSurface Button Dark Theme Enabled",
     uiMode = Configuration.UI_MODE_NIGHT_YES,
     showBackground = true
 )
 @Composable
-private fun Loading_OnSurface_Enabled_Preview() {
+private fun TextButton_OnSurface_Enabled_Preview() {
     PreviewFireFlowTheme {
-        FireFlowButtons.Loading.OnSurface(
-            text = "Loading OnSurface Enabled Button",
+        FireFlowButtons.TextButton.OnSurface(
+            text = "TextButton OnSurface Enabled Button",
             enabled = true,
             loading = true,
             onClick = {}
@@ -385,19 +394,19 @@ private fun Loading_OnSurface_Enabled_Preview() {
 }
 
 @Preview(
-    name = "Loading OnSurface Button Light Theme Disabled",
+    name = "TextButton OnSurface Button Light Theme Disabled",
     showBackground = true
 )
 @Preview(
-    name = "Loading OnSurface Button Dark Theme Disabled",
+    name = "TextButton OnSurface Button Dark Theme Disabled",
     uiMode = Configuration.UI_MODE_NIGHT_YES,
     showBackground = true
 )
 @Composable
-private fun Loading_OnSurface_Disabled_Preview() {
+private fun TextButton_OnSurface_Disabled_Preview() {
     PreviewFireFlowTheme {
-        FireFlowButtons.Loading.OnSurface(
-            text = "Loading OnSurface Disabled Button",
+        FireFlowButtons.TextButton.OnSurface(
+            text = "TextButton OnSurface Disabled Button",
             enabled = false,
             loading = true,
             onClick = {}

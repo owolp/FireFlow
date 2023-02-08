@@ -164,6 +164,7 @@ private fun OauthScreenContent(
             modifier = Modifier.fillMaxWidth(),
             text = stringResource(R.string.oauth_login),
             enabled = state.loginEnabled && !state.loading,
+            loading = state.loading,
             onClick = onLoginClick
         )
         FireFlowSpacers.Vertical()
