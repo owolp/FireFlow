@@ -18,6 +18,7 @@
 package dev.zitech.onboarding.presentation.oauth.compose
 
 import android.content.res.Configuration
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -64,13 +65,19 @@ internal fun OauthScreen(
     modifier: Modifier = Modifier,
     snackbarState: FireFlowSnackbarState = rememberSnackbarState()
 ) {
+    BackHandler(enabled = true) {
+        if (!oauthState.loading) onBackClick()
+    }
+
     FireFlowScaffolds.Primary(
         modifier = modifier
             .navigationBarsPadding(),
         snackbarState = snackbarState,
         topBar = {
             FireFlowTopAppBars.BackNavigation(
-                onNavigationClick = onBackClick
+                onNavigationClick = {
+                    if (!oauthState.loading) onBackClick()
+                }
             )
         }
     ) { innerPadding ->
