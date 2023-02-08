@@ -31,6 +31,9 @@ internal class UserAccountDatabaseSourceImpl @Inject constructor(
     private val userAccountMapper: UserAccountMapper
 ) : UserAccountDatabaseSource {
 
+    override suspend fun getUserAccountByStateOrNull(state: String): UserAccount? =
+        userAccountDao.getUserAccountByState(state)?.let(userAccountMapper::toDomain)
+
     override fun getUserAccounts(): Flow<List<UserAccount>> =
         userAccountDao.getUserAccounts().map { userAccountEntities ->
             userAccountEntities.map(userAccountMapper::toDomain)

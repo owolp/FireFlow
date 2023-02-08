@@ -20,7 +20,4 @@ package dev.zitech.onboarding.presentation.oauth.model
 data class OauthAuthentication(
     val code: String?,
     val state: String?
-) {
-
-    fun isComplete() = code != null && state != null
-}
+)

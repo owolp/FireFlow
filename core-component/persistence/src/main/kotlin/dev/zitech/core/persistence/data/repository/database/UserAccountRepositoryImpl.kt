@@ -20,6 +20,7 @@ package dev.zitech.core.persistence.data.repository.database
 import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.domain.model.exception.NullCurrentUserAccountException
+import dev.zitech.core.persistence.domain.model.exception.NullUserAccountException
 import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
 import dev.zitech.core.persistence.domain.source.database.UserAccountDatabaseSource
 import javax.inject.Inject
@@ -29,6 +30,11 @@ import kotlinx.coroutines.flow.map
 internal class UserAccountRepositoryImpl @Inject constructor(
     private val userAccountDatabaseSource: UserAccountDatabaseSource
 ) : UserAccountRepository {
+
+    override suspend fun getUserAccountByState(state: String): DataResult<UserAccount> =
+        userAccountDatabaseSource.getUserAccountByStateOrNull(state)?.let { userAccount ->
+            DataResult.Success(userAccount)
+        } ?: DataResult.Error(cause = NullUserAccountException)
 
     override fun getUserAccounts(): Flow<DataResult<List<UserAccount>>> =
         userAccountDatabaseSource.getUserAccounts()

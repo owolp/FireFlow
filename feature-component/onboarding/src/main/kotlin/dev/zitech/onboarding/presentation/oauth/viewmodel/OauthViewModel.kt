@@ -25,9 +25,12 @@ import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.common.domain.model.exception.NoBrowserInstalledException
 import dev.zitech.core.common.presentation.architecture.MviViewModel
+import dev.zitech.core.persistence.domain.model.exception.NullUserAccountException
+import dev.zitech.core.persistence.domain.usecase.database.GetUserAccountByStateUseCase
 import dev.zitech.core.persistence.domain.usecase.database.SaveUserAccountUseCase
 import dev.zitech.onboarding.domain.usecase.IsOauthLoginInputValidUseCase
 import dev.zitech.onboarding.domain.validator.ClientIdValidator
+import dev.zitech.onboarding.presentation.oauth.model.OauthAuthentication
 import dev.zitech.onboarding.presentation.oauth.viewmodel.resource.OauthStringsProvider
 import javax.inject.Inject
 import kotlinx.coroutines.flow.StateFlow
@@ -38,6 +41,7 @@ internal class OauthViewModel @Inject constructor(
     private val stateHandler: OauthStateHandler,
     private val isOauthLoginInputValidUseCase: IsOauthLoginInputValidUseCase,
     private val saveUserAccountUseCase: SaveUserAccountUseCase,
+    private val getUserAccountByStateUseCase: GetUserAccountByStateUseCase,
     private val clientIdValidator: ClientIdValidator,
     private val oauthStringsProvider: OauthStringsProvider
 ) : ViewModel(), MviViewModel<OauthIntent, OauthState> {
@@ -67,12 +71,7 @@ internal class OauthViewModel @Inject constructor(
                 }
                 is NavigatedToFireflyResult -> handleNavigatedToFireflyResult(intent.dataResult)
                 ErrorHandled -> stateHandler.resetEvent()
-                is OnOauthCode -> {
-                    Logger.d(tag, "code=" + intent.authentication.code)
-                    Logger.d(tag, "state=" + intent.authentication.state)
-                    // TODO: Use secret + authcode to generate token
-                    // TODO: Populate input fields in disabled state and show loading button
-                }
+                is OnOauthCode -> handleOnOauthCode(intent.authentication)
             }
         }
     }
@@ -86,7 +85,11 @@ internal class OauthViewModel @Inject constructor(
         // TODO: Show Loading (Disable input, show login loading button)
         when (
             val result = saveUserAccountUseCase(
-                clientId, clientSecret, false, serverAddress, state
+                clientId,
+                clientSecret,
+                false,
+                serverAddress,
+                state
             )
         ) {
             is DataResult.Success -> {
@@ -144,6 +147,33 @@ internal class OauthViewModel @Inject constructor(
                     }
                 }
             }
+        }
+    }
+
+    private suspend fun handleOnOauthCode(authentication: OauthAuthentication) {
+        val code = authentication.code
+        val state = authentication.state
+        if (code != null && state != null) {
+            // TODO: Populate input fields in disabled state and show loading button
+            when (val result = getUserAccountByStateUseCase(state)) {
+                is DataResult.Success -> {
+                    val userAccount = result.value
+                    stateHandler.setServerAddress(userAccount.serverAddress)
+                    stateHandler.setClientId(userAccount.clientId)
+                    stateHandler.setClientSecret(userAccount.clientSecret)
+
+                    // TODO: Update user account with code
+                    // TODO: Use secret + authcode to generate token
+                }
+                is DataResult.Error -> {
+                    // TODO: Show error message
+                    if (result.cause is NullUserAccountException) {
+                        // TODO
+                    }
+                }
+            }
+        } else {
+            // TODO: Show error message
         }
     }
 }
