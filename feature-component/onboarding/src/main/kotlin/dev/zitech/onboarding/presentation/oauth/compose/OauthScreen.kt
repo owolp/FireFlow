@@ -110,6 +110,7 @@ private fun OauthScreenContent(
             modifier = Modifier.fillMaxWidth(),
             headlineText = stringResource(R.string.oauth_server_address),
             value = state.serverAddress,
+            enabled = !state.loading,
             keyboardOptions = KeyboardOptions.Default.copy(
                 imeAction = ImeAction.Next,
                 keyboardType = KeyboardType.Uri
@@ -123,6 +124,7 @@ private fun OauthScreenContent(
             modifier = Modifier.fillMaxWidth(),
             headlineText = stringResource(R.string.oauth_client_id),
             value = state.clientId,
+            enabled = !state.loading,
             keyboardOptions = KeyboardOptions.Default.copy(
                 imeAction = ImeAction.Next,
                 keyboardType = KeyboardType.Number
@@ -136,6 +138,7 @@ private fun OauthScreenContent(
             modifier = Modifier.fillMaxWidth(),
             headlineText = stringResource(R.string.oauth_client_secret),
             value = state.clientSecret,
+            enabled = !state.loading,
             keyboardOptions = KeyboardOptions.Default.copy(
                 imeAction = ImeAction.Done
             ),
@@ -153,7 +156,7 @@ private fun OauthScreenContent(
         FireFlowButtons.Filled.OnSurfaceTint(
             modifier = Modifier.fillMaxWidth(),
             text = stringResource(R.string.oauth_login),
-            enabled = state.loginEnabled,
+            enabled = state.loginEnabled && !state.loading,
             onClick = onLoginClick
         )
         FireFlowSpacers.Vertical()

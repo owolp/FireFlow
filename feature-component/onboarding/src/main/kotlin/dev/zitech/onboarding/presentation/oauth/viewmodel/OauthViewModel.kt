@@ -154,7 +154,8 @@ internal class OauthViewModel @Inject constructor(
         val code = authentication.code
         val state = authentication.state
         if (code != null && state != null) {
-            // TODO: Populate input fields in disabled state and show loading button
+            // TODO: show loading button
+            stateHandler.setLoading(true)
             when (val result = getUserAccountByStateUseCase(state)) {
                 is DataResult.Success -> {
                     val userAccount = result.value

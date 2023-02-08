@@ -52,4 +52,8 @@ internal class OauthStateHandler @Inject constructor() : MviStateHandler<OauthSt
     fun setLoginEnabled(loginEnabled: Boolean) {
         mutableState.update { it.copy(loginEnabled = loginEnabled) }
     }
+
+    fun setLoading(loading: Boolean) {
+        mutableState.update { it.copy(loading = loading) }
+    }
 }
