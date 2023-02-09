@@ -25,6 +25,7 @@ import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.common.domain.model.exception.NoBrowserInstalledException
 import dev.zitech.core.common.presentation.architecture.MviViewModel
+import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.domain.model.exception.NullUserAccountException
 import dev.zitech.core.persistence.domain.usecase.database.GetUserAccountByStateUseCase
 import dev.zitech.core.persistence.domain.usecase.database.SaveUserAccountUseCase
@@ -84,7 +85,7 @@ internal class OauthViewModel @Inject constructor(
 
         stateHandler.setLoading(true)
         when (
-            val result = saveUserAccountUseCase(
+            saveUserAccountUseCase(
                 clientId = clientId,
                 clientSecret = clientSecret,
                 isCurrentUserAccount = false,
@@ -170,16 +171,7 @@ internal class OauthViewModel @Inject constructor(
                     setClientId(userAccount.clientId)
                     setClientSecret(userAccount.clientSecret)
                 }
-                saveUserAccountUseCase(
-                    clientId = userAccount.clientId,
-                    clientSecret = userAccount.clientSecret,
-                    isCurrentUserAccount = true,
-                    oauthCode = code,
-                    serverAddress = userAccount.serverAddress,
-                    userId = userAccount.userId
-                )
-
-                // TODO: Use secret + authcode to generate token
+                updateUserAccount(userAccount, code)
             }
             is DataResult.Error -> {
                 if (result.cause is NullUserAccountException) {
@@ -187,6 +179,26 @@ internal class OauthViewModel @Inject constructor(
                 } else {
                     TODO("Show error message")
                 }
+            }
+        }
+    }
+
+    private suspend fun updateUserAccount(userAccount: UserAccount, code: String) {
+        when (
+            saveUserAccountUseCase(
+                clientId = userAccount.clientId,
+                clientSecret = userAccount.clientSecret,
+                isCurrentUserAccount = true,
+                oauthCode = code,
+                serverAddress = userAccount.serverAddress,
+                userId = userAccount.userId
+            )
+        ) {
+            is DataResult.Success -> {
+                // TODO: Use secret + authcode to generate token
+            }
+            is DataResult.Error -> {
+                TODO("Show error message")
             }
         }
     }
