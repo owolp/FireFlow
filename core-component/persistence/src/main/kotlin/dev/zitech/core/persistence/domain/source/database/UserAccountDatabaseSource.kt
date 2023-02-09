@@ -26,14 +26,12 @@ internal interface UserAccountDatabaseSource {
     fun getUserAccounts(): Flow<List<UserAccount>>
     fun getCurrentUserAccountOrNull(): Flow<UserAccount?>
     suspend fun saveUserAccount(
-        accessToken: String?,
         clientId: String,
         clientSecret: String,
         isCurrentUserAccount: Boolean,
-        oauthCode: String?,
-        refreshToken: String?,
         serverAddress: String,
-        state: String?,
-        userId: Long?
+        state: String
     ): Long
+
+    suspend fun updateUserAccount(userAccount: UserAccount): Int
 }

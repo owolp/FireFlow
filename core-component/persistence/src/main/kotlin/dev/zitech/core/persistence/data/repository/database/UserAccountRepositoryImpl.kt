@@ -55,30 +55,34 @@ internal class UserAccountRepositoryImpl @Inject constructor(
             }
 
     override suspend fun saveUserAccount(
-        accessToken: String?,
         clientId: String,
         clientSecret: String,
         isCurrentUserAccount: Boolean,
-        oauthCode: String?,
-        refreshToken: String?,
         serverAddress: String,
-        state: String?,
-        userId: Long?
+        state: String
     ): DataResult<Long> =
         try {
             val resultId = userAccountDatabaseSource.saveUserAccount(
-                accessToken = accessToken,
                 clientId = clientId,
                 clientSecret = clientSecret,
                 isCurrentUserAccount = isCurrentUserAccount,
-                oauthCode = oauthCode,
-                refreshToken = refreshToken,
                 serverAddress = serverAddress,
-                state = state,
-                userId = userId
+                state = state
             )
             currentUserServerAddressInMemoryCache.data = serverAddress
             DataResult.Success(resultId)
+        } catch (exception: Exception) {
+            DataResult.Error(cause = exception)
+        }
+
+    override suspend fun updateUserAccount(userAccount: UserAccount): DataResult<Unit> =
+        try {
+            val result = userAccountDatabaseSource.updateUserAccount(userAccount)
+            if (result != 0) {
+                DataResult.Success(Unit)
+            } else {
+                DataResult.Error(cause = NullUserAccountException)
+            }
         } catch (exception: Exception) {
             DataResult.Error(cause = exception)
         }

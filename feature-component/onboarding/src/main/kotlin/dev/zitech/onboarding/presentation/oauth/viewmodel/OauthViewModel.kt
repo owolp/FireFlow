@@ -31,6 +31,7 @@ import dev.zitech.core.persistence.domain.model.database.UserAccount.Companion.S
 import dev.zitech.core.persistence.domain.model.exception.NullUserAccountException
 import dev.zitech.core.persistence.domain.usecase.database.GetUserAccountByStateUseCase
 import dev.zitech.core.persistence.domain.usecase.database.SaveUserAccountUseCase
+import dev.zitech.core.persistence.domain.usecase.database.UpdateUserAccountUseCase
 import dev.zitech.onboarding.domain.usecase.IsOauthLoginInputValidUseCase
 import dev.zitech.onboarding.domain.validator.ClientIdValidator
 import dev.zitech.onboarding.presentation.oauth.model.OauthAuthentication
@@ -44,6 +45,7 @@ internal class OauthViewModel @Inject constructor(
     private val stateHandler: OauthStateHandler,
     private val isOauthLoginInputValidUseCase: IsOauthLoginInputValidUseCase,
     private val saveUserAccountUseCase: SaveUserAccountUseCase,
+    private val updateUserAccountUseCase: UpdateUserAccountUseCase,
     private val getUserAccountByStateUseCase: GetUserAccountByStateUseCase,
     private val clientIdValidator: ClientIdValidator,
     private val oauthStringsProvider: OauthStringsProvider,
@@ -170,7 +172,7 @@ internal class OauthViewModel @Inject constructor(
                     setClientId(userAccount.clientId)
                     setClientSecret(userAccount.clientSecret)
                 }
-                updateUserAccount(userAccount, code)
+                retrieveToken(userAccount, code)
             }
             is DataResult.Error -> {
                 if (result.cause is NullUserAccountException) {
@@ -182,48 +184,28 @@ internal class OauthViewModel @Inject constructor(
         }
     }
 
-    private suspend fun updateUserAccount(userAccount: UserAccount, code: String) {
-        when (
-            saveUserAccountUseCase(
-                clientId = userAccount.clientId,
-                clientSecret = userAccount.clientSecret,
-                isCurrentUserAccount = true,
-                oauthCode = code,
-                serverAddress = userAccount.serverAddress,
-                userId = userAccount.userId
-            )
-        ) {
-            is DataResult.Success -> retrieveToken(userAccount, code)
-            is DataResult.Error -> {
-                TODO("Show error message")
-            }
-        }
-    }
-
     private suspend fun retrieveToken(userAccount: UserAccount, code: String) {
         // TODO: Remove usage of service
-        with(userAccount) {
-            val result = oauthService.get().postToken(
-                clientId,
-                clientSecret,
-                code
-            )
-            when (
-                saveUserAccountUseCase(
+        val result = oauthService.get().postToken(
+            userAccount.clientId,
+            userAccount.clientSecret,
+            code
+        )
+
+        when (
+            updateUserAccountUseCase(
+                userAccount.copy(
                     accessToken = result.accessToken,
-                    clientId = userAccount.clientId,
-                    clientSecret = userAccount.clientSecret,
                     isCurrentUserAccount = true,
                     oauthCode = code,
                     refreshToken = result.refreshToken,
-                    serverAddress = userAccount.serverAddress,
-                    userId = userAccount.userId
+                    state = null
                 )
-            ) {
-                is DataResult.Success -> stateHandler.setEvent(NavigateToDashboard)
-                is DataResult.Error -> {
-                    TODO("Show error message")
-                }
+            )
+        ) {
+            is DataResult.Success -> stateHandler.setEvent(NavigateToDashboard)
+            is DataResult.Error -> {
+                TODO("Show error message")
             }
         }
     }

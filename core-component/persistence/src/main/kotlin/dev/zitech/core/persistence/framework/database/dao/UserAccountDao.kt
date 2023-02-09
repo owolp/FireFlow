@@ -21,6 +21,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import dev.zitech.core.persistence.framework.database.entity.UserAccountEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -41,4 +42,7 @@ internal interface UserAccountDao {
 
     @Query("UPDATE user_accounts SET isCurrentUserAccount=0")
     suspend fun removeCurrentUserAccount(): Int
+
+    @Update
+    suspend fun updateUserAccount(userAccountEntity: UserAccountEntity): Int
 }

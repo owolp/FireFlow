@@ -26,12 +26,12 @@ import androidx.room.PrimaryKey
 internal data class UserAccountEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long? = null,
-    val accessToken: String?,
+    val accessToken: String? = null,
     val clientId: String,
     val clientSecret: String,
     val isCurrentUserAccount: Boolean,
-    val oauthCode: String?,
-    val refreshToken: String?,
+    val oauthCode: String? = null,
+    val refreshToken: String? = null,
     val serverAddress: String,
-    val state: String?
+    val state: String? = null
 )

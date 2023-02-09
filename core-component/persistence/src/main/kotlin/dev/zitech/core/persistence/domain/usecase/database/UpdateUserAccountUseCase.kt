@@ -15,24 +15,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.persistence.domain.repository.database
+package dev.zitech.core.persistence.domain.usecase.database
 
 import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.persistence.domain.model.database.UserAccount
-import kotlinx.coroutines.flow.Flow
+import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
+import javax.inject.Inject
 
-interface UserAccountRepository {
+class UpdateUserAccountUseCase @Inject constructor(
+    private val userAccountRepository: UserAccountRepository
+) {
 
-    suspend fun getUserAccountByState(state: String): DataResult<UserAccount>
-    fun getUserAccounts(): Flow<DataResult<List<UserAccount>>>
-    fun getCurrentUserAccount(): Flow<DataResult<UserAccount>>
-    suspend fun saveUserAccount(
-        clientId: String,
-        clientSecret: String,
-        isCurrentUserAccount: Boolean,
-        serverAddress: String,
-        state: String
-    ): DataResult<Long>
-
-    suspend fun updateUserAccount(userAccount: UserAccount): DataResult<Unit>
+    suspend operator fun invoke(userAccount: UserAccount): DataResult<Unit> =
+        userAccountRepository.updateUserAccount(userAccount)
 }
