@@ -51,12 +51,12 @@ import dev.zitech.ds.templates.scaffold.FireFlowScaffolds
 import dev.zitech.ds.theme.FireFlowTheme
 import dev.zitech.ds.theme.PreviewFireFlowTheme
 import dev.zitech.onboarding.R
-import dev.zitech.onboarding.presentation.oauth.viewmodel.OauthState
+import dev.zitech.onboarding.presentation.oauth.viewmodel.OAuthState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun OauthScreen(
-    oauthState: OauthState,
+internal fun OAuthScreen(
+    oauthState: OAuthState,
     onLoginClick: () -> Unit,
     onBackClick: () -> Unit,
     onServerAddressChange: (String) -> Unit,
@@ -81,7 +81,7 @@ internal fun OauthScreen(
             )
         }
     ) { innerPadding ->
-        OauthScreenContent(
+        OAuthScreenContent(
             innerPadding,
             oauthState,
             onLoginClick,
@@ -94,9 +94,9 @@ internal fun OauthScreen(
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun OauthScreenContent(
+private fun OAuthScreenContent(
     innerPadding: PaddingValues,
-    state: OauthState,
+    state: OAuthState,
     onLoginClick: () -> Unit,
     onServerAddressChange: (String) -> Unit,
     onClientIdChange: (String) -> Unit,
@@ -183,8 +183,8 @@ private fun OauthScreenContent(
 @Composable
 private fun OauthScreen_Preview() {
     PreviewFireFlowTheme {
-        OauthScreen(
-            oauthState = OauthState(),
+        OAuthScreen(
+            oauthState = OAuthState(),
             onLoginClick = {},
             onBackClick = {},
             onClientSecretChange = {},

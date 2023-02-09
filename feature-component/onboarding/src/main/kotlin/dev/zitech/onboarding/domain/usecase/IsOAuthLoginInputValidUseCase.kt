@@ -23,7 +23,7 @@ import dev.zitech.onboarding.di.annotation.ValidatorClientSecret
 import dev.zitech.onboarding.di.annotation.ValidatorServerAddress
 import javax.inject.Inject
 
-internal class IsOauthLoginInputValidUseCase @Inject constructor(
+internal class IsOAuthLoginInputValidUseCase @Inject constructor(
     @ValidatorClientId private val clientIdValidator: Validator<String>,
     @ValidatorClientSecret private val clientSecretValidator: Validator<String>,
     @ValidatorServerAddress private val serverAddressValidator: Validator<String>

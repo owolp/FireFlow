@@ -15,9 +15,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.onboarding.presentation.oauth.model
+package dev.zitech.onboarding.presentation.oauth.viewmodel
 
-data class OauthAuthentication(
-    val code: String?,
-    val state: String?
-)
+import dev.zitech.core.common.presentation.architecture.MviState
+
+internal data class OAuthState(
+    val clientId: String = "",
+    val clientSecret: String = "",
+    val loading: Boolean = false,
+    val loginEnabled: Boolean = false,
+    val serverAddress: String = "",
+    val event: OAuthEvent = Idle
+) : MviState

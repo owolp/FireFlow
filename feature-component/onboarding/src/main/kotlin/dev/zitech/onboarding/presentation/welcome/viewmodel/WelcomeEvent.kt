@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@ import dev.zitech.core.common.presentation.architecture.MviState
 internal sealed interface WelcomeEvent : MviState.Event
 
 internal object Idle : WelcomeEvent
-internal object NavigateToOath : WelcomeEvent
+internal object NavigateToOAuth : WelcomeEvent
 internal object NavigateToPat : WelcomeEvent
 internal object NavigateToDemo : WelcomeEvent
 internal data class NavigateToFirefly(val url: String) : WelcomeEvent

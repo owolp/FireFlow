@@ -44,7 +44,7 @@ internal class WelcomeViewModel @Inject constructor(
     override fun sendIntent(intent: WelcomeIntent) {
         viewModelScope.launch {
             when (intent) {
-                OnContinueWithOauthClick -> stateHandler.setEvent(NavigateToOath)
+                OnContinueWithOauthClick -> stateHandler.setEvent(NavigateToOAuth)
                 OnContinueWithPatClick -> stateHandler.setEvent(NavigateToPat)
                 OnDemoClick -> handleOnDemoClick()
                 OnBackClick -> stateHandler.setEvent(NavigateOutOfApp)

@@ -25,38 +25,38 @@ import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.common.domain.model.exception.NoBrowserInstalledException
 import dev.zitech.core.common.presentation.architecture.MviViewModel
-import dev.zitech.core.network.data.service.OauthService
+import dev.zitech.core.network.data.service.OAuthService
 import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.domain.model.database.UserAccount.Companion.STATE_LENGTH
 import dev.zitech.core.persistence.domain.model.exception.NullUserAccountException
 import dev.zitech.core.persistence.domain.usecase.database.GetUserAccountByStateUseCase
 import dev.zitech.core.persistence.domain.usecase.database.SaveUserAccountUseCase
 import dev.zitech.core.persistence.domain.usecase.database.UpdateUserAccountUseCase
-import dev.zitech.onboarding.domain.usecase.IsOauthLoginInputValidUseCase
+import dev.zitech.onboarding.domain.usecase.IsOAuthLoginInputValidUseCase
 import dev.zitech.onboarding.domain.validator.ClientIdValidator
-import dev.zitech.onboarding.presentation.oauth.model.OauthAuthentication
-import dev.zitech.onboarding.presentation.oauth.viewmodel.resource.OauthStringsProvider
+import dev.zitech.onboarding.presentation.oauth.model.OAuthAuthentication
+import dev.zitech.onboarding.presentation.oauth.viewmodel.resource.OAuthStringsProvider
 import javax.inject.Inject
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 @HiltViewModel
-internal class OauthViewModel @Inject constructor(
-    private val stateHandler: OauthStateHandler,
-    private val isOauthLoginInputValidUseCase: IsOauthLoginInputValidUseCase,
+internal class OAuthViewModel @Inject constructor(
+    private val stateHandler: OAuthStateHandler,
+    private val isOauthLoginInputValidUseCase: IsOAuthLoginInputValidUseCase,
     private val saveUserAccountUseCase: SaveUserAccountUseCase,
     private val updateUserAccountUseCase: UpdateUserAccountUseCase,
     private val getUserAccountByStateUseCase: GetUserAccountByStateUseCase,
     private val clientIdValidator: ClientIdValidator,
-    private val oauthStringsProvider: OauthStringsProvider,
-    private val oauthService: dagger.Lazy<OauthService>
-) : ViewModel(), MviViewModel<OauthIntent, OauthState> {
+    private val oauthStringsProvider: OAuthStringsProvider,
+    private val oauthService: dagger.Lazy<OAuthService>
+) : ViewModel(), MviViewModel<OAuthIntent, OAuthState> {
 
     private val tag = Logger.tag(this::class.java)
 
-    override val screenState: StateFlow<OauthState> = stateHandler.state
+    override val screenState: StateFlow<OAuthState> = stateHandler.state
 
-    override fun sendIntent(intent: OauthIntent) {
+    override fun sendIntent(intent: OAuthIntent) {
         viewModelScope.launch {
             when (intent) {
                 OnLoginClick -> handleOnLoginClick()
@@ -154,7 +154,7 @@ internal class OauthViewModel @Inject constructor(
         }
     }
 
-    private suspend fun handleOnOauthCode(authentication: OauthAuthentication) {
+    private suspend fun handleOnOauthCode(authentication: OAuthAuthentication) {
         val code = authentication.code
         val state = authentication.state
         if (code != null && state != null) {

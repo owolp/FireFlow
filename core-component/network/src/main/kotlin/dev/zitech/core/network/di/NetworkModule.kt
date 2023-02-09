@@ -26,7 +26,7 @@ import dagger.hilt.components.SingletonComponent
 import dev.zitech.core.common.di.annotation.CurrentUserServerAddressCache
 import dev.zitech.core.common.domain.cache.InMemoryCache
 import dev.zitech.core.common.domain.concurrency.ControlledRunner
-import dev.zitech.core.network.data.service.OauthService
+import dev.zitech.core.network.data.service.OAuthService
 import dev.zitech.core.network.domain.retrofit.RetrofitModel
 import dev.zitech.core.network.domain.retrofit.ServiceModel
 import dev.zitech.core.network.framework.retrofit.RetrofitFactory
@@ -60,6 +60,6 @@ internal interface NetworkModule {
 
         @ViewModelScoped
         @Provides
-        fun oauthService(serviceModel: ServiceModel): OauthService = serviceModel.oauthService
+        fun oauthService(serviceModel: ServiceModel): OAuthService = serviceModel.oauthService
     }
 }

@@ -22,7 +22,7 @@ import dev.zitech.core.common.presentation.resource.CommonStringsProvider
 import dev.zitech.onboarding.R
 import javax.inject.Inject
 
-internal class OauthStringsProvider @Inject constructor(
+internal class OAuthStringsProvider @Inject constructor(
     private val stringsProvider: StringsProvider,
     private val commonStringsProvider: CommonStringsProvider
 ) {

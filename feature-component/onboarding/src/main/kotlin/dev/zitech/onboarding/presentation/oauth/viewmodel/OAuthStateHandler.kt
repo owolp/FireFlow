@@ -24,12 +24,12 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-internal class OauthStateHandler @Inject constructor() : MviStateHandler<OauthState> {
+internal class OAuthStateHandler @Inject constructor() : MviStateHandler<OAuthState> {
 
-    private val mutableState = MutableStateFlow(OauthState())
-    override val state: StateFlow<OauthState> = mutableState.asStateFlow()
+    private val mutableState = MutableStateFlow(OAuthState())
+    override val state: StateFlow<OAuthState> = mutableState.asStateFlow()
 
-    fun setEvent(event: OauthEvent) {
+    fun setEvent(event: OAuthEvent) {
         mutableState.update { it.copy(event = event) }
     }
 

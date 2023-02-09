@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigateOutOfApp
 import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigateToDemo
 import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigateToError
 import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigateToFirefly
-import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigateToOath
+import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigateToOAuth
 import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigateToPat
 import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigatedToFireflyResult
 import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigationHandled
@@ -57,7 +57,7 @@ import kotlinx.coroutines.flow.stateIn
 
 @Composable
 internal fun WelcomeRoute(
-    navigateToOath: () -> Unit,
+    navigateToOAuth: () -> Unit,
     navigateToPat: () -> Unit,
     navigateToDemo: () -> Unit,
     navigateOutOfApp: () -> Unit,
@@ -72,8 +72,8 @@ internal fun WelcomeRoute(
     val coroutineScope = LocalLifecycleOwner.current.lifecycle.coroutineScope
 
     when (val event = screenState.event) {
-        NavigateToOath -> {
-            navigateToOath()
+        NavigateToOAuth -> {
+            navigateToOAuth()
             viewModel.sendIntent(NavigationHandled)
         }
         NavigateToPat -> {

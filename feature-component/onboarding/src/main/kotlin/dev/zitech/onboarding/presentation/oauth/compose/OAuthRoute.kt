@@ -31,7 +31,7 @@ import dev.zitech.core.common.framework.browser.Browser
 import dev.zitech.ds.molecules.snackbar.BottomNotifierMessage
 import dev.zitech.ds.molecules.snackbar.rememberSnackbarState
 import dev.zitech.ds.theme.FireFlowTheme
-import dev.zitech.onboarding.presentation.oauth.model.OauthAuthentication
+import dev.zitech.onboarding.presentation.oauth.model.OAuthAuthentication
 import dev.zitech.onboarding.presentation.oauth.viewmodel.ErrorHandled
 import dev.zitech.onboarding.presentation.oauth.viewmodel.Idle
 import dev.zitech.onboarding.presentation.oauth.viewmodel.NavigateBack
@@ -40,7 +40,7 @@ import dev.zitech.onboarding.presentation.oauth.viewmodel.NavigateToError
 import dev.zitech.onboarding.presentation.oauth.viewmodel.NavigateToFirefly
 import dev.zitech.onboarding.presentation.oauth.viewmodel.NavigatedToFireflyResult
 import dev.zitech.onboarding.presentation.oauth.viewmodel.NavigationHandled
-import dev.zitech.onboarding.presentation.oauth.viewmodel.OauthViewModel
+import dev.zitech.onboarding.presentation.oauth.viewmodel.OAuthViewModel
 import dev.zitech.onboarding.presentation.oauth.viewmodel.OnBackClick
 import dev.zitech.onboarding.presentation.oauth.viewmodel.OnClientIdChange
 import dev.zitech.onboarding.presentation.oauth.viewmodel.OnClientSecretChange
@@ -52,13 +52,13 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 
 @Composable
-internal fun OauthRoute(
-    oauthAuthentication: OauthAuthentication,
+internal fun OAuthRoute(
+    oauthAuthentication: OAuthAuthentication,
     navigateToDashboard: () -> Unit,
     navigateBack: () -> Unit,
     navigateToError: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: OauthViewModel = hiltViewModel()
+    viewModel: OAuthViewModel = hiltViewModel()
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
     val snackbarState = rememberSnackbarState()
@@ -105,7 +105,7 @@ internal fun OauthRoute(
         }
     }
 
-    OauthScreen(
+    OAuthScreen(
         modifier = modifier,
         oauthState = screenState,
         snackbarState = snackbarState,

@@ -15,15 +15,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.onboarding.presentation.oauth.viewmodel
+package dev.zitech.onboarding.presentation.oauth.model
 
-import dev.zitech.core.common.presentation.architecture.MviState
-
-internal sealed interface OauthEvent : MviState.Event
-
-internal object Idle : OauthEvent
-internal object NavigateToDashboard : OauthEvent
-internal object NavigateBack : OauthEvent
-internal data class NavigateToFirefly(val url: String) : OauthEvent
-internal data class ShowError(val message: String) : OauthEvent
-internal object NavigateToError : OauthEvent
+data class OAuthAuthentication(
+    val code: String?,
+    val state: String?
+)

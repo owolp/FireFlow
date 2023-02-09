@@ -22,7 +22,7 @@ import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
 
-interface OauthService {
+interface OAuthService {
 
     @FormUrlEncoded
     @POST("oauth/token")

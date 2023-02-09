@@ -19,11 +19,11 @@ package dev.zitech.onboarding.presentation.oauth.viewmodel
 
 import dev.zitech.core.common.presentation.architecture.MviState
 
-internal data class OauthState(
-    val clientId: String = "",
-    val clientSecret: String = "",
-    val loading: Boolean = false,
-    val loginEnabled: Boolean = false,
-    val serverAddress: String = "",
-    val event: OauthEvent = Idle
-) : MviState
+internal sealed interface OAuthEvent : MviState.Event
+
+internal object Idle : OAuthEvent
+internal object NavigateToDashboard : OAuthEvent
+internal object NavigateBack : OAuthEvent
+internal data class NavigateToFirefly(val url: String) : OAuthEvent
+internal data class ShowError(val message: String) : OAuthEvent
+internal object NavigateToError : OAuthEvent
