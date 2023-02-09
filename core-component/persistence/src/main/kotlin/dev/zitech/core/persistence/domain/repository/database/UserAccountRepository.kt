@@ -27,10 +27,12 @@ interface UserAccountRepository {
     fun getUserAccounts(): Flow<DataResult<List<UserAccount>>>
     fun getCurrentUserAccount(): Flow<DataResult<UserAccount>>
     suspend fun saveUserAccount(
+        accessToken: String?,
         clientId: String,
         clientSecret: String,
         isCurrentUserAccount: Boolean,
         oauthCode: String?,
+        refreshToken: String?,
         serverAddress: String,
         state: String?,
         userId: Long?

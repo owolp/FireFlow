@@ -55,20 +55,24 @@ internal class UserAccountRepositoryImpl @Inject constructor(
             }
 
     override suspend fun saveUserAccount(
+        accessToken: String?,
         clientId: String,
         clientSecret: String,
         isCurrentUserAccount: Boolean,
         oauthCode: String?,
+        refreshToken: String?,
         serverAddress: String,
         state: String?,
         userId: Long?
     ): DataResult<Long> =
         try {
             val resultId = userAccountDatabaseSource.saveUserAccount(
+                accessToken = accessToken,
                 clientId = clientId,
                 clientSecret = clientSecret,
                 isCurrentUserAccount = isCurrentUserAccount,
                 oauthCode = oauthCode,
+                refreshToken = refreshToken,
                 serverAddress = serverAddress,
                 state = state,
                 userId = userId

@@ -49,20 +49,24 @@ internal class UserAccountDatabaseSourceImpl @Inject constructor(
         }
 
     override suspend fun saveUserAccount(
+        accessToken: String?,
         clientId: String,
         clientSecret: String,
         isCurrentUserAccount: Boolean,
         oauthCode: String?,
+        refreshToken: String?,
         serverAddress: String,
         state: String?,
         userId: Long?
     ): Long = userAccountDao.saveUserAccount(
         UserAccountEntity(
+            accessToken = accessToken,
             clientId = clientId,
             clientSecret = clientSecret,
             id = userId,
             isCurrentUserAccount = isCurrentUserAccount,
             oauthCode = oauthCode,
+            refreshToken = refreshToken,
             serverAddress = serverAddress,
             state = state
         )

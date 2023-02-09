@@ -193,20 +193,37 @@ internal class OauthViewModel @Inject constructor(
                 userId = userAccount.userId
             )
         ) {
-            is DataResult.Success -> {
-                // TODO: Use secret + authcode to generate token
-                with(userAccount) {
-                    val result = oauthService.get().postToken(
-                        clientId,
-                        clientSecret,
-                        code
-                    )
-                    Logger.d(tag, "accessToken=${result.accessToken}")
-                    Logger.d(tag, "refreshToken=${result.refreshToken}")
-                }
-            }
+            is DataResult.Success -> retrieveToken(userAccount, code)
             is DataResult.Error -> {
                 TODO("Show error message")
+            }
+        }
+    }
+
+    private suspend fun retrieveToken(userAccount: UserAccount, code: String) {
+        // TODO: Remove usage of service
+        with(userAccount) {
+            val result = oauthService.get().postToken(
+                clientId,
+                clientSecret,
+                code
+            )
+            when (
+                saveUserAccountUseCase(
+                    accessToken = result.accessToken,
+                    clientId = userAccount.clientId,
+                    clientSecret = userAccount.clientSecret,
+                    isCurrentUserAccount = true,
+                    oauthCode = code,
+                    refreshToken = result.refreshToken,
+                    serverAddress = userAccount.serverAddress,
+                    userId = userAccount.userId
+                )
+            ) {
+                is DataResult.Success -> stateHandler.setEvent(NavigateToDashboard)
+                is DataResult.Error -> {
+                    TODO("Show error message")
+                }
             }
         }
     }

@@ -26,19 +26,23 @@ class SaveUserAccountUseCase @Inject constructor(
 ) {
 
     suspend operator fun invoke(
+        accessToken: String? = null,
         clientId: String,
         clientSecret: String,
         isCurrentUserAccount: Boolean,
         oauthCode: String? = null,
+        refreshToken: String? = null,
         serverAddress: String,
         state: String? = null,
         userId: Long? = null
     ): DataResult<Long> =
         userAccountRepository.saveUserAccount(
+            accessToken = accessToken,
             clientId = clientId,
             clientSecret = clientSecret,
             isCurrentUserAccount = isCurrentUserAccount,
             oauthCode = oauthCode,
+            refreshToken = refreshToken,
             serverAddress = serverAddress,
             state = state,
             userId = userId

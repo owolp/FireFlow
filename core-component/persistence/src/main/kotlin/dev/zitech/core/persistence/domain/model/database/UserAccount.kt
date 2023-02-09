@@ -18,10 +18,12 @@
 package dev.zitech.core.persistence.domain.model.database
 
 data class UserAccount(
+    val accessToken: String?,
     val clientId: String,
     val clientSecret: String,
     val isCurrentUserAccount: Boolean,
     val oauthCode: String?,
+    val refreshToken: String?,
     val serverAddress: String,
     val state: String?,
     val userId: Long

@@ -28,21 +28,25 @@ internal class UserAccountMapper @Inject constructor() :
     EntityMapper<UserAccount, UserAccountEntity> {
 
     override fun toDomain(input: UserAccountEntity) = UserAccount(
-        userId = input.id!!,
+        accessToken = input.accessToken,
         clientId = input.clientId,
         clientSecret = input.clientSecret,
         isCurrentUserAccount = input.isCurrentUserAccount,
         oauthCode = input.oauthCode,
+        refreshToken = input.refreshToken,
         serverAddress = input.serverAddress,
-        state = input.state
+        state = input.state,
+        userId = input.id!!
     )
 
     override fun toEntity(input: UserAccount) = UserAccountEntity(
         id = input.userId,
+        accessToken = input.accessToken,
         clientId = input.clientId,
         clientSecret = input.clientSecret,
         isCurrentUserAccount = input.isCurrentUserAccount,
         oauthCode = input.oauthCode,
+        refreshToken = input.refreshToken,
         serverAddress = input.serverAddress,
         state = input.state
     )
