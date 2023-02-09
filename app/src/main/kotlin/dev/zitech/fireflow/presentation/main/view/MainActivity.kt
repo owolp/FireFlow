@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,6 +29,7 @@ import androidx.core.view.WindowCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
+import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.fireflow.R
 import dev.zitech.fireflow.presentation.FireFlowApp
 import dev.zitech.fireflow.presentation.main.viewmodel.MainViewModel
@@ -36,6 +37,8 @@ import dev.zitech.fireflow.presentation.main.viewmodel.MainViewModel
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @AndroidEntryPoint
 internal class MainActivity : AppCompatActivity() {
+
+    private val tag = Logger.tag(this::class.java)
 
     private val viewModel: MainViewModel by viewModels()
 
@@ -70,5 +73,10 @@ internal class MainActivity : AppCompatActivity() {
                 )
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Logger.d(tag, "onResume, `intent.data=${intent.data}`")
     }
 }

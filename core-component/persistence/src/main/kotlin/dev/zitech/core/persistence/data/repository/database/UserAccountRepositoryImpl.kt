@@ -17,6 +17,7 @@
 
 package dev.zitech.core.persistence.data.repository.database
 
+import dev.zitech.core.common.domain.cache.InMemoryCache
 import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.domain.model.exception.NullCurrentUserAccountException
@@ -28,7 +29,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 internal class UserAccountRepositoryImpl @Inject constructor(
-    private val userAccountDatabaseSource: UserAccountDatabaseSource
+    private val userAccountDatabaseSource: UserAccountDatabaseSource,
+    private val currentUserServerAddressInMemoryCache: InMemoryCache<String>
 ) : UserAccountRepository {
 
     override suspend fun getUserAccountByState(state: String): DataResult<UserAccount> =
@@ -71,6 +73,7 @@ internal class UserAccountRepositoryImpl @Inject constructor(
                 state = state,
                 userId = userId
             )
+            currentUserServerAddressInMemoryCache.data = serverAddress
             DataResult.Success(resultId)
         } catch (exception: Exception) {
             DataResult.Error(cause = exception)

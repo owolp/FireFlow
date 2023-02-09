@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,10 +15,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.persistence.data.repository.cache
+package dev.zitech.core.common.data.repository
 
 import com.google.common.truth.Truth.assertThat
-import dev.zitech.core.persistence.domain.model.cache.Cache
+import dev.zitech.core.common.domain.cache.Cache
 import io.mockk.mockkClass
 import io.mockk.verify
 import org.junit.jupiter.api.BeforeEach

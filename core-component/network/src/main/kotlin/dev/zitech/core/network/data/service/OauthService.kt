@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,8 +15,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.persistence.domain.model.cache
+package dev.zitech.core.network.data.service
 
-interface Cache {
-    fun invalidate()
+import dev.zitech.core.network.data.model.PostTokenResponse
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
+import retrofit2.http.POST
+
+interface OauthService {
+
+    @FormUrlEncoded
+    @POST("oauth/token")
+    suspend fun postToken(
+        @Field("client_id") clientId: String,
+        @Field("client_secret") clientSecret: String,
+        @Field("code") code: String,
+        @Field("redirect_uri") redirectUri: String = "fireflow://authentication",
+        @Field("grant_type") grantType: String = "authorization_code"
+    ): PostTokenResponse
 }

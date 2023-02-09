@@ -15,18 +15,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.persistence.domain.model.database
+package dev.zitech.core.persistence.domain.cache
 
-data class UserAccount(
-    val clientId: String,
-    val clientSecret: String,
-    val isCurrentUserAccount: Boolean,
-    val oauthCode: String?,
-    val serverAddress: String,
-    val state: String?,
-    val userId: Long
-) {
-    companion object {
-        const val STATE_LENGTH = 10
-    }
-}
+import dev.zitech.core.common.domain.cache.CacheRepository
+import dev.zitech.core.common.domain.cache.InMemoryCache
+import javax.inject.Inject
+
+class CurrentUserServerAddressInMemoryCache @Inject constructor(
+    cacheRepository: CacheRepository
+) : InMemoryCache<String>(cacheRepository)

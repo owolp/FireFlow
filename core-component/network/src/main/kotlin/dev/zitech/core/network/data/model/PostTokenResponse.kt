@@ -15,18 +15,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.persistence.domain.model.database
+package dev.zitech.core.network.data.model
 
-data class UserAccount(
-    val clientId: String,
-    val clientSecret: String,
-    val isCurrentUserAccount: Boolean,
-    val oauthCode: String?,
-    val serverAddress: String,
-    val state: String?,
-    val userId: Long
-) {
-    companion object {
-        const val STATE_LENGTH = 10
-    }
-}
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
+
+@JsonClass(generateAdapter = true)
+data class PostTokenResponse(
+    @Json(name = "access_token")
+    val accessToken: String,
+    @Json(name = "refresh_token")
+    val refreshToken: String
+)

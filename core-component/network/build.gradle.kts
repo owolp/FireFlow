@@ -25,14 +25,17 @@ plugins {
 }
 
 dependencies {
+    implementation(projects.coreComponent.common)
+
     implementation(libs.androidx.compose.runtime)
     implementation(libs.google.dagger.hilt.android)
     kapt(libs.google.dagger.hilt.compiler)
     implementation(libs.jetbrains.kotlin.coroutines.android)
 
-    api(libs.squareup.moshi.moshi)
+    implementation(libs.squareup.moshi.moshi)
+    kapt(libs.squareup.moshi.kotlin.codegen)
     implementation(libs.squareup.okhttp3.logging.intereceptor)
-    api(libs.squareup.retrofit2.retrofit)
+    implementation(libs.squareup.retrofit2.retrofit)
     implementation(libs.squareup.retrofit2.converter.moshi)
 }
 

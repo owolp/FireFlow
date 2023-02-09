@@ -15,18 +15,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.persistence.domain.model.database
+package dev.zitech.core.network.framework.retrofit
 
-data class UserAccount(
-    val clientId: String,
-    val clientSecret: String,
-    val isCurrentUserAccount: Boolean,
-    val oauthCode: String?,
-    val serverAddress: String,
-    val state: String?,
-    val userId: Long
-) {
-    companion object {
-        const val STATE_LENGTH = 10
-    }
+import javax.inject.Inject
+import retrofit2.Retrofit
+import retrofit2.converter.moshi.MoshiConverterFactory
+
+internal class RetrofitFactory @Inject constructor() {
+
+    operator fun invoke(baseUrl: String): Retrofit =
+        Retrofit.Builder()
+            .baseUrl(baseUrl)
+//            .client(okHttpClientFactory.createOkHttpClient())
+            .addConverterFactory(MoshiConverterFactory.create())
+            .build()
 }

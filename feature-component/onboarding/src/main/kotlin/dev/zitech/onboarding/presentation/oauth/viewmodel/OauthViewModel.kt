@@ -25,7 +25,9 @@ import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.common.domain.model.exception.NoBrowserInstalledException
 import dev.zitech.core.common.presentation.architecture.MviViewModel
+import dev.zitech.core.network.data.service.OauthService
 import dev.zitech.core.persistence.domain.model.database.UserAccount
+import dev.zitech.core.persistence.domain.model.database.UserAccount.Companion.STATE_LENGTH
 import dev.zitech.core.persistence.domain.model.exception.NullUserAccountException
 import dev.zitech.core.persistence.domain.usecase.database.GetUserAccountByStateUseCase
 import dev.zitech.core.persistence.domain.usecase.database.SaveUserAccountUseCase
@@ -44,12 +46,9 @@ internal class OauthViewModel @Inject constructor(
     private val saveUserAccountUseCase: SaveUserAccountUseCase,
     private val getUserAccountByStateUseCase: GetUserAccountByStateUseCase,
     private val clientIdValidator: ClientIdValidator,
-    private val oauthStringsProvider: OauthStringsProvider
+    private val oauthStringsProvider: OauthStringsProvider,
+    private val oauthService: dagger.Lazy<OauthService>
 ) : ViewModel(), MviViewModel<OauthIntent, OauthState> {
-
-    private companion object {
-        const val STATE_LENGTH = 10
-    }
 
     private val tag = Logger.tag(this::class.java)
 
@@ -196,6 +195,15 @@ internal class OauthViewModel @Inject constructor(
         ) {
             is DataResult.Success -> {
                 // TODO: Use secret + authcode to generate token
+                with(userAccount) {
+                    val result = oauthService.get().postToken(
+                        clientId,
+                        clientSecret,
+                        code
+                    )
+                    Logger.d(tag, "accessToken=${result.accessToken}")
+                    Logger.d(tag, "refreshToken=${result.refreshToken}")
+                }
             }
             is DataResult.Error -> {
                 TODO("Show error message")
