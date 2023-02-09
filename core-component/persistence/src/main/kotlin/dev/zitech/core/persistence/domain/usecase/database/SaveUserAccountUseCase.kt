@@ -29,14 +29,18 @@ class SaveUserAccountUseCase @Inject constructor(
         clientId: String,
         clientSecret: String,
         isCurrentUserAccount: Boolean,
+        oauthCode: String? = null,
         serverAddress: String,
-        state: String
+        state: String? = null,
+        userId: Long? = null
     ): DataResult<Long> =
         userAccountRepository.saveUserAccount(
             clientId = clientId,
             clientSecret = clientSecret,
             isCurrentUserAccount = isCurrentUserAccount,
+            oauthCode = oauthCode,
             serverAddress = serverAddress,
-            state = state
+            state = state,
+            userId = userId
         )
 }

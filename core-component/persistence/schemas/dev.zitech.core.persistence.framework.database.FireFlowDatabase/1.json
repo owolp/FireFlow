@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "0cc70d9ff33b1b39be3570a2fc0e5c66",
+    "identityHash": "7ac08a6e817d0ccb102ec1a9a792eee2",
     "entities": [
       {
         "tableName": "user_accounts",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `clientId` TEXT NOT NULL, `clientSecret` TEXT NOT NULL, `isCurrentUserAccount` INTEGER NOT NULL, `serverAddress` TEXT NOT NULL, `state` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `clientId` TEXT NOT NULL, `clientSecret` TEXT NOT NULL, `isCurrentUserAccount` INTEGER NOT NULL, `oauthCode` TEXT, `serverAddress` TEXT NOT NULL, `state` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -33,6 +33,12 @@
             "notNull": true
           },
           {
+            "fieldPath": "oauthCode",
+            "columnName": "oauthCode",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
             "fieldPath": "serverAddress",
             "columnName": "serverAddress",
             "affinity": "TEXT",
@@ -42,7 +48,7 @@
             "fieldPath": "state",
             "columnName": "state",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -58,7 +64,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0cc70d9ff33b1b39be3570a2fc0e5c66')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7ac08a6e817d0ccb102ec1a9a792eee2')"
     ]
   }
 }

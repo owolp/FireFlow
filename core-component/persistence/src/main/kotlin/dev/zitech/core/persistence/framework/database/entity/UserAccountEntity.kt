@@ -29,6 +29,7 @@ internal data class UserAccountEntity(
     val clientId: String,
     val clientSecret: String,
     val isCurrentUserAccount: Boolean,
+    val oauthCode: String?,
     val serverAddress: String,
-    val state: String
+    val state: String?
 )

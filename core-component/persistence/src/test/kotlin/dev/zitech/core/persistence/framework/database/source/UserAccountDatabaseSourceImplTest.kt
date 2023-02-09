@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -67,11 +67,11 @@ internal class UserAccountDatabaseSourceImplTest {
             sut.getUserAccounts().test {
                 val result = awaitItem()
                 assertThat(result).hasSize(3)
-                assertThat(result[0].id).isEqualTo(1)
+                assertThat(result[0].userId).isEqualTo(1)
                 assertThat(result[0].isCurrentUserAccount).isTrue()
-                assertThat(result[1].id).isEqualTo(2)
+                assertThat(result[1].userId).isEqualTo(2)
                 assertThat(result[1].isCurrentUserAccount).isFalse()
-                assertThat(result[2].id).isEqualTo(3)
+                assertThat(result[2].userId).isEqualTo(3)
                 assertThat(result[2].isCurrentUserAccount).isFalse()
                 awaitComplete()
             }
@@ -93,7 +93,7 @@ internal class UserAccountDatabaseSourceImplTest {
             // Act & Assert
             sut.getCurrentUserAccountOrNull().test {
                 with(awaitItem()!!) {
-                    assertThat(id).isEqualTo(1)
+                    assertThat(userId).isEqualTo(1)
                     assertThat(isCurrentUserAccount).isTrue()
                 }
                 awaitComplete()

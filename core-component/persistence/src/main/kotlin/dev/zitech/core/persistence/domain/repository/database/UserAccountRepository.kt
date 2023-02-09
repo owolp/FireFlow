@@ -30,7 +30,9 @@ interface UserAccountRepository {
         clientId: String,
         clientSecret: String,
         isCurrentUserAccount: Boolean,
+        oauthCode: String?,
         serverAddress: String,
-        state: String
+        state: String?,
+        userId: Long?
     ): DataResult<Long>
 }

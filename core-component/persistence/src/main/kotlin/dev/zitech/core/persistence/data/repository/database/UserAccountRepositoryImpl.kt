@@ -56,18 +56,22 @@ internal class UserAccountRepositoryImpl @Inject constructor(
         clientId: String,
         clientSecret: String,
         isCurrentUserAccount: Boolean,
+        oauthCode: String?,
         serverAddress: String,
-        state: String
+        state: String?,
+        userId: Long?
     ): DataResult<Long> =
         try {
-            val id = userAccountDatabaseSource.saveUserAccount(
+            val resultId = userAccountDatabaseSource.saveUserAccount(
                 clientId = clientId,
                 clientSecret = clientSecret,
                 isCurrentUserAccount = isCurrentUserAccount,
+                oauthCode = oauthCode,
                 serverAddress = serverAddress,
-                state = state
+                state = state,
+                userId = userId
             )
-            DataResult.Success(id)
+            DataResult.Success(resultId)
         } catch (exception: Exception) {
             DataResult.Error(cause = exception)
         }

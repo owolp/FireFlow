@@ -85,11 +85,11 @@ internal class OauthViewModel @Inject constructor(
         stateHandler.setLoading(true)
         when (
             val result = saveUserAccountUseCase(
-                clientId,
-                clientSecret,
-                false,
-                serverAddress,
-                state
+                clientId = clientId,
+                clientSecret = clientSecret,
+                isCurrentUserAccount = false,
+                serverAddress = serverAddress,
+                state = state
             )
         ) {
             is DataResult.Success -> {
@@ -107,7 +107,7 @@ internal class OauthViewModel @Inject constructor(
                 }
             }
             is DataResult.Error -> {
-                // TODO: Show error for db save
+                TODO("Show error message for save id DB")
             }
         }
     }
@@ -156,28 +156,38 @@ internal class OauthViewModel @Inject constructor(
         val code = authentication.code
         val state = authentication.state
         if (code != null && state != null) {
-            stateHandler.setLoading(true)
-            when (val result = getUserAccountByStateUseCase(state)) {
-                is DataResult.Success -> {
-                    val userAccount = result.value
-                    with(stateHandler) {
-                        setServerAddress(userAccount.serverAddress)
-                        setClientId(userAccount.clientId)
-                        setClientSecret(userAccount.clientSecret)
-                    }
+            handleScreenOpenedFromDeepLink(state, code)
+        }
+    }
 
-                    // TODO: Update user account with code
-                    // TODO: Use secret + authcode to generate token
+    private suspend fun handleScreenOpenedFromDeepLink(state: String, code: String) {
+        stateHandler.setLoading(true)
+        when (val result = getUserAccountByStateUseCase(state)) {
+            is DataResult.Success -> {
+                val userAccount = result.value
+                with(stateHandler) {
+                    setServerAddress(userAccount.serverAddress)
+                    setClientId(userAccount.clientId)
+                    setClientSecret(userAccount.clientSecret)
                 }
-                is DataResult.Error -> {
-                    // TODO: Show error message
-                    if (result.cause is NullUserAccountException) {
-                        // TODO
-                    }
+                saveUserAccountUseCase(
+                    clientId = userAccount.clientId,
+                    clientSecret = userAccount.clientSecret,
+                    isCurrentUserAccount = true,
+                    oauthCode = code,
+                    serverAddress = userAccount.serverAddress,
+                    userId = userAccount.userId
+                )
+
+                // TODO: Use secret + authcode to generate token
+            }
+            is DataResult.Error -> {
+                if (result.cause is NullUserAccountException) {
+                    TODO("Show NullUserAccountException message")
+                } else {
+                    TODO("Show error message")
                 }
             }
-        } else {
-            // TODO: Show error message
         }
     }
 }

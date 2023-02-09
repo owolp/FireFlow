@@ -116,5 +116,7 @@ internal fun OauthRoute(
         onClientSecretChange = { viewModel.sendIntent(OnClientSecretChange(it)) }
     )
 
-    viewModel.sendIntent(OnOauthCode(oauthAuthentication))
+    LaunchedEffect(Unit) {
+        viewModel.sendIntent(OnOauthCode(oauthAuthentication))
+    }
 }
