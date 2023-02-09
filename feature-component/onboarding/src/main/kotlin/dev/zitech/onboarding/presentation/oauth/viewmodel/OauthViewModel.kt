@@ -93,16 +93,18 @@ internal class OauthViewModel @Inject constructor(
             )
         ) {
             is DataResult.Success -> {
-                stateHandler.setEvent(
-                    NavigateToFirefly(
-                        oauthStringsProvider.getNewAccessTokenUrl(
-                            serverAddress,
-                            clientId,
-                            state
+                with(stateHandler) {
+                    setEvent(
+                        NavigateToFirefly(
+                            oauthStringsProvider.getNewAccessTokenUrl(
+                                serverAddress,
+                                clientId,
+                                state
+                            )
                         )
                     )
-                )
-                // TODO: Hide Loading
+                    setLoading(true)
+                }
             }
             is DataResult.Error -> {
                 // TODO: Show error for db save
@@ -158,9 +160,11 @@ internal class OauthViewModel @Inject constructor(
             when (val result = getUserAccountByStateUseCase(state)) {
                 is DataResult.Success -> {
                     val userAccount = result.value
-                    stateHandler.setServerAddress(userAccount.serverAddress)
-                    stateHandler.setClientId(userAccount.clientId)
-                    stateHandler.setClientSecret(userAccount.clientSecret)
+                    with(stateHandler) {
+                        setServerAddress(userAccount.serverAddress)
+                        setClientId(userAccount.clientId)
+                        setClientSecret(userAccount.clientSecret)
+                    }
 
                     // TODO: Update user account with code
                     // TODO: Use secret + authcode to generate token
