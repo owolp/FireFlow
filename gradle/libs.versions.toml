@@ -12,6 +12,7 @@ jvmTarget = "11"
 lifecycle = "2.6.0-alpha05"
 kotlin = "1.8.0"
 navigation = "2.5.3"
+retrofit = "2.9.0"
 room = "2.5.0"
 test = "1.5.2"
 
@@ -79,5 +80,9 @@ jetbrains-kotlin-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-cor
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
 mockk-mockk = "io.mockk:mockk:1.13.4"
+squareup-moshi-moshi = "com.squareup.moshi:moshi:1.14.0"
 squareup-leakcanary-android = "com.squareup.leakcanary:leakcanary-android:2.10"
+squareup-okhttp3-logging-intereceptor = "com.squareup.okhttp3:logging-interceptor:4.10.0"
+squareup-retrofit2-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+squareup-retrofit2-converter-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "retrofit" }
 zetetic-sqlcipher = "net.zetetic:android-database-sqlcipher:4.5.3"

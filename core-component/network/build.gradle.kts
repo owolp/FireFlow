@@ -15,17 +15,27 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+apply(from = "$rootDir/config/dependencies/test-dependencies.gradle")
+
 plugins {
     id(BuildPlugins.KOTLIN_ANDROID)
     id(BuildPlugins.LIBRARY)
+    id(BuildPlugins.JUNIT5)
+    kotlin(BuildPlugins.KAPT)
 }
 
 dependencies {
-    api(projects.coreComponent.common)
-    api(projects.coreComponent.featureFlag)
-    api(projects.coreComponent.navigation)
-    api(projects.coreComponent.network)
-    api(projects.coreComponent.persistence)
-    api(projects.coreComponent.remoteConfig)
-    api(projects.coreComponent.reporter)
+    implementation(libs.androidx.compose.runtime)
+    implementation(libs.google.dagger.hilt.android)
+    kapt(libs.google.dagger.hilt.compiler)
+    implementation(libs.jetbrains.kotlin.coroutines.android)
+
+    api(libs.squareup.moshi.moshi)
+    implementation(libs.squareup.okhttp3.logging.intereceptor)
+    api(libs.squareup.retrofit2.retrofit)
+    implementation(libs.squareup.retrofit2.converter.moshi)
+}
+
+kapt {
+    correctErrorTypes = true
 }
