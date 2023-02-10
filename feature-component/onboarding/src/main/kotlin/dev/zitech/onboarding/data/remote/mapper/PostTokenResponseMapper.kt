@@ -15,22 +15,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.network.framework.retrofit
+package dev.zitech.onboarding.data.remote.mapper
 
-import dev.zitech.core.common.domain.cache.InMemoryCache
-import dev.zitech.core.network.data.service.OAuthService
-import dev.zitech.core.network.domain.retrofit.RetrofitModel
-import dev.zitech.core.network.domain.retrofit.ServiceModel
+import dev.zitech.core.common.data.mapper.DomainMapper
+import dev.zitech.core.network.data.model.PostTokenResponse
+import dev.zitech.onboarding.domain.model.Token
 import javax.inject.Inject
-import kotlinx.coroutines.runBlocking
 
-internal class ServiceModelImpl @Inject constructor(
-    private val retrofitModel: RetrofitModel,
-    private val serverAddress: InMemoryCache<String>
-) : ServiceModel {
+internal class PostTokenResponseMapper @Inject constructor() :
+    DomainMapper<PostTokenResponse, Token> {
 
-    override val oAuthService: OAuthService
-        get() = runBlocking {
-            retrofitModel.invoke(serverAddress.data!!).create(OAuthService::class.java)
-        }
+    override fun toDomain(input: PostTokenResponse) = Token(
+        accessToken = input.refreshToken,
+        refreshToken = input.refreshToken
+    )
 }

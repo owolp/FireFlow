@@ -15,10 +15,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.network.domain.retrofit
+package dev.zitech.onboarding.domain.model
 
-import dev.zitech.core.network.data.service.OAuthService
-
-internal interface ServiceModel {
-    val oAuthService: OAuthService
-}
+data class Token(
+    val accessToken: String,
+    val refreshToken: String
+)

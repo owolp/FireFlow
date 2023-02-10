@@ -25,13 +25,13 @@ import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.common.domain.model.exception.NoBrowserInstalledException
 import dev.zitech.core.common.presentation.architecture.MviViewModel
-import dev.zitech.core.network.data.service.OAuthService
 import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.domain.model.database.UserAccount.Companion.STATE_LENGTH
 import dev.zitech.core.persistence.domain.model.exception.NullUserAccountException
 import dev.zitech.core.persistence.domain.usecase.database.GetUserAccountByStateUseCase
 import dev.zitech.core.persistence.domain.usecase.database.SaveUserAccountUseCase
 import dev.zitech.core.persistence.domain.usecase.database.UpdateUserAccountUseCase
+import dev.zitech.onboarding.domain.usecase.GetTokenUseCase
 import dev.zitech.onboarding.domain.usecase.IsOAuthLoginInputValidUseCase
 import dev.zitech.onboarding.domain.validator.ClientIdValidator
 import dev.zitech.onboarding.presentation.oauth.model.OAuthAuthentication
@@ -47,9 +47,9 @@ internal class OAuthViewModel @Inject constructor(
     private val saveUserAccountUseCase: SaveUserAccountUseCase,
     private val updateUserAccountUseCase: UpdateUserAccountUseCase,
     private val getUserAccountByStateUseCase: GetUserAccountByStateUseCase,
+    private val getTokenUseCase: dagger.Lazy<GetTokenUseCase>,
     private val clientIdValidator: ClientIdValidator,
-    private val oauthStringsProvider: OAuthStringsProvider,
-    private val oauthService: dagger.Lazy<OAuthService>
+    private val oauthStringsProvider: OAuthStringsProvider
 ) : ViewModel(), MviViewModel<OAuthIntent, OAuthState> {
 
     private val tag = Logger.tag(this::class.java)
@@ -185,25 +185,31 @@ internal class OAuthViewModel @Inject constructor(
     }
 
     private suspend fun retrieveToken(userAccount: UserAccount, code: String) {
-        // TODO: Remove usage of service
-        val result = oauthService.get().postToken(
-            userAccount.clientId,
-            userAccount.clientSecret,
-            code
-        )
-
         when (
-            updateUserAccountUseCase(
-                userAccount.copy(
-                    accessToken = result.accessToken,
-                    isCurrentUserAccount = true,
-                    oauthCode = code,
-                    refreshToken = result.refreshToken,
-                    state = null
-                )
+            val result = getTokenUseCase.get()(
+                clientId = userAccount.clientId,
+                clientSecret = userAccount.clientSecret,
+                code = code
             )
         ) {
-            is DataResult.Success -> stateHandler.setEvent(NavigateToDashboard)
+            is DataResult.Success -> {
+                when (
+                    updateUserAccountUseCase(
+                        userAccount.copy(
+                            accessToken = result.value.accessToken,
+                            isCurrentUserAccount = true,
+                            oauthCode = code,
+                            refreshToken = result.value.refreshToken,
+                            state = null
+                        )
+                    )
+                ) {
+                    is DataResult.Success -> stateHandler.setEvent(NavigateToDashboard)
+                    is DataResult.Error -> {
+                        TODO("Show error message")
+                    }
+                }
+            }
             is DataResult.Error -> {
                 TODO("Show error message")
             }

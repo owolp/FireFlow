@@ -60,6 +60,6 @@ internal interface NetworkModule {
 
         @ViewModelScoped
         @Provides
-        fun oauthService(serviceModel: ServiceModel): OAuthService = serviceModel.oauthService
+        fun oAuthService(serviceModel: ServiceModel): OAuthService = serviceModel.oAuthService
     }
 }

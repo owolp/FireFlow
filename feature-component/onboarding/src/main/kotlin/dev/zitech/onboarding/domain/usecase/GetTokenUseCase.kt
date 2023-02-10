@@ -15,22 +15,20 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.network.framework.retrofit
+package dev.zitech.onboarding.domain.usecase
 
-import dev.zitech.core.common.domain.cache.InMemoryCache
-import dev.zitech.core.network.data.service.OAuthService
-import dev.zitech.core.network.domain.retrofit.RetrofitModel
-import dev.zitech.core.network.domain.retrofit.ServiceModel
+import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.onboarding.domain.model.Token
+import dev.zitech.onboarding.domain.repository.TokenRepository
 import javax.inject.Inject
-import kotlinx.coroutines.runBlocking
 
-internal class ServiceModelImpl @Inject constructor(
-    private val retrofitModel: RetrofitModel,
-    private val serverAddress: InMemoryCache<String>
-) : ServiceModel {
+internal class GetTokenUseCase @Inject constructor(
+    private val tokenRepository: TokenRepository
+) {
 
-    override val oAuthService: OAuthService
-        get() = runBlocking {
-            retrofitModel.invoke(serverAddress.data!!).create(OAuthService::class.java)
-        }
+    suspend operator fun invoke(
+        clientId: String,
+        clientSecret: String,
+        code: String
+    ): DataResult<Token> = tokenRepository.getToken(clientId, clientSecret, code)
 }
