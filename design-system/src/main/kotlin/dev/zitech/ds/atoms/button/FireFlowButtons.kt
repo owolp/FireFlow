@@ -72,10 +72,8 @@ object FireFlowButtons {
                 FireFlowTexts.TitleMedium(
                     text = text,
                     color = FireFlowTheme.colors.surface,
-                    style = FireFlowTheme.typography.titleMedium.copy(
-                        fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.Center
-                    )
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center
                 )
 
                 if (loading) {
@@ -128,10 +126,8 @@ object FireFlowButtons {
                 FireFlowTexts.TitleMedium(
                     text = text,
                     color = FireFlowTheme.colors.onSurface,
-                    style = FireFlowTheme.typography.titleMedium.copy(
-                        fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.Center
-                    )
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center
                 )
 
                 if (loading) {
@@ -166,10 +162,8 @@ object FireFlowButtons {
                 FireFlowTexts.TitleMedium(
                     text = text,
                     color = FireFlowTheme.colors.onSurface,
-                    style = FireFlowTheme.typography.titleMedium.copy(
-                        fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.Center
-                    )
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center
                 )
             }
         }
@@ -206,10 +200,8 @@ object FireFlowButtons {
                     start = FireFlowTheme.space.s
                 ),
                 text = text,
-                style = FireFlowTheme.typography.titleMedium.copy(
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center
-                )
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center
             )
         }
     }
@@ -232,10 +224,8 @@ object FireFlowButtons {
                 FireFlowTexts.TitleMedium(
                     text = text,
                     color = FireFlowTheme.colors.onSurface,
-                    style = FireFlowTheme.typography.titleMedium.copy(
-                        fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.Center
-                    )
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center
                 )
             }
         }
@@ -256,10 +246,8 @@ object FireFlowButtons {
                 FireFlowTexts.TitleMedium(
                     text = text,
                     color = FireFlowTheme.colors.inverseOnSurface,
-                    style = FireFlowTheme.typography.titleMedium.copy(
-                        fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.Center
-                    )
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center
                 )
             }
         }
@@ -280,10 +268,8 @@ object FireFlowButtons {
                 FireFlowTexts.TitleMedium(
                     text = text,
                     color = FireFlowTheme.colors.onErrorContainer,
-                    style = FireFlowTheme.typography.titleMedium.copy(
-                        fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.Center
-                    )
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center
                 )
             }
         }

@@ -114,17 +114,13 @@ private fun WelcomeScreenContent(
             FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.s)
             FireFlowTexts.DisplayMedium(
                 text = stringResource(R.string.welcome_slogan),
-                style = FireFlowTheme.typography.displayMedium.copy(
-                    textAlign = TextAlign.Center
-                )
+                textAlign = TextAlign.Center
             )
             FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.s)
             FireFlowClickableTexts.LabelSmall(
                 text = getFireflyInfoAnnotatedString(),
                 color = FireFlowTheme.colors.onSurface,
-                style = FireFlowTheme.typography.labelSmall.copy(
-                    textAlign = TextAlign.Center
-                )
+                textAlign = TextAlign.Center
             ) { onFireflyClick() }
             FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.l)
             FireFlowButtons.Filled.OnSurfaceTint(

@@ -23,7 +23,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import dev.zitech.ds.theme.FireFlowTheme
 import dev.zitech.ds.theme.PreviewFireFlowTheme
@@ -35,13 +36,18 @@ object FireFlowClickableTexts {
         text: AnnotatedString,
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
-        style: TextStyle = FireFlowTheme.typography.displayLarge,
+        fontWeight: FontWeight? = null,
+        textAlign: TextAlign = TextAlign.Start,
         onClick: (Int) -> Unit
     ) {
         ClickableText(
             modifier = modifier,
             text = text,
-            style = style.copy(color = color),
+            style = FireFlowTheme.typography.displayLarge.copy(
+                color = color,
+                fontWeight = fontWeight,
+                textAlign = textAlign
+            ),
             onClick = onClick
         )
     }
@@ -51,13 +57,18 @@ object FireFlowClickableTexts {
         text: AnnotatedString,
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
-        style: TextStyle = FireFlowTheme.typography.displayMedium,
+        fontWeight: FontWeight? = null,
+        textAlign: TextAlign = TextAlign.Start,
         onClick: (Int) -> Unit
     ) {
         ClickableText(
             modifier = modifier,
             text = text,
-            style = style.copy(color = color),
+            style = FireFlowTheme.typography.displayMedium.copy(
+                color = color,
+                fontWeight = fontWeight,
+                textAlign = textAlign
+            ),
             onClick = onClick
         )
     }
@@ -67,13 +78,18 @@ object FireFlowClickableTexts {
         text: AnnotatedString,
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
-        style: TextStyle = FireFlowTheme.typography.displaySmall,
+        fontWeight: FontWeight? = null,
+        textAlign: TextAlign = TextAlign.Start,
         onClick: (Int) -> Unit
     ) {
         ClickableText(
             modifier = modifier,
             text = text,
-            style = style.copy(color = color),
+            style = FireFlowTheme.typography.displaySmall.copy(
+                color = color,
+                fontWeight = fontWeight,
+                textAlign = textAlign
+            ),
             onClick = onClick
         )
     }
@@ -83,13 +99,18 @@ object FireFlowClickableTexts {
         text: AnnotatedString,
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
-        style: TextStyle = FireFlowTheme.typography.headlineLarge,
+        fontWeight: FontWeight? = null,
+        textAlign: TextAlign = TextAlign.Start,
         onClick: (Int) -> Unit
     ) {
         ClickableText(
             modifier = modifier,
             text = text,
-            style = style.copy(color = color),
+            style = FireFlowTheme.typography.headlineLarge.copy(
+                color = color,
+                fontWeight = fontWeight,
+                textAlign = textAlign
+            ),
             onClick = onClick
         )
     }
@@ -99,13 +120,18 @@ object FireFlowClickableTexts {
         text: AnnotatedString,
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
-        style: TextStyle = FireFlowTheme.typography.headlineMedium,
+        fontWeight: FontWeight? = null,
+        textAlign: TextAlign = TextAlign.Start,
         onClick: (Int) -> Unit
     ) {
         ClickableText(
             modifier = modifier,
             text = text,
-            style = style.copy(color = color),
+            style = FireFlowTheme.typography.headlineMedium.copy(
+                color = color,
+                fontWeight = fontWeight,
+                textAlign = textAlign
+            ),
             onClick = onClick
         )
     }
@@ -115,13 +141,18 @@ object FireFlowClickableTexts {
         text: AnnotatedString,
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
-        style: TextStyle = FireFlowTheme.typography.headlineSmall,
+        fontWeight: FontWeight? = null,
+        textAlign: TextAlign = TextAlign.Start,
         onClick: (Int) -> Unit
     ) {
         ClickableText(
             modifier = modifier,
             text = text,
-            style = style.copy(color = color),
+            style = FireFlowTheme.typography.headlineSmall.copy(
+                color = color,
+                fontWeight = fontWeight,
+                textAlign = textAlign
+            ),
             onClick = onClick
         )
     }
@@ -131,13 +162,18 @@ object FireFlowClickableTexts {
         text: AnnotatedString,
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
-        style: TextStyle = FireFlowTheme.typography.titleLarge,
+        fontWeight: FontWeight? = null,
+        textAlign: TextAlign = TextAlign.Start,
         onClick: (Int) -> Unit
     ) {
         ClickableText(
             modifier = modifier,
             text = text,
-            style = style.copy(color = color),
+            style = FireFlowTheme.typography.titleLarge.copy(
+                color = color,
+                fontWeight = fontWeight,
+                textAlign = textAlign
+            ),
             onClick = onClick
         )
     }
@@ -147,13 +183,18 @@ object FireFlowClickableTexts {
         text: AnnotatedString,
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
-        style: TextStyle = FireFlowTheme.typography.titleMedium,
+        fontWeight: FontWeight? = null,
+        textAlign: TextAlign = TextAlign.Start,
         onClick: (Int) -> Unit
     ) {
         ClickableText(
             modifier = modifier,
             text = text,
-            style = style.copy(color = color),
+            style = FireFlowTheme.typography.titleMedium.copy(
+                color = color,
+                fontWeight = fontWeight,
+                textAlign = textAlign
+            ),
             onClick = onClick
         )
     }
@@ -163,13 +204,18 @@ object FireFlowClickableTexts {
         text: AnnotatedString,
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
-        style: TextStyle = FireFlowTheme.typography.titleSmall,
+        fontWeight: FontWeight? = null,
+        textAlign: TextAlign = TextAlign.Start,
         onClick: (Int) -> Unit
     ) {
         ClickableText(
             modifier = modifier,
             text = text,
-            style = style.copy(color = color),
+            style = FireFlowTheme.typography.titleSmall.copy(
+                color = color,
+                fontWeight = fontWeight,
+                textAlign = textAlign
+            ),
             onClick = onClick
         )
     }
@@ -179,13 +225,18 @@ object FireFlowClickableTexts {
         text: AnnotatedString,
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
-        style: TextStyle = FireFlowTheme.typography.bodyLarge,
+        fontWeight: FontWeight? = null,
+        textAlign: TextAlign = TextAlign.Start,
         onClick: (Int) -> Unit
     ) {
         ClickableText(
             modifier = modifier,
             text = text,
-            style = style.copy(color = color),
+            style = FireFlowTheme.typography.bodyLarge.copy(
+                color = color,
+                fontWeight = fontWeight,
+                textAlign = textAlign
+            ),
             onClick = onClick
         )
     }
@@ -195,13 +246,18 @@ object FireFlowClickableTexts {
         text: AnnotatedString,
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
-        style: TextStyle = FireFlowTheme.typography.bodyMedium,
+        fontWeight: FontWeight? = null,
+        textAlign: TextAlign = TextAlign.Start,
         onClick: (Int) -> Unit
     ) {
         ClickableText(
             modifier = modifier,
             text = text,
-            style = style.copy(color = color),
+            style = FireFlowTheme.typography.bodyMedium.copy(
+                color = color,
+                fontWeight = fontWeight,
+                textAlign = textAlign
+            ),
             onClick = onClick
         )
     }
@@ -211,13 +267,18 @@ object FireFlowClickableTexts {
         text: AnnotatedString,
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
-        style: TextStyle = FireFlowTheme.typography.bodySmall,
+        fontWeight: FontWeight? = null,
+        textAlign: TextAlign = TextAlign.Start,
         onClick: (Int) -> Unit
     ) {
         ClickableText(
             modifier = modifier,
             text = text,
-            style = style.copy(color = color),
+            style = FireFlowTheme.typography.bodySmall.copy(
+                color = color,
+                fontWeight = fontWeight,
+                textAlign = textAlign
+            ),
             onClick = onClick
         )
     }
@@ -227,13 +288,18 @@ object FireFlowClickableTexts {
         text: AnnotatedString,
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
-        style: TextStyle = FireFlowTheme.typography.labelLarge,
+        fontWeight: FontWeight? = null,
+        textAlign: TextAlign = TextAlign.Start,
         onClick: (Int) -> Unit
     ) {
         ClickableText(
             modifier = modifier,
             text = text,
-            style = style.copy(color = color),
+            style = FireFlowTheme.typography.labelLarge.copy(
+                color = color,
+                fontWeight = fontWeight,
+                textAlign = textAlign
+            ),
             onClick = onClick
         )
     }
@@ -243,13 +309,18 @@ object FireFlowClickableTexts {
         text: AnnotatedString,
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
-        style: TextStyle = FireFlowTheme.typography.labelMedium,
+        fontWeight: FontWeight? = null,
+        textAlign: TextAlign = TextAlign.Start,
         onClick: (Int) -> Unit
     ) {
         ClickableText(
             modifier = modifier,
             text = text,
-            style = style.copy(color = color),
+            style = FireFlowTheme.typography.labelMedium.copy(
+                color = color,
+                fontWeight = fontWeight,
+                textAlign = textAlign
+            ),
             onClick = onClick
         )
     }
@@ -259,13 +330,18 @@ object FireFlowClickableTexts {
         text: AnnotatedString,
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
-        style: TextStyle = FireFlowTheme.typography.labelSmall,
+        fontWeight: FontWeight? = null,
+        textAlign: TextAlign = TextAlign.Start,
         onClick: (Int) -> Unit
     ) {
         ClickableText(
             modifier = modifier,
             text = text,
-            style = style.copy(color = color),
+            style = FireFlowTheme.typography.labelSmall.copy(
+                color = color,
+                fontWeight = fontWeight,
+                textAlign = textAlign
+            ),
             onClick = onClick
         )
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import dev.zitech.ds.atoms.text.FireFlowTexts.BodyMedium
 import dev.zitech.ds.atoms.text.FireFlowTexts.BodySmall
@@ -49,13 +50,16 @@ object FireFlowTexts {
         text: String,
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
-        style: TextStyle = FireFlowTheme.typography.displayLarge
+        fontWeight: FontWeight? = null,
+        textAlign: TextAlign = TextAlign.Start
     ) {
         Text(
             modifier = modifier,
             text = text,
             color = color,
-            style = style
+            fontWeight = fontWeight,
+            style = FireFlowTheme.typography.displayLarge,
+            textAlign = textAlign
         )
     }
 
@@ -64,13 +68,16 @@ object FireFlowTexts {
         text: AnnotatedString,
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
-        style: TextStyle = FireFlowTheme.typography.displayLarge
+        fontWeight: FontWeight? = null,
+        textAlign: TextAlign = TextAlign.Start
     ) {
         Text(
             modifier = modifier,
             text = text,
             color = color,
-            style = style
+            fontWeight = fontWeight,
+            style = FireFlowTheme.typography.displayLarge,
+            textAlign = textAlign
         )
     }
 
@@ -79,13 +86,16 @@ object FireFlowTexts {
         text: String,
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
-        style: TextStyle = FireFlowTheme.typography.displayMedium
+        fontWeight: FontWeight? = null,
+        textAlign: TextAlign = TextAlign.Start
     ) {
         Text(
             modifier = modifier,
             text = text,
             color = color,
-            style = style
+            fontWeight = fontWeight,
+            style = FireFlowTheme.typography.displayMedium,
+            textAlign = textAlign
         )
     }
 
@@ -94,13 +104,16 @@ object FireFlowTexts {
         text: AnnotatedString,
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
-        style: TextStyle = FireFlowTheme.typography.displayMedium
+        fontWeight: FontWeight? = null,
+        textAlign: TextAlign = TextAlign.Start
     ) {
         Text(
             modifier = modifier,
             text = text,
             color = color,
-            style = style
+            fontWeight = fontWeight,
+            style = FireFlowTheme.typography.displayMedium,
+            textAlign = textAlign
         )
     }
 
@@ -109,13 +122,16 @@ object FireFlowTexts {
         text: String,
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
-        style: TextStyle = FireFlowTheme.typography.displaySmall
+        fontWeight: FontWeight? = null,
+        textAlign: TextAlign = TextAlign.Start
     ) {
         Text(
             modifier = modifier,
             text = text,
             color = color,
-            style = style
+            fontWeight = fontWeight,
+            style = FireFlowTheme.typography.displaySmall,
+            textAlign = textAlign
         )
     }
 
@@ -124,13 +140,16 @@ object FireFlowTexts {
         text: AnnotatedString,
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
-        style: TextStyle = FireFlowTheme.typography.displaySmall
+        fontWeight: FontWeight? = null,
+        textAlign: TextAlign = TextAlign.Start
     ) {
         Text(
             modifier = modifier,
             text = text,
             color = color,
-            style = style
+            fontWeight = fontWeight,
+            style = FireFlowTheme.typography.displaySmall,
+            textAlign = textAlign
         )
     }
 
@@ -139,13 +158,16 @@ object FireFlowTexts {
         text: String,
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
-        style: TextStyle = FireFlowTheme.typography.headlineLarge
+        fontWeight: FontWeight? = null,
+        textAlign: TextAlign = TextAlign.Start
     ) {
         Text(
             modifier = modifier,
             text = text,
             color = color,
-            style = style
+            fontWeight = fontWeight,
+            style = FireFlowTheme.typography.headlineLarge,
+            textAlign = textAlign
         )
     }
 
@@ -154,13 +176,16 @@ object FireFlowTexts {
         text: AnnotatedString,
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
-        style: TextStyle = FireFlowTheme.typography.headlineLarge
+        fontWeight: FontWeight? = null,
+        textAlign: TextAlign = TextAlign.Start
     ) {
         Text(
             modifier = modifier,
             text = text,
             color = color,
-            style = style
+            fontWeight = fontWeight,
+            style = FireFlowTheme.typography.headlineLarge,
+            textAlign = textAlign
         )
     }
 
@@ -169,13 +194,16 @@ object FireFlowTexts {
         text: String,
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
-        style: TextStyle = FireFlowTheme.typography.headlineMedium
+        fontWeight: FontWeight? = null,
+        textAlign: TextAlign = TextAlign.Start
     ) {
         Text(
             modifier = modifier,
             text = text,
             color = color,
-            style = style
+            fontWeight = fontWeight,
+            style = FireFlowTheme.typography.headlineMedium,
+            textAlign = textAlign
         )
     }
 
@@ -184,13 +212,16 @@ object FireFlowTexts {
         text: AnnotatedString,
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
-        style: TextStyle = FireFlowTheme.typography.headlineMedium
+        fontWeight: FontWeight? = null,
+        textAlign: TextAlign = TextAlign.Start
     ) {
         Text(
             modifier = modifier,
             text = text,
             color = color,
-            style = style
+            fontWeight = fontWeight,
+            style = FireFlowTheme.typography.headlineMedium,
+            textAlign = textAlign
         )
     }
 
@@ -199,13 +230,16 @@ object FireFlowTexts {
         text: String,
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
-        style: TextStyle = FireFlowTheme.typography.headlineSmall
+        fontWeight: FontWeight? = null,
+        textAlign: TextAlign = TextAlign.Start
     ) {
         Text(
             modifier = modifier,
             text = text,
             color = color,
-            style = style
+            fontWeight = fontWeight,
+            style = FireFlowTheme.typography.headlineSmall,
+            textAlign = textAlign
         )
     }
 
@@ -214,13 +248,16 @@ object FireFlowTexts {
         text: AnnotatedString,
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
-        style: TextStyle = FireFlowTheme.typography.headlineSmall
+        fontWeight: FontWeight? = null,
+        textAlign: TextAlign = TextAlign.Start
     ) {
         Text(
             modifier = modifier,
             text = text,
             color = color,
-            style = style
+            fontWeight = fontWeight,
+            style = FireFlowTheme.typography.headlineSmall,
+            textAlign = textAlign
         )
     }
 
@@ -229,13 +266,16 @@ object FireFlowTexts {
         text: String,
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
-        style: TextStyle = FireFlowTheme.typography.titleLarge
+        fontWeight: FontWeight? = null,
+        textAlign: TextAlign = TextAlign.Start
     ) {
         Text(
             modifier = modifier,
             text = text,
             color = color,
-            style = style
+            fontWeight = fontWeight,
+            style = FireFlowTheme.typography.titleLarge,
+            textAlign = textAlign
         )
     }
 
@@ -244,13 +284,16 @@ object FireFlowTexts {
         text: AnnotatedString,
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
-        style: TextStyle = FireFlowTheme.typography.titleLarge
+        fontWeight: FontWeight? = null,
+        textAlign: TextAlign = TextAlign.Start
     ) {
         Text(
             modifier = modifier,
             text = text,
             color = color,
-            style = style
+            fontWeight = fontWeight,
+            style = FireFlowTheme.typography.titleLarge,
+            textAlign = textAlign
         )
     }
 
@@ -259,13 +302,16 @@ object FireFlowTexts {
         text: String,
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
-        style: TextStyle = FireFlowTheme.typography.titleMedium
+        fontWeight: FontWeight? = null,
+        textAlign: TextAlign = TextAlign.Start
     ) {
         Text(
             modifier = modifier,
             text = text,
             color = color,
-            style = style
+            fontWeight = fontWeight,
+            style = FireFlowTheme.typography.titleMedium,
+            textAlign = textAlign
         )
     }
 
@@ -274,13 +320,16 @@ object FireFlowTexts {
         text: AnnotatedString,
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
-        style: TextStyle = FireFlowTheme.typography.titleMedium
+        fontWeight: FontWeight? = null,
+        textAlign: TextAlign = TextAlign.Start
     ) {
         Text(
             modifier = modifier,
             text = text,
             color = color,
-            style = style
+            fontWeight = fontWeight,
+            style = FireFlowTheme.typography.titleMedium,
+            textAlign = textAlign
         )
     }
 
@@ -289,13 +338,16 @@ object FireFlowTexts {
         text: String,
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
-        style: TextStyle = FireFlowTheme.typography.titleSmall
+        fontWeight: FontWeight? = null,
+        textAlign: TextAlign = TextAlign.Start
     ) {
         Text(
             modifier = modifier,
             text = text,
             color = color,
-            style = style
+            fontWeight = fontWeight,
+            style = FireFlowTheme.typography.titleSmall,
+            textAlign = textAlign
         )
     }
 
@@ -304,13 +356,16 @@ object FireFlowTexts {
         text: AnnotatedString,
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
-        style: TextStyle = FireFlowTheme.typography.titleSmall
+        fontWeight: FontWeight? = null,
+        textAlign: TextAlign = TextAlign.Start
     ) {
         Text(
             modifier = modifier,
             text = text,
             color = color,
-            style = style
+            fontWeight = fontWeight,
+            style = FireFlowTheme.typography.titleSmall,
+            textAlign = textAlign
         )
     }
 
@@ -319,13 +374,16 @@ object FireFlowTexts {
         text: String,
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
-        style: TextStyle = FireFlowTheme.typography.bodyLarge
+        fontWeight: FontWeight? = null,
+        textAlign: TextAlign = TextAlign.Start
     ) {
         Text(
             modifier = modifier,
             text = text,
             color = color,
-            style = style
+            fontWeight = fontWeight,
+            style = FireFlowTheme.typography.bodyLarge,
+            textAlign = textAlign
         )
     }
 
@@ -334,13 +392,16 @@ object FireFlowTexts {
         text: AnnotatedString,
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
-        style: TextStyle = FireFlowTheme.typography.bodyLarge
+        fontWeight: FontWeight? = null,
+        textAlign: TextAlign = TextAlign.Start
     ) {
         Text(
             modifier = modifier,
             text = text,
             color = color,
-            style = style
+            fontWeight = fontWeight,
+            style = FireFlowTheme.typography.bodyLarge,
+            textAlign = textAlign
         )
     }
 
@@ -349,13 +410,16 @@ object FireFlowTexts {
         text: String,
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
-        style: TextStyle = FireFlowTheme.typography.bodyMedium
+        fontWeight: FontWeight? = null,
+        textAlign: TextAlign = TextAlign.Start
     ) {
         Text(
             modifier = modifier,
             text = text,
             color = color,
-            style = style
+            fontWeight = fontWeight,
+            style = FireFlowTheme.typography.bodyMedium,
+            textAlign = textAlign
         )
     }
 
@@ -364,13 +428,16 @@ object FireFlowTexts {
         text: AnnotatedString,
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
-        style: TextStyle = FireFlowTheme.typography.bodyMedium
+        fontWeight: FontWeight? = null,
+        textAlign: TextAlign = TextAlign.Start
     ) {
         Text(
             modifier = modifier,
             text = text,
             color = color,
-            style = style
+            fontWeight = fontWeight,
+            style = FireFlowTheme.typography.bodyMedium,
+            textAlign = textAlign
         )
     }
 
@@ -379,13 +446,16 @@ object FireFlowTexts {
         text: String,
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
-        style: TextStyle = FireFlowTheme.typography.bodySmall
+        fontWeight: FontWeight? = null,
+        textAlign: TextAlign = TextAlign.Start
     ) {
         Text(
             modifier = modifier,
             text = text,
             color = color,
-            style = style
+            fontWeight = fontWeight,
+            style = FireFlowTheme.typography.bodySmall,
+            textAlign = textAlign
         )
     }
 
@@ -394,13 +464,16 @@ object FireFlowTexts {
         text: AnnotatedString,
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
-        style: TextStyle = FireFlowTheme.typography.bodySmall
+        fontWeight: FontWeight? = null,
+        textAlign: TextAlign = TextAlign.Start
     ) {
         Text(
             modifier = modifier,
             text = text,
             color = color,
-            style = style
+            fontWeight = fontWeight,
+            style = FireFlowTheme.typography.bodySmall,
+            textAlign = textAlign
         )
     }
 
@@ -409,13 +482,16 @@ object FireFlowTexts {
         text: String,
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
-        style: TextStyle = FireFlowTheme.typography.labelLarge
+        fontWeight: FontWeight? = null,
+        textAlign: TextAlign = TextAlign.Start
     ) {
         Text(
             modifier = modifier,
             text = text,
             color = color,
-            style = style
+            fontWeight = fontWeight,
+            style = FireFlowTheme.typography.labelLarge,
+            textAlign = textAlign
         )
     }
 
@@ -424,13 +500,16 @@ object FireFlowTexts {
         text: AnnotatedString,
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
-        style: TextStyle = FireFlowTheme.typography.labelLarge
+        fontWeight: FontWeight? = null,
+        textAlign: TextAlign = TextAlign.Start
     ) {
         Text(
             modifier = modifier,
             text = text,
             color = color,
-            style = style
+            fontWeight = fontWeight,
+            style = FireFlowTheme.typography.labelLarge,
+            textAlign = textAlign
         )
     }
 
@@ -439,13 +518,16 @@ object FireFlowTexts {
         text: String,
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
-        style: TextStyle = FireFlowTheme.typography.labelMedium
+        fontWeight: FontWeight? = null,
+        textAlign: TextAlign = TextAlign.Start
     ) {
         Text(
             modifier = modifier,
             text = text,
             color = color,
-            style = style
+            fontWeight = fontWeight,
+            style = FireFlowTheme.typography.labelMedium,
+            textAlign = textAlign
         )
     }
 
@@ -454,13 +536,16 @@ object FireFlowTexts {
         text: AnnotatedString,
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
-        style: TextStyle = FireFlowTheme.typography.labelMedium
+        fontWeight: FontWeight? = null,
+        textAlign: TextAlign = TextAlign.Start
     ) {
         Text(
             modifier = modifier,
             text = text,
             color = color,
-            style = style
+            fontWeight = fontWeight,
+            style = FireFlowTheme.typography.labelMedium,
+            textAlign = textAlign
         )
     }
 
@@ -469,13 +554,16 @@ object FireFlowTexts {
         text: String,
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
-        style: TextStyle = FireFlowTheme.typography.labelSmall
+        fontWeight: FontWeight? = null,
+        textAlign: TextAlign = TextAlign.Start
     ) {
         Text(
             modifier = modifier,
             text = text,
             color = color,
-            style = style
+            fontWeight = fontWeight,
+            style = FireFlowTheme.typography.labelSmall,
+            textAlign = textAlign
         )
     }
 
@@ -484,13 +572,16 @@ object FireFlowTexts {
         text: AnnotatedString,
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
-        style: TextStyle = FireFlowTheme.typography.labelSmall
+        fontWeight: FontWeight? = null,
+        textAlign: TextAlign = TextAlign.Start
     ) {
         Text(
             modifier = modifier,
             text = text,
             color = color,
-            style = style
+            fontWeight = fontWeight,
+            style = FireFlowTheme.typography.labelSmall,
+            textAlign = textAlign
         )
     }
 }
