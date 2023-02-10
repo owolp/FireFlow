@@ -17,11 +17,12 @@
 
 package dev.zitech.onboarding.presentation.oauth.compose
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -30,7 +31,6 @@ import androidx.lifecycle.coroutineScope
 import dev.zitech.core.common.framework.browser.Browser
 import dev.zitech.ds.molecules.snackbar.BottomNotifierMessage
 import dev.zitech.ds.molecules.snackbar.rememberSnackbarState
-import dev.zitech.ds.theme.FireFlowTheme
 import dev.zitech.onboarding.presentation.oauth.model.OAuthAuthentication
 import dev.zitech.onboarding.presentation.oauth.viewmodel.ErrorHandled
 import dev.zitech.onboarding.presentation.oauth.viewmodel.Idle
@@ -62,9 +62,14 @@ internal fun OAuthRoute(
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
     val snackbarState = rememberSnackbarState()
-    val backgroundColorResource = FireFlowTheme.colors.background.toArgb()
     val context = LocalContext.current
     val coroutineScope = LocalLifecycleOwner.current.lifecycle.coroutineScope
+
+    val result = rememberLauncherForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) {
+        // TODO: Send result back to the VM, so that proper action is taken
+    }
 
     when (val event = screenState.event) {
         NavigateToDashboard -> {
@@ -84,7 +89,7 @@ internal fun OAuthRoute(
                 Browser.openUrl(
                     context,
                     event.url,
-                    backgroundColorResource
+                    result
                 ).onEach { event ->
                     viewModel.sendIntent(NavigatedToFireflyResult(event))
                 }.stateIn(coroutineScope)

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,6 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.jakewharton.processphoenix.ProcessPhoenix
-import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.dashboard.R as dashboardR
 import dev.zitech.dashboard.presentation.navigation.DashboardDestination
 import dev.zitech.ds.atoms.icon.FireFlowIcons
@@ -119,7 +118,7 @@ internal class FireFlowAppState(
         }
     }
 
-    fun onBackClick(
+    fun goBack(
         destination: FireFlowNavigationDestination?,
         inclusive: Boolean? = DEFAULT_STATE_INCLUSIVE
     ) {
@@ -128,19 +127,18 @@ internal class FireFlowAppState(
                 val id = navController.getBackStackEntry(destination.route).destination.id
                 navController.popBackStack(id, inclusive)
             } catch (e: IllegalArgumentException) {
-                Logger.e("FireFlowAppState", e)
-                navController.popBackStack()
+                restartApplication()
             }
         } else {
             navController.popBackStack()
         }
     }
 
-    fun onCloseApplication() {
+    fun closeApplication() {
         (navController.context as? AppCompatActivity)?.finish()
     }
 
-    fun onRestartApplication() {
+    fun restartApplication() {
         ProcessPhoenix.triggerRebirth(navController.context)
     }
 
