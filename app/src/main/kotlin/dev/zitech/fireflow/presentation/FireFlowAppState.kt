@@ -29,6 +29,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.jakewharton.processphoenix.ProcessPhoenix
+import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.dashboard.R as dashboardR
 import dev.zitech.dashboard.presentation.navigation.DashboardDestination
 import dev.zitech.ds.atoms.icon.FireFlowIcons
@@ -127,6 +128,7 @@ internal class FireFlowAppState(
                 val id = navController.getBackStackEntry(destination.route).destination.id
                 navController.popBackStack(id, inclusive)
             } catch (e: IllegalArgumentException) {
+                Logger.e("FireFlowAppState", e)
                 restartApplication()
             }
         } else {
