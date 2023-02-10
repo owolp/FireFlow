@@ -36,6 +36,7 @@ import dev.zitech.fireflow.presentation.main.viewmodel.MainViewModel
 
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @AndroidEntryPoint
+// Using AppCompatActivity, since ComponentActivity doesn't support language change
 internal class MainActivity : AppCompatActivity() {
 
     private val tag = Logger.tag(this::class.java)
