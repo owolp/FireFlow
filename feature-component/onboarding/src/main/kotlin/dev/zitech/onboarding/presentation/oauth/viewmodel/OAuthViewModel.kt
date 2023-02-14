@@ -31,6 +31,7 @@ import dev.zitech.core.persistence.domain.model.exception.NullUserAccountExcepti
 import dev.zitech.core.persistence.domain.usecase.database.GetUserAccountByStateUseCase
 import dev.zitech.core.persistence.domain.usecase.database.SaveUserAccountUseCase
 import dev.zitech.core.persistence.domain.usecase.database.UpdateUserAccountUseCase
+import dev.zitech.onboarding.domain.model.Token
 import dev.zitech.onboarding.domain.usecase.GetTokenUseCase
 import dev.zitech.onboarding.domain.usecase.IsOAuthLoginInputValidUseCase
 import dev.zitech.onboarding.domain.validator.ClientIdValidator
@@ -65,11 +66,11 @@ internal class OAuthViewModel @Inject constructor(
                 is OnClientIdChange -> handleOnClientIdChange(intent)
                 is OnClientSecretChange -> {
                     stateHandler.setClientSecret(intent.clientSecret.trim())
-                    setLoginEnabled()
+                    setLoginEnabledOrDisabled()
                 }
                 is OnServerAddressChange -> {
                     stateHandler.setServerAddress(intent.serverAddress.trim())
-                    setLoginEnabled()
+                    setLoginEnabledOrDisabled()
                 }
                 is NavigatedToFireflyResult -> handleNavigatedToFireflyResult(intent.dataResult)
                 ErrorHandled -> stateHandler.resetEvent()
@@ -86,7 +87,7 @@ internal class OAuthViewModel @Inject constructor(
 
         stateHandler.setLoading(true)
         when (
-            saveUserAccountUseCase(
+            val result = saveUserAccountUseCase(
                 clientId = clientId,
                 clientSecret = clientSecret,
                 isCurrentUserAccount = false,
@@ -109,7 +110,8 @@ internal class OAuthViewModel @Inject constructor(
                 }
             }
             is DataResult.Error -> {
-                TODO("Show error message for save id DB")
+                Logger.e(tag, exception = result.cause)
+                stateHandler.setEvent(NavigateToError)
             }
         }
     }
@@ -118,12 +120,12 @@ internal class OAuthViewModel @Inject constructor(
         with(intent.clientId.trim()) {
             if (clientIdValidator(this) || this.isEmpty()) {
                 stateHandler.setClientId(this)
-                setLoginEnabled()
+                setLoginEnabledOrDisabled()
             }
         }
     }
 
-    private fun setLoginEnabled() {
+    private fun setLoginEnabledOrDisabled() {
         stateHandler.setLoginEnabled(
             with(screenState.value) {
                 isOauthLoginInputValidUseCase(
@@ -135,18 +137,18 @@ internal class OAuthViewModel @Inject constructor(
         )
     }
 
-    private fun handleNavigatedToFireflyResult(dataResult: DataResult<Unit>) {
-        when (dataResult) {
+    private fun handleNavigatedToFireflyResult(result: DataResult<Unit>) {
+        when (result) {
             is DataResult.Success -> stateHandler.resetEvent()
             is DataResult.Error -> {
-                when (dataResult.cause) {
+                when (result.cause) {
                     is NoBrowserInstalledException -> {
                         stateHandler.setEvent(
                             ShowError(oauthStringsProvider.getNoSupportedBrowserInstalled())
                         )
                     }
                     else -> {
-                        Logger.e(tag, exception = dataResult.cause)
+                        Logger.e(tag, exception = result.cause)
                         stateHandler.setEvent(NavigateToError)
                     }
                 }
@@ -176,9 +178,12 @@ internal class OAuthViewModel @Inject constructor(
             }
             is DataResult.Error -> {
                 if (result.cause is NullUserAccountException) {
-                    TODO("Show NullUserAccountException message")
+                    stateHandler.setEvent(
+                        ShowError(oauthStringsProvider.getCodeStateError())
+                    )
                 } else {
-                    TODO("Show error message")
+                    Logger.e(tag, exception = result.cause)
+                    stateHandler.setEvent(NavigateToError)
                 }
             }
         }
@@ -192,26 +197,35 @@ internal class OAuthViewModel @Inject constructor(
                 code = code
             )
         ) {
-            is DataResult.Success -> {
-                when (
-                    updateUserAccountUseCase(
-                        userAccount.copy(
-                            accessToken = result.value.accessToken,
-                            isCurrentUserAccount = true,
-                            oauthCode = code,
-                            refreshToken = result.value.refreshToken,
-                            state = null
-                        )
-                    )
-                ) {
-                    is DataResult.Success -> stateHandler.setEvent(NavigateToDashboard)
-                    is DataResult.Error -> {
-                        TODO("Show error message")
-                    }
-                }
-            }
+            is DataResult.Success -> updateUserAccount(userAccount, result.value, code)
             is DataResult.Error -> {
-                TODO("Show error message")
+                stateHandler.setEvent(
+                    ShowError(oauthStringsProvider.getTokenError())
+                )
+            }
+        }
+    }
+
+    private suspend fun updateUserAccount(
+        userAccount: UserAccount,
+        token: Token,
+        code: String
+    ) {
+        when (
+            val result = updateUserAccountUseCase(
+                userAccount.copy(
+                    accessToken = token.accessToken,
+                    isCurrentUserAccount = true,
+                    oauthCode = code,
+                    refreshToken = token.refreshToken,
+                    state = null
+                )
+            )
+        ) {
+            is DataResult.Success -> stateHandler.setEvent(NavigateToDashboard)
+            is DataResult.Error -> {
+                Logger.e(tag, exception = result.cause)
+                stateHandler.setEvent(NavigateToError)
             }
         }
     }
