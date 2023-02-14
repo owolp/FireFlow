@@ -17,6 +17,7 @@
 
 package dev.zitech.core.network.data.factory
 
+import dev.zitech.core.network.data.factory.InterceptorFactory.Companion.Type.DEBUGGER
 import dev.zitech.core.network.data.factory.InterceptorFactory.Companion.Type.HTTP_INSPECTOR
 import dev.zitech.core.network.data.factory.InterceptorFactory.Companion.Type.HTTP_LOGGING
 import java.util.concurrent.TimeUnit
@@ -39,6 +40,7 @@ internal class OkHttpClientFactory @Inject constructor(
             .retryOnConnectionFailure(true)
 
         with(okHttpClient) {
+            addInterceptor(interceptorFactory(DEBUGGER))
             addInterceptor(interceptorFactory(HTTP_INSPECTOR))
             addInterceptor(interceptorFactory(HTTP_LOGGING))
         }

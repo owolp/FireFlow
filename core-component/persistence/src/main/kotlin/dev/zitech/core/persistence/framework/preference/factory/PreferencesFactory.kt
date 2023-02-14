@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,9 @@
 package dev.zitech.core.persistence.framework.preference.factory
 
 import android.content.Context
+import dev.zitech.core.common.data.preferences.PreferencesConstants.DEVELOPMENT_PREFERENCES_NAME
+import dev.zitech.core.common.data.preferences.PreferencesConstants.SECURED_PREFERENCES_NAME
+import dev.zitech.core.common.data.preferences.PreferencesConstants.STANDARD_PREFERENCES_NAME
 import dev.zitech.core.common.domain.dispatcher.AppDispatchers
 import dev.zitech.core.persistence.domain.model.preferences.PreferenceType
 import dev.zitech.core.persistence.domain.source.preferences.PreferencesDataSource
@@ -25,10 +28,6 @@ import dev.zitech.core.persistence.framework.preference.source.SecuredPreference
 import dev.zitech.core.persistence.framework.preference.source.StandardPreferencesDataSource
 
 internal object PreferencesFactory {
-
-    private const val DEVELOPMENT_PREFERENCES_NAME = "development_preferences"
-    private const val SECURED_PREFERENCES_NAME = "secured_preferences"
-    private const val STANDARD_PREFERENCES_NAME = "standard_preferences"
 
     fun createsPreferences(
         appDispatchers: AppDispatchers,

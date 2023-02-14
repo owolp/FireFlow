@@ -33,6 +33,8 @@ dependencies {
     implementation(libs.jetbrains.kotlin.coroutines.android)
 
     devImplementation(libs.chuckerteam.chucker)
+    devImplementation(libs.facebook.flipper.flipper)
+    devApi(libs.facebook.flipper.network.plugin)
     devImplementation(libs.squareup.okhttp3.logging.intereceptor)
 
     implementation(libs.squareup.moshi.moshi)
