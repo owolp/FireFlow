@@ -21,6 +21,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.zitech.core.common.DataFactory
+import dev.zitech.core.common.domain.dispatcher.AppDispatchers
 import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.common.domain.model.exception.NoBrowserInstalledException
@@ -38,8 +39,10 @@ import dev.zitech.onboarding.domain.validator.ClientIdValidator
 import dev.zitech.onboarding.presentation.oauth.model.OAuthAuthentication
 import dev.zitech.onboarding.presentation.oauth.viewmodel.resource.OAuthStringsProvider
 import javax.inject.Inject
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @HiltViewModel
 internal class OAuthViewModel @Inject constructor(
@@ -50,8 +53,13 @@ internal class OAuthViewModel @Inject constructor(
     private val getUserAccountByStateUseCase: GetUserAccountByStateUseCase,
     private val getTokenUseCase: dagger.Lazy<GetTokenUseCase>,
     private val clientIdValidator: ClientIdValidator,
-    private val oauthStringsProvider: OAuthStringsProvider
+    private val oauthStringsProvider: OAuthStringsProvider,
+    private val appDispatchers: AppDispatchers
 ) : ViewModel(), MviViewModel<OAuthIntent, OAuthState> {
+
+    private companion object {
+        const val LOADING_DELAY_IN_MILLISECONDS = 500L
+    }
 
     private val tag = Logger.tag(this::class.java)
 
@@ -85,7 +93,10 @@ internal class OAuthViewModel @Inject constructor(
         val serverAddress = screenState.value.serverAddress
         val state = DataFactory.createRandomString(STATE_LENGTH)
 
-        stateHandler.setLoading(true)
+        withContext(appDispatchers.io) {
+            delay(LOADING_DELAY_IN_MILLISECONDS)
+            stateHandler.setLoading(true)
+        }
         when (
             val result = saveUserAccountUseCase(
                 clientId = clientId,
