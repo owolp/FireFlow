@@ -54,6 +54,8 @@ androidx-test-runner = { module = "androidx.test:runner", version.ref = "test" }
 androidx-test-core = { module = "androidx.test:core-ktx", version.ref = "test" }
 cash-turbine = "app.cash.turbine:turbine:0.12.1"
 chuckerteam-chucker = "com.github.chuckerteam.chucker:library:3.5.2"
+facebook-flipper = "com.facebook.flipper:flipper:0.179.0"
+facebook-soloader = "com.facebook.soloader:soloader:0.10.4"
 google-accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
 google-accompanist-placeholder-material = { module = "com.google.accompanist:accompanist-placeholder-material", version.ref = "accompanist" }
 google-dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "dagger" }
