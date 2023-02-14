@@ -15,21 +15,27 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.network.framework.retrofit
+package dev.zitech.core.network.di
 
-import dev.zitech.core.network.data.factory.OkHttpClientFactory
-import javax.inject.Inject
-import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
+import android.content.Context
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
+import dev.zitech.core.network.data.factory.InterceptorFactory
+import javax.inject.Singleton
 
-internal class RetrofitFactory @Inject constructor(
-    private val okHttpClientFactory: OkHttpClientFactory
-) {
+internal interface NetworkDevModule {
 
-    operator fun invoke(baseUrl: String): Retrofit =
-        Retrofit.Builder()
-            .baseUrl(baseUrl)
-            .client(okHttpClientFactory.createOkHttpClient())
-            .addConverterFactory(MoshiConverterFactory.create())
-            .build()
+    @InstallIn(SingletonComponent::class)
+    @Module
+    object SingletonProvidesModule {
+
+        @Singleton
+        @Provides
+        fun interceptorFactory(
+            @ApplicationContext context: Context
+        ) = InterceptorFactory(context)
+    }
 }

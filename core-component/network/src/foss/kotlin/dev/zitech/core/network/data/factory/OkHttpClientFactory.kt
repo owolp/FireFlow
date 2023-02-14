@@ -15,21 +15,25 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.network.framework.retrofit
+package dev.zitech.core.network.data.factory
 
-import dev.zitech.core.network.data.factory.OkHttpClientFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
-import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
+import okhttp3.OkHttpClient
 
-internal class RetrofitFactory @Inject constructor(
-    private val okHttpClientFactory: OkHttpClientFactory
-) {
+internal class OkHttpClientFactory @Inject constructor() {
 
-    operator fun invoke(baseUrl: String): Retrofit =
-        Retrofit.Builder()
-            .baseUrl(baseUrl)
-            .client(okHttpClientFactory.createOkHttpClient())
-            .addConverterFactory(MoshiConverterFactory.create())
-            .build()
+    private companion object {
+        const val SERVICE_TIMEOUT_SECONDS = 60L
+    }
+
+    fun createOkHttpClient(): OkHttpClient {
+        val okHttpClient = OkHttpClient.Builder()
+            .connectTimeout(SERVICE_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+            .readTimeout(SERVICE_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+            .writeTimeout(SERVICE_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+            .retryOnConnectionFailure(true)
+
+        return okHttpClient.build()
+    }
 }

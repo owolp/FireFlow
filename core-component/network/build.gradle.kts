@@ -32,6 +32,7 @@ dependencies {
     kapt(libs.google.dagger.hilt.compiler)
     implementation(libs.jetbrains.kotlin.coroutines.android)
 
+    implementation(libs.chuckerteam.chucker)
     implementation(libs.squareup.moshi.moshi)
     kapt(libs.squareup.moshi.kotlin.codegen)
     implementation(libs.squareup.okhttp3.logging.intereceptor)
