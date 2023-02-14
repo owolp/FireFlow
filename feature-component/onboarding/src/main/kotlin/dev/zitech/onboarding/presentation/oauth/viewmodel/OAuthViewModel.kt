@@ -111,6 +111,7 @@ internal class OAuthViewModel @Inject constructor(
             }
             is DataResult.Error -> {
                 Logger.e(tag, exception = result.cause)
+                stateHandler.setLoading(false)
                 stateHandler.setEvent(NavigateToError)
             }
         }
@@ -141,6 +142,7 @@ internal class OAuthViewModel @Inject constructor(
         when (result) {
             is DataResult.Success -> stateHandler.resetEvent()
             is DataResult.Error -> {
+                stateHandler.setLoading(false)
                 when (result.cause) {
                     is NoBrowserInstalledException -> {
                         stateHandler.setEvent(
@@ -177,6 +179,7 @@ internal class OAuthViewModel @Inject constructor(
                 retrieveToken(userAccount, code)
             }
             is DataResult.Error -> {
+                stateHandler.setLoading(false)
                 if (result.cause is NullUserAccountException) {
                     stateHandler.setEvent(
                         ShowError(oauthStringsProvider.getCodeStateError())
@@ -199,6 +202,7 @@ internal class OAuthViewModel @Inject constructor(
         ) {
             is DataResult.Success -> updateUserAccount(userAccount, result.value, code)
             is DataResult.Error -> {
+                stateHandler.setLoading(false)
                 stateHandler.setEvent(
                     ShowError(oauthStringsProvider.getTokenError())
                 )
@@ -222,9 +226,13 @@ internal class OAuthViewModel @Inject constructor(
                 )
             )
         ) {
-            is DataResult.Success -> stateHandler.setEvent(NavigateToDashboard)
+            is DataResult.Success -> {
+                stateHandler.setLoading(false)
+                stateHandler.setEvent(NavigateToDashboard)
+            }
             is DataResult.Error -> {
                 Logger.e(tag, exception = result.cause)
+                stateHandler.setLoading(false)
                 stateHandler.setEvent(NavigateToError)
             }
         }
