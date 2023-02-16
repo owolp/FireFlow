@@ -25,6 +25,7 @@ internal interface UserAccountDatabaseSource {
     suspend fun getUserAccountByStateOrNull(state: String): UserAccount?
     fun getUserAccounts(): Flow<List<UserAccount>>
     fun getCurrentUserAccountOrNull(): Flow<UserAccount?>
+    suspend fun removeUserAccountsWithoutState()
     suspend fun saveUserAccount(
         clientId: String,
         clientSecret: String,

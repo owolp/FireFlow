@@ -32,6 +32,7 @@ import dev.zitech.core.common.domain.scope.AppScopes
 import dev.zitech.core.common.domain.scope.AppScopesImpl
 import dev.zitech.core.common.domain.strings.StringsProvider
 import dev.zitech.core.common.framework.strings.StringsProviderImpl
+import dev.zitech.core.common.presentation.splash.LoginCheckCompletedHandler
 import javax.inject.Singleton
 
 internal interface CommonModule {
@@ -44,6 +45,11 @@ internal interface CommonModule {
         @Provides
         fun stringsProvider(@ApplicationContext applicationContext: Context): StringsProvider =
             StringsProviderImpl(applicationContext)
+
+        @Singleton
+        @Provides
+        fun loginCheckCompletedHandler(): LoginCheckCompletedHandler =
+            LoginCheckCompletedHandler()
     }
 
     @InstallIn(SingletonComponent::class)

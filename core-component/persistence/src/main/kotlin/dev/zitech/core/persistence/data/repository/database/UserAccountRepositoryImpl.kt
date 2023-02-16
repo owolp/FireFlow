@@ -75,6 +75,14 @@ internal class UserAccountRepositoryImpl @Inject constructor(
             DataResult.Error(cause = exception)
         }
 
+    override suspend fun removeUserAccountsWithoutState(): DataResult<Unit> =
+        try {
+            userAccountDatabaseSource.removeUserAccountsWithoutState()
+            DataResult.Success(Unit)
+        } catch (exception: Exception) {
+            DataResult.Error(cause = exception)
+        }
+
     override suspend fun updateUserAccount(userAccount: UserAccount): DataResult<Unit> =
         try {
             val result = userAccountDatabaseSource.updateUserAccount(userAccount)

@@ -66,13 +66,11 @@ internal class MainActivity : AppCompatActivity() {
 
             val navController = rememberNavController()
 
-            if (mainState.remoteConfig) {
-                FireFlowApp(
-                    theme = mainState.theme,
-                    windowSizeClass = calculateWindowSizeClass(this),
-                    navController = navController
-                )
-            }
+            FireFlowApp(
+                theme = mainState.theme,
+                windowSizeClass = calculateWindowSizeClass(this),
+                navController = navController
+            )
         }
     }
 

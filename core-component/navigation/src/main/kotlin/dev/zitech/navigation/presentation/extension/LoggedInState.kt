@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@ package dev.zitech.navigation.presentation.extension
 
 import dev.zitech.core.common.domain.navigation.DeepLinkScreenDestination
 import dev.zitech.core.common.domain.navigation.LogInState
-import dev.zitech.core.common.presentation.splash.SplashScreenStateHandler
+import dev.zitech.core.common.presentation.splash.LoginCheckCompletedHandler
 import dev.zitech.navigation.domain.usecase.GetScreenDestinationUseCase
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
@@ -29,11 +29,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 
 fun logInState(
     getScreenDestinationUseCase: GetScreenDestinationUseCase,
-    splashScreenStateHandler: SplashScreenStateHandler,
+    loginCheckCompletedHandler: LoginCheckCompletedHandler,
     coroutineScope: CoroutineScope
 ): ReadOnlyProperty<Any, StateFlow<LogInState>> =
     object : ReadOnlyProperty<Any, StateFlow<LogInState>> {
@@ -60,15 +59,9 @@ fun logInState(
                         DeepLinkScreenDestination.Init ->
                             LogInState.InitScreen
                     }.also {
-                        hideSplashScreen()
+                        loginCheckCompletedHandler(true)
                     }
                 )
             }.launchIn(coroutineScope)
-        }
-
-        private fun hideSplashScreen() {
-            coroutineScope.launch {
-                splashScreenStateHandler(false)
-            }
         }
     }

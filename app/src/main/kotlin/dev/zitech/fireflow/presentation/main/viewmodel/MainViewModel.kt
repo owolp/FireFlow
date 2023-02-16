@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,45 +20,69 @@ package dev.zitech.fireflow.presentation.main.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.zitech.core.common.presentation.splash.SplashScreenStateHandler
+import dev.zitech.core.common.domain.logger.Logger
+import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.presentation.splash.LoginCheckCompletedHandler
+import dev.zitech.core.persistence.domain.usecase.database.RemoveUserAccountsWithoutStateUseCase
 import dev.zitech.core.persistence.domain.usecase.preferences.GetApplicationThemeValueUseCase
 import dev.zitech.core.remoteconfig.domain.usecase.InitializeRemoteConfiguratorUseCase
 import dev.zitech.core.reporter.analytics.domain.usecase.event.ApplicationLaunchAnalyticsEvent
+import dev.zitech.fireflow.presentation.model.LaunchState
+import dev.zitech.fireflow.presentation.model.LaunchState.Status.Error
+import dev.zitech.fireflow.presentation.model.LaunchState.Status.Success
 import javax.inject.Inject
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 @HiltViewModel
 internal class MainViewModel @Inject constructor(
     private val stateHandler: MainStateHandler,
-    splashScreenStateHandler: SplashScreenStateHandler,
+    private val loginCheckHandler: LoginCheckCompletedHandler,
     private val getApplicationThemeValueUseCase: GetApplicationThemeValueUseCase,
     private val initializeRemoteConfiguratorUseCase: InitializeRemoteConfiguratorUseCase,
+    private val removeUserAccountsWithoutStateUseCase: RemoveUserAccountsWithoutStateUseCase,
     applicationLaunchAnalyticsEvent: ApplicationLaunchAnalyticsEvent
 ) : ViewModel() {
 
+    private val tag = Logger.tag(this::class.java)
+
     val screenState: StateFlow<MainState> = stateHandler.state
-    val splashState: StateFlow<Boolean> = splashScreenStateHandler.splashState
+
+    private val mutableSplashState = MutableStateFlow(true)
+    val splashState: StateFlow<Boolean> = mutableSplashState.asStateFlow()
 
     init {
-        initializeRemoteConfigurator()
-        initApplicationThemeCollection()
         applicationLaunchAnalyticsEvent()
-    }
 
-    private fun initApplicationThemeCollection() {
-        getApplicationThemeValueUseCase()
-            .onEach { stateHandler.setTheme(it) }
-            .launchIn(viewModelScope)
-    }
-
-    private fun initializeRemoteConfigurator() {
-        initializeRemoteConfiguratorUseCase()
-            .onCompletion {
-                stateHandler.setRemoteConfig(true)
-            }
-            .launchIn(viewModelScope)
+        viewModelScope.launch {
+            combine(
+                loginCheckHandler.loginCheckState,
+                getApplicationThemeValueUseCase(),
+                initializeRemoteConfiguratorUseCase(),
+                flowOf(removeUserAccountsWithoutStateUseCase())
+            ) { _, themeResult, _, databaseResult ->
+                when (databaseResult) {
+                    is DataResult.Success -> LaunchState(Success(themeResult))
+                    is DataResult.Error -> LaunchState(Error(databaseResult.cause))
+                }
+            }.onEach { launchState ->
+                when (val status = launchState.status) {
+                    is Success -> {
+                        stateHandler.setTheme(status.theme)
+                        mutableSplashState.update { false }
+                    }
+                    is Error -> {
+                        Logger.e(tag, exception = status.cause)
+                    }
+                }
+            }.collect()
+        }
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.zitech.core.common.domain.navigation.LogInState
 import dev.zitech.core.common.presentation.architecture.DeepLinkViewModel
 import dev.zitech.core.common.presentation.architecture.MviViewModel
-import dev.zitech.core.common.presentation.splash.SplashScreenStateHandler
+import dev.zitech.core.common.presentation.splash.LoginCheckCompletedHandler
 import dev.zitech.navigation.domain.usecase.GetScreenDestinationUseCase
 import dev.zitech.navigation.presentation.extension.logInState
 import javax.inject.Inject
@@ -32,14 +32,14 @@ import kotlinx.coroutines.flow.StateFlow
 @HiltViewModel
 internal class DashboardViewModel @Inject constructor(
     stateHandler: DashboardStateHandler,
-    splashScreenState: SplashScreenStateHandler,
+    loginCheckCompletedHandler: LoginCheckCompletedHandler,
     getScreenDestinationUseCase: GetScreenDestinationUseCase
 ) : ViewModel(), MviViewModel<DashboardIntent, DashboardState>, DeepLinkViewModel {
 
     override val screenState: StateFlow<DashboardState> = stateHandler.state
     override val logInState: StateFlow<LogInState> by logInState(
         getScreenDestinationUseCase,
-        splashScreenState,
+        loginCheckCompletedHandler,
         viewModelScope
     )
 

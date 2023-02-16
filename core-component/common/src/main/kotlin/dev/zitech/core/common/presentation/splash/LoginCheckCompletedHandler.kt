@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,18 +18,16 @@
 package dev.zitech.core.common.presentation.splash
 
 import javax.inject.Inject
-import javax.inject.Singleton
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-@Singleton
-class SplashScreenStateHandler @Inject constructor() {
+class LoginCheckCompletedHandler @Inject constructor() {
 
-    private val mutableSplashState = MutableStateFlow(true)
-    val splashState: StateFlow<Boolean> = mutableSplashState.asStateFlow()
+    private val mutableLoginCheckState = MutableStateFlow(false)
+    val loginCheckState: StateFlow<Boolean> = mutableLoginCheckState.asStateFlow()
 
     suspend operator fun invoke(show: Boolean) {
-        mutableSplashState.emit(show)
+        mutableLoginCheckState.emit(show)
     }
 }

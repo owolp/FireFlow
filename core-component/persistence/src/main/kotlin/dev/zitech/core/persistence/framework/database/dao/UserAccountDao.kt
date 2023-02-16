@@ -34,7 +34,7 @@ internal interface UserAccountDao {
     @Query("SELECT * FROM user_accounts")
     fun getUserAccounts(): Flow<List<UserAccountEntity>>
 
-    @Query("SELECT * FROM user_accounts WHERE isCurrentUserAccount = 1 ORDER BY id DESC LIMIT 1")
+    @Query("SELECT * FROM user_accounts WHERE isCurrentUserAccount=1 ORDER BY id DESC LIMIT 1")
     fun getCurrentUserAccount(): Flow<UserAccountEntity?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -42,6 +42,9 @@ internal interface UserAccountDao {
 
     @Query("UPDATE user_accounts SET isCurrentUserAccount=0")
     suspend fun removeCurrentUserAccount(): Int
+
+    @Query("DELETE FROM user_accounts WHERE state IS NULL")
+    suspend fun removeUserAccountsWithoutState()
 
     @Update
     suspend fun updateUserAccount(userAccountEntity: UserAccountEntity): Int

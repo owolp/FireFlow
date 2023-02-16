@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ import dev.zitech.core.common.domain.model.BuildFlavor
 import dev.zitech.core.common.domain.navigation.LogInState
 import dev.zitech.core.common.presentation.architecture.DeepLinkViewModel
 import dev.zitech.core.common.presentation.architecture.MviViewModel
-import dev.zitech.core.common.presentation.splash.SplashScreenStateHandler
+import dev.zitech.core.common.presentation.splash.LoginCheckCompletedHandler
 import dev.zitech.navigation.domain.usecase.GetScreenDestinationUseCase
 import dev.zitech.navigation.presentation.extension.logInState
 import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsAppearanceCollectionStates
@@ -43,7 +43,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 internal class SettingsViewModel @Inject constructor(
     private val stateHandler: SettingsStateHandler,
-    splashScreenStateHandler: SplashScreenStateHandler,
+    loginCheckCompletedHandler: LoginCheckCompletedHandler,
     getScreenDestinationUseCase: GetScreenDestinationUseCase,
     private val settingsAppearanceCollectionStates: SettingsAppearanceCollectionStates,
     private val settingsDataChoicesCollectionStates: SettingsDataChoicesCollectionStates,
@@ -58,7 +58,7 @@ internal class SettingsViewModel @Inject constructor(
 
     override val logInState: StateFlow<LogInState> by logInState(
         getScreenDestinationUseCase,
-        splashScreenStateHandler,
+        loginCheckCompletedHandler,
         viewModelScope
     )
 

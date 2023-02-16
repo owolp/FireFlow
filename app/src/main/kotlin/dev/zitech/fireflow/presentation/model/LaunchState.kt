@@ -15,11 +15,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.fireflow.presentation.main.viewmodel
+package dev.zitech.fireflow.presentation.model
 
 import dev.zitech.core.common.domain.model.ApplicationTheme
-import dev.zitech.core.common.presentation.architecture.MviState
 
-data class MainState(
-    val theme: ApplicationTheme? = null
-) : MviState
+internal data class LaunchState(
+    val status: Status
+) {
+    sealed class Status {
+        data class Success(val theme: ApplicationTheme) : Status()
+        data class Error(val cause: Exception?) : Status()
+    }
+}
