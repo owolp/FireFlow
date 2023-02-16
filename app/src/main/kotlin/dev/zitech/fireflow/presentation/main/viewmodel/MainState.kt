@@ -23,6 +23,8 @@ import dev.zitech.core.common.presentation.architecture.MviState
 data class MainState(
     val databaseCleanCompleted: Boolean = false,
     val mandatoryStepsCompleted: Boolean = false,
-    val splash: Boolean = true,
     val theme: ApplicationTheme? = null
-) : MviState
+) : MviState {
+
+    val splash: Boolean = !(databaseCleanCompleted && mandatoryStepsCompleted)
+}
