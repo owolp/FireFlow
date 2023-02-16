@@ -64,8 +64,8 @@ internal class UserAccountDatabaseSourceImpl @Inject constructor(
         )
     )
 
-    override suspend fun removeUserAccountsWithoutState() =
-        userAccountDao.removeUserAccountsWithoutState()
+    override suspend fun removeUserAccountsWithStateAndWithoutAccessToken() =
+        userAccountDao.removeUserAccountsWithStateAndWithoutAccessToken()
 
     override suspend fun updateUserAccount(userAccount: UserAccount): Int =
         userAccountDao.updateUserAccount(userAccountMapper.toEntity(userAccount))

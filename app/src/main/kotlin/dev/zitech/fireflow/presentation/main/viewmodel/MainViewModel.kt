@@ -21,9 +21,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.zitech.core.common.domain.logger.Logger
-import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.presentation.architecture.MviViewModel
 import dev.zitech.core.common.presentation.splash.LoginCheckCompletedHandler
-import dev.zitech.core.persistence.domain.usecase.database.RemoveUserAccountsWithoutStateUseCase
+import dev.zitech.core.persistence.domain.usecase.database.RemoveStaleUserAccountsUseCase
 import dev.zitech.core.persistence.domain.usecase.preferences.GetApplicationThemeValueUseCase
 import dev.zitech.core.remoteconfig.domain.usecase.InitializeRemoteConfiguratorUseCase
 import dev.zitech.core.reporter.analytics.domain.usecase.event.ApplicationLaunchAnalyticsEvent
@@ -31,14 +31,10 @@ import dev.zitech.fireflow.presentation.model.LaunchState
 import dev.zitech.fireflow.presentation.model.LaunchState.Status.Error
 import dev.zitech.fireflow.presentation.model.LaunchState.Status.Success
 import javax.inject.Inject
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -47,42 +43,57 @@ internal class MainViewModel @Inject constructor(
     private val loginCheckHandler: LoginCheckCompletedHandler,
     private val getApplicationThemeValueUseCase: GetApplicationThemeValueUseCase,
     private val initializeRemoteConfiguratorUseCase: InitializeRemoteConfiguratorUseCase,
-    private val removeUserAccountsWithoutStateUseCase: RemoveUserAccountsWithoutStateUseCase,
+    private val removeStaleUserAccountsUseCase: RemoveStaleUserAccountsUseCase,
     applicationLaunchAnalyticsEvent: ApplicationLaunchAnalyticsEvent
-) : ViewModel() {
+) : ViewModel(), MviViewModel<MainIntent, MainState> {
 
     private val tag = Logger.tag(this::class.java)
 
-    val screenState: StateFlow<MainState> = stateHandler.state
-
-    private val mutableSplashState = MutableStateFlow(true)
-    val splashState: StateFlow<Boolean> = mutableSplashState.asStateFlow()
+    override val screenState: StateFlow<MainState> = stateHandler.state
 
     init {
         applicationLaunchAnalyticsEvent()
+        startMandatoryChecks()
+    }
 
+    private fun startMandatoryChecks() {
         viewModelScope.launch {
             combine(
                 loginCheckHandler.loginCheckState,
                 getApplicationThemeValueUseCase(),
-                initializeRemoteConfiguratorUseCase(),
-                flowOf(removeUserAccountsWithoutStateUseCase())
-            ) { _, themeResult, _, databaseResult ->
-                when (databaseResult) {
-                    is DataResult.Success -> LaunchState(Success(themeResult))
-                    is DataResult.Error -> LaunchState(Error(databaseResult.cause))
-                }
+                initializeRemoteConfiguratorUseCase()
+            ) { _, themeResult, _ ->
+                LaunchState(Success(themeResult))
             }.onEach { launchState ->
                 when (val status = launchState.status) {
                     is Success -> {
                         stateHandler.setTheme(status.theme)
-                        mutableSplashState.update { false }
+                        stateHandler.setMandatoryCompleted(true)
                     }
                     is Error -> {
                         Logger.e(tag, exception = status.cause)
                     }
                 }
             }.collect()
+        }
+    }
+
+    override fun sendIntent(intent: MainIntent) {
+        viewModelScope.launch {
+            when (intent) {
+                is ScreenResumed -> handleScreenResumed(intent)
+            }
+        }
+    }
+
+    private fun handleScreenResumed(intent: ScreenResumed) {
+        viewModelScope.launch {
+            with(intent) {
+                if (code == null && host == null && scheme == null && state == null) {
+                    removeStaleUserAccountsUseCase()
+                }
+            }
+            stateHandler.setDatabaseCleanCompleted(true)
         }
     }
 }

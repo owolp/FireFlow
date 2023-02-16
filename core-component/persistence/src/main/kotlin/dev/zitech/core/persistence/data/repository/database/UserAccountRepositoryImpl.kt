@@ -75,9 +75,9 @@ internal class UserAccountRepositoryImpl @Inject constructor(
             DataResult.Error(cause = exception)
         }
 
-    override suspend fun removeUserAccountsWithoutState(): DataResult<Unit> =
+    override suspend fun removeStaleUserAccounts(): DataResult<Unit> =
         try {
-            userAccountDatabaseSource.removeUserAccountsWithoutState()
+            userAccountDatabaseSource.removeUserAccountsWithStateAndWithoutAccessToken()
             DataResult.Success(Unit)
         } catch (exception: Exception) {
             DataResult.Error(cause = exception)

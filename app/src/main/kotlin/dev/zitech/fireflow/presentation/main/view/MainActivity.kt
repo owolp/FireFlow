@@ -33,11 +33,17 @@ import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.fireflow.R
 import dev.zitech.fireflow.presentation.FireFlowApp
 import dev.zitech.fireflow.presentation.main.viewmodel.MainViewModel
+import dev.zitech.fireflow.presentation.main.viewmodel.ScreenResumed
 
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @AndroidEntryPoint
 // Using AppCompatActivity, since ComponentActivity doesn't support language change
 internal class MainActivity : AppCompatActivity() {
+
+    private companion object {
+        const val QUERY_PARAMETER_CODE = "code"
+        const val QUERY_PARAMETER_STATE = "state"
+    }
 
     private val tag = Logger.tag(this::class.java)
 
@@ -47,7 +53,7 @@ internal class MainActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
             installSplashScreen().apply {
                 setKeepOnScreenCondition {
-                    viewModel.splashState.value
+                    viewModel.screenState.value.splash
                 }
             }
         } else {
@@ -77,5 +83,13 @@ internal class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         Logger.d(tag, "onResume, `intent.data=${intent.data}`")
+        viewModel.sendIntent(
+            ScreenResumed(
+                code = intent.data?.getQueryParameter(QUERY_PARAMETER_CODE),
+                host = intent.data?.host,
+                scheme = intent.data?.scheme,
+                state = intent.data?.getQueryParameter(QUERY_PARAMETER_STATE)
+            )
+        )
     }
 }

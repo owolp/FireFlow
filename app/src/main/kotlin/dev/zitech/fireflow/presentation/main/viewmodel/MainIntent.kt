@@ -15,16 +15,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.persistence.domain.usecase.database
+package dev.zitech.fireflow.presentation.main.viewmodel
 
-import dev.zitech.core.common.domain.model.DataResult
-import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
-import javax.inject.Inject
+import dev.zitech.core.common.presentation.architecture.MviIntent
 
-class RemoveUserAccountsWithoutStateUseCase @Inject constructor(
-    private val userAccountRepository: UserAccountRepository
-) {
+internal sealed interface MainIntent : MviIntent
 
-    suspend operator fun invoke(): DataResult<Unit> =
-        userAccountRepository.removeUserAccountsWithoutState()
-}
+internal data class ScreenResumed(
+    val code: String?,
+    val host: String?,
+    val scheme: String?,
+    val state: String?
+) : MainIntent

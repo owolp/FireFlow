@@ -30,6 +30,24 @@ class MainStateHandler @Inject constructor() : MviStateHandler<MainState> {
     private val mutableState = MutableStateFlow(MainState())
     override val state: StateFlow<MainState> = mutableState.asStateFlow()
 
+    fun setDatabaseCleanCompleted(value: Boolean) {
+        mutableState.update { state ->
+            state.copy(
+                databaseCleanCompleted = value,
+                splash = !(state.mandatoryStepsCompleted && value)
+            )
+        }
+    }
+
+    fun setMandatoryCompleted(value: Boolean) {
+        mutableState.update { state ->
+            state.copy(
+                mandatoryStepsCompleted = value,
+                splash = !(value && state.databaseCleanCompleted)
+            )
+        }
+    }
+
     fun setTheme(value: ApplicationTheme) {
         mutableState.update { it.copy(theme = value) }
     }

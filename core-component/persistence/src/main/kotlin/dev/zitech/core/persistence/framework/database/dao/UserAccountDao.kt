@@ -43,8 +43,8 @@ internal interface UserAccountDao {
     @Query("UPDATE user_accounts SET isCurrentUserAccount=0")
     suspend fun removeCurrentUserAccount(): Int
 
-    @Query("DELETE FROM user_accounts WHERE state IS NULL")
-    suspend fun removeUserAccountsWithoutState()
+    @Query("DELETE FROM user_accounts WHERE state IS NOT NULL AND accessToken IS NULL")
+    suspend fun removeUserAccountsWithStateAndWithoutAccessToken()
 
     @Update
     suspend fun updateUserAccount(userAccountEntity: UserAccountEntity): Int
