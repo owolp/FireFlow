@@ -59,7 +59,7 @@ import dev.zitech.onboarding.R
 internal fun WelcomeScreen(
     onContinueWithOauthClick: () -> Unit,
     onContinueWithPatClick: () -> Unit,
-    onDemoClick: () -> Unit,
+    onGetStartedClick: () -> Unit,
     onBackClick: () -> Unit,
     onFireflyClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -78,7 +78,7 @@ internal fun WelcomeScreen(
             innerPadding,
             onContinueWithOauthClick,
             onContinueWithPatClick,
-            onDemoClick,
+            onGetStartedClick,
             onFireflyClick
         )
     }
@@ -90,7 +90,7 @@ private fun WelcomeScreenContent(
     innerPadding: PaddingValues,
     onContinueWithOauthCLick: () -> Unit,
     onContinueWithPatClick: () -> Unit,
-    onDemoClick: () -> Unit,
+    onGetStartedClick: () -> Unit,
     onFireflyClick: () -> Unit
 ) {
     FireFlowBackground.Gradient(
@@ -116,14 +116,20 @@ private fun WelcomeScreenContent(
                 text = stringResource(R.string.welcome_slogan),
                 textAlign = TextAlign.Center
             )
-            FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.s)
+            FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.l)
+            FireFlowButtons.Filled.OnSurfaceTint(
+                modifier = Modifier.fillMaxWidth(),
+                text = stringResource(R.string.welcome_button_get_started),
+                onClick = onGetStartedClick
+            )
+            FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.l)
             FireFlowClickableTexts.LabelSmall(
                 text = getFireflyInfoAnnotatedString(),
                 color = FireFlowTheme.colors.onSurface,
                 textAlign = TextAlign.Center
             ) { onFireflyClick() }
-            FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.l)
-            FireFlowButtons.Filled.OnSurfaceTint(
+            FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.s)
+            FireFlowButtons.Outlined.OnSurface(
                 modifier = Modifier.fillMaxWidth(),
                 text = stringResource(R.string.welcome_button_continue_with_oauth),
                 onClick = onContinueWithOauthCLick
@@ -133,12 +139,6 @@ private fun WelcomeScreenContent(
                 modifier = Modifier.fillMaxWidth(),
                 text = stringResource(R.string.welcome_button_continue_with_personal_access_token),
                 onClick = onContinueWithPatClick
-            )
-            FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.s)
-            FireFlowButtons.Outlined.OnSurface(
-                modifier = Modifier.fillMaxWidth(),
-                text = stringResource(R.string.welcome_button_demo),
-                onClick = onDemoClick
             )
             FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.s)
         }
@@ -177,7 +177,7 @@ private fun WelcomeScreen_Preview() {
         WelcomeScreen(
             onContinueWithOauthClick = {},
             onContinueWithPatClick = {},
-            onDemoClick = {},
+            onGetStartedClick = {},
             onBackClick = {},
             onFireflyClick = {}
         )

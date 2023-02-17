@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@ internal sealed interface WelcomeIntent : MviIntent
 
 internal object OnContinueWithOauthClick : WelcomeIntent
 internal object OnContinueWithPatClick : WelcomeIntent
-internal object OnDemoClick : WelcomeIntent
+internal object OnGetStartedClick : WelcomeIntent
 internal object OnBackClick : WelcomeIntent
 internal object OnFireflyClick : WelcomeIntent
 internal object OnShowDemoPositive : WelcomeIntent

@@ -43,7 +43,7 @@ import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigationHandled
 import dev.zitech.onboarding.presentation.welcome.viewmodel.OnBackClick
 import dev.zitech.onboarding.presentation.welcome.viewmodel.OnContinueWithOauthClick
 import dev.zitech.onboarding.presentation.welcome.viewmodel.OnContinueWithPatClick
-import dev.zitech.onboarding.presentation.welcome.viewmodel.OnDemoClick
+import dev.zitech.onboarding.presentation.welcome.viewmodel.OnGetStartedClick
 import dev.zitech.onboarding.presentation.welcome.viewmodel.OnFireflyClick
 import dev.zitech.onboarding.presentation.welcome.viewmodel.OnShowDemoDismiss
 import dev.zitech.onboarding.presentation.welcome.viewmodel.OnShowDemoPositive
@@ -127,7 +127,7 @@ internal fun WelcomeRoute(
         snackbarState = snackbarState,
         onContinueWithOauthClick = { viewModel.sendIntent(OnContinueWithOauthClick) },
         onContinueWithPatClick = { viewModel.sendIntent(OnContinueWithPatClick) },
-        onDemoClick = { viewModel.sendIntent(OnDemoClick) },
+        onGetStartedClick = { viewModel.sendIntent(OnGetStartedClick) },
         onBackClick = { viewModel.sendIntent(OnBackClick) },
         onFireflyClick = { viewModel.sendIntent(OnFireflyClick) }
     )
