@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import dev.zitech.ds.atoms.text.FireFlowTexts.BodyMedium
 import dev.zitech.ds.atoms.text.FireFlowTexts.BodySmall
@@ -43,6 +44,7 @@ import dev.zitech.ds.atoms.text.FireFlowTexts.TitleSmall
 import dev.zitech.ds.theme.FireFlowTheme
 import dev.zitech.ds.theme.PreviewFireFlowTheme
 
+@Suppress("LargeClass")
 object FireFlowTexts {
 
     @Composable
@@ -51,7 +53,9 @@ object FireFlowTexts {
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
         fontWeight: FontWeight? = null,
-        textAlign: TextAlign = TextAlign.Start
+        textAlign: TextAlign = TextAlign.Start,
+        maxLines: Int = Int.MAX_VALUE,
+        overflow: TextOverflow = TextOverflow.Ellipsis
     ) {
         Text(
             modifier = modifier,
@@ -59,7 +63,9 @@ object FireFlowTexts {
             color = color,
             fontWeight = fontWeight,
             style = FireFlowTheme.typography.displayLarge,
-            textAlign = textAlign
+            textAlign = textAlign,
+            maxLines = maxLines,
+            overflow = overflow
         )
     }
 
@@ -69,7 +75,9 @@ object FireFlowTexts {
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
         fontWeight: FontWeight? = null,
-        textAlign: TextAlign = TextAlign.Start
+        textAlign: TextAlign = TextAlign.Start,
+        maxLines: Int = Int.MAX_VALUE,
+        overflow: TextOverflow = TextOverflow.Ellipsis
     ) {
         Text(
             modifier = modifier,
@@ -77,7 +85,9 @@ object FireFlowTexts {
             color = color,
             fontWeight = fontWeight,
             style = FireFlowTheme.typography.displayLarge,
-            textAlign = textAlign
+            textAlign = textAlign,
+            maxLines = maxLines,
+            overflow = overflow
         )
     }
 
@@ -87,7 +97,9 @@ object FireFlowTexts {
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
         fontWeight: FontWeight? = null,
-        textAlign: TextAlign = TextAlign.Start
+        textAlign: TextAlign = TextAlign.Start,
+        maxLines: Int = Int.MAX_VALUE,
+        overflow: TextOverflow = TextOverflow.Ellipsis
     ) {
         Text(
             modifier = modifier,
@@ -95,7 +107,9 @@ object FireFlowTexts {
             color = color,
             fontWeight = fontWeight,
             style = FireFlowTheme.typography.displayMedium,
-            textAlign = textAlign
+            textAlign = textAlign,
+            maxLines = maxLines,
+            overflow = overflow
         )
     }
 
@@ -105,7 +119,9 @@ object FireFlowTexts {
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
         fontWeight: FontWeight? = null,
-        textAlign: TextAlign = TextAlign.Start
+        textAlign: TextAlign = TextAlign.Start,
+        maxLines: Int = Int.MAX_VALUE,
+        overflow: TextOverflow = TextOverflow.Ellipsis
     ) {
         Text(
             modifier = modifier,
@@ -113,7 +129,9 @@ object FireFlowTexts {
             color = color,
             fontWeight = fontWeight,
             style = FireFlowTheme.typography.displayMedium,
-            textAlign = textAlign
+            textAlign = textAlign,
+            maxLines = maxLines,
+            overflow = overflow
         )
     }
 
@@ -123,7 +141,9 @@ object FireFlowTexts {
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
         fontWeight: FontWeight? = null,
-        textAlign: TextAlign = TextAlign.Start
+        textAlign: TextAlign = TextAlign.Start,
+        maxLines: Int = Int.MAX_VALUE,
+        overflow: TextOverflow = TextOverflow.Ellipsis
     ) {
         Text(
             modifier = modifier,
@@ -131,7 +151,9 @@ object FireFlowTexts {
             color = color,
             fontWeight = fontWeight,
             style = FireFlowTheme.typography.displaySmall,
-            textAlign = textAlign
+            textAlign = textAlign,
+            maxLines = maxLines,
+            overflow = overflow
         )
     }
 
@@ -141,7 +163,9 @@ object FireFlowTexts {
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
         fontWeight: FontWeight? = null,
-        textAlign: TextAlign = TextAlign.Start
+        textAlign: TextAlign = TextAlign.Start,
+        maxLines: Int = Int.MAX_VALUE,
+        overflow: TextOverflow = TextOverflow.Ellipsis
     ) {
         Text(
             modifier = modifier,
@@ -149,7 +173,9 @@ object FireFlowTexts {
             color = color,
             fontWeight = fontWeight,
             style = FireFlowTheme.typography.displaySmall,
-            textAlign = textAlign
+            textAlign = textAlign,
+            maxLines = maxLines,
+            overflow = overflow
         )
     }
 
@@ -159,7 +185,9 @@ object FireFlowTexts {
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
         fontWeight: FontWeight? = null,
-        textAlign: TextAlign = TextAlign.Start
+        textAlign: TextAlign = TextAlign.Start,
+        maxLines: Int = Int.MAX_VALUE,
+        overflow: TextOverflow = TextOverflow.Ellipsis
     ) {
         Text(
             modifier = modifier,
@@ -167,7 +195,9 @@ object FireFlowTexts {
             color = color,
             fontWeight = fontWeight,
             style = FireFlowTheme.typography.headlineLarge,
-            textAlign = textAlign
+            textAlign = textAlign,
+            maxLines = maxLines,
+            overflow = overflow
         )
     }
 
@@ -177,7 +207,9 @@ object FireFlowTexts {
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
         fontWeight: FontWeight? = null,
-        textAlign: TextAlign = TextAlign.Start
+        textAlign: TextAlign = TextAlign.Start,
+        maxLines: Int = Int.MAX_VALUE,
+        overflow: TextOverflow = TextOverflow.Ellipsis
     ) {
         Text(
             modifier = modifier,
@@ -185,7 +217,9 @@ object FireFlowTexts {
             color = color,
             fontWeight = fontWeight,
             style = FireFlowTheme.typography.headlineLarge,
-            textAlign = textAlign
+            textAlign = textAlign,
+            maxLines = maxLines,
+            overflow = overflow
         )
     }
 
@@ -195,7 +229,9 @@ object FireFlowTexts {
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
         fontWeight: FontWeight? = null,
-        textAlign: TextAlign = TextAlign.Start
+        textAlign: TextAlign = TextAlign.Start,
+        maxLines: Int = Int.MAX_VALUE,
+        overflow: TextOverflow = TextOverflow.Ellipsis
     ) {
         Text(
             modifier = modifier,
@@ -203,7 +239,9 @@ object FireFlowTexts {
             color = color,
             fontWeight = fontWeight,
             style = FireFlowTheme.typography.headlineMedium,
-            textAlign = textAlign
+            textAlign = textAlign,
+            maxLines = maxLines,
+            overflow = overflow
         )
     }
 
@@ -213,7 +251,9 @@ object FireFlowTexts {
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
         fontWeight: FontWeight? = null,
-        textAlign: TextAlign = TextAlign.Start
+        textAlign: TextAlign = TextAlign.Start,
+        maxLines: Int = Int.MAX_VALUE,
+        overflow: TextOverflow = TextOverflow.Ellipsis
     ) {
         Text(
             modifier = modifier,
@@ -221,7 +261,9 @@ object FireFlowTexts {
             color = color,
             fontWeight = fontWeight,
             style = FireFlowTheme.typography.headlineMedium,
-            textAlign = textAlign
+            textAlign = textAlign,
+            maxLines = maxLines,
+            overflow = overflow
         )
     }
 
@@ -231,7 +273,9 @@ object FireFlowTexts {
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
         fontWeight: FontWeight? = null,
-        textAlign: TextAlign = TextAlign.Start
+        textAlign: TextAlign = TextAlign.Start,
+        maxLines: Int = Int.MAX_VALUE,
+        overflow: TextOverflow = TextOverflow.Ellipsis
     ) {
         Text(
             modifier = modifier,
@@ -239,7 +283,9 @@ object FireFlowTexts {
             color = color,
             fontWeight = fontWeight,
             style = FireFlowTheme.typography.headlineSmall,
-            textAlign = textAlign
+            textAlign = textAlign,
+            maxLines = maxLines,
+            overflow = overflow
         )
     }
 
@@ -249,7 +295,9 @@ object FireFlowTexts {
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
         fontWeight: FontWeight? = null,
-        textAlign: TextAlign = TextAlign.Start
+        textAlign: TextAlign = TextAlign.Start,
+        maxLines: Int = Int.MAX_VALUE,
+        overflow: TextOverflow = TextOverflow.Ellipsis
     ) {
         Text(
             modifier = modifier,
@@ -257,7 +305,9 @@ object FireFlowTexts {
             color = color,
             fontWeight = fontWeight,
             style = FireFlowTheme.typography.headlineSmall,
-            textAlign = textAlign
+            textAlign = textAlign,
+            maxLines = maxLines,
+            overflow = overflow
         )
     }
 
@@ -267,7 +317,9 @@ object FireFlowTexts {
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
         fontWeight: FontWeight? = null,
-        textAlign: TextAlign = TextAlign.Start
+        textAlign: TextAlign = TextAlign.Start,
+        maxLines: Int = Int.MAX_VALUE,
+        overflow: TextOverflow = TextOverflow.Ellipsis
     ) {
         Text(
             modifier = modifier,
@@ -275,7 +327,9 @@ object FireFlowTexts {
             color = color,
             fontWeight = fontWeight,
             style = FireFlowTheme.typography.titleLarge,
-            textAlign = textAlign
+            textAlign = textAlign,
+            maxLines = maxLines,
+            overflow = overflow
         )
     }
 
@@ -285,7 +339,9 @@ object FireFlowTexts {
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
         fontWeight: FontWeight? = null,
-        textAlign: TextAlign = TextAlign.Start
+        textAlign: TextAlign = TextAlign.Start,
+        maxLines: Int = Int.MAX_VALUE,
+        overflow: TextOverflow = TextOverflow.Ellipsis
     ) {
         Text(
             modifier = modifier,
@@ -293,7 +349,9 @@ object FireFlowTexts {
             color = color,
             fontWeight = fontWeight,
             style = FireFlowTheme.typography.titleLarge,
-            textAlign = textAlign
+            textAlign = textAlign,
+            maxLines = maxLines,
+            overflow = overflow
         )
     }
 
@@ -303,7 +361,9 @@ object FireFlowTexts {
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
         fontWeight: FontWeight? = null,
-        textAlign: TextAlign = TextAlign.Start
+        textAlign: TextAlign = TextAlign.Start,
+        maxLines: Int = Int.MAX_VALUE,
+        overflow: TextOverflow = TextOverflow.Ellipsis
     ) {
         Text(
             modifier = modifier,
@@ -311,7 +371,9 @@ object FireFlowTexts {
             color = color,
             fontWeight = fontWeight,
             style = FireFlowTheme.typography.titleMedium,
-            textAlign = textAlign
+            textAlign = textAlign,
+            maxLines = maxLines,
+            overflow = overflow
         )
     }
 
@@ -321,7 +383,9 @@ object FireFlowTexts {
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
         fontWeight: FontWeight? = null,
-        textAlign: TextAlign = TextAlign.Start
+        textAlign: TextAlign = TextAlign.Start,
+        maxLines: Int = Int.MAX_VALUE,
+        overflow: TextOverflow = TextOverflow.Ellipsis
     ) {
         Text(
             modifier = modifier,
@@ -329,7 +393,9 @@ object FireFlowTexts {
             color = color,
             fontWeight = fontWeight,
             style = FireFlowTheme.typography.titleMedium,
-            textAlign = textAlign
+            textAlign = textAlign,
+            maxLines = maxLines,
+            overflow = overflow
         )
     }
 
@@ -339,7 +405,9 @@ object FireFlowTexts {
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
         fontWeight: FontWeight? = null,
-        textAlign: TextAlign = TextAlign.Start
+        textAlign: TextAlign = TextAlign.Start,
+        maxLines: Int = Int.MAX_VALUE,
+        overflow: TextOverflow = TextOverflow.Ellipsis
     ) {
         Text(
             modifier = modifier,
@@ -347,7 +415,9 @@ object FireFlowTexts {
             color = color,
             fontWeight = fontWeight,
             style = FireFlowTheme.typography.titleSmall,
-            textAlign = textAlign
+            textAlign = textAlign,
+            maxLines = maxLines,
+            overflow = overflow
         )
     }
 
@@ -357,7 +427,9 @@ object FireFlowTexts {
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
         fontWeight: FontWeight? = null,
-        textAlign: TextAlign = TextAlign.Start
+        textAlign: TextAlign = TextAlign.Start,
+        maxLines: Int = Int.MAX_VALUE,
+        overflow: TextOverflow = TextOverflow.Ellipsis
     ) {
         Text(
             modifier = modifier,
@@ -365,7 +437,9 @@ object FireFlowTexts {
             color = color,
             fontWeight = fontWeight,
             style = FireFlowTheme.typography.titleSmall,
-            textAlign = textAlign
+            textAlign = textAlign,
+            maxLines = maxLines,
+            overflow = overflow
         )
     }
 
@@ -375,7 +449,9 @@ object FireFlowTexts {
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
         fontWeight: FontWeight? = null,
-        textAlign: TextAlign = TextAlign.Start
+        textAlign: TextAlign = TextAlign.Start,
+        maxLines: Int = Int.MAX_VALUE,
+        overflow: TextOverflow = TextOverflow.Ellipsis
     ) {
         Text(
             modifier = modifier,
@@ -383,7 +459,9 @@ object FireFlowTexts {
             color = color,
             fontWeight = fontWeight,
             style = FireFlowTheme.typography.bodyLarge,
-            textAlign = textAlign
+            textAlign = textAlign,
+            maxLines = maxLines,
+            overflow = overflow
         )
     }
 
@@ -393,7 +471,9 @@ object FireFlowTexts {
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
         fontWeight: FontWeight? = null,
-        textAlign: TextAlign = TextAlign.Start
+        textAlign: TextAlign = TextAlign.Start,
+        maxLines: Int = Int.MAX_VALUE,
+        overflow: TextOverflow = TextOverflow.Ellipsis
     ) {
         Text(
             modifier = modifier,
@@ -401,7 +481,9 @@ object FireFlowTexts {
             color = color,
             fontWeight = fontWeight,
             style = FireFlowTheme.typography.bodyLarge,
-            textAlign = textAlign
+            textAlign = textAlign,
+            maxLines = maxLines,
+            overflow = overflow
         )
     }
 
@@ -411,7 +493,9 @@ object FireFlowTexts {
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
         fontWeight: FontWeight? = null,
-        textAlign: TextAlign = TextAlign.Start
+        textAlign: TextAlign = TextAlign.Start,
+        maxLines: Int = Int.MAX_VALUE,
+        overflow: TextOverflow = TextOverflow.Ellipsis
     ) {
         Text(
             modifier = modifier,
@@ -419,7 +503,9 @@ object FireFlowTexts {
             color = color,
             fontWeight = fontWeight,
             style = FireFlowTheme.typography.bodyMedium,
-            textAlign = textAlign
+            textAlign = textAlign,
+            maxLines = maxLines,
+            overflow = overflow
         )
     }
 
@@ -429,7 +515,9 @@ object FireFlowTexts {
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
         fontWeight: FontWeight? = null,
-        textAlign: TextAlign = TextAlign.Start
+        textAlign: TextAlign = TextAlign.Start,
+        maxLines: Int = Int.MAX_VALUE,
+        overflow: TextOverflow = TextOverflow.Ellipsis
     ) {
         Text(
             modifier = modifier,
@@ -437,7 +525,9 @@ object FireFlowTexts {
             color = color,
             fontWeight = fontWeight,
             style = FireFlowTheme.typography.bodyMedium,
-            textAlign = textAlign
+            textAlign = textAlign,
+            maxLines = maxLines,
+            overflow = overflow
         )
     }
 
@@ -447,7 +537,9 @@ object FireFlowTexts {
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
         fontWeight: FontWeight? = null,
-        textAlign: TextAlign = TextAlign.Start
+        textAlign: TextAlign = TextAlign.Start,
+        maxLines: Int = Int.MAX_VALUE,
+        overflow: TextOverflow = TextOverflow.Ellipsis
     ) {
         Text(
             modifier = modifier,
@@ -455,7 +547,9 @@ object FireFlowTexts {
             color = color,
             fontWeight = fontWeight,
             style = FireFlowTheme.typography.bodySmall,
-            textAlign = textAlign
+            textAlign = textAlign,
+            maxLines = maxLines,
+            overflow = overflow
         )
     }
 
@@ -465,7 +559,9 @@ object FireFlowTexts {
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
         fontWeight: FontWeight? = null,
-        textAlign: TextAlign = TextAlign.Start
+        textAlign: TextAlign = TextAlign.Start,
+        maxLines: Int = Int.MAX_VALUE,
+        overflow: TextOverflow = TextOverflow.Ellipsis
     ) {
         Text(
             modifier = modifier,
@@ -473,7 +569,9 @@ object FireFlowTexts {
             color = color,
             fontWeight = fontWeight,
             style = FireFlowTheme.typography.bodySmall,
-            textAlign = textAlign
+            textAlign = textAlign,
+            maxLines = maxLines,
+            overflow = overflow
         )
     }
 
@@ -483,7 +581,9 @@ object FireFlowTexts {
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
         fontWeight: FontWeight? = null,
-        textAlign: TextAlign = TextAlign.Start
+        textAlign: TextAlign = TextAlign.Start,
+        maxLines: Int = Int.MAX_VALUE,
+        overflow: TextOverflow = TextOverflow.Ellipsis
     ) {
         Text(
             modifier = modifier,
@@ -491,7 +591,9 @@ object FireFlowTexts {
             color = color,
             fontWeight = fontWeight,
             style = FireFlowTheme.typography.labelLarge,
-            textAlign = textAlign
+            textAlign = textAlign,
+            maxLines = maxLines,
+            overflow = overflow
         )
     }
 
@@ -501,7 +603,9 @@ object FireFlowTexts {
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
         fontWeight: FontWeight? = null,
-        textAlign: TextAlign = TextAlign.Start
+        textAlign: TextAlign = TextAlign.Start,
+        maxLines: Int = Int.MAX_VALUE,
+        overflow: TextOverflow = TextOverflow.Ellipsis
     ) {
         Text(
             modifier = modifier,
@@ -509,7 +613,9 @@ object FireFlowTexts {
             color = color,
             fontWeight = fontWeight,
             style = FireFlowTheme.typography.labelLarge,
-            textAlign = textAlign
+            textAlign = textAlign,
+            maxLines = maxLines,
+            overflow = overflow
         )
     }
 
@@ -519,7 +625,9 @@ object FireFlowTexts {
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
         fontWeight: FontWeight? = null,
-        textAlign: TextAlign = TextAlign.Start
+        textAlign: TextAlign = TextAlign.Start,
+        maxLines: Int = Int.MAX_VALUE,
+        overflow: TextOverflow = TextOverflow.Ellipsis
     ) {
         Text(
             modifier = modifier,
@@ -527,7 +635,9 @@ object FireFlowTexts {
             color = color,
             fontWeight = fontWeight,
             style = FireFlowTheme.typography.labelMedium,
-            textAlign = textAlign
+            textAlign = textAlign,
+            maxLines = maxLines,
+            overflow = overflow
         )
     }
 
@@ -537,7 +647,9 @@ object FireFlowTexts {
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
         fontWeight: FontWeight? = null,
-        textAlign: TextAlign = TextAlign.Start
+        textAlign: TextAlign = TextAlign.Start,
+        maxLines: Int = Int.MAX_VALUE,
+        overflow: TextOverflow = TextOverflow.Ellipsis
     ) {
         Text(
             modifier = modifier,
@@ -545,7 +657,9 @@ object FireFlowTexts {
             color = color,
             fontWeight = fontWeight,
             style = FireFlowTheme.typography.labelMedium,
-            textAlign = textAlign
+            textAlign = textAlign,
+            maxLines = maxLines,
+            overflow = overflow
         )
     }
 
@@ -555,7 +669,9 @@ object FireFlowTexts {
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
         fontWeight: FontWeight? = null,
-        textAlign: TextAlign = TextAlign.Start
+        textAlign: TextAlign = TextAlign.Start,
+        maxLines: Int = Int.MAX_VALUE,
+        overflow: TextOverflow = TextOverflow.Ellipsis
     ) {
         Text(
             modifier = modifier,
@@ -563,7 +679,9 @@ object FireFlowTexts {
             color = color,
             fontWeight = fontWeight,
             style = FireFlowTheme.typography.labelSmall,
-            textAlign = textAlign
+            textAlign = textAlign,
+            maxLines = maxLines,
+            overflow = overflow
         )
     }
 
@@ -573,7 +691,9 @@ object FireFlowTexts {
         modifier: Modifier = Modifier,
         color: Color = Color.Unspecified,
         fontWeight: FontWeight? = null,
-        textAlign: TextAlign = TextAlign.Start
+        textAlign: TextAlign = TextAlign.Start,
+        maxLines: Int = Int.MAX_VALUE,
+        overflow: TextOverflow = TextOverflow.Ellipsis
     ) {
         Text(
             modifier = modifier,
@@ -581,7 +701,9 @@ object FireFlowTexts {
             color = color,
             fontWeight = fontWeight,
             style = FireFlowTheme.typography.labelSmall,
-            textAlign = textAlign
+            textAlign = textAlign,
+            maxLines = maxLines,
+            overflow = overflow
         )
     }
 }

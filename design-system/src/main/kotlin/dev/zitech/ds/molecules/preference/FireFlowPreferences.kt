@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -31,7 +32,6 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.toggleable
-import androidx.compose.material3.Card
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,6 +42,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import dev.zitech.ds.atoms.card.FireFlowCards
 import dev.zitech.ds.atoms.checkbox.FireFlowCheckboxes
 import dev.zitech.ds.atoms.icon.FireFlowIcons
 import dev.zitech.ds.atoms.spacer.FireFlowSpacers
@@ -304,22 +305,18 @@ object FireFlowPreferences {
         }
     }
 
-    @SuppressWarnings("ForbiddenComment")
     @Composable
     private fun PreferenceItem(
         modifier: Modifier = Modifier,
-        content: @Composable () -> Unit
+        content: @Composable ColumnScope.() -> Unit
     ) {
-        // TODO: Extract Card to atom
-        Card(
+        FireFlowCards.Default.ExtraLarge(
             modifier = modifier
                 .fillMaxWidth()
                 .height(IntrinsicSize.Min)
                 .heightIn(min = 72.dp),
-            shape = FireFlowTheme.shapes.extraLarge
-        ) {
-            content()
-        }
+            content = content
+        )
     }
 }
 

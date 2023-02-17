@@ -18,8 +18,9 @@
 <resources>
 
     <string name="welcome_slogan">Control your finance with FireFlow</string>
-    <string name="welcome_firefly_iii_annotated_text">Firefly III</string>
-    <string name="welcome_firefly_iii_text">and Firefly III personal finance manager</string>
+    <string name="welcome_firefly_iii_already_using">Already using Firefly III personal finances manager?</string>
+    <string name="welcome_firefly_iii_more_info_annotated_text">Firefly III</string>
+    <string name="welcome_firefly_iii_more_info_text">Check out Firefly III Documentation for more information.</string>
     <string name="welcome_button_continue_with_oauth">Continue with OAuth</string>
     <string name="welcome_button_continue_with_personal_access_token">Continue with personal access token</string>
     <string name="welcome_button_get_started">Get started</string>

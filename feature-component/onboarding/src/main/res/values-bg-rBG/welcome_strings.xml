@@ -18,8 +18,9 @@
 <resources>
 
     <string name="welcome_slogan">Управлявайте финансите си с FireFlow</string>
-    <string name="welcome_firefly_iii_annotated_text">Firefly III</string>
-    <string name="welcome_firefly_iii_text">и Firefly III личен финансов мениджър</string>
+    <string name="welcome_firefly_iii_already_using">Вече използвате Firefly III личен финансов мениджър?</string>
+    <string name="welcome_firefly_iii_more_info_annotated_text">Firefly III</string>
+    <string name="welcome_firefly_iii_more_info_text">Проверете документацията на Firefly III за повече информация.</string>
     <string name="welcome_button_continue_with_oauth">Продължете с OAuth</string>
     <string name="welcome_button_continue_with_personal_access_token">Продължете с персонален токен за достъп</string>
     <string name="welcome_button_get_started">Започнете</string>

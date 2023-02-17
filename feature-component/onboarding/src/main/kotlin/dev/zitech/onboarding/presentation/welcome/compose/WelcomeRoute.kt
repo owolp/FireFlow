@@ -43,8 +43,8 @@ import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigationHandled
 import dev.zitech.onboarding.presentation.welcome.viewmodel.OnBackClick
 import dev.zitech.onboarding.presentation.welcome.viewmodel.OnContinueWithOauthClick
 import dev.zitech.onboarding.presentation.welcome.viewmodel.OnContinueWithPatClick
-import dev.zitech.onboarding.presentation.welcome.viewmodel.OnGetStartedClick
 import dev.zitech.onboarding.presentation.welcome.viewmodel.OnFireflyClick
+import dev.zitech.onboarding.presentation.welcome.viewmodel.OnGetStartedClick
 import dev.zitech.onboarding.presentation.welcome.viewmodel.OnShowDemoDismiss
 import dev.zitech.onboarding.presentation.welcome.viewmodel.OnShowDemoPositive
 import dev.zitech.onboarding.presentation.welcome.viewmodel.ShowDemoWarning
