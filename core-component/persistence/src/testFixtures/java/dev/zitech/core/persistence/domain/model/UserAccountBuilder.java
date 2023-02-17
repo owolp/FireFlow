@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,12 +21,26 @@ import dev.zitech.core.persistence.domain.model.database.UserAccount;
 
 public class UserAccountBuilder {
 
-    private Long id = 0L;
+    private String accessToken;
+    private String clientId = "123";
+    private String clientSecret = "456";
     private Boolean isCurrentUserAccount = false;
+    private String oauthCode;
+    private String refreshToken;
+    private String serverAddress = "http://localhost";
+    private String state;
+    private Long userId = 0L;
 
-    public UserAccountBuilder setId(Long id) {
-        this.id = id;
-        return this;
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
+
+    public void setClientSecret(String clientSecret) {
+        this.clientSecret = clientSecret;
     }
 
     public UserAccountBuilder setCurrentUserAccount(Boolean currentUserAccount) {
@@ -34,10 +48,38 @@ public class UserAccountBuilder {
         return this;
     }
 
+    public void setOauthCode(String oauthCode) {
+        this.oauthCode = oauthCode;
+    }
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+
+    public void setServerAddress(String serverAddress) {
+        this.serverAddress = serverAddress;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public UserAccountBuilder setUserId(Long userId) {
+        this.userId = userId;
+        return this;
+    }
+
     public UserAccount build() {
         return new UserAccount(
-                id,
-                isCurrentUserAccount
+                accessToken,
+                clientId,
+                clientSecret,
+                isCurrentUserAccount,
+                oauthCode,
+                refreshToken,
+                serverAddress,
+                state,
+                userId
         );
     }
 }

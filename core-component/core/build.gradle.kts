@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@ dependencies {
     api(projects.coreComponent.common)
     api(projects.coreComponent.featureFlag)
     api(projects.coreComponent.navigation)
+    api(projects.coreComponent.network)
     api(projects.coreComponent.persistence)
     api(projects.coreComponent.remoteConfig)
     api(projects.coreComponent.reporter)

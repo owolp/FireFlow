@@ -25,7 +25,7 @@ import dev.zitech.authentication.presentation.navigation.AccountsDestination
 import dev.zitech.authentication.presentation.navigation.authenticationGraph
 import dev.zitech.dashboard.presentation.navigation.DashboardDestination
 import dev.zitech.dashboard.presentation.navigation.dashboardGraph
-import dev.zitech.onboarding.presentation.navigation.OauthDestination
+import dev.zitech.onboarding.presentation.navigation.OAuthDestination
 import dev.zitech.onboarding.presentation.navigation.PatDestination
 import dev.zitech.onboarding.presentation.navigation.WelcomeDestination
 import dev.zitech.onboarding.presentation.navigation.onboardingGraph
@@ -58,10 +58,10 @@ internal fun FireFlowNavHost(
             }
         )
         onboardingGraph(
-            navigateToOath = {
+            navigateToOAuth = {
                 onNavigateToDestination(
                     NavDirection(
-                        destination = OauthDestination
+                        destination = OAuthDestination
                     )
                 )
             },

@@ -23,10 +23,12 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
 import dev.zitech.core.common.domain.validator.Validator
+import dev.zitech.onboarding.data.repository.TokenRepositoryImpl
 import dev.zitech.onboarding.di.annotation.ValidatorClientId
 import dev.zitech.onboarding.di.annotation.ValidatorClientSecret
 import dev.zitech.onboarding.di.annotation.ValidatorPat
 import dev.zitech.onboarding.di.annotation.ValidatorServerAddress
+import dev.zitech.onboarding.domain.repository.TokenRepository
 import dev.zitech.onboarding.domain.validator.ClientIdValidator
 import dev.zitech.onboarding.domain.validator.ClientSecretValidator
 import dev.zitech.onboarding.domain.validator.PatValidator
@@ -59,5 +61,9 @@ internal interface OnboardingModule {
         fun serverAddressValidator(
             serverAddressValidator: ServerAddressValidator
         ): Validator<String>
+
+        @ViewModelScoped
+        @Binds
+        fun tokenRepository(tokenRepositoryImpl: TokenRepositoryImpl): TokenRepository
     }
 }

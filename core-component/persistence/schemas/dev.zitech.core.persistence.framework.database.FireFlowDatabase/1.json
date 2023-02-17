@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "0dc6f7717207bc8f67fc44a468eebd48",
+    "identityHash": "4ad3e34df9394a6b94313dad84847da1",
     "entities": [
       {
         "tableName": "user_accounts",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `isCurrentUserAccount` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `accessToken` TEXT, `clientId` TEXT NOT NULL, `clientSecret` TEXT NOT NULL, `isCurrentUserAccount` INTEGER NOT NULL, `oauthCode` TEXT, `refreshToken` TEXT, `serverAddress` TEXT NOT NULL, `state` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -15,17 +15,59 @@
             "notNull": false
           },
           {
+            "fieldPath": "accessToken",
+            "columnName": "accessToken",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "clientId",
+            "columnName": "clientId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "clientSecret",
+            "columnName": "clientSecret",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
             "fieldPath": "isCurrentUserAccount",
             "columnName": "isCurrentUserAccount",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "oauthCode",
+            "columnName": "oauthCode",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "refreshToken",
+            "columnName": "refreshToken",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "serverAddress",
+            "columnName": "serverAddress",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "state",
+            "columnName": "state",
+            "affinity": "TEXT",
+            "notNull": false
           }
         ],
         "primaryKey": {
+          "autoGenerate": true,
           "columnNames": [
             "id"
-          ],
-          "autoGenerate": true
+          ]
         },
         "indices": [],
         "foreignKeys": []
@@ -34,7 +76,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0dc6f7717207bc8f67fc44a468eebd48')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4ad3e34df9394a6b94313dad84847da1')"
     ]
   }
 }

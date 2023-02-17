@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@ import com.android.build.gradle.AppPlugin
 import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.LibraryExtension
 import com.android.build.gradle.LibraryPlugin
+import com.android.build.gradle.internal.dsl.BuildType
 
 plugins.apply(BuildPlugins.DETEKT)
 plugins.apply(BuildPlugins.GRADLE_VERSION_PLUGIN)
@@ -163,6 +164,10 @@ fun BaseExtension.configureBuildTypes(project: Project) {
         getByName(BuildTypes.DEBUG) {
             isDebuggable = true
             isMinifyEnabled = false
+
+            ManifestPlaceholders.stringPlaceHolders.forEach { (t, u) ->
+                addStringConstant(t, u)
+            }
         }
 
         getByName(BuildTypes.RELEASE) {
@@ -171,6 +176,10 @@ fun BaseExtension.configureBuildTypes(project: Project) {
                 getDefaultProguardFile("proguard-android.txt"),
                 "${project.rootProject.file("config/proguard/proguard-rules.pro")}"
             )
+
+            ManifestPlaceholders.stringPlaceHolders.forEach { (t, u) ->
+                addStringConstant(t, u)
+            }
         }
     }
 }
@@ -213,4 +222,9 @@ fun BaseExtension.configureProductFlavors() {
 
         create(ProductFlavors.FOSS) {}
     }
+}
+
+fun BuildType.addStringConstant(constantName: String, constantValue: String) {
+    manifestPlaceholders += constantName to constantValue
+    buildConfigField("String", constantName, "\"$constantValue\"")
 }

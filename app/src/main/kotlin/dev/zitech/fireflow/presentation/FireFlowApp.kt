@@ -116,13 +116,13 @@ internal fun FireFlowApp(
                             }
                         },
                         onBackClick = { navDirection ->
-                            appState.onBackClick(
+                            appState.goBack(
                                 destination = navDirection?.destination,
                                 inclusive = navDirection?.inclusive
                             )
                         },
-                        onCloseApplication = appState::onCloseApplication,
-                        onRestartApplication = appState::onRestartApplication
+                        onCloseApplication = appState::closeApplication,
+                        onRestartApplication = appState::restartApplication
                     )
                 }
             }

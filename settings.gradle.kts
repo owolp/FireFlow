@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ include(":core-component:core")
 include(":core-component:common")
 include(":core-component:feature-flag")
 include(":core-component:navigation")
+include(":core-component:network")
 include(":core-component:persistence")
 include(":core-component:remote-config")
 include(":core-component:reporter")

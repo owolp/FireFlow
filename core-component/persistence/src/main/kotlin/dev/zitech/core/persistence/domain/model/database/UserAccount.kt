@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,17 @@
 package dev.zitech.core.persistence.domain.model.database
 
 data class UserAccount(
-    val id: Long,
-    val isCurrentUserAccount: Boolean
-)
+    val accessToken: String?,
+    val clientId: String,
+    val clientSecret: String,
+    val isCurrentUserAccount: Boolean,
+    val oauthCode: String?,
+    val refreshToken: String?,
+    val serverAddress: String,
+    val state: String?,
+    val userId: Long
+) {
+    companion object {
+        const val STATE_LENGTH = 10
+    }
+}

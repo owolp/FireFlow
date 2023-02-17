@@ -21,8 +21,6 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import androidx.activity.result.ActivityResultLauncher
-import androidx.annotation.ColorInt
-import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.net.toUri
 import dev.zitech.core.common.domain.model.DataResult
@@ -36,26 +34,22 @@ object Browser {
     fun openUrl(
         context: Context,
         url: String,
-        @ColorInt toolbarColor: Int,
         activityResultLauncher: ActivityResultLauncher<Intent>? = null
     ) = callbackFlow {
         try {
-            val customTabBarColor = CustomTabColorSchemeParams.Builder()
-                .setToolbarColor(toolbarColor).build()
-            val customTabsIntent = CustomTabsIntent.Builder()
-                .setShowTitle(true)
-                .setDefaultColorSchemeParams(customTabBarColor)
-                .build()
-
-            if (activityResultLauncher == null) {
-                customTabsIntent.launchUrl(context, url.toUri())
+            val uri = url.toUri()
+            if (activityResultLauncher != null) {
+                val intent = Intent().apply {
+                    action = Intent.ACTION_VIEW
+                    data = uri
+                    addCategory(Intent.CATEGORY_BROWSABLE)
+                }
+                activityResultLauncher.launch(intent)
             } else {
-                customTabsIntent.intent
-                    .setAction(Intent.ACTION_VIEW)
-                    .addCategory(Intent.CATEGORY_BROWSABLE)
-                    .data = url.toUri()
-
-                activityResultLauncher.launch(customTabsIntent.intent)
+                val customTabsIntent = CustomTabsIntent.Builder()
+                    .setShowTitle(true)
+                    .build()
+                customTabsIntent.launchUrl(context, uri)
             }
 
             trySend(DataResult.Success(Unit))

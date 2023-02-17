@@ -18,14 +18,19 @@
 package dev.zitech.onboarding.presentation.navigation
 
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
-import dev.zitech.onboarding.presentation.oauth.compose.OauthRoute
+import androidx.navigation.navArgument
+import androidx.navigation.navDeepLink
+import dev.zitech.onboarding.BuildConfig
+import dev.zitech.onboarding.presentation.oauth.compose.OAuthRoute
+import dev.zitech.onboarding.presentation.oauth.model.OAuthAuthentication
 import dev.zitech.onboarding.presentation.pat.compose.PatRoute
 import dev.zitech.onboarding.presentation.welcome.compose.WelcomeRoute
 
 @Suppress("LongParameterList")
 fun NavGraphBuilder.onboardingGraph(
-    navigateToOath: () -> Unit,
+    navigateToOAuth: () -> Unit,
     navigateToPat: () -> Unit,
     navigateToDemo: () -> Unit,
     navigateToDashboard: () -> Unit,
@@ -33,8 +38,39 @@ fun NavGraphBuilder.onboardingGraph(
     navigateToError: () -> Unit,
     navigateBack: () -> Unit
 ) {
-    composable(route = OauthDestination.route) {
-        OauthRoute(
+    composable(
+        route = OAuthDestination.route,
+        arguments = listOf(
+            navArgument(OAuthDestination.code) {
+                type = NavType.StringType
+                defaultValue = null
+                nullable = true
+            },
+            navArgument(OAuthDestination.state) {
+                type = NavType.StringType
+                defaultValue = null
+                nullable = true
+            }
+        ),
+        deepLinks = listOf(
+            navDeepLink {
+                uriPattern = BuildConfig.data_scheme +
+                    "://" +
+                    BuildConfig.data_host_authentication +
+                    "?code={" +
+                    OAuthDestination.code +
+                    "}" +
+                    "&state=authentication_{" +
+                    OAuthDestination.state +
+                    "}"
+            }
+        )
+    ) { navBackStackEntry ->
+        val code = navBackStackEntry.arguments?.getString(OAuthDestination.code)
+        val state = navBackStackEntry.arguments?.getString(OAuthDestination.state)
+
+        OAuthRoute(
+            oauthAuthentication = OAuthAuthentication(code, state),
             navigateToDashboard = navigateToDashboard,
             navigateBack = navigateBack,
             navigateToError = navigateToError
@@ -48,7 +84,7 @@ fun NavGraphBuilder.onboardingGraph(
     }
     composable(route = WelcomeDestination.route) {
         WelcomeRoute(
-            navigateToOath = navigateToOath,
+            navigateToOAuth = navigateToOAuth,
             navigateToPat = navigateToPat,
             navigateToDemo = navigateToDemo,
             navigateOutOfApp = navigateOutOfApp,

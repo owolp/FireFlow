@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,5 +26,12 @@ import androidx.room.PrimaryKey
 internal data class UserAccountEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long? = null,
-    val isCurrentUserAccount: Boolean
+    val accessToken: String? = null,
+    val clientId: String,
+    val clientSecret: String,
+    val isCurrentUserAccount: Boolean,
+    val oauthCode: String? = null,
+    val refreshToken: String? = null,
+    val serverAddress: String,
+    val state: String? = null
 )

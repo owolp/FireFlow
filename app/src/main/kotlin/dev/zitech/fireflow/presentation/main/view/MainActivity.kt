@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,13 +29,23 @@ import androidx.core.view.WindowCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
+import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.fireflow.R
 import dev.zitech.fireflow.presentation.FireFlowApp
 import dev.zitech.fireflow.presentation.main.viewmodel.MainViewModel
+import dev.zitech.fireflow.presentation.main.viewmodel.ScreenResumed
 
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @AndroidEntryPoint
+// Using AppCompatActivity, since ComponentActivity doesn't support language change
 internal class MainActivity : AppCompatActivity() {
+
+    private companion object {
+        const val QUERY_PARAMETER_CODE = "code"
+        const val QUERY_PARAMETER_STATE = "state"
+    }
+
+    private val tag = Logger.tag(this::class.java)
 
     private val viewModel: MainViewModel by viewModels()
 
@@ -43,7 +53,7 @@ internal class MainActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
             installSplashScreen().apply {
                 setKeepOnScreenCondition {
-                    viewModel.splashState.value
+                    viewModel.screenState.value.splash
                 }
             }
         } else {
@@ -62,13 +72,24 @@ internal class MainActivity : AppCompatActivity() {
 
             val navController = rememberNavController()
 
-            if (mainState.remoteConfig) {
-                FireFlowApp(
-                    theme = mainState.theme,
-                    windowSizeClass = calculateWindowSizeClass(this),
-                    navController = navController
-                )
-            }
+            FireFlowApp(
+                theme = mainState.theme,
+                windowSizeClass = calculateWindowSizeClass(this),
+                navController = navController
+            )
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Logger.d(tag, "onResume, `intent.data=${intent.data}`")
+        viewModel.sendIntent(
+            ScreenResumed(
+                code = intent.data?.getQueryParameter(QUERY_PARAMETER_CODE),
+                host = intent.data?.host,
+                scheme = intent.data?.scheme,
+                state = intent.data?.getQueryParameter(QUERY_PARAMETER_STATE)
+            )
+        )
     }
 }

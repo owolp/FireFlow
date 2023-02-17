@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -119,7 +119,7 @@ internal class FireFlowAppState(
         }
     }
 
-    fun onBackClick(
+    fun goBack(
         destination: FireFlowNavigationDestination?,
         inclusive: Boolean? = DEFAULT_STATE_INCLUSIVE
     ) {
@@ -129,18 +129,18 @@ internal class FireFlowAppState(
                 navController.popBackStack(id, inclusive)
             } catch (e: IllegalArgumentException) {
                 Logger.e("FireFlowAppState", e)
-                navController.popBackStack()
+                restartApplication()
             }
         } else {
             navController.popBackStack()
         }
     }
 
-    fun onCloseApplication() {
+    fun closeApplication() {
         (navController.context as? AppCompatActivity)?.finish()
     }
 
-    fun onRestartApplication() {
+    fun restartApplication() {
         ProcessPhoenix.triggerRebirth(navController.context)
     }
 

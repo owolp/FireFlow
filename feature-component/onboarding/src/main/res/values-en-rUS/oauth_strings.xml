@@ -21,4 +21,6 @@
     <string name="oauth_client_id">Client ID</string>
     <string name="oauth_client_secret">Client Secret</string>
     <string name="oauth_login">Log in</string>
+    <string name="oauth_error_code_state">Something went wrong. The verification URL is incorrect. Please check the URL and try again.</string>
+    <string name="oauth_error_token">Token retrieval failed. Please check your network connection and try again.</string>
 </resources>

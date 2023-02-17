@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,12 +24,15 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import dev.zitech.core.common.data.repository.CacheRepositoryImpl
+import dev.zitech.core.common.domain.cache.CacheRepository
 import dev.zitech.core.common.domain.dispatcher.AppDispatchers
 import dev.zitech.core.common.domain.dispatcher.AppDispatchersImpl
 import dev.zitech.core.common.domain.scope.AppScopes
 import dev.zitech.core.common.domain.scope.AppScopesImpl
 import dev.zitech.core.common.domain.strings.StringsProvider
 import dev.zitech.core.common.framework.strings.StringsProviderImpl
+import dev.zitech.core.common.presentation.splash.LoginCheckCompletedHandler
 import javax.inject.Singleton
 
 internal interface CommonModule {
@@ -42,6 +45,11 @@ internal interface CommonModule {
         @Provides
         fun stringsProvider(@ApplicationContext applicationContext: Context): StringsProvider =
             StringsProviderImpl(applicationContext)
+
+        @Singleton
+        @Provides
+        fun loginCheckCompletedHandler(): LoginCheckCompletedHandler =
+            LoginCheckCompletedHandler()
     }
 
     @InstallIn(SingletonComponent::class)
@@ -55,5 +63,11 @@ internal interface CommonModule {
         @Singleton
         @Binds
         fun appScopes(appScopesImpl: AppScopesImpl): AppScopes
+
+        @Singleton
+        @Binds
+        fun cacheRepository(
+            cacheRepositoryImpl: CacheRepositoryImpl
+        ): CacheRepository
     }
 }

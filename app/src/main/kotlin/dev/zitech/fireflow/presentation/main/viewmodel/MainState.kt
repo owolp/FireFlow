@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,10 @@ import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.core.common.presentation.architecture.MviState
 
 data class MainState(
-    val theme: ApplicationTheme? = null,
-    val remoteConfig: Boolean = false
-) : MviState
+    val databaseCleanCompleted: Boolean = false,
+    val mandatoryStepsCompleted: Boolean = false,
+    val theme: ApplicationTheme? = null
+) : MviState {
+
+    val splash: Boolean = !(databaseCleanCompleted && mandatoryStepsCompleted)
+}

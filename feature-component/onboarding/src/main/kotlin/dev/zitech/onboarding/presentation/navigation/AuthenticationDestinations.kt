@@ -21,9 +21,11 @@ import dev.zitech.navigation.presentation.model.FireFlowNavigationDestination
 
 private const val DESTINATION = "onboarding"
 
-object OauthDestination : FireFlowNavigationDestination {
+object OAuthDestination : FireFlowNavigationDestination {
     override val route: String = "oauth_route"
     override val destination: String = DESTINATION
+    const val code = "code"
+    const val state = "state"
 }
 
 object PatDestination : FireFlowNavigationDestination {

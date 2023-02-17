@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
- * This program is free software= mockk<you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -24,7 +24,7 @@ import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.core.common.domain.model.BuildFlavor
 import dev.zitech.core.common.domain.navigation.DeepLinkScreenDestination
 import dev.zitech.core.common.framework.applicationconfig.FakeAppConfigProvider
-import dev.zitech.core.common.presentation.splash.SplashScreenStateHandler
+import dev.zitech.core.common.presentation.splash.LoginCheckCompletedHandler
 import dev.zitech.navigation.domain.usecase.GetScreenDestinationUseCase
 import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsAppearanceCollectionStates
 import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsDataChoicesCollectionStates
@@ -50,7 +50,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 internal class SettingsViewModelTest {
 
     private val settingsStateHandler = SettingsStateHandler()
-    private val splashScreenStateHandler = mockk<SplashScreenStateHandler>(relaxUnitFun = true)
+    private val splashScreenStateHandler = mockk<LoginCheckCompletedHandler>(relaxUnitFun = true)
     private val getScreenDestinationUseCase = mockk<GetScreenDestinationUseCase> {
         every { this@mockk.invoke() } returns flowOf(DeepLinkScreenDestination.Current)
     }

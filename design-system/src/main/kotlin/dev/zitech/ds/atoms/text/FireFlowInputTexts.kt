@@ -59,7 +59,8 @@ object FireFlowInputTexts {
             shape = FireFlowTheme.shapes.extraLarge,
             colors = TextFieldDefaults.textFieldColors(
                 focusedIndicatorColor = FireFlowTheme.colors.background,
-                unfocusedIndicatorColor = FireFlowTheme.colors.background
+                unfocusedIndicatorColor = FireFlowTheme.colors.background,
+                disabledIndicatorColor = FireFlowTheme.colors.background
             ),
             onValueChange = onValueChanged,
             keyboardOptions = keyboardOptions,
@@ -103,7 +104,8 @@ object FireFlowInputTexts {
             shape = FireFlowTheme.shapes.extraLarge,
             colors = TextFieldDefaults.textFieldColors(
                 focusedIndicatorColor = FireFlowTheme.colors.background,
-                unfocusedIndicatorColor = FireFlowTheme.colors.background
+                unfocusedIndicatorColor = FireFlowTheme.colors.background,
+                disabledIndicatorColor = FireFlowTheme.colors.background
             ),
             onValueChange = onValueChanged,
             keyboardOptions = keyboardOptions,
@@ -147,7 +149,8 @@ object FireFlowInputTexts {
             shape = FireFlowTheme.shapes.extraLarge,
             colors = TextFieldDefaults.textFieldColors(
                 focusedIndicatorColor = FireFlowTheme.colors.background,
-                unfocusedIndicatorColor = FireFlowTheme.colors.background
+                unfocusedIndicatorColor = FireFlowTheme.colors.background,
+                disabledIndicatorColor = FireFlowTheme.colors.background
             ),
             onValueChange = onValueChanged,
             keyboardOptions = keyboardOptions,
@@ -191,7 +194,8 @@ object FireFlowInputTexts {
             shape = FireFlowTheme.shapes.extraLarge,
             colors = TextFieldDefaults.textFieldColors(
                 focusedIndicatorColor = FireFlowTheme.colors.background,
-                unfocusedIndicatorColor = FireFlowTheme.colors.background
+                unfocusedIndicatorColor = FireFlowTheme.colors.background,
+                disabledIndicatorColor = FireFlowTheme.colors.background
             ),
             onValueChange = onValueChanged,
             keyboardOptions = keyboardOptions,
@@ -235,7 +239,8 @@ object FireFlowInputTexts {
             shape = FireFlowTheme.shapes.extraLarge,
             colors = TextFieldDefaults.textFieldColors(
                 focusedIndicatorColor = FireFlowTheme.colors.background,
-                unfocusedIndicatorColor = FireFlowTheme.colors.background
+                unfocusedIndicatorColor = FireFlowTheme.colors.background,
+                disabledIndicatorColor = FireFlowTheme.colors.background
             ),
             onValueChange = onValueChanged,
             keyboardOptions = keyboardOptions,
@@ -279,7 +284,8 @@ object FireFlowInputTexts {
             shape = FireFlowTheme.shapes.extraLarge,
             colors = TextFieldDefaults.textFieldColors(
                 focusedIndicatorColor = FireFlowTheme.colors.background,
-                unfocusedIndicatorColor = FireFlowTheme.colors.background
+                unfocusedIndicatorColor = FireFlowTheme.colors.background,
+                disabledIndicatorColor = FireFlowTheme.colors.background
             ),
             onValueChange = onValueChanged,
             keyboardOptions = keyboardOptions,
@@ -323,7 +329,8 @@ object FireFlowInputTexts {
             shape = FireFlowTheme.shapes.extraLarge,
             colors = TextFieldDefaults.textFieldColors(
                 focusedIndicatorColor = FireFlowTheme.colors.background,
-                unfocusedIndicatorColor = FireFlowTheme.colors.background
+                unfocusedIndicatorColor = FireFlowTheme.colors.background,
+                disabledIndicatorColor = FireFlowTheme.colors.background
             ),
             onValueChange = onValueChanged,
             keyboardOptions = keyboardOptions,
@@ -367,7 +374,8 @@ object FireFlowInputTexts {
             shape = FireFlowTheme.shapes.extraLarge,
             colors = TextFieldDefaults.textFieldColors(
                 focusedIndicatorColor = FireFlowTheme.colors.background,
-                unfocusedIndicatorColor = FireFlowTheme.colors.background
+                unfocusedIndicatorColor = FireFlowTheme.colors.background,
+                disabledIndicatorColor = FireFlowTheme.colors.background
             ),
             onValueChange = onValueChanged,
             keyboardOptions = keyboardOptions,
@@ -411,7 +419,8 @@ object FireFlowInputTexts {
             shape = FireFlowTheme.shapes.extraLarge,
             colors = TextFieldDefaults.textFieldColors(
                 focusedIndicatorColor = FireFlowTheme.colors.background,
-                unfocusedIndicatorColor = FireFlowTheme.colors.background
+                unfocusedIndicatorColor = FireFlowTheme.colors.background,
+                disabledIndicatorColor = FireFlowTheme.colors.background
             ),
             onValueChange = onValueChanged,
             keyboardOptions = keyboardOptions,
@@ -455,7 +464,8 @@ object FireFlowInputTexts {
             shape = FireFlowTheme.shapes.extraLarge,
             colors = TextFieldDefaults.textFieldColors(
                 focusedIndicatorColor = FireFlowTheme.colors.background,
-                unfocusedIndicatorColor = FireFlowTheme.colors.background
+                unfocusedIndicatorColor = FireFlowTheme.colors.background,
+                disabledIndicatorColor = FireFlowTheme.colors.background
             ),
             onValueChange = onValueChanged,
             keyboardOptions = keyboardOptions,
@@ -499,7 +509,8 @@ object FireFlowInputTexts {
             shape = FireFlowTheme.shapes.extraLarge,
             colors = TextFieldDefaults.textFieldColors(
                 focusedIndicatorColor = FireFlowTheme.colors.background,
-                unfocusedIndicatorColor = FireFlowTheme.colors.background
+                unfocusedIndicatorColor = FireFlowTheme.colors.background,
+                disabledIndicatorColor = FireFlowTheme.colors.background
             ),
             onValueChange = onValueChanged,
             keyboardOptions = keyboardOptions,
@@ -543,7 +554,8 @@ object FireFlowInputTexts {
             shape = FireFlowTheme.shapes.extraLarge,
             colors = TextFieldDefaults.textFieldColors(
                 focusedIndicatorColor = FireFlowTheme.colors.background,
-                unfocusedIndicatorColor = FireFlowTheme.colors.background
+                unfocusedIndicatorColor = FireFlowTheme.colors.background,
+                disabledIndicatorColor = FireFlowTheme.colors.background
             ),
             onValueChange = onValueChanged,
             keyboardOptions = keyboardOptions,
@@ -587,7 +599,8 @@ object FireFlowInputTexts {
             shape = FireFlowTheme.shapes.extraLarge,
             colors = TextFieldDefaults.textFieldColors(
                 focusedIndicatorColor = FireFlowTheme.colors.background,
-                unfocusedIndicatorColor = FireFlowTheme.colors.background
+                unfocusedIndicatorColor = FireFlowTheme.colors.background,
+                disabledIndicatorColor = FireFlowTheme.colors.background
             ),
             onValueChange = onValueChanged,
             keyboardOptions = keyboardOptions,
@@ -631,7 +644,8 @@ object FireFlowInputTexts {
             shape = FireFlowTheme.shapes.extraLarge,
             colors = TextFieldDefaults.textFieldColors(
                 focusedIndicatorColor = FireFlowTheme.colors.background,
-                unfocusedIndicatorColor = FireFlowTheme.colors.background
+                unfocusedIndicatorColor = FireFlowTheme.colors.background,
+                disabledIndicatorColor = FireFlowTheme.colors.background
             ),
             onValueChange = onValueChanged,
             keyboardOptions = keyboardOptions,
@@ -675,7 +689,8 @@ object FireFlowInputTexts {
             shape = FireFlowTheme.shapes.extraLarge,
             colors = TextFieldDefaults.textFieldColors(
                 focusedIndicatorColor = FireFlowTheme.colors.background,
-                unfocusedIndicatorColor = FireFlowTheme.colors.background
+                unfocusedIndicatorColor = FireFlowTheme.colors.background,
+                disabledIndicatorColor = FireFlowTheme.colors.background
             ),
             onValueChange = onValueChanged,
             keyboardOptions = keyboardOptions,

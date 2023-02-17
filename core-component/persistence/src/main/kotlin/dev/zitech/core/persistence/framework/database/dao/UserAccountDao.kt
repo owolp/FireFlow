@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,16 +21,20 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import dev.zitech.core.persistence.framework.database.entity.UserAccountEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 internal interface UserAccountDao {
 
+    @Query("SELECT * FROM user_accounts WHERE state=:state")
+    suspend fun getUserAccountByState(state: String): UserAccountEntity?
+
     @Query("SELECT * FROM user_accounts")
     fun getUserAccounts(): Flow<List<UserAccountEntity>>
 
-    @Query("SELECT * FROM user_accounts WHERE isCurrentUserAccount = 1 ORDER BY id DESC LIMIT 1")
+    @Query("SELECT * FROM user_accounts WHERE isCurrentUserAccount=1 ORDER BY id DESC LIMIT 1")
     fun getCurrentUserAccount(): Flow<UserAccountEntity?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -38,4 +42,10 @@ internal interface UserAccountDao {
 
     @Query("UPDATE user_accounts SET isCurrentUserAccount=0")
     suspend fun removeCurrentUserAccount(): Int
+
+    @Query("DELETE FROM user_accounts WHERE state IS NOT NULL AND accessToken IS NULL")
+    suspend fun removeUserAccountsWithStateAndWithoutAccessToken()
+
+    @Update
+    suspend fun updateUserAccount(userAccountEntity: UserAccountEntity): Int
 }

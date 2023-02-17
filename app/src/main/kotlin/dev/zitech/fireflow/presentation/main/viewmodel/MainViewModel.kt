@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,45 +20,83 @@ package dev.zitech.fireflow.presentation.main.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.zitech.core.common.presentation.splash.SplashScreenStateHandler
+import dev.zitech.core.common.domain.logger.Logger
+import dev.zitech.core.common.presentation.architecture.MviViewModel
+import dev.zitech.core.common.presentation.splash.LoginCheckCompletedHandler
+import dev.zitech.core.persistence.domain.usecase.database.RemoveStaleUserAccountsUseCase
 import dev.zitech.core.persistence.domain.usecase.preferences.GetApplicationThemeValueUseCase
 import dev.zitech.core.remoteconfig.domain.usecase.InitializeRemoteConfiguratorUseCase
 import dev.zitech.core.reporter.analytics.domain.usecase.event.ApplicationLaunchAnalyticsEvent
+import dev.zitech.fireflow.presentation.model.LaunchState
+import dev.zitech.fireflow.presentation.model.LaunchState.Status.Error
+import dev.zitech.fireflow.presentation.model.LaunchState.Status.Success
 import javax.inject.Inject
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 @HiltViewModel
 internal class MainViewModel @Inject constructor(
     private val stateHandler: MainStateHandler,
-    splashScreenStateHandler: SplashScreenStateHandler,
+    private val loginCheckHandler: LoginCheckCompletedHandler,
     private val getApplicationThemeValueUseCase: GetApplicationThemeValueUseCase,
     private val initializeRemoteConfiguratorUseCase: InitializeRemoteConfiguratorUseCase,
+    private val removeStaleUserAccountsUseCase: RemoveStaleUserAccountsUseCase,
     applicationLaunchAnalyticsEvent: ApplicationLaunchAnalyticsEvent
-) : ViewModel() {
+) : ViewModel(), MviViewModel<MainIntent, MainState> {
 
-    val screenState: StateFlow<MainState> = stateHandler.state
-    val splashState: StateFlow<Boolean> = splashScreenStateHandler.splashState
+    private val tag = Logger.tag(this::class.java)
+
+    override val screenState: StateFlow<MainState> = stateHandler.state
 
     init {
-        initializeRemoteConfigurator()
-        initApplicationThemeCollection()
         applicationLaunchAnalyticsEvent()
+        startMandatoryChecks()
     }
 
-    private fun initApplicationThemeCollection() {
-        getApplicationThemeValueUseCase()
-            .onEach { stateHandler.setTheme(it) }
-            .launchIn(viewModelScope)
+    private fun startMandatoryChecks() {
+        viewModelScope.launch {
+            combine(
+                loginCheckHandler.loginCheckState,
+                getApplicationThemeValueUseCase(),
+                initializeRemoteConfiguratorUseCase()
+            ) { _, themeResult, _ ->
+                LaunchState(Success(themeResult))
+            }.onEach { launchState ->
+                when (val status = launchState.status) {
+                    is Success -> {
+                        stateHandler.setTheme(status.theme)
+                        stateHandler.setMandatoryCompleted(true)
+                    }
+                    is Error -> {
+                        Logger.e(tag, exception = status.cause)
+                    }
+                }
+            }.collect()
+        }
     }
 
-    private fun initializeRemoteConfigurator() {
-        initializeRemoteConfiguratorUseCase()
-            .onCompletion {
-                stateHandler.setRemoteConfig(true)
+    override fun sendIntent(intent: MainIntent) {
+        viewModelScope.launch {
+            when (intent) {
+                is ScreenResumed -> handleScreenResumed(intent)
             }
-            .launchIn(viewModelScope)
+        }
     }
+
+    private fun handleScreenResumed(intent: ScreenResumed) {
+        viewModelScope.launch {
+            with(intent) {
+                if (!resumingFromOauthDeepLink()) {
+                    removeStaleUserAccountsUseCase()
+                }
+            }
+            stateHandler.setDatabaseCleanCompleted(true)
+        }
+    }
+
+    private fun ScreenResumed.resumingFromOauthDeepLink() =
+        code != null && host != null && scheme != null && state != null
 }

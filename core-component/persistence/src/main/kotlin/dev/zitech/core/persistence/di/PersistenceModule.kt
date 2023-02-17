@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,9 +24,10 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import dev.zitech.core.common.di.annotation.CurrentUserServerAddressCache
 import dev.zitech.core.common.domain.applicationconfig.AppConfigProvider
+import dev.zitech.core.common.domain.cache.InMemoryCache
 import dev.zitech.core.common.domain.dispatcher.AppDispatchers
-import dev.zitech.core.persistence.data.repository.cache.CacheRepositoryImpl
 import dev.zitech.core.persistence.data.repository.database.DatabaseKeyRepositoryImpl
 import dev.zitech.core.persistence.data.repository.database.UserAccountRepositoryImpl
 import dev.zitech.core.persistence.data.repository.preferences.ContainsPreferencesRepositoryImpl
@@ -36,8 +37,8 @@ import dev.zitech.core.persistence.data.repository.preferences.SavePreferencesRe
 import dev.zitech.core.persistence.di.annotation.DevelopmentPreferencesDataSource
 import dev.zitech.core.persistence.di.annotation.SecuredPreferencesDataSource
 import dev.zitech.core.persistence.di.annotation.StandardPreferencesDataSource
+import dev.zitech.core.persistence.domain.cache.CurrentUserServerAddressInMemoryCache
 import dev.zitech.core.persistence.domain.model.preferences.PreferenceType
-import dev.zitech.core.persistence.domain.repository.cache.CacheRepository
 import dev.zitech.core.persistence.domain.repository.database.DatabaseKeyRepository
 import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
 import dev.zitech.core.persistence.domain.repository.preferences.ContainsPreferencesRepository
@@ -182,9 +183,12 @@ internal interface PersistenceModule {
         @Singleton
         @Provides
         fun userAccountRepository(
-            userAccountDatabaseSource: UserAccountDatabaseSource
+            userAccountDatabaseSource: UserAccountDatabaseSource,
+            @CurrentUserServerAddressCache
+            currentUserServerAddressInMemoryCache: InMemoryCache<String>
         ): UserAccountRepository = UserAccountRepositoryImpl(
-            userAccountDatabaseSource = userAccountDatabaseSource
+            userAccountDatabaseSource,
+            currentUserServerAddressInMemoryCache
         )
     }
 
@@ -198,10 +202,11 @@ internal interface PersistenceModule {
             databaseKeyRepositoryImpl: DatabaseKeyRepositoryImpl
         ): DatabaseKeyRepository
 
+        @CurrentUserServerAddressCache
         @Singleton
         @Binds
-        fun inMemoryCacheInvalidator(
-            inMemoryCacheInvalidatorImpl: CacheRepositoryImpl
-        ): CacheRepository
+        fun currentUserServerAddressInMemoryCache(
+            currentUserServerAddressInMemoryCache: CurrentUserServerAddressInMemoryCache
+        ): InMemoryCache<String>
     }
 }

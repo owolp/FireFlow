@@ -41,6 +41,7 @@ object FireFlowInputForm {
         modifier: Modifier = Modifier,
         supportingText: String? = null,
         isError: Boolean = false,
+        enabled: Boolean = true,
         keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
         keyboardActions: KeyboardActions = KeyboardActions.Default
     ) {
@@ -57,6 +58,7 @@ object FireFlowInputForm {
                 value = value,
                 onValueChanged = onValueChanged,
                 supportingText = supportingText,
+                enabled = enabled,
                 isError = isError,
                 keyboardActions = keyboardActions,
                 keyboardOptions = keyboardOptions

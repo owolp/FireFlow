@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,6 @@
 
 package dev.zitech.core.persistence.framework.database.source
 
-import androidx.room.Transaction
 import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.domain.source.database.UserAccountDatabaseSource
 import dev.zitech.core.persistence.framework.database.dao.UserAccountDao
@@ -32,29 +31,42 @@ internal class UserAccountDatabaseSourceImpl @Inject constructor(
     private val userAccountMapper: UserAccountMapper
 ) : UserAccountDatabaseSource {
 
+    override suspend fun getUserAccountByStateOrNull(state: String): UserAccount? =
+        userAccountDao.getUserAccountByState(state)?.let(userAccountMapper::toDomain)
+
     override fun getUserAccounts(): Flow<List<UserAccount>> =
         userAccountDao.getUserAccounts().map { userAccountEntities ->
-            userAccountEntities.map {
-                userAccountMapper(it)
-            }
+            userAccountEntities.map(userAccountMapper::toDomain)
         }
 
     override fun getCurrentUserAccountOrNull(): Flow<UserAccount?> =
         userAccountDao.getCurrentUserAccount().map { userAccountEntity ->
             if (userAccountEntity != null) {
-                userAccountMapper(userAccountEntity)
+                userAccountMapper.toDomain(userAccountEntity)
             } else {
                 null
             }
         }
 
-    @Transaction
-    override suspend fun saveUserAccount(isCurrentUserAccount: Boolean): Long {
-        userAccountDao.removeCurrentUserAccount()
-        return userAccountDao.saveUserAccount(
-            UserAccountEntity(
-                isCurrentUserAccount = isCurrentUserAccount
-            )
+    override suspend fun saveUserAccount(
+        clientId: String,
+        clientSecret: String,
+        isCurrentUserAccount: Boolean,
+        serverAddress: String,
+        state: String
+    ): Long = userAccountDao.saveUserAccount(
+        UserAccountEntity(
+            clientId = clientId,
+            clientSecret = clientSecret,
+            isCurrentUserAccount = isCurrentUserAccount,
+            serverAddress = serverAddress,
+            state = state
         )
-    }
+    )
+
+    override suspend fun removeUserAccountsWithStateAndWithoutAccessToken() =
+        userAccountDao.removeUserAccountsWithStateAndWithoutAccessToken()
+
+    override suspend fun updateUserAccount(userAccount: UserAccount): Int =
+        userAccountDao.updateUserAccount(userAccountMapper.toEntity(userAccount))
 }
