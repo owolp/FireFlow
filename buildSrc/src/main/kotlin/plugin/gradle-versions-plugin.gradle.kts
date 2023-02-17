@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ tasks.register<DependencyUpdatesTask>("dependencyUpdates").configure {
 
 fun isNonStable(version: String): Boolean {
     val stableKeyword =
-        listOf("RELEASE", "FINAL", "GA", "RC").any { version.toUpperCase().contains(it) }
+        listOf("RELEASE", "FINAL", "GA", "RC").any { version.contains(it, true) }
     val regex = "^[0-9,.v-]+(-r)?$".toRegex()
     val isStable = stableKeyword || regex.matches(version)
     return isStable.not()

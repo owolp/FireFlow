@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@ import androidx.compose.material.icons.outlined.Brightness6
 import androidx.compose.material.icons.outlined.BugReport
 import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.icons.outlined.Dashboard
+import androidx.compose.material.icons.outlined.ExpandMore
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.Settings
@@ -38,6 +39,7 @@ object FireFlowIcons {
     val BugReport = Icons.Outlined.BugReport
     val Check = Icons.Outlined.Check
     val Dashboard = Icons.Outlined.Dashboard
+    val ExpandMore = Icons.Outlined.ExpandMore
     val Info = Icons.Outlined.Info
     val Language = Icons.Outlined.Language
     val Settings = Icons.Outlined.Settings

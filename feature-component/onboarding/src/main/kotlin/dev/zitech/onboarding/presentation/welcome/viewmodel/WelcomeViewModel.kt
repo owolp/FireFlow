@@ -46,7 +46,7 @@ internal class WelcomeViewModel @Inject constructor(
             when (intent) {
                 OnContinueWithOauthClick -> stateHandler.setEvent(NavigateToOAuth)
                 OnContinueWithPatClick -> stateHandler.setEvent(NavigateToPat)
-                OnDemoClick -> handleOnDemoClick()
+                OnGetStartedClick -> handleOnGetStartedClick()
                 OnBackClick -> stateHandler.setEvent(NavigateOutOfApp)
                 OnFireflyClick -> handleOnFireflyClick()
                 OnShowDemoPositive -> handleOnShowDemoPositive()
@@ -58,7 +58,7 @@ internal class WelcomeViewModel @Inject constructor(
         }
     }
 
-    private fun handleOnDemoClick() {
+    private fun handleOnGetStartedClick() {
         stateHandler.setEvent(
             ShowDemoWarning(
                 text = welcomeStringsProvider.getDemoDialogText(),
