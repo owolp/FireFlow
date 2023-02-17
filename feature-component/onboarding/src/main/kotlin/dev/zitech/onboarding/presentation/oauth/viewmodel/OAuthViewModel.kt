@@ -83,6 +83,7 @@ internal class OAuthViewModel @Inject constructor(
                 is NavigatedToFireflyResult -> handleNavigatedToFireflyResult(intent.dataResult)
                 ErrorHandled -> stateHandler.resetEvent()
                 is OnOauthCode -> handleOnOauthCode(intent.authentication)
+                OnAuthenticationCanceled -> stateHandler.setLoading(false)
             }
         }
     }

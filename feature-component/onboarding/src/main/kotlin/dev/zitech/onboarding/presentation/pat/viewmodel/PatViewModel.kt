@@ -21,7 +21,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.zitech.core.common.presentation.architecture.MviViewModel
-import dev.zitech.core.persistence.domain.usecase.database.SaveUserAccountUseCase
 import dev.zitech.onboarding.domain.usecase.IsPatLoginInputValidUseCase
 import javax.inject.Inject
 import kotlinx.coroutines.flow.StateFlow
@@ -30,7 +29,6 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 internal class PatViewModel @Inject constructor(
     private val stateHandler: PatStateHandler,
-    private val saveUserAccountUseCase: SaveUserAccountUseCase,
     private val isPatLoginInputValidUseCase: IsPatLoginInputValidUseCase
 ) : ViewModel(), MviViewModel<PatIntent, PatState> {
 
@@ -56,8 +54,6 @@ internal class PatViewModel @Inject constructor(
 
     @Suppress("ForbiddenComment")
     private suspend fun handleOnLoginClick() {
-        // TODO: Dev usage
-//        saveUserAccountUseCase(true)
         stateHandler.setEvent(NavigateToDashboard)
     }
 

@@ -17,6 +17,7 @@
 
 package dev.zitech.onboarding.presentation.oauth.compose
 
+import android.app.Activity.RESULT_CANCELED
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
@@ -41,6 +42,7 @@ import dev.zitech.onboarding.presentation.oauth.viewmodel.NavigateToFirefly
 import dev.zitech.onboarding.presentation.oauth.viewmodel.NavigatedToFireflyResult
 import dev.zitech.onboarding.presentation.oauth.viewmodel.NavigationHandled
 import dev.zitech.onboarding.presentation.oauth.viewmodel.OAuthViewModel
+import dev.zitech.onboarding.presentation.oauth.viewmodel.OnAuthenticationCanceled
 import dev.zitech.onboarding.presentation.oauth.viewmodel.OnBackClick
 import dev.zitech.onboarding.presentation.oauth.viewmodel.OnClientIdChange
 import dev.zitech.onboarding.presentation.oauth.viewmodel.OnClientSecretChange
@@ -67,8 +69,10 @@ internal fun OAuthRoute(
 
     val result = rememberLauncherForActivityResult(
         ActivityResultContracts.StartActivityForResult()
-    ) {
-        // TODO: Send result back to the VM, so that proper action is taken
+    ) { activityResult ->
+        if (activityResult.resultCode == RESULT_CANCELED) {
+            viewModel.sendIntent(OnAuthenticationCanceled)
+        }
     }
 
     when (val event = screenState.event) {

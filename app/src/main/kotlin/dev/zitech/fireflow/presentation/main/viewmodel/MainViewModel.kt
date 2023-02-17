@@ -89,11 +89,14 @@ internal class MainViewModel @Inject constructor(
     private fun handleScreenResumed(intent: ScreenResumed) {
         viewModelScope.launch {
             with(intent) {
-                if (code == null && host == null && scheme == null && state == null) {
+                if (!resumingFromOauthDeepLink()) {
                     removeStaleUserAccountsUseCase()
                 }
             }
             stateHandler.setDatabaseCleanCompleted(true)
         }
     }
+
+    private fun ScreenResumed.resumingFromOauthDeepLink() =
+        code != null && host != null && scheme != null && state != null
 }

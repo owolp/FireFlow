@@ -29,6 +29,7 @@ internal data class OnServerAddressChange(val serverAddress: String) : OAuthInte
 internal data class OnClientIdChange(val clientId: String) : OAuthIntent
 internal data class OnClientSecretChange(val clientSecret: String) : OAuthIntent
 internal data class OnOauthCode(val authentication: OAuthAuthentication) : OAuthIntent
+internal object OnAuthenticationCanceled : OAuthIntent
 internal data class NavigatedToFireflyResult(val dataResult: DataResult<Unit>) : OAuthIntent
 internal object NavigationHandled : OAuthIntent
 internal object ErrorHandled : OAuthIntent
