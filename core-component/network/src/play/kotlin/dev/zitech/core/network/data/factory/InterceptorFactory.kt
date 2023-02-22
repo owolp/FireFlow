@@ -17,29 +17,17 @@
 
 package dev.zitech.core.network.data.factory
 
-import java.util.concurrent.TimeUnit
+import android.content.Context
 import javax.inject.Inject
-import okhttp3.OkHttpClient
+import okhttp3.Interceptor
 
-internal class OkHttpClientFactory @Inject constructor(
-    private val interceptorFactory: InterceptorFactory
+internal class InterceptorFactory @Inject constructor(
+    @Suppress("UnusedPrivateMember") context: Context,
+    private val authenticationInterceptor: Interceptor
 ) {
 
-    private companion object {
-        const val SERVICE_TIMEOUT_SECONDS = 60L
-    }
-
-    fun createOkHttpClient(): OkHttpClient {
-        val okHttpClient = OkHttpClient.Builder()
-            .connectTimeout(SERVICE_TIMEOUT_SECONDS, TimeUnit.SECONDS)
-            .readTimeout(SERVICE_TIMEOUT_SECONDS, TimeUnit.SECONDS)
-            .writeTimeout(SERVICE_TIMEOUT_SECONDS, TimeUnit.SECONDS)
-            .retryOnConnectionFailure(true)
-
-        with(okHttpClient) {
-            addInterceptor(interceptorFactory(Authenticator))
+    operator fun invoke(type: InterceptorType): Interceptor =
+        when (type) {
+            Authenticator -> authenticationInterceptor
         }
-
-        return okHttpClient.build()
-    }
 }

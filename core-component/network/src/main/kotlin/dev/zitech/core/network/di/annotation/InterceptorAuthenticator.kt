@@ -15,27 +15,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.network.di
+package dev.zitech.core.network.di.annotation
 
-import android.content.Context
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
-import dev.zitech.core.network.data.factory.InterceptorFactory
-import javax.inject.Singleton
+import javax.inject.Qualifier
 
-internal interface NetworkDevModule {
-
-    @InstallIn(SingletonComponent::class)
-    @Module
-    object SingletonProvidesModule {
-
-        @Singleton
-        @Provides
-        fun interceptorFactory(
-            @ApplicationContext context: Context
-        ) = InterceptorFactory(context)
-    }
-}
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+internal annotation class InterceptorAuthenticator

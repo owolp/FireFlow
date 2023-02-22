@@ -17,28 +17,45 @@
 
 package dev.zitech.core.network.di
 
+import android.content.Context
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ViewModelScoped
 import dagger.hilt.components.SingletonComponent
 import dev.zitech.core.common.di.annotation.CurrentUserServerAddressCache
 import dev.zitech.core.common.domain.cache.InMemoryCache
 import dev.zitech.core.common.domain.concurrency.ControlledRunner
+import dev.zitech.core.network.data.factory.InterceptorFactory
+import dev.zitech.core.network.data.interceptor.AuthenticationInterceptor
 import dev.zitech.core.network.data.service.OAuthService
+import dev.zitech.core.network.di.annotation.InterceptorAuthenticator
 import dev.zitech.core.network.domain.retrofit.RetrofitModel
 import dev.zitech.core.network.domain.retrofit.ServiceModel
 import dev.zitech.core.network.framework.retrofit.RetrofitFactory
 import dev.zitech.core.network.framework.retrofit.RetrofitModelImpl
 import dev.zitech.core.network.framework.retrofit.ServiceModelImpl
 import javax.inject.Singleton
+import okhttp3.Interceptor
 
 internal interface NetworkModule {
 
     @InstallIn(SingletonComponent::class)
     @Module
     object SingletonProvides {
+
+        @Singleton
+        @Provides
+        fun interceptorFactory(
+            @ApplicationContext context: Context,
+            @InterceptorAuthenticator authenticationInterceptor: Interceptor
+        ) = InterceptorFactory(
+            context = context,
+            authenticationInterceptor = authenticationInterceptor
+        )
 
         @Singleton
         @Provides
@@ -52,6 +69,18 @@ internal interface NetworkModule {
             retrofitModel: RetrofitModel,
             @CurrentUserServerAddressCache serverAddress: InMemoryCache<String>
         ): ServiceModel = ServiceModelImpl(retrofitModel, serverAddress)
+    }
+
+    @InstallIn(SingletonComponent::class)
+    @Module
+    interface SingletonBinds {
+
+        @InterceptorAuthenticator
+        @Singleton
+        @Binds
+        fun authenticationInterceptor(
+            authenticationInterceptor: AuthenticationInterceptor
+        ): Interceptor
     }
 
     @InstallIn(ViewModelComponent::class)

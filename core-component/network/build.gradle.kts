@@ -26,6 +26,7 @@ plugins {
 
 dependencies {
     implementation(projects.coreComponent.common)
+    implementation(projects.coreComponent.persistence)
 
     implementation(libs.androidx.compose.runtime)
     implementation(libs.google.dagger.hilt.android)

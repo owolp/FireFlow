@@ -22,34 +22,27 @@ import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.chuckerteam.chucker.api.RetentionManager
 import com.facebook.flipper.plugins.network.FlipperOkhttpInterceptor
-import dev.zitech.core.network.data.factory.InterceptorFactory.Companion.Type.DEBUGGER
-import dev.zitech.core.network.data.factory.InterceptorFactory.Companion.Type.HTTP_INSPECTOR
-import dev.zitech.core.network.data.factory.InterceptorFactory.Companion.Type.HTTP_LOGGING
 import dev.zitech.core.network.framework.debugger.NetworkDebugger
 import javax.inject.Inject
 import okhttp3.Interceptor
 import okhttp3.logging.HttpLoggingInterceptor
 
 internal class InterceptorFactory @Inject constructor(
-    private val context: Context
+    private val context: Context,
+    private val authenticationInterceptor: Interceptor
 ) {
 
     companion object {
 
-        enum class Type {
-            DEBUGGER,
-            HTTP_INSPECTOR,
-            HTTP_LOGGING
-        }
-
         private const val MAX_CONTENT_LENGTH = 250000L
     }
 
-    operator fun invoke(type: Type): Interceptor =
+    operator fun invoke(type: InterceptorType): Interceptor =
         when (type) {
-            DEBUGGER -> createDebuggerInterceptor()
-            HTTP_INSPECTOR -> createHttpInspectorInterceptor()
-            HTTP_LOGGING -> createHttpLoggingInterceptor()
+            Authenticator -> authenticationInterceptor
+            Debugger -> createDebuggerInterceptor()
+            HttpInspector -> createHttpInspectorInterceptor()
+            HttpLogging -> createHttpLoggingInterceptor()
         }
 
     private fun createDebuggerInterceptor(): Interceptor =
