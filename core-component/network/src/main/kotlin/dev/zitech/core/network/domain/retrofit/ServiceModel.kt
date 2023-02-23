@@ -17,8 +17,10 @@
 
 package dev.zitech.core.network.domain.retrofit
 
+import dev.zitech.core.network.data.service.AboutService
 import dev.zitech.core.network.data.service.OAuthService
 
 internal interface ServiceModel {
+    val aboutService: AboutService
     val oAuthService: OAuthService
 }

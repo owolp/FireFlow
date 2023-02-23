@@ -26,7 +26,7 @@ internal class PostTokenResponseMapper @Inject constructor() :
     DomainMapper<PostTokenResponse, Token> {
 
     override fun toDomain(input: PostTokenResponse) = Token(
-        accessToken = input.refreshToken,
+        accessToken = input.accessToken,
         refreshToken = input.refreshToken
     )
 }

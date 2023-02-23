@@ -15,12 +15,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.persistence.domain.cache
+package dev.zitech.core.persistence.domain.model.cache
 
-import dev.zitech.core.common.domain.cache.CacheRepository
-import dev.zitech.core.common.domain.cache.InMemoryCache
-import javax.inject.Inject
-
-class CurrentUserServerAddressInMemoryCache @Inject constructor(
-    cacheRepository: CacheRepository
-) : InMemoryCache<String>(cacheRepository)
+data class NetworkDetails(
+    val userId: Long,
+    val serverAddress: String
+)

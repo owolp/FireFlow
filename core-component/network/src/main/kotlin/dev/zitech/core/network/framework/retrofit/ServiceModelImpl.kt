@@ -18,19 +18,26 @@
 package dev.zitech.core.network.framework.retrofit
 
 import dev.zitech.core.common.domain.cache.InMemoryCache
+import dev.zitech.core.network.data.service.AboutService
 import dev.zitech.core.network.data.service.OAuthService
 import dev.zitech.core.network.domain.retrofit.RetrofitModel
 import dev.zitech.core.network.domain.retrofit.ServiceModel
+import dev.zitech.core.persistence.domain.model.cache.NetworkDetails
 import javax.inject.Inject
 import kotlinx.coroutines.runBlocking
 
 internal class ServiceModelImpl @Inject constructor(
     private val retrofitModel: RetrofitModel,
-    private val serverAddress: InMemoryCache<String>
+    private val networkDetailsInMemoryCache: InMemoryCache<NetworkDetails>
 ) : ServiceModel {
 
-    override val oAuthService: OAuthService
-        get() = runBlocking {
-            retrofitModel.invoke(serverAddress.data!!).create(OAuthService::class.java)
-        }
+    override val aboutService = getService<AboutService>()
+    override val oAuthService = getService<OAuthService>()
+
+    private inline fun <reified T> getService(): T = runBlocking {
+        retrofitModel.invoke(
+            userId = networkDetailsInMemoryCache.data!!.userId,
+            serverAddress = networkDetailsInMemoryCache.data!!.serverAddress
+        ).create(T::class.java)
+    }
 }

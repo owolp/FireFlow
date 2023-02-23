@@ -15,13 +15,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.network.domain.retrofit
+package dev.zitech.core.network.data.service
 
-import retrofit2.Retrofit
+import dev.zitech.core.network.data.model.GetUserResponse
+import retrofit2.http.GET
 
-internal interface RetrofitModel {
-    suspend operator fun invoke(
-        userId: Long,
-        serverAddress: String
-    ): Retrofit
+interface AboutService {
+
+    @GET("api/v1/about/user")
+    suspend fun getUser(): GetUserResponse
 }

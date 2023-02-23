@@ -26,11 +26,10 @@ import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ViewModelScoped
 import dagger.hilt.components.SingletonComponent
-import dev.zitech.core.common.di.annotation.CurrentUserServerAddressCache
-import dev.zitech.core.common.domain.cache.InMemoryCache
 import dev.zitech.core.common.domain.concurrency.ControlledRunner
 import dev.zitech.core.network.data.factory.InterceptorFactory
 import dev.zitech.core.network.data.interceptor.AuthenticationInterceptor
+import dev.zitech.core.network.data.service.AboutService
 import dev.zitech.core.network.data.service.OAuthService
 import dev.zitech.core.network.di.annotation.InterceptorAuthenticator
 import dev.zitech.core.network.domain.retrofit.RetrofitModel
@@ -62,13 +61,6 @@ internal interface NetworkModule {
         fun retrofitModel(
             retrofitFactory: RetrofitFactory
         ): RetrofitModel = RetrofitModelImpl(retrofitFactory, ControlledRunner())
-
-        @Singleton
-        @Provides
-        fun serviceModel(
-            retrofitModel: RetrofitModel,
-            @CurrentUserServerAddressCache serverAddress: InMemoryCache<String>
-        ): ServiceModel = ServiceModelImpl(retrofitModel, serverAddress)
     }
 
     @InstallIn(SingletonComponent::class)
@@ -81,11 +73,19 @@ internal interface NetworkModule {
         fun authenticationInterceptor(
             authenticationInterceptor: AuthenticationInterceptor
         ): Interceptor
+
+        @Singleton
+        @Binds
+        fun serviceModel(serviceModelImpl: ServiceModelImpl): ServiceModel
     }
 
     @InstallIn(ViewModelComponent::class)
     @Module
     object ViewModelProvides {
+
+        @ViewModelScoped
+        @Provides
+        fun aboutService(serviceModel: ServiceModel): AboutService = serviceModel.aboutService
 
         @ViewModelScoped
         @Provides

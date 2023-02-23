@@ -31,18 +31,22 @@ internal class RetrofitModelImpl @Inject constructor(
 
     private val tag = Logger.tag(this::class.java)
 
-    private val retrofitMap = ConcurrentHashMap<String, Retrofit>()
+    private val retrofitMap = ConcurrentHashMap<Long, Retrofit>()
 
     override suspend fun invoke(
+        userId: Long,
         serverAddress: String
     ) = controlledRunner.joinPreviousOrRun {
-        var retrofit = retrofitMap[serverAddress]
+        var retrofit = retrofitMap[userId]
         if (retrofit == null) {
             retrofit = retrofitFactory(serverAddress)
-            retrofitMap[serverAddress] = retrofit
-            Logger.d(tag, "Created new $serverAddress retrofit instance '${retrofit.hashCode()}")
+            retrofitMap[userId] = retrofit
+            Logger.d(
+                tag,
+                "Created new retrofit instance '${retrofit.hashCode()} for userId:$userId"
+            )
         } else {
-            Logger.d(tag, "Found retrofit instance '${retrofit.hashCode()}\" for $serverAddress")
+            Logger.d(tag, "Found retrofit instance '${retrofit.hashCode()}\" for userId:$userId")
         }
 
         return@joinPreviousOrRun retrofit

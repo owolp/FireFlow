@@ -15,10 +15,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.common.di.annotation
+package dev.zitech.core.persistence.domain.cache
 
-import javax.inject.Qualifier
+import dev.zitech.core.common.domain.cache.CacheRepository
+import dev.zitech.core.common.domain.cache.InMemoryCache
+import dev.zitech.core.persistence.domain.model.cache.NetworkDetails
+import javax.inject.Inject
 
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
-annotation class CurrentUserServerAddressCache
+class NetworkDetailsInMemoryCache @Inject constructor(
+    cacheRepository: CacheRepository
+) : InMemoryCache<NetworkDetails>(cacheRepository)

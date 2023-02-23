@@ -28,17 +28,20 @@ internal class AuthenticationInterceptor @Inject constructor(
 ) : Interceptor {
 
     private companion object {
-        private const val AUTHORIZATION_HEADER = "Authorization"
-        private const val AUTHORIZATION_VALUE = "Bearer"
+        private const val HEADER_AUTHORIZATION_KEY = "Authorization"
+        private const val HEADER_AUTHORIZATION_VALUE = "Bearer"
+        private const val HEADER_ACCEPT_KEY = "Accept"
+        private const val HEADER_ACCEPT_VALUE = "application/json"
     }
 
     override fun intercept(chain: Interceptor.Chain): Response = runBlocking {
         chain.proceed(
             chain.request().newBuilder()
                 .header(
-                    AUTHORIZATION_HEADER,
-                    "$AUTHORIZATION_VALUE ${getCurrentUserAccountAccessTokenUseCase()}"
+                    HEADER_AUTHORIZATION_KEY,
+                    "$HEADER_AUTHORIZATION_VALUE ${getCurrentUserAccountAccessTokenUseCase()}"
                 )
+                .header(HEADER_ACCEPT_KEY, HEADER_ACCEPT_VALUE)
                 .build()
         )
     }
