@@ -15,15 +15,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.network.data.model
+package dev.zitech.authenticator.domain.repository
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import dev.zitech.authenticator.domain.model.Token
+import dev.zitech.core.common.domain.model.DataResult
 
-@JsonClass(generateAdapter = true)
-data class PostTokenResponse(
-    @Json(name = "access_token")
-    val accessToken: String,
-    @Json(name = "refresh_token")
-    val refreshToken: String
-)
+interface TokenRepository {
+
+    suspend fun getAccessToken(
+        clientId: String,
+        clientSecret: String,
+        code: String
+    ): DataResult<Token>
+
+    suspend fun getRefreshedToken(
+        clientId: String,
+        clientSecret: String,
+        refreshToken: String
+    ): DataResult<Token>
+}

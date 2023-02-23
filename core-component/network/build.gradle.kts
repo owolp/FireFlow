@@ -25,6 +25,7 @@ plugins {
 }
 
 dependencies {
+    implementation(projects.coreComponent.authenticator)
     implementation(projects.coreComponent.common)
     implementation(projects.coreComponent.persistence)
 

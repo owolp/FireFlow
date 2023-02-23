@@ -15,22 +15,27 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.network.data.service
+plugins {
+    id(BuildPlugins.KOTLIN_ANDROID)
+    id(BuildPlugins.LIBRARY)
+    id(BuildPlugins.JUNIT5)
+    kotlin(BuildPlugins.KAPT)
+}
 
-import dev.zitech.core.network.data.model.PostTokenResponse
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.POST
+dependencies {
+    implementation(projects.coreComponent.common)
+    implementation(projects.coreComponent.persistence)
 
-interface OAuthService {
+    implementation(libs.androidx.compose.runtime)
+    implementation(libs.google.dagger.hilt.android)
+    kapt(libs.google.dagger.hilt.compiler)
+    implementation(libs.jetbrains.kotlin.coroutines.android)
 
-    @FormUrlEncoded
-    @POST("oauth/token")
-    suspend fun postToken(
-        @Field("client_id") clientId: String,
-        @Field("client_secret") clientSecret: String,
-        @Field("code") code: String,
-        @Field("redirect_uri") redirectUri: String = "fireflow://authentication",
-        @Field("grant_type") grantType: String = "authorization_code"
-    ): PostTokenResponse
+    implementation(libs.squareup.moshi.moshi)
+    kapt(libs.squareup.moshi.kotlin.codegen)
+    implementation(libs.squareup.retrofit2.retrofit)
+}
+
+kapt {
+    correctErrorTypes = true
 }

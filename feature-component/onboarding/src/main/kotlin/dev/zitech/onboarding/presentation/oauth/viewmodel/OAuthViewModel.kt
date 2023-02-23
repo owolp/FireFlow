@@ -20,6 +20,8 @@ package dev.zitech.onboarding.presentation.oauth.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.zitech.authenticator.domain.model.Token
+import dev.zitech.authenticator.domain.usecase.GetAccessTokenUseCase
 import dev.zitech.core.common.DataFactory
 import dev.zitech.core.common.domain.dispatcher.AppDispatchers
 import dev.zitech.core.common.domain.logger.Logger
@@ -32,8 +34,6 @@ import dev.zitech.core.persistence.domain.model.exception.NullUserAccountExcepti
 import dev.zitech.core.persistence.domain.usecase.database.GetUserAccountByStateUseCase
 import dev.zitech.core.persistence.domain.usecase.database.SaveUserAccountUseCase
 import dev.zitech.core.persistence.domain.usecase.database.UpdateUserAccountUseCase
-import dev.zitech.onboarding.domain.model.Token
-import dev.zitech.onboarding.domain.usecase.GetTokenUseCase
 import dev.zitech.onboarding.domain.usecase.IsOAuthLoginInputValidUseCase
 import dev.zitech.onboarding.domain.validator.ClientIdValidator
 import dev.zitech.onboarding.presentation.oauth.model.OAuthAuthentication
@@ -51,7 +51,7 @@ internal class OAuthViewModel @Inject constructor(
     private val saveUserAccountUseCase: SaveUserAccountUseCase,
     private val updateUserAccountUseCase: UpdateUserAccountUseCase,
     private val getUserAccountByStateUseCase: GetUserAccountByStateUseCase,
-    private val getTokenUseCase: dagger.Lazy<GetTokenUseCase>,
+    private val getAccessTokenUseCase: dagger.Lazy<GetAccessTokenUseCase>,
     private val clientIdValidator: ClientIdValidator,
     private val oauthStringsProvider: OAuthStringsProvider,
     private val appDispatchers: AppDispatchers
@@ -206,7 +206,7 @@ internal class OAuthViewModel @Inject constructor(
 
     private suspend fun retrieveToken(userAccount: UserAccount, code: String) {
         when (
-            val result = getTokenUseCase.get()(
+            val result = getAccessTokenUseCase.get()(
                 clientId = userAccount.clientId,
                 clientSecret = userAccount.clientSecret,
                 code = code

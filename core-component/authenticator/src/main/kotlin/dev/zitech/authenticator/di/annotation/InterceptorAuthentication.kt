@@ -15,18 +15,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.onboarding.data.remote.mapper
+package dev.zitech.authenticator.di.annotation
 
-import dev.zitech.core.common.data.mapper.DomainMapper
-import dev.zitech.core.network.data.model.PostTokenResponse
-import dev.zitech.onboarding.domain.model.Token
-import javax.inject.Inject
+import javax.inject.Qualifier
 
-internal class PostTokenResponseMapper @Inject constructor() :
-    DomainMapper<PostTokenResponse, Token> {
-
-    override fun toDomain(input: PostTokenResponse) = Token(
-        accessToken = input.accessToken,
-        refreshToken = input.refreshToken
-    )
-}
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class InterceptorAuthentication

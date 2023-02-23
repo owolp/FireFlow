@@ -15,30 +15,20 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.onboarding.data.remote.source
+package dev.zitech.authenticator.domain.usecase
 
+import dev.zitech.authenticator.domain.model.Token
+import dev.zitech.authenticator.domain.repository.TokenRepository
 import dev.zitech.core.common.domain.model.DataResult
-import dev.zitech.core.network.data.service.OAuthService
-import dev.zitech.onboarding.data.remote.mapper.PostTokenResponseMapper
-import dev.zitech.onboarding.domain.model.Token
 import javax.inject.Inject
 
-internal class OAuthRemoteSource @Inject constructor(
-    private val oAuthService: OAuthService,
-    private val postTokenResponseMapper: PostTokenResponseMapper
+class GetAccessTokenUseCase @Inject constructor(
+    private val tokenRepository: TokenRepository
 ) {
 
-    suspend fun getToken(
+    suspend operator fun invoke(
         clientId: String,
         clientSecret: String,
         code: String
-    ): DataResult<Token> = try {
-        DataResult.Success(
-            postTokenResponseMapper.toDomain(
-                oAuthService.postToken(clientId, clientSecret, code)
-            )
-        )
-    } catch (exception: Exception) {
-        DataResult.Error(cause = exception)
-    }
+    ): DataResult<Token> = tokenRepository.getAccessToken(clientId, clientSecret, code)
 }

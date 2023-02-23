@@ -15,12 +15,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.network.domain.retrofit
+package dev.zitech.authenticator.data.remote.mapper
 
-import dev.zitech.authenticator.data.remote.service.OAuthService
-import dev.zitech.core.network.data.service.AboutService
+import dev.zitech.authenticator.data.remote.model.RefreshTokenResponse
+import dev.zitech.authenticator.domain.model.Token
+import dev.zitech.core.common.data.mapper.DomainMapper
+import javax.inject.Inject
 
-internal interface ServiceModel {
-    val aboutService: AboutService
-    val oAuthService: OAuthService
+internal class RefreshTokenResponseMapper @Inject constructor() :
+    DomainMapper<RefreshTokenResponse, Token> {
+
+    override fun toDomain(input: RefreshTokenResponse) = Token(
+        accessToken = input.accessToken,
+        refreshToken = input.refreshToken
+    )
 }

@@ -15,22 +15,29 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.onboarding.data.repository
+package dev.zitech.authenticator.data.repository
 
+import dev.zitech.authenticator.data.remote.source.OAuthRemoteSource
+import dev.zitech.authenticator.domain.model.Token
+import dev.zitech.authenticator.domain.repository.TokenRepository
 import dev.zitech.core.common.domain.model.DataResult
-import dev.zitech.onboarding.data.remote.source.OAuthRemoteSource
-import dev.zitech.onboarding.domain.model.Token
-import dev.zitech.onboarding.domain.repository.TokenRepository
 import javax.inject.Inject
 
 internal class TokenRepositoryImpl @Inject constructor(
     private val oAuthRemoteSource: OAuthRemoteSource
 ) : TokenRepository {
 
-    override suspend fun getToken(
+    override suspend fun getAccessToken(
         clientId: String,
         clientSecret: String,
         code: String
     ): DataResult<Token> =
-        oAuthRemoteSource.getToken(clientId, clientSecret, code)
+        oAuthRemoteSource.getAccessToken(clientId, clientSecret, code)
+
+    override suspend fun getRefreshedToken(
+        clientId: String,
+        clientSecret: String,
+        refreshToken: String
+    ): DataResult<Token> =
+        oAuthRemoteSource.getRefreshedToken(clientId, clientSecret, refreshToken)
 }

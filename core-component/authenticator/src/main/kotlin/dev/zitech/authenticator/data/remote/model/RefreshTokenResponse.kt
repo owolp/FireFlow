@@ -15,9 +15,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.onboarding.domain.model
+package dev.zitech.authenticator.data.remote.model
 
-data class Token(
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
+
+@JsonClass(generateAdapter = true)
+data class RefreshTokenResponse(
+    @Json(name = "access_token")
     val accessToken: String,
+    @Json(name = "refresh_token")
     val refreshToken: String
 )

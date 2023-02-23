@@ -15,10 +15,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.network.di.annotation
+package dev.zitech.authenticator.framework
 
-import javax.inject.Qualifier
-
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
-internal annotation class InterceptorAuthenticator
+internal const val HEADER_AUTHORIZATION_KEY = "Authorization"
+internal const val HEADER_AUTHORIZATION_VALUE = "Bearer"
+internal const val HEADER_ACCEPT_KEY = "Accept"
+internal const val HEADER_ACCEPT_VALUE = "application/json"

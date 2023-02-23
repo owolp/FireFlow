@@ -26,12 +26,11 @@ import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ViewModelScoped
 import dagger.hilt.components.SingletonComponent
+import dev.zitech.authenticator.data.remote.service.OAuthService
+import dev.zitech.authenticator.di.annotation.InterceptorAuthentication
 import dev.zitech.core.common.domain.concurrency.ControlledRunner
 import dev.zitech.core.network.data.factory.InterceptorFactory
-import dev.zitech.core.network.data.interceptor.AuthenticationInterceptor
 import dev.zitech.core.network.data.service.AboutService
-import dev.zitech.core.network.data.service.OAuthService
-import dev.zitech.core.network.di.annotation.InterceptorAuthenticator
 import dev.zitech.core.network.domain.retrofit.RetrofitModel
 import dev.zitech.core.network.domain.retrofit.ServiceModel
 import dev.zitech.core.network.framework.retrofit.RetrofitFactory
@@ -50,7 +49,7 @@ internal interface NetworkModule {
         @Provides
         fun interceptorFactory(
             @ApplicationContext context: Context,
-            @InterceptorAuthenticator authenticationInterceptor: Interceptor
+            @InterceptorAuthentication authenticationInterceptor: Interceptor
         ) = InterceptorFactory(
             context = context,
             authenticationInterceptor = authenticationInterceptor
@@ -61,18 +60,15 @@ internal interface NetworkModule {
         fun retrofitModel(
             retrofitFactory: RetrofitFactory
         ): RetrofitModel = RetrofitModelImpl(retrofitFactory, ControlledRunner())
+
+        @Singleton
+        @Provides
+        fun oAuthService(serviceModel: ServiceModel): OAuthService = serviceModel.oAuthService
     }
 
     @InstallIn(SingletonComponent::class)
     @Module
     interface SingletonBinds {
-
-        @InterceptorAuthenticator
-        @Singleton
-        @Binds
-        fun authenticationInterceptor(
-            authenticationInterceptor: AuthenticationInterceptor
-        ): Interceptor
 
         @Singleton
         @Binds
@@ -86,9 +82,5 @@ internal interface NetworkModule {
         @ViewModelScoped
         @Provides
         fun aboutService(serviceModel: ServiceModel): AboutService = serviceModel.aboutService
-
-        @ViewModelScoped
-        @Provides
-        fun oAuthService(serviceModel: ServiceModel): OAuthService = serviceModel.oAuthService
     }
 }

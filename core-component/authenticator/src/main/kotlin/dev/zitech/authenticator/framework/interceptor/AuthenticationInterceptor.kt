@@ -15,8 +15,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.network.data.interceptor
+package dev.zitech.authenticator.framework.interceptor
 
+import dev.zitech.authenticator.framework.HEADER_ACCEPT_KEY
+import dev.zitech.authenticator.framework.HEADER_ACCEPT_VALUE
+import dev.zitech.authenticator.framework.HEADER_AUTHORIZATION_KEY
+import dev.zitech.authenticator.framework.HEADER_AUTHORIZATION_VALUE
 import dev.zitech.core.persistence.domain.usecase.database.GetCurrentUserAccountAccessTokenUseCase
 import javax.inject.Inject
 import kotlinx.coroutines.runBlocking
@@ -26,13 +30,6 @@ import okhttp3.Response
 internal class AuthenticationInterceptor @Inject constructor(
     private val getCurrentUserAccountAccessTokenUseCase: GetCurrentUserAccountAccessTokenUseCase
 ) : Interceptor {
-
-    private companion object {
-        private const val HEADER_AUTHORIZATION_KEY = "Authorization"
-        private const val HEADER_AUTHORIZATION_VALUE = "Bearer"
-        private const val HEADER_ACCEPT_KEY = "Accept"
-        private const val HEADER_ACCEPT_VALUE = "application/json"
-    }
 
     override fun intercept(chain: Interceptor.Chain): Response = runBlocking {
         chain.proceed(

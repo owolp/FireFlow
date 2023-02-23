@@ -15,20 +15,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.onboarding.domain.usecase
+package dev.zitech.authenticator.data.remote.mapper
 
-import dev.zitech.core.common.domain.model.DataResult
-import dev.zitech.onboarding.domain.model.Token
-import dev.zitech.onboarding.domain.repository.TokenRepository
+import dev.zitech.authenticator.data.remote.model.AccessTokenResponse
+import dev.zitech.authenticator.domain.model.Token
+import dev.zitech.core.common.data.mapper.DomainMapper
 import javax.inject.Inject
 
-internal class GetTokenUseCase @Inject constructor(
-    private val tokenRepository: TokenRepository
-) {
+internal class AccessTokenResponseMapper @Inject constructor() :
+    DomainMapper<AccessTokenResponse, Token> {
 
-    suspend operator fun invoke(
-        clientId: String,
-        clientSecret: String,
-        code: String
-    ): DataResult<Token> = tokenRepository.getToken(clientId, clientSecret, code)
+    override fun toDomain(input: AccessTokenResponse) = Token(
+        accessToken = input.accessToken,
+        refreshToken = input.refreshToken
+    )
 }

@@ -19,4 +19,4 @@ package dev.zitech.core.network.data.factory
 
 internal sealed interface InterceptorType
 
-internal object Authenticator : InterceptorType
+internal object Authentication : InterceptorType

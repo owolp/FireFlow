@@ -17,9 +17,9 @@
 
 package dev.zitech.core.network.framework.retrofit
 
+import dev.zitech.authenticator.data.remote.service.OAuthService
 import dev.zitech.core.common.domain.cache.InMemoryCache
 import dev.zitech.core.network.data.service.AboutService
-import dev.zitech.core.network.data.service.OAuthService
 import dev.zitech.core.network.domain.retrofit.RetrofitModel
 import dev.zitech.core.network.domain.retrofit.ServiceModel
 import dev.zitech.core.persistence.domain.model.cache.NetworkDetails

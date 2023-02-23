@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,21 +15,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.persistence.domain.usecase.database
+package dev.zitech.authenticator.data.remote.model
 
-import dev.zitech.core.common.domain.model.DataResult
-import javax.inject.Inject
-import kotlinx.coroutines.flow.first
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
-class UpdateCurrentUserAccountUseCase @Inject constructor(
-    private val getCurrentUserAccountUseCase: GetCurrentUserAccountUseCase
-) {
-
-    suspend operator fun invoke(): DataResult<Unit> =
-        when (val result = getCurrentUserAccountUseCase().first()) {
-            is DataResult.Success -> {
-                DataResult.Success(Unit)
-            }
-            is DataResult.Error -> result
-        }
-}
+@JsonClass(generateAdapter = true)
+data class AccessTokenResponse(
+    @Json(name = "access_token")
+    val accessToken: String,
+    @Json(name = "refresh_token")
+    val refreshToken: String
+)

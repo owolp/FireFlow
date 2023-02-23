@@ -15,16 +15,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.onboarding.domain.repository
+package dev.zitech.authenticator.domain.model
 
-import dev.zitech.core.common.domain.model.DataResult
-import dev.zitech.onboarding.domain.model.Token
-
-internal interface TokenRepository {
-
-    suspend fun getToken(
-        clientId: String,
-        clientSecret: String,
-        code: String
-    ): DataResult<Token>
-}
+data class Token(
+    val accessToken: String,
+    val refreshToken: String
+)

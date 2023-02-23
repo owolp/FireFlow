@@ -28,6 +28,6 @@ internal class InterceptorFactory @Inject constructor(
 
     operator fun invoke(type: InterceptorType): Interceptor =
         when (type) {
-            Authenticator -> authenticationInterceptor
+            Authentication -> authenticationInterceptor
         }
 }

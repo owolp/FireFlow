@@ -21,6 +21,7 @@ plugins {
 }
 
 dependencies {
+    api(projects.coreComponent.authenticator)
     api(projects.coreComponent.common)
     api(projects.coreComponent.featureFlag)
     api(projects.coreComponent.navigation)

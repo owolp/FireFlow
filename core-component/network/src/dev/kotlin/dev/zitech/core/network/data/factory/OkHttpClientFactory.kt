@@ -19,10 +19,12 @@ package dev.zitech.core.network.data.factory
 
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import okhttp3.Authenticator
 import okhttp3.OkHttpClient
 
 internal class OkHttpClientFactory @Inject constructor(
-    private val interceptorFactory: InterceptorFactory
+    private val interceptorFactory: InterceptorFactory,
+    private val refreshTokenAuthenticator: Authenticator
 ) {
 
     private companion object {
@@ -37,10 +39,11 @@ internal class OkHttpClientFactory @Inject constructor(
             .retryOnConnectionFailure(true)
 
         with(okHttpClient) {
-            addInterceptor(interceptorFactory(Authenticator))
+            addInterceptor(interceptorFactory(Authentication))
             addInterceptor(interceptorFactory(Debugger))
             addInterceptor(interceptorFactory(HttpInspector))
             addInterceptor(interceptorFactory(HttpLogging))
+            authenticator(refreshTokenAuthenticator)
         }
 
         return okHttpClient.build()
