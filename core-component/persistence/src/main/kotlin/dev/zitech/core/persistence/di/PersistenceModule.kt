@@ -24,7 +24,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import dev.zitech.core.common.di.annotation.CurrentUserServerAddressCache
 import dev.zitech.core.common.domain.applicationconfig.AppConfigProvider
 import dev.zitech.core.common.domain.cache.InMemoryCache
 import dev.zitech.core.common.domain.dispatcher.AppDispatchers
@@ -37,7 +36,8 @@ import dev.zitech.core.persistence.data.repository.preferences.SavePreferencesRe
 import dev.zitech.core.persistence.di.annotation.DevelopmentPreferencesDataSource
 import dev.zitech.core.persistence.di.annotation.SecuredPreferencesDataSource
 import dev.zitech.core.persistence.di.annotation.StandardPreferencesDataSource
-import dev.zitech.core.persistence.domain.cache.CurrentUserServerAddressInMemoryCache
+import dev.zitech.core.persistence.domain.cache.NetworkDetailsInMemoryCache
+import dev.zitech.core.persistence.domain.model.cache.NetworkDetails
 import dev.zitech.core.persistence.domain.model.preferences.PreferenceType
 import dev.zitech.core.persistence.domain.repository.database.DatabaseKeyRepository
 import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
@@ -184,11 +184,10 @@ internal interface PersistenceModule {
         @Provides
         fun userAccountRepository(
             userAccountDatabaseSource: UserAccountDatabaseSource,
-            @CurrentUserServerAddressCache
-            currentUserServerAddressInMemoryCache: InMemoryCache<String>
+            networkDetailsInMemoryCache: InMemoryCache<NetworkDetails>
         ): UserAccountRepository = UserAccountRepositoryImpl(
             userAccountDatabaseSource,
-            currentUserServerAddressInMemoryCache
+            networkDetailsInMemoryCache
         )
     }
 
@@ -202,11 +201,10 @@ internal interface PersistenceModule {
             databaseKeyRepositoryImpl: DatabaseKeyRepositoryImpl
         ): DatabaseKeyRepository
 
-        @CurrentUserServerAddressCache
         @Singleton
         @Binds
-        fun currentUserServerAddressInMemoryCache(
-            currentUserServerAddressInMemoryCache: CurrentUserServerAddressInMemoryCache
-        ): InMemoryCache<String>
+        fun networkDetailsInMemoryCache(
+            networkDetailsInMemoryCache: NetworkDetailsInMemoryCache
+        ): InMemoryCache<NetworkDetails>
     }
 }

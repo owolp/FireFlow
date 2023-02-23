@@ -19,6 +19,7 @@ package dev.zitech.core.persistence.data.repository.database
 
 import dev.zitech.core.common.domain.cache.InMemoryCache
 import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.persistence.domain.model.cache.NetworkDetails
 import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.domain.model.exception.NullCurrentUserAccountException
 import dev.zitech.core.persistence.domain.model.exception.NullUserAccountException
@@ -30,7 +31,7 @@ import kotlinx.coroutines.flow.map
 
 internal class UserAccountRepositoryImpl @Inject constructor(
     private val userAccountDatabaseSource: UserAccountDatabaseSource,
-    private val currentUserServerAddressInMemoryCache: InMemoryCache<String>
+    private val networkDetailsInMemoryCache: InMemoryCache<NetworkDetails>
 ) : UserAccountRepository {
 
     override suspend fun getUserAccountByState(state: String): DataResult<UserAccount> =
@@ -48,6 +49,10 @@ internal class UserAccountRepositoryImpl @Inject constructor(
         userAccountDatabaseSource.getCurrentUserAccountOrNull()
             .map { userAccount ->
                 if (userAccount != null) {
+                    networkDetailsInMemoryCache.data = NetworkDetails(
+                        userId = userAccount.userId,
+                        serverAddress = userAccount.serverAddress
+                    )
                     DataResult.Success(userAccount)
                 } else {
                     DataResult.Error(cause = NullCurrentUserAccountException)
@@ -62,15 +67,18 @@ internal class UserAccountRepositoryImpl @Inject constructor(
         state: String
     ): DataResult<Long> =
         try {
-            val resultId = userAccountDatabaseSource.saveUserAccount(
+            val userId = userAccountDatabaseSource.saveUserAccount(
                 clientId = clientId,
                 clientSecret = clientSecret,
                 isCurrentUserAccount = isCurrentUserAccount,
                 serverAddress = serverAddress,
                 state = state
             )
-            currentUserServerAddressInMemoryCache.data = serverAddress
-            DataResult.Success(resultId)
+            networkDetailsInMemoryCache.data = NetworkDetails(
+                userId = userId,
+                serverAddress = serverAddress
+            )
+            DataResult.Success(userId)
         } catch (exception: Exception) {
             DataResult.Error(cause = exception)
         }

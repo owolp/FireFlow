@@ -21,6 +21,7 @@ import retrofit2.Retrofit
 
 internal interface RetrofitModel {
     suspend operator fun invoke(
+        userId: Long,
         serverAddress: String
     ): Retrofit
 }

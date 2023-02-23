@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.zitech.core.common.domain.navigation.DeepLinkScreenDestination
 import dev.zitech.core.common.domain.navigation.LogInState
 import dev.zitech.dashboard.presentation.dashboard.viewmodel.DashboardViewModel
+import dev.zitech.dashboard.presentation.dashboard.viewmodel.DoDevJob
 import dev.zitech.ds.atoms.loading.FireFlowProgressIndicators
 
 @Composable
@@ -48,6 +49,7 @@ internal fun DashboardRoute(
                 modifier = modifier,
                 state = screenState
             )
+            viewModel.sendIntent(DoDevJob)
         }
         is LogInState.NotLogged -> {
             LaunchedEffect(Unit) {

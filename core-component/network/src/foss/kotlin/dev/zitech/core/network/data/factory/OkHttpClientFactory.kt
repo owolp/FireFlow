@@ -19,9 +19,13 @@ package dev.zitech.core.network.data.factory
 
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import okhttp3.Authenticator
 import okhttp3.OkHttpClient
 
-internal class OkHttpClientFactory @Inject constructor() {
+internal class OkHttpClientFactory @Inject constructor(
+    private val interceptorFactory: InterceptorFactory,
+    private val refreshTokenAuthenticator: Authenticator
+) {
 
     private companion object {
         const val SERVICE_TIMEOUT_SECONDS = 60L
@@ -33,6 +37,11 @@ internal class OkHttpClientFactory @Inject constructor() {
             .readTimeout(SERVICE_TIMEOUT_SECONDS, TimeUnit.SECONDS)
             .writeTimeout(SERVICE_TIMEOUT_SECONDS, TimeUnit.SECONDS)
             .retryOnConnectionFailure(true)
+
+        with(okHttpClient) {
+            addInterceptor(interceptorFactory(Authentication))
+            authenticator(refreshTokenAuthenticator)
+        }
 
         return okHttpClient.build()
     }

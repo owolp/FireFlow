@@ -44,6 +44,7 @@ open class InMemoryCache<T : Any>(
             field = value
             if (value != null) {
                 Logger.i(tag, "set cache")
+                Logger.d(tag, "set cache $value")
                 setExpirationTime()
                 cacheRepository.addCache(this)
             } else {
@@ -53,6 +54,7 @@ open class InMemoryCache<T : Any>(
             }
         }
         get() {
+            Logger.d(tag, "get cache $field")
             checkCacheExpired()
             return field
         }
