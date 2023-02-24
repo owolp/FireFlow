@@ -17,8 +17,6 @@
 
 package dev.zitech.core.common.domain.model
 
-import dev.zitech.core.common.domain.code.StatusCode
-
 @Deprecated("Deprecated", ReplaceWith("DataResult"))
 sealed class LegacyDataResult<out T : Any> {
     data class Success<out T : Any>(val value: T) : LegacyDataResult<T>()
@@ -26,38 +24,4 @@ sealed class LegacyDataResult<out T : Any> {
         val message: String? = null,
         val cause: Exception? = null
     ) : LegacyDataResult<Nothing>()
-}
-
-sealed interface DataResult<T : Any>
-
-data class DataSuccess<T : Any>(val data: T) : DataResult<T>
-data class DataError(
-    val statusCode: StatusCode,
-    val message: String? = null
-) : DataResult<Nothing>
-
-data class DataException(val exception: Throwable) : DataResult<Nothing>
-
-suspend fun <T : Any> DataResult<T>.onSuccess(
-    executable: suspend (T) -> Unit
-): DataResult<T> = apply {
-    if (this is DataSuccess<T>) {
-        executable(data)
-    }
-}
-
-suspend fun <T : Any> DataResult<T>.onError(
-    executable: suspend (statusCode: StatusCode, message: String) -> Unit
-): DataResult<T> = apply {
-    if (this is DataError) {
-        executable(statusCode, message.orEmpty())
-    }
-}
-
-suspend fun <T : Any> DataResult<T>.onException(
-    executable: suspend (e: Throwable) -> Unit
-): DataResult<T> = apply {
-    if (this is DataException) {
-        executable(exception)
-    }
 }
