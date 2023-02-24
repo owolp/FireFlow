@@ -23,8 +23,8 @@ import kotlinx.coroutines.flow.Flow
 
 internal interface UserAccountSource {
 
-    suspend fun getUserAccountByState(state: String): DataResult<out UserAccount>
-    fun getUserAccounts(): Flow<DataResult<out List<UserAccount>>>
+    suspend fun getUserAccountByState(state: String): DataResult<UserAccount>
+    fun getUserAccounts(): Flow<DataResult<List<UserAccount>>>
     fun getCurrentUserAccountOrNull(): Flow<UserAccount?>
     suspend fun removeUserAccountsWithStateAndWithoutAccessToken()
     suspend fun saveUserAccount(

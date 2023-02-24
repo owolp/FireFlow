@@ -17,28 +17,28 @@
 
 package dev.zitech.core.network.framework.retrofit
 
-import dev.zitech.core.common.domain.network.NetworkError
-import dev.zitech.core.common.domain.network.NetworkException
-import dev.zitech.core.common.domain.network.NetworkResult
-import dev.zitech.core.common.domain.network.NetworkSuccess
+import dev.zitech.core.common.domain.model.DataError
+import dev.zitech.core.common.domain.model.DataException
+import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.model.DataSuccess
 import retrofit2.Response
 
 @Suppress("TooGenericExceptionCaught")
 internal fun <T : Any> handleApi(
     execute: () -> Response<T>
-): NetworkResult<T> = try {
+): DataResult<T> = try {
     val response = execute()
     val body = response.body()
     if (response.isSuccessful && body != null) {
-        NetworkSuccess(body)
+        DataSuccess(body)
     } else {
-        NetworkError(
+        DataError(
             statusCode = getStatusCodeFromResponse(response),
             message = response.message()
         )
     }
 } catch (exception: Throwable) {
-    NetworkException(
+    DataException(
         exception = exception
     )
 }

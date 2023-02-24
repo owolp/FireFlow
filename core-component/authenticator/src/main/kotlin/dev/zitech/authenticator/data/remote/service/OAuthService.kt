@@ -19,7 +19,7 @@ package dev.zitech.authenticator.data.remote.service
 
 import dev.zitech.authenticator.data.remote.model.AccessTokenResponse
 import dev.zitech.authenticator.data.remote.model.RefreshTokenResponse
-import dev.zitech.core.common.domain.network.NetworkResult
+import dev.zitech.core.common.domain.model.DataResult
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
@@ -34,7 +34,7 @@ interface OAuthService {
         @Field("code") code: String,
         @Field("redirect_uri") redirectUri: String = "fireflow://authentication",
         @Field("grant_type") grantType: String = "authorization_code"
-    ): NetworkResult<AccessTokenResponse>
+    ): DataResult<AccessTokenResponse>
 
     @FormUrlEncoded
     @POST("oauth/token")
@@ -43,5 +43,5 @@ interface OAuthService {
         @Field("client_secret") clientSecret: String,
         @Field("grant_type") grantType: String = "refresh_token",
         @Field("refresh_token") refreshToken: String
-    ): NetworkResult<RefreshTokenResponse>
+    ): DataResult<RefreshTokenResponse>
 }

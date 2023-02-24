@@ -17,21 +17,21 @@
 
 package dev.zitech.core.network.framework.retrofit
 
-import dev.zitech.core.common.domain.network.NetworkException
-import dev.zitech.core.common.domain.network.NetworkResult
+import dev.zitech.core.common.domain.model.DataException
+import dev.zitech.core.common.domain.model.DataResult
 import okhttp3.Request
 import okio.Timeout
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-internal class NetworkResultCall<T : Any>(
+internal class DataResultCall<T : Any>(
     private val proxy: Call<T>
-) : Call<NetworkResult<T>> {
+) : Call<DataResult<T>> {
 
-    override fun clone(): Call<NetworkResult<T>> = NetworkResultCall(proxy.clone())
+    override fun clone(): Call<DataResult<T>> = DataResultCall(proxy.clone())
 
-    override fun execute(): Response<NetworkResult<T>> = throw NotImplementedError()
+    override fun execute(): Response<DataResult<T>> = throw NotImplementedError()
 
     override fun isExecuted(): Boolean = proxy.isExecuted
 
@@ -45,16 +45,16 @@ internal class NetworkResultCall<T : Any>(
 
     override fun timeout(): Timeout = proxy.timeout()
 
-    override fun enqueue(callback: Callback<NetworkResult<T>>) {
+    override fun enqueue(callback: Callback<DataResult<T>>) {
         proxy.enqueue(object : Callback<T> {
             override fun onResponse(call: Call<T>, response: Response<T>) {
-                val networkResult = handleApi { response }
-                callback.onResponse(this@NetworkResultCall, Response.success(networkResult))
+                val dataResult = handleApi { response }
+                callback.onResponse(this@DataResultCall, Response.success(dataResult))
             }
 
             override fun onFailure(call: Call<T>, t: Throwable) {
-                val networkResult = NetworkException<T>(t)
-                callback.onResponse(this@NetworkResultCall, Response.success(networkResult))
+                val dataResult = DataException<T>(t)
+                callback.onResponse(this@DataResultCall, Response.success(dataResult))
             }
         })
     }

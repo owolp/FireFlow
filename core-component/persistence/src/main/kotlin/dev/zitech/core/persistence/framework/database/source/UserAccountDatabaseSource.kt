@@ -37,7 +37,7 @@ internal class UserAccountDatabaseSource @Inject constructor(
     private val userAccountMapper: UserAccountMapper
 ) : UserAccountSource {
 
-    override suspend fun getUserAccountByState(state: String): DataResult<out UserAccount> = try {
+    override suspend fun getUserAccountByState(state: String): DataResult<UserAccount> = try {
         val userAccountEntity = userAccountDao.getUserAccountByState(state)
         if (userAccountEntity != null) {
             DataSuccess(userAccountMapper.toDomain(userAccountEntity))
@@ -48,11 +48,11 @@ internal class UserAccountDatabaseSource @Inject constructor(
         DataException(exception)
     }
 
-    override fun getUserAccounts(): Flow<DataResult<out List<UserAccount>>> =
+    override fun getUserAccounts(): Flow<DataResult<List<UserAccount>>> =
         userAccountDao.getUserAccounts().map { userAccountEntities ->
             DataSuccess(userAccountEntities.map(userAccountMapper::toDomain))
         }.catch { exception ->
-            DataException(exception)
+            DataException<List<UserAccount>>(exception)
         }
 
     override fun getCurrentUserAccountOrNull(): Flow<UserAccount?> =

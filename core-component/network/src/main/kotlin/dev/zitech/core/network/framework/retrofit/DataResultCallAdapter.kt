@@ -17,16 +17,16 @@
 
 package dev.zitech.core.network.framework.retrofit
 
-import dev.zitech.core.common.domain.network.NetworkResult
+import dev.zitech.core.common.domain.model.DataResult
 import java.lang.reflect.Type
 import retrofit2.Call
 import retrofit2.CallAdapter
 
-internal class NetworkResultCallAdapter(
+internal class DataResultCallAdapter(
     private val resultType: Type
-) : CallAdapter<Type, Call<NetworkResult<Type>>> {
+) : CallAdapter<Type, Call<DataResult<Type>>> {
 
     override fun responseType(): Type = resultType
 
-    override fun adapt(call: Call<Type>): Call<NetworkResult<Type>> = NetworkResultCall(call)
+    override fun adapt(call: Call<Type>): Call<DataResult<Type>> = DataResultCall(call)
 }

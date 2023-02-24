@@ -23,7 +23,7 @@ import dev.zitech.authenticator.data.remote.service.OAuthService
 import dev.zitech.authenticator.data.source.OAuthSource
 import dev.zitech.authenticator.domain.model.Token
 import dev.zitech.core.common.domain.model.DataResult
-import dev.zitech.core.common.domain.network.mapToDataResult
+import dev.zitech.core.common.domain.model.mapToDataResult
 import javax.inject.Inject
 
 internal class OAuthRemoteSource @Inject constructor(

@@ -22,12 +22,12 @@ import dev.zitech.core.common.domain.code.StatusCode
 sealed interface DataResult<T : Any>
 
 data class DataSuccess<T : Any>(val data: T) : DataResult<T>
-data class DataError(
+data class DataError<T : Any>(
     val statusCode: StatusCode,
     val message: String? = null
-) : DataResult<Nothing>
+) : DataResult<T>
 
-data class DataException(val exception: Throwable) : DataResult<Nothing>
+data class DataException<T : Any>(val exception: Throwable) : DataResult<T>
 
 suspend fun <T : Any> DataResult<T>.onSuccess(
     executable: suspend (T) -> Unit
@@ -52,3 +52,12 @@ suspend fun <T : Any> DataResult<T>.onException(
         executable(exception)
     }
 }
+
+inline fun <T : Any, R : Any> DataResult<T>.mapToDataResult(
+    transform: (T) -> R
+): DataResult<out R> =
+    when (this) {
+        is DataSuccess -> DataSuccess(transform(data))
+        is DataError -> DataError(statusCode, message)
+        is DataException -> DataException(exception)
+    }
