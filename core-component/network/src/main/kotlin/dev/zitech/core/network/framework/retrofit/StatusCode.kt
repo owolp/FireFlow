@@ -17,7 +17,7 @@
 
 package dev.zitech.core.network.framework.retrofit
 
-import dev.zitech.core.common.domain.network.StatusCode
+import dev.zitech.core.common.domain.code.StatusCode
 import retrofit2.Response
 
 internal fun <T> getStatusCodeFromResponse(response: Response<T>): StatusCode {

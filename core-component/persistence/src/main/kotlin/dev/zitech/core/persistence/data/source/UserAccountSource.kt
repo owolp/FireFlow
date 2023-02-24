@@ -17,12 +17,13 @@
 
 package dev.zitech.core.persistence.data.source
 
+import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.persistence.domain.model.database.UserAccount
 import kotlinx.coroutines.flow.Flow
 
 internal interface UserAccountSource {
 
-    suspend fun getUserAccountByStateOrNull(state: String): UserAccount?
+    suspend fun getUserAccountByState(state: String): DataResult<out UserAccount>
     fun getUserAccounts(): Flow<List<UserAccount>>
     fun getCurrentUserAccountOrNull(): Flow<UserAccount?>
     suspend fun removeUserAccountsWithStateAndWithoutAccessToken()

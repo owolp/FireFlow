@@ -17,7 +17,7 @@
 
 package dev.zitech.core.common.domain.model
 
-import dev.zitech.core.common.domain.network.StatusCode
+import dev.zitech.core.common.domain.code.StatusCode
 
 @Deprecated("Deprecated", ReplaceWith("DataResult"))
 sealed class LegacyDataResult<out T : Any> {
@@ -33,7 +33,7 @@ sealed interface DataResult<T : Any>
 data class DataSuccess<T : Any>(val data: T) : DataResult<T>
 data class DataError(
     val statusCode: StatusCode,
-    val message: String?
+    val message: String? = null
 ) : DataResult<Nothing>
 
 data class DataException(val exception: Throwable) : DataResult<Nothing>
@@ -47,10 +47,10 @@ suspend fun <T : Any> DataResult<T>.onSuccess(
 }
 
 suspend fun <T : Any> DataResult<T>.onError(
-    executable: suspend (statusCode: StatusCode, message: String?) -> Unit
+    executable: suspend (statusCode: StatusCode, message: String) -> Unit
 ): DataResult<T> = apply {
     if (this is DataError) {
-        executable(statusCode, message)
+        executable(statusCode, message.orEmpty())
     }
 }
 

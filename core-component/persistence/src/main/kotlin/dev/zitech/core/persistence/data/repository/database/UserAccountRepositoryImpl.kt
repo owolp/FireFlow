@@ -18,13 +18,14 @@
 package dev.zitech.core.persistence.data.repository.database
 
 import dev.zitech.core.common.domain.cache.InMemoryCache
+import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.common.domain.model.LegacyDataResult
+import dev.zitech.core.persistence.data.source.UserAccountSource
 import dev.zitech.core.persistence.domain.model.cache.NetworkDetails
 import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.domain.model.exception.NullCurrentUserAccountException
 import dev.zitech.core.persistence.domain.model.exception.NullUserAccountException
 import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
-import dev.zitech.core.persistence.data.source.UserAccountSource
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -34,10 +35,8 @@ internal class UserAccountRepositoryImpl @Inject constructor(
     private val networkDetailsInMemoryCache: InMemoryCache<NetworkDetails>
 ) : UserAccountRepository {
 
-    override suspend fun getUserAccountByState(state: String): LegacyDataResult<UserAccount> =
-        userAccountDatabaseSource.getUserAccountByStateOrNull(state)?.let { userAccount ->
-            LegacyDataResult.Success(userAccount)
-        } ?: LegacyDataResult.Error(cause = NullUserAccountException)
+    override suspend fun getUserAccountByState(state: String): DataResult<out UserAccount> =
+        userAccountDatabaseSource.getUserAccountByState(state)
 
     override fun getUserAccounts(): Flow<LegacyDataResult<List<UserAccount>>> =
         userAccountDatabaseSource.getUserAccounts()

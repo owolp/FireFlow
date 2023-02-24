@@ -26,21 +26,19 @@ import retrofit2.Response
 @Suppress("TooGenericExceptionCaught")
 internal fun <T : Any> handleApi(
     execute: () -> Response<T>
-): NetworkResult<T> {
-    return try {
-        val response = execute()
-        val body = response.body()
-        if (response.isSuccessful && body != null) {
-            NetworkSuccess(body)
-        } else {
-            NetworkError(
-                statusCode = getStatusCodeFromResponse(response),
-                message = response.message()
-            )
-        }
-    } catch (exception: Throwable) {
-        NetworkException(
-            exception = exception
+): NetworkResult<T> = try {
+    val response = execute()
+    val body = response.body()
+    if (response.isSuccessful && body != null) {
+        NetworkSuccess(body)
+    } else {
+        NetworkError(
+            statusCode = getStatusCodeFromResponse(response),
+            message = response.message()
         )
     }
+} catch (exception: Throwable) {
+    NetworkException(
+        exception = exception
+    )
 }

@@ -21,8 +21,8 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import dev.zitech.authenticator.data.source.OAuthSource
 import dev.zitech.authenticator.data.repository.TokenRepositoryImpl
+import dev.zitech.authenticator.data.source.OAuthSource
 import dev.zitech.authenticator.di.annotation.InterceptorAuthentication
 import dev.zitech.authenticator.domain.repository.TokenRepository
 import dev.zitech.authenticator.framework.remote.authenticator.RefreshTokenAuthenticator

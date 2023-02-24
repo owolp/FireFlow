@@ -34,7 +34,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.common.domain.network
+package dev.zitech.core.common.domain.code
 
 enum class StatusCode(val code: Int) {
     Unknown(0),

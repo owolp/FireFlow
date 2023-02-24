@@ -23,6 +23,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.zitech.authenticator.domain.model.Token
 import dev.zitech.authenticator.domain.usecase.GetAccessTokenUseCase
 import dev.zitech.core.common.DataFactory
+import dev.zitech.core.common.domain.code.StatusCode.NotFound
 import dev.zitech.core.common.domain.dispatcher.AppDispatchers
 import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.domain.model.LegacyDataResult
@@ -33,7 +34,6 @@ import dev.zitech.core.common.domain.model.onSuccess
 import dev.zitech.core.common.presentation.architecture.MviViewModel
 import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.domain.model.database.UserAccount.Companion.STATE_LENGTH
-import dev.zitech.core.persistence.domain.model.exception.NullUserAccountException
 import dev.zitech.core.persistence.domain.usecase.database.GetUserAccountByStateUseCase
 import dev.zitech.core.persistence.domain.usecase.database.SaveUserAccountUseCase
 import dev.zitech.core.persistence.domain.usecase.database.UpdateUserAccountUseCase
@@ -183,28 +183,28 @@ internal class OAuthViewModel @Inject constructor(
 
     private suspend fun handleScreenOpenedFromDeepLink(state: String, code: String) {
         stateHandler.setLoading(true)
-        when (val result = getUserAccountByStateUseCase(state)) {
-            is LegacyDataResult.Success -> {
-                val userAccount = result.value
+        getUserAccountByStateUseCase(state)
+            .onSuccess { userAccount ->
                 with(stateHandler) {
                     setServerAddress(userAccount.serverAddress)
                     setClientId(userAccount.clientId)
                     setClientSecret(userAccount.clientSecret)
                 }
                 retrieveToken(userAccount, code)
-            }
-            is LegacyDataResult.Error -> {
+            }.onError { statusCode, message ->
                 stateHandler.setLoading(false)
-                if (result.cause is NullUserAccountException) {
+                if (statusCode == NotFound) {
                     stateHandler.setEvent(
-                        ShowError(oauthStringsProvider.getCodeStateError())
+                        ShowError(oauthStringsProvider.getOauthCodeStateError())
                     )
                 } else {
-                    Logger.e(tag, exception = result.cause)
+                    Logger.e(tag, message = message)
                     stateHandler.setEvent(NavigateToError)
                 }
+            }.onException {
+                Logger.e(tag, throwable = it)
+                stateHandler.setEvent(NavigateToError)
             }
-        }
     }
 
     private suspend fun retrieveToken(userAccount: UserAccount, code: String) {

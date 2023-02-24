@@ -17,6 +17,7 @@
 
 package dev.zitech.core.common.domain.network
 
+import dev.zitech.core.common.domain.code.StatusCode
 import dev.zitech.core.common.domain.model.DataError
 import dev.zitech.core.common.domain.model.DataException
 import dev.zitech.core.common.domain.model.DataResult

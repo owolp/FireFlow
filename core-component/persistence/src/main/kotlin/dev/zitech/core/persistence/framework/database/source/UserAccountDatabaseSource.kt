@@ -17,8 +17,13 @@
 
 package dev.zitech.core.persistence.framework.database.source
 
-import dev.zitech.core.persistence.domain.model.database.UserAccount
+import dev.zitech.core.common.domain.code.StatusCode.NotFound
+import dev.zitech.core.common.domain.model.DataError
+import dev.zitech.core.common.domain.model.DataException
+import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.model.DataSuccess
 import dev.zitech.core.persistence.data.source.UserAccountSource
+import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.framework.database.dao.UserAccountDao
 import dev.zitech.core.persistence.framework.database.entity.UserAccountEntity
 import dev.zitech.core.persistence.framework.database.mapper.UserAccountMapper
@@ -26,13 +31,21 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-internal class UserAccountDatabaseSourceImpl @Inject constructor(
+internal class UserAccountDatabaseSource @Inject constructor(
     private val userAccountDao: UserAccountDao,
     private val userAccountMapper: UserAccountMapper
 ) : UserAccountSource {
 
-    override suspend fun getUserAccountByStateOrNull(state: String): UserAccount? =
-        userAccountDao.getUserAccountByState(state)?.let(userAccountMapper::toDomain)
+    override suspend fun getUserAccountByState(state: String): DataResult<out UserAccount> = try {
+        val userAccountEntity = userAccountDao.getUserAccountByState(state)
+        if (userAccountEntity != null) {
+            DataSuccess(userAccountMapper.toDomain(userAccountEntity))
+        } else {
+            DataError(NotFound)
+        }
+    } catch (exception: Throwable) {
+        DataException(exception)
+    }
 
     override fun getUserAccounts(): Flow<List<UserAccount>> =
         userAccountDao.getUserAccounts().map { userAccountEntities ->

@@ -33,6 +33,7 @@ import dev.zitech.core.persistence.data.repository.preferences.ContainsPreferenc
 import dev.zitech.core.persistence.data.repository.preferences.GetPreferencesRepositoryImpl
 import dev.zitech.core.persistence.data.repository.preferences.RemovePreferencesRepositoryImpl
 import dev.zitech.core.persistence.data.repository.preferences.SavePreferencesRepositoryImpl
+import dev.zitech.core.persistence.data.source.UserAccountSource
 import dev.zitech.core.persistence.di.annotation.DevelopmentPreferencesDataSource
 import dev.zitech.core.persistence.di.annotation.SecuredPreferencesDataSource
 import dev.zitech.core.persistence.di.annotation.StandardPreferencesDataSource
@@ -45,13 +46,12 @@ import dev.zitech.core.persistence.domain.repository.preferences.ContainsPrefere
 import dev.zitech.core.persistence.domain.repository.preferences.GetPreferencesRepository
 import dev.zitech.core.persistence.domain.repository.preferences.RemovePreferencesRepository
 import dev.zitech.core.persistence.domain.repository.preferences.SavePreferencesRepository
-import dev.zitech.core.persistence.data.source.UserAccountSource
 import dev.zitech.core.persistence.domain.source.preferences.PreferencesDataSource
 import dev.zitech.core.persistence.framework.database.FireFlowDatabase
 import dev.zitech.core.persistence.framework.database.dao.UserAccountDao
 import dev.zitech.core.persistence.framework.database.factory.DatabaseFactory
 import dev.zitech.core.persistence.framework.database.mapper.UserAccountMapper
-import dev.zitech.core.persistence.framework.database.source.UserAccountDatabaseSourceImpl
+import dev.zitech.core.persistence.framework.database.source.UserAccountDatabaseSource
 import dev.zitech.core.persistence.framework.preference.factory.PreferencesFactory
 import javax.inject.Singleton
 import kotlinx.coroutines.runBlocking
@@ -156,7 +156,7 @@ internal interface PersistenceModule {
             fireFlowDatabase: FireFlowDatabase,
             userAccountMapper: UserAccountMapper
         ): UserAccountSource =
-            UserAccountDatabaseSourceImpl(
+            UserAccountDatabaseSource(
                 userAccountDao = fireFlowDatabase.userAccountDao(),
                 userAccountMapper = userAccountMapper
             )

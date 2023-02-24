@@ -33,7 +33,7 @@ internal class OAuthStringsProvider @Inject constructor(
     fun getNoSupportedBrowserInstalled(): String =
         commonStringsProvider.getNoSupportedBrowserInstalled()
 
-    fun getCodeStateError(): String = stringsProvider(R.string.oauth_error_code_state)
+    fun getOauthCodeStateError(): String = stringsProvider(R.string.oauth_error_code_state)
 
     fun getTokenError(): String = stringsProvider(R.string.oauth_error_token)
 }

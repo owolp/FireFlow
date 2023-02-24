@@ -19,12 +19,12 @@ package dev.zitech.authenticator.domain.usecase
 
 import dev.zitech.authenticator.domain.model.Token
 import dev.zitech.authenticator.domain.repository.TokenRepository
+import dev.zitech.core.common.domain.code.StatusCode
 import dev.zitech.core.common.domain.model.DataError
 import dev.zitech.core.common.domain.model.DataException
 import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.common.domain.model.DataSuccess
 import dev.zitech.core.common.domain.model.LegacyDataResult
-import dev.zitech.core.common.domain.network.StatusCode
 import dev.zitech.core.persistence.domain.usecase.database.GetCurrentUserAccountUseCase
 import dev.zitech.core.persistence.domain.usecase.database.UpdateUserAccountUseCase
 import javax.inject.Inject
