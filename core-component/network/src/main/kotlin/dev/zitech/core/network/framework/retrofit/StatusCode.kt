@@ -15,14 +15,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.network.data.service
+package dev.zitech.core.network.framework.retrofit
 
-import dev.zitech.core.common.domain.network.NetworkResult
-import dev.zitech.core.network.data.model.GetUserResponse
-import retrofit2.http.GET
+import dev.zitech.core.common.domain.network.StatusCode
+import retrofit2.Response
 
-interface AboutService {
-
-    @GET("api/v1/about/user")
-    suspend fun getUser(): NetworkResult<GetUserResponse>
+internal fun <T> getStatusCodeFromResponse(response: Response<T>): StatusCode {
+    return StatusCode.values().find { it.code == response.code() }
+        ?: StatusCode.Unknown
 }

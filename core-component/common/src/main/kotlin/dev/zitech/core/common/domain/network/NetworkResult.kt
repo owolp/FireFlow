@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.network.domain.model
+package dev.zitech.core.common.domain.network
 
 sealed interface NetworkResult<T : Any>
 

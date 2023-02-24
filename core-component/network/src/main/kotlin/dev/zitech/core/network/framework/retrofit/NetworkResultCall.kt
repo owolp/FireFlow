@@ -17,8 +17,8 @@
 
 package dev.zitech.core.network.framework.retrofit
 
-import dev.zitech.core.network.domain.model.NetworkException
-import dev.zitech.core.network.domain.model.NetworkResult
+import dev.zitech.core.common.domain.network.NetworkException
+import dev.zitech.core.common.domain.network.NetworkResult
 import okhttp3.Request
 import okio.Timeout
 import retrofit2.Call

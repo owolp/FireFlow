@@ -17,7 +17,7 @@
 
 package dev.zitech.core.network.framework.retrofit
 
-import dev.zitech.core.network.domain.model.NetworkResult
+import dev.zitech.core.common.domain.network.NetworkResult
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 import retrofit2.Call

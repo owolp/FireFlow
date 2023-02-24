@@ -22,13 +22,13 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.domain.navigation.LogInState
+import dev.zitech.core.common.domain.network.onError
+import dev.zitech.core.common.domain.network.onException
+import dev.zitech.core.common.domain.network.onSuccess
 import dev.zitech.core.common.presentation.architecture.DeepLinkViewModel
 import dev.zitech.core.common.presentation.architecture.MviViewModel
 import dev.zitech.core.common.presentation.splash.LoginCheckCompletedHandler
 import dev.zitech.core.network.data.service.AboutService
-import dev.zitech.core.network.domain.model.onError
-import dev.zitech.core.network.domain.model.onException
-import dev.zitech.core.network.domain.model.onSuccess
 import dev.zitech.navigation.domain.usecase.GetScreenDestinationUseCase
 import dev.zitech.navigation.presentation.extension.logInState
 import javax.inject.Inject

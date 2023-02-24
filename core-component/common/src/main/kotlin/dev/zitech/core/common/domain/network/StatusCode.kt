@@ -34,9 +34,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.network.domain.model
-
-import retrofit2.Response
+package dev.zitech.core.common.domain.network
 
 enum class StatusCode(val code: Int) {
     Unknown(0),
@@ -105,9 +103,4 @@ enum class StatusCode(val code: Int) {
     HTTPVersionNotSupported(505),
     NotExtended(510),
     NetworkAuthenticationRequired(511)
-}
-
-internal fun <T> getStatusCodeFromResponse(response: Response<T>): StatusCode {
-    return StatusCode.values().find { it.code == response.code() }
-        ?: StatusCode.Unknown
 }

@@ -17,11 +17,10 @@
 
 package dev.zitech.core.network.framework.retrofit
 
-import dev.zitech.core.network.domain.model.NetworkError
-import dev.zitech.core.network.domain.model.NetworkException
-import dev.zitech.core.network.domain.model.NetworkResult
-import dev.zitech.core.network.domain.model.NetworkSuccess
-import dev.zitech.core.network.domain.model.getStatusCodeFromResponse
+import dev.zitech.core.common.domain.network.NetworkError
+import dev.zitech.core.common.domain.network.NetworkException
+import dev.zitech.core.common.domain.network.NetworkResult
+import dev.zitech.core.common.domain.network.NetworkSuccess
 import retrofit2.Response
 
 @Suppress("TooGenericExceptionCaught")
