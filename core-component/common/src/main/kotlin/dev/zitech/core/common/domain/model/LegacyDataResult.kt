@@ -19,6 +19,7 @@ package dev.zitech.core.common.domain.model
 
 import dev.zitech.core.common.domain.network.StatusCode
 
+@Deprecated("Deprecated", ReplaceWith("DataResult"))
 sealed class LegacyDataResult<out T : Any> {
     data class Success<out T : Any>(val value: T) : LegacyDataResult<T>()
     data class Error(
