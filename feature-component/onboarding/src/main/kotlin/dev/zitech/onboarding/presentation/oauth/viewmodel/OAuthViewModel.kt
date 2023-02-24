@@ -27,6 +27,9 @@ import dev.zitech.core.common.domain.dispatcher.AppDispatchers
 import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.domain.model.LegacyDataResult
 import dev.zitech.core.common.domain.model.exception.NoBrowserInstalledException
+import dev.zitech.core.common.domain.model.onError
+import dev.zitech.core.common.domain.model.onException
+import dev.zitech.core.common.domain.model.onSuccess
 import dev.zitech.core.common.presentation.architecture.MviViewModel
 import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.domain.model.database.UserAccount.Companion.STATE_LENGTH
@@ -205,20 +208,19 @@ internal class OAuthViewModel @Inject constructor(
     }
 
     private suspend fun retrieveToken(userAccount: UserAccount, code: String) {
-        when (
-            val result = getAccessTokenUseCase.get()(
-                clientId = userAccount.clientId,
-                clientSecret = userAccount.clientSecret,
-                code = code
+        getAccessTokenUseCase.get()(
+            clientId = userAccount.clientId,
+            clientSecret = userAccount.clientSecret,
+            code = code
+        ).onSuccess { token ->
+            updateUserAccount(userAccount, token, code)
+        }.onError { statusCode, message ->
+            stateHandler.setLoading(false)
+            stateHandler.setEvent(
+                ShowError(oauthStringsProvider.getTokenError())
             )
-        ) {
-            is LegacyDataResult.Success -> updateUserAccount(userAccount, result.value, code)
-            is LegacyDataResult.Error -> {
-                stateHandler.setLoading(false)
-                stateHandler.setEvent(
-                    ShowError(oauthStringsProvider.getTokenError())
-                )
-            }
+        }.onException {
+            // TODO
         }
     }
 

@@ -18,7 +18,7 @@
 package dev.zitech.authenticator.domain.repository
 
 import dev.zitech.authenticator.domain.model.Token
-import dev.zitech.core.common.domain.model.LegacyDataResult
+import dev.zitech.core.common.domain.model.DataResult
 
 interface TokenRepository {
 
@@ -26,11 +26,11 @@ interface TokenRepository {
         clientId: String,
         clientSecret: String,
         code: String
-    ): LegacyDataResult<Token>
+    ): DataResult<out Token>
 
     suspend fun getRefreshedToken(
         clientId: String,
         clientSecret: String,
         refreshToken: String
-    ): LegacyDataResult<Token>
+    ): DataResult<out Token>
 }

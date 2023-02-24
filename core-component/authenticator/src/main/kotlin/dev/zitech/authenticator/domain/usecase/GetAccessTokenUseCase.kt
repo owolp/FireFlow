@@ -19,7 +19,7 @@ package dev.zitech.authenticator.domain.usecase
 
 import dev.zitech.authenticator.domain.model.Token
 import dev.zitech.authenticator.domain.repository.TokenRepository
-import dev.zitech.core.common.domain.model.LegacyDataResult
+import dev.zitech.core.common.domain.model.DataResult
 import javax.inject.Inject
 
 class GetAccessTokenUseCase @Inject constructor(
@@ -30,5 +30,5 @@ class GetAccessTokenUseCase @Inject constructor(
         clientId: String,
         clientSecret: String,
         code: String
-    ): LegacyDataResult<Token> = tokenRepository.getAccessToken(clientId, clientSecret, code)
+    ): DataResult<out Token> = tokenRepository.getAccessToken(clientId, clientSecret, code)
 }

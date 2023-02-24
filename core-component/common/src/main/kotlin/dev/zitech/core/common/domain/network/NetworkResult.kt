@@ -17,7 +17,20 @@
 
 package dev.zitech.core.common.domain.network
 
+import dev.zitech.core.common.domain.model.DataError
+import dev.zitech.core.common.domain.model.DataException
+import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.model.DataSuccess
+
 sealed interface NetworkResult<T : Any>
+
+data class NetworkSuccess<T : Any>(val data: T) : NetworkResult<T>
+data class NetworkError<T : Any>(
+    val statusCode: StatusCode,
+    val message: String?
+) : NetworkResult<T>
+
+data class NetworkException<T : Any>(val exception: Throwable) : NetworkResult<T>
 
 suspend fun <T : Any> NetworkResult<T>.onSuccess(
     executable: suspend (T) -> Unit
@@ -43,10 +56,11 @@ suspend fun <T : Any> NetworkResult<T>.onException(
     }
 }
 
-data class NetworkSuccess<T : Any>(val data: T) : NetworkResult<T>
-data class NetworkError<T : Any>(
-    val statusCode: StatusCode,
-    val message: String?
-) : NetworkResult<T>
-
-data class NetworkException<T : Any>(val exception: Throwable) : NetworkResult<T>
+inline fun <T : Any, R : Any> NetworkResult<T>.mapToDataResult(
+    transform: (T) -> R
+): DataResult<out R> =
+    when (this) {
+        is NetworkSuccess -> DataSuccess(transform(data))
+        is NetworkError -> DataError(statusCode, message)
+        is NetworkException -> DataException(exception)
+    }

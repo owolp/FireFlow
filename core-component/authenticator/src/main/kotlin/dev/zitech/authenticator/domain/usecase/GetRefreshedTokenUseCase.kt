@@ -19,7 +19,12 @@ package dev.zitech.authenticator.domain.usecase
 
 import dev.zitech.authenticator.domain.model.Token
 import dev.zitech.authenticator.domain.repository.TokenRepository
+import dev.zitech.core.common.domain.model.DataError
+import dev.zitech.core.common.domain.model.DataException
+import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.model.DataSuccess
 import dev.zitech.core.common.domain.model.LegacyDataResult
+import dev.zitech.core.common.domain.network.StatusCode
 import dev.zitech.core.persistence.domain.usecase.database.GetCurrentUserAccountUseCase
 import dev.zitech.core.persistence.domain.usecase.database.UpdateUserAccountUseCase
 import javax.inject.Inject
@@ -31,7 +36,7 @@ internal class GetRefreshedTokenUseCase @Inject constructor(
     private val tokenRepository: TokenRepository
 ) {
 
-    suspend operator fun invoke(): LegacyDataResult<Token> =
+    suspend operator fun invoke(): DataResult<out Token> =
         when (val currentUserAccountResult = getCurrentUserAccountUseCase().first()) {
             is LegacyDataResult.Success -> {
                 val currentUser = currentUserAccountResult.value
@@ -42,19 +47,20 @@ internal class GetRefreshedTokenUseCase @Inject constructor(
                         refreshToken = currentUser.refreshToken.orEmpty()
                     )
                 ) {
-                    is LegacyDataResult.Success -> {
-                        val refreshedToken = refreshTokenResult.value
+                    is DataSuccess -> {
+                        val refreshedToken = refreshTokenResult.data
                         updateUserAccountUseCase(
                             currentUser.copy(
                                 accessToken = refreshedToken.accessToken,
                                 refreshToken = refreshedToken.refreshToken
                             )
                         )
-                        LegacyDataResult.Success(refreshedToken)
+                        DataSuccess(refreshedToken)
                     }
-                    is LegacyDataResult.Error -> refreshTokenResult
+                    is DataError -> refreshTokenResult
+                    is DataException -> refreshTokenResult
                 }
             }
-            is LegacyDataResult.Error -> currentUserAccountResult
+            is LegacyDataResult.Error -> DataError(StatusCode.Unknown, "")
         }
 }

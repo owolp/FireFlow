@@ -20,7 +20,7 @@ package dev.zitech.authenticator.data.repository
 import dev.zitech.authenticator.data.remote.source.OAuthRemoteSource
 import dev.zitech.authenticator.domain.model.Token
 import dev.zitech.authenticator.domain.repository.TokenRepository
-import dev.zitech.core.common.domain.model.LegacyDataResult
+import dev.zitech.core.common.domain.model.DataResult
 import javax.inject.Inject
 
 internal class TokenRepositoryImpl @Inject constructor(
@@ -31,13 +31,13 @@ internal class TokenRepositoryImpl @Inject constructor(
         clientId: String,
         clientSecret: String,
         code: String
-    ): LegacyDataResult<Token> =
+    ): DataResult<out Token> =
         oAuthRemoteSource.getAccessToken(clientId, clientSecret, code)
 
     override suspend fun getRefreshedToken(
         clientId: String,
         clientSecret: String,
         refreshToken: String
-    ): LegacyDataResult<Token> =
+    ): DataResult<out Token> =
         oAuthRemoteSource.getRefreshedToken(clientId, clientSecret, refreshToken)
 }

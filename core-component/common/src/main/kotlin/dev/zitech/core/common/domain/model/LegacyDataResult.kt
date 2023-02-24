@@ -17,10 +17,46 @@
 
 package dev.zitech.core.common.domain.model
 
+import dev.zitech.core.common.domain.network.StatusCode
+
 sealed class LegacyDataResult<out T : Any> {
     data class Success<out T : Any>(val value: T) : LegacyDataResult<T>()
     data class Error(
         val message: String? = null,
         val cause: Exception? = null
     ) : LegacyDataResult<Nothing>()
+}
+
+sealed interface DataResult<T : Any>
+
+data class DataSuccess<T : Any>(val data: T) : DataResult<T>
+data class DataError(
+    val statusCode: StatusCode,
+    val message: String?
+) : DataResult<Nothing>
+
+data class DataException(val exception: Throwable) : DataResult<Nothing>
+
+suspend fun <T : Any> DataResult<T>.onSuccess(
+    executable: suspend (T) -> Unit
+): DataResult<T> = apply {
+    if (this is DataSuccess<T>) {
+        executable(data)
+    }
+}
+
+suspend fun <T : Any> DataResult<T>.onError(
+    executable: suspend (statusCode: StatusCode, message: String?) -> Unit
+): DataResult<T> = apply {
+    if (this is DataError) {
+        executable(statusCode, message)
+    }
+}
+
+suspend fun <T : Any> DataResult<T>.onException(
+    executable: suspend (e: Throwable) -> Unit
+): DataResult<T> = apply {
+    if (this is DataException) {
+        executable(exception)
+    }
 }

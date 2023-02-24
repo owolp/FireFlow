@@ -21,7 +21,8 @@ import dev.zitech.authenticator.data.remote.mapper.AccessTokenResponseMapper
 import dev.zitech.authenticator.data.remote.mapper.RefreshTokenResponseMapper
 import dev.zitech.authenticator.data.remote.service.OAuthService
 import dev.zitech.authenticator.domain.model.Token
-import dev.zitech.core.common.domain.model.LegacyDataResult
+import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.network.mapToDataResult
 import javax.inject.Inject
 
 internal class OAuthRemoteSource @Inject constructor(
@@ -34,35 +35,19 @@ internal class OAuthRemoteSource @Inject constructor(
         clientId: String,
         clientSecret: String,
         code: String
-    ): LegacyDataResult<Token> = try {
-        LegacyDataResult.Success(
-            accessTokenResponseMapper.toDomain(
-                oAuthService.postAccessToken(
-                    clientId = clientId,
-                    clientSecret = clientSecret,
-                    code = code
-                )
-            )
-        )
-    } catch (exception: Exception) {
-        LegacyDataResult.Error(cause = exception)
-    }
+    ): DataResult<out Token> = oAuthService.postAccessToken(
+        clientId = clientId,
+        clientSecret = clientSecret,
+        code = code
+    ).mapToDataResult(accessTokenResponseMapper::toDomain)
 
     suspend fun getRefreshedToken(
         clientId: String,
         clientSecret: String,
         refreshToken: String
-    ): LegacyDataResult<Token> = try {
-        LegacyDataResult.Success(
-            refreshTokenResponseMapper.toDomain(
-                oAuthService.postRefreshToken(
-                    clientId = clientId,
-                    clientSecret = clientSecret,
-                    refreshToken = refreshToken
-                )
-            )
-        )
-    } catch (exception: Exception) {
-        LegacyDataResult.Error(cause = exception)
-    }
+    ): DataResult<out Token> = oAuthService.postRefreshToken(
+        clientId = clientId,
+        clientSecret = clientSecret,
+        refreshToken = refreshToken
+    ).mapToDataResult(refreshTokenResponseMapper::toDomain)
 }
