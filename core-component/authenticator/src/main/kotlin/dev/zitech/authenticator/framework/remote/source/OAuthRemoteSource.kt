@@ -20,7 +20,7 @@ package dev.zitech.authenticator.framework.remote.source
 import dev.zitech.authenticator.data.remote.mapper.AccessTokenResponseMapper
 import dev.zitech.authenticator.data.remote.mapper.RefreshTokenResponseMapper
 import dev.zitech.authenticator.data.remote.service.OAuthService
-import dev.zitech.authenticator.data.remote.source.OAuthSource
+import dev.zitech.authenticator.data.source.OAuthSource
 import dev.zitech.authenticator.domain.model.Token
 import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.common.domain.network.mapToDataResult

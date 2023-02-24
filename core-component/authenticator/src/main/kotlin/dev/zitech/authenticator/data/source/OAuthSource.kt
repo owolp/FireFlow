@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.authenticator.data.remote.source
+package dev.zitech.authenticator.data.source
 
 import dev.zitech.authenticator.domain.model.Token
 import dev.zitech.core.common.domain.model.DataResult

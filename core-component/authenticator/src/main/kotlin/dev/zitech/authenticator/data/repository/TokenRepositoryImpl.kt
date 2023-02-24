@@ -17,7 +17,7 @@
 
 package dev.zitech.authenticator.data.repository
 
-import dev.zitech.authenticator.data.remote.source.OAuthSource
+import dev.zitech.authenticator.data.source.OAuthSource
 import dev.zitech.authenticator.domain.model.Token
 import dev.zitech.authenticator.domain.repository.TokenRepository
 import dev.zitech.core.common.domain.model.DataResult
