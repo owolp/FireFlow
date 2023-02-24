@@ -15,14 +15,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.network.data.service
+package dev.zitech.core.network.framework.retrofit
 
-import dev.zitech.core.network.data.model.GetUserResponse
 import dev.zitech.core.network.domain.model.NetworkResult
-import retrofit2.http.GET
+import java.lang.reflect.Type
+import retrofit2.Call
+import retrofit2.CallAdapter
 
-interface AboutService {
+internal class NetworkResultCallAdapter(
+    private val resultType: Type
+) : CallAdapter<Type, Call<NetworkResult<Type>>> {
 
-    @GET("api/v1/about/user")
-    suspend fun getUser(): NetworkResult<GetUserResponse>
+    override fun responseType(): Type = resultType
+
+    override fun adapt(call: Call<Type>): Call<NetworkResult<Type>> = NetworkResultCall(call)
 }
