@@ -29,6 +29,7 @@ import dev.zitech.core.persistence.framework.database.entity.UserAccountEntity
 import dev.zitech.core.persistence.framework.database.mapper.UserAccountMapper
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 
 internal class UserAccountDatabaseSource @Inject constructor(
@@ -47,9 +48,11 @@ internal class UserAccountDatabaseSource @Inject constructor(
         DataException(exception)
     }
 
-    override fun getUserAccounts(): Flow<List<UserAccount>> =
+    override fun getUserAccounts(): Flow<DataResult<out List<UserAccount>>> =
         userAccountDao.getUserAccounts().map { userAccountEntities ->
-            userAccountEntities.map(userAccountMapper::toDomain)
+            DataSuccess(userAccountEntities.map(userAccountMapper::toDomain))
+        }.catch { exception ->
+            DataException(exception)
         }
 
     override fun getCurrentUserAccountOrNull(): Flow<UserAccount?> =

@@ -38,11 +38,8 @@ internal class UserAccountRepositoryImpl @Inject constructor(
     override suspend fun getUserAccountByState(state: String): DataResult<out UserAccount> =
         userAccountDatabaseSource.getUserAccountByState(state)
 
-    override fun getUserAccounts(): Flow<LegacyDataResult<List<UserAccount>>> =
+    override fun getUserAccounts(): Flow<DataResult<out List<UserAccount>>> =
         userAccountDatabaseSource.getUserAccounts()
-            .map { userAccounts ->
-                LegacyDataResult.Success(userAccounts)
-            }
 
     override fun getCurrentUserAccount(): Flow<LegacyDataResult<UserAccount>> =
         userAccountDatabaseSource.getCurrentUserAccountOrNull()

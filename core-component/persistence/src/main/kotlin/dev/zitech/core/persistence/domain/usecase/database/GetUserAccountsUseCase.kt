@@ -17,7 +17,7 @@
 
 package dev.zitech.core.persistence.domain.usecase.database
 
-import dev.zitech.core.common.domain.model.LegacyDataResult
+import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
 import javax.inject.Inject
@@ -27,6 +27,6 @@ class GetUserAccountsUseCase @Inject constructor(
     private val userAccountRepository: UserAccountRepository
 ) {
 
-    operator fun invoke(): Flow<LegacyDataResult<List<UserAccount>>> =
+    operator fun invoke(): Flow<DataResult<out List<UserAccount>>> =
         userAccountRepository.getUserAccounts()
 }

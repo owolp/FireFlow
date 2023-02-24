@@ -214,7 +214,7 @@ internal class OAuthViewModel @Inject constructor(
             code = code
         ).onSuccess { token ->
             updateUserAccount(userAccount, token, code)
-        }.onError { statusCode, message ->
+        }.onError { _, _ ->
             stateHandler.setLoading(false)
             stateHandler.setEvent(
                 ShowError(oauthStringsProvider.getTokenError())

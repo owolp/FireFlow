@@ -55,13 +55,14 @@ internal class DashboardViewModel @Inject constructor(
     override fun sendIntent(intent: DashboardIntent) {
         if (intent is DoDevJob) {
             viewModelScope.launch {
-                aboutService.get().getUser().onSuccess {
-                    Logger.d(tag, it.toString())
-                }.onError { statusCode, message ->
-                    Logger.e(tag, statusCode.code.toString() + " " + message)
-                }.onException {
-                    Logger.e(tag, it)
-                }
+                aboutService.get().getUser()
+                    .onSuccess {
+                        Logger.d(tag, it.toString())
+                    }.onError { statusCode, message ->
+                        Logger.e(tag, statusCode.code.toString() + " " + message)
+                    }.onException {
+                        Logger.e(tag, it)
+                    }
             }
         }
     }
