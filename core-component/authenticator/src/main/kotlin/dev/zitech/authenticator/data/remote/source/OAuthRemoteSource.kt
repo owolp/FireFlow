@@ -21,7 +21,7 @@ import dev.zitech.authenticator.data.remote.mapper.AccessTokenResponseMapper
 import dev.zitech.authenticator.data.remote.mapper.RefreshTokenResponseMapper
 import dev.zitech.authenticator.data.remote.service.OAuthService
 import dev.zitech.authenticator.domain.model.Token
-import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.model.LegacyDataResult
 import javax.inject.Inject
 
 internal class OAuthRemoteSource @Inject constructor(
@@ -34,8 +34,8 @@ internal class OAuthRemoteSource @Inject constructor(
         clientId: String,
         clientSecret: String,
         code: String
-    ): DataResult<Token> = try {
-        DataResult.Success(
+    ): LegacyDataResult<Token> = try {
+        LegacyDataResult.Success(
             accessTokenResponseMapper.toDomain(
                 oAuthService.postAccessToken(
                     clientId = clientId,
@@ -45,15 +45,15 @@ internal class OAuthRemoteSource @Inject constructor(
             )
         )
     } catch (exception: Exception) {
-        DataResult.Error(cause = exception)
+        LegacyDataResult.Error(cause = exception)
     }
 
     suspend fun getRefreshedToken(
         clientId: String,
         clientSecret: String,
         refreshToken: String
-    ): DataResult<Token> = try {
-        DataResult.Success(
+    ): LegacyDataResult<Token> = try {
+        LegacyDataResult.Success(
             refreshTokenResponseMapper.toDomain(
                 oAuthService.postRefreshToken(
                     clientId = clientId,
@@ -63,6 +63,6 @@ internal class OAuthRemoteSource @Inject constructor(
             )
         )
     } catch (exception: Exception) {
-        DataResult.Error(cause = exception)
+        LegacyDataResult.Error(cause = exception)
     }
 }

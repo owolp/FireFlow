@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,10 +17,10 @@
 
 package dev.zitech.core.common.domain.model
 
-sealed class DataResult<out T : Any> {
-    data class Success<out T : Any>(val value: T) : DataResult<T>()
+sealed class LegacyDataResult<out T : Any> {
+    data class Success<out T : Any>(val value: T) : LegacyDataResult<T>()
     data class Error(
         val message: String? = null,
         val cause: Exception? = null
-    ) : DataResult<Nothing>()
+    ) : LegacyDataResult<Nothing>()
 }

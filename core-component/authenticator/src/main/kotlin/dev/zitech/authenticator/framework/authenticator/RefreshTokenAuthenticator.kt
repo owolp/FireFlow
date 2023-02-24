@@ -21,7 +21,7 @@ import dev.zitech.authenticator.domain.usecase.GetRefreshedTokenUseCase
 import dev.zitech.authenticator.framework.HEADER_AUTHORIZATION_KEY
 import dev.zitech.authenticator.framework.HEADER_AUTHORIZATION_VALUE
 import dev.zitech.core.common.domain.logger.Logger
-import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.model.LegacyDataResult
 import javax.inject.Inject
 import kotlinx.coroutines.runBlocking
 import okhttp3.Authenticator
@@ -45,7 +45,7 @@ internal class RefreshTokenAuthenticator @Inject constructor(
             return@runBlocking when (
                 val refreshedTokenResult = getRefreshedTokenUseCase.get().invoke()
             ) {
-                is DataResult.Success -> {
+                is LegacyDataResult.Success -> {
                     response.request().newBuilder()
                         .removeHeader(HEADER_AUTHORIZATION_KEY)
                         .addHeader(
@@ -54,7 +54,7 @@ internal class RefreshTokenAuthenticator @Inject constructor(
                         )
                         .build()
                 }
-                is DataResult.Error -> null
+                is LegacyDataResult.Error -> null
             }
         }
 

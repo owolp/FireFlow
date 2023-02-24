@@ -21,7 +21,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.zitech.core.common.domain.logger.Logger
-import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.model.LegacyDataResult
 import dev.zitech.core.common.domain.model.exception.NoBrowserInstalledException
 import dev.zitech.core.common.presentation.architecture.MviViewModel
 import dev.zitech.core.persistence.domain.usecase.database.SaveUserAccountUseCase
@@ -78,10 +78,10 @@ internal class WelcomeViewModel @Inject constructor(
         stateHandler.setEvent(NavigateToDemo)
     }
 
-    private fun handleNavigatedToFireflyResult(dataResult: DataResult<Unit>) {
+    private fun handleNavigatedToFireflyResult(dataResult: LegacyDataResult<Unit>) {
         when (dataResult) {
-            is DataResult.Success -> stateHandler.resetEvent()
-            is DataResult.Error -> {
+            is LegacyDataResult.Success -> stateHandler.resetEvent()
+            is LegacyDataResult.Error -> {
                 when (dataResult.cause) {
                     is NoBrowserInstalledException -> {
                         stateHandler.setEvent(

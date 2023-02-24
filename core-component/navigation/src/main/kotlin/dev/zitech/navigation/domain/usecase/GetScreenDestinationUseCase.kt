@@ -17,7 +17,7 @@
 
 package dev.zitech.navigation.domain.usecase
 
-import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.model.LegacyDataResult
 import dev.zitech.core.common.domain.navigation.DeepLinkScreenDestination
 import dev.zitech.core.persistence.domain.model.exception.NullCurrentUserAccountException
 import dev.zitech.core.persistence.domain.usecase.database.GetCurrentUserAccountUseCase
@@ -39,8 +39,8 @@ class GetScreenDestinationUseCase @Inject constructor(
         getCurrentUserAccountUseCase()
             .onEach { result ->
                 when (result) {
-                    is DataResult.Success -> send(DeepLinkScreenDestination.Current)
-                    is DataResult.Error -> {
+                    is LegacyDataResult.Success -> send(DeepLinkScreenDestination.Current)
+                    is LegacyDataResult.Error -> {
                         when (result.cause) {
                             NullCurrentUserAccountException -> {
                                 handleNullCurrentUserAccount()
@@ -54,14 +54,14 @@ class GetScreenDestinationUseCase @Inject constructor(
 
     private suspend fun ProducerScope<DeepLinkScreenDestination>.handleNullCurrentUserAccount() {
         when (val result = getUserAccountsUseCase().first()) {
-            is DataResult.Success -> {
+            is LegacyDataResult.Success -> {
                 if (result.value.isNotEmpty()) {
                     send(DeepLinkScreenDestination.Accounts)
                 } else {
                     send(DeepLinkScreenDestination.Welcome)
                 }
             }
-            is DataResult.Error -> send(DeepLinkScreenDestination.Error)
+            is LegacyDataResult.Error -> send(DeepLinkScreenDestination.Error)
         }
     }
 }

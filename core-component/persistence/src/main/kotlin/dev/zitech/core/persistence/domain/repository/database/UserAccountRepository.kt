@@ -17,23 +17,23 @@
 
 package dev.zitech.core.persistence.domain.repository.database
 
-import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.model.LegacyDataResult
 import dev.zitech.core.persistence.domain.model.database.UserAccount
 import kotlinx.coroutines.flow.Flow
 
 interface UserAccountRepository {
 
-    suspend fun getUserAccountByState(state: String): DataResult<UserAccount>
-    fun getUserAccounts(): Flow<DataResult<List<UserAccount>>>
-    fun getCurrentUserAccount(): Flow<DataResult<UserAccount>>
+    suspend fun getUserAccountByState(state: String): LegacyDataResult<UserAccount>
+    fun getUserAccounts(): Flow<LegacyDataResult<List<UserAccount>>>
+    fun getCurrentUserAccount(): Flow<LegacyDataResult<UserAccount>>
     suspend fun saveUserAccount(
         clientId: String,
         clientSecret: String,
         isCurrentUserAccount: Boolean,
         serverAddress: String,
         state: String
-    ): DataResult<Long>
+    ): LegacyDataResult<Long>
 
-    suspend fun removeStaleUserAccounts(): DataResult<Unit>
-    suspend fun updateUserAccount(userAccount: UserAccount): DataResult<Unit>
+    suspend fun removeStaleUserAccounts(): LegacyDataResult<Unit>
+    suspend fun updateUserAccount(userAccount: UserAccount): LegacyDataResult<Unit>
 }

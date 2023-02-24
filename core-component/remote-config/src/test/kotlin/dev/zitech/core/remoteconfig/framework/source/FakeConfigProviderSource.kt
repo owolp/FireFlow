@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
 
 package dev.zitech.core.remoteconfig.framework.source
 
-import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.model.LegacyDataResult
 import dev.zitech.core.remoteconfig.domain.model.BooleanConfig
 import dev.zitech.core.remoteconfig.domain.model.DoubleConfig
 import dev.zitech.core.remoteconfig.domain.model.LongConfig
@@ -28,19 +28,19 @@ import kotlinx.coroutines.flow.flowOf
 
 internal class FakeConfigProviderSource : ConfigProviderSource {
 
-    var initResult: DataResult<Unit> = DataResult.Error()
-    var stringResult: DataResult<String> = DataResult.Error()
-    var booleanResult: DataResult<Boolean> = DataResult.Error()
-    var doubleResult: DataResult<Double> = DataResult.Error()
-    var longResult: DataResult<Long> = DataResult.Error()
+    var initResult: LegacyDataResult<Unit> = LegacyDataResult.Error()
+    var stringResult: LegacyDataResult<String> = LegacyDataResult.Error()
+    var booleanResult: LegacyDataResult<Boolean> = LegacyDataResult.Error()
+    var doubleResult: LegacyDataResult<Double> = LegacyDataResult.Error()
+    var longResult: LegacyDataResult<Long> = LegacyDataResult.Error()
 
-    override fun init(): Flow<DataResult<Unit>> = flowOf(initResult)
+    override fun init(): Flow<LegacyDataResult<Unit>> = flowOf(initResult)
 
-    override fun getString(config: StringConfig): DataResult<String> = stringResult
+    override fun getString(config: StringConfig): LegacyDataResult<String> = stringResult
 
-    override fun getBoolean(config: BooleanConfig): DataResult<Boolean> = booleanResult
+    override fun getBoolean(config: BooleanConfig): LegacyDataResult<Boolean> = booleanResult
 
-    override fun getDouble(config: DoubleConfig): DataResult<Double> = doubleResult
+    override fun getDouble(config: DoubleConfig): LegacyDataResult<Double> = doubleResult
 
-    override fun getLong(config: LongConfig): DataResult<Long> = longResult
+    override fun getLong(config: LongConfig): LegacyDataResult<Long> = longResult
 }

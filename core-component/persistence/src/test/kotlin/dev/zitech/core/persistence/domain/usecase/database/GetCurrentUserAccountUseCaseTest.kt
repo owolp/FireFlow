@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@ package dev.zitech.core.persistence.domain.usecase.database
 
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
-import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.model.LegacyDataResult
 import dev.zitech.core.persistence.domain.model.UserAccountBuilder
 import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
 import io.mockk.coVerify
@@ -45,11 +45,11 @@ internal class GetCurrentUserAccountUseCaseTest {
         val account = UserAccountBuilder().build()
         every {
             userAccountRepository.getCurrentUserAccount()
-        } returns flowOf(DataResult.Success(account))
+        } returns flowOf(LegacyDataResult.Success(account))
 
         // Act & Assert
         sut().test {
-            assertThat((awaitItem() as DataResult.Success).value).isEqualTo(account)
+            assertThat((awaitItem() as LegacyDataResult.Success).value).isEqualTo(account)
             awaitComplete()
         }
         coVerify { userAccountRepository.getCurrentUserAccount() }
@@ -65,11 +65,11 @@ internal class GetCurrentUserAccountUseCaseTest {
 
         every {
             userAccountRepository.getCurrentUserAccount()
-        } returns flowOf(DataResult.Error())
+        } returns flowOf(LegacyDataResult.Error())
 
         // Act & Assert
         sut().test {
-            assertThat(awaitItem()).isInstanceOf(DataResult.Error::class.java)
+            assertThat(awaitItem()).isInstanceOf(LegacyDataResult.Error::class.java)
             awaitComplete()
         }
         coVerify { userAccountRepository.getCurrentUserAccount() }

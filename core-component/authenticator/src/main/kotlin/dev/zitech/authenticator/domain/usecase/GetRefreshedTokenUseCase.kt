@@ -19,7 +19,7 @@ package dev.zitech.authenticator.domain.usecase
 
 import dev.zitech.authenticator.domain.model.Token
 import dev.zitech.authenticator.domain.repository.TokenRepository
-import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.model.LegacyDataResult
 import dev.zitech.core.persistence.domain.usecase.database.GetCurrentUserAccountUseCase
 import dev.zitech.core.persistence.domain.usecase.database.UpdateUserAccountUseCase
 import javax.inject.Inject
@@ -31,9 +31,9 @@ internal class GetRefreshedTokenUseCase @Inject constructor(
     private val tokenRepository: TokenRepository
 ) {
 
-    suspend operator fun invoke(): DataResult<Token> =
+    suspend operator fun invoke(): LegacyDataResult<Token> =
         when (val currentUserAccountResult = getCurrentUserAccountUseCase().first()) {
-            is DataResult.Success -> {
+            is LegacyDataResult.Success -> {
                 val currentUser = currentUserAccountResult.value
                 when (
                     val refreshTokenResult = tokenRepository.getRefreshedToken(
@@ -42,7 +42,7 @@ internal class GetRefreshedTokenUseCase @Inject constructor(
                         refreshToken = currentUser.refreshToken.orEmpty()
                     )
                 ) {
-                    is DataResult.Success -> {
+                    is LegacyDataResult.Success -> {
                         val refreshedToken = refreshTokenResult.value
                         updateUserAccountUseCase(
                             currentUser.copy(
@@ -50,11 +50,11 @@ internal class GetRefreshedTokenUseCase @Inject constructor(
                                 refreshToken = refreshedToken.refreshToken
                             )
                         )
-                        DataResult.Success(refreshedToken)
+                        LegacyDataResult.Success(refreshedToken)
                     }
-                    is DataResult.Error -> refreshTokenResult
+                    is LegacyDataResult.Error -> refreshTokenResult
                 }
             }
-            is DataResult.Error -> currentUserAccountResult
+            is LegacyDataResult.Error -> currentUserAccountResult
         }
 }

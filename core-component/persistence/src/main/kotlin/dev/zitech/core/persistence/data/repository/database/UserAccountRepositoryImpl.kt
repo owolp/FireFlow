@@ -18,7 +18,7 @@
 package dev.zitech.core.persistence.data.repository.database
 
 import dev.zitech.core.common.domain.cache.InMemoryCache
-import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.model.LegacyDataResult
 import dev.zitech.core.persistence.domain.model.cache.NetworkDetails
 import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.domain.model.exception.NullCurrentUserAccountException
@@ -34,18 +34,18 @@ internal class UserAccountRepositoryImpl @Inject constructor(
     private val networkDetailsInMemoryCache: InMemoryCache<NetworkDetails>
 ) : UserAccountRepository {
 
-    override suspend fun getUserAccountByState(state: String): DataResult<UserAccount> =
+    override suspend fun getUserAccountByState(state: String): LegacyDataResult<UserAccount> =
         userAccountDatabaseSource.getUserAccountByStateOrNull(state)?.let { userAccount ->
-            DataResult.Success(userAccount)
-        } ?: DataResult.Error(cause = NullUserAccountException)
+            LegacyDataResult.Success(userAccount)
+        } ?: LegacyDataResult.Error(cause = NullUserAccountException)
 
-    override fun getUserAccounts(): Flow<DataResult<List<UserAccount>>> =
+    override fun getUserAccounts(): Flow<LegacyDataResult<List<UserAccount>>> =
         userAccountDatabaseSource.getUserAccounts()
             .map { userAccounts ->
-                DataResult.Success(userAccounts)
+                LegacyDataResult.Success(userAccounts)
             }
 
-    override fun getCurrentUserAccount(): Flow<DataResult<UserAccount>> =
+    override fun getCurrentUserAccount(): Flow<LegacyDataResult<UserAccount>> =
         userAccountDatabaseSource.getCurrentUserAccountOrNull()
             .map { userAccount ->
                 if (userAccount != null) {
@@ -53,9 +53,9 @@ internal class UserAccountRepositoryImpl @Inject constructor(
                         userId = userAccount.userId,
                         serverAddress = userAccount.serverAddress
                     )
-                    DataResult.Success(userAccount)
+                    LegacyDataResult.Success(userAccount)
                 } else {
-                    DataResult.Error(cause = NullCurrentUserAccountException)
+                    LegacyDataResult.Error(cause = NullCurrentUserAccountException)
                 }
             }
 
@@ -65,7 +65,7 @@ internal class UserAccountRepositoryImpl @Inject constructor(
         isCurrentUserAccount: Boolean,
         serverAddress: String,
         state: String
-    ): DataResult<Long> =
+    ): LegacyDataResult<Long> =
         try {
             val userId = userAccountDatabaseSource.saveUserAccount(
                 clientId = clientId,
@@ -78,28 +78,28 @@ internal class UserAccountRepositoryImpl @Inject constructor(
                 userId = userId,
                 serverAddress = serverAddress
             )
-            DataResult.Success(userId)
+            LegacyDataResult.Success(userId)
         } catch (exception: Exception) {
-            DataResult.Error(cause = exception)
+            LegacyDataResult.Error(cause = exception)
         }
 
-    override suspend fun removeStaleUserAccounts(): DataResult<Unit> =
+    override suspend fun removeStaleUserAccounts(): LegacyDataResult<Unit> =
         try {
             userAccountDatabaseSource.removeUserAccountsWithStateAndWithoutAccessToken()
-            DataResult.Success(Unit)
+            LegacyDataResult.Success(Unit)
         } catch (exception: Exception) {
-            DataResult.Error(cause = exception)
+            LegacyDataResult.Error(cause = exception)
         }
 
-    override suspend fun updateUserAccount(userAccount: UserAccount): DataResult<Unit> =
+    override suspend fun updateUserAccount(userAccount: UserAccount): LegacyDataResult<Unit> =
         try {
             val result = userAccountDatabaseSource.updateUserAccount(userAccount)
             if (result != 0) {
-                DataResult.Success(Unit)
+                LegacyDataResult.Success(Unit)
             } else {
-                DataResult.Error(cause = NullUserAccountException)
+                LegacyDataResult.Error(cause = NullUserAccountException)
             }
         } catch (exception: Exception) {
-            DataResult.Error(cause = exception)
+            LegacyDataResult.Error(cause = exception)
         }
 }

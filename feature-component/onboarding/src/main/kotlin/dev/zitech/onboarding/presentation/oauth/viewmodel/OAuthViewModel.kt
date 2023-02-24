@@ -25,7 +25,7 @@ import dev.zitech.authenticator.domain.usecase.GetAccessTokenUseCase
 import dev.zitech.core.common.DataFactory
 import dev.zitech.core.common.domain.dispatcher.AppDispatchers
 import dev.zitech.core.common.domain.logger.Logger
-import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.model.LegacyDataResult
 import dev.zitech.core.common.domain.model.exception.NoBrowserInstalledException
 import dev.zitech.core.common.presentation.architecture.MviViewModel
 import dev.zitech.core.persistence.domain.model.database.UserAccount
@@ -107,7 +107,7 @@ internal class OAuthViewModel @Inject constructor(
                 state = state
             )
         ) {
-            is DataResult.Success -> {
+            is LegacyDataResult.Success -> {
                 with(stateHandler) {
                     setEvent(
                         NavigateToFirefly(
@@ -121,7 +121,7 @@ internal class OAuthViewModel @Inject constructor(
                     setLoading(true)
                 }
             }
-            is DataResult.Error -> {
+            is LegacyDataResult.Error -> {
                 Logger.e(tag, exception = result.cause)
                 stateHandler.setLoading(false)
                 stateHandler.setEvent(NavigateToError)
@@ -150,10 +150,10 @@ internal class OAuthViewModel @Inject constructor(
         )
     }
 
-    private fun handleNavigatedToFireflyResult(result: DataResult<Unit>) {
+    private fun handleNavigatedToFireflyResult(result: LegacyDataResult<Unit>) {
         when (result) {
-            is DataResult.Success -> stateHandler.resetEvent()
-            is DataResult.Error -> {
+            is LegacyDataResult.Success -> stateHandler.resetEvent()
+            is LegacyDataResult.Error -> {
                 stateHandler.setLoading(false)
                 when (result.cause) {
                     is NoBrowserInstalledException -> {
@@ -181,7 +181,7 @@ internal class OAuthViewModel @Inject constructor(
     private suspend fun handleScreenOpenedFromDeepLink(state: String, code: String) {
         stateHandler.setLoading(true)
         when (val result = getUserAccountByStateUseCase(state)) {
-            is DataResult.Success -> {
+            is LegacyDataResult.Success -> {
                 val userAccount = result.value
                 with(stateHandler) {
                     setServerAddress(userAccount.serverAddress)
@@ -190,7 +190,7 @@ internal class OAuthViewModel @Inject constructor(
                 }
                 retrieveToken(userAccount, code)
             }
-            is DataResult.Error -> {
+            is LegacyDataResult.Error -> {
                 stateHandler.setLoading(false)
                 if (result.cause is NullUserAccountException) {
                     stateHandler.setEvent(
@@ -212,8 +212,8 @@ internal class OAuthViewModel @Inject constructor(
                 code = code
             )
         ) {
-            is DataResult.Success -> updateUserAccount(userAccount, result.value, code)
-            is DataResult.Error -> {
+            is LegacyDataResult.Success -> updateUserAccount(userAccount, result.value, code)
+            is LegacyDataResult.Error -> {
                 stateHandler.setLoading(false)
                 stateHandler.setEvent(
                     ShowError(oauthStringsProvider.getTokenError())
@@ -238,11 +238,11 @@ internal class OAuthViewModel @Inject constructor(
                 )
             )
         ) {
-            is DataResult.Success -> {
+            is LegacyDataResult.Success -> {
                 stateHandler.setLoading(false)
                 stateHandler.setEvent(NavigateToDashboard)
             }
-            is DataResult.Error -> {
+            is LegacyDataResult.Error -> {
                 Logger.e(tag, exception = result.cause)
                 stateHandler.setLoading(false)
                 stateHandler.setEvent(NavigateToError)

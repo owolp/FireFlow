@@ -17,7 +17,7 @@
 
 package dev.zitech.core.persistence.domain.usecase.database
 
-import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.model.LegacyDataResult
 import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
 import javax.inject.Inject
 
@@ -31,7 +31,7 @@ class SaveUserAccountUseCase @Inject constructor(
         isCurrentUserAccount: Boolean,
         serverAddress: String,
         state: String
-    ): DataResult<Long> =
+    ): LegacyDataResult<Long> =
         userAccountRepository.saveUserAccount(
             clientId = clientId,
             clientSecret = clientSecret,

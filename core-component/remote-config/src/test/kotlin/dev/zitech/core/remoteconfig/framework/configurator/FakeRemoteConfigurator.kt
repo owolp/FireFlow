@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,25 +17,25 @@
 
 package dev.zitech.core.remoteconfig.framework.configurator
 
-import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.model.LegacyDataResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
 internal class FakeRemoteConfigurator : RemoteConfigurator {
 
-    var initResult: DataResult<Unit> = DataResult.Error()
-    var stringResult: DataResult<String> = DataResult.Error()
-    var booleanResult: DataResult<Boolean> = DataResult.Error()
-    var doubleResult: DataResult<Double> = DataResult.Error()
-    var longResult: DataResult<Long> = DataResult.Error()
+    var initResult: LegacyDataResult<Unit> = LegacyDataResult.Error()
+    var stringResult: LegacyDataResult<String> = LegacyDataResult.Error()
+    var booleanResult: LegacyDataResult<Boolean> = LegacyDataResult.Error()
+    var doubleResult: LegacyDataResult<Double> = LegacyDataResult.Error()
+    var longResult: LegacyDataResult<Long> = LegacyDataResult.Error()
 
-    override fun init(): Flow<DataResult<Unit>> = flowOf(initResult)
+    override fun init(): Flow<LegacyDataResult<Unit>> = flowOf(initResult)
 
-    override fun getString(key: String): DataResult<String> = stringResult
+    override fun getString(key: String): LegacyDataResult<String> = stringResult
 
-    override fun getBoolean(key: String): DataResult<Boolean> = booleanResult
+    override fun getBoolean(key: String): LegacyDataResult<Boolean> = booleanResult
 
-    override fun getDouble(key: String): DataResult<Double> = doubleResult
+    override fun getDouble(key: String): LegacyDataResult<Double> = doubleResult
 
-    override fun getLong(key: String): DataResult<Long> = longResult
+    override fun getLong(key: String): LegacyDataResult<Long> = longResult
 }
