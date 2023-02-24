@@ -15,12 +15,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.persistence.domain.source.database
+package dev.zitech.core.persistence.data.source
 
 import dev.zitech.core.persistence.domain.model.database.UserAccount
 import kotlinx.coroutines.flow.Flow
 
-internal interface UserAccountDatabaseSource {
+internal interface UserAccountSource {
 
     suspend fun getUserAccountByStateOrNull(state: String): UserAccount?
     fun getUserAccounts(): Flow<List<UserAccount>>

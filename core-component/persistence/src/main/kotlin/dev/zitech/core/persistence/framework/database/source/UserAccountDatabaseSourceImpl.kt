@@ -18,7 +18,7 @@
 package dev.zitech.core.persistence.framework.database.source
 
 import dev.zitech.core.persistence.domain.model.database.UserAccount
-import dev.zitech.core.persistence.domain.source.database.UserAccountDatabaseSource
+import dev.zitech.core.persistence.data.source.UserAccountSource
 import dev.zitech.core.persistence.framework.database.dao.UserAccountDao
 import dev.zitech.core.persistence.framework.database.entity.UserAccountEntity
 import dev.zitech.core.persistence.framework.database.mapper.UserAccountMapper
@@ -29,7 +29,7 @@ import kotlinx.coroutines.flow.map
 internal class UserAccountDatabaseSourceImpl @Inject constructor(
     private val userAccountDao: UserAccountDao,
     private val userAccountMapper: UserAccountMapper
-) : UserAccountDatabaseSource {
+) : UserAccountSource {
 
     override suspend fun getUserAccountByStateOrNull(state: String): UserAccount? =
         userAccountDao.getUserAccountByState(state)?.let(userAccountMapper::toDomain)

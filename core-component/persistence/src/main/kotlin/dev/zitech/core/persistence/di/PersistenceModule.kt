@@ -45,7 +45,7 @@ import dev.zitech.core.persistence.domain.repository.preferences.ContainsPrefere
 import dev.zitech.core.persistence.domain.repository.preferences.GetPreferencesRepository
 import dev.zitech.core.persistence.domain.repository.preferences.RemovePreferencesRepository
 import dev.zitech.core.persistence.domain.repository.preferences.SavePreferencesRepository
-import dev.zitech.core.persistence.domain.source.database.UserAccountDatabaseSource
+import dev.zitech.core.persistence.data.source.UserAccountSource
 import dev.zitech.core.persistence.domain.source.preferences.PreferencesDataSource
 import dev.zitech.core.persistence.framework.database.FireFlowDatabase
 import dev.zitech.core.persistence.framework.database.dao.UserAccountDao
@@ -155,7 +155,7 @@ internal interface PersistenceModule {
         fun userAccountDatabaseSource(
             fireFlowDatabase: FireFlowDatabase,
             userAccountMapper: UserAccountMapper
-        ): UserAccountDatabaseSource =
+        ): UserAccountSource =
             UserAccountDatabaseSourceImpl(
                 userAccountDao = fireFlowDatabase.userAccountDao(),
                 userAccountMapper = userAccountMapper
@@ -183,7 +183,7 @@ internal interface PersistenceModule {
         @Singleton
         @Provides
         fun userAccountRepository(
-            userAccountDatabaseSource: UserAccountDatabaseSource,
+            userAccountDatabaseSource: UserAccountSource,
             networkDetailsInMemoryCache: InMemoryCache<NetworkDetails>
         ): UserAccountRepository = UserAccountRepositoryImpl(
             userAccountDatabaseSource,

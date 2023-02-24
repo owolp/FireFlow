@@ -24,13 +24,13 @@ import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.domain.model.exception.NullCurrentUserAccountException
 import dev.zitech.core.persistence.domain.model.exception.NullUserAccountException
 import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
-import dev.zitech.core.persistence.domain.source.database.UserAccountDatabaseSource
+import dev.zitech.core.persistence.data.source.UserAccountSource
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 internal class UserAccountRepositoryImpl @Inject constructor(
-    private val userAccountDatabaseSource: UserAccountDatabaseSource,
+    private val userAccountDatabaseSource: UserAccountSource,
     private val networkDetailsInMemoryCache: InMemoryCache<NetworkDetails>
 ) : UserAccountRepository {
 
