@@ -25,9 +25,9 @@ import dev.zitech.authenticator.data.remote.source.OAuthSource
 import dev.zitech.authenticator.data.repository.TokenRepositoryImpl
 import dev.zitech.authenticator.di.annotation.InterceptorAuthentication
 import dev.zitech.authenticator.domain.repository.TokenRepository
-import dev.zitech.authenticator.framework.authenticator.RefreshTokenAuthenticator
-import dev.zitech.authenticator.framework.interceptor.AuthenticationInterceptor
-import dev.zitech.authenticator.framework.source.OAuthRemoteSource
+import dev.zitech.authenticator.framework.remote.authenticator.RefreshTokenAuthenticator
+import dev.zitech.authenticator.framework.remote.interceptor.AuthenticationInterceptor
+import dev.zitech.authenticator.framework.remote.source.OAuthRemoteSource
 import javax.inject.Singleton
 import okhttp3.Authenticator
 import okhttp3.Interceptor

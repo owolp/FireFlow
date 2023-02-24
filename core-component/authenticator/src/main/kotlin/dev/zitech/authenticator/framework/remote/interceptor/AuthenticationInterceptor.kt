@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.authenticator.framework.interceptor
+package dev.zitech.authenticator.framework.remote.interceptor
 
 import dev.zitech.authenticator.framework.HEADER_ACCEPT_KEY
 import dev.zitech.authenticator.framework.HEADER_ACCEPT_VALUE

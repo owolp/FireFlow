@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.authenticator.framework.authenticator
+package dev.zitech.authenticator.framework.remote.authenticator
 
 import dev.zitech.authenticator.domain.usecase.GetRefreshedTokenUseCase
 import dev.zitech.authenticator.framework.HEADER_AUTHORIZATION_KEY

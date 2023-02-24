@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.authenticator.framework.source
+package dev.zitech.authenticator.framework.remote.source
 
 import dev.zitech.authenticator.data.remote.mapper.AccessTokenResponseMapper
 import dev.zitech.authenticator.data.remote.mapper.RefreshTokenResponseMapper
