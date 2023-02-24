@@ -30,5 +30,5 @@ class GetAccessTokenUseCase @Inject constructor(
         clientId: String,
         clientSecret: String,
         code: String
-    ): DataResult<out Token> = tokenRepository.getAccessToken(clientId, clientSecret, code)
+    ): DataResult<Token> = tokenRepository.getAccessToken(clientId, clientSecret, code)
 }

@@ -27,6 +27,6 @@ class GetUserAccountsUseCase @Inject constructor(
     private val userAccountRepository: UserAccountRepository
 ) {
 
-    operator fun invoke(): Flow<DataResult<out List<UserAccount>>> =
+    operator fun invoke(): Flow<DataResult<List<UserAccount>>> =
         userAccountRepository.getUserAccounts()
 }

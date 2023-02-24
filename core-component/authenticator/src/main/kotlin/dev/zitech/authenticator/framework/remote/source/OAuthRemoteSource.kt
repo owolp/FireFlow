@@ -36,7 +36,7 @@ internal class OAuthRemoteSource @Inject constructor(
         clientId: String,
         clientSecret: String,
         code: String
-    ): DataResult<out Token> = oAuthService.postAccessToken(
+    ): DataResult<Token> = oAuthService.postAccessToken(
         clientId = clientId,
         clientSecret = clientSecret,
         code = code
@@ -46,7 +46,7 @@ internal class OAuthRemoteSource @Inject constructor(
         clientId: String,
         clientSecret: String,
         refreshToken: String
-    ): DataResult<out Token> = oAuthService.postRefreshToken(
+    ): DataResult<Token> = oAuthService.postRefreshToken(
         clientId = clientId,
         clientSecret = clientSecret,
         refreshToken = refreshToken

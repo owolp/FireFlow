@@ -26,11 +26,11 @@ interface TokenRepository {
         clientId: String,
         clientSecret: String,
         code: String
-    ): DataResult<out Token>
+    ): DataResult<Token>
 
     suspend fun getRefreshedToken(
         clientId: String,
         clientSecret: String,
         refreshToken: String
-    ): DataResult<out Token>
+    ): DataResult<Token>
 }

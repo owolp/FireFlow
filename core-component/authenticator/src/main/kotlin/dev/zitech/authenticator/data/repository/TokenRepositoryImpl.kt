@@ -31,13 +31,13 @@ internal class TokenRepositoryImpl @Inject constructor(
         clientId: String,
         clientSecret: String,
         code: String
-    ): DataResult<out Token> =
+    ): DataResult<Token> =
         oAuthRemoteSource.getAccessToken(clientId, clientSecret, code)
 
     override suspend fun getRefreshedToken(
         clientId: String,
         clientSecret: String,
         refreshToken: String
-    ): DataResult<out Token> =
+    ): DataResult<Token> =
         oAuthRemoteSource.getRefreshedToken(clientId, clientSecret, refreshToken)
 }

@@ -36,7 +36,7 @@ internal class GetRefreshedTokenUseCase @Inject constructor(
     private val tokenRepository: TokenRepository
 ) {
 
-    suspend operator fun invoke(): DataResult<out Token> =
+    suspend operator fun invoke(): DataResult<Token> =
         when (val currentUserAccountResult = getCurrentUserAccountUseCase().first()) {
             is LegacyDataResult.Success -> {
                 val currentUser = currentUserAccountResult.value

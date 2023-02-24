@@ -24,8 +24,8 @@ import kotlinx.coroutines.flow.Flow
 
 interface UserAccountRepository {
 
-    suspend fun getUserAccountByState(state: String): DataResult<out UserAccount>
-    fun getUserAccounts(): Flow<DataResult<out List<UserAccount>>>
+    suspend fun getUserAccountByState(state: String): DataResult<UserAccount>
+    fun getUserAccounts(): Flow<DataResult<List<UserAccount>>>
     fun getCurrentUserAccount(): Flow<LegacyDataResult<UserAccount>>
     suspend fun saveUserAccount(
         clientId: String,

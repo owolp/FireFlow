@@ -26,6 +26,6 @@ class GetUserAccountByStateUseCase @Inject constructor(
     private val userAccountRepository: UserAccountRepository
 ) {
 
-    suspend operator fun invoke(state: String): DataResult<out UserAccount> =
+    suspend operator fun invoke(state: String): DataResult<UserAccount> =
         userAccountRepository.getUserAccountByState(state)
 }

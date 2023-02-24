@@ -19,15 +19,15 @@ package dev.zitech.core.common.domain.model
 
 import dev.zitech.core.common.domain.code.StatusCode
 
-sealed interface DataResult<T : Any>
+sealed interface DataResult<out T : Any>
 
-data class DataSuccess<T : Any>(val data: T) : DataResult<T>
+data class DataSuccess<out T : Any>(val data: T) : DataResult<T>
 data class DataError<T : Any>(
     val statusCode: StatusCode,
     val message: String? = null
 ) : DataResult<T>
 
-data class DataException<T : Any>(val exception: Throwable) : DataResult<T>
+data class DataException<out T : Any>(val exception: Throwable) : DataResult<T>
 
 suspend fun <T : Any> DataResult<T>.onSuccess(
     executable: suspend (T) -> Unit
@@ -55,7 +55,7 @@ suspend fun <T : Any> DataResult<T>.onException(
 
 inline fun <T : Any, R : Any> DataResult<T>.mapToDataResult(
     transform: (T) -> R
-): DataResult<out R> =
+): DataResult<R> =
     when (this) {
         is DataSuccess -> DataSuccess(transform(data))
         is DataError -> DataError(statusCode, message)

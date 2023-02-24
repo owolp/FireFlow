@@ -35,10 +35,10 @@ internal class UserAccountRepositoryImpl @Inject constructor(
     private val networkDetailsInMemoryCache: InMemoryCache<NetworkDetails>
 ) : UserAccountRepository {
 
-    override suspend fun getUserAccountByState(state: String): DataResult<out UserAccount> =
+    override suspend fun getUserAccountByState(state: String): DataResult<UserAccount> =
         userAccountDatabaseSource.getUserAccountByState(state)
 
-    override fun getUserAccounts(): Flow<DataResult<out List<UserAccount>>> =
+    override fun getUserAccounts(): Flow<DataResult<List<UserAccount>>> =
         userAccountDatabaseSource.getUserAccounts()
 
     override fun getCurrentUserAccount(): Flow<LegacyDataResult<UserAccount>> =
