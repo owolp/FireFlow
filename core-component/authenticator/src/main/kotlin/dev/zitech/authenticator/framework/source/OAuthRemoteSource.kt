@@ -15,29 +15,40 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.authenticator.data.repository
+package dev.zitech.authenticator.framework.source
 
+import dev.zitech.authenticator.data.remote.mapper.AccessTokenResponseMapper
+import dev.zitech.authenticator.data.remote.mapper.RefreshTokenResponseMapper
+import dev.zitech.authenticator.data.remote.service.OAuthService
 import dev.zitech.authenticator.data.remote.source.OAuthSource
 import dev.zitech.authenticator.domain.model.Token
-import dev.zitech.authenticator.domain.repository.TokenRepository
 import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.network.mapToDataResult
 import javax.inject.Inject
 
-internal class TokenRepositoryImpl @Inject constructor(
-    private val oAuthRemoteSource: OAuthSource
-) : TokenRepository {
+internal class OAuthRemoteSource @Inject constructor(
+    private val oAuthService: OAuthService,
+    private val accessTokenResponseMapper: AccessTokenResponseMapper,
+    private val refreshTokenResponseMapper: RefreshTokenResponseMapper
+) : OAuthSource {
 
     override suspend fun getAccessToken(
         clientId: String,
         clientSecret: String,
         code: String
-    ): DataResult<out Token> =
-        oAuthRemoteSource.getAccessToken(clientId, clientSecret, code)
+    ): DataResult<out Token> = oAuthService.postAccessToken(
+        clientId = clientId,
+        clientSecret = clientSecret,
+        code = code
+    ).mapToDataResult(accessTokenResponseMapper::toDomain)
 
     override suspend fun getRefreshedToken(
         clientId: String,
         clientSecret: String,
         refreshToken: String
-    ): DataResult<out Token> =
-        oAuthRemoteSource.getRefreshedToken(clientId, clientSecret, refreshToken)
+    ): DataResult<out Token> = oAuthService.postRefreshToken(
+        clientId = clientId,
+        clientSecret = clientSecret,
+        refreshToken = refreshToken
+    ).mapToDataResult(refreshTokenResponseMapper::toDomain)
 }
