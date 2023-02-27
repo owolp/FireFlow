@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -57,7 +57,7 @@ internal class SettingsShowErrorProviderTest {
         val result = sut.analyticsError
 
         // Assert
-        assertThat(result.message).isEqualTo(message)
+        assertThat(result.messageResId).isEqualTo(message)
         assertThat(result.action).isEqualTo(action)
     }
 
@@ -67,7 +67,7 @@ internal class SettingsShowErrorProviderTest {
         val result = sut.crashReporterError
 
         // Assert
-        assertThat(result.message).isEqualTo(message)
+        assertThat(result.messageResId).isEqualTo(message)
         assertThat(result.action).isEqualTo(action)
     }
 
@@ -77,7 +77,7 @@ internal class SettingsShowErrorProviderTest {
         val result = sut.personalizedAdsError
 
         // Assert
-        assertThat(result.message).isEqualTo(message)
+        assertThat(result.messageResId).isEqualTo(message)
         assertThat(result.action).isEqualTo(action)
     }
 
@@ -87,7 +87,7 @@ internal class SettingsShowErrorProviderTest {
         val result = sut.performanceError
 
         // Assert
-        assertThat(result.message).isEqualTo(message)
+        assertThat(result.messageResId).isEqualTo(message)
         assertThat(result.action).isEqualTo(action)
     }
 }

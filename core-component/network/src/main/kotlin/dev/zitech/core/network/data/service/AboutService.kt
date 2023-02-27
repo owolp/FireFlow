@@ -17,12 +17,12 @@
 
 package dev.zitech.core.network.data.service
 
-import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.model.NetworkResult
 import dev.zitech.core.network.data.model.GetUserResponse
 import retrofit2.http.GET
 
 interface AboutService {
 
     @GET("api/v1/about/user")
-    suspend fun getUser(): DataResult<GetUserResponse>
+    suspend fun getUser(): NetworkResult<GetUserResponse>
 }

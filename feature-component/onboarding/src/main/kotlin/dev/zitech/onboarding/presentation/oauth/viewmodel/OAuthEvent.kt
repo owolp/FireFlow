@@ -17,6 +17,7 @@
 
 package dev.zitech.onboarding.presentation.oauth.viewmodel
 
+import dev.zitech.core.common.domain.exception.FireFlowException
 import dev.zitech.core.common.presentation.architecture.MviState
 
 internal sealed interface OAuthEvent : MviState.Event
@@ -25,5 +26,5 @@ internal object Idle : OAuthEvent
 internal object NavigateToDashboard : OAuthEvent
 internal object NavigateBack : OAuthEvent
 internal data class NavigateToFirefly(val url: String) : OAuthEvent
-internal data class ShowError(val message: String) : OAuthEvent
-internal object NavigateToError : OAuthEvent
+internal data class ShowError(val messageResId: Int) : OAuthEvent
+internal data class NavigateToError(val exception: FireFlowException) : OAuthEvent

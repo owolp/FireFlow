@@ -15,11 +15,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.exception
+package dev.zitech.core.network.framework.retrofit
 
-import androidx.annotation.StringRes
+import dev.zitech.core.common.domain.model.NetworkResult
+import java.lang.reflect.Type
+import retrofit2.Call
+import retrofit2.CallAdapter
 
-sealed class FireFlowException(@StringRes val text: Int)
+internal class NetworkResultCallAdapter(
+    private val resultType: Type
+) : CallAdapter<Type, Call<NetworkResult<Type>>> {
 
-object NullCurrentUserAccount : FireFlowException(R.string.null_current_user_account)
-object NullUserAccount : FireFlowException(R.string.null_user_account)
+    override fun responseType(): Type = resultType
+
+    override fun adapt(call: Call<Type>): Call<NetworkResult<Type>> = NetworkResultCall(call)
+}

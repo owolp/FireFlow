@@ -31,6 +31,6 @@ internal class RetrofitFactory @Inject constructor(
             .baseUrl(baseUrl)
             .client(okHttpClientFactory.createOkHttpClient())
             .addConverterFactory(MoshiConverterFactory.create())
-            .addCallAdapterFactory(DataResultCallAdapterFactory.create())
+            .addCallAdapterFactory(NetworkResultCallAdapterFactory.create())
             .build()
 }

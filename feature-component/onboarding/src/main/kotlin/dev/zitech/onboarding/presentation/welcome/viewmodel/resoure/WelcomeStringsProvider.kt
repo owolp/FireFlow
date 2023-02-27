@@ -36,6 +36,6 @@ internal class WelcomeStringsProvider @Inject constructor(
     fun getFireflyHomePageUrl(): String =
         stringsProvider(R.string.firefly_iii_home_page_url)
 
-    fun getNoSupportedBrowserInstalled(): String =
+    fun getNoSupportedBrowserInstalled(): Int =
         commonStringsProvider.getNoSupportedBrowserInstalled()
 }

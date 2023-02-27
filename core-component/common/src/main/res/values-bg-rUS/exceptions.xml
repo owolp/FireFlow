@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2023 Zitech Ltd.
   ~
   ~ This program is free software: you can redistribute it and/or modify
@@ -16,4 +15,12 @@
   ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<manifest package="dev.zitech.core.exception" />
+<resources>
+    <string name="disk_exception"></string>
+    <string name="empty"></string>
+    <string name="network_error"></string>
+    <string name="network_exception"></string>
+    <string name="null_current_user_account"></string>
+    <string name="null_user_account_by_state">Something went wrong. The verification URL is incorrect. Please check the URL and try again.</string>
+    <string name="token_expired">Token retrieval failed. Please check your network connection and try again.</string>
+</resources>

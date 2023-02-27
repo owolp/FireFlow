@@ -16,9 +16,11 @@
   -->
 
 <resources>
-
-    <string name="oauth_server_address">Server Address</string>
-    <string name="oauth_client_id">Client ID</string>
-    <string name="oauth_client_secret">Client Secret</string>
-    <string name="oauth_login">Log in</string>
+    <string name="disk_exception"></string>
+    <string name="empty"></string>
+    <string name="network_error"></string>
+    <string name="network_exception"></string>
+    <string name="null_current_user_account"></string>
+    <string name="null_user_account_by_state">Something went wrong. The verification URL is incorrect. Please check the URL and try again.</string>
+    <string name="token_expired">Token retrieval failed. Please check your network connection and try again.</string>
 </resources>

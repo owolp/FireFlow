@@ -17,9 +17,8 @@
 
 package dev.zitech.core.persistence.framework.database.source
 
-import dev.zitech.core.common.domain.code.StatusCode.NotFound
+import dev.zitech.core.common.domain.exception.FireFlowException
 import dev.zitech.core.common.domain.model.DataError
-import dev.zitech.core.common.domain.model.DataException
 import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.common.domain.model.DataSuccess
 import dev.zitech.core.persistence.data.source.UserAccountSource
@@ -42,17 +41,17 @@ internal class UserAccountDatabaseSource @Inject constructor(
         if (userAccountEntity != null) {
             DataSuccess(userAccountMapper.toDomain(userAccountEntity))
         } else {
-            DataError(NotFound)
+            DataError(FireFlowException.NullUserAccountByState)
         }
-    } catch (exception: Throwable) {
-        DataException(exception)
+    } catch (throwable: Throwable) {
+        DataError(FireFlowException.DataException(throwable))
     }
 
     override fun getUserAccounts(): Flow<DataResult<List<UserAccount>>> =
         userAccountDao.getUserAccounts().map { userAccountEntities ->
             DataSuccess(userAccountEntities.map(userAccountMapper::toDomain))
-        }.catch { exception ->
-            DataException<List<UserAccount>>(exception)
+        }.catch { throwable ->
+            DataError<List<UserAccount>>(FireFlowException.DataException(throwable))
         }
 
     override fun getCurrentUserAccountOrNull(): Flow<UserAccount?> =

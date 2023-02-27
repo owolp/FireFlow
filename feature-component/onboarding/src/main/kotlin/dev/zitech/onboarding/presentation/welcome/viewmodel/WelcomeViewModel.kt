@@ -20,6 +20,7 @@ package dev.zitech.onboarding.presentation.welcome.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.zitech.core.common.domain.exception.FireFlowException
 import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.domain.model.LegacyDataResult
 import dev.zitech.core.common.domain.model.exception.NoBrowserInstalledException
@@ -90,7 +91,7 @@ internal class WelcomeViewModel @Inject constructor(
                     }
                     else -> {
                         Logger.e(tag, exception = dataResult.cause)
-                        stateHandler.setEvent(NavigateToError)
+                        stateHandler.setEvent(NavigateToError(FireFlowException.Legacy))
                     }
                 }
             }

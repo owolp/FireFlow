@@ -16,6 +16,11 @@
   -->
 
 <resources>
+    <string name="disk_exception"></string>
+    <string name="empty"></string>
+    <string name="network_error"></string>
+    <string name="network_exception"></string>
     <string name="null_current_user_account"></string>
-    <string name="null_user_account"></string>
+    <string name="null_user_account_by_state">Нещо се обърка. URL за потвърждението е неправилен. Моля, проверете URL адреса и опитайте отново.</string>
+    <string name="token_expired">Неуспешно изтегляне на токен. Моля, проверете вашата мрежова връзка и опитайте отново.</string>
 </resources>

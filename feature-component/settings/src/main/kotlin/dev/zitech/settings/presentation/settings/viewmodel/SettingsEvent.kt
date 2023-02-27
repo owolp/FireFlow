@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@ internal sealed interface SettingsEvent : MviState.Event
 
 internal object Idle : SettingsEvent
 internal data class ShowError(
-    val message: String,
+    val messageResId: Int,
     val action: String
 ) : SettingsEvent
 

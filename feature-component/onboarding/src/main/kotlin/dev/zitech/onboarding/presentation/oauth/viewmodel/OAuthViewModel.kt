@@ -23,13 +23,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.zitech.authenticator.domain.model.Token
 import dev.zitech.authenticator.domain.usecase.GetAccessTokenUseCase
 import dev.zitech.core.common.DataFactory
-import dev.zitech.core.common.domain.code.StatusCode.NotFound
 import dev.zitech.core.common.domain.dispatcher.AppDispatchers
+import dev.zitech.core.common.domain.exception.FireFlowException
 import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.domain.model.LegacyDataResult
 import dev.zitech.core.common.domain.model.exception.NoBrowserInstalledException
 import dev.zitech.core.common.domain.model.onError
-import dev.zitech.core.common.domain.model.onException
 import dev.zitech.core.common.domain.model.onSuccess
 import dev.zitech.core.common.presentation.architecture.MviViewModel
 import dev.zitech.core.persistence.domain.model.database.UserAccount
@@ -127,7 +126,7 @@ internal class OAuthViewModel @Inject constructor(
             is LegacyDataResult.Error -> {
                 Logger.e(tag, exception = result.cause)
                 stateHandler.setLoading(false)
-                stateHandler.setEvent(NavigateToError)
+                stateHandler.setEvent(NavigateToError(FireFlowException.Legacy))
             }
         }
     }
@@ -166,7 +165,7 @@ internal class OAuthViewModel @Inject constructor(
                     }
                     else -> {
                         Logger.e(tag, exception = result.cause)
-                        stateHandler.setEvent(NavigateToError)
+                        stateHandler.setEvent(NavigateToError(FireFlowException.Legacy))
                     }
                 }
             }
@@ -191,19 +190,19 @@ internal class OAuthViewModel @Inject constructor(
                     setClientSecret(userAccount.clientSecret)
                 }
                 retrieveToken(userAccount, code)
-            }.onError { statusCode, message ->
+            }.onError { exception ->
                 stateHandler.setLoading(false)
-                if (statusCode == NotFound) {
-                    stateHandler.setEvent(
-                        ShowError(oauthStringsProvider.getOauthCodeStateError())
-                    )
-                } else {
-                    Logger.e(tag, message = message)
-                    stateHandler.setEvent(NavigateToError)
+                when (exception) {
+                    is FireFlowException.NullUserAccountByState ->
+                        stateHandler.setEvent(ShowError(exception.uiResId))
+                    is FireFlowException.DataException -> {
+                        Logger.e(tag, throwable = exception.throwable)
+                        stateHandler.setEvent(NavigateToError(exception))
+                    }
+                    is FireFlowException.DataError ->
+                        stateHandler.setEvent(ShowError(exception.uiResId))
+                    else -> Logger.e(tag, exception.debugMessage)
                 }
-            }.onException {
-                Logger.e(tag, throwable = it)
-                stateHandler.setEvent(NavigateToError)
             }
     }
 
@@ -214,13 +213,17 @@ internal class OAuthViewModel @Inject constructor(
             code = code
         ).onSuccess { token ->
             updateUserAccount(userAccount, token, code)
-        }.onError { _, _ ->
+        }.onError { exception ->
             stateHandler.setLoading(false)
-            stateHandler.setEvent(
-                ShowError(oauthStringsProvider.getTokenError())
-            )
-        }.onException {
-            // TODO
+            when (exception) {
+                is FireFlowException.DataException -> {
+                    Logger.e(tag, throwable = exception.throwable)
+                    stateHandler.setEvent(NavigateToError(exception))
+                }
+                is FireFlowException.DataError ->
+                    stateHandler.setEvent(ShowError(exception.uiResId))
+                else -> Logger.e(tag, exception.debugMessage)
+            }
         }
     }
 
@@ -247,7 +250,7 @@ internal class OAuthViewModel @Inject constructor(
             is LegacyDataResult.Error -> {
                 Logger.e(tag, exception = result.cause)
                 stateHandler.setLoading(false)
-                stateHandler.setEvent(NavigateToError)
+                stateHandler.setEvent(NavigateToError(FireFlowException.Legacy))
             }
         }
     }

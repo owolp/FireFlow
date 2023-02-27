@@ -17,9 +17,9 @@
 
 package dev.zitech.navigation.domain.usecase
 
+import dev.zitech.core.common.domain.exception.FireFlowException
 import dev.zitech.core.common.domain.model.LegacyDataResult
 import dev.zitech.core.common.domain.model.onError
-import dev.zitech.core.common.domain.model.onException
 import dev.zitech.core.common.domain.model.onSuccess
 import dev.zitech.core.common.domain.navigation.DeepLinkScreenDestination
 import dev.zitech.core.persistence.domain.model.exception.NullCurrentUserAccountException
@@ -48,7 +48,7 @@ class GetScreenDestinationUseCase @Inject constructor(
                             NullCurrentUserAccountException -> {
                                 handleNullCurrentUserAccount()
                             }
-                            else -> send(DeepLinkScreenDestination.Error)
+                            else -> send(DeepLinkScreenDestination.Error(FireFlowException.Legacy))
                         }
                     }
                 }
@@ -64,11 +64,8 @@ class GetScreenDestinationUseCase @Inject constructor(
                     send(DeepLinkScreenDestination.Welcome)
                 }
             }
-            .onError { _, _ ->
-                send(DeepLinkScreenDestination.Error)
-            }
-            .onException {
-                send(DeepLinkScreenDestination.Error)
+            .onError { exception ->
+                send(DeepLinkScreenDestination.Error(exception))
             }
     }
 }

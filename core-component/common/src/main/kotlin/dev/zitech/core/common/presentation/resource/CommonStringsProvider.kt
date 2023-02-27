@@ -18,13 +18,9 @@
 package dev.zitech.core.common.presentation.resource
 
 import dev.zitech.core.common.R
-import dev.zitech.core.common.domain.strings.StringsProvider
 import javax.inject.Inject
 
-class CommonStringsProvider @Inject constructor(
-    private val stringsProvider: StringsProvider
-) {
+class CommonStringsProvider @Inject constructor() {
 
-    fun getNoSupportedBrowserInstalled(): String =
-        stringsProvider(R.string.no_supported_browser_installed)
+    fun getNoSupportedBrowserInstalled(): Int = R.string.no_supported_browser_installed
 }

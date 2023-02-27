@@ -17,21 +17,21 @@
 
 package dev.zitech.core.network.framework.retrofit
 
-import dev.zitech.core.common.domain.model.DataException
-import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.model.NetworkException
+import dev.zitech.core.common.domain.model.NetworkResult
 import okhttp3.Request
 import okio.Timeout
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-internal class DataResultCall<T : Any>(
+internal class NetworkResultCall<T : Any>(
     private val proxy: Call<T>
-) : Call<DataResult<T>> {
+) : Call<NetworkResult<T>> {
 
-    override fun clone(): Call<DataResult<T>> = DataResultCall(proxy.clone())
+    override fun clone(): Call<NetworkResult<T>> = NetworkResultCall(proxy.clone())
 
-    override fun execute(): Response<DataResult<T>> = throw NotImplementedError()
+    override fun execute(): Response<NetworkResult<T>> = throw NotImplementedError()
 
     override fun isExecuted(): Boolean = proxy.isExecuted
 
@@ -45,16 +45,16 @@ internal class DataResultCall<T : Any>(
 
     override fun timeout(): Timeout = proxy.timeout()
 
-    override fun enqueue(callback: Callback<DataResult<T>>) {
+    override fun enqueue(callback: Callback<NetworkResult<T>>) {
         proxy.enqueue(object : Callback<T> {
             override fun onResponse(call: Call<T>, response: Response<T>) {
                 val dataResult = handleApi { response }
-                callback.onResponse(this@DataResultCall, Response.success(dataResult))
+                callback.onResponse(this@NetworkResultCall, Response.success(dataResult))
             }
 
             override fun onFailure(call: Call<T>, t: Throwable) {
-                val dataResult = DataException<T>(t)
-                callback.onResponse(this@DataResultCall, Response.success(dataResult))
+                val dataResult = NetworkException<T>(t)
+                callback.onResponse(this@NetworkResultCall, Response.success(dataResult))
             }
         })
     }

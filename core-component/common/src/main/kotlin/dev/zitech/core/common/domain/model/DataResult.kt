@@ -17,17 +17,12 @@
 
 package dev.zitech.core.common.domain.model
 
-import dev.zitech.core.common.domain.code.StatusCode
+import dev.zitech.core.common.domain.exception.FireFlowException
 
 sealed interface DataResult<out T : Any>
 
 data class DataSuccess<out T : Any>(val data: T) : DataResult<T>
-data class DataError<T : Any>(
-    val statusCode: StatusCode,
-    val message: String? = null
-) : DataResult<T>
-
-data class DataException<out T : Any>(val exception: Throwable) : DataResult<T>
+data class DataError<T : Any>(val fireFlowException: FireFlowException) : DataResult<T>
 
 suspend fun <T : Any> DataResult<T>.onSuccess(
     executable: suspend (T) -> Unit
@@ -38,18 +33,10 @@ suspend fun <T : Any> DataResult<T>.onSuccess(
 }
 
 suspend fun <T : Any> DataResult<T>.onError(
-    executable: suspend (statusCode: StatusCode, message: String) -> Unit
+    executable: suspend (fireFlowException: FireFlowException) -> Unit
 ): DataResult<T> = apply {
     if (this is DataError) {
-        executable(statusCode, message.orEmpty())
-    }
-}
-
-suspend fun <T : Any> DataResult<T>.onException(
-    executable: suspend (e: Throwable) -> Unit
-): DataResult<T> = apply {
-    if (this is DataException) {
-        executable(exception)
+        executable(fireFlowException)
     }
 }
 
@@ -58,6 +45,5 @@ inline fun <T : Any, R : Any> DataResult<T>.mapToDataResult(
 ): DataResult<R> =
     when (this) {
         is DataSuccess -> DataSuccess(transform(data))
-        is DataError -> DataError(statusCode, message)
-        is DataException -> DataException(exception)
+        is DataError -> DataError(fireFlowException)
     }

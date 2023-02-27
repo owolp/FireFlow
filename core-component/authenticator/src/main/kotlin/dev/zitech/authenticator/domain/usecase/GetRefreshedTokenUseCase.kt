@@ -19,9 +19,8 @@ package dev.zitech.authenticator.domain.usecase
 
 import dev.zitech.authenticator.domain.model.Token
 import dev.zitech.authenticator.domain.repository.TokenRepository
-import dev.zitech.core.common.domain.code.StatusCode
+import dev.zitech.core.common.domain.exception.FireFlowException
 import dev.zitech.core.common.domain.model.DataError
-import dev.zitech.core.common.domain.model.DataException
 import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.common.domain.model.DataSuccess
 import dev.zitech.core.common.domain.model.LegacyDataResult
@@ -58,9 +57,8 @@ internal class GetRefreshedTokenUseCase @Inject constructor(
                         DataSuccess(refreshedToken)
                     }
                     is DataError -> refreshTokenResult
-                    is DataException -> refreshTokenResult
                 }
             }
-            is LegacyDataResult.Error -> DataError(StatusCode.Unknown, "")
+            is LegacyDataResult.Error -> DataError(FireFlowException.Legacy)
         }
 }

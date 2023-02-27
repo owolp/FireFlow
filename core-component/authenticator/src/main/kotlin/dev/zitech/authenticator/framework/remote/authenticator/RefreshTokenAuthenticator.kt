@@ -18,11 +18,10 @@
 package dev.zitech.authenticator.framework.remote.authenticator
 
 import dev.zitech.authenticator.domain.usecase.GetRefreshedTokenUseCase
-import dev.zitech.authenticator.framework.HEADER_AUTHORIZATION_KEY
-import dev.zitech.authenticator.framework.HEADER_AUTHORIZATION_VALUE
+import dev.zitech.authenticator.framework.remote.HEADER_AUTHORIZATION_KEY
+import dev.zitech.authenticator.framework.remote.HEADER_AUTHORIZATION_VALUE
 import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.domain.model.DataError
-import dev.zitech.core.common.domain.model.DataException
 import dev.zitech.core.common.domain.model.DataSuccess
 import javax.inject.Inject
 import kotlinx.coroutines.runBlocking
@@ -57,7 +56,6 @@ internal class RefreshTokenAuthenticator @Inject constructor(
                         .build()
                 }
                 is DataError -> null
-                is DataException -> null
             }
         }
 
