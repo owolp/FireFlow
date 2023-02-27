@@ -15,19 +15,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id(BuildPlugins.KOTLIN_ANDROID)
-    id(BuildPlugins.LIBRARY)
-}
+package dev.zitech.exception
 
-dependencies {
-    api(projects.coreComponent.authenticator)
-    api(projects.coreComponent.common)
-    api(projects.coreComponent.exception)
-    api(projects.coreComponent.featureFlag)
-    api(projects.coreComponent.navigation)
-    api(projects.coreComponent.network)
-    api(projects.coreComponent.persistence)
-    api(projects.coreComponent.remoteConfig)
-    api(projects.coreComponent.reporter)
-}
+import androidx.annotation.StringRes
+
+sealed class FireFlowException(@StringRes val text: Int)
+
+object NullCurrentUserAccount : FireFlowException(R.string.null_current_user_account)
+object NullUserAccount : FireFlowException(R.string.null_user_account)
