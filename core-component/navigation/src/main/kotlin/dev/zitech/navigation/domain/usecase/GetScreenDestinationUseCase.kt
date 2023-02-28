@@ -18,11 +18,11 @@
 package dev.zitech.navigation.domain.usecase
 
 import dev.zitech.core.common.domain.exception.FireFlowException
-import dev.zitech.core.common.domain.model.LegacyDataResult
+import dev.zitech.core.common.domain.model.DataError
+import dev.zitech.core.common.domain.model.DataSuccess
 import dev.zitech.core.common.domain.model.onError
 import dev.zitech.core.common.domain.model.onSuccess
 import dev.zitech.core.common.domain.navigation.DeepLinkScreenDestination
-import dev.zitech.core.persistence.domain.model.exception.NullCurrentUserAccountException
 import dev.zitech.core.persistence.domain.usecase.database.GetCurrentUserAccountUseCase
 import dev.zitech.core.persistence.domain.usecase.database.GetUserAccountsUseCase
 import javax.inject.Inject
@@ -42,13 +42,13 @@ class GetScreenDestinationUseCase @Inject constructor(
         getCurrentUserAccountUseCase()
             .onEach { result ->
                 when (result) {
-                    is LegacyDataResult.Success -> send(DeepLinkScreenDestination.Current)
-                    is LegacyDataResult.Error -> {
-                        when (result.cause) {
-                            NullCurrentUserAccountException -> {
+                    is DataSuccess -> send(DeepLinkScreenDestination.Current)
+                    is DataError -> {
+                        when (result.fireFlowException) {
+                            is FireFlowException.NullCurrentUserAccount -> {
                                 handleNullCurrentUserAccount()
                             }
-                            else -> send(DeepLinkScreenDestination.Error(FireFlowException.Legacy))
+                            else -> send(DeepLinkScreenDestination.Error(result.fireFlowException))
                         }
                     }
                 }

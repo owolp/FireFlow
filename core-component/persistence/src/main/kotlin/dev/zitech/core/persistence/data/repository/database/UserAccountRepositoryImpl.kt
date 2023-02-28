@@ -18,12 +18,13 @@
 package dev.zitech.core.persistence.data.repository.database
 
 import dev.zitech.core.common.domain.cache.InMemoryCache
+import dev.zitech.core.common.domain.model.DataError
 import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.model.DataSuccess
 import dev.zitech.core.common.domain.model.LegacyDataResult
 import dev.zitech.core.persistence.data.source.UserAccountSource
 import dev.zitech.core.persistence.domain.model.cache.NetworkDetails
 import dev.zitech.core.persistence.domain.model.database.UserAccount
-import dev.zitech.core.persistence.domain.model.exception.NullCurrentUserAccountException
 import dev.zitech.core.persistence.domain.model.exception.NullUserAccountException
 import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
 import javax.inject.Inject
@@ -41,18 +42,21 @@ internal class UserAccountRepositoryImpl @Inject constructor(
     override fun getUserAccounts(): Flow<DataResult<List<UserAccount>>> =
         userAccountDatabaseSource.getUserAccounts()
 
-    override fun getCurrentUserAccount(): Flow<LegacyDataResult<UserAccount>> =
-        userAccountDatabaseSource.getCurrentUserAccountOrNull()
-            .map { userAccount ->
-                if (userAccount != null) {
-                    networkDetailsInMemoryCache.data = NetworkDetails(
-                        userId = userAccount.userId,
-                        serverAddress = userAccount.serverAddress
-                    )
-                    LegacyDataResult.Success(userAccount)
-                } else {
-                    LegacyDataResult.Error(cause = NullCurrentUserAccountException)
+    override fun getCurrentUserAccount(): Flow<DataResult<UserAccount>> =
+        userAccountDatabaseSource.getCurrentUserAccount()
+            .map { userAccountResult ->
+                when (userAccountResult) {
+                    is DataSuccess -> {
+                        networkDetailsInMemoryCache.data = NetworkDetails(
+                            userId = userAccountResult.data.userId,
+                            serverAddress = userAccountResult.data.serverAddress
+                        )
+                    }
+                    is DataError -> {
+                        // NO_OP
+                    }
                 }
+                userAccountResult
             }
 
     override suspend fun saveUserAccount(

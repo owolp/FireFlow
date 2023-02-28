@@ -17,7 +17,7 @@
 
 package dev.zitech.core.persistence.domain.usecase.database
 
-import dev.zitech.core.common.domain.model.LegacyDataResult
+import dev.zitech.core.common.domain.model.DataSuccess
 import dev.zitech.core.persistence.domain.model.database.UserLoggedState
 import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
 import javax.inject.Inject
@@ -29,7 +29,7 @@ class GetUserLoggedStateUseCase @Inject constructor(
 
     suspend operator fun invoke(): UserLoggedState =
         when (userAccountRepository.getCurrentUserAccount().firstOrNull()) {
-            is LegacyDataResult.Success -> UserLoggedState.LOGGED_IN
+            is DataSuccess -> UserLoggedState.LOGGED_IN
             else -> UserLoggedState.LOGGED_OUT
         }
 }

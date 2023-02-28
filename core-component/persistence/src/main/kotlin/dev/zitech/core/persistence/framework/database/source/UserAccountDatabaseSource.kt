@@ -54,13 +54,15 @@ internal class UserAccountDatabaseSource @Inject constructor(
             DataError<List<UserAccount>>(FireFlowException.DataException(throwable))
         }
 
-    override fun getCurrentUserAccountOrNull(): Flow<UserAccount?> =
+    override fun getCurrentUserAccount(): Flow<DataResult<UserAccount>> =
         userAccountDao.getCurrentUserAccount().map { userAccountEntity ->
             if (userAccountEntity != null) {
-                userAccountMapper.toDomain(userAccountEntity)
+                DataSuccess(userAccountMapper.toDomain(userAccountEntity))
             } else {
-                null
+                DataError(FireFlowException.NullCurrentUserAccount)
             }
+        }.catch { throwable ->
+            DataError<UserAccount>(FireFlowException.DataException(throwable))
         }
 
     override suspend fun saveUserAccount(

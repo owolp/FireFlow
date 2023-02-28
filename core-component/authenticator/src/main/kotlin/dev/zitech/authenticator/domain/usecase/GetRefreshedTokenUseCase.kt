@@ -19,11 +19,9 @@ package dev.zitech.authenticator.domain.usecase
 
 import dev.zitech.authenticator.domain.model.Token
 import dev.zitech.authenticator.domain.repository.TokenRepository
-import dev.zitech.core.common.domain.exception.FireFlowException
 import dev.zitech.core.common.domain.model.DataError
 import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.common.domain.model.DataSuccess
-import dev.zitech.core.common.domain.model.LegacyDataResult
 import dev.zitech.core.persistence.domain.usecase.database.GetCurrentUserAccountUseCase
 import dev.zitech.core.persistence.domain.usecase.database.UpdateUserAccountUseCase
 import javax.inject.Inject
@@ -37,8 +35,8 @@ internal class GetRefreshedTokenUseCase @Inject constructor(
 
     suspend operator fun invoke(): DataResult<Token> =
         when (val currentUserAccountResult = getCurrentUserAccountUseCase().first()) {
-            is LegacyDataResult.Success -> {
-                val currentUser = currentUserAccountResult.value
+            is DataSuccess -> {
+                val currentUser = currentUserAccountResult.data
                 when (
                     val refreshTokenResult = tokenRepository.getRefreshedToken(
                         clientId = currentUser.clientId,
@@ -59,6 +57,6 @@ internal class GetRefreshedTokenUseCase @Inject constructor(
                     is DataError -> refreshTokenResult
                 }
             }
-            is LegacyDataResult.Error -> DataError(FireFlowException.Legacy)
+            is DataError -> DataError(currentUserAccountResult.fireFlowException)
         }
 }

@@ -17,5 +17,4 @@
 
 package dev.zitech.core.persistence.domain.model.exception
 
-object NullCurrentUserAccountException : Exception()
 object NullUserAccountException : Exception()
