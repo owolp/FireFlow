@@ -33,7 +33,7 @@ internal interface UserAccountSource {
         isCurrentUserAccount: Boolean,
         serverAddress: String,
         state: String
-    ): Long
+    ): DataResult<Long>
 
     suspend fun updateUserAccount(userAccount: UserAccount): Int
 }

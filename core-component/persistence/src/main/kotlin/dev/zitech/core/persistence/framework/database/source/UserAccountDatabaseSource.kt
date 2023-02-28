@@ -71,15 +71,20 @@ internal class UserAccountDatabaseSource @Inject constructor(
         isCurrentUserAccount: Boolean,
         serverAddress: String,
         state: String
-    ): Long = userAccountDao.saveUserAccount(
-        UserAccountEntity(
-            clientId = clientId,
-            clientSecret = clientSecret,
-            isCurrentUserAccount = isCurrentUserAccount,
-            serverAddress = serverAddress,
-            state = state
+    ): DataResult<Long> = try {
+        val userAccountId = userAccountDao.saveUserAccount(
+            UserAccountEntity(
+                clientId = clientId,
+                clientSecret = clientSecret,
+                isCurrentUserAccount = isCurrentUserAccount,
+                serverAddress = serverAddress,
+                state = state
+            )
         )
-    )
+        DataSuccess(userAccountId)
+    } catch (throwable: Throwable) {
+        DataError(FireFlowException.DataException(throwable))
+    }
 
     override suspend fun removeUserAccountsWithStateAndWithoutAccessToken() =
         userAccountDao.removeUserAccountsWithStateAndWithoutAccessToken()

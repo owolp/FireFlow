@@ -65,23 +65,28 @@ internal class UserAccountRepositoryImpl @Inject constructor(
         isCurrentUserAccount: Boolean,
         serverAddress: String,
         state: String
-    ): LegacyDataResult<Long> =
-        try {
-            val userId = userAccountDatabaseSource.saveUserAccount(
-                clientId = clientId,
-                clientSecret = clientSecret,
-                isCurrentUserAccount = isCurrentUserAccount,
-                serverAddress = serverAddress,
-                state = state
-            )
-            networkDetailsInMemoryCache.data = NetworkDetails(
-                userId = userId,
-                serverAddress = serverAddress
-            )
-            LegacyDataResult.Success(userId)
-        } catch (exception: Exception) {
-            LegacyDataResult.Error(cause = exception)
+    ): DataResult<Long> {
+        val saveUserAccountResult = userAccountDatabaseSource.saveUserAccount(
+            clientId = clientId,
+            clientSecret = clientSecret,
+            isCurrentUserAccount = isCurrentUserAccount,
+            serverAddress = serverAddress,
+            state = state
+        )
+        when (saveUserAccountResult) {
+            is DataSuccess -> {
+                networkDetailsInMemoryCache.data = NetworkDetails(
+                    userId = saveUserAccountResult.data,
+                    serverAddress = serverAddress
+                )
+            }
+            is DataError -> {
+                // NO_OP
+            }
         }
+
+        return saveUserAccountResult
+    }
 
     override suspend fun removeStaleUserAccounts(): LegacyDataResult<Unit> =
         try {

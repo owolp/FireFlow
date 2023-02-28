@@ -100,33 +100,35 @@ internal class OAuthViewModel @Inject constructor(
             delay(LOADING_DELAY_IN_MILLISECONDS)
             stateHandler.setLoading(true)
         }
-        when (
-            val result = saveUserAccountUseCase(
-                clientId = clientId,
-                clientSecret = clientSecret,
-                isCurrentUserAccount = false,
-                serverAddress = serverAddress,
-                state = state
-            )
-        ) {
-            is LegacyDataResult.Success -> {
-                with(stateHandler) {
-                    setEvent(
-                        NavigateToFirefly(
-                            oauthStringsProvider.getNewAccessTokenUrl(
-                                serverAddress,
-                                clientId,
-                                state
-                            )
+        saveUserAccountUseCase(
+            clientId = clientId,
+            clientSecret = clientSecret,
+            isCurrentUserAccount = false,
+            serverAddress = serverAddress,
+            state = state
+        ).onSuccess {
+            with(stateHandler) {
+                setEvent(
+                    NavigateToFirefly(
+                        oauthStringsProvider.getNewAccessTokenUrl(
+                            serverAddress,
+                            clientId,
+                            state
                         )
                     )
-                    setLoading(true)
-                }
+                )
+                setLoading(true)
             }
-            is LegacyDataResult.Error -> {
-                Logger.e(tag, exception = result.cause)
-                stateHandler.setLoading(false)
-                stateHandler.setEvent(NavigateToError(FireFlowException.Legacy))
+        }.onError { exception ->
+            stateHandler.setLoading(false)
+            when (exception) {
+                is FireFlowException.DataException -> {
+                    Logger.e(tag, throwable = exception.throwable)
+                    stateHandler.setEvent(NavigateToError(exception))
+                }
+                is FireFlowException.DataError ->
+                    stateHandler.setEvent(ShowError(exception.uiResId))
+                else -> Logger.e(tag, exception.debugMessage)
             }
         }
     }

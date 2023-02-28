@@ -33,7 +33,7 @@ interface UserAccountRepository {
         isCurrentUserAccount: Boolean,
         serverAddress: String,
         state: String
-    ): LegacyDataResult<Long>
+    ): DataResult<Long>
 
     suspend fun removeStaleUserAccounts(): LegacyDataResult<Unit>
     suspend fun updateUserAccount(userAccount: UserAccount): LegacyDataResult<Unit>
