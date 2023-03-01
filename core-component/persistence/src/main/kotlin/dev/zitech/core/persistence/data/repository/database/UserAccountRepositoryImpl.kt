@@ -88,13 +88,8 @@ internal class UserAccountRepositoryImpl @Inject constructor(
         return saveUserAccountResult
     }
 
-    override suspend fun removeStaleUserAccounts(): LegacyDataResult<Unit> =
-        try {
-            userAccountDatabaseSource.removeUserAccountsWithStateAndWithoutAccessToken()
-            LegacyDataResult.Success(Unit)
-        } catch (exception: Exception) {
-            LegacyDataResult.Error(cause = exception)
-        }
+    override suspend fun removeStaleUserAccounts(): DataResult<Unit> =
+        userAccountDatabaseSource.removeUserAccountsWithStateAndWithoutAccessToken()
 
     override suspend fun updateUserAccount(userAccount: UserAccount): LegacyDataResult<Unit> =
         try {

@@ -86,8 +86,13 @@ internal class UserAccountDatabaseSource @Inject constructor(
         DataError(FireFlowException.DataException(throwable))
     }
 
-    override suspend fun removeUserAccountsWithStateAndWithoutAccessToken() =
-        userAccountDao.removeUserAccountsWithStateAndWithoutAccessToken()
+    override suspend fun removeUserAccountsWithStateAndWithoutAccessToken(): DataResult<Unit> =
+        try {
+            userAccountDao.removeUserAccountsWithStateAndWithoutAccessToken()
+            DataSuccess(Unit)
+        } catch (throwable: Throwable) {
+            DataError(FireFlowException.DataException(throwable))
+        }
 
     override suspend fun updateUserAccount(userAccount: UserAccount): Int =
         userAccountDao.updateUserAccount(userAccountMapper.toEntity(userAccount))

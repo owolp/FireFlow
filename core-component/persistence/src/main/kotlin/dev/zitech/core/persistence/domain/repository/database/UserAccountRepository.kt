@@ -35,6 +35,6 @@ interface UserAccountRepository {
         state: String
     ): DataResult<Long>
 
-    suspend fun removeStaleUserAccounts(): LegacyDataResult<Unit>
+    suspend fun removeStaleUserAccounts(): DataResult<Unit>
     suspend fun updateUserAccount(userAccount: UserAccount): LegacyDataResult<Unit>
 }

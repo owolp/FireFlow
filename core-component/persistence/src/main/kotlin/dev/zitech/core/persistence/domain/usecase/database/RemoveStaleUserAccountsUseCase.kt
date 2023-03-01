@@ -17,7 +17,7 @@
 
 package dev.zitech.core.persistence.domain.usecase.database
 
-import dev.zitech.core.common.domain.model.LegacyDataResult
+import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
 import javax.inject.Inject
 
@@ -25,6 +25,6 @@ class RemoveStaleUserAccountsUseCase @Inject constructor(
     private val userAccountRepository: UserAccountRepository
 ) {
 
-    suspend operator fun invoke(): LegacyDataResult<Unit> =
+    suspend operator fun invoke(): DataResult<Unit> =
         userAccountRepository.removeStaleUserAccounts()
 }
