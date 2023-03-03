@@ -35,6 +35,10 @@ internal class UserAccountRepositoryImpl @Inject constructor(
     private val networkDetailsInMemoryCache: InMemoryCache<NetworkDetails>
 ) : UserAccountRepository {
 
+    private companion object {
+        const val NO_WORKER_UPDATED_RESULT = 0
+    }
+
     override suspend fun getUserAccountByState(state: String): DataResult<UserAccount> =
         userAccountDatabaseSource.getUserAccountByState(state)
 
@@ -97,7 +101,7 @@ internal class UserAccountRepositoryImpl @Inject constructor(
             )
         ) {
             is DataSuccess -> {
-                if (updateUserAccountResult.data != 0) {
+                if (updateUserAccountResult.data != NO_WORKER_UPDATED_RESULT) {
                     DataSuccess(Unit)
                 } else {
                     DataError(FireFlowException.NullUserAccount)

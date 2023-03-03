@@ -25,6 +25,7 @@ import dev.zitech.core.common.domain.model.DataError
 import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.common.domain.model.DataSuccess
 import dev.zitech.core.common.domain.model.onError
+import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.domain.usecase.database.GetCurrentUserAccountUseCase
 import dev.zitech.core.persistence.domain.usecase.database.UpdateUserAccountUseCase
 import javax.inject.Inject
@@ -42,33 +43,36 @@ internal class GetRefreshedTokenUseCase @Inject constructor(
         when (val currentUserAccountResult = getCurrentUserAccountUseCase().first()) {
             is DataSuccess -> {
                 val currentUser = currentUserAccountResult.data
-                when (
-                    val refreshTokenResult = tokenRepository.getRefreshedToken(
-                        clientId = currentUser.clientId,
-                        clientSecret = currentUser.clientSecret,
-                        refreshToken = currentUser.refreshToken.orEmpty()
-                    )
-                ) {
-                    is DataSuccess -> {
-                        val refreshedToken = refreshTokenResult.data
-                        updateUserAccountUseCase(
-                            currentUser.copy(
-                                accessToken = refreshedToken.accessToken,
-                                refreshToken = refreshedToken.refreshToken
-                            )
-                        ).onError { exception ->
-                            when (exception) {
-                                is FireFlowException.Fatal -> {
-                                    Logger.e(tag, throwable = exception.throwable)
-                                }
-                                else -> Logger.e(tag, exception.text)
-                            }
-                        }
-                        DataSuccess(refreshedToken)
-                    }
-                    is DataError -> refreshTokenResult
-                }
+                getRefreshedToken(currentUser)
             }
             is DataError -> DataError(currentUserAccountResult.fireFlowException)
+        }
+
+    private suspend fun getRefreshedToken(currentUser: UserAccount) =
+        when (
+            val refreshTokenResult = tokenRepository.getRefreshedToken(
+                clientId = currentUser.clientId,
+                clientSecret = currentUser.clientSecret,
+                refreshToken = currentUser.refreshToken.orEmpty()
+            )
+        ) {
+            is DataSuccess -> {
+                val refreshedToken = refreshTokenResult.data
+                updateUserAccountUseCase(
+                    currentUser.copy(
+                        accessToken = refreshedToken.accessToken,
+                        refreshToken = refreshedToken.refreshToken
+                    )
+                ).onError { exception ->
+                    when (exception) {
+                        is FireFlowException.Fatal -> {
+                            Logger.e(tag, throwable = exception.throwable)
+                        }
+                        else -> Logger.e(tag, exception.text)
+                    }
+                }
+                DataSuccess(refreshedToken)
+            }
+            is DataError -> refreshTokenResult
         }
 }
