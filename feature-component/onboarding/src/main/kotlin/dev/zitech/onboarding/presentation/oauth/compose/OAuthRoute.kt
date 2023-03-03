@@ -104,7 +104,7 @@ internal fun OAuthRoute(
         is ShowError -> {
             snackbarState.showMessage(
                 BottomNotifierMessage(
-                    text = event.messageResId?.let { stringResource(id = it) }
+                    text = event.messageResId?.let { stringResource(it) }
                         ?: event.text.orEmpty(),
                     state = BottomNotifierMessage.State.ERROR,
                     duration = BottomNotifierMessage.Duration.SHORT
