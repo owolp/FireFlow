@@ -126,9 +126,9 @@ internal class OAuthViewModel @Inject constructor(
                     Logger.e(tag, throwable = exception.throwable)
                     stateHandler.setEvent(NavigateToError(exception))
                 }
-                is FireFlowException.DataError ->
-                    stateHandler.setEvent(ShowError(exception.uiResId))
-                else -> Logger.e(tag, exception.debugMessage)
+                is FireFlowException.UserVisible ->
+                    stateHandler.setEvent(ShowError(text = exception.text))
+                else -> Logger.e(tag, exception.text)
             }
         }
     }
@@ -162,7 +162,9 @@ internal class OAuthViewModel @Inject constructor(
                 when (result.cause) {
                     is NoBrowserInstalledException -> {
                         stateHandler.setEvent(
-                            ShowError(oauthStringsProvider.getNoSupportedBrowserInstalled())
+                            ShowError(
+                                messageResId = oauthStringsProvider.getNoSupportedBrowserInstalled()
+                            )
                         )
                     }
                     else -> {
@@ -196,7 +198,7 @@ internal class OAuthViewModel @Inject constructor(
                 stateHandler.setLoading(false)
                 when (exception) {
                     is FireFlowException.NullUserAccountByState -> {
-                        Logger.e(tag, exception.debugMessage)
+                        Logger.e(tag, exception.text)
                         stateHandler.setEvent(NavigateToError(exception))
                     }
                     is FireFlowException.Fatal -> {
@@ -204,8 +206,8 @@ internal class OAuthViewModel @Inject constructor(
                         stateHandler.setEvent(NavigateToError(exception))
                     }
                     else -> {
-                        Logger.e(tag, exception.debugMessage)
-                        stateHandler.setEvent(ShowError(exception.uiResId))
+                        Logger.e(tag, exception.text)
+                        stateHandler.setEvent(ShowError(messageResId = exception.uiResId))
                     }
                 }
             }
@@ -225,9 +227,9 @@ internal class OAuthViewModel @Inject constructor(
                     Logger.e(tag, throwable = exception.throwable)
                     stateHandler.setEvent(NavigateToError(exception))
                 }
-                is FireFlowException.DataError ->
-                    stateHandler.setEvent(ShowError(exception.uiResId))
-                else -> Logger.e(tag, exception.debugMessage)
+                is FireFlowException.UserVisible ->
+                    stateHandler.setEvent(ShowError(text = exception.text))
+                else -> Logger.e(tag, exception.text)
             }
         }
     }
@@ -252,7 +254,7 @@ internal class OAuthViewModel @Inject constructor(
             stateHandler.setLoading(false)
             when (exception) {
                 is FireFlowException.NullUserAccount -> {
-                    Logger.e(tag, exception.debugMessage)
+                    Logger.e(tag, exception.text)
                     stateHandler.setEvent(NavigateToError(exception))
                 }
                 is FireFlowException.Fatal -> {
@@ -260,8 +262,8 @@ internal class OAuthViewModel @Inject constructor(
                     stateHandler.setEvent(NavigateToError(exception))
                 }
                 else -> {
-                    Logger.e(tag, exception.debugMessage)
-                    stateHandler.setEvent(ShowError(exception.uiResId))
+                    Logger.e(tag, exception.text)
+                    stateHandler.setEvent(ShowError(messageResId = exception.uiResId))
                 }
             }
         }

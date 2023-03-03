@@ -26,5 +26,9 @@ internal object Idle : OAuthEvent
 internal object NavigateToDashboard : OAuthEvent
 internal object NavigateBack : OAuthEvent
 internal data class NavigateToFirefly(val url: String) : OAuthEvent
-internal data class ShowError(val messageResId: Int) : OAuthEvent
+internal class ShowError(
+    val messageResId: Int? = null,
+    val text: String? = null
+) : OAuthEvent
+
 internal data class NavigateToError(val exception: FireFlowException) : OAuthEvent

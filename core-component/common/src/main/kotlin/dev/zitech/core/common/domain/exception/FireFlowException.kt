@@ -19,23 +19,24 @@ package dev.zitech.core.common.domain.exception
 
 import androidx.annotation.StringRes
 import dev.zitech.core.common.R
-import dev.zitech.core.common.domain.code.StatusCode
 
 sealed class FireFlowException(
     @StringRes val uiResId: Int,
-    val debugMessage: String
+    val text: String
 ) {
     // TODO: To be removed
     object Legacy : FireFlowException(R.string.empty, "")
 
-    data class DataError(
-        val statusCode: StatusCode,
-        val message: String?
-    ) : FireFlowException(R.string.network_error, "")
+    data class UserVisible(
+        private val message: String?
+    ) : FireFlowException(
+        R.string.empty,
+        message.orEmpty()
+    )
 
     data class Fatal(
         val throwable: Throwable,
-        val type: Type
+        private val type: Type
     ) : FireFlowException(
         when (type) {
             Type.DISK -> R.string.disk_exception
@@ -68,7 +69,7 @@ sealed class FireFlowException(
     )
 
     data class TokenRefreshFailed(
-        val message: String?
+        private val message: String?
     ) : FireFlowException(
         R.string.token_expired,
         "message=$message"

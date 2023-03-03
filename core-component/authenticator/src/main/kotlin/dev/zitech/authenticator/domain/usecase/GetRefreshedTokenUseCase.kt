@@ -61,7 +61,7 @@ internal class GetRefreshedTokenUseCase @Inject constructor(
                                 is FireFlowException.Fatal -> {
                                     Logger.e(tag, throwable = exception.throwable)
                                 }
-                                else -> Logger.e(tag, exception.debugMessage)
+                                else -> Logger.e(tag, exception.text)
                             }
                         }
                         DataSuccess(refreshedToken)
