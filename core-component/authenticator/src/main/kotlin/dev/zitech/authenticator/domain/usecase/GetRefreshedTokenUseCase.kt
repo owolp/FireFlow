@@ -58,7 +58,7 @@ internal class GetRefreshedTokenUseCase @Inject constructor(
                             )
                         ).onError { exception ->
                             when (exception) {
-                                is FireFlowException.DataException -> {
+                                is FireFlowException.Fatal -> {
                                     Logger.e(tag, throwable = exception.throwable)
                                 }
                                 else -> Logger.e(tag, exception.debugMessage)

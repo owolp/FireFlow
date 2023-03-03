@@ -122,7 +122,7 @@ internal class OAuthViewModel @Inject constructor(
         }.onError { exception ->
             stateHandler.setLoading(false)
             when (exception) {
-                is FireFlowException.DataException -> {
+                is FireFlowException.Fatal -> {
                     Logger.e(tag, throwable = exception.throwable)
                     stateHandler.setEvent(NavigateToError(exception))
                 }
@@ -199,7 +199,7 @@ internal class OAuthViewModel @Inject constructor(
                         Logger.e(tag, exception.debugMessage)
                         stateHandler.setEvent(NavigateToError(exception))
                     }
-                    is FireFlowException.DataException -> {
+                    is FireFlowException.Fatal -> {
                         Logger.e(tag, throwable = exception.throwable)
                         stateHandler.setEvent(NavigateToError(exception))
                     }
@@ -221,7 +221,7 @@ internal class OAuthViewModel @Inject constructor(
         }.onError { exception ->
             stateHandler.setLoading(false)
             when (exception) {
-                is FireFlowException.DataException -> {
+                is FireFlowException.Fatal -> {
                     Logger.e(tag, throwable = exception.throwable)
                     stateHandler.setEvent(NavigateToError(exception))
                 }
@@ -255,7 +255,7 @@ internal class OAuthViewModel @Inject constructor(
                     Logger.e(tag, exception.debugMessage)
                     stateHandler.setEvent(NavigateToError(exception))
                 }
-                is FireFlowException.DataException -> {
+                is FireFlowException.Fatal -> {
                     Logger.e(tag, throwable = exception.throwable)
                     stateHandler.setEvent(NavigateToError(exception))
                 }

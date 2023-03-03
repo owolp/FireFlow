@@ -19,6 +19,7 @@ package dev.zitech.core.common.domain.model
 
 import dev.zitech.core.common.domain.code.StatusCode
 import dev.zitech.core.common.domain.exception.FireFlowException
+import dev.zitech.core.common.domain.exception.FireFlowException.Fatal.Type.NETWORK
 
 sealed interface NetworkResult<out T : Any>
 
@@ -70,4 +71,4 @@ fun getFireFlowException(statusCode: StatusCode, message: String?): FireFlowExce
     }
 
 fun getFireFlowException(throwable: Throwable): FireFlowException =
-    FireFlowException.DataException(throwable)
+    FireFlowException.Fatal(throwable, NETWORK)

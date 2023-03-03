@@ -18,6 +18,7 @@
 package dev.zitech.core.persistence.framework.database.source
 
 import dev.zitech.core.common.domain.exception.FireFlowException
+import dev.zitech.core.common.domain.exception.FireFlowException.Fatal.Type.DISK
 import dev.zitech.core.common.domain.model.DataError
 import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.common.domain.model.DataSuccess
@@ -44,14 +45,14 @@ internal class UserAccountDatabaseSource @Inject constructor(
             DataError(FireFlowException.NullUserAccountByState)
         }
     } catch (throwable: Throwable) {
-        DataError(FireFlowException.DataException(throwable))
+        DataError(FireFlowException.Fatal(throwable, DISK))
     }
 
     override fun getUserAccounts(): Flow<DataResult<List<UserAccount>>> =
         userAccountDao.getUserAccounts().map { userAccountEntities ->
             DataSuccess(userAccountEntities.map(userAccountMapper::toDomain))
         }.catch { throwable ->
-            DataError<List<UserAccount>>(FireFlowException.DataException(throwable))
+            DataError<List<UserAccount>>(FireFlowException.Fatal(throwable, DISK))
         }
 
     override fun getCurrentUserAccount(): Flow<DataResult<UserAccount>> =
@@ -62,7 +63,7 @@ internal class UserAccountDatabaseSource @Inject constructor(
                 DataError(FireFlowException.NullCurrentUserAccount)
             }
         }.catch { throwable ->
-            DataError<UserAccount>(FireFlowException.DataException(throwable))
+            DataError<UserAccount>(FireFlowException.Fatal(throwable, DISK))
         }
 
     override suspend fun saveUserAccount(
@@ -83,7 +84,7 @@ internal class UserAccountDatabaseSource @Inject constructor(
         )
         DataSuccess(userAccountId)
     } catch (throwable: Throwable) {
-        DataError(FireFlowException.DataException(throwable))
+        DataError(FireFlowException.Fatal(throwable, DISK))
     }
 
     override suspend fun removeUserAccountsWithStateAndWithoutAccessToken(): DataResult<Unit> =
@@ -91,7 +92,7 @@ internal class UserAccountDatabaseSource @Inject constructor(
             userAccountDao.removeUserAccountsWithStateAndWithoutAccessToken()
             DataSuccess(Unit)
         } catch (throwable: Throwable) {
-            DataError(FireFlowException.DataException(throwable))
+            DataError(FireFlowException.Fatal(throwable, DISK))
         }
 
     override suspend fun updateUserAccount(userAccount: UserAccount): DataResult<Int> =
@@ -100,6 +101,6 @@ internal class UserAccountDatabaseSource @Inject constructor(
                 userAccountDao.updateUserAccount(userAccountMapper.toEntity(userAccount))
             )
         } catch (throwable: Throwable) {
-            DataError(FireFlowException.DataException(throwable))
+            DataError(FireFlowException.Fatal(throwable, DISK))
         }
 }

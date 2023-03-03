@@ -16,10 +16,10 @@
   -->
 
 <resources>
-    <string name="disk_exception"></string>
+    <string name="disk_exception">Възникна непредвидена грешка при достъпа до съхранението.</string>
     <string name="empty"></string>
     <string name="network_error"></string>
-    <string name="network_exception"></string>
+    <string name="network_exception">Възникна проблем при свързването с мрежата. Моля, проверете интернет връзката си и опитайте отново.</string>
     <string name="null_current_user_account">Невалиден потребителски акаунт. Това може да е предизвикано от неочаквано поведение.</string>
     <string name="null_user_account">Невалиден потребителски акаунт. Това може да е предизвикано от неочаквано поведение.</string>
     <string name="null_user_account_by_state">Нещо се обърка. URL за потвърждението е неправилен. Моля, проверете URL адреса и опитайте отново.</string>

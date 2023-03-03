@@ -16,10 +16,10 @@
   -->
 
 <resources>
-    <string name="disk_exception"></string>
+    <string name="disk_exception">An unexpected error occurred while accessing the storage.</string>
     <string name="empty"></string>
     <string name="network_error"></string>
-    <string name="network_exception"></string>
+    <string name="network_exception">There was a problem connecting to the network. Please check your internet connection and try again.</string>
     <string name="null_current_user_account">Null user account. This may have been caused by unexpected behavior.</string>
     <string name="null_user_account">Null user account. This may have been caused by unexpected behavior.</string>
     <string name="null_user_account_by_state">The verification URL is incorrect. Please check the URL and try again.</string>

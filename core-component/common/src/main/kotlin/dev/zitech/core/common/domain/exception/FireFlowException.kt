@@ -33,10 +33,24 @@ sealed class FireFlowException(
         val message: String?
     ) : FireFlowException(R.string.network_error, "")
 
-    data class DataException(val throwable: Throwable) : FireFlowException(
-        R.string.network_exception,
-        ""
-    )
+    data class Fatal(
+        val throwable: Throwable,
+        val type: Type
+    ) : FireFlowException(
+        when (type) {
+            Type.DISK -> R.string.disk_exception
+            Type.NETWORK -> R.string.network_exception
+        },
+        when (type) {
+            Type.DISK -> "Disk exception:${throwable.message}"
+            Type.NETWORK -> "Network exception:${throwable.message}"
+        }
+    ) {
+        enum class Type {
+            DISK,
+            NETWORK
+        }
+    }
 
     object NullCurrentUserAccount : FireFlowException(
         R.string.null_current_user_account,
