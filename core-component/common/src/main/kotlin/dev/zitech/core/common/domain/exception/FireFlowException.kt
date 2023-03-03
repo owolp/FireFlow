@@ -26,7 +26,6 @@ sealed class FireFlowException(
     val debugMessage: String
 ) {
     // TODO: To be removed
-    @Suppress("ForbiddenComment")
     object Legacy : FireFlowException(R.string.empty, "")
 
     data class DataError(
@@ -40,7 +39,20 @@ sealed class FireFlowException(
     )
 
     object NullCurrentUserAccount : FireFlowException(R.string.null_current_user_account, "")
-    object NullUserAccount : FireFlowException(R.string.null_current_user_account, "")
-    object NullUserAccountByState : FireFlowException(R.string.null_user_account_by_state, "")
-    object TokenExpired : FireFlowException(R.string.token_expired, "")
+    object NullUserAccount : FireFlowException(
+        R.string.null_user_account,
+        "Null user account"
+    )
+
+    object NullUserAccountByState : FireFlowException(
+        R.string.null_user_account_by_state,
+        "Null user account by state"
+    )
+
+    data class TokenRefreshFailed(
+        val message: String?
+    ) : FireFlowException(
+        R.string.token_expired,
+        "message=$message"
+    )
 }

@@ -65,7 +65,7 @@ fun <T : Any, R : Any> NetworkResult<T>.mapToDataResult(
 
 fun getFireFlowException(statusCode: StatusCode, message: String?): FireFlowException =
     when (statusCode) {
-        StatusCode.Unauthorized -> FireFlowException.TokenExpired
+        StatusCode.Unauthorized -> FireFlowException.TokenRefreshFailed(message)
         else -> FireFlowException.DataError(statusCode, message)
     }
 
