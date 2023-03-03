@@ -26,6 +26,7 @@ import dev.zitech.core.persistence.data.source.UserAccountSource
 import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.framework.database.dao.UserAccountDao
 import dev.zitech.core.persistence.framework.database.entity.UserAccountEntity
+import dev.zitech.core.persistence.framework.database.handleDb
 import dev.zitech.core.persistence.framework.database.mapper.UserAccountMapper
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
@@ -72,8 +73,8 @@ internal class UserAccountDatabaseSource @Inject constructor(
         isCurrentUserAccount: Boolean,
         serverAddress: String,
         state: String
-    ): DataResult<Long> = try {
-        val userAccountId = userAccountDao.saveUserAccount(
+    ): DataResult<Long> = handleDb {
+        userAccountDao.saveUserAccount(
             UserAccountEntity(
                 clientId = clientId,
                 clientSecret = clientSecret,
@@ -82,25 +83,15 @@ internal class UserAccountDatabaseSource @Inject constructor(
                 state = state
             )
         )
-        DataSuccess(userAccountId)
-    } catch (throwable: Throwable) {
-        DataError(FireFlowException.Fatal(throwable, DISK))
     }
 
     override suspend fun removeUserAccountsWithStateAndWithoutAccessToken(): DataResult<Unit> =
-        try {
+        handleDb {
             userAccountDao.removeUserAccountsWithStateAndWithoutAccessToken()
-            DataSuccess(Unit)
-        } catch (throwable: Throwable) {
-            DataError(FireFlowException.Fatal(throwable, DISK))
         }
 
     override suspend fun updateUserAccount(userAccount: UserAccount): DataResult<Int> =
-        try {
-            DataSuccess(
-                userAccountDao.updateUserAccount(userAccountMapper.toEntity(userAccount))
-            )
-        } catch (throwable: Throwable) {
-            DataError(FireFlowException.Fatal(throwable, DISK))
+        handleDb {
+            userAccountDao.updateUserAccount(userAccountMapper.toEntity(userAccount))
         }
 }
