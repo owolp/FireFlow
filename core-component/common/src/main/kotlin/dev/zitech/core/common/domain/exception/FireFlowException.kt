@@ -27,13 +27,6 @@ sealed class FireFlowException(
     // TODO: To be removed
     object Legacy : FireFlowException(R.string.empty, "")
 
-    data class UserVisible(
-        private val message: String?
-    ) : FireFlowException(
-        R.string.empty,
-        message.orEmpty()
-    )
-
     data class Fatal(
         val throwable: Throwable,
         private val type: Type
@@ -73,5 +66,12 @@ sealed class FireFlowException(
     ) : FireFlowException(
         R.string.token_expired,
         "message=$message"
+    )
+
+    data class UserVisible(
+        private val message: String?
+    ) : FireFlowException(
+        R.string.empty,
+        message.orEmpty()
     )
 }
