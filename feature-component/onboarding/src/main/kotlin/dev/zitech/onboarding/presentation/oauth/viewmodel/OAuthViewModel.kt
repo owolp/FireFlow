@@ -195,15 +195,18 @@ internal class OAuthViewModel @Inject constructor(
             }.onError { exception ->
                 stateHandler.setLoading(false)
                 when (exception) {
-                    is FireFlowException.NullUserAccountByState ->
-                        stateHandler.setEvent(ShowError(exception.uiResId))
+                    is FireFlowException.NullUserAccountByState -> {
+                        Logger.e(tag, exception.debugMessage)
+                        stateHandler.setEvent(NavigateToError(exception))
+                    }
                     is FireFlowException.DataException -> {
                         Logger.e(tag, throwable = exception.throwable)
                         stateHandler.setEvent(NavigateToError(exception))
                     }
-                    is FireFlowException.DataError ->
+                    else -> {
+                        Logger.e(tag, exception.debugMessage)
                         stateHandler.setEvent(ShowError(exception.uiResId))
-                    else -> Logger.e(tag, exception.debugMessage)
+                    }
                 }
             }
     }
@@ -234,25 +237,32 @@ internal class OAuthViewModel @Inject constructor(
         token: Token,
         code: String
     ) {
-        when (
-            val result = updateUserAccountUseCase(
-                userAccount.copy(
-                    accessToken = token.accessToken,
-                    isCurrentUserAccount = true,
-                    oauthCode = code,
-                    refreshToken = token.refreshToken,
-                    state = null
-                )
+        updateUserAccountUseCase(
+            userAccount.copy(
+                accessToken = token.accessToken,
+                isCurrentUserAccount = true,
+                oauthCode = code,
+                refreshToken = token.refreshToken,
+                state = null
             )
-        ) {
-            is LegacyDataResult.Success -> {
-                stateHandler.setLoading(false)
-                stateHandler.setEvent(NavigateToDashboard)
-            }
-            is LegacyDataResult.Error -> {
-                Logger.e(tag, exception = result.cause)
-                stateHandler.setLoading(false)
-                stateHandler.setEvent(NavigateToError(FireFlowException.Legacy))
+        ).onSuccess {
+            stateHandler.setLoading(false)
+            stateHandler.setEvent(NavigateToDashboard)
+        }.onError { exception ->
+            stateHandler.setLoading(false)
+            when (exception) {
+                is FireFlowException.NullUserAccount -> {
+                    Logger.e(tag, exception.debugMessage)
+                    stateHandler.setEvent(NavigateToError(exception))
+                }
+                is FireFlowException.DataException -> {
+                    Logger.e(tag, throwable = exception.throwable)
+                    stateHandler.setEvent(NavigateToError(exception))
+                }
+                else -> {
+                    Logger.e(tag, exception.debugMessage)
+                    stateHandler.setEvent(ShowError(exception.uiResId))
+                }
             }
         }
     }

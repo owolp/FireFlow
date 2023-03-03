@@ -18,14 +18,13 @@
 package dev.zitech.core.persistence.data.repository.database
 
 import dev.zitech.core.common.domain.cache.InMemoryCache
+import dev.zitech.core.common.domain.exception.FireFlowException
 import dev.zitech.core.common.domain.model.DataError
 import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.common.domain.model.DataSuccess
-import dev.zitech.core.common.domain.model.LegacyDataResult
 import dev.zitech.core.persistence.data.source.UserAccountSource
 import dev.zitech.core.persistence.domain.model.cache.NetworkDetails
 import dev.zitech.core.persistence.domain.model.database.UserAccount
-import dev.zitech.core.persistence.domain.model.exception.NullUserAccountException
 import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
@@ -91,15 +90,19 @@ internal class UserAccountRepositoryImpl @Inject constructor(
     override suspend fun removeStaleUserAccounts(): DataResult<Unit> =
         userAccountDatabaseSource.removeUserAccountsWithStateAndWithoutAccessToken()
 
-    override suspend fun updateUserAccount(userAccount: UserAccount): LegacyDataResult<Unit> =
-        try {
-            val result = userAccountDatabaseSource.updateUserAccount(userAccount)
-            if (result != 0) {
-                LegacyDataResult.Success(Unit)
-            } else {
-                LegacyDataResult.Error(cause = NullUserAccountException)
+    override suspend fun updateUserAccount(userAccount: UserAccount): DataResult<Unit> =
+        when (
+            val updateUserAccountResult = userAccountDatabaseSource.updateUserAccount(
+                userAccount
+            )
+        ) {
+            is DataSuccess -> {
+                if (updateUserAccountResult.data != 0) {
+                    DataSuccess(Unit)
+                } else {
+                    DataError(FireFlowException.NullUserAccount)
+                }
             }
-        } catch (exception: Exception) {
-            LegacyDataResult.Error(cause = exception)
+            is DataError -> DataError(updateUserAccountResult.fireFlowException)
         }
 }

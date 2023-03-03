@@ -18,7 +18,6 @@
 package dev.zitech.core.persistence.domain.repository.database
 
 import dev.zitech.core.common.domain.model.DataResult
-import dev.zitech.core.common.domain.model.LegacyDataResult
 import dev.zitech.core.persistence.domain.model.database.UserAccount
 import kotlinx.coroutines.flow.Flow
 
@@ -36,5 +35,5 @@ interface UserAccountRepository {
     ): DataResult<Long>
 
     suspend fun removeStaleUserAccounts(): DataResult<Unit>
-    suspend fun updateUserAccount(userAccount: UserAccount): LegacyDataResult<Unit>
+    suspend fun updateUserAccount(userAccount: UserAccount): DataResult<Unit>
 }

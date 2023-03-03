@@ -40,6 +40,7 @@ sealed class FireFlowException(
     )
 
     object NullCurrentUserAccount : FireFlowException(R.string.null_current_user_account, "")
+    object NullUserAccount : FireFlowException(R.string.null_current_user_account, "")
     object NullUserAccountByState : FireFlowException(R.string.null_user_account_by_state, "")
     object TokenExpired : FireFlowException(R.string.token_expired, "")
 }

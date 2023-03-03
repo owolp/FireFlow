@@ -35,5 +35,5 @@ internal interface UserAccountSource {
         state: String
     ): DataResult<Long>
 
-    suspend fun updateUserAccount(userAccount: UserAccount): Int
+    suspend fun updateUserAccount(userAccount: UserAccount): DataResult<Int>
 }

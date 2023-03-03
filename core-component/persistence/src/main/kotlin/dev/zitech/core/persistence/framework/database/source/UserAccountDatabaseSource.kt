@@ -94,6 +94,12 @@ internal class UserAccountDatabaseSource @Inject constructor(
             DataError(FireFlowException.DataException(throwable))
         }
 
-    override suspend fun updateUserAccount(userAccount: UserAccount): Int =
-        userAccountDao.updateUserAccount(userAccountMapper.toEntity(userAccount))
+    override suspend fun updateUserAccount(userAccount: UserAccount): DataResult<Int> =
+        try {
+            DataSuccess(
+                userAccountDao.updateUserAccount(userAccountMapper.toEntity(userAccount))
+            )
+        } catch (throwable: Throwable) {
+            DataError(FireFlowException.DataException(throwable))
+        }
 }

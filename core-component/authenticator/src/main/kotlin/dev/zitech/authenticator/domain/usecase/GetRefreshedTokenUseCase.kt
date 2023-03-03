@@ -19,9 +19,12 @@ package dev.zitech.authenticator.domain.usecase
 
 import dev.zitech.authenticator.domain.model.Token
 import dev.zitech.authenticator.domain.repository.TokenRepository
+import dev.zitech.core.common.domain.exception.FireFlowException
+import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.domain.model.DataError
 import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.common.domain.model.DataSuccess
+import dev.zitech.core.common.domain.model.onError
 import dev.zitech.core.persistence.domain.usecase.database.GetCurrentUserAccountUseCase
 import dev.zitech.core.persistence.domain.usecase.database.UpdateUserAccountUseCase
 import javax.inject.Inject
@@ -32,6 +35,8 @@ internal class GetRefreshedTokenUseCase @Inject constructor(
     private val updateUserAccountUseCase: UpdateUserAccountUseCase,
     private val tokenRepository: TokenRepository
 ) {
+
+    private val tag = Logger.tag(this::class.java)
 
     suspend operator fun invoke(): DataResult<Token> =
         when (val currentUserAccountResult = getCurrentUserAccountUseCase().first()) {
@@ -51,7 +56,14 @@ internal class GetRefreshedTokenUseCase @Inject constructor(
                                 accessToken = refreshedToken.accessToken,
                                 refreshToken = refreshedToken.refreshToken
                             )
-                        )
+                        ).onError { exception ->
+                            when (exception) {
+                                is FireFlowException.DataException -> {
+                                    Logger.e(tag, throwable = exception.throwable)
+                                }
+                                else -> Logger.e(tag, exception.debugMessage)
+                            }
+                        }
                         DataSuccess(refreshedToken)
                     }
                     is DataError -> refreshTokenResult
