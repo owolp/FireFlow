@@ -23,6 +23,7 @@ import dev.zitech.core.common.domain.model.DataError
 import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.common.domain.model.DataSuccess
 
+@Suppress("TooGenericExceptionCaught")
 internal suspend fun <T : Any> handleDb(
     execute: suspend () -> T
 ): DataResult<T> = try {

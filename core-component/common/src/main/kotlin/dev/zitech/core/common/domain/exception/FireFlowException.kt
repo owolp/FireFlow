@@ -25,6 +25,7 @@ sealed class FireFlowException(
     val text: String
 ) {
     // TODO: To be removed
+    @Suppress("ForbiddenComment")
     object Legacy : FireFlowException(R.string.empty, "")
 
     data class Fatal(
