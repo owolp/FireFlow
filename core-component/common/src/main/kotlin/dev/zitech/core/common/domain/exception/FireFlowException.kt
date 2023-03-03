@@ -38,7 +38,11 @@ sealed class FireFlowException(
         ""
     )
 
-    object NullCurrentUserAccount : FireFlowException(R.string.null_current_user_account, "")
+    object NullCurrentUserAccount : FireFlowException(
+        R.string.null_current_user_account,
+        "Null current user account"
+    )
+
     object NullUserAccount : FireFlowException(
         R.string.null_user_account,
         "Null user account"
