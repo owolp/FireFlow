@@ -19,7 +19,9 @@ package dev.zitech.core.persistence.domain.usecase.database
 
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
-import dev.zitech.core.common.domain.model.LegacyDataResult
+import dev.zitech.core.common.domain.exception.FireFlowException
+import dev.zitech.core.common.domain.model.DataError
+import dev.zitech.core.common.domain.model.DataSuccess
 import dev.zitech.core.persistence.domain.model.UserAccountBuilder
 import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
 import io.mockk.coVerify
@@ -45,11 +47,11 @@ internal class GetCurrentUserAccountUseCaseTest {
         val account = UserAccountBuilder().build()
         every {
             userAccountRepository.getCurrentUserAccount()
-        } returns flowOf(LegacyDataResult.Success(account))
+        } returns flowOf(DataSuccess(account))
 
         // Act & Assert
         sut().test {
-            assertThat((awaitItem() as LegacyDataResult.Success).value).isEqualTo(account)
+            assertThat((awaitItem() as DataSuccess).data).isEqualTo(account)
             awaitComplete()
         }
         coVerify { userAccountRepository.getCurrentUserAccount() }
@@ -63,13 +65,14 @@ internal class GetCurrentUserAccountUseCaseTest {
         val userAccountRepository = mockk<UserAccountRepository>()
         val sut = GetCurrentUserAccountUseCase(userAccountRepository)
 
+        val exception = FireFlowException.NullUserAccount
         every {
             userAccountRepository.getCurrentUserAccount()
-        } returns flowOf(LegacyDataResult.Error())
+        } returns flowOf(DataError(exception))
 
         // Act & Assert
         sut().test {
-            assertThat(awaitItem()).isInstanceOf(LegacyDataResult.Error::class.java)
+            assertThat(awaitItem()).isInstanceOf(DataError::class.java)
             awaitComplete()
         }
         coVerify { userAccountRepository.getCurrentUserAccount() }
