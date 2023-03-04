@@ -14,3 +14,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
+package dev.zitech.authenticator.data.source
+
+import dev.zitech.authenticator.domain.model.Token
+import dev.zitech.core.common.domain.model.DataResult
+
+internal interface OAuthSource {
+
+    suspend fun getAccessToken(
+        clientId: String,
+        clientSecret: String,
+        code: String
+    ): DataResult<Token>
+
+    suspend fun getRefreshedToken(
+        clientId: String,
+        clientSecret: String,
+        refreshToken: String
+    ): DataResult<Token>
+}

@@ -14,3 +14,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
+package dev.zitech.core.network.framework.retrofit
+
+import dev.zitech.core.common.domain.model.NetworkResult
+import java.lang.reflect.Type
+import retrofit2.Call
+import retrofit2.CallAdapter
+
+internal class NetworkResultCallAdapter(
+    private val resultType: Type
+) : CallAdapter<Type, Call<NetworkResult<Type>>> {
+
+    override fun responseType(): Type = resultType
+
+    override fun adapt(call: Call<Type>): Call<NetworkResult<Type>> = NetworkResultCall(call)
+}

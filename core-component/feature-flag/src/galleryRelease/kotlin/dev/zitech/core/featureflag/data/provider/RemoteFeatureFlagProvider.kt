@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
 
 package dev.zitech.core.featureflag.data.provider
 
-import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.model.LegacyDataResult
 import dev.zitech.core.featureflag.domain.model.Feature
 import dev.zitech.core.featureflag.domain.provider.FeatureFlagProvider
 import dev.zitech.core.remoteconfig.framework.configurator.RemoteConfigurator
@@ -31,8 +31,8 @@ internal class RemoteFeatureFlagProvider @Inject constructor(
 
     override suspend fun isFeatureEnabled(feature: Feature): Boolean =
         when (val result = remoteConfigurator.getBoolean(feature.key)) {
-            is DataResult.Success -> result.value
-            is DataResult.Error -> feature.defaultValue
+            is LegacyDataResult.Success -> result.value
+            is LegacyDataResult.Error -> feature.defaultValue
         }
 
     override suspend fun hasFeature(feature: Feature): Boolean =

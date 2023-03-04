@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
 
 package dev.zitech.core.remoteconfig.domain.repository
 
-import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.model.LegacyDataResult
 import dev.zitech.core.remoteconfig.domain.model.BooleanConfig
 import dev.zitech.core.remoteconfig.domain.model.DoubleConfig
 import dev.zitech.core.remoteconfig.domain.model.LongConfig
@@ -25,15 +25,15 @@ import dev.zitech.core.remoteconfig.domain.model.StringConfig
 import kotlinx.coroutines.flow.Flow
 
 interface ConfigRepository {
-    fun init(): Flow<DataResult<Unit>>
+    fun init(): Flow<LegacyDataResult<Unit>>
 
     fun getBooleanConfigs(): List<BooleanConfig>
     fun getDoubleConfigs(): List<DoubleConfig>
     fun getLongConfigs(): List<LongConfig>
     fun getStringConfigs(): List<StringConfig>
 
-    suspend fun getBooleanValue(config: BooleanConfig): DataResult<Boolean>
-    suspend fun getDoubleValue(config: DoubleConfig): DataResult<Double>
-    suspend fun getLongValue(config: LongConfig): DataResult<Long>
-    suspend fun getStringValue(config: StringConfig): DataResult<String>
+    suspend fun getBooleanValue(config: BooleanConfig): LegacyDataResult<Boolean>
+    suspend fun getDoubleValue(config: DoubleConfig): LegacyDataResult<Double>
+    suspend fun getLongValue(config: LongConfig): LegacyDataResult<Long>
+    suspend fun getStringValue(config: StringConfig): LegacyDataResult<String>
 }

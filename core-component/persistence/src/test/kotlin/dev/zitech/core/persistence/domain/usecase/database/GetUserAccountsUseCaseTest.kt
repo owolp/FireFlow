@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,8 +19,9 @@ package dev.zitech.core.persistence.domain.usecase.database
 
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
-import dev.zitech.core.common.DataFactory
-import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.exception.FireFlowException
+import dev.zitech.core.common.domain.model.DataError
+import dev.zitech.core.common.domain.model.DataSuccess
 import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -48,14 +49,14 @@ internal class GetUserAccountsUseCaseTest {
     fun success() = runBlocking {
         // Arrange
         coEvery { userAccountRepository.getUserAccounts() } returns flowOf(
-            DataResult.Success(
+            DataSuccess(
                 listOf(mockk(), mockk(), mockk())
             )
         )
 
         // Act & Assert
         sut().test {
-            assertThat((awaitItem() as DataResult.Success).value).hasSize(3)
+            assertThat((awaitItem() as DataSuccess).data).hasSize(3)
             awaitComplete()
 
         }
@@ -67,16 +68,16 @@ internal class GetUserAccountsUseCaseTest {
     @DisplayName("WHEN there is exception THEN return Error")
     fun error() = runBlocking {
         // Arrange
-        val exception = DataFactory.createException()
+        val exception = FireFlowException.NullUserAccount
         coEvery { userAccountRepository.getUserAccounts() } returns flowOf(
-            DataResult.Error(
-                cause = exception
+            DataError(
+                fireFlowException = exception
             )
         )
 
         // Act & Assert
         sut().test {
-            assertThat((awaitItem() as DataResult.Error).cause).isEqualTo(exception)
+            assertThat((awaitItem() as DataError).fireFlowException).isEqualTo(exception)
             awaitComplete()
         }
         coVerify { userAccountRepository.getUserAccounts() }

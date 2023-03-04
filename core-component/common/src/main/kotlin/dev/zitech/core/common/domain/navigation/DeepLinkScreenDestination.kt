@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,10 +17,13 @@
 
 package dev.zitech.core.common.domain.navigation
 
+import dev.zitech.core.common.domain.exception.FireFlowException
+
 sealed class DeepLinkScreenDestination {
     object Accounts : DeepLinkScreenDestination()
     object Current : DeepLinkScreenDestination()
-    object Error : DeepLinkScreenDestination()
+    data class Error(val exception: FireFlowException) : DeepLinkScreenDestination()
+
     object Init : DeepLinkScreenDestination()
     object Welcome : DeepLinkScreenDestination()
 }

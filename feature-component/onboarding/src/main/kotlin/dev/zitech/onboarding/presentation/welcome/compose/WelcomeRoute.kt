@@ -23,9 +23,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.coroutineScope
+import dev.zitech.core.common.domain.exception.FireFlowException
 import dev.zitech.core.common.framework.browser.Browser
 import dev.zitech.ds.molecules.dialog.FireFlowDialogs
 import dev.zitech.ds.molecules.snackbar.BottomNotifierMessage
@@ -59,7 +61,7 @@ internal fun WelcomeRoute(
     navigateToPat: () -> Unit,
     navigateToDemo: () -> Unit,
     navigateOutOfApp: () -> Unit,
-    navigateToError: () -> Unit,
+    navigateToError: (exception: FireFlowException) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: WelcomeViewModel = hiltViewModel()
 ) {
@@ -85,8 +87,8 @@ internal fun WelcomeRoute(
             navigateOutOfApp()
             viewModel.sendIntent(NavigationHandled)
         }
-        NavigateToError -> {
-            navigateToError()
+        is NavigateToError -> {
+            navigateToError(event.exception)
             viewModel.sendIntent(NavigationHandled)
         }
         is NavigateToFirefly -> {
@@ -110,7 +112,7 @@ internal fun WelcomeRoute(
         is ShowError -> {
             snackbarState.showMessage(
                 BottomNotifierMessage(
-                    text = event.message,
+                    text = stringResource(event.messageResId),
                     state = BottomNotifierMessage.State.ERROR,
                     duration = BottomNotifierMessage.Duration.SHORT
                 )

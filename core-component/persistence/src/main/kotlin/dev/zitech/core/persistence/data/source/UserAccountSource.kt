@@ -15,24 +15,25 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.persistence.domain.source.database
+package dev.zitech.core.persistence.data.source
 
+import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.persistence.domain.model.database.UserAccount
 import kotlinx.coroutines.flow.Flow
 
-internal interface UserAccountDatabaseSource {
+internal interface UserAccountSource {
 
-    suspend fun getUserAccountByStateOrNull(state: String): UserAccount?
-    fun getUserAccounts(): Flow<List<UserAccount>>
-    fun getCurrentUserAccountOrNull(): Flow<UserAccount?>
-    suspend fun removeUserAccountsWithStateAndWithoutAccessToken()
+    suspend fun getUserAccountByState(state: String): DataResult<UserAccount>
+    fun getUserAccounts(): Flow<DataResult<List<UserAccount>>>
+    fun getCurrentUserAccount(): Flow<DataResult<UserAccount>>
+    suspend fun removeUserAccountsWithStateAndWithoutAccessToken(): DataResult<Unit>
     suspend fun saveUserAccount(
         clientId: String,
         clientSecret: String,
         isCurrentUserAccount: Boolean,
         serverAddress: String,
         state: String
-    ): Long
+    ): DataResult<Long>
 
-    suspend fun updateUserAccount(userAccount: UserAccount): Int
+    suspend fun updateUserAccount(userAccount: UserAccount): DataResult<Int>
 }

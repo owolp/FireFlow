@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,21 +17,21 @@
 
 package dev.zitech.core.remoteconfig.framework.configurator
 
-import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.model.LegacyDataResult
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
 internal class RemoteConfiguratorImpl @Inject constructor() : RemoteConfigurator {
 
-    override fun init(): Flow<DataResult<Unit>> =
-        flowOf(DataResult.Error())
+    override fun init(): Flow<LegacyDataResult<Unit>> =
+        flowOf(LegacyDataResult.Error())
 
-    override fun getString(key: String): DataResult<String> = DataResult.Error()
+    override fun getString(key: String): LegacyDataResult<String> = LegacyDataResult.Error()
 
-    override fun getBoolean(key: String): DataResult<Boolean> = DataResult.Error()
+    override fun getBoolean(key: String): LegacyDataResult<Boolean> = LegacyDataResult.Error()
 
-    override fun getDouble(key: String): DataResult<Double> = DataResult.Error()
+    override fun getDouble(key: String): LegacyDataResult<Double> = LegacyDataResult.Error()
 
-    override fun getLong(key: String): DataResult<Long> = DataResult.Error()
+    override fun getLong(key: String): LegacyDataResult<Long> = LegacyDataResult.Error()
 }

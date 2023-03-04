@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,8 +22,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import dev.zitech.core.common.domain.exception.FireFlowException
 import dev.zitech.core.common.domain.navigation.DeepLinkScreenDestination
 import dev.zitech.core.common.domain.navigation.LogInState
 import dev.zitech.ds.atoms.loading.FireFlowProgressIndicators
@@ -54,7 +56,7 @@ internal fun SettingsRoute(
     modifier: Modifier = Modifier,
     viewModel: SettingsViewModel = hiltViewModel(),
     navigateToAccounts: () -> Unit,
-    navigateToError: () -> Unit,
+    navigateToError: (exception: FireFlowException) -> Unit,
     navigateToWelcome: () -> Unit,
     restartApplication: () -> Unit
 ) {
@@ -95,9 +97,10 @@ internal fun SettingsRoute(
         }
         is LogInState.NotLogged -> {
             LaunchedEffect(Unit) {
-                when (state.destination) {
+                when (val destination = state.destination) {
                     DeepLinkScreenDestination.Accounts -> navigateToAccounts()
-                    DeepLinkScreenDestination.Error -> navigateToError()
+                    is DeepLinkScreenDestination.Error ->
+                        navigateToError(destination.exception)
                     DeepLinkScreenDestination.Welcome -> navigateToWelcome()
                     DeepLinkScreenDestination.Current,
                     DeepLinkScreenDestination.Init -> {
@@ -112,7 +115,7 @@ internal fun SettingsRoute(
         is ShowError -> {
             snackbarState.showMessage(
                 BottomNotifierMessage(
-                    text = event.message,
+                    text = stringResource(event.messageResId),
                     state = BottomNotifierMessage.State.ERROR,
                     duration = BottomNotifierMessage.Duration.SHORT,
                     action = BottomNotifierMessage.Action(

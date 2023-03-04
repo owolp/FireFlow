@@ -15,12 +15,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.authenticator.framework.interceptor
+package dev.zitech.authenticator.framework.remote.interceptor
 
-import dev.zitech.authenticator.framework.HEADER_ACCEPT_KEY
-import dev.zitech.authenticator.framework.HEADER_ACCEPT_VALUE
-import dev.zitech.authenticator.framework.HEADER_AUTHORIZATION_KEY
-import dev.zitech.authenticator.framework.HEADER_AUTHORIZATION_VALUE
+import dev.zitech.authenticator.framework.remote.HEADER_ACCEPT_KEY
+import dev.zitech.authenticator.framework.remote.HEADER_ACCEPT_VALUE
+import dev.zitech.authenticator.framework.remote.HEADER_AUTHORIZATION_KEY
+import dev.zitech.authenticator.framework.remote.HEADER_AUTHORIZATION_VALUE
 import dev.zitech.core.persistence.domain.usecase.database.GetCurrentUserAccountAccessTokenUseCase
 import javax.inject.Inject
 import kotlinx.coroutines.runBlocking

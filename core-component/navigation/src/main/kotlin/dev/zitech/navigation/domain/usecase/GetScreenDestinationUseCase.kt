@@ -17,9 +17,12 @@
 
 package dev.zitech.navigation.domain.usecase
 
-import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.exception.FireFlowException
+import dev.zitech.core.common.domain.model.DataError
+import dev.zitech.core.common.domain.model.DataSuccess
+import dev.zitech.core.common.domain.model.onError
+import dev.zitech.core.common.domain.model.onSuccess
 import dev.zitech.core.common.domain.navigation.DeepLinkScreenDestination
-import dev.zitech.core.persistence.domain.model.exception.NullCurrentUserAccountException
 import dev.zitech.core.persistence.domain.usecase.database.GetCurrentUserAccountUseCase
 import dev.zitech.core.persistence.domain.usecase.database.GetUserAccountsUseCase
 import javax.inject.Inject
@@ -39,13 +42,13 @@ class GetScreenDestinationUseCase @Inject constructor(
         getCurrentUserAccountUseCase()
             .onEach { result ->
                 when (result) {
-                    is DataResult.Success -> send(DeepLinkScreenDestination.Current)
-                    is DataResult.Error -> {
-                        when (result.cause) {
-                            NullCurrentUserAccountException -> {
+                    is DataSuccess -> send(DeepLinkScreenDestination.Current)
+                    is DataError -> {
+                        when (result.fireFlowException) {
+                            is FireFlowException.NullCurrentUserAccount -> {
                                 handleNullCurrentUserAccount()
                             }
-                            else -> send(DeepLinkScreenDestination.Error)
+                            else -> send(DeepLinkScreenDestination.Error(result.fireFlowException))
                         }
                     }
                 }
@@ -53,15 +56,16 @@ class GetScreenDestinationUseCase @Inject constructor(
     }
 
     private suspend fun ProducerScope<DeepLinkScreenDestination>.handleNullCurrentUserAccount() {
-        when (val result = getUserAccountsUseCase().first()) {
-            is DataResult.Success -> {
-                if (result.value.isNotEmpty()) {
+        getUserAccountsUseCase().first()
+            .onSuccess { userAccounts ->
+                if (userAccounts.isNotEmpty()) {
                     send(DeepLinkScreenDestination.Accounts)
                 } else {
                     send(DeepLinkScreenDestination.Welcome)
                 }
             }
-            is DataResult.Error -> send(DeepLinkScreenDestination.Error)
-        }
+            .onError { exception ->
+                send(DeepLinkScreenDestination.Error(exception))
+            }
     }
 }

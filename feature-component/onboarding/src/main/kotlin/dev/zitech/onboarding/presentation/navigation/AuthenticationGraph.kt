@@ -22,6 +22,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
+import dev.zitech.core.common.domain.exception.FireFlowException
 import dev.zitech.onboarding.BuildConfig
 import dev.zitech.onboarding.presentation.oauth.compose.OAuthRoute
 import dev.zitech.onboarding.presentation.oauth.model.OAuthAuthentication
@@ -35,7 +36,7 @@ fun NavGraphBuilder.onboardingGraph(
     navigateToDemo: () -> Unit,
     navigateToDashboard: () -> Unit,
     navigateOutOfApp: () -> Unit,
-    navigateToError: () -> Unit,
+    navigateToError: (exception: FireFlowException) -> Unit,
     navigateBack: () -> Unit
 ) {
     composable(

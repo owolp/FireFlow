@@ -21,6 +21,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.zitech.core.common.domain.logger.Logger
+import dev.zitech.core.common.domain.model.onError
+import dev.zitech.core.common.domain.model.onException
+import dev.zitech.core.common.domain.model.onSuccess
 import dev.zitech.core.common.domain.navigation.LogInState
 import dev.zitech.core.common.presentation.architecture.DeepLinkViewModel
 import dev.zitech.core.common.presentation.architecture.MviViewModel
@@ -52,8 +55,14 @@ internal class DashboardViewModel @Inject constructor(
     override fun sendIntent(intent: DashboardIntent) {
         if (intent is DoDevJob) {
             viewModelScope.launch {
-                val user = aboutService.get().getUser()
-                Logger.d(tag, user.toString())
+                aboutService.get().getUser()
+                    .onSuccess {
+                        Logger.d(tag, it.toString())
+                    }.onError { statusCode, message ->
+                        Logger.e(tag, statusCode.code.toString() + " " + message)
+                    }.onException {
+                        Logger.e(tag, it)
+                    }
             }
         }
     }

@@ -26,9 +26,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.coroutineScope
+import dev.zitech.core.common.domain.exception.FireFlowException
 import dev.zitech.core.common.framework.browser.Browser
 import dev.zitech.ds.molecules.snackbar.BottomNotifierMessage
 import dev.zitech.ds.molecules.snackbar.rememberSnackbarState
@@ -58,7 +60,7 @@ internal fun OAuthRoute(
     oauthAuthentication: OAuthAuthentication,
     navigateToDashboard: () -> Unit,
     navigateBack: () -> Unit,
-    navigateToError: () -> Unit,
+    navigateToError: (exception: FireFlowException) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: OAuthViewModel = hiltViewModel()
 ) {
@@ -84,8 +86,8 @@ internal fun OAuthRoute(
             navigateBack()
             viewModel.sendIntent(NavigationHandled)
         }
-        NavigateToError -> {
-            navigateToError()
+        is NavigateToError -> {
+            navigateToError(event.exception)
             viewModel.sendIntent(NavigationHandled)
         }
         is NavigateToFirefly -> {
@@ -102,7 +104,8 @@ internal fun OAuthRoute(
         is ShowError -> {
             snackbarState.showMessage(
                 BottomNotifierMessage(
-                    text = event.message,
+                    text = event.messageResId?.let { stringResource(it) }
+                        ?: event.text.orEmpty(),
                     state = BottomNotifierMessage.State.ERROR,
                     duration = BottomNotifierMessage.Duration.SHORT
                 )

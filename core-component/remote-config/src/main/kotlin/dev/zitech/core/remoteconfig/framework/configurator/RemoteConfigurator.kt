@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,14 +17,14 @@
 
 package dev.zitech.core.remoteconfig.framework.configurator
 
-import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.model.LegacyDataResult
 import kotlinx.coroutines.flow.Flow
 
 interface RemoteConfigurator {
 
-    fun init(): Flow<DataResult<Unit>>
-    fun getBoolean(key: String): DataResult<Boolean>
-    fun getDouble(key: String): DataResult<Double>
-    fun getLong(key: String): DataResult<Long>
-    fun getString(key: String): DataResult<String>
+    fun init(): Flow<LegacyDataResult<Unit>>
+    fun getBoolean(key: String): LegacyDataResult<Boolean>
+    fun getDouble(key: String): LegacyDataResult<Double>
+    fun getLong(key: String): LegacyDataResult<Long>
+    fun getString(key: String): LegacyDataResult<String>
 }
