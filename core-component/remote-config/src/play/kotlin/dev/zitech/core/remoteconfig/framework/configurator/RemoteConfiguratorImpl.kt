@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@ import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import dev.zitech.core.common.domain.applicationconfig.AppConfigProvider
 import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.domain.model.BuildMode
-import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.model.LegacyDataResult
 import dev.zitech.core.remoteconfig.domain.usecase.GetDefaultConfigValuesUseCase
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -66,7 +66,7 @@ internal class RemoteConfiguratorImpl @Inject constructor(
                         logInfo("Fetch and Activated completed")
 
                         if (!isClosedForSend) {
-                            trySend(DataResult.Success(Unit))
+                            trySend(LegacyDataResult.Success(Unit))
                         } else {
                             logError("fetchAndActivate addOnSuccessListener isClosedForSend=true")
                         }
@@ -77,7 +77,7 @@ internal class RemoteConfiguratorImpl @Inject constructor(
                         logError("Failed to Fetch and Activate remote config")
 
                         if (!isClosedForSend) {
-                            trySend(DataResult.Error())
+                            trySend(LegacyDataResult.Error())
                         } else {
                             logError("fetchAndActivate addOnFailureListener isClosedForSend=true")
                         }
@@ -89,7 +89,7 @@ internal class RemoteConfiguratorImpl @Inject constructor(
                 logError("Failed to set default value to remote config")
 
                 if (!isClosedForSend) {
-                    trySend(DataResult.Error())
+                    trySend(LegacyDataResult.Error())
                 } else {
                     logError("init addOnFailureListener isClosedForSend=true")
                 }
@@ -101,47 +101,47 @@ internal class RemoteConfiguratorImpl @Inject constructor(
     }
 
     @Suppress("TooGenericExceptionCaught")
-    override fun getString(key: String): DataResult<String> =
+    override fun getString(key: String): LegacyDataResult<String> =
         try {
-            DataResult.Success(
+            LegacyDataResult.Success(
                 firebaseRemoteConfig.getString(key)
             )
         } catch (e: Exception) {
             logError("getString $key", e)
-            DataResult.Error()
+            LegacyDataResult.Error()
         }
 
     @Suppress("TooGenericExceptionCaught")
-    override fun getBoolean(key: String): DataResult<Boolean> =
+    override fun getBoolean(key: String): LegacyDataResult<Boolean> =
         try {
-            DataResult.Success(
+            LegacyDataResult.Success(
                 firebaseRemoteConfig.getBoolean(key)
             )
         } catch (e: Exception) {
             logError("getBoolean $key", e)
-            DataResult.Error()
+            LegacyDataResult.Error()
         }
 
     @Suppress("TooGenericExceptionCaught")
-    override fun getDouble(key: String): DataResult<Double> =
+    override fun getDouble(key: String): LegacyDataResult<Double> =
         try {
-            DataResult.Success(
+            LegacyDataResult.Success(
                 firebaseRemoteConfig.getDouble(key)
             )
         } catch (e: Exception) {
             logError("getDouble $key", e)
-            DataResult.Error()
+            LegacyDataResult.Error()
         }
 
     @Suppress("TooGenericExceptionCaught")
-    override fun getLong(key: String): DataResult<Long> =
+    override fun getLong(key: String): LegacyDataResult<Long> =
         try {
-            DataResult.Success(
+            LegacyDataResult.Success(
                 firebaseRemoteConfig.getLong(key)
             )
         } catch (e: Exception) {
             logError("getLong $key", e)
-            DataResult.Error()
+            LegacyDataResult.Error()
         }
 
     private fun logInfo(infoMessage: String) {

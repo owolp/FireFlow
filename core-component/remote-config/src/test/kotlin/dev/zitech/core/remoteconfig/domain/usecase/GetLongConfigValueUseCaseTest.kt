@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@ package dev.zitech.core.remoteconfig.domain.usecase
 
 import com.google.common.truth.Truth.assertThat
 import dev.zitech.core.common.DataFactory
-import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.model.LegacyDataResult
 import dev.zitech.core.remoteconfig.data.repository.ConfigRepositoryImpl
 import dev.zitech.core.remoteconfig.domain.model.LongConfig
 import dev.zitech.core.remoteconfig.framework.source.FakeConfigProviderSource
@@ -34,7 +34,7 @@ internal class GetLongConfigValueUseCaseTest {
         // Arrange
         val expectedResult = DataFactory.createRandomLong()
         val fakeConfigProviderSource = FakeConfigProviderSource()
-        fakeConfigProviderSource.longResult = DataResult.Success(expectedResult)
+        fakeConfigProviderSource.longResult = LegacyDataResult.Success(expectedResult)
         val configRepository = ConfigRepositoryImpl(fakeConfigProviderSource)
         val sut = GetLongConfigValueUseCase(configRepository)
 

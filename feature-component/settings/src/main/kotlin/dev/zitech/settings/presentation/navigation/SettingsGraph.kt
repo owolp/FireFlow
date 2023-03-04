@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,11 +19,12 @@ package dev.zitech.settings.presentation.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import dev.zitech.core.common.domain.exception.FireFlowException
 import dev.zitech.settings.presentation.settings.compose.SettingsRoute
 
 fun NavGraphBuilder.settingsGraph(
     navigateToAccounts: () -> Unit,
-    navigateToError: () -> Unit,
+    navigateToError: (exception: FireFlowException) -> Unit,
     navigateToWelcome: () -> Unit,
     restartApplication: () -> Unit
 ) {

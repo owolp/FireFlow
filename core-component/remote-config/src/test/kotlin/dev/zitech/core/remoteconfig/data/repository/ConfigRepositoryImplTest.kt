@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@ package dev.zitech.core.remoteconfig.data.repository
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import dev.zitech.core.common.DataFactory
-import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.model.LegacyDataResult
 import dev.zitech.core.remoteconfig.domain.model.BooleanConfig
 import dev.zitech.core.remoteconfig.domain.model.DoubleConfig
 import dev.zitech.core.remoteconfig.domain.model.LongConfig
@@ -48,11 +48,11 @@ internal class ConfigRepositoryImplTest {
     @Test
     fun init() = runBlocking {
         // Arrange
-        fakeConfigProviderSource.initResult = DataResult.Success(Unit)
+        fakeConfigProviderSource.initResult = LegacyDataResult.Success(Unit)
 
         // Act & Assert
         sut.init().test {
-            assertThat(awaitItem()).isEqualTo(DataResult.Success(Unit))
+            assertThat(awaitItem()).isEqualTo(LegacyDataResult.Success(Unit))
             awaitComplete()
         }
     }
@@ -97,51 +97,51 @@ internal class ConfigRepositoryImplTest {
     fun getBooleanValue() = runBlocking {
         // Arrange
         val expectedResult = DataFactory.createRandomBoolean()
-        fakeConfigProviderSource.booleanResult = DataResult.Success(expectedResult)
+        fakeConfigProviderSource.booleanResult = LegacyDataResult.Success(expectedResult)
 
         // Act
         val result = sut.getBooleanValue(mockkClass(BooleanConfig::class))
 
         // Assert
-        assertThat((result as DataResult.Success).value).isEqualTo(expectedResult)
+        assertThat((result as LegacyDataResult.Success).value).isEqualTo(expectedResult)
     }
 
     @Test
     fun getDoubleValue() = runBlocking {
         // Arrange
         val expectedResult = DataFactory.createRandomDouble()
-        fakeConfigProviderSource.doubleResult = DataResult.Success(expectedResult)
+        fakeConfigProviderSource.doubleResult = LegacyDataResult.Success(expectedResult)
 
         // Act
         val result = sut.getDoubleValue(mockkClass(DoubleConfig::class))
 
         // Assert
-        assertThat((result as DataResult.Success).value).isEqualTo(expectedResult)
+        assertThat((result as LegacyDataResult.Success).value).isEqualTo(expectedResult)
     }
 
     @Test
     fun getLongValue() = runBlocking {
         // Arrange
         val expectedResult = DataFactory.createRandomLong()
-        fakeConfigProviderSource.longResult = DataResult.Success(expectedResult)
+        fakeConfigProviderSource.longResult = LegacyDataResult.Success(expectedResult)
 
         // Act
         val result = sut.getLongValue(mockkClass(LongConfig::class))
 
         // Assert
-        assertThat((result as DataResult.Success).value).isEqualTo(expectedResult)
+        assertThat((result as LegacyDataResult.Success).value).isEqualTo(expectedResult)
     }
 
     @Test
     fun getStringValue() = runBlocking {
         // Arrange
         val expectedResult = DataFactory.createRandomString()
-        fakeConfigProviderSource.stringResult = DataResult.Success(expectedResult)
+        fakeConfigProviderSource.stringResult = LegacyDataResult.Success(expectedResult)
 
         // Act
         val result = sut.getStringValue(mockkClass(StringConfig::class))
 
         // Assert
-        assertThat((result as DataResult.Success).value).isEqualTo(expectedResult)
+        assertThat((result as LegacyDataResult.Success).value).isEqualTo(expectedResult)
     }
 }

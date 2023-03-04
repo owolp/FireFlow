@@ -30,10 +30,6 @@ internal class OAuthStringsProvider @Inject constructor(
     fun getNewAccessTokenUrl(serverAddress: String, clientId: String, state: String): String =
         stringsProvider(R.string.firefly_iii_new_access_token_url, serverAddress, clientId, state)
 
-    fun getNoSupportedBrowserInstalled(): String =
+    fun getNoSupportedBrowserInstalled(): Int =
         commonStringsProvider.getNoSupportedBrowserInstalled()
-
-    fun getCodeStateError(): String = stringsProvider(R.string.oauth_error_code_state)
-
-    fun getTokenError(): String = stringsProvider(R.string.oauth_error_token)
 }

@@ -14,3 +14,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
+package dev.zitech.authenticator.framework.remote
+
+internal const val HEADER_AUTHORIZATION_KEY = "Authorization"
+internal const val HEADER_AUTHORIZATION_VALUE = "Bearer"
+internal const val HEADER_ACCEPT_KEY = "Accept"
+internal const val HEADER_ACCEPT_VALUE = "application/json"

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@ package dev.zitech.core.remoteconfig.framework.configurator
 
 import com.huawei.agconnect.remoteconfig.AGConnectConfig
 import dev.zitech.core.common.domain.logger.Logger
-import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.model.LegacyDataResult
 import dev.zitech.core.remoteconfig.domain.usecase.GetDefaultConfigValuesUseCase
 import javax.inject.Inject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -38,7 +38,7 @@ internal class RemoteConfiguratorImpl @Inject constructor(
 
     private val huaweiRemoteConfig = AGConnectConfig.getInstance()
 
-    override fun init(): Flow<DataResult<Unit>> = callbackFlow {
+    override fun init(): Flow<LegacyDataResult<Unit>> = callbackFlow {
         logInfo("Set default values")
         huaweiRemoteConfig
             .applyDefault(getDefaultConfigValuesUseCase())
@@ -52,7 +52,7 @@ internal class RemoteConfiguratorImpl @Inject constructor(
                 logInfo("Applied completed")
 
                 if (!isClosedForSend) {
-                    trySend(DataResult.Success(Unit))
+                    trySend(LegacyDataResult.Success(Unit))
                 } else {
                     logError("fetch addOnSuccessListener isClosedForSend=true")
                 }
@@ -63,7 +63,7 @@ internal class RemoteConfiguratorImpl @Inject constructor(
                 logError("Failed to fetch remote config")
 
                 if (!isClosedForSend) {
-                    trySend(DataResult.Error())
+                    trySend(LegacyDataResult.Error())
                 } else {
                     logError("fetch addOnFailureListener isClosedForSend=true")
                 }
@@ -75,47 +75,47 @@ internal class RemoteConfiguratorImpl @Inject constructor(
     }
 
     @Suppress("TooGenericExceptionCaught")
-    override fun getString(key: String): DataResult<String> =
+    override fun getString(key: String): LegacyDataResult<String> =
         try {
-            DataResult.Success(
+            LegacyDataResult.Success(
                 huaweiRemoteConfig.getValueAsString(key)
             )
         } catch (e: Exception) {
             logError("getString $key", e)
-            DataResult.Error()
+            LegacyDataResult.Error()
         }
 
     @Suppress("TooGenericExceptionCaught")
-    override fun getBoolean(key: String): DataResult<Boolean> =
+    override fun getBoolean(key: String): LegacyDataResult<Boolean> =
         try {
-            DataResult.Success(
+            LegacyDataResult.Success(
                 huaweiRemoteConfig.getValueAsBoolean(key)
             )
         } catch (e: Exception) {
             logError("getBoolean $key", e)
-            DataResult.Error()
+            LegacyDataResult.Error()
         }
 
     @Suppress("TooGenericExceptionCaught")
-    override fun getDouble(key: String): DataResult<Double> =
+    override fun getDouble(key: String): LegacyDataResult<Double> =
         try {
-            DataResult.Success(
+            LegacyDataResult.Success(
                 huaweiRemoteConfig.getValueAsDouble(key)
             )
         } catch (e: Exception) {
             logError("getDouble $key", e)
-            DataResult.Error()
+            LegacyDataResult.Error()
         }
 
     @Suppress("TooGenericExceptionCaught")
-    override fun getLong(key: String): DataResult<Long> =
+    override fun getLong(key: String): LegacyDataResult<Long> =
         try {
-            DataResult.Success(
+            LegacyDataResult.Success(
                 huaweiRemoteConfig.getValueAsLong(key)
             )
         } catch (e: Exception) {
             logError("getLong $key", e)
-            DataResult.Error()
+            LegacyDataResult.Error()
         }
 
     private fun logInfo(infoMessage: String) {

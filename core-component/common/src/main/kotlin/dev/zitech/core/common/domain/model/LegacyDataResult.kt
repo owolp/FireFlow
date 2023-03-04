@@ -15,9 +15,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.authenticator.framework
+package dev.zitech.core.common.domain.model
 
-internal const val HEADER_AUTHORIZATION_KEY = "Authorization"
-internal const val HEADER_AUTHORIZATION_VALUE = "Bearer"
-internal const val HEADER_ACCEPT_KEY = "Accept"
-internal const val HEADER_ACCEPT_VALUE = "application/json"
+@Deprecated("Deprecated", ReplaceWith("DataResult"))
+sealed class LegacyDataResult<out T : Any> {
+    data class Success<out T : Any>(val value: T) : LegacyDataResult<T>()
+    data class Error(
+        val message: String? = null,
+        val cause: Exception? = null
+    ) : LegacyDataResult<Nothing>()
+}

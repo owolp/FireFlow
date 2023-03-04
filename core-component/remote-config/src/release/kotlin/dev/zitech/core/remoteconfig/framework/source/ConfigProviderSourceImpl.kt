@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
 
 package dev.zitech.core.remoteconfig.framework.source
 
-import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.model.LegacyDataResult
 import dev.zitech.core.remoteconfig.domain.model.BooleanConfig
 import dev.zitech.core.remoteconfig.domain.model.DoubleConfig
 import dev.zitech.core.remoteconfig.domain.model.LongConfig
@@ -31,18 +31,18 @@ class ConfigProviderSourceImpl @Inject constructor(
     private val remoteConfigurator: RemoteConfigurator
 ) : ConfigProviderSource {
 
-    override fun init(): Flow<DataResult<Unit>> =
+    override fun init(): Flow<LegacyDataResult<Unit>> =
         remoteConfigurator.init()
 
-    override fun getBoolean(config: BooleanConfig): DataResult<Boolean> =
+    override fun getBoolean(config: BooleanConfig): LegacyDataResult<Boolean> =
         remoteConfigurator.getBoolean(config.key)
 
-    override fun getDouble(config: DoubleConfig): DataResult<Double> =
+    override fun getDouble(config: DoubleConfig): LegacyDataResult<Double> =
         remoteConfigurator.getDouble(config.key)
 
-    override fun getLong(config: LongConfig): DataResult<Long> =
+    override fun getLong(config: LongConfig): LegacyDataResult<Long> =
         remoteConfigurator.getLong(config.key)
 
-    override fun getString(config: StringConfig): DataResult<String> =
+    override fun getString(config: StringConfig): LegacyDataResult<String> =
         remoteConfigurator.getString(config.key)
 }

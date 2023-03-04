@@ -51,7 +51,7 @@ fun logInState(
                 logInState.emit(
                     when (destination) {
                         DeepLinkScreenDestination.Accounts,
-                        DeepLinkScreenDestination.Error,
+                        is DeepLinkScreenDestination.Error,
                         DeepLinkScreenDestination.Welcome ->
                             LogInState.NotLogged(destination)
                         DeepLinkScreenDestination.Current ->

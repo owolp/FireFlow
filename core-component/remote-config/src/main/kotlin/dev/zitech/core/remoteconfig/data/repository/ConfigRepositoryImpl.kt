@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
 
 package dev.zitech.core.remoteconfig.data.repository
 
-import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.model.LegacyDataResult
 import dev.zitech.core.remoteconfig.domain.model.BooleanConfig
 import dev.zitech.core.remoteconfig.domain.model.DoubleConfig
 import dev.zitech.core.remoteconfig.domain.model.LongConfig
@@ -31,7 +31,7 @@ internal class ConfigRepositoryImpl @Inject constructor(
     private val configProviderSource: ConfigProviderSource
 ) : ConfigRepository {
 
-    override fun init(): Flow<DataResult<Unit>> =
+    override fun init(): Flow<LegacyDataResult<Unit>> =
         configProviderSource.init()
 
     override fun getBooleanConfigs(): List<BooleanConfig> =
@@ -46,15 +46,15 @@ internal class ConfigRepositoryImpl @Inject constructor(
     override fun getStringConfigs(): List<StringConfig> =
         StringConfig.values().toList()
 
-    override suspend fun getBooleanValue(config: BooleanConfig): DataResult<Boolean> =
+    override suspend fun getBooleanValue(config: BooleanConfig): LegacyDataResult<Boolean> =
         configProviderSource.getBoolean(config)
 
-    override suspend fun getDoubleValue(config: DoubleConfig): DataResult<Double> =
+    override suspend fun getDoubleValue(config: DoubleConfig): LegacyDataResult<Double> =
         configProviderSource.getDouble(config)
 
-    override suspend fun getLongValue(config: LongConfig): DataResult<Long> =
+    override suspend fun getLongValue(config: LongConfig): LegacyDataResult<Long> =
         configProviderSource.getLong(config)
 
-    override suspend fun getStringValue(config: StringConfig): DataResult<String> =
+    override suspend fun getStringValue(config: StringConfig): LegacyDataResult<String> =
         configProviderSource.getString(config)
 }

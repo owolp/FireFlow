@@ -24,13 +24,15 @@ import dev.zitech.authenticator.domain.model.Token
 import dev.zitech.authenticator.domain.usecase.GetAccessTokenUseCase
 import dev.zitech.core.common.DataFactory
 import dev.zitech.core.common.domain.dispatcher.AppDispatchers
+import dev.zitech.core.common.domain.exception.FireFlowException
 import dev.zitech.core.common.domain.logger.Logger
-import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.model.LegacyDataResult
 import dev.zitech.core.common.domain.model.exception.NoBrowserInstalledException
+import dev.zitech.core.common.domain.model.onError
+import dev.zitech.core.common.domain.model.onSuccess
 import dev.zitech.core.common.presentation.architecture.MviViewModel
 import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.domain.model.database.UserAccount.Companion.STATE_LENGTH
-import dev.zitech.core.persistence.domain.model.exception.NullUserAccountException
 import dev.zitech.core.persistence.domain.usecase.database.GetUserAccountByStateUseCase
 import dev.zitech.core.persistence.domain.usecase.database.SaveUserAccountUseCase
 import dev.zitech.core.persistence.domain.usecase.database.UpdateUserAccountUseCase
@@ -98,33 +100,35 @@ internal class OAuthViewModel @Inject constructor(
             delay(LOADING_DELAY_IN_MILLISECONDS)
             stateHandler.setLoading(true)
         }
-        when (
-            val result = saveUserAccountUseCase(
-                clientId = clientId,
-                clientSecret = clientSecret,
-                isCurrentUserAccount = false,
-                serverAddress = serverAddress,
-                state = state
-            )
-        ) {
-            is DataResult.Success -> {
-                with(stateHandler) {
-                    setEvent(
-                        NavigateToFirefly(
-                            oauthStringsProvider.getNewAccessTokenUrl(
-                                serverAddress,
-                                clientId,
-                                state
-                            )
+        saveUserAccountUseCase(
+            clientId = clientId,
+            clientSecret = clientSecret,
+            isCurrentUserAccount = false,
+            serverAddress = serverAddress,
+            state = state
+        ).onSuccess {
+            with(stateHandler) {
+                setEvent(
+                    NavigateToFirefly(
+                        oauthStringsProvider.getNewAccessTokenUrl(
+                            serverAddress,
+                            clientId,
+                            state
                         )
                     )
-                    setLoading(true)
-                }
+                )
+                setLoading(true)
             }
-            is DataResult.Error -> {
-                Logger.e(tag, exception = result.cause)
-                stateHandler.setLoading(false)
-                stateHandler.setEvent(NavigateToError)
+        }.onError { exception ->
+            stateHandler.setLoading(false)
+            when (exception) {
+                is FireFlowException.Fatal -> {
+                    Logger.e(tag, throwable = exception.throwable)
+                    stateHandler.setEvent(NavigateToError(exception))
+                }
+                is FireFlowException.UserVisible ->
+                    stateHandler.setEvent(ShowError(text = exception.text))
+                else -> Logger.e(tag, exception.text)
             }
         }
     }
@@ -150,20 +154,22 @@ internal class OAuthViewModel @Inject constructor(
         )
     }
 
-    private fun handleNavigatedToFireflyResult(result: DataResult<Unit>) {
+    private fun handleNavigatedToFireflyResult(result: LegacyDataResult<Unit>) {
         when (result) {
-            is DataResult.Success -> stateHandler.resetEvent()
-            is DataResult.Error -> {
+            is LegacyDataResult.Success -> stateHandler.resetEvent()
+            is LegacyDataResult.Error -> {
                 stateHandler.setLoading(false)
                 when (result.cause) {
                     is NoBrowserInstalledException -> {
                         stateHandler.setEvent(
-                            ShowError(oauthStringsProvider.getNoSupportedBrowserInstalled())
+                            ShowError(
+                                messageResId = oauthStringsProvider.getNoSupportedBrowserInstalled()
+                            )
                         )
                     }
                     else -> {
                         Logger.e(tag, exception = result.cause)
-                        stateHandler.setEvent(NavigateToError)
+                        stateHandler.setEvent(NavigateToError(FireFlowException.Legacy))
                     }
                 }
             }
@@ -180,44 +186,50 @@ internal class OAuthViewModel @Inject constructor(
 
     private suspend fun handleScreenOpenedFromDeepLink(state: String, code: String) {
         stateHandler.setLoading(true)
-        when (val result = getUserAccountByStateUseCase(state)) {
-            is DataResult.Success -> {
-                val userAccount = result.value
+        getUserAccountByStateUseCase(state)
+            .onSuccess { userAccount ->
                 with(stateHandler) {
                     setServerAddress(userAccount.serverAddress)
                     setClientId(userAccount.clientId)
                     setClientSecret(userAccount.clientSecret)
                 }
                 retrieveToken(userAccount, code)
-            }
-            is DataResult.Error -> {
+            }.onError { exception ->
                 stateHandler.setLoading(false)
-                if (result.cause is NullUserAccountException) {
-                    stateHandler.setEvent(
-                        ShowError(oauthStringsProvider.getCodeStateError())
-                    )
-                } else {
-                    Logger.e(tag, exception = result.cause)
-                    stateHandler.setEvent(NavigateToError)
+                when (exception) {
+                    is FireFlowException.NullUserAccountByState -> {
+                        Logger.e(tag, exception.text)
+                        stateHandler.setEvent(NavigateToError(exception))
+                    }
+                    is FireFlowException.Fatal -> {
+                        Logger.e(tag, throwable = exception.throwable)
+                        stateHandler.setEvent(NavigateToError(exception))
+                    }
+                    else -> {
+                        Logger.e(tag, exception.text)
+                        stateHandler.setEvent(ShowError(messageResId = exception.uiResId))
+                    }
                 }
             }
-        }
     }
 
     private suspend fun retrieveToken(userAccount: UserAccount, code: String) {
-        when (
-            val result = getAccessTokenUseCase.get()(
-                clientId = userAccount.clientId,
-                clientSecret = userAccount.clientSecret,
-                code = code
-            )
-        ) {
-            is DataResult.Success -> updateUserAccount(userAccount, result.value, code)
-            is DataResult.Error -> {
-                stateHandler.setLoading(false)
-                stateHandler.setEvent(
-                    ShowError(oauthStringsProvider.getTokenError())
-                )
+        getAccessTokenUseCase.get()(
+            clientId = userAccount.clientId,
+            clientSecret = userAccount.clientSecret,
+            code = code
+        ).onSuccess { token ->
+            updateUserAccount(userAccount, token, code)
+        }.onError { exception ->
+            stateHandler.setLoading(false)
+            when (exception) {
+                is FireFlowException.Fatal -> {
+                    Logger.e(tag, throwable = exception.throwable)
+                    stateHandler.setEvent(NavigateToError(exception))
+                }
+                is FireFlowException.UserVisible ->
+                    stateHandler.setEvent(ShowError(text = exception.text))
+                else -> Logger.e(tag, exception.text)
             }
         }
     }
@@ -227,25 +239,32 @@ internal class OAuthViewModel @Inject constructor(
         token: Token,
         code: String
     ) {
-        when (
-            val result = updateUserAccountUseCase(
-                userAccount.copy(
-                    accessToken = token.accessToken,
-                    isCurrentUserAccount = true,
-                    oauthCode = code,
-                    refreshToken = token.refreshToken,
-                    state = null
-                )
+        updateUserAccountUseCase(
+            userAccount.copy(
+                accessToken = token.accessToken,
+                isCurrentUserAccount = true,
+                oauthCode = code,
+                refreshToken = token.refreshToken,
+                state = null
             )
-        ) {
-            is DataResult.Success -> {
-                stateHandler.setLoading(false)
-                stateHandler.setEvent(NavigateToDashboard)
-            }
-            is DataResult.Error -> {
-                Logger.e(tag, exception = result.cause)
-                stateHandler.setLoading(false)
-                stateHandler.setEvent(NavigateToError)
+        ).onSuccess {
+            stateHandler.setLoading(false)
+            stateHandler.setEvent(NavigateToDashboard)
+        }.onError { exception ->
+            stateHandler.setLoading(false)
+            when (exception) {
+                is FireFlowException.NullUserAccount -> {
+                    Logger.e(tag, exception.text)
+                    stateHandler.setEvent(NavigateToError(exception))
+                }
+                is FireFlowException.Fatal -> {
+                    Logger.e(tag, throwable = exception.throwable)
+                    stateHandler.setEvent(NavigateToError(exception))
+                }
+                else -> {
+                    Logger.e(tag, exception.text)
+                    stateHandler.setEvent(ShowError(messageResId = exception.uiResId))
+                }
             }
         }
     }

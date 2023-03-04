@@ -15,54 +15,40 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.authenticator.data.remote.source
+package dev.zitech.authenticator.framework.remote.source
 
 import dev.zitech.authenticator.data.remote.mapper.AccessTokenResponseMapper
 import dev.zitech.authenticator.data.remote.mapper.RefreshTokenResponseMapper
 import dev.zitech.authenticator.data.remote.service.OAuthService
+import dev.zitech.authenticator.data.source.OAuthSource
 import dev.zitech.authenticator.domain.model.Token
 import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.model.mapToDataResult
 import javax.inject.Inject
 
 internal class OAuthRemoteSource @Inject constructor(
     private val oAuthService: OAuthService,
     private val accessTokenResponseMapper: AccessTokenResponseMapper,
     private val refreshTokenResponseMapper: RefreshTokenResponseMapper
-) {
+) : OAuthSource {
 
-    suspend fun getAccessToken(
+    override suspend fun getAccessToken(
         clientId: String,
         clientSecret: String,
         code: String
-    ): DataResult<Token> = try {
-        DataResult.Success(
-            accessTokenResponseMapper.toDomain(
-                oAuthService.postAccessToken(
-                    clientId = clientId,
-                    clientSecret = clientSecret,
-                    code = code
-                )
-            )
-        )
-    } catch (exception: Exception) {
-        DataResult.Error(cause = exception)
-    }
+    ): DataResult<Token> = oAuthService.postAccessToken(
+        clientId = clientId,
+        clientSecret = clientSecret,
+        code = code
+    ).mapToDataResult(accessTokenResponseMapper::toDomain)
 
-    suspend fun getRefreshedToken(
+    override suspend fun getRefreshedToken(
         clientId: String,
         clientSecret: String,
         refreshToken: String
-    ): DataResult<Token> = try {
-        DataResult.Success(
-            refreshTokenResponseMapper.toDomain(
-                oAuthService.postRefreshToken(
-                    clientId = clientId,
-                    clientSecret = clientSecret,
-                    refreshToken = refreshToken
-                )
-            )
-        )
-    } catch (exception: Exception) {
-        DataResult.Error(cause = exception)
-    }
+    ): DataResult<Token> = oAuthService.postRefreshToken(
+        clientId = clientId,
+        clientSecret = clientSecret,
+        refreshToken = refreshToken
+    ).mapToDataResult(refreshTokenResponseMapper::toDomain)
 }

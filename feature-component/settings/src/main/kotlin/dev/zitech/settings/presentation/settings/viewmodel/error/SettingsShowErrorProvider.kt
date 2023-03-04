@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,22 +27,22 @@ internal class SettingsShowErrorProvider @Inject constructor(
 ) {
 
     val analyticsError = ShowError(
-        message = stringsProvider(R.string.data_choices_analytics_error),
+        messageResId = R.string.data_choices_analytics_error,
         action = stringsProvider(R.string.action_restart)
     )
 
     val crashReporterError = ShowError(
-        message = stringsProvider(R.string.data_choices_crash_reporter_error),
+        messageResId = R.string.data_choices_crash_reporter_error,
         action = stringsProvider(R.string.action_restart)
     )
 
     val personalizedAdsError = ShowError(
-        message = stringsProvider(R.string.data_choices_personalized_ads_error),
+        messageResId = R.string.data_choices_personalized_ads_error,
         action = stringsProvider(R.string.action_restart)
     )
 
     val performanceError = ShowError(
-        message = stringsProvider(R.string.data_choices_performance_error),
+        messageResId = R.string.data_choices_performance_error,
         action = stringsProvider(R.string.action_restart)
     )
 }

@@ -18,45 +18,48 @@
 package dev.zitech.core.persistence.data.repository.database
 
 import dev.zitech.core.common.domain.cache.InMemoryCache
+import dev.zitech.core.common.domain.exception.FireFlowException
+import dev.zitech.core.common.domain.model.DataError
 import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.model.DataSuccess
+import dev.zitech.core.persistence.data.source.UserAccountSource
 import dev.zitech.core.persistence.domain.model.cache.NetworkDetails
 import dev.zitech.core.persistence.domain.model.database.UserAccount
-import dev.zitech.core.persistence.domain.model.exception.NullCurrentUserAccountException
-import dev.zitech.core.persistence.domain.model.exception.NullUserAccountException
 import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
-import dev.zitech.core.persistence.domain.source.database.UserAccountDatabaseSource
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 internal class UserAccountRepositoryImpl @Inject constructor(
-    private val userAccountDatabaseSource: UserAccountDatabaseSource,
+    private val userAccountDatabaseSource: UserAccountSource,
     private val networkDetailsInMemoryCache: InMemoryCache<NetworkDetails>
 ) : UserAccountRepository {
 
+    private companion object {
+        const val NO_WORKER_UPDATED_RESULT = 0
+    }
+
     override suspend fun getUserAccountByState(state: String): DataResult<UserAccount> =
-        userAccountDatabaseSource.getUserAccountByStateOrNull(state)?.let { userAccount ->
-            DataResult.Success(userAccount)
-        } ?: DataResult.Error(cause = NullUserAccountException)
+        userAccountDatabaseSource.getUserAccountByState(state)
 
     override fun getUserAccounts(): Flow<DataResult<List<UserAccount>>> =
         userAccountDatabaseSource.getUserAccounts()
-            .map { userAccounts ->
-                DataResult.Success(userAccounts)
-            }
 
     override fun getCurrentUserAccount(): Flow<DataResult<UserAccount>> =
-        userAccountDatabaseSource.getCurrentUserAccountOrNull()
-            .map { userAccount ->
-                if (userAccount != null) {
-                    networkDetailsInMemoryCache.data = NetworkDetails(
-                        userId = userAccount.userId,
-                        serverAddress = userAccount.serverAddress
-                    )
-                    DataResult.Success(userAccount)
-                } else {
-                    DataResult.Error(cause = NullCurrentUserAccountException)
+        userAccountDatabaseSource.getCurrentUserAccount()
+            .map { userAccountResult ->
+                when (userAccountResult) {
+                    is DataSuccess -> {
+                        networkDetailsInMemoryCache.data = NetworkDetails(
+                            userId = userAccountResult.data.userId,
+                            serverAddress = userAccountResult.data.serverAddress
+                        )
+                    }
+                    is DataError -> {
+                        // NO_OP
+                    }
                 }
+                userAccountResult
             }
 
     override suspend fun saveUserAccount(
@@ -65,41 +68,45 @@ internal class UserAccountRepositoryImpl @Inject constructor(
         isCurrentUserAccount: Boolean,
         serverAddress: String,
         state: String
-    ): DataResult<Long> =
-        try {
-            val userId = userAccountDatabaseSource.saveUserAccount(
-                clientId = clientId,
-                clientSecret = clientSecret,
-                isCurrentUserAccount = isCurrentUserAccount,
-                serverAddress = serverAddress,
-                state = state
-            )
-            networkDetailsInMemoryCache.data = NetworkDetails(
-                userId = userId,
-                serverAddress = serverAddress
-            )
-            DataResult.Success(userId)
-        } catch (exception: Exception) {
-            DataResult.Error(cause = exception)
+    ): DataResult<Long> {
+        val saveUserAccountResult = userAccountDatabaseSource.saveUserAccount(
+            clientId = clientId,
+            clientSecret = clientSecret,
+            isCurrentUserAccount = isCurrentUserAccount,
+            serverAddress = serverAddress,
+            state = state
+        )
+        when (saveUserAccountResult) {
+            is DataSuccess -> {
+                networkDetailsInMemoryCache.data = NetworkDetails(
+                    userId = saveUserAccountResult.data,
+                    serverAddress = serverAddress
+                )
+            }
+            is DataError -> {
+                // NO_OP
+            }
         }
+
+        return saveUserAccountResult
+    }
 
     override suspend fun removeStaleUserAccounts(): DataResult<Unit> =
-        try {
-            userAccountDatabaseSource.removeUserAccountsWithStateAndWithoutAccessToken()
-            DataResult.Success(Unit)
-        } catch (exception: Exception) {
-            DataResult.Error(cause = exception)
-        }
+        userAccountDatabaseSource.removeUserAccountsWithStateAndWithoutAccessToken()
 
     override suspend fun updateUserAccount(userAccount: UserAccount): DataResult<Unit> =
-        try {
-            val result = userAccountDatabaseSource.updateUserAccount(userAccount)
-            if (result != 0) {
-                DataResult.Success(Unit)
-            } else {
-                DataResult.Error(cause = NullUserAccountException)
+        when (
+            val updateUserAccountResult = userAccountDatabaseSource.updateUserAccount(
+                userAccount
+            )
+        ) {
+            is DataSuccess -> {
+                if (updateUserAccountResult.data != NO_WORKER_UPDATED_RESULT) {
+                    DataSuccess(Unit)
+                } else {
+                    DataError(FireFlowException.NullUserAccount)
+                }
             }
-        } catch (exception: Exception) {
-            DataResult.Error(cause = exception)
+            is DataError -> DataError(updateUserAccountResult.fireFlowException)
         }
 }

@@ -140,10 +140,10 @@ internal class SettingsViewModelTest {
         val checked = true
         coEvery { settingsDataChoicesCollectionStates.setCrashReporterCollection(checked) } just Runs
 
-        val message = DataFactory.createRandomString()
+        val messageResId = DataFactory.createRandomInt()
         val action = DataFactory.createRandomString()
         every { settingsShowErrorProvider.crashReporterError } returns ShowError(
-            message,
+            messageResId,
             action
         )
 
@@ -164,7 +164,7 @@ internal class SettingsViewModelTest {
         // Assert
         testObserver.assertValues(
             getInitState(),
-            getInitState(event = ShowError(message, action))
+            getInitState(event = ShowError(messageResId, action))
         )
         coVerify {
             settingsDataChoicesCollectionStates.setCrashReporterCollection(checked)
@@ -321,10 +321,10 @@ internal class SettingsViewModelTest {
         val checked = true
         coEvery { settingsDataChoicesCollectionStates.setAnalyticsCollection(checked) } just Runs
 
-        val message = DataFactory.createRandomString()
+        val messageResId = DataFactory.createRandomInt()
         val action = DataFactory.createRandomString()
         every { settingsShowErrorProvider.analyticsError } returns ShowError(
-            message,
+            messageResId,
             action
         )
 
@@ -343,7 +343,7 @@ internal class SettingsViewModelTest {
         // Assert
         testObserver.assertValues(
             getInitState(),
-            getInitState(event = ShowError(message, action))
+            getInitState(event = ShowError(messageResId, action))
         )
         coVerify(exactly = 0) {
             settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(any())
@@ -431,10 +431,10 @@ internal class SettingsViewModelTest {
         val checked = true
         coEvery { settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked) } just Runs
 
-        val message = DataFactory.createRandomString()
+        val messageResId = DataFactory.createRandomInt()
         val action = DataFactory.createRandomString()
         every { settingsShowErrorProvider.personalizedAdsError } returns ShowError(
-            message,
+            messageResId,
             action
         )
 
@@ -455,7 +455,7 @@ internal class SettingsViewModelTest {
         // Assert
         testObserver.assertValues(
             getInitState(),
-            getInitState(event = ShowError(message, action))
+            getInitState(event = ShowError(messageResId, action))
         )
         coVerify {
             settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked)
@@ -691,10 +691,10 @@ internal class SettingsViewModelTest {
         val checked = true
         coEvery { settingsDataChoicesCollectionStates.setPerformanceCollection(checked) } just Runs
 
-        val message = DataFactory.createRandomString()
+        val messageResId = DataFactory.createRandomInt()
         val action = DataFactory.createRandomString()
         every { settingsShowErrorProvider.performanceError } returns ShowError(
-            message,
+            messageResId,
             action
         )
 
@@ -715,7 +715,7 @@ internal class SettingsViewModelTest {
         // Assert
         testObserver.assertValues(
             getInitState(),
-            getInitState(event = ShowError(message, action))
+            getInitState(event = ShowError(messageResId, action))
         )
         coVerify {
             settingsDataChoicesCollectionStates.setPerformanceCollection(checked)

@@ -15,13 +15,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.authenticator.framework.authenticator
+package dev.zitech.authenticator.framework.remote.authenticator
 
 import dev.zitech.authenticator.domain.usecase.GetRefreshedTokenUseCase
-import dev.zitech.authenticator.framework.HEADER_AUTHORIZATION_KEY
-import dev.zitech.authenticator.framework.HEADER_AUTHORIZATION_VALUE
+import dev.zitech.authenticator.framework.remote.HEADER_AUTHORIZATION_KEY
+import dev.zitech.authenticator.framework.remote.HEADER_AUTHORIZATION_VALUE
 import dev.zitech.core.common.domain.logger.Logger
-import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.model.DataError
+import dev.zitech.core.common.domain.model.DataSuccess
 import javax.inject.Inject
 import kotlinx.coroutines.runBlocking
 import okhttp3.Authenticator
@@ -45,16 +46,19 @@ internal class RefreshTokenAuthenticator @Inject constructor(
             return@runBlocking when (
                 val refreshedTokenResult = getRefreshedTokenUseCase.get().invoke()
             ) {
-                is DataResult.Success -> {
+                is DataSuccess -> {
                     response.request().newBuilder()
                         .removeHeader(HEADER_AUTHORIZATION_KEY)
                         .addHeader(
                             HEADER_AUTHORIZATION_KEY,
-                            "$HEADER_AUTHORIZATION_VALUE ${refreshedTokenResult.value.accessToken}"
+                            "$HEADER_AUTHORIZATION_VALUE ${refreshedTokenResult.data.accessToken}"
                         )
                         .build()
                 }
-                is DataResult.Error -> null
+                is DataError -> {
+                    Logger.e(tag, message = refreshedTokenResult.fireFlowException.text)
+                    null
+                }
             }
         }
 

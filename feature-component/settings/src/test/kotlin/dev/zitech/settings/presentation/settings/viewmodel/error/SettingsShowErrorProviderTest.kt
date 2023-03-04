@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,7 +26,6 @@ import io.mockk.mockk
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-private val message = DataFactory.createRandomString()
 private val action = DataFactory.createRandomString()
 
 internal class SettingsShowErrorProviderTest {
@@ -37,13 +36,6 @@ internal class SettingsShowErrorProviderTest {
 
     @BeforeEach
     fun setup() {
-        every { stringsProvider(R.string.data_choices_analytics_error) } returns message
-        every { stringsProvider(R.string.action_restart) } returns action
-        every { stringsProvider(R.string.data_choices_crash_reporter_error) } returns message
-        every { stringsProvider(R.string.action_restart) } returns action
-        every { stringsProvider(R.string.data_choices_personalized_ads_error) } returns message
-        every { stringsProvider(R.string.action_restart) } returns action
-        every { stringsProvider(R.string.data_choices_performance_error) } returns message
         every { stringsProvider(R.string.action_restart) } returns action
 
         sut = SettingsShowErrorProvider(
@@ -57,7 +49,7 @@ internal class SettingsShowErrorProviderTest {
         val result = sut.analyticsError
 
         // Assert
-        assertThat(result.message).isEqualTo(message)
+        assertThat(result.messageResId).isEqualTo(R.string.data_choices_analytics_error)
         assertThat(result.action).isEqualTo(action)
     }
 
@@ -67,7 +59,7 @@ internal class SettingsShowErrorProviderTest {
         val result = sut.crashReporterError
 
         // Assert
-        assertThat(result.message).isEqualTo(message)
+        assertThat(result.messageResId).isEqualTo(R.string.data_choices_crash_reporter_error)
         assertThat(result.action).isEqualTo(action)
     }
 
@@ -77,7 +69,7 @@ internal class SettingsShowErrorProviderTest {
         val result = sut.personalizedAdsError
 
         // Assert
-        assertThat(result.message).isEqualTo(message)
+        assertThat(result.messageResId).isEqualTo(R.string.data_choices_personalized_ads_error)
         assertThat(result.action).isEqualTo(action)
     }
 
@@ -87,7 +79,7 @@ internal class SettingsShowErrorProviderTest {
         val result = sut.performanceError
 
         // Assert
-        assertThat(result.message).isEqualTo(message)
+        assertThat(result.messageResId).isEqualTo(R.string.data_choices_performance_error)
         assertThat(result.action).isEqualTo(action)
     }
 }

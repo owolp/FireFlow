@@ -14,3 +14,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
+package dev.zitech.core.persistence.framework.database
+
+import dev.zitech.core.common.domain.exception.FireFlowException
+import dev.zitech.core.common.domain.exception.FireFlowException.Fatal.Type.DISK
+import dev.zitech.core.common.domain.model.DataError
+import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.model.DataSuccess
+
+@Suppress("TooGenericExceptionCaught")
+internal suspend fun <T : Any> handleDb(
+    execute: suspend () -> T
+): DataResult<T> = try {
+    DataSuccess(execute())
+} catch (throwable: Throwable) {
+    DataError(FireFlowException.Fatal(throwable, DISK))
+}
