@@ -34,6 +34,8 @@ plugins {
 }
 
 android {
+    namespace = "dev.zitech.fireflow"
+
     buildTypes {
         getByName(BuildTypes.DEBUG) {
             configure<CrashlyticsExtension> {

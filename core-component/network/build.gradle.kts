@@ -24,6 +24,10 @@ plugins {
     kotlin(BuildPlugins.KAPT)
 }
 
+android {
+    namespace = "dev.zitech.core.network"
+}
+
 dependencies {
     implementation(projects.coreComponent.authenticator)
     implementation(projects.coreComponent.common)
