@@ -20,6 +20,10 @@ plugins {
     id(BuildPlugins.LIBRARY)
 }
 
+android {
+    namespace = "dev.zitech.core"
+}
+
 dependencies {
     api(projects.coreComponent.authenticator)
     api(projects.coreComponent.common)

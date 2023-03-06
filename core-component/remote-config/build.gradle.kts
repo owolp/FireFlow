@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,9 @@ plugins {
     id(BuildPlugins.LIBRARY)
     id(BuildPlugins.JUNIT5)
     kotlin(BuildPlugins.KAPT)
+}
+android {
+    namespace = "dev.zitech.core.remoteconfig"
 }
 
 dependencies {
