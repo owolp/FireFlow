@@ -17,6 +17,7 @@
 
 <resources>
     <string name="disk_exception">Възникна непредвидена грешка при достъпа до съхранението.</string>
+    <string name="failed_to_fetched">Неуспешно извличане на отдалечена конфигурация.</string>
     <string name="empty" translatable="false" />
     <string name="network_exception">Възникна проблем при свързването с мрежата. Моля, проверете интернет връзката си и опитайте отново.</string>
     <string name="null_current_user_account">Невалиден потребителски акаунт. Това може да е предизвикано от неочаквано поведение.</string>

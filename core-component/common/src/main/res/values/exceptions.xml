@@ -17,6 +17,7 @@
 
 <resources>
     <string name="disk_exception">An unexpected error occurred while accessing the storage.</string>
+    <string name="failed_to_fetched">Failed to fetch remote config.</string>
     <string name="empty" translatable="false" />
     <string name="network_exception">There was a problem connecting to the network. Please check your internet connection and try again.</string>
     <string name="null_current_user_account">Null user account. This may have been caused by unexpected behavior.</string>

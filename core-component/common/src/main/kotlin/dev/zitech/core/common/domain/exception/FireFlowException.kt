@@ -28,6 +28,8 @@ sealed class FireFlowException(
     @Suppress("ForbiddenComment")
     object Legacy : FireFlowException(R.string.empty, "")
 
+    object BuildTypeUnsupported : FireFlowException(R.string.empty, "")
+
     data class Fatal(
         val throwable: Throwable,
         private val type: Type
@@ -44,6 +46,22 @@ sealed class FireFlowException(
         enum class Type {
             DISK,
             NETWORK
+        }
+    }
+
+    data class FailedToFetch(
+        val key: Any? = null,
+        private val type: Type
+    ) : FireFlowException(
+        R.string.failed_to_fetched,
+        "Failed to fetch remote config for key:$key"
+    ) {
+        enum class Type {
+            INIT,
+            STRING,
+            BOOLEAN,
+            DOUBLE,
+            LONG
         }
     }
 

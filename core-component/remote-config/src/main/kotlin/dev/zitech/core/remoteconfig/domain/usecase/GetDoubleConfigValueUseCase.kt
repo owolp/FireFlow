@@ -17,7 +17,8 @@
 
 package dev.zitech.core.remoteconfig.domain.usecase
 
-import dev.zitech.core.common.domain.model.LegacyDataResult
+import dev.zitech.core.common.domain.model.DataError
+import dev.zitech.core.common.domain.model.DataSuccess
 import dev.zitech.core.remoteconfig.domain.model.DoubleConfig
 import dev.zitech.core.remoteconfig.domain.repository.ConfigRepository
 import javax.inject.Inject
@@ -28,7 +29,7 @@ class GetDoubleConfigValueUseCase @Inject constructor(
 
     suspend operator fun invoke(config: DoubleConfig): Double =
         when (val result = configRepository.getDoubleValue(config)) {
-            is LegacyDataResult.Success -> result.value
-            is LegacyDataResult.Error -> config.defaultValue
+            is DataSuccess -> result.data
+            is DataError -> config.defaultValue
         }
 }

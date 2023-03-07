@@ -17,7 +17,8 @@
 
 package dev.zitech.core.remoteconfig.framework.source
 
-import dev.zitech.core.common.domain.model.LegacyDataResult
+import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.model.DataSuccess
 import dev.zitech.core.remoteconfig.domain.model.BooleanConfig
 import dev.zitech.core.remoteconfig.domain.model.DoubleConfig
 import dev.zitech.core.remoteconfig.domain.model.LongConfig
@@ -29,17 +30,17 @@ import kotlinx.coroutines.flow.flowOf
 
 internal class ConfigProviderSourceImpl @Inject constructor() : ConfigProviderSource {
 
-    override fun init(): Flow<LegacyDataResult<Unit>> = flowOf(LegacyDataResult.Success(Unit))
+    override fun init(): Flow<DataResult<Unit>> = flowOf(DataSuccess(Unit))
 
-    override fun getString(config: StringConfig): LegacyDataResult<String> =
-        LegacyDataResult.Success(config.defaultValue)
+    override fun getString(config: StringConfig): DataResult<String> =
+        DataSuccess(config.defaultValue)
 
-    override fun getBoolean(config: BooleanConfig): LegacyDataResult<Boolean> =
-        LegacyDataResult.Success(config.defaultValue)
+    override fun getBoolean(config: BooleanConfig): DataResult<Boolean> =
+        DataSuccess(config.defaultValue)
 
-    override fun getDouble(config: DoubleConfig): LegacyDataResult<Double> =
-        LegacyDataResult.Success(config.defaultValue)
+    override fun getDouble(config: DoubleConfig): DataResult<Double> =
+        DataSuccess(config.defaultValue)
 
-    override fun getLong(config: LongConfig): LegacyDataResult<Long> =
-        LegacyDataResult.Success(config.defaultValue)
+    override fun getLong(config: LongConfig): DataResult<Long> =
+        DataSuccess(config.defaultValue)
 }

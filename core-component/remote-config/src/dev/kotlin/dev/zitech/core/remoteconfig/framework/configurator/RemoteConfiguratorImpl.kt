@@ -17,21 +17,23 @@
 
 package dev.zitech.core.remoteconfig.framework.configurator
 
-import dev.zitech.core.common.domain.model.LegacyDataResult
+import dev.zitech.core.common.domain.exception.FireFlowException.BuildTypeUnsupported
+import dev.zitech.core.common.domain.model.DataError
+import dev.zitech.core.common.domain.model.DataResult
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
 internal class RemoteConfiguratorImpl @Inject constructor() : RemoteConfigurator {
 
-    override fun init(): Flow<LegacyDataResult<Unit>> =
-        flowOf(LegacyDataResult.Error())
+    override fun init(): Flow<DataResult<Unit>> =
+        flowOf(DataError(BuildTypeUnsupported))
 
-    override fun getString(key: String): LegacyDataResult<String> = LegacyDataResult.Error()
+    override fun getString(key: String): DataResult<String> = DataError(BuildTypeUnsupported)
 
-    override fun getBoolean(key: String): LegacyDataResult<Boolean> = LegacyDataResult.Error()
+    override fun getBoolean(key: String): DataResult<Boolean> = DataError(BuildTypeUnsupported)
 
-    override fun getDouble(key: String): LegacyDataResult<Double> = LegacyDataResult.Error()
+    override fun getDouble(key: String): DataResult<Double> = DataError(BuildTypeUnsupported)
 
-    override fun getLong(key: String): LegacyDataResult<Long> = LegacyDataResult.Error()
+    override fun getLong(key: String): DataResult<Long> = DataError(BuildTypeUnsupported)
 }
