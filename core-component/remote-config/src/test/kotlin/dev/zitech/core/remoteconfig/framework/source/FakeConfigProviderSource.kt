@@ -17,7 +17,9 @@
 
 package dev.zitech.core.remoteconfig.framework.source
 
-import dev.zitech.core.common.domain.model.LegacyDataResult
+import dev.zitech.core.common.domain.exception.FireFlowException.BuildTypeUnsupported
+import dev.zitech.core.common.domain.model.DataError
+import dev.zitech.core.common.domain.model.DataResult
 import dev.zitech.core.remoteconfig.domain.model.BooleanConfig
 import dev.zitech.core.remoteconfig.domain.model.DoubleConfig
 import dev.zitech.core.remoteconfig.domain.model.LongConfig
@@ -28,19 +30,19 @@ import kotlinx.coroutines.flow.flowOf
 
 internal class FakeConfigProviderSource : ConfigProviderSource {
 
-    var initResult: LegacyDataResult<Unit> = LegacyDataResult.Error()
-    var stringResult: LegacyDataResult<String> = LegacyDataResult.Error()
-    var booleanResult: LegacyDataResult<Boolean> = LegacyDataResult.Error()
-    var doubleResult: LegacyDataResult<Double> = LegacyDataResult.Error()
-    var longResult: LegacyDataResult<Long> = LegacyDataResult.Error()
+    var initResult: DataResult<Unit> = DataError(BuildTypeUnsupported)
+    var stringResult: DataResult<String> = DataError(BuildTypeUnsupported)
+    var booleanResult: DataResult<Boolean> = DataError(BuildTypeUnsupported)
+    var doubleResult: DataResult<Double> = DataError(BuildTypeUnsupported)
+    var longResult: DataResult<Long> = DataError(BuildTypeUnsupported)
 
-    override fun init(): Flow<LegacyDataResult<Unit>> = flowOf(initResult)
+    override fun init(): Flow<DataResult<Unit>> = flowOf(initResult)
 
-    override fun getString(config: StringConfig): LegacyDataResult<String> = stringResult
+    override fun getString(config: StringConfig): DataResult<String> = stringResult
 
-    override fun getBoolean(config: BooleanConfig): LegacyDataResult<Boolean> = booleanResult
+    override fun getBoolean(config: BooleanConfig): DataResult<Boolean> = booleanResult
 
-    override fun getDouble(config: DoubleConfig): LegacyDataResult<Double> = doubleResult
+    override fun getDouble(config: DoubleConfig): DataResult<Double> = doubleResult
 
-    override fun getLong(config: LongConfig): LegacyDataResult<Long> = longResult
+    override fun getLong(config: LongConfig): DataResult<Long> = longResult
 }

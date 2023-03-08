@@ -17,25 +17,27 @@
 
 package dev.zitech.core.remoteconfig.framework.configurator
 
-import dev.zitech.core.common.domain.model.LegacyDataResult
+import dev.zitech.core.common.domain.exception.FireFlowException.BuildTypeUnsupported
+import dev.zitech.core.common.domain.model.DataError
+import dev.zitech.core.common.domain.model.DataResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
 internal class FakeRemoteConfigurator : RemoteConfigurator {
 
-    var initResult: LegacyDataResult<Unit> = LegacyDataResult.Error()
-    var stringResult: LegacyDataResult<String> = LegacyDataResult.Error()
-    var booleanResult: LegacyDataResult<Boolean> = LegacyDataResult.Error()
-    var doubleResult: LegacyDataResult<Double> = LegacyDataResult.Error()
-    var longResult: LegacyDataResult<Long> = LegacyDataResult.Error()
+    var initResult: DataResult<Unit> = DataError(BuildTypeUnsupported)
+    var stringResult: DataResult<String> = DataError(BuildTypeUnsupported)
+    var booleanResult: DataResult<Boolean> = DataError(BuildTypeUnsupported)
+    var doubleResult: DataResult<Double> = DataError(BuildTypeUnsupported)
+    var longResult: DataResult<Long> = DataError(BuildTypeUnsupported)
 
-    override fun init(): Flow<LegacyDataResult<Unit>> = flowOf(initResult)
+    override fun init(): Flow<DataResult<Unit>> = flowOf(initResult)
 
-    override fun getString(key: String): LegacyDataResult<String> = stringResult
+    override fun getString(key: String): DataResult<String> = stringResult
 
-    override fun getBoolean(key: String): LegacyDataResult<Boolean> = booleanResult
+    override fun getBoolean(key: String): DataResult<Boolean> = booleanResult
 
-    override fun getDouble(key: String): LegacyDataResult<Double> = doubleResult
+    override fun getDouble(key: String): DataResult<Double> = doubleResult
 
-    override fun getLong(key: String): LegacyDataResult<Long> = longResult
+    override fun getLong(key: String): DataResult<Long> = longResult
 }
