@@ -23,8 +23,10 @@ import android.content.Intent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.net.toUri
-import dev.zitech.core.common.domain.model.LegacyDataResult
-import dev.zitech.core.common.domain.model.exception.NoBrowserInstalledException
+import dev.zitech.core.common.domain.error.Error
+import dev.zitech.core.common.domain.error.Error.Fatal.Type.OS
+import dev.zitech.core.common.domain.model.WorkError
+import dev.zitech.core.common.domain.model.WorkSuccess
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
 
@@ -52,13 +54,20 @@ object Browser {
                 customTabsIntent.launchUrl(context, uri)
             }
 
-            trySend(LegacyDataResult.Success(Unit))
+            trySend(WorkSuccess(Unit))
             close()
         } catch (e: ActivityNotFoundException) {
-            trySend(LegacyDataResult.Error(cause = NoBrowserInstalledException))
+            trySend(WorkError(Error.NoBrowserInstalled))
             close()
         } catch (e: Exception) {
-            trySend(LegacyDataResult.Error(cause = e))
+            trySend(
+                WorkError(
+                    Error.Fatal(
+                        throwable = e,
+                        type = OS
+                    )
+                )
+            )
             close()
         }
 

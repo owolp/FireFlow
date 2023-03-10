@@ -25,7 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import dev.zitech.core.common.domain.exception.FireFlowException
+import dev.zitech.core.common.domain.error.Error
 import dev.zitech.core.common.domain.navigation.DeepLinkScreenDestination
 import dev.zitech.core.common.domain.navigation.LogInState
 import dev.zitech.ds.atoms.loading.FireFlowProgressIndicators
@@ -56,7 +56,7 @@ internal fun SettingsRoute(
     modifier: Modifier = Modifier,
     viewModel: SettingsViewModel = hiltViewModel(),
     navigateToAccounts: () -> Unit,
-    navigateToError: (exception: FireFlowException) -> Unit,
+    navigateToError: (error: Error) -> Unit,
     navigateToWelcome: () -> Unit,
     restartApplication: () -> Unit
 ) {
@@ -100,7 +100,7 @@ internal fun SettingsRoute(
                 when (val destination = state.destination) {
                     DeepLinkScreenDestination.Accounts -> navigateToAccounts()
                     is DeepLinkScreenDestination.Error ->
-                        navigateToError(destination.exception)
+                        navigateToError(destination.error)
                     DeepLinkScreenDestination.Welcome -> navigateToWelcome()
                     DeepLinkScreenDestination.Current,
                     DeepLinkScreenDestination.Init -> {

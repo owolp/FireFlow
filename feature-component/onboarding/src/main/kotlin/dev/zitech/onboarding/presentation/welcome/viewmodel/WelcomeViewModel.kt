@@ -20,10 +20,11 @@ package dev.zitech.onboarding.presentation.welcome.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.zitech.core.common.domain.exception.FireFlowException
+import dev.zitech.core.common.domain.error.Error
 import dev.zitech.core.common.domain.logger.Logger
-import dev.zitech.core.common.domain.model.LegacyDataResult
-import dev.zitech.core.common.domain.model.exception.NoBrowserInstalledException
+import dev.zitech.core.common.domain.model.Work
+import dev.zitech.core.common.domain.model.onError
+import dev.zitech.core.common.domain.model.onSuccess
 import dev.zitech.core.common.presentation.architecture.MviViewModel
 import dev.zitech.core.persistence.domain.usecase.database.SaveUserAccountUseCase
 import dev.zitech.onboarding.presentation.welcome.viewmodel.resoure.WelcomeStringsProvider
@@ -51,7 +52,7 @@ internal class WelcomeViewModel @Inject constructor(
                 OnBackClick -> stateHandler.setEvent(NavigateOutOfApp)
                 OnFireflyClick -> handleOnFireflyClick()
                 OnShowDemoPositive -> handleOnShowDemoPositive()
-                is NavigatedToFireflyResult -> handleNavigatedToFireflyResult(intent.dataResult)
+                is NavigatedToFireflyResult -> handleNavigatedToFireflyResult(intent.result)
                 NavigationHandled,
                 OnShowDemoDismiss,
                 ErrorHandled -> stateHandler.resetEvent()
@@ -79,20 +80,25 @@ internal class WelcomeViewModel @Inject constructor(
         stateHandler.setEvent(NavigateToDemo)
     }
 
-    private fun handleNavigatedToFireflyResult(dataResult: LegacyDataResult<Unit>) {
-        when (dataResult) {
-            is LegacyDataResult.Success -> stateHandler.resetEvent()
-            is LegacyDataResult.Error -> {
-                when (dataResult.cause) {
-                    is NoBrowserInstalledException -> {
-                        stateHandler.setEvent(
-                            ShowError(welcomeStringsProvider.getNoSupportedBrowserInstalled())
-                        )
-                    }
-                    else -> {
-                        Logger.e(tag, exception = dataResult.cause)
-                        stateHandler.setEvent(NavigateToError(FireFlowException.Legacy))
-                    }
+    private suspend fun handleNavigatedToFireflyResult(result: Work<Unit>) {
+        result.onSuccess {
+            stateHandler.resetEvent()
+        }.onError { error ->
+            when (error) {
+                is Error.NoBrowserInstalled -> {
+                    stateHandler.setEvent(
+                        ShowError(messageResId = error.uiResId)
+                    )
+                }
+                is Error.Fatal -> {
+                    Logger.e(tag, throwable = error.throwable)
+                    stateHandler.setEvent(NavigateToError(error))
+                }
+                is Error.UserVisible ->
+                    stateHandler.setEvent(ShowError(text = error.text))
+                else -> {
+                    Logger.e(tag, error.text)
+                    stateHandler.setEvent(NavigateToError(error))
                 }
             }
         }

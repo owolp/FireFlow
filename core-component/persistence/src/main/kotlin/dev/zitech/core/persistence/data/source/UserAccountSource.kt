@@ -17,23 +17,23 @@
 
 package dev.zitech.core.persistence.data.source
 
-import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.model.Work
 import dev.zitech.core.persistence.domain.model.database.UserAccount
 import kotlinx.coroutines.flow.Flow
 
 internal interface UserAccountSource {
 
-    suspend fun getUserAccountByState(state: String): DataResult<UserAccount>
-    fun getUserAccounts(): Flow<DataResult<List<UserAccount>>>
-    fun getCurrentUserAccount(): Flow<DataResult<UserAccount>>
-    suspend fun removeUserAccountsWithStateAndWithoutAccessToken(): DataResult<Unit>
+    suspend fun getUserAccountByState(state: String): Work<UserAccount>
+    fun getUserAccounts(): Flow<Work<List<UserAccount>>>
+    fun getCurrentUserAccount(): Flow<Work<UserAccount>>
+    suspend fun removeUserAccountsWithStateAndWithoutAccessToken(): Work<Unit>
     suspend fun saveUserAccount(
         clientId: String,
         clientSecret: String,
         isCurrentUserAccount: Boolean,
         serverAddress: String,
         state: String
-    ): DataResult<Long>
+    ): Work<Long>
 
-    suspend fun updateUserAccount(userAccount: UserAccount): DataResult<Int>
+    suspend fun updateUserAccount(userAccount: UserAccount): Work<Int>
 }

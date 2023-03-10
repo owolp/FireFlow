@@ -19,9 +19,9 @@ package dev.zitech.core.persistence.domain.usecase.database
 
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
-import dev.zitech.core.common.domain.exception.FireFlowException
-import dev.zitech.core.common.domain.model.DataError
-import dev.zitech.core.common.domain.model.DataSuccess
+import dev.zitech.core.common.domain.error.Error
+import dev.zitech.core.common.domain.model.WorkError
+import dev.zitech.core.common.domain.model.WorkSuccess
 import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -49,14 +49,14 @@ internal class GetUserAccountsUseCaseTest {
     fun success() = runBlocking {
         // Arrange
         coEvery { userAccountRepository.getUserAccounts() } returns flowOf(
-            DataSuccess(
+            WorkSuccess(
                 listOf(mockk(), mockk(), mockk())
             )
         )
 
         // Act & Assert
         sut().test {
-            assertThat((awaitItem() as DataSuccess).data).hasSize(3)
+            assertThat((awaitItem() as WorkSuccess).data).hasSize(3)
             awaitComplete()
 
         }
@@ -68,16 +68,16 @@ internal class GetUserAccountsUseCaseTest {
     @DisplayName("WHEN there is exception THEN return Error")
     fun error() = runBlocking {
         // Arrange
-        val exception = FireFlowException.NullUserAccount
+        val error = Error.NullUserAccount
         coEvery { userAccountRepository.getUserAccounts() } returns flowOf(
-            DataError(
-                fireFlowException = exception
+            WorkError(
+                error = error
             )
         )
 
         // Act & Assert
         sut().test {
-            assertThat((awaitItem() as DataError).fireFlowException).isEqualTo(exception)
+            assertThat((awaitItem() as WorkError).error).isEqualTo(error)
             awaitComplete()
         }
         coVerify { userAccountRepository.getUserAccounts() }

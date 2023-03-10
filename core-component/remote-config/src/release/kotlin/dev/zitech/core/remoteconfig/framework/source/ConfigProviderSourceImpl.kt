@@ -17,7 +17,7 @@
 
 package dev.zitech.core.remoteconfig.framework.source
 
-import dev.zitech.core.common.domain.model.LegacyDataResult
+import dev.zitech.core.common.domain.model.Work
 import dev.zitech.core.remoteconfig.domain.model.BooleanConfig
 import dev.zitech.core.remoteconfig.domain.model.DoubleConfig
 import dev.zitech.core.remoteconfig.domain.model.LongConfig
@@ -31,18 +31,18 @@ class ConfigProviderSourceImpl @Inject constructor(
     private val remoteConfigurator: RemoteConfigurator
 ) : ConfigProviderSource {
 
-    override fun init(): Flow<LegacyDataResult<Unit>> =
+    override fun init(): Flow<Work<Unit>> =
         remoteConfigurator.init()
 
-    override fun getBoolean(config: BooleanConfig): LegacyDataResult<Boolean> =
+    override fun getBoolean(config: BooleanConfig): Work<Boolean> =
         remoteConfigurator.getBoolean(config.key)
 
-    override fun getDouble(config: DoubleConfig): LegacyDataResult<Double> =
+    override fun getDouble(config: DoubleConfig): Work<Double> =
         remoteConfigurator.getDouble(config.key)
 
-    override fun getLong(config: LongConfig): LegacyDataResult<Long> =
+    override fun getLong(config: LongConfig): Work<Long> =
         remoteConfigurator.getLong(config.key)
 
-    override fun getString(config: StringConfig): LegacyDataResult<String> =
+    override fun getString(config: StringConfig): Work<String> =
         remoteConfigurator.getString(config.key)
 }

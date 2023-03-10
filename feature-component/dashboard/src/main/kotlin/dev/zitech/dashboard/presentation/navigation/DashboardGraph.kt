@@ -19,12 +19,12 @@ package dev.zitech.dashboard.presentation.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import dev.zitech.core.common.domain.exception.FireFlowException
+import dev.zitech.core.common.domain.error.Error
 import dev.zitech.dashboard.presentation.dashboard.compose.DashboardRoute
 
 fun NavGraphBuilder.dashboardGraph(
     navigateToAccounts: () -> Unit,
-    navigateToError: (exception: FireFlowException) -> Unit,
+    navigateToError: (error: Error) -> Unit,
     navigateToWelcome: () -> Unit
 ) {
     composable(route = DashboardDestination.route) {

@@ -18,13 +18,11 @@
 package dev.zitech.onboarding.presentation.welcome.viewmodel.resoure
 
 import dev.zitech.core.common.domain.strings.StringsProvider
-import dev.zitech.core.common.presentation.resource.CommonStringsProvider
 import dev.zitech.onboarding.R
 import javax.inject.Inject
 
 internal class WelcomeStringsProvider @Inject constructor(
-    private val stringsProvider: StringsProvider,
-    private val commonStringsProvider: CommonStringsProvider
+    private val stringsProvider: StringsProvider
 ) {
 
     fun getDemoDialogText(): String =
@@ -35,7 +33,4 @@ internal class WelcomeStringsProvider @Inject constructor(
 
     fun getFireflyHomePageUrl(): String =
         stringsProvider(R.string.firefly_iii_home_page_url)
-
-    fun getNoSupportedBrowserInstalled(): Int =
-        commonStringsProvider.getNoSupportedBrowserInstalled()
 }

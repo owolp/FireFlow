@@ -18,10 +18,10 @@
 package dev.zitech.core.persistence.data.repository.database
 
 import dev.zitech.core.common.domain.cache.InMemoryCache
-import dev.zitech.core.common.domain.exception.FireFlowException
-import dev.zitech.core.common.domain.model.DataError
-import dev.zitech.core.common.domain.model.DataResult
-import dev.zitech.core.common.domain.model.DataSuccess
+import dev.zitech.core.common.domain.error.Error
+import dev.zitech.core.common.domain.model.Work
+import dev.zitech.core.common.domain.model.WorkError
+import dev.zitech.core.common.domain.model.WorkSuccess
 import dev.zitech.core.persistence.data.source.UserAccountSource
 import dev.zitech.core.persistence.domain.model.cache.NetworkDetails
 import dev.zitech.core.persistence.domain.model.database.UserAccount
@@ -39,23 +39,23 @@ internal class UserAccountRepositoryImpl @Inject constructor(
         const val NO_WORKER_UPDATED_RESULT = 0
     }
 
-    override suspend fun getUserAccountByState(state: String): DataResult<UserAccount> =
+    override suspend fun getUserAccountByState(state: String): Work<UserAccount> =
         userAccountDatabaseSource.getUserAccountByState(state)
 
-    override fun getUserAccounts(): Flow<DataResult<List<UserAccount>>> =
+    override fun getUserAccounts(): Flow<Work<List<UserAccount>>> =
         userAccountDatabaseSource.getUserAccounts()
 
-    override fun getCurrentUserAccount(): Flow<DataResult<UserAccount>> =
+    override fun getCurrentUserAccount(): Flow<Work<UserAccount>> =
         userAccountDatabaseSource.getCurrentUserAccount()
             .map { userAccountResult ->
                 when (userAccountResult) {
-                    is DataSuccess -> {
+                    is WorkSuccess -> {
                         networkDetailsInMemoryCache.data = NetworkDetails(
                             userId = userAccountResult.data.userId,
                             serverAddress = userAccountResult.data.serverAddress
                         )
                     }
-                    is DataError -> {
+                    is WorkError -> {
                         // NO_OP
                     }
                 }
@@ -68,7 +68,7 @@ internal class UserAccountRepositoryImpl @Inject constructor(
         isCurrentUserAccount: Boolean,
         serverAddress: String,
         state: String
-    ): DataResult<Long> {
+    ): Work<Long> {
         val saveUserAccountResult = userAccountDatabaseSource.saveUserAccount(
             clientId = clientId,
             clientSecret = clientSecret,
@@ -77,13 +77,13 @@ internal class UserAccountRepositoryImpl @Inject constructor(
             state = state
         )
         when (saveUserAccountResult) {
-            is DataSuccess -> {
+            is WorkSuccess -> {
                 networkDetailsInMemoryCache.data = NetworkDetails(
                     userId = saveUserAccountResult.data,
                     serverAddress = serverAddress
                 )
             }
-            is DataError -> {
+            is WorkError -> {
                 // NO_OP
             }
         }
@@ -91,22 +91,22 @@ internal class UserAccountRepositoryImpl @Inject constructor(
         return saveUserAccountResult
     }
 
-    override suspend fun removeStaleUserAccounts(): DataResult<Unit> =
+    override suspend fun removeStaleUserAccounts(): Work<Unit> =
         userAccountDatabaseSource.removeUserAccountsWithStateAndWithoutAccessToken()
 
-    override suspend fun updateUserAccount(userAccount: UserAccount): DataResult<Unit> =
+    override suspend fun updateUserAccount(userAccount: UserAccount): Work<Unit> =
         when (
             val updateUserAccountResult = userAccountDatabaseSource.updateUserAccount(
                 userAccount
             )
         ) {
-            is DataSuccess -> {
+            is WorkSuccess -> {
                 if (updateUserAccountResult.data != NO_WORKER_UPDATED_RESULT) {
-                    DataSuccess(Unit)
+                    WorkSuccess(Unit)
                 } else {
-                    DataError(FireFlowException.NullUserAccount)
+                    WorkError(Error.NullUserAccount)
                 }
             }
-            is DataError -> DataError(updateUserAccountResult.fireFlowException)
+            is WorkError -> WorkError(updateUserAccountResult.error)
         }
 }

@@ -17,7 +17,8 @@
 
 package dev.zitech.core.remoteconfig.domain.usecase
 
-import dev.zitech.core.common.domain.model.LegacyDataResult
+import dev.zitech.core.common.domain.model.WorkError
+import dev.zitech.core.common.domain.model.WorkSuccess
 import dev.zitech.core.remoteconfig.domain.model.BooleanConfig
 import dev.zitech.core.remoteconfig.domain.repository.ConfigRepository
 import javax.inject.Inject
@@ -28,7 +29,7 @@ class GetBooleanConfigValueUseCase @Inject constructor(
 
     suspend operator fun invoke(config: BooleanConfig): Boolean =
         when (val result = configRepository.getBooleanValue(config)) {
-            is LegacyDataResult.Success -> result.value
-            is LegacyDataResult.Error -> config.defaultValue
+            is WorkSuccess -> result.data
+            is WorkError -> config.defaultValue
         }
 }

@@ -17,17 +17,17 @@
 
 package dev.zitech.core.persistence.framework.database
 
-import dev.zitech.core.common.domain.exception.FireFlowException
-import dev.zitech.core.common.domain.exception.FireFlowException.Fatal.Type.DISK
-import dev.zitech.core.common.domain.model.DataError
-import dev.zitech.core.common.domain.model.DataResult
-import dev.zitech.core.common.domain.model.DataSuccess
+import dev.zitech.core.common.domain.error.Error
+import dev.zitech.core.common.domain.error.Error.Fatal.Type.DISK
+import dev.zitech.core.common.domain.model.Work
+import dev.zitech.core.common.domain.model.WorkError
+import dev.zitech.core.common.domain.model.WorkSuccess
 
 @Suppress("TooGenericExceptionCaught")
 internal suspend fun <T : Any> handleDb(
     execute: suspend () -> T
-): DataResult<T> = try {
-    DataSuccess(execute())
+): Work<T> = try {
+    WorkSuccess(execute())
 } catch (throwable: Throwable) {
-    DataError(FireFlowException.Fatal(throwable, DISK))
+    WorkError(Error.Fatal(throwable, DISK))
 }

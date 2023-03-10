@@ -17,7 +17,9 @@
 
 package dev.zitech.core.remoteconfig.framework.source
 
-import dev.zitech.core.common.domain.model.LegacyDataResult
+import dev.zitech.core.common.domain.error.Error.BuildTypeUnsupported
+import dev.zitech.core.common.domain.model.Work
+import dev.zitech.core.common.domain.model.WorkError
 import dev.zitech.core.remoteconfig.domain.model.BooleanConfig
 import dev.zitech.core.remoteconfig.domain.model.DoubleConfig
 import dev.zitech.core.remoteconfig.domain.model.LongConfig
@@ -28,19 +30,19 @@ import kotlinx.coroutines.flow.flowOf
 
 internal class FakeConfigProviderSource : ConfigProviderSource {
 
-    var initResult: LegacyDataResult<Unit> = LegacyDataResult.Error()
-    var stringResult: LegacyDataResult<String> = LegacyDataResult.Error()
-    var booleanResult: LegacyDataResult<Boolean> = LegacyDataResult.Error()
-    var doubleResult: LegacyDataResult<Double> = LegacyDataResult.Error()
-    var longResult: LegacyDataResult<Long> = LegacyDataResult.Error()
+    var initResult: Work<Unit> = WorkError(BuildTypeUnsupported)
+    var stringResult: Work<String> = WorkError(BuildTypeUnsupported)
+    var booleanResult: Work<Boolean> = WorkError(BuildTypeUnsupported)
+    var doubleResult: Work<Double> = WorkError(BuildTypeUnsupported)
+    var longResult: Work<Long> = WorkError(BuildTypeUnsupported)
 
-    override fun init(): Flow<LegacyDataResult<Unit>> = flowOf(initResult)
+    override fun init(): Flow<Work<Unit>> = flowOf(initResult)
 
-    override fun getString(config: StringConfig): LegacyDataResult<String> = stringResult
+    override fun getString(config: StringConfig): Work<String> = stringResult
 
-    override fun getBoolean(config: BooleanConfig): LegacyDataResult<Boolean> = booleanResult
+    override fun getBoolean(config: BooleanConfig): Work<Boolean> = booleanResult
 
-    override fun getDouble(config: DoubleConfig): LegacyDataResult<Double> = doubleResult
+    override fun getDouble(config: DoubleConfig): Work<Double> = doubleResult
 
-    override fun getLong(config: LongConfig): LegacyDataResult<Long> = longResult
+    override fun getLong(config: LongConfig): Work<Long> = longResult
 }

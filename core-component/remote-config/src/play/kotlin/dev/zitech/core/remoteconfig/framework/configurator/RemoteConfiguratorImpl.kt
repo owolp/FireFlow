@@ -21,14 +21,23 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import dev.zitech.core.common.domain.applicationconfig.AppConfigProvider
+import dev.zitech.core.common.domain.error.Error
+import dev.zitech.core.common.domain.error.Error.FailedToFetch.Type.BOOLEAN
+import dev.zitech.core.common.domain.error.Error.FailedToFetch.Type.DOUBLE
+import dev.zitech.core.common.domain.error.Error.FailedToFetch.Type.INIT
+import dev.zitech.core.common.domain.error.Error.FailedToFetch.Type.LONG
+import dev.zitech.core.common.domain.error.Error.FailedToFetch.Type.STRING
 import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.domain.model.BuildMode
-import dev.zitech.core.common.domain.model.LegacyDataResult
+import dev.zitech.core.common.domain.model.Work
+import dev.zitech.core.common.domain.model.WorkError
+import dev.zitech.core.common.domain.model.WorkSuccess
 import dev.zitech.core.remoteconfig.domain.usecase.GetDefaultConfigValuesUseCase
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
 @ExperimentalCoroutinesApi
@@ -55,7 +64,7 @@ internal class RemoteConfiguratorImpl @Inject constructor(
         setConfigSettingsAsync(configSettings)
     }
 
-    override fun init() = callbackFlow {
+    override fun init(): Flow<Work<Unit>> = callbackFlow {
         firebaseRemoteConfig
             .setDefaultsAsync(getDefaultConfigValuesUseCase())
             .addOnSuccessListener {
@@ -66,7 +75,13 @@ internal class RemoteConfiguratorImpl @Inject constructor(
                         logInfo("Fetch and Activated completed")
 
                         if (!isClosedForSend) {
-                            trySend(LegacyDataResult.Success(Unit))
+                            trySend(
+                                WorkError(
+                                    Error.FailedToFetch(
+                                        type = INIT
+                                    )
+                                )
+                            )
                         } else {
                             logError("fetchAndActivate addOnSuccessListener isClosedForSend=true")
                         }
@@ -77,7 +92,13 @@ internal class RemoteConfiguratorImpl @Inject constructor(
                         logError("Failed to Fetch and Activate remote config")
 
                         if (!isClosedForSend) {
-                            trySend(LegacyDataResult.Error())
+                            trySend(
+                                WorkError(
+                                    Error.FailedToFetch(
+                                        type = INIT
+                                    )
+                                )
+                            )
                         } else {
                             logError("fetchAndActivate addOnFailureListener isClosedForSend=true")
                         }
@@ -89,7 +110,13 @@ internal class RemoteConfiguratorImpl @Inject constructor(
                 logError("Failed to set default value to remote config")
 
                 if (!isClosedForSend) {
-                    trySend(LegacyDataResult.Error())
+                    trySend(
+                        WorkError(
+                            Error.FailedToFetch(
+                                type = INIT
+                            )
+                        )
+                    )
                 } else {
                     logError("init addOnFailureListener isClosedForSend=true")
                 }
@@ -101,47 +128,67 @@ internal class RemoteConfiguratorImpl @Inject constructor(
     }
 
     @Suppress("TooGenericExceptionCaught")
-    override fun getString(key: String): LegacyDataResult<String> =
+    override fun getString(key: String): Work<String> =
         try {
-            LegacyDataResult.Success(
+            WorkSuccess(
                 firebaseRemoteConfig.getString(key)
             )
         } catch (e: Exception) {
             logError("getString $key", e)
-            LegacyDataResult.Error()
+            WorkError(
+                Error.FailedToFetch(
+                    key = key,
+                    type = STRING
+                )
+            )
         }
 
     @Suppress("TooGenericExceptionCaught")
-    override fun getBoolean(key: String): LegacyDataResult<Boolean> =
+    override fun getBoolean(key: String): Work<Boolean> =
         try {
-            LegacyDataResult.Success(
+            WorkSuccess(
                 firebaseRemoteConfig.getBoolean(key)
             )
         } catch (e: Exception) {
             logError("getBoolean $key", e)
-            LegacyDataResult.Error()
+            WorkError(
+                Error.FailedToFetch(
+                    key = key,
+                    type = BOOLEAN
+                )
+            )
         }
 
     @Suppress("TooGenericExceptionCaught")
-    override fun getDouble(key: String): LegacyDataResult<Double> =
+    override fun getDouble(key: String): Work<Double> =
         try {
-            LegacyDataResult.Success(
+            WorkSuccess(
                 firebaseRemoteConfig.getDouble(key)
             )
         } catch (e: Exception) {
             logError("getDouble $key", e)
-            LegacyDataResult.Error()
+            WorkError(
+                Error.FailedToFetch(
+                    key = key,
+                    type = DOUBLE
+                )
+            )
         }
 
     @Suppress("TooGenericExceptionCaught")
-    override fun getLong(key: String): LegacyDataResult<Long> =
+    override fun getLong(key: String): Work<Long> =
         try {
-            LegacyDataResult.Success(
+            WorkSuccess(
                 firebaseRemoteConfig.getLong(key)
             )
         } catch (e: Exception) {
             logError("getLong $key", e)
-            LegacyDataResult.Error()
+            WorkError(
+                Error.FailedToFetch(
+                    key = key,
+                    type = LONG
+                )
+            )
         }
 
     private fun logInfo(infoMessage: String) {

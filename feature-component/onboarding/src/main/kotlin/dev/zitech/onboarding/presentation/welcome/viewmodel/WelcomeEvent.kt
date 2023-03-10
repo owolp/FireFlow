@@ -17,7 +17,7 @@
 
 package dev.zitech.onboarding.presentation.welcome.viewmodel
 
-import dev.zitech.core.common.domain.exception.FireFlowException
+import dev.zitech.core.common.domain.error.Error
 import dev.zitech.core.common.presentation.architecture.MviState
 
 internal sealed interface WelcomeEvent : MviState.Event
@@ -34,6 +34,9 @@ internal data class ShowDemoWarning(
     val confirm: String
 ) : WelcomeEvent
 
-internal data class ShowError(val messageResId: Int) : WelcomeEvent
+internal data class ShowError(
+    val messageResId: Int? = null,
+    val text: String? = null
+) : WelcomeEvent
 
-internal data class NavigateToError(val exception: FireFlowException) : WelcomeEvent
+internal data class NavigateToError(val error: Error) : WelcomeEvent
