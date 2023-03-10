@@ -18,6 +18,7 @@
 package dev.zitech.onboarding.presentation.pat.compose
 
 import android.content.res.Configuration
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -25,16 +26,22 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.relocation.BringIntoViewRequester
+import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -51,6 +58,7 @@ import dev.zitech.ds.theme.FireFlowTheme
 import dev.zitech.ds.theme.PreviewFireFlowTheme
 import dev.zitech.onboarding.R
 import dev.zitech.onboarding.presentation.pat.viewmodel.PatState
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -65,7 +73,8 @@ internal fun PatScreen(
 ) {
     FireFlowScaffolds.Primary(
         modifier = modifier
-            .navigationBarsPadding(),
+            .navigationBarsPadding()
+            .imePadding(),
         snackbarState = snackbarState,
         topBar = {
             FireFlowTopAppBars.BackNavigation(
@@ -83,7 +92,7 @@ internal fun PatScreen(
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
+@OptIn(ExperimentalLayoutApi::class, ExperimentalFoundationApi::class)
 @Composable
 private fun PatScreenContent(
     innerPadding: PaddingValues,
@@ -93,6 +102,8 @@ private fun PatScreenContent(
     onPersonalAccessTokenChange: (String) -> Unit
 ) {
     val focusManager = LocalFocusManager.current
+    val logInViewRequester = remember { BringIntoViewRequester() }
+    val coroutineScope = rememberCoroutineScope()
 
     Column(
         modifier = Modifier
@@ -117,7 +128,15 @@ private fun PatScreenContent(
             onValueChanged = onServerAddressChange
         )
         FireFlowInputForm.TitleAndInput(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .onFocusEvent { focusState ->
+                    if (focusState.isFocused) {
+                        coroutineScope.launch {
+                            logInViewRequester.bringIntoView()
+                        }
+                    }
+                },
             headlineText = stringResource(R.string.pat_personal_access_token),
             value = state.pat,
             keyboardOptions = KeyboardOptions.Default.copy(
@@ -135,7 +154,9 @@ private fun PatScreenContent(
         )
         FireFlowSpacers.Vertical(modifier = Modifier.weight(1F))
         FireFlowButtons.Filled.OnSurfaceTint(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .bringIntoViewRequester(logInViewRequester),
             text = stringResource(R.string.pat_login),
             enabled = state.loginEnabled,
             onClick = onLoginClick
