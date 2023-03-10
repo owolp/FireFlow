@@ -17,12 +17,12 @@
 
 package dev.zitech.core.common.domain.model
 
-import dev.zitech.core.common.domain.exception.FireFlowException
+import dev.zitech.core.common.domain.error.Error
 
 sealed interface Work<out T : Any>
 
 data class WorkSuccess<out T : Any>(val data: T) : Work<T>
-data class WorkError<T : Any>(val fireFlowException: FireFlowException) : Work<T>
+data class WorkError<T : Any>(val error: Error) : Work<T>
 
 suspend fun <T : Any> Work<T>.onSuccess(
     executable: suspend (T) -> Unit
@@ -33,10 +33,10 @@ suspend fun <T : Any> Work<T>.onSuccess(
 }
 
 suspend fun <T : Any> Work<T>.onError(
-    executable: suspend (fireFlowException: FireFlowException) -> Unit
+    executable: suspend (fireFlowException: Error) -> Unit
 ): Work<T> = apply {
     if (this is WorkError) {
-        executable(fireFlowException)
+        executable(error)
     }
 }
 
@@ -45,5 +45,5 @@ inline fun <T : Any, R : Any> Work<T>.mapToDataResult(
 ): Work<R> =
     when (this) {
         is WorkSuccess -> WorkSuccess(transform(data))
-        is WorkError -> WorkError(fireFlowException)
+        is WorkError -> WorkError(error)
     }

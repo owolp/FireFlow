@@ -19,7 +19,7 @@ package dev.zitech.core.persistence.domain.usecase.database
 
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
-import dev.zitech.core.common.domain.exception.FireFlowException
+import dev.zitech.core.common.domain.error.Error
 import dev.zitech.core.common.domain.model.WorkError
 import dev.zitech.core.common.domain.model.WorkSuccess
 import dev.zitech.core.persistence.domain.model.UserAccountBuilder
@@ -65,10 +65,10 @@ internal class GetCurrentUserAccountUseCaseTest {
         val userAccountRepository = mockk<UserAccountRepository>()
         val sut = GetCurrentUserAccountUseCase(userAccountRepository)
 
-        val exception = FireFlowException.NullUserAccount
+        val error = Error.NullUserAccount
         every {
             userAccountRepository.getCurrentUserAccount()
-        } returns flowOf(WorkError(exception))
+        } returns flowOf(WorkError(error))
 
         // Act & Assert
         sut().test {

@@ -19,7 +19,7 @@ package dev.zitech.core.persistence.domain.usecase.database
 
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
-import dev.zitech.core.common.domain.exception.FireFlowException
+import dev.zitech.core.common.domain.error.Error
 import dev.zitech.core.common.domain.model.WorkError
 import dev.zitech.core.common.domain.model.WorkSuccess
 import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
@@ -68,16 +68,16 @@ internal class GetUserAccountsUseCaseTest {
     @DisplayName("WHEN there is exception THEN return Error")
     fun error() = runBlocking {
         // Arrange
-        val exception = FireFlowException.NullUserAccount
+        val error = Error.NullUserAccount
         coEvery { userAccountRepository.getUserAccounts() } returns flowOf(
             WorkError(
-                fireFlowException = exception
+                error = error
             )
         )
 
         // Act & Assert
         sut().test {
-            assertThat((awaitItem() as WorkError).fireFlowException).isEqualTo(exception)
+            assertThat((awaitItem() as WorkError).error).isEqualTo(error)
             awaitComplete()
         }
         coVerify { userAccountRepository.getUserAccounts() }

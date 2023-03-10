@@ -23,7 +23,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import dev.zitech.core.common.domain.exception.FireFlowException
+import dev.zitech.core.common.domain.error.Error
 import dev.zitech.core.common.domain.navigation.DeepLinkScreenDestination
 import dev.zitech.core.common.domain.navigation.LogInState
 import dev.zitech.dashboard.presentation.dashboard.viewmodel.DashboardViewModel
@@ -35,7 +35,7 @@ internal fun DashboardRoute(
     modifier: Modifier = Modifier,
     viewModel: DashboardViewModel = hiltViewModel(),
     navigateToAccounts: () -> Unit,
-    navigateToError: (exception: FireFlowException) -> Unit,
+    navigateToError: (error: Error) -> Unit,
     navigateToWelcome: () -> Unit
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
@@ -57,7 +57,7 @@ internal fun DashboardRoute(
                 when (val destination = state.destination) {
                     DeepLinkScreenDestination.Accounts -> navigateToAccounts()
                     is DeepLinkScreenDestination.Error ->
-                        navigateToError(destination.exception)
+                        navigateToError(destination.error)
                     DeepLinkScreenDestination.Welcome -> navigateToWelcome()
                     DeepLinkScreenDestination.Current,
                     DeepLinkScreenDestination.Init -> {

@@ -19,7 +19,7 @@ package dev.zitech.authenticator.domain.usecase
 
 import dev.zitech.authenticator.domain.model.Token
 import dev.zitech.authenticator.domain.repository.TokenRepository
-import dev.zitech.core.common.domain.exception.FireFlowException
+import dev.zitech.core.common.domain.error.Error
 import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.domain.model.Work
 import dev.zitech.core.common.domain.model.WorkError
@@ -45,7 +45,7 @@ internal class GetRefreshedTokenUseCase @Inject constructor(
                 val currentUser = currentUserAccountResult.data
                 getRefreshedToken(currentUser)
             }
-            is WorkError -> WorkError(currentUserAccountResult.fireFlowException)
+            is WorkError -> WorkError(currentUserAccountResult.error)
         }
 
     private suspend fun getRefreshedToken(currentUser: UserAccount) =
@@ -63,12 +63,12 @@ internal class GetRefreshedTokenUseCase @Inject constructor(
                         accessToken = refreshedToken.accessToken,
                         refreshToken = refreshedToken.refreshToken
                     )
-                ).onError { exception ->
-                    when (exception) {
-                        is FireFlowException.Fatal -> {
-                            Logger.e(tag, throwable = exception.throwable)
+                ).onError { error ->
+                    when (error) {
+                        is Error.Fatal -> {
+                            Logger.e(tag, throwable = error.throwable)
                         }
-                        else -> Logger.e(tag, exception.text)
+                        else -> Logger.e(tag, error.text)
                     }
                 }
                 WorkSuccess(refreshedToken)

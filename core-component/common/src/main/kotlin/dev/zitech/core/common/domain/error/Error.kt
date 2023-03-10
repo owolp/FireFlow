@@ -15,19 +15,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.common.domain.exception
+package dev.zitech.core.common.domain.error
 
 import androidx.annotation.StringRes
 import dev.zitech.core.common.R
 
-sealed class FireFlowException(
+sealed class Error(
     @StringRes val uiResId: Int,
     val text: String
 ) {
 
-    object BuildTypeUnsupported : FireFlowException(R.string.empty, "")
+    object BuildTypeUnsupported : Error(R.string.empty, "")
 
-    object NoBrowserInstalledException : FireFlowException(
+    object NoBrowserInstalled : Error(
         R.string.no_browser_installed,
         "No supported browser installed"
     )
@@ -35,7 +35,7 @@ sealed class FireFlowException(
     data class Fatal(
         val throwable: Throwable,
         private val type: Type
-    ) : FireFlowException(
+    ) : Error(
         when (type) {
             Type.DISK -> R.string.disk_exception
             Type.NETWORK -> R.string.network_exception
@@ -57,7 +57,7 @@ sealed class FireFlowException(
     data class FailedToFetch(
         val key: Any? = null,
         private val type: Type
-    ) : FireFlowException(
+    ) : Error(
         R.string.failed_to_fetched,
         "Failed to fetch remote config for key:$key"
     ) {
@@ -70,31 +70,31 @@ sealed class FireFlowException(
         }
     }
 
-    object NullCurrentUserAccount : FireFlowException(
+    object NullCurrentUserAccount : Error(
         R.string.null_current_user_account,
         "Null current user account"
     )
 
-    object NullUserAccount : FireFlowException(
+    object NullUserAccount : Error(
         R.string.null_user_account,
         "Null user account"
     )
 
-    object NullUserAccountByState : FireFlowException(
+    object NullUserAccountByState : Error(
         R.string.null_user_account_by_state,
         "Null user account by state"
     )
 
     data class TokenRefreshFailed(
         private val message: String?
-    ) : FireFlowException(
+    ) : Error(
         R.string.token_expired,
         "message=$message"
     )
 
     data class UserVisible(
         private val message: String?
-    ) : FireFlowException(
+    ) : Error(
         R.string.empty,
         message.orEmpty()
     )

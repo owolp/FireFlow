@@ -21,17 +21,17 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import dev.zitech.core.common.domain.applicationconfig.AppConfigProvider
-import dev.zitech.core.common.domain.exception.FireFlowException
-import dev.zitech.core.common.domain.exception.FireFlowException.FailedToFetch.Type.BOOLEAN
-import dev.zitech.core.common.domain.exception.FireFlowException.FailedToFetch.Type.DOUBLE
-import dev.zitech.core.common.domain.exception.FireFlowException.FailedToFetch.Type.INIT
-import dev.zitech.core.common.domain.exception.FireFlowException.FailedToFetch.Type.LONG
-import dev.zitech.core.common.domain.exception.FireFlowException.FailedToFetch.Type.STRING
+import dev.zitech.core.common.domain.error.Error
+import dev.zitech.core.common.domain.error.Error.FailedToFetch.Type.BOOLEAN
+import dev.zitech.core.common.domain.error.Error.FailedToFetch.Type.DOUBLE
+import dev.zitech.core.common.domain.error.Error.FailedToFetch.Type.INIT
+import dev.zitech.core.common.domain.error.Error.FailedToFetch.Type.LONG
+import dev.zitech.core.common.domain.error.Error.FailedToFetch.Type.STRING
 import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.domain.model.BuildMode
-import dev.zitech.core.common.domain.model.DataError
-import dev.zitech.core.common.domain.model.DataResult
-import dev.zitech.core.common.domain.model.DataSuccess
+import dev.zitech.core.common.domain.model.Work
+import dev.zitech.core.common.domain.model.WorkError
+import dev.zitech.core.common.domain.model.WorkSuccess
 import dev.zitech.core.remoteconfig.domain.usecase.GetDefaultConfigValuesUseCase
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -64,7 +64,7 @@ internal class RemoteConfiguratorImpl @Inject constructor(
         setConfigSettingsAsync(configSettings)
     }
 
-    override fun init(): Flow<DataResult<Unit>> = callbackFlow {
+    override fun init(): Flow<Work<Unit>> = callbackFlow {
         firebaseRemoteConfig
             .setDefaultsAsync(getDefaultConfigValuesUseCase())
             .addOnSuccessListener {
@@ -76,8 +76,8 @@ internal class RemoteConfiguratorImpl @Inject constructor(
 
                         if (!isClosedForSend) {
                             trySend(
-                                DataError(
-                                    FireFlowException.FailedToFetch(
+                                WorkError(
+                                    Error.FailedToFetch(
                                         type = INIT
                                     )
                                 )
@@ -93,8 +93,8 @@ internal class RemoteConfiguratorImpl @Inject constructor(
 
                         if (!isClosedForSend) {
                             trySend(
-                                DataError(
-                                    FireFlowException.FailedToFetch(
+                                WorkError(
+                                    Error.FailedToFetch(
                                         type = INIT
                                     )
                                 )
@@ -111,8 +111,8 @@ internal class RemoteConfiguratorImpl @Inject constructor(
 
                 if (!isClosedForSend) {
                     trySend(
-                        DataError(
-                            FireFlowException.FailedToFetch(
+                        WorkError(
+                            Error.FailedToFetch(
                                 type = INIT
                             )
                         )
@@ -128,15 +128,15 @@ internal class RemoteConfiguratorImpl @Inject constructor(
     }
 
     @Suppress("TooGenericExceptionCaught")
-    override fun getString(key: String): DataResult<String> =
+    override fun getString(key: String): Work<String> =
         try {
-            DataSuccess(
+            WorkSuccess(
                 firebaseRemoteConfig.getString(key)
             )
         } catch (e: Exception) {
             logError("getString $key", e)
-            DataError(
-                FireFlowException.FailedToFetch(
+            WorkError(
+                Error.FailedToFetch(
                     key = key,
                     type = STRING
                 )
@@ -144,15 +144,15 @@ internal class RemoteConfiguratorImpl @Inject constructor(
         }
 
     @Suppress("TooGenericExceptionCaught")
-    override fun getBoolean(key: String): DataResult<Boolean> =
+    override fun getBoolean(key: String): Work<Boolean> =
         try {
-            DataSuccess(
+            WorkSuccess(
                 firebaseRemoteConfig.getBoolean(key)
             )
         } catch (e: Exception) {
             logError("getBoolean $key", e)
-            DataError(
-                FireFlowException.FailedToFetch(
+            WorkError(
+                Error.FailedToFetch(
                     key = key,
                     type = BOOLEAN
                 )
@@ -160,15 +160,15 @@ internal class RemoteConfiguratorImpl @Inject constructor(
         }
 
     @Suppress("TooGenericExceptionCaught")
-    override fun getDouble(key: String): DataResult<Double> =
+    override fun getDouble(key: String): Work<Double> =
         try {
-            DataSuccess(
+            WorkSuccess(
                 firebaseRemoteConfig.getDouble(key)
             )
         } catch (e: Exception) {
             logError("getDouble $key", e)
-            DataError(
-                FireFlowException.FailedToFetch(
+            WorkError(
+                Error.FailedToFetch(
                     key = key,
                     type = DOUBLE
                 )
@@ -176,15 +176,15 @@ internal class RemoteConfiguratorImpl @Inject constructor(
         }
 
     @Suppress("TooGenericExceptionCaught")
-    override fun getLong(key: String): DataResult<Long> =
+    override fun getLong(key: String): Work<Long> =
         try {
-            DataSuccess(
+            WorkSuccess(
                 firebaseRemoteConfig.getLong(key)
             )
         } catch (e: Exception) {
             logError("getLong $key", e)
-            DataError(
-                FireFlowException.FailedToFetch(
+            WorkError(
+                Error.FailedToFetch(
                     key = key,
                     type = LONG
                 )

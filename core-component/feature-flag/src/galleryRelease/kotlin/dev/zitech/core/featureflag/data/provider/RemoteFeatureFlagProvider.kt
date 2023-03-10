@@ -17,8 +17,8 @@
 
 package dev.zitech.core.featureflag.data.provider
 
-import dev.zitech.core.common.domain.model.DataError
-import dev.zitech.core.common.domain.model.DataSuccess
+import dev.zitech.core.common.domain.model.WorkError
+import dev.zitech.core.common.domain.model.WorkSuccess
 import dev.zitech.core.featureflag.domain.model.Feature
 import dev.zitech.core.featureflag.domain.provider.FeatureFlagProvider
 import dev.zitech.core.remoteconfig.framework.configurator.RemoteConfigurator
@@ -32,8 +32,8 @@ internal class RemoteFeatureFlagProvider @Inject constructor(
 
     override suspend fun isFeatureEnabled(feature: Feature): Boolean =
         when (val result = remoteConfigurator.getBoolean(feature.key)) {
-            is DataSuccess -> result.data
-            is DataError -> feature.defaultValue
+            is WorkSuccess -> result.data
+            is WorkError -> feature.defaultValue
         }
 
     override suspend fun hasFeature(feature: Feature): Boolean =

@@ -24,7 +24,7 @@ import dev.zitech.authenticator.domain.model.Token
 import dev.zitech.authenticator.domain.usecase.GetAccessTokenUseCase
 import dev.zitech.core.common.DataFactory
 import dev.zitech.core.common.domain.dispatcher.AppDispatchers
-import dev.zitech.core.common.domain.exception.FireFlowException
+import dev.zitech.core.common.domain.error.Error
 import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.domain.model.Work
 import dev.zitech.core.common.domain.model.onError
@@ -118,16 +118,16 @@ internal class OAuthViewModel @Inject constructor(
                 )
                 setLoading(true)
             }
-        }.onError { exception ->
+        }.onError { error ->
             stateHandler.setLoading(false)
-            when (exception) {
-                is FireFlowException.Fatal -> {
-                    Logger.e(tag, throwable = exception.throwable)
-                    stateHandler.setEvent(NavigateToError(exception))
+            when (error) {
+                is Error.Fatal -> {
+                    Logger.e(tag, throwable = error.throwable)
+                    stateHandler.setEvent(NavigateToError(error))
                 }
-                is FireFlowException.UserVisible ->
-                    stateHandler.setEvent(ShowError(text = exception.text))
-                else -> Logger.e(tag, exception.text)
+                is Error.UserVisible ->
+                    stateHandler.setEvent(ShowError(text = error.text))
+                else -> Logger.e(tag, error.text)
             }
         }
     }
@@ -156,23 +156,23 @@ internal class OAuthViewModel @Inject constructor(
     private suspend fun handleNavigatedToFireflyResult(result: Work<Unit>) {
         result.onSuccess {
             stateHandler.resetEvent()
-        }.onError { exception ->
+        }.onError { error ->
             stateHandler.setLoading(false)
-            when (exception) {
-                is FireFlowException.NoBrowserInstalledException -> {
+            when (error) {
+                is Error.NoBrowserInstalled -> {
                     stateHandler.setEvent(
-                        ShowError(messageResId = exception.uiResId)
+                        ShowError(messageResId = error.uiResId)
                     )
                 }
-                is FireFlowException.Fatal -> {
-                    Logger.e(tag, throwable = exception.throwable)
-                    stateHandler.setEvent(NavigateToError(exception))
+                is Error.Fatal -> {
+                    Logger.e(tag, throwable = error.throwable)
+                    stateHandler.setEvent(NavigateToError(error))
                 }
-                is FireFlowException.UserVisible ->
-                    stateHandler.setEvent(ShowError(text = exception.text))
+                is Error.UserVisible ->
+                    stateHandler.setEvent(ShowError(text = error.text))
                 else -> {
-                    Logger.e(tag, exception.text)
-                    stateHandler.setEvent(NavigateToError(exception))
+                    Logger.e(tag, error.text)
+                    stateHandler.setEvent(NavigateToError(error))
                 }
             }
         }
@@ -196,20 +196,20 @@ internal class OAuthViewModel @Inject constructor(
                     setClientSecret(userAccount.clientSecret)
                 }
                 retrieveToken(userAccount, code)
-            }.onError { exception ->
+            }.onError { error ->
                 stateHandler.setLoading(false)
-                when (exception) {
-                    is FireFlowException.NullUserAccountByState -> {
-                        Logger.e(tag, exception.text)
-                        stateHandler.setEvent(NavigateToError(exception))
+                when (error) {
+                    is Error.NullUserAccountByState -> {
+                        Logger.e(tag, error.text)
+                        stateHandler.setEvent(NavigateToError(error))
                     }
-                    is FireFlowException.Fatal -> {
-                        Logger.e(tag, throwable = exception.throwable)
-                        stateHandler.setEvent(NavigateToError(exception))
+                    is Error.Fatal -> {
+                        Logger.e(tag, throwable = error.throwable)
+                        stateHandler.setEvent(NavigateToError(error))
                     }
                     else -> {
-                        Logger.e(tag, exception.text)
-                        stateHandler.setEvent(ShowError(messageResId = exception.uiResId))
+                        Logger.e(tag, error.text)
+                        stateHandler.setEvent(ShowError(messageResId = error.uiResId))
                     }
                 }
             }
@@ -222,16 +222,16 @@ internal class OAuthViewModel @Inject constructor(
             code = code
         ).onSuccess { token ->
             updateUserAccount(userAccount, token, code)
-        }.onError { exception ->
+        }.onError { error ->
             stateHandler.setLoading(false)
-            when (exception) {
-                is FireFlowException.Fatal -> {
-                    Logger.e(tag, throwable = exception.throwable)
-                    stateHandler.setEvent(NavigateToError(exception))
+            when (error) {
+                is Error.Fatal -> {
+                    Logger.e(tag, throwable = error.throwable)
+                    stateHandler.setEvent(NavigateToError(error))
                 }
-                is FireFlowException.UserVisible ->
-                    stateHandler.setEvent(ShowError(text = exception.text))
-                else -> Logger.e(tag, exception.text)
+                is Error.UserVisible ->
+                    stateHandler.setEvent(ShowError(text = error.text))
+                else -> Logger.e(tag, error.text)
             }
         }
     }
@@ -252,20 +252,20 @@ internal class OAuthViewModel @Inject constructor(
         ).onSuccess {
             stateHandler.setLoading(false)
             stateHandler.setEvent(NavigateToDashboard)
-        }.onError { exception ->
+        }.onError { error ->
             stateHandler.setLoading(false)
-            when (exception) {
-                is FireFlowException.NullUserAccount -> {
-                    Logger.e(tag, exception.text)
-                    stateHandler.setEvent(NavigateToError(exception))
+            when (error) {
+                is Error.NullUserAccount -> {
+                    Logger.e(tag, error.text)
+                    stateHandler.setEvent(NavigateToError(error))
                 }
-                is FireFlowException.Fatal -> {
-                    Logger.e(tag, throwable = exception.throwable)
-                    stateHandler.setEvent(NavigateToError(exception))
+                is Error.Fatal -> {
+                    Logger.e(tag, throwable = error.throwable)
+                    stateHandler.setEvent(NavigateToError(error))
                 }
                 else -> {
-                    Logger.e(tag, exception.text)
-                    stateHandler.setEvent(ShowError(messageResId = exception.uiResId))
+                    Logger.e(tag, error.text)
+                    stateHandler.setEvent(ShowError(messageResId = error.uiResId))
                 }
             }
         }

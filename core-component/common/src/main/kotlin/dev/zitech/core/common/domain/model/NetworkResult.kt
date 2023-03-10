@@ -18,8 +18,8 @@
 package dev.zitech.core.common.domain.model
 
 import dev.zitech.core.common.domain.code.StatusCode
-import dev.zitech.core.common.domain.exception.FireFlowException
-import dev.zitech.core.common.domain.exception.FireFlowException.Fatal.Type.NETWORK
+import dev.zitech.core.common.domain.error.Error
+import dev.zitech.core.common.domain.error.Error.Fatal.Type.NETWORK
 
 sealed interface NetworkResult<out T : Any>
 
@@ -64,11 +64,11 @@ fun <T : Any, R : Any> NetworkResult<T>.mapToDataResult(
         is NetworkException -> WorkError(getFireFlowException(throwable))
     }
 
-fun getFireFlowException(statusCode: StatusCode, message: String?): FireFlowException =
+fun getFireFlowException(statusCode: StatusCode, message: String?): Error =
     when (statusCode) {
-        StatusCode.Unauthorized -> FireFlowException.TokenRefreshFailed(message)
-        else -> FireFlowException.UserVisible(message)
+        StatusCode.Unauthorized -> Error.TokenRefreshFailed(message)
+        else -> Error.UserVisible(message)
     }
 
-fun getFireFlowException(throwable: Throwable): FireFlowException =
-    FireFlowException.Fatal(throwable, NETWORK)
+fun getFireFlowException(throwable: Throwable): Error =
+    Error.Fatal(throwable, NETWORK)

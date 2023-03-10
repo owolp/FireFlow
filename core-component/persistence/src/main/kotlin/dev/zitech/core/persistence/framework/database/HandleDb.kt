@@ -17,8 +17,8 @@
 
 package dev.zitech.core.persistence.framework.database
 
-import dev.zitech.core.common.domain.exception.FireFlowException
-import dev.zitech.core.common.domain.exception.FireFlowException.Fatal.Type.DISK
+import dev.zitech.core.common.domain.error.Error
+import dev.zitech.core.common.domain.error.Error.Fatal.Type.DISK
 import dev.zitech.core.common.domain.model.Work
 import dev.zitech.core.common.domain.model.WorkError
 import dev.zitech.core.common.domain.model.WorkSuccess
@@ -29,5 +29,5 @@ internal suspend fun <T : Any> handleDb(
 ): Work<T> = try {
     WorkSuccess(execute())
 } catch (throwable: Throwable) {
-    WorkError(FireFlowException.Fatal(throwable, DISK))
+    WorkError(Error.Fatal(throwable, DISK))
 }

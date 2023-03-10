@@ -17,7 +17,7 @@
 
 package dev.zitech.core.remoteconfig.framework.source
 
-import dev.zitech.core.common.domain.exception.FireFlowException.BuildTypeUnsupported
+import dev.zitech.core.common.domain.error.Error.BuildTypeUnsupported
 import dev.zitech.core.common.domain.model.Work
 import dev.zitech.core.common.domain.model.WorkError
 import dev.zitech.core.remoteconfig.domain.model.BooleanConfig

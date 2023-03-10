@@ -27,7 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.coroutineScope
-import dev.zitech.core.common.domain.exception.FireFlowException
+import dev.zitech.core.common.domain.error.Error
 import dev.zitech.core.common.framework.browser.Browser
 import dev.zitech.ds.molecules.dialog.FireFlowDialogs
 import dev.zitech.ds.molecules.snackbar.BottomNotifierMessage
@@ -61,7 +61,7 @@ internal fun WelcomeRoute(
     navigateToPat: () -> Unit,
     navigateToDemo: () -> Unit,
     navigateOutOfApp: () -> Unit,
-    navigateToError: (exception: FireFlowException) -> Unit,
+    navigateToError: (error: Error) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: WelcomeViewModel = hiltViewModel()
 ) {
@@ -88,7 +88,7 @@ internal fun WelcomeRoute(
             viewModel.sendIntent(NavigationHandled)
         }
         is NavigateToError -> {
-            navigateToError(event.exception)
+            navigateToError(event.error)
             viewModel.sendIntent(NavigationHandled)
         }
         is NavigateToFirefly -> {

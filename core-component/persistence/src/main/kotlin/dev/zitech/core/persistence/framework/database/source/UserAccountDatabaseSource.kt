@@ -17,8 +17,8 @@
 
 package dev.zitech.core.persistence.framework.database.source
 
-import dev.zitech.core.common.domain.exception.FireFlowException
-import dev.zitech.core.common.domain.exception.FireFlowException.Fatal.Type.DISK
+import dev.zitech.core.common.domain.error.Error
+import dev.zitech.core.common.domain.error.Error.Fatal.Type.DISK
 import dev.zitech.core.common.domain.model.Work
 import dev.zitech.core.common.domain.model.WorkError
 import dev.zitech.core.common.domain.model.WorkSuccess
@@ -43,17 +43,17 @@ internal class UserAccountDatabaseSource @Inject constructor(
         if (userAccountEntity != null) {
             WorkSuccess(userAccountMapper.toDomain(userAccountEntity))
         } else {
-            WorkError(FireFlowException.NullUserAccountByState)
+            WorkError(Error.NullUserAccountByState)
         }
     } catch (throwable: Throwable) {
-        WorkError(FireFlowException.Fatal(throwable, DISK))
+        WorkError(Error.Fatal(throwable, DISK))
     }
 
     override fun getUserAccounts(): Flow<Work<List<UserAccount>>> =
         userAccountDao.getUserAccounts().map { userAccountEntities ->
             WorkSuccess(userAccountEntities.map(userAccountMapper::toDomain))
         }.catch { throwable ->
-            WorkError<List<UserAccount>>(FireFlowException.Fatal(throwable, DISK))
+            WorkError<List<UserAccount>>(Error.Fatal(throwable, DISK))
         }
 
     override fun getCurrentUserAccount(): Flow<Work<UserAccount>> =
@@ -61,10 +61,10 @@ internal class UserAccountDatabaseSource @Inject constructor(
             if (userAccountEntity != null) {
                 WorkSuccess(userAccountMapper.toDomain(userAccountEntity))
             } else {
-                WorkError(FireFlowException.NullCurrentUserAccount)
+                WorkError(Error.NullCurrentUserAccount)
             }
         }.catch { throwable ->
-            WorkError<UserAccount>(FireFlowException.Fatal(throwable, DISK))
+            WorkError<UserAccount>(Error.Fatal(throwable, DISK))
         }
 
     override suspend fun saveUserAccount(

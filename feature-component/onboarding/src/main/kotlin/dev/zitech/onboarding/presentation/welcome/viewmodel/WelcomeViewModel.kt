@@ -20,7 +20,7 @@ package dev.zitech.onboarding.presentation.welcome.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.zitech.core.common.domain.exception.FireFlowException
+import dev.zitech.core.common.domain.error.Error
 import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.domain.model.Work
 import dev.zitech.core.common.domain.model.onError
@@ -83,22 +83,22 @@ internal class WelcomeViewModel @Inject constructor(
     private suspend fun handleNavigatedToFireflyResult(result: Work<Unit>) {
         result.onSuccess {
             stateHandler.resetEvent()
-        }.onError { exception ->
-            when (exception) {
-                is FireFlowException.NoBrowserInstalledException -> {
+        }.onError { error ->
+            when (error) {
+                is Error.NoBrowserInstalled -> {
                     stateHandler.setEvent(
-                        ShowError(messageResId = exception.uiResId)
+                        ShowError(messageResId = error.uiResId)
                     )
                 }
-                is FireFlowException.Fatal -> {
-                    Logger.e(tag, throwable = exception.throwable)
-                    stateHandler.setEvent(NavigateToError(exception))
+                is Error.Fatal -> {
+                    Logger.e(tag, throwable = error.throwable)
+                    stateHandler.setEvent(NavigateToError(error))
                 }
-                is FireFlowException.UserVisible ->
-                    stateHandler.setEvent(ShowError(text = exception.text))
+                is Error.UserVisible ->
+                    stateHandler.setEvent(ShowError(text = error.text))
                 else -> {
-                    Logger.e(tag, exception.text)
-                    stateHandler.setEvent(NavigateToError(exception))
+                    Logger.e(tag, error.text)
+                    stateHandler.setEvent(NavigateToError(error))
                 }
             }
         }

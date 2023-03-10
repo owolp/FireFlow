@@ -23,8 +23,8 @@ import android.content.Intent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.net.toUri
-import dev.zitech.core.common.domain.exception.FireFlowException
-import dev.zitech.core.common.domain.exception.FireFlowException.Fatal.Type.OS
+import dev.zitech.core.common.domain.error.Error
+import dev.zitech.core.common.domain.error.Error.Fatal.Type.OS
 import dev.zitech.core.common.domain.model.WorkError
 import dev.zitech.core.common.domain.model.WorkSuccess
 import kotlinx.coroutines.channels.awaitClose
@@ -57,12 +57,12 @@ object Browser {
             trySend(WorkSuccess(Unit))
             close()
         } catch (e: ActivityNotFoundException) {
-            trySend(WorkError(FireFlowException.NoBrowserInstalledException))
+            trySend(WorkError(Error.NoBrowserInstalled))
             close()
         } catch (e: Exception) {
             trySend(
                 WorkError(
-                    FireFlowException.Fatal(
+                    Error.Fatal(
                         throwable = e,
                         type = OS
                     )

@@ -18,7 +18,7 @@
 package dev.zitech.core.persistence.data.repository.database
 
 import dev.zitech.core.common.domain.cache.InMemoryCache
-import dev.zitech.core.common.domain.exception.FireFlowException
+import dev.zitech.core.common.domain.error.Error
 import dev.zitech.core.common.domain.model.Work
 import dev.zitech.core.common.domain.model.WorkError
 import dev.zitech.core.common.domain.model.WorkSuccess
@@ -104,9 +104,9 @@ internal class UserAccountRepositoryImpl @Inject constructor(
                 if (updateUserAccountResult.data != NO_WORKER_UPDATED_RESULT) {
                     WorkSuccess(Unit)
                 } else {
-                    WorkError(FireFlowException.NullUserAccount)
+                    WorkError(Error.NullUserAccount)
                 }
             }
-            is WorkError -> WorkError(updateUserAccountResult.fireFlowException)
+            is WorkError -> WorkError(updateUserAccountResult.error)
         }
 }

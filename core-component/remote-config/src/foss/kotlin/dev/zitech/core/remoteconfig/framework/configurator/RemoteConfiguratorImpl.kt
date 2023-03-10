@@ -17,23 +17,23 @@
 
 package dev.zitech.core.remoteconfig.framework.configurator
 
-import dev.zitech.core.common.domain.exception.FireFlowException.BuildTypeUnsupported
-import dev.zitech.core.common.domain.model.DataError
-import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.error.Error.BuildTypeUnsupported
+import dev.zitech.core.common.domain.model.Work
+import dev.zitech.core.common.domain.model.WorkError
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
 internal class RemoteConfiguratorImpl @Inject constructor() : RemoteConfigurator {
 
-    override fun init(): Flow<DataResult<Unit>> =
-        flowOf(DataError(BuildTypeUnsupported))
+    override fun init(): Flow<Work<Unit>> =
+        flowOf(WorkError(BuildTypeUnsupported))
 
-    override fun getString(key: String): DataResult<String> = DataError(BuildTypeUnsupported)
+    override fun getString(key: String): Work<String> = WorkError(BuildTypeUnsupported)
 
-    override fun getBoolean(key: String): DataResult<Boolean> = DataError(BuildTypeUnsupported)
+    override fun getBoolean(key: String): Work<Boolean> = WorkError(BuildTypeUnsupported)
 
-    override fun getDouble(key: String): DataResult<Double> = DataError(BuildTypeUnsupported)
+    override fun getDouble(key: String): Work<Double> = WorkError(BuildTypeUnsupported)
 
-    override fun getLong(key: String): DataResult<Long> = DataError(BuildTypeUnsupported)
+    override fun getLong(key: String): Work<Long> = WorkError(BuildTypeUnsupported)
 }

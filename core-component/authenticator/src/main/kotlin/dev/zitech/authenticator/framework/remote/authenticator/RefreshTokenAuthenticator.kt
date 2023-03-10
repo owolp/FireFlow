@@ -56,7 +56,7 @@ internal class RefreshTokenAuthenticator @Inject constructor(
                         .build()
                 }
                 is WorkError -> {
-                    Logger.e(tag, message = refreshedTokenResult.fireFlowException.text)
+                    Logger.e(tag, message = refreshedTokenResult.error.text)
                     null
                 }
             }
