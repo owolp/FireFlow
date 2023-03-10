@@ -112,7 +112,8 @@ internal fun WelcomeRoute(
         is ShowError -> {
             snackbarState.showMessage(
                 BottomNotifierMessage(
-                    text = stringResource(event.messageResId),
+                    text = event.messageResId?.let { stringResource(it) }
+                        ?: event.text.orEmpty(),
                     state = BottomNotifierMessage.State.ERROR,
                     duration = BottomNotifierMessage.Duration.SHORT
                 )

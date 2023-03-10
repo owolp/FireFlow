@@ -18,18 +18,13 @@
 package dev.zitech.onboarding.presentation.oauth.viewmodel.resource
 
 import dev.zitech.core.common.domain.strings.StringsProvider
-import dev.zitech.core.common.presentation.resource.CommonStringsProvider
 import dev.zitech.onboarding.R
 import javax.inject.Inject
 
 internal class OAuthStringsProvider @Inject constructor(
-    private val stringsProvider: StringsProvider,
-    private val commonStringsProvider: CommonStringsProvider
+    private val stringsProvider: StringsProvider
 ) {
 
     fun getNewAccessTokenUrl(serverAddress: String, clientId: String, state: String): String =
         stringsProvider(R.string.firefly_iii_new_access_token_url, serverAddress, clientId, state)
-
-    fun getNoSupportedBrowserInstalled(): Int =
-        commonStringsProvider.getNoSupportedBrowserInstalled()
 }

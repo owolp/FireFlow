@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright (C) 2022 Zitech Ltd.
+  ~ Copyright (C) 2023 Zitech Ltd.
   ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
@@ -24,6 +24,4 @@
     <string name="application_language_system">Ситемни настройки по подразбиране</string>
     <string name="application_language_english">Английски English</string>
     <string name="application_language_bulgarian">Български</string>
-
-    <string name="no_supported_browser_installed">No supported browser found. Please install a browser and try again.</string>
 </resources>

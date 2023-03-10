@@ -24,11 +24,13 @@ sealed class FireFlowException(
     @StringRes val uiResId: Int,
     val text: String
 ) {
-    // TODO: To be removed
-    @Suppress("ForbiddenComment")
-    object Legacy : FireFlowException(R.string.empty, "")
 
     object BuildTypeUnsupported : FireFlowException(R.string.empty, "")
+
+    object NoBrowserInstalledException : FireFlowException(
+        R.string.no_browser_installed,
+        "No supported browser installed"
+    )
 
     data class Fatal(
         val throwable: Throwable,
@@ -37,15 +39,18 @@ sealed class FireFlowException(
         when (type) {
             Type.DISK -> R.string.disk_exception
             Type.NETWORK -> R.string.network_exception
+            Type.OS -> R.string.os_exception
         },
         when (type) {
             Type.DISK -> "Disk exception:${throwable.message}"
             Type.NETWORK -> "Network exception:${throwable.message}"
+            Type.OS -> "OS exception:${throwable.message}"
         }
     ) {
         enum class Type {
             DISK,
-            NETWORK
+            NETWORK,
+            OS
         }
     }
 

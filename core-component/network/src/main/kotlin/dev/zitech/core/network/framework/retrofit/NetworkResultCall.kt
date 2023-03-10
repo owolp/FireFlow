@@ -48,13 +48,13 @@ internal class NetworkResultCall<T : Any>(
     override fun enqueue(callback: Callback<NetworkResult<T>>) {
         proxy.enqueue(object : Callback<T> {
             override fun onResponse(call: Call<T>, response: Response<T>) {
-                val dataResult = handleApi { response }
-                callback.onResponse(this@NetworkResultCall, Response.success(dataResult))
+                val networkResult = handleApi { response }
+                callback.onResponse(this@NetworkResultCall, Response.success(networkResult))
             }
 
             override fun onFailure(call: Call<T>, t: Throwable) {
-                val dataResult = NetworkException<T>(t)
-                callback.onResponse(this@NetworkResultCall, Response.success(dataResult))
+                val networkResult = NetworkException<T>(t)
+                callback.onResponse(this@NetworkResultCall, Response.success(networkResult))
             }
         })
     }

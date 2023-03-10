@@ -34,6 +34,9 @@ internal data class ShowDemoWarning(
     val confirm: String
 ) : WelcomeEvent
 
-internal data class ShowError(val messageResId: Int) : WelcomeEvent
+internal data class ShowError(
+    val messageResId: Int? = null,
+    val text: String? = null
+) : WelcomeEvent
 
 internal data class NavigateToError(val exception: FireFlowException) : WelcomeEvent
