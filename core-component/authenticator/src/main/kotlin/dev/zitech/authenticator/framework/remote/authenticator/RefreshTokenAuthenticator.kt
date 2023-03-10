@@ -21,8 +21,8 @@ import dev.zitech.authenticator.domain.usecase.GetRefreshedTokenUseCase
 import dev.zitech.authenticator.framework.remote.HEADER_AUTHORIZATION_KEY
 import dev.zitech.authenticator.framework.remote.HEADER_AUTHORIZATION_VALUE
 import dev.zitech.core.common.domain.logger.Logger
-import dev.zitech.core.common.domain.model.DataError
-import dev.zitech.core.common.domain.model.DataSuccess
+import dev.zitech.core.common.domain.model.WorkError
+import dev.zitech.core.common.domain.model.WorkSuccess
 import javax.inject.Inject
 import kotlinx.coroutines.runBlocking
 import okhttp3.Authenticator
@@ -46,7 +46,7 @@ internal class RefreshTokenAuthenticator @Inject constructor(
             return@runBlocking when (
                 val refreshedTokenResult = getRefreshedTokenUseCase.get().invoke()
             ) {
-                is DataSuccess -> {
+                is WorkSuccess -> {
                     response.request().newBuilder()
                         .removeHeader(HEADER_AUTHORIZATION_KEY)
                         .addHeader(
@@ -55,7 +55,7 @@ internal class RefreshTokenAuthenticator @Inject constructor(
                         )
                         .build()
                 }
-                is DataError -> {
+                is WorkError -> {
                     Logger.e(tag, message = refreshedTokenResult.fireFlowException.text)
                     null
                 }

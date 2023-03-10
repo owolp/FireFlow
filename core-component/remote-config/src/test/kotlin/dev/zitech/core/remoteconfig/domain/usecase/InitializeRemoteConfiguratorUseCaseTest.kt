@@ -19,7 +19,7 @@ package dev.zitech.core.remoteconfig.domain.usecase
 
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
-import dev.zitech.core.common.domain.model.DataSuccess
+import dev.zitech.core.common.domain.model.WorkSuccess
 import dev.zitech.core.remoteconfig.framework.configurator.FakeRemoteConfigurator
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
@@ -30,13 +30,13 @@ internal class InitializeRemoteConfiguratorUseCaseTest {
     fun invoke() = runBlocking {
         // Arrange
         val fakeRemoteConfigurator = FakeRemoteConfigurator().apply {
-            initResult = DataSuccess(Unit)
+            initResult = WorkSuccess(Unit)
         }
         val sut = InitializeRemoteConfiguratorUseCase(fakeRemoteConfigurator)
 
         // Act & Assert
         sut().test {
-            assertThat(awaitItem()).isEqualTo(DataSuccess(Unit))
+            assertThat(awaitItem()).isEqualTo(WorkSuccess(Unit))
             awaitComplete()
         }
     }

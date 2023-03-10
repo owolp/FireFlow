@@ -17,7 +17,7 @@
 
 package dev.zitech.onboarding.presentation.oauth.viewmodel
 
-import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.model.Work
 import dev.zitech.core.common.presentation.architecture.MviIntent
 import dev.zitech.onboarding.presentation.oauth.model.OAuthAuthentication
 
@@ -30,6 +30,6 @@ internal data class OnClientIdChange(val clientId: String) : OAuthIntent
 internal data class OnClientSecretChange(val clientSecret: String) : OAuthIntent
 internal data class OnOauthCode(val authentication: OAuthAuthentication) : OAuthIntent
 internal object OnAuthenticationCanceled : OAuthIntent
-internal data class NavigatedToFireflyResult(val result: DataResult<Unit>) : OAuthIntent
+internal data class NavigatedToFireflyResult(val result: Work<Unit>) : OAuthIntent
 internal object NavigationHandled : OAuthIntent
 internal object ErrorHandled : OAuthIntent

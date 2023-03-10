@@ -26,7 +26,7 @@ import dev.zitech.core.common.DataFactory
 import dev.zitech.core.common.domain.dispatcher.AppDispatchers
 import dev.zitech.core.common.domain.exception.FireFlowException
 import dev.zitech.core.common.domain.logger.Logger
-import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.model.Work
 import dev.zitech.core.common.domain.model.onError
 import dev.zitech.core.common.domain.model.onSuccess
 import dev.zitech.core.common.presentation.architecture.MviViewModel
@@ -153,7 +153,7 @@ internal class OAuthViewModel @Inject constructor(
         )
     }
 
-    private suspend fun handleNavigatedToFireflyResult(result: DataResult<Unit>) {
+    private suspend fun handleNavigatedToFireflyResult(result: Work<Unit>) {
         result.onSuccess {
             stateHandler.resetEvent()
         }.onError { exception ->

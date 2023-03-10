@@ -22,7 +22,7 @@ import dev.zitech.authenticator.data.remote.mapper.RefreshTokenResponseMapper
 import dev.zitech.authenticator.data.remote.service.OAuthService
 import dev.zitech.authenticator.data.source.OAuthSource
 import dev.zitech.authenticator.domain.model.Token
-import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.model.Work
 import dev.zitech.core.common.domain.model.mapToDataResult
 import javax.inject.Inject
 
@@ -36,7 +36,7 @@ internal class OAuthRemoteSource @Inject constructor(
         clientId: String,
         clientSecret: String,
         code: String
-    ): DataResult<Token> = oAuthService.postAccessToken(
+    ): Work<Token> = oAuthService.postAccessToken(
         clientId = clientId,
         clientSecret = clientSecret,
         code = code
@@ -46,7 +46,7 @@ internal class OAuthRemoteSource @Inject constructor(
         clientId: String,
         clientSecret: String,
         refreshToken: String
-    ): DataResult<Token> = oAuthService.postRefreshToken(
+    ): Work<Token> = oAuthService.postRefreshToken(
         clientId = clientId,
         clientSecret = clientSecret,
         refreshToken = refreshToken

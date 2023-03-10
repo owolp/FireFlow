@@ -18,7 +18,7 @@
 package dev.zitech.authenticator.data.source
 
 import dev.zitech.authenticator.domain.model.Token
-import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.model.Work
 
 internal interface OAuthSource {
 
@@ -26,11 +26,11 @@ internal interface OAuthSource {
         clientId: String,
         clientSecret: String,
         code: String
-    ): DataResult<Token>
+    ): Work<Token>
 
     suspend fun getRefreshedToken(
         clientId: String,
         clientSecret: String,
         refreshToken: String
-    ): DataResult<Token>
+    ): Work<Token>
 }

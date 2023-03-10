@@ -17,14 +17,14 @@
 
 package dev.zitech.core.remoteconfig.framework.configurator
 
-import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.model.Work
 import kotlinx.coroutines.flow.Flow
 
 interface RemoteConfigurator {
 
-    fun init(): Flow<DataResult<Unit>>
-    fun getBoolean(key: String): DataResult<Boolean>
-    fun getDouble(key: String): DataResult<Double>
-    fun getLong(key: String): DataResult<Long>
-    fun getString(key: String): DataResult<String>
+    fun init(): Flow<Work<Unit>>
+    fun getBoolean(key: String): Work<Boolean>
+    fun getDouble(key: String): Work<Double>
+    fun getLong(key: String): Work<Long>
+    fun getString(key: String): Work<String>
 }

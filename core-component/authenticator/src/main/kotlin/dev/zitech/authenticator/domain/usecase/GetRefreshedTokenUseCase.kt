@@ -21,9 +21,9 @@ import dev.zitech.authenticator.domain.model.Token
 import dev.zitech.authenticator.domain.repository.TokenRepository
 import dev.zitech.core.common.domain.exception.FireFlowException
 import dev.zitech.core.common.domain.logger.Logger
-import dev.zitech.core.common.domain.model.DataError
-import dev.zitech.core.common.domain.model.DataResult
-import dev.zitech.core.common.domain.model.DataSuccess
+import dev.zitech.core.common.domain.model.Work
+import dev.zitech.core.common.domain.model.WorkError
+import dev.zitech.core.common.domain.model.WorkSuccess
 import dev.zitech.core.common.domain.model.onError
 import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.domain.usecase.database.GetCurrentUserAccountUseCase
@@ -39,13 +39,13 @@ internal class GetRefreshedTokenUseCase @Inject constructor(
 
     private val tag = Logger.tag(this::class.java)
 
-    suspend operator fun invoke(): DataResult<Token> =
+    suspend operator fun invoke(): Work<Token> =
         when (val currentUserAccountResult = getCurrentUserAccountUseCase().first()) {
-            is DataSuccess -> {
+            is WorkSuccess -> {
                 val currentUser = currentUserAccountResult.data
                 getRefreshedToken(currentUser)
             }
-            is DataError -> DataError(currentUserAccountResult.fireFlowException)
+            is WorkError -> WorkError(currentUserAccountResult.fireFlowException)
         }
 
     private suspend fun getRefreshedToken(currentUser: UserAccount) =
@@ -56,7 +56,7 @@ internal class GetRefreshedTokenUseCase @Inject constructor(
                 refreshToken = currentUser.refreshToken.orEmpty()
             )
         ) {
-            is DataSuccess -> {
+            is WorkSuccess -> {
                 val refreshedToken = refreshTokenResult.data
                 updateUserAccountUseCase(
                     currentUser.copy(
@@ -71,8 +71,8 @@ internal class GetRefreshedTokenUseCase @Inject constructor(
                         else -> Logger.e(tag, exception.text)
                     }
                 }
-                DataSuccess(refreshedToken)
+                WorkSuccess(refreshedToken)
             }
-            is DataError -> refreshTokenResult
+            is WorkError -> refreshTokenResult
         }
 }

@@ -17,7 +17,7 @@
 
 package dev.zitech.core.remoteconfig.data.repository
 
-import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.model.Work
 import dev.zitech.core.remoteconfig.domain.model.BooleanConfig
 import dev.zitech.core.remoteconfig.domain.model.DoubleConfig
 import dev.zitech.core.remoteconfig.domain.model.LongConfig
@@ -31,7 +31,7 @@ internal class ConfigRepositoryImpl @Inject constructor(
     private val configProviderSource: ConfigProviderSource
 ) : ConfigRepository {
 
-    override fun init(): Flow<DataResult<Unit>> =
+    override fun init(): Flow<Work<Unit>> =
         configProviderSource.init()
 
     override fun getBooleanConfigs(): List<BooleanConfig> =
@@ -46,15 +46,15 @@ internal class ConfigRepositoryImpl @Inject constructor(
     override fun getStringConfigs(): List<StringConfig> =
         StringConfig.values().toList()
 
-    override suspend fun getBooleanValue(config: BooleanConfig): DataResult<Boolean> =
+    override suspend fun getBooleanValue(config: BooleanConfig): Work<Boolean> =
         configProviderSource.getBoolean(config)
 
-    override suspend fun getDoubleValue(config: DoubleConfig): DataResult<Double> =
+    override suspend fun getDoubleValue(config: DoubleConfig): Work<Double> =
         configProviderSource.getDouble(config)
 
-    override suspend fun getLongValue(config: LongConfig): DataResult<Long> =
+    override suspend fun getLongValue(config: LongConfig): Work<Long> =
         configProviderSource.getLong(config)
 
-    override suspend fun getStringValue(config: StringConfig): DataResult<String> =
+    override suspend fun getStringValue(config: StringConfig): Work<String> =
         configProviderSource.getString(config)
 }

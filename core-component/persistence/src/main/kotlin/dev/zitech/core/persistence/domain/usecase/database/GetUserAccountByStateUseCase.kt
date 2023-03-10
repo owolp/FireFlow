@@ -17,7 +17,7 @@
 
 package dev.zitech.core.persistence.domain.usecase.database
 
-import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.model.Work
 import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
 import javax.inject.Inject
@@ -26,6 +26,6 @@ class GetUserAccountByStateUseCase @Inject constructor(
     private val userAccountRepository: UserAccountRepository
 ) {
 
-    suspend operator fun invoke(state: String): DataResult<UserAccount> =
+    suspend operator fun invoke(state: String): Work<UserAccount> =
         userAccountRepository.getUserAccountByState(state)
 }

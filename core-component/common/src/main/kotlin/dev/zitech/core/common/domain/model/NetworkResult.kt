@@ -57,11 +57,11 @@ suspend fun <T : Any> NetworkResult<T>.onException(
 
 fun <T : Any, R : Any> NetworkResult<T>.mapToDataResult(
     transformSuccess: (T) -> R
-): DataResult<R> =
+): Work<R> =
     when (this) {
-        is NetworkSuccess -> DataSuccess(transformSuccess(data))
-        is NetworkError -> DataError(getFireFlowException(statusCode, message))
-        is NetworkException -> DataError(getFireFlowException(throwable))
+        is NetworkSuccess -> WorkSuccess(transformSuccess(data))
+        is NetworkError -> WorkError(getFireFlowException(statusCode, message))
+        is NetworkException -> WorkError(getFireFlowException(throwable))
     }
 
 fun getFireFlowException(statusCode: StatusCode, message: String?): FireFlowException =

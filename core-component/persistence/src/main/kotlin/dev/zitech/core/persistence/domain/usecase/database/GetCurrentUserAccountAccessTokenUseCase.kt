@@ -17,8 +17,8 @@
 
 package dev.zitech.core.persistence.domain.usecase.database
 
-import dev.zitech.core.common.domain.model.DataError
-import dev.zitech.core.common.domain.model.DataSuccess
+import dev.zitech.core.common.domain.model.WorkError
+import dev.zitech.core.common.domain.model.WorkSuccess
 import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
 import javax.inject.Inject
 import kotlinx.coroutines.flow.first
@@ -29,7 +29,7 @@ class GetCurrentUserAccountAccessTokenUseCase @Inject constructor(
 
     suspend operator fun invoke(): String? =
         when (val result = userAccountRepository.getCurrentUserAccount().first()) {
-            is DataSuccess -> result.data.accessToken
-            is DataError -> null
+            is WorkSuccess -> result.data.accessToken
+            is WorkError -> null
         }
 }

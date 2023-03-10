@@ -17,7 +17,7 @@
 
 package dev.zitech.core.remoteconfig.domain.repository
 
-import dev.zitech.core.common.domain.model.DataResult
+import dev.zitech.core.common.domain.model.Work
 import dev.zitech.core.remoteconfig.domain.model.BooleanConfig
 import dev.zitech.core.remoteconfig.domain.model.DoubleConfig
 import dev.zitech.core.remoteconfig.domain.model.LongConfig
@@ -25,15 +25,15 @@ import dev.zitech.core.remoteconfig.domain.model.StringConfig
 import kotlinx.coroutines.flow.Flow
 
 interface ConfigRepository {
-    fun init(): Flow<DataResult<Unit>>
+    fun init(): Flow<Work<Unit>>
 
     fun getBooleanConfigs(): List<BooleanConfig>
     fun getDoubleConfigs(): List<DoubleConfig>
     fun getLongConfigs(): List<LongConfig>
     fun getStringConfigs(): List<StringConfig>
 
-    suspend fun getBooleanValue(config: BooleanConfig): DataResult<Boolean>
-    suspend fun getDoubleValue(config: DoubleConfig): DataResult<Double>
-    suspend fun getLongValue(config: LongConfig): DataResult<Long>
-    suspend fun getStringValue(config: StringConfig): DataResult<String>
+    suspend fun getBooleanValue(config: BooleanConfig): Work<Boolean>
+    suspend fun getDoubleValue(config: DoubleConfig): Work<Double>
+    suspend fun getLongValue(config: LongConfig): Work<Long>
+    suspend fun getStringValue(config: StringConfig): Work<String>
 }
