@@ -19,6 +19,7 @@ package dev.zitech.onboarding.presentation.welcome.compose
 
 import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -32,10 +33,14 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.relocation.BringIntoViewRequester
+import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
@@ -46,6 +51,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.ds.atoms.animation.FireFlowAnimations
 import dev.zitech.ds.atoms.background.FireFlowBackground
 import dev.zitech.ds.atoms.button.FireFlowButtons
@@ -60,6 +66,7 @@ import dev.zitech.ds.templates.scaffold.FireFlowScaffolds
 import dev.zitech.ds.theme.FireFlowTheme
 import dev.zitech.ds.theme.PreviewFireFlowTheme
 import dev.zitech.onboarding.R
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -92,7 +99,7 @@ internal fun WelcomeScreen(
 }
 
 @Composable
-@OptIn(ExperimentalLayoutApi::class)
+@OptIn(ExperimentalLayoutApi::class, ExperimentalFoundationApi::class)
 private fun WelcomeScreenContent(
     innerPadding: PaddingValues,
     onContinueWithOauthCLick: () -> Unit,
@@ -100,6 +107,9 @@ private fun WelcomeScreenContent(
     onGetStartedClick: () -> Unit,
     onFireflyClick: () -> Unit
 ) {
+    val fireflyIIIViewRequester = remember { BringIntoViewRequester() }
+    val coroutineScope = rememberCoroutineScope()
+
     FireFlowBackground.Gradient(
         modifier = Modifier
             .fillMaxSize()
@@ -131,6 +141,8 @@ private fun WelcomeScreenContent(
             )
             FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.s)
             FireFlowExpandableTextCards.Transparent.Icon(
+                modifier = Modifier
+                    .bringIntoViewRequester(fireflyIIIViewRequester),
                 topContent = {
                     FireFlowTexts.BodyMedium(
                         modifier = Modifier
@@ -175,6 +187,15 @@ private fun WelcomeScreenContent(
                             text = getFireflyInfoAnnotatedString(),
                             color = FireFlowTheme.colors.onSurface
                         ) { onFireflyClick() }
+                    }
+                },
+                onClick = { isExpanded ->
+                    Logger.d("KOKO", "isExpanded=$isExpanded")
+                    if (isExpanded) {
+                        coroutineScope.launch {
+                            Logger.d("KOKO", "bring request")
+                            fireflyIIIViewRequester.bringIntoView()
+                        }
                     }
                 }
             )
