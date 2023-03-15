@@ -267,6 +267,7 @@ internal class OAuthViewModel @Inject constructor(
                 state = null
             )
         ).onSuccess {
+            // TODO: Update with email and type from firefly profile
             stateHandler.setLoading(false)
             stateHandler.setEvent(NavigateToDashboard)
         }.onError { error ->

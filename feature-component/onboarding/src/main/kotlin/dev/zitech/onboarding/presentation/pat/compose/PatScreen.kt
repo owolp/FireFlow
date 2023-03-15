@@ -105,6 +105,7 @@ private fun PatScreenContent(
     val logInViewRequester = remember { BringIntoViewRequester() }
     val coroutineScope = rememberCoroutineScope()
 
+    // TODO: Disable input on loading
     Column(
         modifier = Modifier
             .fillMaxSize()

@@ -77,6 +77,7 @@ internal class PatViewModel @Inject constructor(
     private suspend fun checkToken(userAccount: UserAccount, accessToken: String) {
         getFireflyProfileUseCase.get().invoke()
             .onSuccess {
+                // TODO: Update with email and type from firefly profile
                 updateUserAccount(accessToken, userAccount)
             }.onError { error ->
                 // TODO: Update account to isCurrentUserAccount = false or remove
