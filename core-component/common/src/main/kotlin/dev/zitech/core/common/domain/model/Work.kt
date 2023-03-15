@@ -33,14 +33,14 @@ suspend fun <T : Any> Work<T>.onSuccess(
 }
 
 suspend fun <T : Any> Work<T>.onError(
-    executable: suspend (fireFlowException: Error) -> Unit
+    executable: suspend (error: Error) -> Unit
 ): Work<T> = apply {
     if (this is WorkError) {
         executable(error)
     }
 }
 
-inline fun <T : Any, R : Any> Work<T>.mapToDataResult(
+inline fun <T : Any, R : Any> Work<T>.mapToWork(
     transform: (T) -> R
 ): Work<R> =
     when (this) {

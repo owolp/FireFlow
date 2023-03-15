@@ -21,7 +21,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class GetUserResponse(
+data class UserResponse(
     @Json(name = "data")
     val data: GetUserDataResponse
 )
@@ -38,14 +38,8 @@ data class GetUserDataResponse(
 
 @JsonClass(generateAdapter = true)
 data class GetUserDataAttributesResponse(
-    @Json(name = "blocked")
-    val blocked: Boolean,
-    @Json(name = "created_at")
-    val createdAt: String,
     @Json(name = "email")
     val email: String,
     @Json(name = "role")
-    val role: String,
-    @Json(name = "updated_at")
-    val updatedAt: String
+    val role: String
 )

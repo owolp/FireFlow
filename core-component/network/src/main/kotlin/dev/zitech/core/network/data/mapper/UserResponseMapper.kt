@@ -15,14 +15,20 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.network.data.service
+package dev.zitech.core.network.data.mapper
 
-import dev.zitech.core.common.domain.model.NetworkResult
+import dev.zitech.core.common.data.mapper.DomainMapper
 import dev.zitech.core.network.data.model.UserResponse
-import retrofit2.http.GET
+import dev.zitech.core.network.domain.model.FireflyProfile
+import javax.inject.Inject
 
-interface AboutService {
+internal class UserResponseMapper @Inject constructor() :
+    DomainMapper<UserResponse, FireflyProfile> {
 
-    @GET("api/v1/about/user")
-    suspend fun getUser(): NetworkResult<UserResponse>
+    override fun toDomain(input: UserResponse) = FireflyProfile(
+        email = input.data.attributes.email,
+        id = input.data.id,
+        role = input.data.attributes.role,
+        type = input.data.type
+    )
 }

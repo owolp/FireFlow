@@ -55,20 +55,20 @@ suspend fun <T : Any> NetworkResult<T>.onException(
     }
 }
 
-fun <T : Any, R : Any> NetworkResult<T>.mapToDataResult(
+fun <T : Any, R : Any> NetworkResult<T>.mapToWork(
     transformSuccess: (T) -> R
 ): Work<R> =
     when (this) {
         is NetworkSuccess -> WorkSuccess(transformSuccess(data))
-        is NetworkError -> WorkError(getFireFlowException(statusCode, message))
-        is NetworkException -> WorkError(getFireFlowException(throwable))
+        is NetworkError -> WorkError(getError(statusCode, message))
+        is NetworkException -> WorkError(getError(throwable))
     }
 
-fun getFireFlowException(statusCode: StatusCode, message: String?): Error =
+fun getError(statusCode: StatusCode, message: String?): Error =
     when (statusCode) {
         StatusCode.Unauthorized -> Error.TokenRefreshFailed(message)
         else -> Error.UserVisible(message)
     }
 
-fun getFireFlowException(throwable: Throwable): Error =
+fun getError(throwable: Throwable): Error =
     Error.Fatal(throwable, NETWORK)

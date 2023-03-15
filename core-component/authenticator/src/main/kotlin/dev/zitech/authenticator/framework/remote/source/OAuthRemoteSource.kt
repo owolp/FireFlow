@@ -23,7 +23,7 @@ import dev.zitech.authenticator.data.remote.service.OAuthService
 import dev.zitech.authenticator.data.source.OAuthSource
 import dev.zitech.authenticator.domain.model.Token
 import dev.zitech.core.common.domain.model.Work
-import dev.zitech.core.common.domain.model.mapToDataResult
+import dev.zitech.core.common.domain.model.mapToWork
 import javax.inject.Inject
 
 internal class OAuthRemoteSource @Inject constructor(
@@ -40,7 +40,7 @@ internal class OAuthRemoteSource @Inject constructor(
         clientId = clientId,
         clientSecret = clientSecret,
         code = code
-    ).mapToDataResult(accessTokenResponseMapper::toDomain)
+    ).mapToWork(accessTokenResponseMapper::toDomain)
 
     override suspend fun getRefreshedToken(
         clientId: String,
@@ -50,5 +50,5 @@ internal class OAuthRemoteSource @Inject constructor(
         clientId = clientId,
         clientSecret = clientSecret,
         refreshToken = refreshToken
-    ).mapToDataResult(refreshTokenResponseMapper::toDomain)
+    ).mapToWork(refreshTokenResponseMapper::toDomain)
 }

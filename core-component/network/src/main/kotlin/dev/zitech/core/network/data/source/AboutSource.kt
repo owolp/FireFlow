@@ -15,14 +15,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.network.data.service
+package dev.zitech.core.network.data.source
 
-import dev.zitech.core.common.domain.model.NetworkResult
-import dev.zitech.core.network.data.model.UserResponse
-import retrofit2.http.GET
+import dev.zitech.core.common.domain.model.Work
+import dev.zitech.core.network.domain.model.FireflyProfile
 
-interface AboutService {
+internal interface AboutSource {
 
-    @GET("api/v1/about/user")
-    suspend fun getUser(): NetworkResult<UserResponse>
+    suspend fun getFireflyProfile(): Work<FireflyProfile>
 }
