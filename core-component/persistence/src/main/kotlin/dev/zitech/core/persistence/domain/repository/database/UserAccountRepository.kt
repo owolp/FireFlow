@@ -23,17 +23,19 @@ import kotlinx.coroutines.flow.Flow
 
 interface UserAccountRepository {
 
+    fun getCurrentUserAccount(): Flow<Work<UserAccount>>
     suspend fun getUserAccountByState(state: String): Work<UserAccount>
     fun getUserAccounts(): Flow<Work<List<UserAccount>>>
-    fun getCurrentUserAccount(): Flow<Work<UserAccount>>
+    suspend fun removeStaleUserAccounts(): Work<Unit>
+
     suspend fun saveUserAccount(
-        clientId: String,
-        clientSecret: String,
+        accessToken: String?,
+        clientId: String?,
+        clientSecret: String?,
         isCurrentUserAccount: Boolean,
         serverAddress: String,
         state: String
     ): Work<Long>
 
-    suspend fun removeStaleUserAccounts(): Work<Unit>
     suspend fun updateUserAccount(userAccount: UserAccount): Work<Unit>
 }

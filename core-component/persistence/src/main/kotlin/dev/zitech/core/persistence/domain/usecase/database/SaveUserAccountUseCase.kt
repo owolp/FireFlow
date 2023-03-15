@@ -26,8 +26,9 @@ class SaveUserAccountUseCase @Inject constructor(
 ) {
 
     suspend operator fun invoke(
-        clientId: String,
-        clientSecret: String,
+        accessToken: String? = null,
+        clientId: String? = null,
+        clientSecret: String? = null,
         isCurrentUserAccount: Boolean,
         serverAddress: String,
         state: String
@@ -36,6 +37,7 @@ class SaveUserAccountUseCase @Inject constructor(
             clientId = clientId,
             clientSecret = clientSecret,
             isCurrentUserAccount = isCurrentUserAccount,
+            accessToken = accessToken,
             serverAddress = serverAddress,
             state = state
         )
