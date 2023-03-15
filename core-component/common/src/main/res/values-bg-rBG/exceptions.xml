@@ -16,6 +16,7 @@
   -->
 
 <resources>
+    <string name="authentication_problem">Предоставеният тип на удостоверяване не е валиден. Моля, уверете се, че използвате правилния тип на удостоверяване.</string>
     <string name="disk_exception">Възникна непредвидена грешка при достъпа до съхранението.</string>
     <string name="empty" translatable="false" />
     <string name="failed_to_fetched">Неуспешно извличане на отдалечена конфигурация.</string>

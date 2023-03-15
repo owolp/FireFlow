@@ -192,10 +192,20 @@ internal class OAuthViewModel @Inject constructor(
             .onSuccess { userAccount ->
                 with(stateHandler) {
                     setServerAddress(userAccount.serverAddress)
-                    setClientId(userAccount.clientId)
-                    setClientSecret(userAccount.clientSecret)
+                    val authenticationType = userAccount.authenticationType
+                    if (authenticationType is UserAccount.AuthenticationType.OAuth) {
+                        val clientId = authenticationType.clientId
+                        setClientId(clientId)
+                        val clientSecret = authenticationType.clientSecret
+                        setClientSecret(clientSecret)
+                        retrieveToken(userAccount, clientId, clientSecret, code)
+                    } else {
+                        stateHandler.setLoading(false)
+                        stateHandler.setEvent(
+                            NavigateToError(Error.AuthenticationProblem)
+                        )
+                    }
                 }
-                retrieveToken(userAccount, code)
             }.onError { error ->
                 stateHandler.setLoading(false)
                 when (error) {
@@ -215,13 +225,18 @@ internal class OAuthViewModel @Inject constructor(
             }
     }
 
-    private suspend fun retrieveToken(userAccount: UserAccount, code: String) {
+    private suspend fun retrieveToken(
+        userAccount: UserAccount,
+        clientId: String,
+        clientSecret: String,
+        code: String
+    ) {
         getAccessTokenUseCase.get()(
-            clientId = userAccount.clientId,
-            clientSecret = userAccount.clientSecret,
+            clientId = clientId,
+            clientSecret = clientSecret,
             code = code
         ).onSuccess { token ->
-            updateUserAccount(userAccount, token, code)
+            updateUserAccount(userAccount, clientId, clientSecret, token, code)
         }.onError { error ->
             stateHandler.setLoading(false)
             when (error) {
@@ -238,15 +253,21 @@ internal class OAuthViewModel @Inject constructor(
 
     private suspend fun updateUserAccount(
         userAccount: UserAccount,
+        clientId: String,
+        clientSecret: String,
         token: Token,
-        code: String
+        oauthCode: String
     ) {
         updateUserAccountUseCase(
             userAccount.copy(
-                accessToken = token.accessToken,
+                authenticationType = UserAccount.AuthenticationType.OAuth(
+                    accessToken = token.accessToken,
+                    clientId = clientId,
+                    clientSecret = clientSecret,
+                    oauthCode = oauthCode,
+                    refreshToken = token.refreshToken
+                ),
                 isCurrentUserAccount = true,
-                oauthCode = code,
-                refreshToken = token.refreshToken,
                 state = null
             )
         ).onSuccess {

@@ -27,8 +27,8 @@ internal data class UserAccountEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long? = null,
     val accessToken: String? = null,
-    val clientId: String,
-    val clientSecret: String,
+    val clientId: String? = null,
+    val clientSecret: String? = null,
     val isCurrentUserAccount: Boolean,
     val oauthCode: String? = null,
     val refreshToken: String? = null,

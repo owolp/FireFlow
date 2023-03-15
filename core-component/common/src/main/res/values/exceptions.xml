@@ -16,6 +16,7 @@
   -->
 
 <resources>
+    <string name="authentication_problem">The authentication type provided is not valid. Please ensure that you are using the correct authentication type.</string>
     <string name="disk_exception">An unexpected error occurred while accessing the storage.</string>
     <string name="empty" translatable="false" />
     <string name="failed_to_fetched">Failed to fetch remote config.</string>

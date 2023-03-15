@@ -25,6 +25,11 @@ sealed class Error(
     val text: String
 ) {
 
+    object AuthenticationProblem : Error(
+        R.string.authentication_problem,
+        "The authentication type provided is not valid"
+    )
+
     object BuildTypeUnsupported : Error(R.string.empty, "")
 
     object NoBrowserInstalled : Error(

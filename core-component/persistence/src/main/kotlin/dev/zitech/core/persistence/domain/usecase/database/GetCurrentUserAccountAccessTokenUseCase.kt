@@ -29,7 +29,7 @@ class GetCurrentUserAccountAccessTokenUseCase @Inject constructor(
 
     suspend operator fun invoke(): String? =
         when (val result = userAccountRepository.getCurrentUserAccount().first()) {
-            is WorkSuccess -> result.data.accessToken
+            is WorkSuccess -> result.data.authenticationType?.accessToken
             is WorkError -> null
         }
 }
