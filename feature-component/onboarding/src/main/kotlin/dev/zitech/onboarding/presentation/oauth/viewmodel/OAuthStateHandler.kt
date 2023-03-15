@@ -27,11 +27,8 @@ import kotlinx.coroutines.flow.update
 internal class OAuthStateHandler @Inject constructor() : MviStateHandler<OAuthState> {
 
     private val mutableState = MutableStateFlow(OAuthState())
-    override val state: StateFlow<OAuthState> = mutableState.asStateFlow()
 
-    fun setEvent(event: OAuthEvent) {
-        mutableState.update { it.copy(event = event) }
-    }
+    override val state: StateFlow<OAuthState> = mutableState.asStateFlow()
 
     fun resetEvent() {
         setEvent(Idle)
@@ -45,15 +42,19 @@ internal class OAuthStateHandler @Inject constructor() : MviStateHandler<OAuthSt
         mutableState.update { it.copy(clientSecret = clientSecret) }
     }
 
-    fun setServerAddress(serverAddress: String) {
-        mutableState.update { it.copy(serverAddress = serverAddress) }
+    fun setEvent(event: OAuthEvent) {
+        mutableState.update { it.copy(event = event) }
+    }
+
+    fun setLoading(loading: Boolean) {
+        mutableState.update { it.copy(loading = loading) }
     }
 
     fun setLoginEnabled(loginEnabled: Boolean) {
         mutableState.update { it.copy(loginEnabled = loginEnabled) }
     }
 
-    fun setLoading(loading: Boolean) {
-        mutableState.update { it.copy(loading = loading) }
+    fun setServerAddress(serverAddress: String) {
+        mutableState.update { it.copy(serverAddress = serverAddress) }
     }
 }

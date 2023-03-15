@@ -47,20 +47,16 @@ import kotlinx.coroutines.withContext
 
 @HiltViewModel
 internal class OAuthViewModel @Inject constructor(
-    private val stateHandler: OAuthStateHandler,
-    private val isOauthLoginInputValidUseCase: IsOAuthLoginInputValidUseCase,
-    private val saveUserAccountUseCase: SaveUserAccountUseCase,
-    private val updateUserAccountUseCase: UpdateUserAccountUseCase,
-    private val getUserAccountByStateUseCase: GetUserAccountByStateUseCase,
-    private val getAccessTokenUseCase: dagger.Lazy<GetAccessTokenUseCase>,
+    private val appDispatchers: AppDispatchers,
     private val clientIdValidator: ClientIdValidator,
+    private val getAccessTokenUseCase: dagger.Lazy<GetAccessTokenUseCase>,
+    private val getUserAccountByStateUseCase: GetUserAccountByStateUseCase,
+    private val isOauthLoginInputValidUseCase: IsOAuthLoginInputValidUseCase,
     private val oauthStringsProvider: OAuthStringsProvider,
-    private val appDispatchers: AppDispatchers
+    private val saveUserAccountUseCase: SaveUserAccountUseCase,
+    private val stateHandler: OAuthStateHandler,
+    private val updateUserAccountUseCase: UpdateUserAccountUseCase
 ) : ViewModel(), MviViewModel<OAuthIntent, OAuthState> {
-
-    private companion object {
-        const val LOADING_DELAY_IN_MILLISECONDS = 500L
-    }
 
     private val tag = Logger.tag(this::class.java)
 
@@ -85,6 +81,40 @@ internal class OAuthViewModel @Inject constructor(
                 ErrorHandled -> stateHandler.resetEvent()
                 is OnOauthCode -> handleOnOauthCode(intent.authentication)
                 OnAuthenticationCanceled -> stateHandler.setLoading(false)
+            }
+        }
+    }
+
+    private suspend fun handleNavigatedToFireflyResult(result: Work<Unit>) {
+        result.onSuccess {
+            stateHandler.resetEvent()
+        }.onError { error ->
+            stateHandler.setLoading(false)
+            when (error) {
+                is Error.NoBrowserInstalled -> {
+                    stateHandler.setEvent(
+                        ShowError(messageResId = error.uiResId)
+                    )
+                }
+                is Error.Fatal -> {
+                    Logger.e(tag, throwable = error.throwable)
+                    stateHandler.setEvent(NavigateToError(error))
+                }
+                is Error.UserVisible ->
+                    stateHandler.setEvent(ShowError(text = error.text))
+                else -> {
+                    Logger.e(tag, error.text)
+                    stateHandler.setEvent(NavigateToError(error))
+                }
+            }
+        }
+    }
+
+    private fun handleOnClientIdChange(intent: OnClientIdChange) {
+        with(intent.clientId.trim()) {
+            if (clientIdValidator(this) || this.isEmpty()) {
+                stateHandler.setClientId(this)
+                setLoginEnabledOrDisabled()
             }
         }
     }
@@ -128,52 +158,6 @@ internal class OAuthViewModel @Inject constructor(
                 is Error.UserVisible ->
                     stateHandler.setEvent(ShowError(text = error.text))
                 else -> Logger.e(tag, error.text)
-            }
-        }
-    }
-
-    private fun handleOnClientIdChange(intent: OnClientIdChange) {
-        with(intent.clientId.trim()) {
-            if (clientIdValidator(this) || this.isEmpty()) {
-                stateHandler.setClientId(this)
-                setLoginEnabledOrDisabled()
-            }
-        }
-    }
-
-    private fun setLoginEnabledOrDisabled() {
-        stateHandler.setLoginEnabled(
-            with(screenState.value) {
-                isOauthLoginInputValidUseCase(
-                    clientId = clientId,
-                    clientSecret = clientSecret,
-                    serverAddress = serverAddress
-                )
-            }
-        )
-    }
-
-    private suspend fun handleNavigatedToFireflyResult(result: Work<Unit>) {
-        result.onSuccess {
-            stateHandler.resetEvent()
-        }.onError { error ->
-            stateHandler.setLoading(false)
-            when (error) {
-                is Error.NoBrowserInstalled -> {
-                    stateHandler.setEvent(
-                        ShowError(messageResId = error.uiResId)
-                    )
-                }
-                is Error.Fatal -> {
-                    Logger.e(tag, throwable = error.throwable)
-                    stateHandler.setEvent(NavigateToError(error))
-                }
-                is Error.UserVisible ->
-                    stateHandler.setEvent(ShowError(text = error.text))
-                else -> {
-                    Logger.e(tag, error.text)
-                    stateHandler.setEvent(NavigateToError(error))
-                }
             }
         }
     }
@@ -251,6 +235,18 @@ internal class OAuthViewModel @Inject constructor(
         }
     }
 
+    private fun setLoginEnabledOrDisabled() {
+        stateHandler.setLoginEnabled(
+            with(screenState.value) {
+                isOauthLoginInputValidUseCase(
+                    clientId = clientId,
+                    clientSecret = clientSecret,
+                    serverAddress = serverAddress
+                )
+            }
+        )
+    }
+
     private suspend fun updateUserAccount(
         userAccount: UserAccount,
         clientId: String,
@@ -290,5 +286,9 @@ internal class OAuthViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    private companion object {
+        const val LOADING_DELAY_IN_MILLISECONDS = 500L
     }
 }

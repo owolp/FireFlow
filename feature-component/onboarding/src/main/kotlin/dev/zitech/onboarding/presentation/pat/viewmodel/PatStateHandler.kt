@@ -27,14 +27,23 @@ import kotlinx.coroutines.flow.update
 internal class PatStateHandler @Inject constructor() : MviStateHandler<PatState> {
 
     private val mutableState = MutableStateFlow(PatState())
+
     override val state: StateFlow<PatState> = mutableState.asStateFlow()
+
+    fun resetEvent() {
+        setEvent(Idle)
+    }
 
     fun setEvent(event: PatEvent) {
         mutableState.update { it.copy(event = event) }
     }
 
-    fun resetEvent() {
-        setEvent(Idle)
+    fun setLoading(loading: Boolean) {
+        mutableState.update { it.copy(loading = loading) }
+    }
+
+    fun setLoginEnabled(loginEnabled: Boolean) {
+        mutableState.update { it.copy(loginEnabled = loginEnabled) }
     }
 
     fun setPersonalAccessToken(pat: String) {
@@ -43,9 +52,5 @@ internal class PatStateHandler @Inject constructor() : MviStateHandler<PatState>
 
     fun setServerAddress(serverAddress: String) {
         mutableState.update { it.copy(serverAddress = serverAddress) }
-    }
-
-    fun setLoginEnabled(loginEnabled: Boolean) {
-        mutableState.update { it.copy(loginEnabled = loginEnabled) }
     }
 }

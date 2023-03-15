@@ -22,8 +22,8 @@ import dev.zitech.core.common.presentation.architecture.MviState
 internal data class OAuthState(
     val clientId: String = "",
     val clientSecret: String = "",
+    val event: OAuthEvent = Idle,
     val loading: Boolean = false,
     val loginEnabled: Boolean = false,
-    val serverAddress: String = "",
-    val event: OAuthEvent = Idle
+    val serverAddress: String = ""
 ) : MviState
