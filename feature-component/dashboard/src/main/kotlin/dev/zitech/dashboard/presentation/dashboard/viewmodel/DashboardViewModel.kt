@@ -63,7 +63,7 @@ internal class DashboardViewModel @Inject constructor(
                             is Error.Fatal -> {
                                 Logger.e(tag, throwable = error.throwable)
                             }
-                            else -> Logger.e(tag, error.text)
+                            else -> Logger.e(tag, error.debugText)
                         }
                     }
             }

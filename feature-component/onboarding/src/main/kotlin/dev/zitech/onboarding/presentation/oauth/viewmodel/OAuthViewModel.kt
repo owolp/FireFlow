@@ -101,9 +101,9 @@ internal class OAuthViewModel @Inject constructor(
                     stateHandler.setEvent(NavigateToError(error))
                 }
                 is Error.UserVisible ->
-                    stateHandler.setEvent(ShowError(text = error.text))
+                    stateHandler.setEvent(ShowError(text = error.message))
                 else -> {
-                    Logger.e(tag, error.text)
+                    Logger.e(tag, error.debugText)
                     stateHandler.setEvent(NavigateToError(error))
                 }
             }
@@ -156,8 +156,8 @@ internal class OAuthViewModel @Inject constructor(
                     stateHandler.setEvent(NavigateToError(error))
                 }
                 is Error.UserVisible ->
-                    stateHandler.setEvent(ShowError(text = error.text))
-                else -> Logger.e(tag, error.text)
+                    stateHandler.setEvent(ShowError(text = error.message))
+                else -> Logger.e(tag, error.debugText)
             }
         }
     }
@@ -194,7 +194,7 @@ internal class OAuthViewModel @Inject constructor(
                 stateHandler.setLoading(false)
                 when (error) {
                     is Error.NullUserAccountByState -> {
-                        Logger.e(tag, error.text)
+                        Logger.e(tag, error.debugText)
                         stateHandler.setEvent(NavigateToError(error))
                     }
                     is Error.Fatal -> {
@@ -202,7 +202,7 @@ internal class OAuthViewModel @Inject constructor(
                         stateHandler.setEvent(NavigateToError(error))
                     }
                     else -> {
-                        Logger.e(tag, error.text)
+                        Logger.e(tag, error.debugText)
                         stateHandler.setEvent(ShowError(messageResId = error.uiResId))
                     }
                 }
@@ -229,8 +229,8 @@ internal class OAuthViewModel @Inject constructor(
                     stateHandler.setEvent(NavigateToError(error))
                 }
                 is Error.UserVisible ->
-                    stateHandler.setEvent(ShowError(text = error.text))
-                else -> Logger.e(tag, error.text)
+                    stateHandler.setEvent(ShowError(text = error.message))
+                else -> Logger.e(tag, error.debugText)
             }
         }
     }
@@ -273,7 +273,7 @@ internal class OAuthViewModel @Inject constructor(
             stateHandler.setLoading(false)
             when (error) {
                 is Error.NullUserAccount -> {
-                    Logger.e(tag, error.text)
+                    Logger.e(tag, error.debugText)
                     stateHandler.setEvent(NavigateToError(error))
                 }
                 is Error.Fatal -> {
@@ -281,7 +281,7 @@ internal class OAuthViewModel @Inject constructor(
                     stateHandler.setEvent(NavigateToError(error))
                 }
                 else -> {
-                    Logger.e(tag, error.text)
+                    Logger.e(tag, error.debugText)
                     stateHandler.setEvent(ShowError(messageResId = error.uiResId))
                 }
             }

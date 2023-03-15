@@ -22,7 +22,7 @@ import dev.zitech.core.common.R
 
 sealed class Error(
     @StringRes val uiResId: Int,
-    val text: String
+    val debugText: String
 ) {
 
     object AuthenticationProblem : Error(
@@ -94,11 +94,11 @@ sealed class Error(
         private val message: String?
     ) : Error(
         R.string.token_failed,
-        "message=$message"
+        message.orEmpty()
     )
 
     data class UserVisible(
-        private val message: String?
+        val message: String?
     ) : Error(
         R.string.empty,
         message.orEmpty()
