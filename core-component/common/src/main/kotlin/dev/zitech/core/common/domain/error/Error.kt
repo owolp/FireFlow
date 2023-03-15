@@ -90,10 +90,10 @@ sealed class Error(
         "Null user account by state"
     )
 
-    data class TokenRefreshFailed(
+    data class TokenFailed(
         private val message: String?
     ) : Error(
-        R.string.token_expired,
+        R.string.token_failed,
         "message=$message"
     )
 

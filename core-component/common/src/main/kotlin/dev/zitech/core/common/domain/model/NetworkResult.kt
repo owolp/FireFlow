@@ -66,7 +66,7 @@ fun <T : Any, R : Any> NetworkResult<T>.mapToWork(
 
 fun getError(statusCode: StatusCode, message: String?): Error =
     when (statusCode) {
-        StatusCode.Unauthorized -> Error.TokenRefreshFailed(message)
+        StatusCode.Unauthorized -> Error.TokenFailed(message)
         else -> Error.UserVisible(message)
     }
 

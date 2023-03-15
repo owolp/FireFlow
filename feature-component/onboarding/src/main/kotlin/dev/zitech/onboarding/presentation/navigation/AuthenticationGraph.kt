@@ -80,7 +80,8 @@ fun NavGraphBuilder.onboardingGraph(
     composable(route = PatDestination.route) {
         PatRoute(
             navigateToDashboard = navigateToDashboard,
-            navigateBack = navigateBack
+            navigateBack = navigateBack,
+            navigateToError = navigateToError
         )
     }
     composable(route = WelcomeDestination.route) {

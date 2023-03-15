@@ -20,30 +20,37 @@ package dev.zitech.onboarding.presentation.pat.compose
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import dev.zitech.core.common.domain.error.Error
+import dev.zitech.ds.molecules.snackbar.BottomNotifierMessage
 import dev.zitech.ds.molecules.snackbar.rememberSnackbarState
+import dev.zitech.onboarding.presentation.pat.viewmodel.ErrorHandled
 import dev.zitech.onboarding.presentation.pat.viewmodel.Idle
 import dev.zitech.onboarding.presentation.pat.viewmodel.NavigateBack
 import dev.zitech.onboarding.presentation.pat.viewmodel.NavigateToDashboard
+import dev.zitech.onboarding.presentation.pat.viewmodel.NavigateToError
 import dev.zitech.onboarding.presentation.pat.viewmodel.NavigationHandled
 import dev.zitech.onboarding.presentation.pat.viewmodel.OnBackClick
 import dev.zitech.onboarding.presentation.pat.viewmodel.OnLoginClick
 import dev.zitech.onboarding.presentation.pat.viewmodel.OnPersonalAccessTokenChange
 import dev.zitech.onboarding.presentation.pat.viewmodel.OnServerAddressChange
 import dev.zitech.onboarding.presentation.pat.viewmodel.PatViewModel
+import dev.zitech.onboarding.presentation.pat.viewmodel.ShowError
 
 @Composable
 internal fun PatRoute(
     navigateToDashboard: () -> Unit,
     navigateBack: () -> Unit,
+    navigateToError: (error: Error) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: PatViewModel = hiltViewModel()
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
     val snackbarState = rememberSnackbarState()
 
-    when (screenState.event) {
+    when (val event = screenState.event) {
         NavigateToDashboard -> {
             navigateToDashboard()
             viewModel.sendIntent(NavigationHandled)
@@ -51,6 +58,21 @@ internal fun PatRoute(
         NavigateBack -> {
             navigateBack()
             viewModel.sendIntent(NavigationHandled)
+        }
+        is NavigateToError -> {
+            navigateToError(event.error)
+            viewModel.sendIntent(NavigationHandled)
+        }
+        is ShowError -> {
+            snackbarState.showMessage(
+                BottomNotifierMessage(
+                    text = event.messageResId?.let { stringResource(it) }
+                        ?: event.text.orEmpty(),
+                    state = BottomNotifierMessage.State.ERROR,
+                    duration = BottomNotifierMessage.Duration.SHORT
+                )
+            )
+            viewModel.sendIntent(ErrorHandled)
         }
         Idle -> {
             // NO_OP

@@ -22,10 +22,17 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.zitech.core.common.DataFactory
 import dev.zitech.core.common.domain.dispatcher.AppDispatchers
+import dev.zitech.core.common.domain.error.Error
+import dev.zitech.core.common.domain.logger.Logger
+import dev.zitech.core.common.domain.model.onError
+import dev.zitech.core.common.domain.model.onSuccess
 import dev.zitech.core.common.presentation.architecture.MviViewModel
 import dev.zitech.core.network.domain.usecase.GetFireflyProfileUseCase
+import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.domain.model.database.UserAccount.Companion.STATE_LENGTH
+import dev.zitech.core.persistence.domain.usecase.database.GetUserAccountByStateUseCase
 import dev.zitech.core.persistence.domain.usecase.database.SaveUserAccountUseCase
+import dev.zitech.core.persistence.domain.usecase.database.UpdateUserAccountUseCase
 import dev.zitech.onboarding.domain.usecase.IsPatLoginInputValidUseCase
 import javax.inject.Inject
 import kotlinx.coroutines.delay
@@ -37,10 +44,14 @@ import kotlinx.coroutines.withContext
 internal class PatViewModel @Inject constructor(
     private val appDispatchers: AppDispatchers,
     private val getFireflyProfileUseCase: dagger.Lazy<GetFireflyProfileUseCase>,
+    private val getUserAccountByStateUseCase: GetUserAccountByStateUseCase,
     private val isPatLoginInputValidUseCase: IsPatLoginInputValidUseCase,
     private val saveUserAccountUseCase: SaveUserAccountUseCase,
-    private val stateHandler: PatStateHandler
+    private val stateHandler: PatStateHandler,
+    private val updateUserAccountUseCase: UpdateUserAccountUseCase
 ) : ViewModel(), MviViewModel<PatIntent, PatState> {
+
+    private val tag = Logger.tag(this::class.java)
 
     override val screenState: StateFlow<PatState> = stateHandler.state
 
@@ -58,13 +69,70 @@ internal class PatViewModel @Inject constructor(
                     stateHandler.setServerAddress(intent.serverAddress)
                     setLoginEnabled()
                 }
+                ErrorHandled -> stateHandler.resetEvent()
             }
         }
     }
 
-    @Suppress("ForbiddenComment")
+    private suspend fun checkToken(userAccount: UserAccount, accessToken: String) {
+        getFireflyProfileUseCase.get().invoke()
+            .onSuccess {
+                updateUserAccount(accessToken, userAccount)
+            }.onError { error ->
+                // TODO: Update account to isCurrentUserAccount = false or remove
+                // current account
+                stateHandler.setLoading(false)
+                when (error) {
+                    is Error.Fatal -> {
+                        Logger.e(tag, throwable = error.throwable)
+                        stateHandler.setEvent(NavigateToError(error))
+                    }
+                    is Error.UserVisible ->
+                        stateHandler.setEvent(ShowError(messageResId = error.uiResId))
+                    is Error.TokenFailed ->
+                        stateHandler.setEvent(ShowError(messageResId = error.uiResId))
+                    else -> Logger.e(tag, error.text)
+                }
+            }
+    }
+
+    private suspend fun getUserAccountByState(state: String) {
+        stateHandler.setLoading(true)
+        getUserAccountByStateUseCase(state)
+            .onSuccess { userAccount ->
+                val authenticationType = userAccount.authenticationType
+                if (authenticationType is UserAccount.AuthenticationType.Pat) {
+                    val accessToken = authenticationType.accessToken
+                    checkToken(userAccount, accessToken)
+                } else {
+                    stateHandler.setLoading(false)
+                    stateHandler.setEvent(
+                        NavigateToError(Error.AuthenticationProblem)
+                    )
+                }
+            }.onError { error ->
+                // TODO: Update account to isCurrentUserAccount = false or remove
+                // current account
+                stateHandler.setLoading(false)
+                when (error) {
+                    is Error.NullUserAccountByState -> {
+                        Logger.e(tag, error.text)
+                        stateHandler.setEvent(NavigateToError(error))
+                    }
+                    is Error.Fatal -> {
+                        Logger.e(tag, throwable = error.throwable)
+                        stateHandler.setEvent(NavigateToError(error))
+                    }
+                    else -> {
+                        Logger.e(tag, error.text)
+                        stateHandler.setEvent(ShowError(messageResId = error.uiResId))
+                    }
+                }
+            }
+    }
+
     private suspend fun handleOnLoginClick() {
-        val pat = screenState.value.pat
+        val accessToken = screenState.value.pat
         val serverAddress = screenState.value.serverAddress
         val state = DataFactory.createRandomString(STATE_LENGTH)
 
@@ -72,9 +140,27 @@ internal class PatViewModel @Inject constructor(
             delay(LOADING_DELAY_IN_MILLISECONDS)
             stateHandler.setLoading(true)
         }
-
-        // TODO: Dev usage
-        stateHandler.setEvent(NavigateToDashboard)
+        saveUserAccountUseCase(
+            accessToken = accessToken,
+            isCurrentUserAccount = true,
+            serverAddress = serverAddress,
+            state = state
+        ).onSuccess {
+            getUserAccountByState(state)
+        }.onError { error ->
+            // TODO: Update account to isCurrentUserAccount = false or remove
+            // current account
+            stateHandler.setLoading(false)
+            when (error) {
+                is Error.Fatal -> {
+                    Logger.e(tag, throwable = error.throwable)
+                    stateHandler.setEvent(NavigateToError(error))
+                }
+                is Error.UserVisible ->
+                    stateHandler.setEvent(ShowError(text = error.text))
+                else -> Logger.e(tag, error.text)
+            }
+        }
     }
 
     private fun setLoginEnabled() {
@@ -86,6 +172,42 @@ internal class PatViewModel @Inject constructor(
                 )
             }
         )
+    }
+
+    private suspend fun updateUserAccount(
+        accessToken: String,
+        userAccount: UserAccount
+    ) {
+        updateUserAccountUseCase(
+            userAccount.copy(
+                authenticationType = UserAccount.AuthenticationType.Pat(
+                    accessToken = accessToken
+                ),
+                isCurrentUserAccount = true,
+                state = null
+            )
+        ).onSuccess {
+            stateHandler.setLoading(false)
+            stateHandler.setEvent(NavigateToDashboard)
+        }.onError { error ->
+            // TODO: Update account to isCurrentUserAccount = false or remove
+            // current account
+            stateHandler.setLoading(false)
+            when (error) {
+                is Error.NullUserAccount -> {
+                    Logger.e(tag, error.text)
+                    stateHandler.setEvent(NavigateToError(error))
+                }
+                is Error.Fatal -> {
+                    Logger.e(tag, throwable = error.throwable)
+                    stateHandler.setEvent(NavigateToError(error))
+                }
+                else -> {
+                    Logger.e(tag, error.text)
+                    stateHandler.setEvent(ShowError(messageResId = error.uiResId))
+                }
+            }
+        }
     }
 
     private companion object {

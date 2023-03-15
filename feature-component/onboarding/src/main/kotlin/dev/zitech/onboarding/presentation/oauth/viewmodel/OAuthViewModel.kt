@@ -219,8 +219,8 @@ internal class OAuthViewModel @Inject constructor(
             clientId = clientId,
             clientSecret = clientSecret,
             code = code
-        ).onSuccess { token ->
-            updateUserAccount(userAccount, clientId, clientSecret, token, code)
+        ).onSuccess { accessToken ->
+            updateUserAccount(accessToken, userAccount, clientId, clientSecret, code)
         }.onError { error ->
             stateHandler.setLoading(false)
             when (error) {
@@ -248,20 +248,20 @@ internal class OAuthViewModel @Inject constructor(
     }
 
     private suspend fun updateUserAccount(
+        accessToken: Token,
         userAccount: UserAccount,
         clientId: String,
         clientSecret: String,
-        token: Token,
         oauthCode: String
     ) {
         updateUserAccountUseCase(
             userAccount.copy(
                 authenticationType = UserAccount.AuthenticationType.OAuth(
-                    accessToken = token.accessToken,
+                    accessToken = accessToken.accessToken,
                     clientId = clientId,
                     clientSecret = clientSecret,
                     oauthCode = oauthCode,
-                    refreshToken = token.refreshToken
+                    refreshToken = accessToken.refreshToken
                 ),
                 isCurrentUserAccount = true,
                 state = null
