@@ -31,6 +31,7 @@ import dev.zitech.core.network.domain.usecase.GetFireflyProfileUseCase
 import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.domain.model.database.UserAccount.Companion.STATE_LENGTH
 import dev.zitech.core.persistence.domain.usecase.database.GetUserAccountByStateUseCase
+import dev.zitech.core.persistence.domain.usecase.database.RemoveStaleUserAccountsUseCase
 import dev.zitech.core.persistence.domain.usecase.database.SaveUserAccountUseCase
 import dev.zitech.core.persistence.domain.usecase.database.UpdateUserAccountUseCase
 import dev.zitech.onboarding.domain.usecase.IsPatLoginInputValidUseCase
@@ -46,6 +47,7 @@ internal class PatViewModel @Inject constructor(
     private val getFireflyProfileUseCase: dagger.Lazy<GetFireflyProfileUseCase>,
     private val getUserAccountByStateUseCase: GetUserAccountByStateUseCase,
     private val isPatLoginInputValidUseCase: IsPatLoginInputValidUseCase,
+    private val removeStaleUserAccountsUseCase: RemoveStaleUserAccountsUseCase,
     private val saveUserAccountUseCase: SaveUserAccountUseCase,
     private val stateHandler: PatStateHandler,
     private val updateUserAccountUseCase: UpdateUserAccountUseCase
@@ -80,8 +82,7 @@ internal class PatViewModel @Inject constructor(
                 // TODO: Update with email and type from firefly profile
                 updateUserAccount(accessToken, userAccount)
             }.onError { error ->
-                // TODO: Update account to isCurrentUserAccount = false or remove
-                // current account
+                removeStaleUserAccountsUseCase()
                 stateHandler.setLoading(false)
                 when (error) {
                     is Error.Fatal -> {
@@ -111,8 +112,7 @@ internal class PatViewModel @Inject constructor(
                     )
                 }
             }.onError { error ->
-                // TODO: Update account to isCurrentUserAccount = false or remove
-                // current account
+                removeStaleUserAccountsUseCase()
                 stateHandler.setLoading(false)
                 when (error) {
                     is Error.NullUserAccountByState -> {
@@ -148,8 +148,7 @@ internal class PatViewModel @Inject constructor(
         ).onSuccess {
             getUserAccountByState(state)
         }.onError { error ->
-            // TODO: Update account to isCurrentUserAccount = false or remove
-            // current account
+            removeStaleUserAccountsUseCase()
             stateHandler.setLoading(false)
             when (error) {
                 is Error.Fatal -> {
@@ -190,8 +189,7 @@ internal class PatViewModel @Inject constructor(
             stateHandler.setLoading(false)
             stateHandler.setEvent(NavigateToDashboard)
         }.onError { error ->
-            // TODO: Update account to isCurrentUserAccount = false or remove
-            // current account
+            removeStaleUserAccountsUseCase()
             stateHandler.setLoading(false)
             when (error) {
                 is Error.NullUserAccount -> {
