@@ -23,7 +23,10 @@ import dev.zitech.authenticator.framework.remote.HEADER_AUTHORIZATION_VALUE
 import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.domain.model.WorkError
 import dev.zitech.core.common.domain.model.WorkSuccess
+import dev.zitech.core.persistence.domain.model.database.UserAccount
+import dev.zitech.core.persistence.domain.usecase.database.GetCurrentUserAccountUseCase
 import javax.inject.Inject
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import okhttp3.Authenticator
 import okhttp3.Request
@@ -31,6 +34,7 @@ import okhttp3.Response
 import okhttp3.Route
 
 internal class RefreshTokenAuthenticator @Inject constructor(
+    private val getCurrentUserAccountUseCase: dagger.Lazy<GetCurrentUserAccountUseCase>,
     private val getRefreshedTokenUseCase: dagger.Lazy<GetRefreshedTokenUseCase>
 ) : Authenticator {
 
@@ -41,27 +45,51 @@ internal class RefreshTokenAuthenticator @Inject constructor(
     private val tag = Logger.tag(this::class.java)
 
     override fun authenticate(route: Route?, response: Response): Request? = runBlocking {
+        return@runBlocking when (val currentUserAccountResult = getCurrentUserAccountUseCase.get().invoke().first()) {
+            is WorkSuccess -> checkAuthenticationType(currentUserAccountResult.data.authenticationType, response)
+            is WorkError -> null
+        }
+    }
+
+    private suspend fun checkAuthenticationType(
+        authenticationType: UserAccount.AuthenticationType?,
+        response: Response
+    ): Request? = if (authenticationType is UserAccount.AuthenticationType.OAuth) {
         if (response.code() == UNAUTHENTICATED_CODE) {
-            Logger.i(tag, "Token has expired, refreshing...")
-            return@runBlocking when (
-                val refreshedTokenResult = getRefreshedTokenUseCase.get().invoke()
-            ) {
-                is WorkSuccess -> {
+            getRefreshedToken(response)
+        } else {
+            Logger.e(tag, message = "Response code not handled=${response.code()}")
+            null
+        }
+    } else {
+        null
+    }
+
+    private suspend fun getRefreshedToken(response: Response): Request? {
+        Logger.i(tag, "Token has expired, refreshing...")
+        return when (
+            val refreshedTokenResult = getRefreshedTokenUseCase.get().invoke()
+        ) {
+            is WorkSuccess -> {
+                val accessToken = refreshedTokenResult.data.accessToken
+                @Suppress("SENSELESS_COMPARISON")
+                if (accessToken != null) {
                     response.request().newBuilder()
                         .removeHeader(HEADER_AUTHORIZATION_KEY)
                         .addHeader(
                             HEADER_AUTHORIZATION_KEY,
-                            "$HEADER_AUTHORIZATION_VALUE ${refreshedTokenResult.data.accessToken}"
+                            "$HEADER_AUTHORIZATION_VALUE $accessToken"
                         )
                         .build()
-                }
-                is WorkError -> {
-                    Logger.e(tag, message = refreshedTokenResult.error.debugText)
+                } else {
+                    Logger.e(tag, message = "Refreshed accessToken is null")
                     null
                 }
             }
+            is WorkError -> {
+                Logger.e(tag, message = refreshedTokenResult.error.debugText)
+                null
+            }
         }
-
-        return@runBlocking null
     }
 }
