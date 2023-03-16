@@ -17,14 +17,43 @@
 
 package dev.zitech.core.persistence.domain.usecase.database
 
+import dev.zitech.core.common.domain.error.Error
 import dev.zitech.core.common.domain.model.Work
+import dev.zitech.core.common.domain.model.WorkError
+import dev.zitech.core.common.domain.model.WorkSuccess
 import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
 import javax.inject.Inject
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 
 class RemoveStaleUserAccountsUseCase @Inject constructor(
     private val userAccountRepository: UserAccountRepository
 ) {
 
-    suspend operator fun invoke(): Work<Unit> =
-        userAccountRepository.removeStaleUserAccounts()
+    @Suppress("RedundantAsync")
+    suspend operator fun invoke(): Work<Unit> = coroutineScope {
+        try {
+            val jobOAuth = async {
+                userAccountRepository.removeUserAccountsWithStateAndNoToken()
+            }.await()
+            val jobPat = async {
+                userAccountRepository.removeUserAccountsWithStateAndTokenAndNoClientIdAndSecret()
+            }.await()
+
+            if (jobOAuth is WorkSuccess && jobPat is WorkSuccess) {
+                WorkSuccess(Unit)
+            } else if (jobOAuth is WorkError) {
+                WorkError(jobOAuth.error)
+            } else {
+                WorkError((jobPat as WorkError).error)
+            }
+        } catch (e: Exception) {
+            WorkError(
+                Error.Fatal(
+                    throwable = e,
+                    type = Error.Fatal.Type.OS
+                )
+            )
+        }
+    }
 }

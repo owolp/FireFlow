@@ -26,7 +26,8 @@ interface UserAccountRepository {
     fun getCurrentUserAccount(): Flow<Work<UserAccount>>
     suspend fun getUserAccountByState(state: String): Work<UserAccount>
     fun getUserAccounts(): Flow<Work<List<UserAccount>>>
-    suspend fun removeStaleUserAccounts(): Work<Unit>
+    suspend fun removeUserAccountsWithStateAndNoToken(): Work<Unit>
+    suspend fun removeUserAccountsWithStateAndTokenAndNoClientIdAndSecret(): Work<Unit>
 
     suspend fun saveUserAccount(
         accessToken: String?,

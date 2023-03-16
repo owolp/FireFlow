@@ -67,9 +67,14 @@ internal class UserAccountDatabaseSource @Inject constructor(
             WorkError<List<UserAccount>>(Error.Fatal(throwable, DISK))
         }
 
-    override suspend fun removeUserAccountsWithStateAndWithoutAccessToken(): Work<Unit> =
+    override suspend fun removeUserAccountsWithStateAndNoToken(): Work<Unit> =
         handleDb {
-            userAccountDao.removeUserAccountsWithStateAndWithoutAccessToken()
+            userAccountDao.removeUserAccountsWithStateAndNoToken()
+        }
+
+    override suspend fun removeUserAccountsWithStateAndTokenAndNoClientIdAndSecret(): Work<Unit> =
+        handleDb {
+            userAccountDao.removeUserAccountsWithStateAndTokenAndNoClientIdAndSecret()
         }
 
     override suspend fun saveUserAccount(

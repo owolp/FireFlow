@@ -45,8 +45,14 @@ internal class RefreshTokenAuthenticator @Inject constructor(
     private val tag = Logger.tag(this::class.java)
 
     override fun authenticate(route: Route?, response: Response): Request? = runBlocking {
-        return@runBlocking when (val currentUserAccountResult = getCurrentUserAccountUseCase.get().invoke().first()) {
-            is WorkSuccess -> checkAuthenticationType(currentUserAccountResult.data.authenticationType, response)
+        return@runBlocking when (
+            val currentUserAccountResult = getCurrentUserAccountUseCase
+                .get().invoke().first()
+        ) {
+            is WorkSuccess -> checkAuthenticationType(
+                currentUserAccountResult.data.authenticationType,
+                response
+            )
             is WorkError -> null
         }
     }

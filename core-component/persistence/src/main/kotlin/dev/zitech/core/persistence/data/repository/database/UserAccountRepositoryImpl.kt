@@ -58,8 +58,11 @@ internal class UserAccountRepositoryImpl @Inject constructor(
     override fun getUserAccounts(): Flow<Work<List<UserAccount>>> =
         userAccountDatabaseSource.getUserAccounts()
 
-    override suspend fun removeStaleUserAccounts(): Work<Unit> =
-        userAccountDatabaseSource.removeUserAccountsWithStateAndWithoutAccessToken()
+    override suspend fun removeUserAccountsWithStateAndNoToken(): Work<Unit> =
+        userAccountDatabaseSource.removeUserAccountsWithStateAndNoToken()
+
+    override suspend fun removeUserAccountsWithStateAndTokenAndNoClientIdAndSecret(): Work<Unit> =
+        userAccountDatabaseSource.removeUserAccountsWithStateAndTokenAndNoClientIdAndSecret()
 
     override suspend fun saveUserAccount(
         accessToken: String?,

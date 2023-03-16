@@ -28,23 +28,29 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 internal interface UserAccountDao {
 
+    @Query("SELECT * FROM user_accounts WHERE isCurrentUserAccount=1 ORDER BY id DESC LIMIT 1")
+    fun getCurrentUserAccount(): Flow<UserAccountEntity?>
+
     @Query("SELECT * FROM user_accounts WHERE state=:state")
     suspend fun getUserAccountByState(state: String): UserAccountEntity?
 
     @Query("SELECT * FROM user_accounts")
     fun getUserAccounts(): Flow<List<UserAccountEntity>>
 
-    @Query("SELECT * FROM user_accounts WHERE isCurrentUserAccount=1 ORDER BY id DESC LIMIT 1")
-    fun getCurrentUserAccount(): Flow<UserAccountEntity?>
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun saveUserAccount(userAccountEntity: UserAccountEntity): Long
-
     @Query("UPDATE user_accounts SET isCurrentUserAccount=0")
     suspend fun removeCurrentUserAccount(): Int
 
+    @Query(
+        "DELETE FROM user_accounts WHERE state IS NOT NULL AND accessToken IS NOT" +
+            " NULL AND clientId IS NULL AND clientSecret IS NULL"
+    )
+    suspend fun removeUserAccountsWithStateAndTokenAndNoClientIdAndSecret()
+
     @Query("DELETE FROM user_accounts WHERE state IS NOT NULL AND accessToken IS NULL")
-    suspend fun removeUserAccountsWithStateAndWithoutAccessToken()
+    suspend fun removeUserAccountsWithStateAndNoToken()
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun saveUserAccount(userAccountEntity: UserAccountEntity): Long
 
     @Update
     suspend fun updateUserAccount(userAccountEntity: UserAccountEntity): Int
