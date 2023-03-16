@@ -29,14 +29,17 @@ internal class UserAccountMapper @Inject constructor() :
 
     override fun toDomain(input: UserAccountEntity) = UserAccount(
         authenticationType = getAuthenticationType(input),
+        email = input.email,
+        fireflyId = input.fireflyId,
         isCurrentUserAccount = input.isCurrentUserAccount,
+        role = input.role,
         serverAddress = input.serverAddress,
         state = input.state,
+        type = input.type,
         userId = input.id!!
     )
 
     override fun toEntity(input: UserAccount) = UserAccountEntity(
-        id = input.userId,
         accessToken = when (val type = input.authenticationType) {
             is UserAccount.AuthenticationType.OAuth -> type.accessToken
             is UserAccount.AuthenticationType.Pat -> type.accessToken
@@ -52,6 +55,9 @@ internal class UserAccountMapper @Inject constructor() :
             is UserAccount.AuthenticationType.Pat,
             null -> null
         },
+        email = input.email,
+        fireflyId = input.fireflyId,
+        id = input.userId,
         isCurrentUserAccount = input.isCurrentUserAccount,
         oauthCode = when (val type = input.authenticationType) {
             is UserAccount.AuthenticationType.OAuth -> type.oauthCode
@@ -63,8 +69,10 @@ internal class UserAccountMapper @Inject constructor() :
             is UserAccount.AuthenticationType.Pat,
             null -> null
         },
+        role = input.role,
         serverAddress = input.serverAddress,
-        state = input.state
+        state = input.state,
+        type = input.type
     )
 
     private fun getAuthenticationType(input: UserAccountEntity): UserAccount.AuthenticationType? =

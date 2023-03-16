@@ -78,9 +78,15 @@ internal class PatViewModel @Inject constructor(
 
     private suspend fun checkToken(userAccount: UserAccount, accessToken: String) {
         getFireflyProfileUseCase.get().invoke()
-            .onSuccess {
-                // TODO: Update with email and type from firefly profile
-                updateUserAccount(accessToken, userAccount)
+            .onSuccess { fireflyProfile ->
+                updateUserAccount(
+                    accessToken = accessToken,
+                    email = fireflyProfile.email,
+                    fireflyId = fireflyProfile.id,
+                    role = fireflyProfile.role,
+                    type = fireflyProfile.type,
+                    userAccount = userAccount
+                )
             }.onError { error ->
                 removeStaleUserAccountsUseCase()
                 stateHandler.setLoading(false)
@@ -175,6 +181,10 @@ internal class PatViewModel @Inject constructor(
 
     private suspend fun updateUserAccount(
         accessToken: String,
+        email: String,
+        fireflyId: String,
+        role: String,
+        type: String,
         userAccount: UserAccount
     ) {
         updateUserAccountUseCase(
@@ -182,8 +192,12 @@ internal class PatViewModel @Inject constructor(
                 authenticationType = UserAccount.AuthenticationType.Pat(
                     accessToken = accessToken
                 ),
+                email = email,
+                fireflyId = fireflyId,
                 isCurrentUserAccount = true,
-                state = null
+                role = role,
+                state = null,
+                type = type
             )
         ).onSuccess {
             stateHandler.setLoading(false)

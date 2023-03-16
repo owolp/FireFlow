@@ -19,9 +19,13 @@ package dev.zitech.core.persistence.domain.model.database
 
 data class UserAccount(
     val authenticationType: AuthenticationType? = null,
+    val email: String? = null,
+    val fireflyId: String? = null,
     val isCurrentUserAccount: Boolean,
+    val role: String? = null,
     val serverAddress: String,
     val state: String? = null,
+    val type: String? = null,
     val userId: Long
 ) {
 
