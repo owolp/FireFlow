@@ -44,5 +44,6 @@ internal class DashboardViewModel @Inject constructor(
     )
 
     override fun sendIntent(intent: DashboardIntent) {
+        // NO_OP
     }
 }

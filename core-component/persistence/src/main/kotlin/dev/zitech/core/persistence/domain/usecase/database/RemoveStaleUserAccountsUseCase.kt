@@ -30,7 +30,7 @@ class RemoveStaleUserAccountsUseCase @Inject constructor(
     private val userAccountRepository: UserAccountRepository
 ) {
 
-    @Suppress("RedundantAsync")
+    @Suppress("RedundantAsync", "TooGenericExceptionCaught")
     suspend operator fun invoke(): Work<Unit> = coroutineScope {
         try {
             val jobOAuth = async {
