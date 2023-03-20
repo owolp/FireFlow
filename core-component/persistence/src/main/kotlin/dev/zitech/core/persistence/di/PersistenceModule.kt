@@ -183,11 +183,11 @@ internal interface PersistenceModule {
         @Singleton
         @Provides
         fun userAccountRepository(
-            userAccountDatabaseSource: UserAccountSource,
-            networkDetailsInMemoryCache: InMemoryCache<NetworkDetails>
+            networkDetailsInMemoryCache: InMemoryCache<NetworkDetails>,
+            userAccountDatabaseSource: UserAccountSource
         ): UserAccountRepository = UserAccountRepositoryImpl(
-            userAccountDatabaseSource,
-            networkDetailsInMemoryCache
+            networkDetailsInMemoryCache,
+            userAccountDatabaseSource
         )
     }
 

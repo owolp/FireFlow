@@ -43,32 +43,55 @@ internal class GetRefreshedTokenUseCase @Inject constructor(
         when (val currentUserAccountResult = getCurrentUserAccountUseCase().first()) {
             is WorkSuccess -> {
                 val currentUser = currentUserAccountResult.data
-                getRefreshedToken(currentUser)
+
+                val authenticationType = currentUser.authenticationType
+                if (authenticationType is UserAccount.AuthenticationType.OAuth) {
+                    getRefreshedToken(
+                        currentUser = currentUser,
+                        clientId = authenticationType.clientId,
+                        clientSecret = authenticationType.clientSecret,
+                        refreshToken = authenticationType.refreshToken.orEmpty(),
+                        oauthCode = authenticationType.oauthCode.orEmpty()
+                    )
+                } else {
+                    WorkError(Error.AuthenticationProblem)
+                }
             }
             is WorkError -> WorkError(currentUserAccountResult.error)
         }
 
-    private suspend fun getRefreshedToken(currentUser: UserAccount) =
+    private suspend fun getRefreshedToken(
+        currentUser: UserAccount,
+        clientId: String,
+        clientSecret: String,
+        refreshToken: String,
+        oauthCode: String
+    ) =
         when (
             val refreshTokenResult = tokenRepository.getRefreshedToken(
-                clientId = currentUser.clientId,
-                clientSecret = currentUser.clientSecret,
-                refreshToken = currentUser.refreshToken.orEmpty()
+                clientId = clientId,
+                clientSecret = clientSecret,
+                refreshToken = refreshToken
             )
         ) {
             is WorkSuccess -> {
                 val refreshedToken = refreshTokenResult.data
                 updateUserAccountUseCase(
                     currentUser.copy(
-                        accessToken = refreshedToken.accessToken,
-                        refreshToken = refreshedToken.refreshToken
+                        authenticationType = UserAccount.AuthenticationType.OAuth(
+                            accessToken = refreshedToken.accessToken,
+                            clientId = clientId,
+                            clientSecret = clientSecret,
+                            oauthCode = oauthCode,
+                            refreshToken = refreshedToken.refreshToken
+                        )
                     )
                 ).onError { error ->
                     when (error) {
                         is Error.Fatal -> {
                             Logger.e(tag, throwable = error.throwable)
                         }
-                        else -> Logger.e(tag, error.text)
+                        else -> Logger.e(tag, error.debugText)
                     }
                 }
                 WorkSuccess(refreshedToken)

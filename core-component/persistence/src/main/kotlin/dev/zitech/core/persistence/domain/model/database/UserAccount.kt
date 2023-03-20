@@ -18,16 +18,33 @@
 package dev.zitech.core.persistence.domain.model.database
 
 data class UserAccount(
-    val accessToken: String? = null,
-    val clientId: String,
-    val clientSecret: String,
+    val authenticationType: AuthenticationType? = null,
+    val email: String? = null,
+    val fireflyId: String? = null,
     val isCurrentUserAccount: Boolean,
-    val oauthCode: String? = null,
-    val refreshToken: String? = null,
+    val role: String? = null,
     val serverAddress: String,
     val state: String? = null,
+    val type: String? = null,
     val userId: Long
 ) {
+
+    sealed class AuthenticationType(
+        open val accessToken: String?
+    ) {
+        data class OAuth(
+            override val accessToken: String? = null,
+            val clientId: String,
+            val clientSecret: String,
+            val oauthCode: String? = null,
+            val refreshToken: String? = null
+        ) : AuthenticationType(accessToken)
+
+        data class Pat(
+            override val accessToken: String
+        ) : AuthenticationType(accessToken)
+    }
+
     companion object {
         const val STATE_LENGTH = 10
     }

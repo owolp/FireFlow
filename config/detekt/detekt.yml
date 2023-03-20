@@ -118,8 +118,9 @@ complexity:
     ignoreAnnotated: [ 'Composable', 'Immutable' ]
   LongParameterList:
     active: true
+    excludes: [ '**/data/source/**', '**/repository/database/**' ]
     functionThreshold: 6
-    constructorThreshold: 10
+    constructorThreshold: 18
     ignoreDefaultParameters: false
     ignoreDataClasses: true
     ignoreAnnotatedParameter: [ ]

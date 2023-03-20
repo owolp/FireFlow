@@ -15,15 +15,20 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.onboarding.presentation.oauth.viewmodel
+package dev.zitech.core.network.data.mapper
 
-import dev.zitech.core.common.presentation.architecture.MviState
+import dev.zitech.core.common.data.mapper.DomainMapper
+import dev.zitech.core.network.data.model.UserResponse
+import dev.zitech.core.network.domain.model.FireflyProfile
+import javax.inject.Inject
 
-internal data class OAuthState(
-    val clientId: String = "",
-    val clientSecret: String = "",
-    val event: OAuthEvent = Idle,
-    val loading: Boolean = false,
-    val loginEnabled: Boolean = false,
-    val serverAddress: String = ""
-) : MviState
+internal class UserResponseMapper @Inject constructor() :
+    DomainMapper<UserResponse, FireflyProfile> {
+
+    override fun toDomain(input: UserResponse) = FireflyProfile(
+        email = input.data.attributes.email,
+        id = input.data.id,
+        role = input.data.attributes.role,
+        type = input.data.type
+    )
+}

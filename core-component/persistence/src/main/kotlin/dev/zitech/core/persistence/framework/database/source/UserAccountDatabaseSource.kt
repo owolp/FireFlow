@@ -38,6 +38,17 @@ internal class UserAccountDatabaseSource @Inject constructor(
     private val userAccountMapper: UserAccountMapper
 ) : UserAccountSource {
 
+    override fun getCurrentUserAccount(): Flow<Work<UserAccount>> =
+        userAccountDao.getCurrentUserAccount().map { userAccountEntity ->
+            if (userAccountEntity != null) {
+                WorkSuccess(userAccountMapper.toDomain(userAccountEntity))
+            } else {
+                WorkError(Error.NullCurrentUserAccount)
+            }
+        }.catch { throwable ->
+            WorkError<UserAccount>(Error.Fatal(throwable, DISK))
+        }
+
     override suspend fun getUserAccountByState(state: String): Work<UserAccount> = try {
         val userAccountEntity = userAccountDao.getUserAccountByState(state)
         if (userAccountEntity != null) {
@@ -56,26 +67,27 @@ internal class UserAccountDatabaseSource @Inject constructor(
             WorkError<List<UserAccount>>(Error.Fatal(throwable, DISK))
         }
 
-    override fun getCurrentUserAccount(): Flow<Work<UserAccount>> =
-        userAccountDao.getCurrentUserAccount().map { userAccountEntity ->
-            if (userAccountEntity != null) {
-                WorkSuccess(userAccountMapper.toDomain(userAccountEntity))
-            } else {
-                WorkError(Error.NullCurrentUserAccount)
-            }
-        }.catch { throwable ->
-            WorkError<UserAccount>(Error.Fatal(throwable, DISK))
+    override suspend fun removeUserAccountsWithStateAndNoToken(): Work<Unit> =
+        handleDb {
+            userAccountDao.removeUserAccountsWithStateAndNoToken()
+        }
+
+    override suspend fun removeUserAccountsWithStateAndTokenAndNoClientIdAndSecret(): Work<Unit> =
+        handleDb {
+            userAccountDao.removeUserAccountsWithStateAndTokenAndNoClientIdAndSecret()
         }
 
     override suspend fun saveUserAccount(
-        clientId: String,
-        clientSecret: String,
+        accessToken: String?,
+        clientId: String?,
+        clientSecret: String?,
         isCurrentUserAccount: Boolean,
         serverAddress: String,
         state: String
     ): Work<Long> = handleDb {
         userAccountDao.saveUserAccount(
             UserAccountEntity(
+                accessToken = accessToken,
                 clientId = clientId,
                 clientSecret = clientSecret,
                 isCurrentUserAccount = isCurrentUserAccount,
@@ -84,11 +96,6 @@ internal class UserAccountDatabaseSource @Inject constructor(
             )
         )
     }
-
-    override suspend fun removeUserAccountsWithStateAndWithoutAccessToken(): Work<Unit> =
-        handleDb {
-            userAccountDao.removeUserAccountsWithStateAndWithoutAccessToken()
-        }
 
     override suspend fun updateUserAccount(userAccount: UserAccount): Work<Int> =
         handleDb {

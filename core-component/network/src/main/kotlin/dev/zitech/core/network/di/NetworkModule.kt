@@ -30,12 +30,16 @@ import dev.zitech.authenticator.data.remote.service.OAuthService
 import dev.zitech.authenticator.di.annotation.InterceptorAuthentication
 import dev.zitech.core.common.domain.concurrency.ControlledRunner
 import dev.zitech.core.network.data.factory.InterceptorFactory
+import dev.zitech.core.network.data.repository.FireflyProfileRepositoryImpl
 import dev.zitech.core.network.data.service.AboutService
+import dev.zitech.core.network.data.source.AboutSource
+import dev.zitech.core.network.domain.repository.FireflyProfileRepository
 import dev.zitech.core.network.domain.retrofit.RetrofitModel
 import dev.zitech.core.network.domain.retrofit.ServiceModel
 import dev.zitech.core.network.framework.retrofit.RetrofitFactory
 import dev.zitech.core.network.framework.retrofit.RetrofitModelImpl
 import dev.zitech.core.network.framework.retrofit.ServiceModelImpl
+import dev.zitech.core.network.framework.source.AboutRemoteSource
 import javax.inject.Singleton
 import okhttp3.Interceptor
 
@@ -73,6 +77,21 @@ internal interface NetworkModule {
         @Singleton
         @Binds
         fun serviceModel(serviceModelImpl: ServiceModelImpl): ServiceModel
+    }
+
+    @InstallIn(ViewModelComponent::class)
+    @Module
+    interface ViewModelBinds {
+
+        @ViewModelScoped
+        @Binds
+        fun aboutRemoteSource(aboutRemoteSource: AboutRemoteSource): AboutSource
+
+        @ViewModelScoped
+        @Binds
+        fun fireflyProfileRepository(
+            fireflyProfileRepositoryImpl: FireflyProfileRepositoryImpl
+        ): FireflyProfileRepository
     }
 
     @InstallIn(ViewModelComponent::class)

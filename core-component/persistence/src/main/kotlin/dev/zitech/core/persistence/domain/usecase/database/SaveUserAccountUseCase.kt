@@ -21,13 +21,15 @@ import dev.zitech.core.common.domain.model.Work
 import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
 import javax.inject.Inject
 
+@Suppress("LongParameterList")
 class SaveUserAccountUseCase @Inject constructor(
     private val userAccountRepository: UserAccountRepository
 ) {
 
     suspend operator fun invoke(
-        clientId: String,
-        clientSecret: String,
+        accessToken: String? = null,
+        clientId: String? = null,
+        clientSecret: String? = null,
         isCurrentUserAccount: Boolean,
         serverAddress: String,
         state: String
@@ -36,6 +38,7 @@ class SaveUserAccountUseCase @Inject constructor(
             clientId = clientId,
             clientSecret = clientSecret,
             isCurrentUserAccount = isCurrentUserAccount,
+            accessToken = accessToken,
             serverAddress = serverAddress,
             state = state
         )

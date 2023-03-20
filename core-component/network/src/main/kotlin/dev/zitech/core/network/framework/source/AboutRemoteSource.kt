@@ -15,21 +15,21 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.persistence.domain.usecase.database
+package dev.zitech.core.network.framework.source
 
-import dev.zitech.core.common.domain.model.WorkError
-import dev.zitech.core.common.domain.model.WorkSuccess
-import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
+import dev.zitech.core.common.domain.model.Work
+import dev.zitech.core.common.domain.model.mapToWork
+import dev.zitech.core.network.data.mapper.UserResponseMapper
+import dev.zitech.core.network.data.service.AboutService
+import dev.zitech.core.network.data.source.AboutSource
+import dev.zitech.core.network.domain.model.FireflyProfile
 import javax.inject.Inject
-import kotlinx.coroutines.flow.first
 
-class GetCurrentUserAccountAccessTokenUseCase @Inject constructor(
-    private val userAccountRepository: UserAccountRepository
-) {
+internal class AboutRemoteSource @Inject constructor(
+    private val aboutService: AboutService,
+    private val userResponseMapper: UserResponseMapper
+) : AboutSource {
 
-    suspend operator fun invoke(): String? =
-        when (val result = userAccountRepository.getCurrentUserAccount().first()) {
-            is WorkSuccess -> result.data.authenticationType?.accessToken
-            is WorkError -> null
-        }
+    override suspend fun getFireflyProfile(): Work<FireflyProfile> =
+        aboutService.getUser().mapToWork(userResponseMapper::toDomain)
 }

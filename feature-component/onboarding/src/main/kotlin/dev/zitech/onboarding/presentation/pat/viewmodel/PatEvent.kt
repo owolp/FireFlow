@@ -17,6 +17,7 @@
 
 package dev.zitech.onboarding.presentation.pat.viewmodel
 
+import dev.zitech.core.common.domain.error.Error
 import dev.zitech.core.common.presentation.architecture.MviState
 
 internal sealed interface PatEvent : MviState.Event
@@ -24,3 +25,8 @@ internal sealed interface PatEvent : MviState.Event
 internal object Idle : PatEvent
 internal object NavigateToDashboard : PatEvent
 internal object NavigateBack : PatEvent
+internal data class NavigateToError(val error: Error) : PatEvent
+internal class ShowError(
+    val messageResId: Int? = null,
+    val text: String? = null
+) : PatEvent

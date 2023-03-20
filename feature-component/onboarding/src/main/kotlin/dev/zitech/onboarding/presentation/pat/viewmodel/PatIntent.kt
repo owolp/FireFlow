@@ -26,3 +26,4 @@ internal object OnBackClick : PatIntent
 internal data class OnServerAddressChange(val serverAddress: String) : PatIntent
 internal data class OnPersonalAccessTokenChange(val pat: String) : PatIntent
 internal object NavigationHandled : PatIntent
+internal object ErrorHandled : PatIntent

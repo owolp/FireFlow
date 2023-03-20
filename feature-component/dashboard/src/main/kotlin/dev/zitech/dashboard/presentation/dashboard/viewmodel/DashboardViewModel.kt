@@ -20,30 +20,21 @@ package dev.zitech.dashboard.presentation.dashboard.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.zitech.core.common.domain.logger.Logger
-import dev.zitech.core.common.domain.model.onError
-import dev.zitech.core.common.domain.model.onException
-import dev.zitech.core.common.domain.model.onSuccess
 import dev.zitech.core.common.domain.navigation.LogInState
 import dev.zitech.core.common.presentation.architecture.DeepLinkViewModel
 import dev.zitech.core.common.presentation.architecture.MviViewModel
 import dev.zitech.core.common.presentation.splash.LoginCheckCompletedHandler
-import dev.zitech.core.network.data.service.AboutService
 import dev.zitech.navigation.domain.usecase.GetScreenDestinationUseCase
 import dev.zitech.navigation.presentation.extension.logInState
 import javax.inject.Inject
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
 
 @HiltViewModel
 internal class DashboardViewModel @Inject constructor(
     stateHandler: DashboardStateHandler,
     loginCheckCompletedHandler: LoginCheckCompletedHandler,
-    getScreenDestinationUseCase: GetScreenDestinationUseCase,
-    private val aboutService: dagger.Lazy<AboutService>
+    getScreenDestinationUseCase: GetScreenDestinationUseCase
 ) : ViewModel(), MviViewModel<DashboardIntent, DashboardState>, DeepLinkViewModel {
-
-    private val tag = Logger.tag(this::class.java)
 
     override val screenState: StateFlow<DashboardState> = stateHandler.state
     override val logInState: StateFlow<LogInState> by logInState(
@@ -53,17 +44,6 @@ internal class DashboardViewModel @Inject constructor(
     )
 
     override fun sendIntent(intent: DashboardIntent) {
-        if (intent is DoDevJob) {
-            viewModelScope.launch {
-                aboutService.get().getUser()
-                    .onSuccess {
-                        Logger.d(tag, it.toString())
-                    }.onError { statusCode, message ->
-                        Logger.e(tag, statusCode.code.toString() + " " + message)
-                    }.onException {
-                        Logger.e(tag, it)
-                    }
-            }
-        }
+        // NO_OP
     }
 }

@@ -24,14 +24,18 @@ import androidx.room.PrimaryKey
     tableName = "user_accounts"
 )
 internal data class UserAccountEntity(
+    val accessToken: String? = null,
+    val clientId: String? = null,
+    val clientSecret: String? = null,
+    val email: String? = null,
+    val fireflyId: String? = null,
     @PrimaryKey(autoGenerate = true)
     val id: Long? = null,
-    val accessToken: String? = null,
-    val clientId: String,
-    val clientSecret: String,
     val isCurrentUserAccount: Boolean,
     val oauthCode: String? = null,
     val refreshToken: String? = null,
+    val role: String? = null,
     val serverAddress: String,
-    val state: String? = null
+    val state: String? = null,
+    val type: String? = null
 )

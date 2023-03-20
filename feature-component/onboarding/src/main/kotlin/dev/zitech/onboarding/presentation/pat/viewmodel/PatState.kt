@@ -20,8 +20,9 @@ package dev.zitech.onboarding.presentation.pat.viewmodel
 import dev.zitech.core.common.presentation.architecture.MviState
 
 internal data class PatState(
+    val event: PatEvent = Idle,
+    val loading: Boolean = false,
     val loginEnabled: Boolean = false,
     val pat: String = "",
-    val serverAddress: String = "",
-    val event: PatEvent = Idle
+    val serverAddress: String = ""
 ) : MviState

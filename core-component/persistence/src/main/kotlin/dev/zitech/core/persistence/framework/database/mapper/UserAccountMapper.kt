@@ -28,26 +28,68 @@ internal class UserAccountMapper @Inject constructor() :
     EntityMapper<UserAccount, UserAccountEntity> {
 
     override fun toDomain(input: UserAccountEntity) = UserAccount(
-        accessToken = input.accessToken,
-        clientId = input.clientId,
-        clientSecret = input.clientSecret,
+        authenticationType = getAuthenticationType(input),
+        email = input.email,
+        fireflyId = input.fireflyId,
         isCurrentUserAccount = input.isCurrentUserAccount,
-        oauthCode = input.oauthCode,
-        refreshToken = input.refreshToken,
+        role = input.role,
         serverAddress = input.serverAddress,
         state = input.state,
+        type = input.type,
         userId = input.id!!
     )
 
     override fun toEntity(input: UserAccount) = UserAccountEntity(
+        accessToken = when (val type = input.authenticationType) {
+            is UserAccount.AuthenticationType.OAuth -> type.accessToken
+            is UserAccount.AuthenticationType.Pat -> type.accessToken
+            null -> null
+        },
+        clientId = when (val type = input.authenticationType) {
+            is UserAccount.AuthenticationType.OAuth -> type.clientId
+            is UserAccount.AuthenticationType.Pat,
+            null -> null
+        },
+        clientSecret = when (val type = input.authenticationType) {
+            is UserAccount.AuthenticationType.OAuth -> type.clientSecret
+            is UserAccount.AuthenticationType.Pat,
+            null -> null
+        },
+        email = input.email,
+        fireflyId = input.fireflyId,
         id = input.userId,
-        accessToken = input.accessToken,
-        clientId = input.clientId,
-        clientSecret = input.clientSecret,
         isCurrentUserAccount = input.isCurrentUserAccount,
-        oauthCode = input.oauthCode,
-        refreshToken = input.refreshToken,
+        oauthCode = when (val type = input.authenticationType) {
+            is UserAccount.AuthenticationType.OAuth -> type.oauthCode
+            is UserAccount.AuthenticationType.Pat,
+            null -> null
+        },
+        refreshToken = when (val type = input.authenticationType) {
+            is UserAccount.AuthenticationType.OAuth -> type.refreshToken
+            is UserAccount.AuthenticationType.Pat,
+            null -> null
+        },
+        role = input.role,
         serverAddress = input.serverAddress,
-        state = input.state
+        state = input.state,
+        type = input.type
     )
+
+    private fun getAuthenticationType(input: UserAccountEntity): UserAccount.AuthenticationType? =
+        when {
+            input.clientId != null && input.clientSecret != null -> {
+                UserAccount.AuthenticationType.OAuth(
+                    accessToken = input.accessToken,
+                    clientId = input.clientId,
+                    clientSecret = input.clientSecret,
+                    oauthCode = input.oauthCode
+                )
+            }
+            input.accessToken != null -> {
+                UserAccount.AuthenticationType.Pat(
+                    accessToken = input.accessToken
+                )
+            }
+            else -> null
+        }
 }

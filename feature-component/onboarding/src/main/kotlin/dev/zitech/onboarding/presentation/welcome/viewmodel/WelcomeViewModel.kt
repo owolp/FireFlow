@@ -76,7 +76,7 @@ internal class WelcomeViewModel @Inject constructor(
     @Suppress("ForbiddenComment")
     private suspend fun handleOnShowDemoPositive() {
         // TODO: Dev usage
-        saveUserAccountUseCase("", "", true, "", "")
+        saveUserAccountUseCase(null, "", "", true, "", "")
         stateHandler.setEvent(NavigateToDemo)
     }
 
@@ -95,9 +95,9 @@ internal class WelcomeViewModel @Inject constructor(
                     stateHandler.setEvent(NavigateToError(error))
                 }
                 is Error.UserVisible ->
-                    stateHandler.setEvent(ShowError(text = error.text))
+                    stateHandler.setEvent(ShowError(text = error.message))
                 else -> {
-                    Logger.e(tag, error.text)
+                    Logger.e(tag, error.debugText)
                     stateHandler.setEvent(NavigateToError(error))
                 }
             }

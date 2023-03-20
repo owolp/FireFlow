@@ -22,8 +22,13 @@ import dev.zitech.core.common.R
 
 sealed class Error(
     @StringRes val uiResId: Int,
-    val text: String
+    val debugText: String
 ) {
+
+    object AuthenticationProblem : Error(
+        R.string.authentication_problem,
+        "The authentication type provided is not valid"
+    )
 
     object BuildTypeUnsupported : Error(R.string.empty, "")
 
@@ -85,15 +90,15 @@ sealed class Error(
         "Null user account by state"
     )
 
-    data class TokenRefreshFailed(
+    data class TokenFailed(
         private val message: String?
     ) : Error(
-        R.string.token_expired,
-        "message=$message"
+        R.string.token_failed,
+        message.orEmpty()
     )
 
     data class UserVisible(
-        private val message: String?
+        val message: String?
     ) : Error(
         R.string.empty,
         message.orEmpty()

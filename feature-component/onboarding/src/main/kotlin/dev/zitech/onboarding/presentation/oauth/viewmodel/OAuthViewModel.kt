@@ -30,6 +30,7 @@ import dev.zitech.core.common.domain.model.Work
 import dev.zitech.core.common.domain.model.onError
 import dev.zitech.core.common.domain.model.onSuccess
 import dev.zitech.core.common.presentation.architecture.MviViewModel
+import dev.zitech.core.network.domain.usecase.GetFireflyProfileUseCase
 import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.domain.model.database.UserAccount.Companion.STATE_LENGTH
 import dev.zitech.core.persistence.domain.usecase.database.GetUserAccountByStateUseCase
@@ -47,20 +48,17 @@ import kotlinx.coroutines.withContext
 
 @HiltViewModel
 internal class OAuthViewModel @Inject constructor(
-    private val stateHandler: OAuthStateHandler,
-    private val isOauthLoginInputValidUseCase: IsOAuthLoginInputValidUseCase,
-    private val saveUserAccountUseCase: SaveUserAccountUseCase,
-    private val updateUserAccountUseCase: UpdateUserAccountUseCase,
-    private val getUserAccountByStateUseCase: GetUserAccountByStateUseCase,
-    private val getAccessTokenUseCase: dagger.Lazy<GetAccessTokenUseCase>,
+    private val appDispatchers: AppDispatchers,
     private val clientIdValidator: ClientIdValidator,
+    private val getAccessTokenUseCase: dagger.Lazy<GetAccessTokenUseCase>,
+    private val getFireflyProfileUseCase: dagger.Lazy<GetFireflyProfileUseCase>,
+    private val getUserAccountByStateUseCase: GetUserAccountByStateUseCase,
+    private val isOauthLoginInputValidUseCase: IsOAuthLoginInputValidUseCase,
     private val oauthStringsProvider: OAuthStringsProvider,
-    private val appDispatchers: AppDispatchers
+    private val saveUserAccountUseCase: SaveUserAccountUseCase,
+    private val stateHandler: OAuthStateHandler,
+    private val updateUserAccountUseCase: UpdateUserAccountUseCase
 ) : ViewModel(), MviViewModel<OAuthIntent, OAuthState> {
-
-    private companion object {
-        const val LOADING_DELAY_IN_MILLISECONDS = 500L
-    }
 
     private val tag = Logger.tag(this::class.java)
 
@@ -85,6 +83,40 @@ internal class OAuthViewModel @Inject constructor(
                 ErrorHandled -> stateHandler.resetEvent()
                 is OnOauthCode -> handleOnOauthCode(intent.authentication)
                 OnAuthenticationCanceled -> stateHandler.setLoading(false)
+            }
+        }
+    }
+
+    private suspend fun handleNavigatedToFireflyResult(result: Work<Unit>) {
+        result.onSuccess {
+            stateHandler.resetEvent()
+        }.onError { error ->
+            stateHandler.setLoading(false)
+            when (error) {
+                is Error.NoBrowserInstalled -> {
+                    stateHandler.setEvent(
+                        ShowError(messageResId = error.uiResId)
+                    )
+                }
+                is Error.Fatal -> {
+                    Logger.e(tag, throwable = error.throwable)
+                    stateHandler.setEvent(NavigateToError(error))
+                }
+                is Error.UserVisible ->
+                    stateHandler.setEvent(ShowError(text = error.message))
+                else -> {
+                    Logger.e(tag, error.debugText)
+                    stateHandler.setEvent(NavigateToError(error))
+                }
+            }
+        }
+    }
+
+    private fun handleOnClientIdChange(intent: OnClientIdChange) {
+        with(intent.clientId.trim()) {
+            if (clientIdValidator(this) || this.isEmpty()) {
+                stateHandler.setClientId(this)
+                setLoginEnabledOrDisabled()
             }
         }
     }
@@ -126,54 +158,8 @@ internal class OAuthViewModel @Inject constructor(
                     stateHandler.setEvent(NavigateToError(error))
                 }
                 is Error.UserVisible ->
-                    stateHandler.setEvent(ShowError(text = error.text))
-                else -> Logger.e(tag, error.text)
-            }
-        }
-    }
-
-    private fun handleOnClientIdChange(intent: OnClientIdChange) {
-        with(intent.clientId.trim()) {
-            if (clientIdValidator(this) || this.isEmpty()) {
-                stateHandler.setClientId(this)
-                setLoginEnabledOrDisabled()
-            }
-        }
-    }
-
-    private fun setLoginEnabledOrDisabled() {
-        stateHandler.setLoginEnabled(
-            with(screenState.value) {
-                isOauthLoginInputValidUseCase(
-                    clientId = clientId,
-                    clientSecret = clientSecret,
-                    serverAddress = serverAddress
-                )
-            }
-        )
-    }
-
-    private suspend fun handleNavigatedToFireflyResult(result: Work<Unit>) {
-        result.onSuccess {
-            stateHandler.resetEvent()
-        }.onError { error ->
-            stateHandler.setLoading(false)
-            when (error) {
-                is Error.NoBrowserInstalled -> {
-                    stateHandler.setEvent(
-                        ShowError(messageResId = error.uiResId)
-                    )
-                }
-                is Error.Fatal -> {
-                    Logger.e(tag, throwable = error.throwable)
-                    stateHandler.setEvent(NavigateToError(error))
-                }
-                is Error.UserVisible ->
-                    stateHandler.setEvent(ShowError(text = error.text))
-                else -> {
-                    Logger.e(tag, error.text)
-                    stateHandler.setEvent(NavigateToError(error))
-                }
+                    stateHandler.setEvent(ShowError(text = error.message))
+                else -> Logger.e(tag, error.debugText)
             }
         }
     }
@@ -192,15 +178,25 @@ internal class OAuthViewModel @Inject constructor(
             .onSuccess { userAccount ->
                 with(stateHandler) {
                     setServerAddress(userAccount.serverAddress)
-                    setClientId(userAccount.clientId)
-                    setClientSecret(userAccount.clientSecret)
+                    val authenticationType = userAccount.authenticationType
+                    if (authenticationType is UserAccount.AuthenticationType.OAuth) {
+                        val clientId = authenticationType.clientId
+                        setClientId(clientId)
+                        val clientSecret = authenticationType.clientSecret
+                        setClientSecret(clientSecret)
+                        retrieveToken(userAccount, clientId, clientSecret, code)
+                    } else {
+                        stateHandler.setLoading(false)
+                        stateHandler.setEvent(
+                            NavigateToError(Error.AuthenticationProblem)
+                        )
+                    }
                 }
-                retrieveToken(userAccount, code)
             }.onError { error ->
                 stateHandler.setLoading(false)
                 when (error) {
                     is Error.NullUserAccountByState -> {
-                        Logger.e(tag, error.text)
+                        Logger.e(tag, error.debugText)
                         stateHandler.setEvent(NavigateToError(error))
                     }
                     is Error.Fatal -> {
@@ -208,20 +204,70 @@ internal class OAuthViewModel @Inject constructor(
                         stateHandler.setEvent(NavigateToError(error))
                     }
                     else -> {
-                        Logger.e(tag, error.text)
+                        Logger.e(tag, error.debugText)
                         stateHandler.setEvent(ShowError(messageResId = error.uiResId))
                     }
                 }
             }
     }
 
-    private suspend fun retrieveToken(userAccount: UserAccount, code: String) {
+    private suspend fun retrieveFireflyInfo(userAccount: UserAccount) {
+        getFireflyProfileUseCase.get().invoke()
+            .onSuccess { fireflyProfile ->
+                updateUserAccountUseCase(
+                    userAccount.copy(
+                        email = fireflyProfile.email,
+                        fireflyId = fireflyProfile.id,
+                        role = fireflyProfile.role,
+                        type = fireflyProfile.type
+                    )
+                ).onSuccess {
+                    stateHandler.setLoading(false)
+                    stateHandler.setEvent(NavigateToDashboard)
+                }.onError { error ->
+                    stateHandler.setLoading(false)
+                    when (error) {
+                        is Error.NullUserAccount -> {
+                            Logger.e(tag, error.debugText)
+                            stateHandler.setEvent(NavigateToError(error))
+                        }
+                        is Error.Fatal -> {
+                            Logger.e(tag, throwable = error.throwable)
+                            stateHandler.setEvent(NavigateToError(error))
+                        }
+                        else -> {
+                            Logger.e(tag, error.debugText)
+                            stateHandler.setEvent(ShowError(messageResId = error.uiResId))
+                        }
+                    }
+                }
+            }.onError { error ->
+                stateHandler.setLoading(false)
+                when (error) {
+                    is Error.Fatal -> {
+                        Logger.e(tag, throwable = error.throwable)
+                        stateHandler.setEvent(NavigateToError(error))
+                    }
+                    is Error.UserVisible,
+                    is Error.TokenFailed ->
+                        stateHandler.setEvent(ShowError(messageResId = error.uiResId))
+                    else -> Logger.e(tag, error.debugText)
+                }
+            }
+    }
+
+    private suspend fun retrieveToken(
+        userAccount: UserAccount,
+        clientId: String,
+        clientSecret: String,
+        code: String
+    ) {
         getAccessTokenUseCase.get()(
-            clientId = userAccount.clientId,
-            clientSecret = userAccount.clientSecret,
+            clientId = clientId,
+            clientSecret = clientSecret,
             code = code
-        ).onSuccess { token ->
-            updateUserAccount(userAccount, token, code)
+        ).onSuccess { accessToken ->
+            updateUserAccount(accessToken, userAccount, clientId, clientSecret, code)
         }.onError { error ->
             stateHandler.setLoading(false)
             when (error) {
@@ -230,33 +276,49 @@ internal class OAuthViewModel @Inject constructor(
                     stateHandler.setEvent(NavigateToError(error))
                 }
                 is Error.UserVisible ->
-                    stateHandler.setEvent(ShowError(text = error.text))
-                else -> Logger.e(tag, error.text)
+                    stateHandler.setEvent(ShowError(text = error.message))
+                else -> Logger.e(tag, error.debugText)
             }
         }
     }
 
+    private fun setLoginEnabledOrDisabled() {
+        stateHandler.setLoginEnabled(
+            with(screenState.value) {
+                isOauthLoginInputValidUseCase(
+                    clientId = clientId,
+                    clientSecret = clientSecret,
+                    serverAddress = serverAddress
+                )
+            }
+        )
+    }
+
     private suspend fun updateUserAccount(
+        accessToken: Token,
         userAccount: UserAccount,
-        token: Token,
-        code: String
+        clientId: String,
+        clientSecret: String,
+        oauthCode: String
     ) {
-        updateUserAccountUseCase(
-            userAccount.copy(
-                accessToken = token.accessToken,
-                isCurrentUserAccount = true,
-                oauthCode = code,
-                refreshToken = token.refreshToken,
-                state = null
-            )
-        ).onSuccess {
-            stateHandler.setLoading(false)
-            stateHandler.setEvent(NavigateToDashboard)
+        val updatedUserAccount = userAccount.copy(
+            authenticationType = UserAccount.AuthenticationType.OAuth(
+                accessToken = accessToken.accessToken,
+                clientId = clientId,
+                clientSecret = clientSecret,
+                oauthCode = oauthCode,
+                refreshToken = accessToken.refreshToken
+            ),
+            isCurrentUserAccount = true,
+            state = null
+        )
+        updateUserAccountUseCase(updatedUserAccount).onSuccess {
+            retrieveFireflyInfo(updatedUserAccount)
         }.onError { error ->
             stateHandler.setLoading(false)
             when (error) {
                 is Error.NullUserAccount -> {
-                    Logger.e(tag, error.text)
+                    Logger.e(tag, error.debugText)
                     stateHandler.setEvent(NavigateToError(error))
                 }
                 is Error.Fatal -> {
@@ -264,10 +326,14 @@ internal class OAuthViewModel @Inject constructor(
                     stateHandler.setEvent(NavigateToError(error))
                 }
                 else -> {
-                    Logger.e(tag, error.text)
+                    Logger.e(tag, error.debugText)
                     stateHandler.setEvent(ShowError(messageResId = error.uiResId))
                 }
             }
         }
+    }
+
+    private companion object {
+        const val LOADING_DELAY_IN_MILLISECONDS = 500L
     }
 }

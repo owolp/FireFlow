@@ -15,15 +15,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.onboarding.presentation.oauth.viewmodel
+package dev.zitech.core.network.domain.usecase
 
-import dev.zitech.core.common.presentation.architecture.MviState
+import dev.zitech.core.common.domain.model.Work
+import dev.zitech.core.network.domain.model.FireflyProfile
+import dev.zitech.core.network.domain.repository.FireflyProfileRepository
+import javax.inject.Inject
 
-internal data class OAuthState(
-    val clientId: String = "",
-    val clientSecret: String = "",
-    val event: OAuthEvent = Idle,
-    val loading: Boolean = false,
-    val loginEnabled: Boolean = false,
-    val serverAddress: String = ""
-) : MviState
+class GetFireflyProfileUseCase @Inject constructor(
+    private val fireflyProfileRepository: FireflyProfileRepository
+) {
+
+    suspend operator fun invoke(): Work<FireflyProfile> =
+        fireflyProfileRepository.getFireflyProfile()
+}

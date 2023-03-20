@@ -15,15 +15,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.onboarding.presentation.oauth.viewmodel
+package dev.zitech.core.network.domain.model
 
-import dev.zitech.core.common.presentation.architecture.MviState
-
-internal data class OAuthState(
-    val clientId: String = "",
-    val clientSecret: String = "",
-    val event: OAuthEvent = Idle,
-    val loading: Boolean = false,
-    val loginEnabled: Boolean = false,
-    val serverAddress: String = ""
-) : MviState
+data class FireflyProfile(
+    val email: String,
+    val id: String,
+    val role: String,
+    val type: String
+)

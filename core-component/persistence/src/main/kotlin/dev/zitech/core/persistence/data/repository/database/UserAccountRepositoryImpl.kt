@@ -31,19 +31,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 internal class UserAccountRepositoryImpl @Inject constructor(
-    private val userAccountDatabaseSource: UserAccountSource,
-    private val networkDetailsInMemoryCache: InMemoryCache<NetworkDetails>
+    private val networkDetailsInMemoryCache: InMemoryCache<NetworkDetails>,
+    private val userAccountDatabaseSource: UserAccountSource
 ) : UserAccountRepository {
-
-    private companion object {
-        const val NO_WORKER_UPDATED_RESULT = 0
-    }
-
-    override suspend fun getUserAccountByState(state: String): Work<UserAccount> =
-        userAccountDatabaseSource.getUserAccountByState(state)
-
-    override fun getUserAccounts(): Flow<Work<List<UserAccount>>> =
-        userAccountDatabaseSource.getUserAccounts()
 
     override fun getCurrentUserAccount(): Flow<Work<UserAccount>> =
         userAccountDatabaseSource.getCurrentUserAccount()
@@ -62,14 +52,28 @@ internal class UserAccountRepositoryImpl @Inject constructor(
                 userAccountResult
             }
 
+    override suspend fun getUserAccountByState(state: String): Work<UserAccount> =
+        userAccountDatabaseSource.getUserAccountByState(state)
+
+    override fun getUserAccounts(): Flow<Work<List<UserAccount>>> =
+        userAccountDatabaseSource.getUserAccounts()
+
+    override suspend fun removeUserAccountsWithStateAndNoToken(): Work<Unit> =
+        userAccountDatabaseSource.removeUserAccountsWithStateAndNoToken()
+
+    override suspend fun removeUserAccountsWithStateAndTokenAndNoClientIdAndSecret(): Work<Unit> =
+        userAccountDatabaseSource.removeUserAccountsWithStateAndTokenAndNoClientIdAndSecret()
+
     override suspend fun saveUserAccount(
-        clientId: String,
-        clientSecret: String,
+        accessToken: String?,
+        clientId: String?,
+        clientSecret: String?,
         isCurrentUserAccount: Boolean,
         serverAddress: String,
         state: String
     ): Work<Long> {
         val saveUserAccountResult = userAccountDatabaseSource.saveUserAccount(
+            accessToken = accessToken,
             clientId = clientId,
             clientSecret = clientSecret,
             isCurrentUserAccount = isCurrentUserAccount,
@@ -91,9 +95,6 @@ internal class UserAccountRepositoryImpl @Inject constructor(
         return saveUserAccountResult
     }
 
-    override suspend fun removeStaleUserAccounts(): Work<Unit> =
-        userAccountDatabaseSource.removeUserAccountsWithStateAndWithoutAccessToken()
-
     override suspend fun updateUserAccount(userAccount: UserAccount): Work<Unit> =
         when (
             val updateUserAccountResult = userAccountDatabaseSource.updateUserAccount(
@@ -109,4 +110,8 @@ internal class UserAccountRepositoryImpl @Inject constructor(
             }
             is WorkError -> WorkError(updateUserAccountResult.error)
         }
+
+    private companion object {
+        const val NO_WORKER_UPDATED_RESULT = 0
+    }
 }
