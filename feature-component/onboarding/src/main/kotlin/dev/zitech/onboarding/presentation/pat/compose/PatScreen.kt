@@ -18,6 +18,7 @@
 package dev.zitech.onboarding.presentation.pat.compose
 
 import android.content.res.Configuration
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -71,6 +72,10 @@ internal fun PatScreen(
     modifier: Modifier = Modifier,
     snackbarState: FireFlowSnackbarState = rememberSnackbarState()
 ) {
+    BackHandler(enabled = true) {
+        if (!patState.loading) onBackClick()
+    }
+
     FireFlowScaffolds.Primary(
         modifier = modifier
             .navigationBarsPadding()
@@ -78,7 +83,9 @@ internal fun PatScreen(
         snackbarState = snackbarState,
         topBar = {
             FireFlowTopAppBars.BackNavigation(
-                onNavigationClick = onBackClick
+                onNavigationClick = {
+                    if (!patState.loading) onBackClick()
+                }
             )
         }
     ) { innerPadding ->
@@ -105,7 +112,6 @@ private fun PatScreenContent(
     val logInViewRequester = remember { BringIntoViewRequester() }
     val coroutineScope = rememberCoroutineScope()
 
-    // TODO: Disable input on loading
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -119,6 +125,7 @@ private fun PatScreenContent(
             modifier = Modifier.fillMaxWidth(),
             headlineText = stringResource(R.string.pat_server_address),
             value = state.serverAddress,
+            enabled = !state.loading,
             keyboardOptions = KeyboardOptions.Default.copy(
                 imeAction = ImeAction.Next,
                 keyboardType = KeyboardType.Uri
@@ -140,6 +147,7 @@ private fun PatScreenContent(
                 },
             headlineText = stringResource(R.string.pat_personal_access_token),
             value = state.pat,
+            enabled = !state.loading,
             keyboardOptions = KeyboardOptions.Default.copy(
                 imeAction = ImeAction.Done
             ),
@@ -159,7 +167,8 @@ private fun PatScreenContent(
                 .fillMaxWidth()
                 .bringIntoViewRequester(logInViewRequester),
             text = stringResource(R.string.pat_login),
-            enabled = state.loginEnabled,
+            enabled = state.loginEnabled && !state.loading,
+            loading = state.loading,
             onClick = onLoginClick
         )
         FireFlowSpacers.Vertical()
