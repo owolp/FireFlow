@@ -30,6 +30,7 @@ import dev.zitech.core.common.domain.model.Work
 import dev.zitech.core.common.domain.model.onError
 import dev.zitech.core.common.domain.model.onSuccess
 import dev.zitech.core.common.presentation.architecture.MviViewModel
+import dev.zitech.core.network.domain.usecase.GetFireflyProfileUseCase
 import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.domain.model.database.UserAccount.Companion.STATE_LENGTH
 import dev.zitech.core.persistence.domain.usecase.database.GetUserAccountByStateUseCase
@@ -50,6 +51,7 @@ internal class OAuthViewModel @Inject constructor(
     private val appDispatchers: AppDispatchers,
     private val clientIdValidator: ClientIdValidator,
     private val getAccessTokenUseCase: dagger.Lazy<GetAccessTokenUseCase>,
+    private val getFireflyProfileUseCase: dagger.Lazy<GetFireflyProfileUseCase>,
     private val getUserAccountByStateUseCase: GetUserAccountByStateUseCase,
     private val isOauthLoginInputValidUseCase: IsOAuthLoginInputValidUseCase,
     private val oauthStringsProvider: OAuthStringsProvider,
@@ -209,6 +211,51 @@ internal class OAuthViewModel @Inject constructor(
             }
     }
 
+    private suspend fun retrieveFireflyInfo(userAccount: UserAccount) {
+        getFireflyProfileUseCase.get().invoke()
+            .onSuccess { fireflyProfile ->
+                updateUserAccountUseCase(
+                    userAccount.copy(
+                        email = fireflyProfile.email,
+                        fireflyId = fireflyProfile.id,
+                        role = fireflyProfile.role,
+                        type = fireflyProfile.type
+                    )
+                ).onSuccess {
+                    stateHandler.setLoading(false)
+                    stateHandler.setEvent(NavigateToDashboard)
+                }.onError { error ->
+                    stateHandler.setLoading(false)
+                    when (error) {
+                        is Error.NullUserAccount -> {
+                            Logger.e(tag, error.debugText)
+                            stateHandler.setEvent(NavigateToError(error))
+                        }
+                        is Error.Fatal -> {
+                            Logger.e(tag, throwable = error.throwable)
+                            stateHandler.setEvent(NavigateToError(error))
+                        }
+                        else -> {
+                            Logger.e(tag, error.debugText)
+                            stateHandler.setEvent(ShowError(messageResId = error.uiResId))
+                        }
+                    }
+                }
+            }.onError { error ->
+                stateHandler.setLoading(false)
+                when (error) {
+                    is Error.Fatal -> {
+                        Logger.e(tag, throwable = error.throwable)
+                        stateHandler.setEvent(NavigateToError(error))
+                    }
+                    is Error.UserVisible,
+                    is Error.TokenFailed ->
+                        stateHandler.setEvent(ShowError(messageResId = error.uiResId))
+                    else -> Logger.e(tag, error.debugText)
+                }
+            }
+    }
+
     private suspend fun retrieveToken(
         userAccount: UserAccount,
         clientId: String,
@@ -254,22 +301,19 @@ internal class OAuthViewModel @Inject constructor(
         clientSecret: String,
         oauthCode: String
     ) {
-        updateUserAccountUseCase(
-            userAccount.copy(
-                authenticationType = UserAccount.AuthenticationType.OAuth(
-                    accessToken = accessToken.accessToken,
-                    clientId = clientId,
-                    clientSecret = clientSecret,
-                    oauthCode = oauthCode,
-                    refreshToken = accessToken.refreshToken
-                ),
-                isCurrentUserAccount = true,
-                state = null
-            )
-        ).onSuccess {
-            // TODO: Update with email and type from firefly profile
-            stateHandler.setLoading(false)
-            stateHandler.setEvent(NavigateToDashboard)
+        val updatedUserAccount = userAccount.copy(
+            authenticationType = UserAccount.AuthenticationType.OAuth(
+                accessToken = accessToken.accessToken,
+                clientId = clientId,
+                clientSecret = clientSecret,
+                oauthCode = oauthCode,
+                refreshToken = accessToken.refreshToken
+            ),
+            isCurrentUserAccount = true,
+            state = null
+        )
+        updateUserAccountUseCase(updatedUserAccount).onSuccess {
+            retrieveFireflyInfo(updatedUserAccount)
         }.onError { error ->
             stateHandler.setLoading(false)
             when (error) {

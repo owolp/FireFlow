@@ -20,5 +20,3 @@ package dev.zitech.dashboard.presentation.dashboard.viewmodel
 import dev.zitech.core.common.presentation.architecture.MviIntent
 
 internal sealed interface DashboardIntent : MviIntent
-
-internal object DoDevJob : DashboardIntent
