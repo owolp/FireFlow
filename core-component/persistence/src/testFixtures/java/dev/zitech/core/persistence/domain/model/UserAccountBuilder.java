@@ -21,26 +21,29 @@ import dev.zitech.core.persistence.domain.model.database.UserAccount;
 
 public class UserAccountBuilder {
 
-    private String accessToken;
-    private String clientId = "123";
-    private String clientSecret = "456";
+    private UserAccount.AuthenticationType authenticationType;
+    private String email;
+    private String fireflyId;
     private Boolean isCurrentUserAccount = false;
-    private String oauthCode;
-    private String refreshToken;
+    private String role;
     private String serverAddress = "http://localhost";
     private String state;
+    private String type;
     private Long userId = 0L;
 
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
+    public UserAccountBuilder setAuthenticationType(UserAccount.AuthenticationType authenticationType) {
+        this.authenticationType = authenticationType;
+        return this;
     }
 
-    public void setClientId(String clientId) {
-        this.clientId = clientId;
+    public UserAccountBuilder setEmail(String email) {
+        this.email = email;
+        return this;
     }
 
-    public void setClientSecret(String clientSecret) {
-        this.clientSecret = clientSecret;
+    public UserAccountBuilder setFireflyId(String fireflyId) {
+        this.fireflyId = fireflyId;
+        return this;
     }
 
     public UserAccountBuilder setCurrentUserAccount(Boolean currentUserAccount) {
@@ -48,20 +51,23 @@ public class UserAccountBuilder {
         return this;
     }
 
-    public void setOauthCode(String oauthCode) {
-        this.oauthCode = oauthCode;
-    }
-
-    public void setRefreshToken(String refreshToken) {
-        this.refreshToken = refreshToken;
-    }
-
-    public void setServerAddress(String serverAddress) {
+    public UserAccountBuilder setServerAddress(String serverAddress) {
         this.serverAddress = serverAddress;
+        return this;
     }
 
-    public void setState(String state) {
+    public UserAccountBuilder setState(String state) {
         this.state = state;
+        return this;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public UserAccountBuilder setType(String type) {
+        this.type = type;
+        return this;
     }
 
     public UserAccountBuilder setUserId(Long userId) {
@@ -71,14 +77,14 @@ public class UserAccountBuilder {
 
     public UserAccount build() {
         return new UserAccount(
-                accessToken,
-                clientId,
-                clientSecret,
+                authenticationType,
+                email,
+                fireflyId,
                 isCurrentUserAccount,
-                oauthCode,
-                refreshToken,
+                role,
                 serverAddress,
                 state,
+                type,
                 userId
         );
     }
