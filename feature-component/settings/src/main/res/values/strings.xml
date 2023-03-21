@@ -51,6 +51,7 @@
 
     <string name="more_category">More</string>
     <string name="more_version">Version</string>
+    <string name="more_log_out">Log out</string>
 
     <string name="action_restart">Restart</string>
 </resources>

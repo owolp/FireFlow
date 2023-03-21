@@ -131,7 +131,7 @@ private fun SettingsScreenContent(
         item {
             FireFlowCategoryPreferences.Primary(
                 categoryName = stringResource(R.string.more_category),
-                preferences = getAboutApplicationPreferences(
+                preferences = getMorePreferences(
                     state = state
                 )
             )
@@ -252,7 +252,7 @@ private fun getDataChoicesPreferences(
 }
 
 @Composable
-private fun getAboutApplicationPreferences(
+private fun getMorePreferences(
     state: SettingsState
 ): List<CategoryPreference> {
     val categoryPreferences = mutableListOf<CategoryPreference>()
@@ -262,6 +262,13 @@ private fun getAboutApplicationPreferences(
             title = stringResource(R.string.more_version),
             icon = FireFlowIcons.Info,
             description = state.version
+        )
+    )
+    categoryPreferences.add(
+        CategoryPreference.Icon(
+            title = stringResource(R.string.more_log_out),
+            icon = FireFlowIcons.Logout,
+            description = state.email
         )
     )
 

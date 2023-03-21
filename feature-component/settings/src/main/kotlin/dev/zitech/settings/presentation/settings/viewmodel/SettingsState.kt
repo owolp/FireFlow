@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,15 +22,16 @@ import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.core.common.presentation.architecture.MviState
 
 internal data class SettingsState(
-    val viewState: ViewState = ViewState.InitScreen,
-    val event: SettingsEvent = Idle,
     val analytics: Boolean? = null,
-    val personalizedAds: Boolean? = null,
-    val performance: Boolean? = null,
     val crashReporter: Boolean = false,
-    val theme: ApplicationTheme = ApplicationTheme.SYSTEM,
+    val email: String = "",
+    val event: SettingsEvent = Idle,
     val language: ApplicationLanguage = ApplicationLanguage.SYSTEM,
-    val version: String = ""
+    val performance: Boolean? = null,
+    val personalizedAds: Boolean? = null,
+    val theme: ApplicationTheme = ApplicationTheme.SYSTEM,
+    val version: String = "",
+    val viewState: ViewState = ViewState.InitScreen
 ) : MviState {
 
     sealed class ViewState {

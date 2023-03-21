@@ -51,6 +51,7 @@
 
     <string name="more_category">Повече</string>
     <string name="more_version">Версия</string>
+    <string name="more_log_out">Излез</string>
 
     <string name="action_restart">Рестартирай</string>
 </resources>
