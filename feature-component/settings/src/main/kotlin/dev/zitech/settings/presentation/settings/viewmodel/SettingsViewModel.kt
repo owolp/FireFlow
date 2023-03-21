@@ -25,10 +25,12 @@ import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.domain.model.ApplicationLanguage
 import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.core.common.domain.model.BuildFlavor
+import dev.zitech.core.common.domain.model.onSuccess
 import dev.zitech.core.common.domain.navigation.LogInState
 import dev.zitech.core.common.presentation.architecture.DeepLinkViewModel
 import dev.zitech.core.common.presentation.architecture.MviViewModel
 import dev.zitech.core.common.presentation.splash.LoginCheckCompletedHandler
+import dev.zitech.core.persistence.domain.usecase.database.GetCurrentUserAccountUseCase
 import dev.zitech.navigation.domain.usecase.GetScreenDestinationUseCase
 import dev.zitech.navigation.presentation.extension.logInState
 import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsAppearanceCollectionStates
@@ -37,30 +39,33 @@ import dev.zitech.settings.presentation.settings.viewmodel.error.SettingsShowErr
 import dev.zitech.settings.presentation.settings.viewmodel.theme.SettingsStringsProvider
 import javax.inject.Inject
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 @Suppress("TooManyFunctions")
 @HiltViewModel
 internal class SettingsViewModel @Inject constructor(
-    private val stateHandler: SettingsStateHandler,
-    loginCheckCompletedHandler: LoginCheckCompletedHandler,
     getScreenDestinationUseCase: GetScreenDestinationUseCase,
+    loginCheckCompletedHandler: LoginCheckCompletedHandler,
+    private val appConfigProvider: AppConfigProvider,
+    private val getCurrentUserAccountUseCase: GetCurrentUserAccountUseCase,
     private val settingsAppearanceCollectionStates: SettingsAppearanceCollectionStates,
     private val settingsDataChoicesCollectionStates: SettingsDataChoicesCollectionStates,
     private val settingsShowErrorProvider: SettingsShowErrorProvider,
     private val settingsStringsProvider: SettingsStringsProvider,
-    private val appConfigProvider: AppConfigProvider
+    private val stateHandler: SettingsStateHandler
 ) : ViewModel(), MviViewModel<SettingsIntent, SettingsState>, DeepLinkViewModel {
 
     private val tag = Logger.tag(this::class.java)
-
-    override val screenState: StateFlow<SettingsState> = stateHandler.state
 
     override val logInState: StateFlow<LogInState> by logInState(
         getScreenDestinationUseCase,
         loginCheckCompletedHandler,
         viewModelScope
     )
+
+    override val screenState: StateFlow<SettingsState> = stateHandler.state
 
     init {
         getPreferencesState()
@@ -87,78 +92,6 @@ internal class SettingsViewModel @Inject constructor(
         }
     }
 
-    private suspend fun handleOnCrashReporterCheckChange(checked: Boolean) {
-        settingsDataChoicesCollectionStates.setCrashReporterCollection(checked)
-        val isEnabled = settingsDataChoicesCollectionStates.getCrashReporterCollectionValue()
-        if (checked == isEnabled) {
-            stateHandler.setCrashReporterState(checked)
-        } else {
-            stateHandler.setErrorState(settingsShowErrorProvider.crashReporterError)
-        }
-    }
-
-    private suspend fun handleOnAnalyticsCheckChange(checked: Boolean) {
-        if (appConfigProvider.buildFlavor != BuildFlavor.FOSS) {
-            settingsDataChoicesCollectionStates.setAnalyticsCollection(checked)
-            val isEnabled = settingsDataChoicesCollectionStates.getAnalyticsCollectionValue()
-            if (checked == isEnabled) {
-                stateHandler.setAnalyticsState(checked, appConfigProvider.buildFlavor)
-                settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked)
-                stateHandler.setPersonalizedAdsState(checked, appConfigProvider.buildFlavor)
-                settingsDataChoicesCollectionStates.setPerformanceCollection(checked)
-                stateHandler.setPerformanceState(checked, appConfigProvider.buildFlavor)
-            } else {
-                stateHandler.setErrorState(settingsShowErrorProvider.analyticsError)
-            }
-        } else {
-            Logger.e(tag, "Setting analytics on FOSS build is not supported")
-        }
-    }
-
-    private suspend fun handleOnThemeSelect(id: Int) {
-        ApplicationTheme.values().first { it.id == id }.run {
-            settingsAppearanceCollectionStates.setApplicationThemeValue(this)
-            stateHandler.setThemeState(this)
-            stateHandler.resetEvent()
-        }
-    }
-
-    private fun handleOnLanguageSelect(id: Int) {
-        ApplicationLanguage.values().first { it.id == id }.run {
-            settingsAppearanceCollectionStates.setApplicationLanguageValue(this)
-            stateHandler.setLanguageState(this)
-            stateHandler.resetEvent()
-        }
-    }
-
-    private suspend fun handleOnPersonalizedAdsCheckChange(checked: Boolean) {
-        if (appConfigProvider.buildFlavor != BuildFlavor.FOSS) {
-            settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked)
-            val isEnabled = settingsDataChoicesCollectionStates.getAllowPersonalizedAdsValue()
-            if (checked == isEnabled) {
-                stateHandler.setPersonalizedAdsState(checked, appConfigProvider.buildFlavor)
-            } else {
-                stateHandler.setErrorState(settingsShowErrorProvider.personalizedAdsError)
-            }
-        } else {
-            Logger.e(tag, "Setting personalized ads on FOSS build is not supported")
-        }
-    }
-
-    private suspend fun handleOnPerformanceCheckChange(checked: Boolean) {
-        if (appConfigProvider.buildFlavor != BuildFlavor.FOSS) {
-            settingsDataChoicesCollectionStates.setPerformanceCollection(checked)
-            val isEnabled = settingsDataChoicesCollectionStates.getPerformanceCollectionValue()
-            if (checked == isEnabled) {
-                stateHandler.setPerformanceState(checked, appConfigProvider.buildFlavor)
-            } else {
-                stateHandler.setErrorState(settingsShowErrorProvider.performanceError)
-            }
-        } else {
-            Logger.e(tag, "Setting performance on FOSS build is not supported")
-        }
-    }
-
     private fun getPreferencesState() = viewModelScope.launch {
         stateHandler.run {
             setAnalyticsState(
@@ -180,6 +113,85 @@ internal class SettingsViewModel @Inject constructor(
             setLanguageState(settingsAppearanceCollectionStates.getApplicationLanguageValue())
             setAppVersionState(appConfigProvider.version)
             setViewState(SettingsState.ViewState.Success)
+
+            getCurrentUserAccountUseCase()
+                .onEach { it.onSuccess { userAccount -> setEmail(userAccount.email.orEmpty()) } }
+                .launchIn(viewModelScope)
+        }
+    }
+
+    private suspend fun handleOnAnalyticsCheckChange(checked: Boolean) {
+        if (appConfigProvider.buildFlavor != BuildFlavor.FOSS) {
+            settingsDataChoicesCollectionStates.setAnalyticsCollection(checked)
+            val isEnabled = settingsDataChoicesCollectionStates.getAnalyticsCollectionValue()
+            if (checked == isEnabled) {
+                stateHandler.setAnalyticsState(checked, appConfigProvider.buildFlavor)
+                settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked)
+                stateHandler.setPersonalizedAdsState(checked, appConfigProvider.buildFlavor)
+                settingsDataChoicesCollectionStates.setPerformanceCollection(checked)
+                stateHandler.setPerformanceState(checked, appConfigProvider.buildFlavor)
+            } else {
+                stateHandler.setErrorState(settingsShowErrorProvider.analyticsError)
+            }
+        } else {
+            Logger.e(tag, "Setting analytics on FOSS build is not supported")
+        }
+    }
+
+    private suspend fun handleOnCrashReporterCheckChange(checked: Boolean) {
+        settingsDataChoicesCollectionStates.setCrashReporterCollection(checked)
+        val isEnabled = settingsDataChoicesCollectionStates.getCrashReporterCollectionValue()
+        if (checked == isEnabled) {
+            stateHandler.setCrashReporterState(checked)
+        } else {
+            stateHandler.setErrorState(settingsShowErrorProvider.crashReporterError)
+        }
+    }
+
+    private fun handleOnLanguagePreferenceClick() {
+        stateHandler.setEvent(
+            SelectLanguage(
+                title = settingsStringsProvider.getDialogLanguageTitle(),
+                languages = settingsStringsProvider.getDialogLanguages(
+                    stateHandler.state.value.language
+                )
+            )
+        )
+    }
+
+    private fun handleOnLanguageSelect(id: Int) {
+        ApplicationLanguage.values().first { it.id == id }.run {
+            settingsAppearanceCollectionStates.setApplicationLanguageValue(this)
+            stateHandler.setLanguageState(this)
+            stateHandler.resetEvent()
+        }
+    }
+
+    private suspend fun handleOnPerformanceCheckChange(checked: Boolean) {
+        if (appConfigProvider.buildFlavor != BuildFlavor.FOSS) {
+            settingsDataChoicesCollectionStates.setPerformanceCollection(checked)
+            val isEnabled = settingsDataChoicesCollectionStates.getPerformanceCollectionValue()
+            if (checked == isEnabled) {
+                stateHandler.setPerformanceState(checked, appConfigProvider.buildFlavor)
+            } else {
+                stateHandler.setErrorState(settingsShowErrorProvider.performanceError)
+            }
+        } else {
+            Logger.e(tag, "Setting performance on FOSS build is not supported")
+        }
+    }
+
+    private suspend fun handleOnPersonalizedAdsCheckChange(checked: Boolean) {
+        if (appConfigProvider.buildFlavor != BuildFlavor.FOSS) {
+            settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked)
+            val isEnabled = settingsDataChoicesCollectionStates.getAllowPersonalizedAdsValue()
+            if (checked == isEnabled) {
+                stateHandler.setPersonalizedAdsState(checked, appConfigProvider.buildFlavor)
+            } else {
+                stateHandler.setErrorState(settingsShowErrorProvider.personalizedAdsError)
+            }
+        } else {
+            Logger.e(tag, "Setting personalized ads on FOSS build is not supported")
         }
     }
 
@@ -194,14 +206,11 @@ internal class SettingsViewModel @Inject constructor(
         )
     }
 
-    private fun handleOnLanguagePreferenceClick() {
-        stateHandler.setEvent(
-            SelectLanguage(
-                title = settingsStringsProvider.getDialogLanguageTitle(),
-                languages = settingsStringsProvider.getDialogLanguages(
-                    stateHandler.state.value.language
-                )
-            )
-        )
+    private suspend fun handleOnThemeSelect(id: Int) {
+        ApplicationTheme.values().first { it.id == id }.run {
+            settingsAppearanceCollectionStates.setApplicationThemeValue(this)
+            stateHandler.setThemeState(this)
+            stateHandler.resetEvent()
+        }
     }
 }

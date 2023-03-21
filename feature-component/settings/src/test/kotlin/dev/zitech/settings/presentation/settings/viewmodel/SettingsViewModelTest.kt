@@ -22,9 +22,12 @@ import dev.zitech.core.common.DataFactory
 import dev.zitech.core.common.domain.model.ApplicationLanguage
 import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.core.common.domain.model.BuildFlavor
+import dev.zitech.core.common.domain.model.WorkSuccess
 import dev.zitech.core.common.domain.navigation.DeepLinkScreenDestination
 import dev.zitech.core.common.framework.applicationconfig.FakeAppConfigProvider
 import dev.zitech.core.common.presentation.splash.LoginCheckCompletedHandler
+import dev.zitech.core.persistence.domain.model.UserAccountBuilder
+import dev.zitech.core.persistence.domain.usecase.database.GetCurrentUserAccountUseCase
 import dev.zitech.navigation.domain.usecase.GetScreenDestinationUseCase
 import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsAppearanceCollectionStates
 import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsDataChoicesCollectionStates
@@ -49,33 +52,39 @@ import org.junit.jupiter.api.extension.ExtendWith
 @ExtendWith(MainDispatcherRule::class)
 internal class SettingsViewModelTest {
 
-    private val settingsStateHandler = SettingsStateHandler()
-    private val splashScreenStateHandler = mockk<LoginCheckCompletedHandler>(relaxUnitFun = true)
+    private lateinit var testObserver: TestObserver<SettingsState>
+    private val appConfigProvider = FakeAppConfigProvider()
+    private val getCurrentUserAccountUseCase = mockk<GetCurrentUserAccountUseCase>()
+
     private val getScreenDestinationUseCase = mockk<GetScreenDestinationUseCase> {
         every { this@mockk.invoke() } returns flowOf(DeepLinkScreenDestination.Current)
     }
+
+    private val loginCheckCompletedHandler = mockk<LoginCheckCompletedHandler>(relaxUnitFun = true)
     private val settingsAppearanceCollectionStates = mockk<SettingsAppearanceCollectionStates>()
     private val settingsDataChoicesCollectionStates = mockk<SettingsDataChoicesCollectionStates>()
     private val settingsShowErrorProvider = mockk<SettingsShowErrorProvider>()
+    private val settingsStateHandler = SettingsStateHandler()
     private val settingsStringsProvider = mockk<SettingsStringsProvider>()
-    private val appConfigProvider = FakeAppConfigProvider()
-
-    private lateinit var testObserver: TestObserver<SettingsState>
 
     @Test
-    fun `WHEN OnCrashReporterCheck GIVEN checked is true and collection is true THEN crashReporter is true`() = runTest {
+    fun `WHEN OnAnalyticsCheck GIVEN build config is FOSS THEN do nothing`() = runTest {
         // Arrange
-        val defaultIsCrashReporterEnabled = false
-        val collection = true
-        coEvery { settingsDataChoicesCollectionStates.getCrashReporterCollectionValue() } returnsMany listOf(defaultIsCrashReporterEnabled, collection)
+        val defaultIsAnalyticsEnabled = false
+        coEvery { settingsDataChoicesCollectionStates.getAnalyticsCollectionValue() } returns defaultIsAnalyticsEnabled
 
-        val checked = true
-        coEvery { settingsDataChoicesCollectionStates.setCrashReporterCollection(checked) } just Runs
+        val defaultIsPersonalizedAdsEnabled = false
+        coEvery { settingsDataChoicesCollectionStates.getAllowPersonalizedAdsValue() } returns defaultIsPersonalizedAdsEnabled
+
+        val defaultIsPerformanceEnabled = false
+        coEvery { settingsDataChoicesCollectionStates.getPerformanceCollectionValue() } returns defaultIsPerformanceEnabled
+
+        val checked = DataFactory.createRandomBoolean()
+
+        appConfigProvider.setBuildFlavor(BuildFlavor.FOSS)
 
         mockInit(
-            analytics = false,
-            personalizedAds = false,
-            performance = false,
+            crashReporter = false,
             theme = ApplicationTheme.SYSTEM,
             language = ApplicationLanguage.SYSTEM
         )
@@ -84,15 +93,156 @@ internal class SettingsViewModelTest {
         testObserver = settingsStateHandler.state.test(this)
 
         // Act
-        sut.sendIntent(OnCrashReporterCheckChange(checked))
+        sut.sendIntent(OnAnalyticsCheckChange(checked))
+
+        // Assert
+        testObserver.assertValues(
+            getInitState(
+                analytics = null,
+                personalizedAds = null,
+                performance = null
+            )
+        )
+        coVerify(exactly = 0) {
+            settingsDataChoicesCollectionStates.setAnalyticsCollection(any())
+            settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(any())
+            settingsDataChoicesCollectionStates.setPerformanceCollection(any())
+        }
+        testObserver.finish()
+    }
+
+    @Test
+    fun `WHEN OnAnalyticsCheck GIVEN checked is false and collection is false THEN analytics and personalisedAds and performance are false`() = runTest {
+        // Arrange
+        val defaultIsAnalyticsEnabled = false
+        val collection = false
+        coEvery { settingsDataChoicesCollectionStates.getAnalyticsCollectionValue() } returnsMany listOf(defaultIsAnalyticsEnabled, collection)
+
+        val defaultIsPersonalizedAdsEnabled = false
+        coEvery { settingsDataChoicesCollectionStates.getAllowPersonalizedAdsValue() } returns defaultIsPersonalizedAdsEnabled
+
+        val defaultIsPerformanceEnabled = false
+        coEvery { settingsDataChoicesCollectionStates.getPerformanceCollectionValue() } returns defaultIsPerformanceEnabled
+
+        val checked = false
+        coEvery { settingsDataChoicesCollectionStates.setAnalyticsCollection(checked) } just Runs
+        coEvery { settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked) } just Runs
+        coEvery { settingsDataChoicesCollectionStates.setPerformanceCollection(checked) } just Runs
+
+        mockInit(
+            crashReporter = false,
+            theme = ApplicationTheme.SYSTEM,
+            language = ApplicationLanguage.SYSTEM
+        )
+
+        val sut = getSettingsViewModel()
+        testObserver = settingsStateHandler.state.test(this)
+
+        // Act
+        sut.sendIntent(OnAnalyticsCheckChange(checked))
+
+        // Assert
+        testObserver.assertValues(
+            getInitState()
+        )
+        coVerify {
+            settingsDataChoicesCollectionStates.setAnalyticsCollection(checked)
+            settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked)
+            settingsDataChoicesCollectionStates.setPerformanceCollection(checked)
+        }
+        testObserver.finish()
+    }
+
+    @Test
+    fun `WHEN OnAnalyticsCheck GIVEN checked is true and collection is false THEN event Error`() = runTest {
+        // Arrange
+        val defaultIsAnalyticsEnabled = false
+        val collection = false
+        coEvery { settingsDataChoicesCollectionStates.getAnalyticsCollectionValue() } returnsMany listOf(defaultIsAnalyticsEnabled, collection)
+
+        val defaultIsPersonalizedAdsEnabled = false
+        coEvery { settingsDataChoicesCollectionStates.getAllowPersonalizedAdsValue() } returns defaultIsPersonalizedAdsEnabled
+
+        val defaultIsPerformanceEnabled = false
+        coEvery { settingsDataChoicesCollectionStates.getPerformanceCollectionValue() } returns defaultIsPerformanceEnabled
+
+        val checked = true
+        coEvery { settingsDataChoicesCollectionStates.setAnalyticsCollection(checked) } just Runs
+
+        val messageResId = DataFactory.createRandomInt()
+        val action = DataFactory.createRandomString()
+        every { settingsShowErrorProvider.analyticsError } returns ShowError(
+            messageResId,
+            action
+        )
+
+        mockInit(
+            crashReporter = false,
+            theme = ApplicationTheme.SYSTEM,
+            language = ApplicationLanguage.SYSTEM
+        )
+
+        val sut = getSettingsViewModel()
+        testObserver = settingsStateHandler.state.test(this)
+
+        // Act
+        sut.sendIntent(OnAnalyticsCheckChange(checked))
 
         // Assert
         testObserver.assertValues(
             getInitState(),
-            getInitState(crashReporter = checked)
+            getInitState(event = ShowError(messageResId, action))
+        )
+        coVerify(exactly = 0) {
+            settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(any())
+            settingsDataChoicesCollectionStates.setPerformanceCollection(any())
+        }
+        testObserver.finish()
+    }
+
+    @Test
+    fun `WHEN OnAnalyticsCheck GIVEN checked is true and collection is true THEN analytics and personalisedAds and performance are true`() = runTest {
+        // Arrange
+        val defaultIsAnalyticsEnabled = false
+        val collection = true
+        coEvery { settingsDataChoicesCollectionStates.getAnalyticsCollectionValue() } returnsMany listOf(defaultIsAnalyticsEnabled, collection)
+
+        val defaultIsPersonalizedAdsEnabled = false
+        coEvery { settingsDataChoicesCollectionStates.getAllowPersonalizedAdsValue() } returnsMany listOf(defaultIsPersonalizedAdsEnabled, true)
+
+        val defaultIsPerformanceEnabled = false
+        coEvery { settingsDataChoicesCollectionStates.getPerformanceCollectionValue() } returnsMany listOf(defaultIsPerformanceEnabled, true)
+
+        val checked = true
+        coEvery { settingsDataChoicesCollectionStates.setAnalyticsCollection(checked) } just Runs
+        coEvery { settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked) } just Runs
+        coEvery { settingsDataChoicesCollectionStates.setPerformanceCollection(checked) } just Runs
+
+        mockInit(
+            crashReporter = false,
+            theme = ApplicationTheme.SYSTEM,
+            language = ApplicationLanguage.SYSTEM
+        )
+
+        val sut = getSettingsViewModel()
+        testObserver = settingsStateHandler.state.test(this)
+
+        // Act
+        sut.sendIntent(OnAnalyticsCheckChange(checked))
+
+        // Assert
+        testObserver.assertValues(
+            getInitState(),
+            getInitState(
+                analytics = checked,
+                personalizedAds = checked,
+                performance = checked,
+            )
         )
         coVerify {
-            settingsDataChoicesCollectionStates.setCrashReporterCollection(checked)
+            settingsDataChoicesCollectionStates.setAnalyticsCollection(checked)
+            settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked)
+            settingsDataChoicesCollectionStates.setPerformanceCollection(checked)
         }
         testObserver.finish()
     }
@@ -173,25 +323,19 @@ internal class SettingsViewModelTest {
     }
 
     @Test
-    fun `WHEN OnAnalyticsCheck GIVEN checked is true and collection is true THEN analytics and personalisedAds and performance are true`() = runTest {
+    fun `WHEN OnCrashReporterCheck GIVEN checked is true and collection is true THEN crashReporter is true`() = runTest {
         // Arrange
-        val defaultIsAnalyticsEnabled = false
+        val defaultIsCrashReporterEnabled = false
         val collection = true
-        coEvery { settingsDataChoicesCollectionStates.getAnalyticsCollectionValue() } returnsMany listOf(defaultIsAnalyticsEnabled, collection)
-
-        val defaultIsPersonalizedAdsEnabled = false
-        coEvery { settingsDataChoicesCollectionStates.getAllowPersonalizedAdsValue() } returnsMany listOf(defaultIsPersonalizedAdsEnabled, true)
-
-        val defaultIsPerformanceEnabled = false
-        coEvery { settingsDataChoicesCollectionStates.getPerformanceCollectionValue() } returnsMany listOf(defaultIsPerformanceEnabled, true)
+        coEvery { settingsDataChoicesCollectionStates.getCrashReporterCollectionValue() } returnsMany listOf(defaultIsCrashReporterEnabled, collection)
 
         val checked = true
-        coEvery { settingsDataChoicesCollectionStates.setAnalyticsCollection(checked) } just Runs
-        coEvery { settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked) } just Runs
-        coEvery { settingsDataChoicesCollectionStates.setPerformanceCollection(checked) } just Runs
+        coEvery { settingsDataChoicesCollectionStates.setCrashReporterCollection(checked) } just Runs
 
         mockInit(
-            crashReporter = false,
+            analytics = false,
+            personalizedAds = false,
+            performance = false,
             theme = ApplicationTheme.SYSTEM,
             language = ApplicationLanguage.SYSTEM
         )
@@ -200,322 +344,22 @@ internal class SettingsViewModelTest {
         testObserver = settingsStateHandler.state.test(this)
 
         // Act
-        sut.sendIntent(OnAnalyticsCheckChange(checked))
+        sut.sendIntent(OnCrashReporterCheckChange(checked))
 
         // Assert
         testObserver.assertValues(
             getInitState(),
-            getInitState(
-                analytics = checked,
-                personalizedAds = checked,
-                performance = checked,
-            )
+            getInitState(crashReporter = checked)
         )
         coVerify {
-            settingsDataChoicesCollectionStates.setAnalyticsCollection(checked)
-            settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked)
-            settingsDataChoicesCollectionStates.setPerformanceCollection(checked)
+            settingsDataChoicesCollectionStates.setCrashReporterCollection(checked)
         }
         testObserver.finish()
     }
 
     @Test
-    fun `WHEN OnAnalyticsCheck GIVEN checked is false and collection is false THEN analytics and personalisedAds and performance are false`() = runTest {
+    fun `WHEN OnLanguageDismiss THEN send Idle event`() = runTest {
         // Arrange
-        val defaultIsAnalyticsEnabled = false
-        val collection = false
-        coEvery { settingsDataChoicesCollectionStates.getAnalyticsCollectionValue() } returnsMany listOf(defaultIsAnalyticsEnabled, collection)
-
-        val defaultIsPersonalizedAdsEnabled = false
-        coEvery { settingsDataChoicesCollectionStates.getAllowPersonalizedAdsValue() } returns defaultIsPersonalizedAdsEnabled
-
-        val defaultIsPerformanceEnabled = false
-        coEvery { settingsDataChoicesCollectionStates.getPerformanceCollectionValue() } returns defaultIsPerformanceEnabled
-
-        val checked = false
-        coEvery { settingsDataChoicesCollectionStates.setAnalyticsCollection(checked) } just Runs
-        coEvery { settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked) } just Runs
-        coEvery { settingsDataChoicesCollectionStates.setPerformanceCollection(checked) } just Runs
-
-        mockInit(
-            crashReporter = false,
-            theme = ApplicationTheme.SYSTEM,
-            language = ApplicationLanguage.SYSTEM
-        )
-
-        val sut = getSettingsViewModel()
-        testObserver = settingsStateHandler.state.test(this)
-
-        // Act
-        sut.sendIntent(OnAnalyticsCheckChange(checked))
-
-        // Assert
-        testObserver.assertValues(
-            getInitState()
-        )
-        coVerify {
-            settingsDataChoicesCollectionStates.setAnalyticsCollection(checked)
-            settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked)
-            settingsDataChoicesCollectionStates.setPerformanceCollection(checked)
-        }
-        testObserver.finish()
-    }
-
-    @Test
-    fun `WHEN OnAnalyticsCheck GIVEN build config is FOSS THEN do nothing`() = runTest {
-        // Arrange
-        val defaultIsAnalyticsEnabled = false
-        coEvery { settingsDataChoicesCollectionStates.getAnalyticsCollectionValue() } returns defaultIsAnalyticsEnabled
-
-        val defaultIsPersonalizedAdsEnabled = false
-        coEvery { settingsDataChoicesCollectionStates.getAllowPersonalizedAdsValue() } returns defaultIsPersonalizedAdsEnabled
-
-        val defaultIsPerformanceEnabled = false
-        coEvery { settingsDataChoicesCollectionStates.getPerformanceCollectionValue() } returns defaultIsPerformanceEnabled
-
-        val checked = DataFactory.createRandomBoolean()
-
-        appConfigProvider.setBuildFlavor(BuildFlavor.FOSS)
-
-        mockInit(
-            crashReporter = false,
-            theme = ApplicationTheme.SYSTEM,
-            language = ApplicationLanguage.SYSTEM
-        )
-
-        val sut = getSettingsViewModel()
-        testObserver = settingsStateHandler.state.test(this)
-
-        // Act
-        sut.sendIntent(OnAnalyticsCheckChange(checked))
-
-        // Assert
-        testObserver.assertValues(
-            getInitState(
-                analytics = null,
-                personalizedAds = null,
-                performance = null
-            )
-        )
-        coVerify(exactly = 0) {
-            settingsDataChoicesCollectionStates.setAnalyticsCollection(any())
-            settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(any())
-            settingsDataChoicesCollectionStates.setPerformanceCollection(any())
-        }
-        testObserver.finish()
-    }
-
-    @Test
-    fun `WHEN OnAnalyticsCheck GIVEN checked is true and collection is false THEN event Error`() = runTest {
-        // Arrange
-        val defaultIsAnalyticsEnabled = false
-        val collection = false
-        coEvery { settingsDataChoicesCollectionStates.getAnalyticsCollectionValue() } returnsMany listOf(defaultIsAnalyticsEnabled, collection)
-
-        val defaultIsPersonalizedAdsEnabled = false
-        coEvery { settingsDataChoicesCollectionStates.getAllowPersonalizedAdsValue() } returns defaultIsPersonalizedAdsEnabled
-
-        val defaultIsPerformanceEnabled = false
-        coEvery { settingsDataChoicesCollectionStates.getPerformanceCollectionValue() } returns defaultIsPerformanceEnabled
-
-        val checked = true
-        coEvery { settingsDataChoicesCollectionStates.setAnalyticsCollection(checked) } just Runs
-
-        val messageResId = DataFactory.createRandomInt()
-        val action = DataFactory.createRandomString()
-        every { settingsShowErrorProvider.analyticsError } returns ShowError(
-            messageResId,
-            action
-        )
-
-        mockInit(
-            crashReporter = false,
-            theme = ApplicationTheme.SYSTEM,
-            language = ApplicationLanguage.SYSTEM
-        )
-
-        val sut = getSettingsViewModel()
-        testObserver = settingsStateHandler.state.test(this)
-
-        // Act
-        sut.sendIntent(OnAnalyticsCheckChange(checked))
-
-        // Assert
-        testObserver.assertValues(
-            getInitState(),
-            getInitState(event = ShowError(messageResId, action))
-        )
-        coVerify(exactly = 0) {
-            settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(any())
-            settingsDataChoicesCollectionStates.setPerformanceCollection(any())
-        }
-        testObserver.finish()
-    }
-
-    @Test
-    fun `WHEN OnPersonalizedAdsCheck GIVEN checked is true and collection is true THEN personalizedAds is true`() = runTest {
-        // Arrange
-        val defaultPersonalizedAdsEnabled = false
-        val collection = true
-        coEvery { settingsDataChoicesCollectionStates.getAllowPersonalizedAdsValue() } returnsMany listOf(defaultPersonalizedAdsEnabled, collection)
-
-        val checked = true
-        coEvery { settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked) } just Runs
-
-        mockInit(
-            analytics = false,
-            performance = false,
-            crashReporter = false,
-            theme = ApplicationTheme.SYSTEM,
-            language = ApplicationLanguage.SYSTEM
-        )
-
-        val sut = getSettingsViewModel()
-        testObserver = settingsStateHandler.state.test(this)
-
-        // Act
-        sut.sendIntent(OnPersonalizedAdsCheckChange(checked))
-
-        // Assert
-        testObserver.assertValues(
-            getInitState(),
-            getInitState(personalizedAds = checked)
-        )
-        coVerify {
-            settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked)
-        }
-        testObserver.finish()
-    }
-
-    @Test
-    fun `WHEN OnPersonalizedAdsCheck GIVEN checked is false and collection is false THEN show only loading`() = runTest {
-        // Arrange
-        val defaultPersonalizedAdsEnabled = false
-        val collection = false
-        coEvery { settingsDataChoicesCollectionStates.getAllowPersonalizedAdsValue() } returnsMany listOf(defaultPersonalizedAdsEnabled, collection)
-
-        val checked = false
-        coEvery { settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked) } just Runs
-
-        mockInit(
-            analytics = false,
-            performance = false,
-            crashReporter = false,
-            theme = ApplicationTheme.SYSTEM,
-            language = ApplicationLanguage.SYSTEM
-        )
-
-        val sut = getSettingsViewModel()
-        testObserver = settingsStateHandler.state.test(this)
-
-        // Act
-        sut.sendIntent(OnPersonalizedAdsCheckChange(checked))
-
-        // Assert
-        testObserver.assertValues(
-            getInitState()
-        )
-        coVerify {
-            settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked)
-        }
-        testObserver.finish()
-    }
-
-    @Test
-    fun `WHEN OnPersonalizedAdsCheck GIVEN checked is true and collection is false THEN event Error`() = runTest {
-        // Arrange
-        val defaultIsPersonalizedAdsEnabled = false
-        val collection = false
-        coEvery { settingsDataChoicesCollectionStates.getAllowPersonalizedAdsValue() } returnsMany listOf(defaultIsPersonalizedAdsEnabled, collection)
-
-        val checked = true
-        coEvery { settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked) } just Runs
-
-        val messageResId = DataFactory.createRandomInt()
-        val action = DataFactory.createRandomString()
-        every { settingsShowErrorProvider.personalizedAdsError } returns ShowError(
-            messageResId,
-            action
-        )
-
-        mockInit(
-            analytics = false,
-            performance = false,
-            crashReporter = false,
-            theme = ApplicationTheme.SYSTEM,
-            language = ApplicationLanguage.SYSTEM
-        )
-
-        val sut = getSettingsViewModel()
-        testObserver = settingsStateHandler.state.test(this)
-
-        // Act
-        sut.sendIntent(OnPersonalizedAdsCheckChange(checked))
-
-        // Assert
-        testObserver.assertValues(
-            getInitState(),
-            getInitState(event = ShowError(messageResId, action))
-        )
-        coVerify {
-            settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked)
-        }
-        testObserver.finish()
-    }
-
-    @Test
-    fun `WHEN OnPersonalizedAdsCheck GIVEN build config is FOSS THEN show only loading`() = runTest {
-        // Arrange
-        val defaultIsAnalyticsEnabled = false
-        coEvery { settingsDataChoicesCollectionStates.getAnalyticsCollectionValue() } returns defaultIsAnalyticsEnabled
-
-        val defaultIsPersonalizedAdsEnabled = false
-        coEvery { settingsDataChoicesCollectionStates.getAllowPersonalizedAdsValue() } returns defaultIsPersonalizedAdsEnabled
-
-        val defaultIsPerformanceEnabled = false
-        coEvery { settingsDataChoicesCollectionStates.getPerformanceCollectionValue() } returns defaultIsPerformanceEnabled
-
-        val checked = DataFactory.createRandomBoolean()
-
-        appConfigProvider.setBuildFlavor(BuildFlavor.FOSS)
-
-        mockInit(
-            analytics = false,
-            performance = false,
-            crashReporter = false,
-            theme = ApplicationTheme.SYSTEM,
-            language = ApplicationLanguage.SYSTEM
-        )
-
-        val sut = getSettingsViewModel()
-        testObserver = settingsStateHandler.state.test(this)
-
-        // Act
-        sut.sendIntent(OnAnalyticsCheckChange(checked))
-
-        // Assert
-        testObserver.assertValues(
-            getInitState(
-                analytics = null,
-                personalizedAds = null,
-                performance = null
-            )
-        )
-        coVerify(exactly = 0) {
-            settingsDataChoicesCollectionStates.setAnalyticsCollection(any())
-            settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(any())
-            settingsDataChoicesCollectionStates.setPerformanceCollection(any())
-        }
-        testObserver.finish()
-    }
-
-    @Test
-    fun `WHEN OnThemeSelect GIVEN theme id THEN update application theme and update theme and reset events`() = runTest {
-        // Arrange
-        val themeId = ApplicationTheme.LIGHT.id
-
-        coEvery { settingsAppearanceCollectionStates.setApplicationThemeValue(ApplicationTheme.LIGHT) } just Runs
-
         mockInit(
             analytics = false,
             personalizedAds = false,
@@ -529,33 +373,33 @@ internal class SettingsViewModelTest {
         testObserver = settingsStateHandler.state.test(this)
 
         // Act
-        sut.sendIntent(OnThemeSelect(themeId))
+        sut.sendIntent(OnLanguageDismiss)
 
         // Assert
         testObserver.assertValues(
-            getInitState(),
-            getInitState(
-                theme = ApplicationTheme.LIGHT
-            )
+            getInitState()
         )
-        coVerify { settingsAppearanceCollectionStates.setApplicationThemeValue(ApplicationTheme.LIGHT) }
         testObserver.finish()
     }
 
     @Test
-    fun `WHEN OnThemePreferenceClick THEN send SelectTheme event`() = runTest {
+    fun `WHEN OnLanguagePreferenceClick THEN send SelectLanguage event`() = runTest {
         // Arrange
-        val dialogTitle = DataFactory.createRandomString()
-        every { settingsStringsProvider.getDialogThemeTitle() } returns dialogTitle
+        val defaultUserTheme = ApplicationTheme.SYSTEM
+        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns defaultUserTheme
 
-        val dialogThemes = listOf(
+        val defaultApplicationLanguage = ApplicationLanguage.SYSTEM
+        coEvery { settingsAppearanceCollectionStates.getApplicationLanguageValue() } returns defaultApplicationLanguage
+
+        val dialogLanguages = listOf(
             DialogRadioItemBuilder().setId(DataFactory.createRandomInt()).build(),
             DialogRadioItemBuilder().setId(DataFactory.createRandomInt()).build(),
             DialogRadioItemBuilder().setId(DataFactory.createRandomInt()).build()
         )
+        coEvery { settingsStringsProvider.getDialogLanguages(defaultApplicationLanguage) } returns dialogLanguages
 
-        val defaultUserTheme = ApplicationTheme.SYSTEM
-        coEvery { settingsStringsProvider.getDialogThemes(defaultUserTheme) } returns dialogThemes
+        val dialogTitle = DataFactory.createRandomString()
+        every { settingsStringsProvider.getDialogLanguageTitle() } returns dialogTitle
 
         mockInit(
             analytics = false,
@@ -570,15 +414,15 @@ internal class SettingsViewModelTest {
         testObserver = settingsStateHandler.state.test(this)
 
         // Act
-        sut.sendIntent(OnThemePreferenceClick)
+        sut.sendIntent(OnLanguagePreferenceClick)
 
         // Assert
         testObserver.assertValues(
             getInitState(),
             getInitState(
-                event = SelectTheme(
+                event = SelectLanguage(
                     title = dialogTitle,
-                    themes = dialogThemes
+                    languages = dialogLanguages
                 )
             )
         )
@@ -586,8 +430,12 @@ internal class SettingsViewModelTest {
     }
 
     @Test
-    fun `WHEN OnThemeDismiss THEN send Idle event`() = runTest {
+    fun `WHEN OnLanguageSelect GIVEN theme id THEN update application language and update language and reset events`() = runTest {
         // Arrange
+        val languageId = ApplicationLanguage.ENGLISH.id
+
+        coEvery { settingsAppearanceCollectionStates.setApplicationLanguageValue(ApplicationLanguage.ENGLISH) } just Runs
+
         mockInit(
             analytics = false,
             personalizedAds = false,
@@ -601,24 +449,34 @@ internal class SettingsViewModelTest {
         testObserver = settingsStateHandler.state.test(this)
 
         // Act
-        sut.sendIntent(OnThemeDismiss)
+        sut.sendIntent(OnLanguageSelect(languageId))
 
         // Assert
         testObserver.assertValues(
-            getInitState()
+            getInitState(),
+            getInitState(
+                language = ApplicationLanguage.ENGLISH
+            )
         )
+        coVerify { settingsAppearanceCollectionStates.setApplicationLanguageValue(ApplicationLanguage.ENGLISH) }
         testObserver.finish()
     }
 
     @Test
-    fun `WHEN OnPerformanceCheckChange GIVEN checked is true and collection is true THEN performance is true`() = runTest {
+    fun `WHEN OnPerformanceCheckChange GIVEN build config is FOSS THEN show only loading`() = runTest {
         // Arrange
-        val defaultPerformanceEnabled = false
-        val collection = true
-        coEvery { settingsDataChoicesCollectionStates.getPerformanceCollectionValue() } returnsMany listOf(defaultPerformanceEnabled, collection)
+        val defaultIsPerformanceEnabled = false
+        coEvery { settingsDataChoicesCollectionStates.getAnalyticsCollectionValue() } returns defaultIsPerformanceEnabled
 
-        val checked = true
-        coEvery { settingsDataChoicesCollectionStates.setPerformanceCollection(checked) } just Runs
+        val defaultIsPersonalizedAdsEnabled = false
+        coEvery { settingsDataChoicesCollectionStates.getAllowPersonalizedAdsValue() } returns defaultIsPersonalizedAdsEnabled
+
+        val defaultIsAnalyticsEnabled = false
+        coEvery { settingsDataChoicesCollectionStates.getPerformanceCollectionValue() } returns defaultIsAnalyticsEnabled
+
+        val checked = DataFactory.createRandomBoolean()
+
+        appConfigProvider.setBuildFlavor(BuildFlavor.FOSS)
 
         mockInit(
             analytics = false,
@@ -636,13 +494,16 @@ internal class SettingsViewModelTest {
 
         // Assert
         testObserver.assertValues(
-            getInitState(),
             getInitState(
-                performance = checked
+                analytics = null,
+                personalizedAds = null,
+                performance = null
             )
         )
-        coVerify {
-            settingsDataChoicesCollectionStates.setPerformanceCollection(checked)
+        coVerify(exactly = 0) {
+            settingsDataChoicesCollectionStates.setAnalyticsCollection(any())
+            settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(any())
+            settingsDataChoicesCollectionStates.setPerformanceCollection(any())
         }
         testObserver.finish()
     }
@@ -724,20 +585,14 @@ internal class SettingsViewModelTest {
     }
 
     @Test
-    fun `WHEN OnPerformanceCheckChange GIVEN build config is FOSS THEN show only loading`() = runTest {
+    fun `WHEN OnPerformanceCheckChange GIVEN checked is true and collection is true THEN performance is true`() = runTest {
         // Arrange
-        val defaultIsPerformanceEnabled = false
-        coEvery { settingsDataChoicesCollectionStates.getAnalyticsCollectionValue() } returns defaultIsPerformanceEnabled
+        val defaultPerformanceEnabled = false
+        val collection = true
+        coEvery { settingsDataChoicesCollectionStates.getPerformanceCollectionValue() } returnsMany listOf(defaultPerformanceEnabled, collection)
 
-        val defaultIsPersonalizedAdsEnabled = false
-        coEvery { settingsDataChoicesCollectionStates.getAllowPersonalizedAdsValue() } returns defaultIsPersonalizedAdsEnabled
-
-        val defaultIsAnalyticsEnabled = false
-        coEvery { settingsDataChoicesCollectionStates.getPerformanceCollectionValue() } returns defaultIsAnalyticsEnabled
-
-        val checked = DataFactory.createRandomBoolean()
-
-        appConfigProvider.setBuildFlavor(BuildFlavor.FOSS)
+        val checked = true
+        coEvery { settingsDataChoicesCollectionStates.setPerformanceCollection(checked) } just Runs
 
         mockInit(
             analytics = false,
@@ -752,6 +607,49 @@ internal class SettingsViewModelTest {
 
         // Act
         sut.sendIntent(OnPerformanceCheckChange(checked))
+
+        // Assert
+        testObserver.assertValues(
+            getInitState(),
+            getInitState(
+                performance = checked
+            )
+        )
+        coVerify {
+            settingsDataChoicesCollectionStates.setPerformanceCollection(checked)
+        }
+        testObserver.finish()
+    }
+
+    @Test
+    fun `WHEN OnPersonalizedAdsCheck GIVEN build config is FOSS THEN show only loading`() = runTest {
+        // Arrange
+        val defaultIsAnalyticsEnabled = false
+        coEvery { settingsDataChoicesCollectionStates.getAnalyticsCollectionValue() } returns defaultIsAnalyticsEnabled
+
+        val defaultIsPersonalizedAdsEnabled = false
+        coEvery { settingsDataChoicesCollectionStates.getAllowPersonalizedAdsValue() } returns defaultIsPersonalizedAdsEnabled
+
+        val defaultIsPerformanceEnabled = false
+        coEvery { settingsDataChoicesCollectionStates.getPerformanceCollectionValue() } returns defaultIsPerformanceEnabled
+
+        val checked = DataFactory.createRandomBoolean()
+
+        appConfigProvider.setBuildFlavor(BuildFlavor.FOSS)
+
+        mockInit(
+            analytics = false,
+            performance = false,
+            crashReporter = false,
+            theme = ApplicationTheme.SYSTEM,
+            language = ApplicationLanguage.SYSTEM
+        )
+
+        val sut = getSettingsViewModel()
+        testObserver = settingsStateHandler.state.test(this)
+
+        // Act
+        sut.sendIntent(OnAnalyticsCheckChange(checked))
 
         // Assert
         testObserver.assertValues(
@@ -770,12 +668,119 @@ internal class SettingsViewModelTest {
     }
 
     @Test
-    fun `WHEN OnLanguageSelect GIVEN theme id THEN update application language and update language and reset events`() = runTest {
+    fun `WHEN OnPersonalizedAdsCheck GIVEN checked is false and collection is false THEN show only loading`() = runTest {
         // Arrange
-        val languageId = ApplicationLanguage.ENGLISH.id
+        val defaultPersonalizedAdsEnabled = false
+        val collection = false
+        coEvery { settingsDataChoicesCollectionStates.getAllowPersonalizedAdsValue() } returnsMany listOf(defaultPersonalizedAdsEnabled, collection)
 
-        coEvery { settingsAppearanceCollectionStates.setApplicationLanguageValue(ApplicationLanguage.ENGLISH) } just Runs
+        val checked = false
+        coEvery { settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked) } just Runs
 
+        mockInit(
+            analytics = false,
+            performance = false,
+            crashReporter = false,
+            theme = ApplicationTheme.SYSTEM,
+            language = ApplicationLanguage.SYSTEM
+        )
+
+        val sut = getSettingsViewModel()
+        testObserver = settingsStateHandler.state.test(this)
+
+        // Act
+        sut.sendIntent(OnPersonalizedAdsCheckChange(checked))
+
+        // Assert
+        testObserver.assertValues(
+            getInitState()
+        )
+        coVerify {
+            settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked)
+        }
+        testObserver.finish()
+    }
+
+    @Test
+    fun `WHEN OnPersonalizedAdsCheck GIVEN checked is true and collection is false THEN event Error`() = runTest {
+        // Arrange
+        val defaultIsPersonalizedAdsEnabled = false
+        val collection = false
+        coEvery { settingsDataChoicesCollectionStates.getAllowPersonalizedAdsValue() } returnsMany listOf(defaultIsPersonalizedAdsEnabled, collection)
+
+        val checked = true
+        coEvery { settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked) } just Runs
+
+        val messageResId = DataFactory.createRandomInt()
+        val action = DataFactory.createRandomString()
+        every { settingsShowErrorProvider.personalizedAdsError } returns ShowError(
+            messageResId,
+            action
+        )
+
+        mockInit(
+            analytics = false,
+            performance = false,
+            crashReporter = false,
+            theme = ApplicationTheme.SYSTEM,
+            language = ApplicationLanguage.SYSTEM
+        )
+
+        val sut = getSettingsViewModel()
+        testObserver = settingsStateHandler.state.test(this)
+
+        // Act
+        sut.sendIntent(OnPersonalizedAdsCheckChange(checked))
+
+        // Assert
+        testObserver.assertValues(
+            getInitState(),
+            getInitState(event = ShowError(messageResId, action))
+        )
+        coVerify {
+            settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked)
+        }
+        testObserver.finish()
+    }
+
+    @Test
+    fun `WHEN OnPersonalizedAdsCheck GIVEN checked is true and collection is true THEN personalizedAds is true`() = runTest {
+        // Arrange
+        val defaultPersonalizedAdsEnabled = false
+        val collection = true
+        coEvery { settingsDataChoicesCollectionStates.getAllowPersonalizedAdsValue() } returnsMany listOf(defaultPersonalizedAdsEnabled, collection)
+
+        val checked = true
+        coEvery { settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked) } just Runs
+
+        mockInit(
+            analytics = false,
+            performance = false,
+            crashReporter = false,
+            theme = ApplicationTheme.SYSTEM,
+            language = ApplicationLanguage.SYSTEM
+        )
+
+        val sut = getSettingsViewModel()
+        testObserver = settingsStateHandler.state.test(this)
+
+        // Act
+        sut.sendIntent(OnPersonalizedAdsCheckChange(checked))
+
+        // Assert
+        testObserver.assertValues(
+            getInitState(),
+            getInitState(personalizedAds = checked)
+        )
+        coVerify {
+            settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked)
+        }
+        testObserver.finish()
+    }
+
+    @Test
+    fun `WHEN OnThemeDismiss THEN send Idle event`() = runTest {
+        // Arrange
         mockInit(
             analytics = false,
             personalizedAds = false,
@@ -789,37 +794,29 @@ internal class SettingsViewModelTest {
         testObserver = settingsStateHandler.state.test(this)
 
         // Act
-        sut.sendIntent(OnLanguageSelect(languageId))
+        sut.sendIntent(OnThemeDismiss)
 
         // Assert
         testObserver.assertValues(
-            getInitState(),
-            getInitState(
-                language = ApplicationLanguage.ENGLISH
-            )
+            getInitState()
         )
-        coVerify { settingsAppearanceCollectionStates.setApplicationLanguageValue(ApplicationLanguage.ENGLISH) }
         testObserver.finish()
     }
 
     @Test
-    fun `WHEN OnLanguagePreferenceClick THEN send SelectLanguage event`() = runTest {
+    fun `WHEN OnThemePreferenceClick THEN send SelectTheme event`() = runTest {
         // Arrange
-        val defaultUserTheme = ApplicationTheme.SYSTEM
-        coEvery { settingsAppearanceCollectionStates.getApplicationThemeValue() } returns defaultUserTheme
+        val dialogTitle = DataFactory.createRandomString()
+        every { settingsStringsProvider.getDialogThemeTitle() } returns dialogTitle
 
-        val defaultApplicationLanguage = ApplicationLanguage.SYSTEM
-        coEvery { settingsAppearanceCollectionStates.getApplicationLanguageValue() } returns defaultApplicationLanguage
-
-        val dialogLanguages = listOf(
+        val dialogThemes = listOf(
             DialogRadioItemBuilder().setId(DataFactory.createRandomInt()).build(),
             DialogRadioItemBuilder().setId(DataFactory.createRandomInt()).build(),
             DialogRadioItemBuilder().setId(DataFactory.createRandomInt()).build()
         )
-        coEvery { settingsStringsProvider.getDialogLanguages(defaultApplicationLanguage) } returns dialogLanguages
 
-        val dialogTitle = DataFactory.createRandomString()
-        every { settingsStringsProvider.getDialogLanguageTitle() } returns dialogTitle
+        val defaultUserTheme = ApplicationTheme.SYSTEM
+        coEvery { settingsStringsProvider.getDialogThemes(defaultUserTheme) } returns dialogThemes
 
         mockInit(
             analytics = false,
@@ -834,15 +831,15 @@ internal class SettingsViewModelTest {
         testObserver = settingsStateHandler.state.test(this)
 
         // Act
-        sut.sendIntent(OnLanguagePreferenceClick)
+        sut.sendIntent(OnThemePreferenceClick)
 
         // Assert
         testObserver.assertValues(
             getInitState(),
             getInitState(
-                event = SelectLanguage(
+                event = SelectTheme(
                     title = dialogTitle,
-                    languages = dialogLanguages
+                    themes = dialogThemes
                 )
             )
         )
@@ -850,8 +847,12 @@ internal class SettingsViewModelTest {
     }
 
     @Test
-    fun `WHEN OnLanguageDismiss THEN send Idle event`() = runTest {
+    fun `WHEN OnThemeSelect GIVEN theme id THEN update application theme and update theme and reset events`() = runTest {
         // Arrange
+        val themeId = ApplicationTheme.LIGHT.id
+
+        coEvery { settingsAppearanceCollectionStates.setApplicationThemeValue(ApplicationTheme.LIGHT) } just Runs
+
         mockInit(
             analytics = false,
             personalizedAds = false,
@@ -865,24 +866,53 @@ internal class SettingsViewModelTest {
         testObserver = settingsStateHandler.state.test(this)
 
         // Act
-        sut.sendIntent(OnLanguageDismiss)
+        sut.sendIntent(OnThemeSelect(themeId))
 
         // Assert
         testObserver.assertValues(
-            getInitState()
+            getInitState(),
+            getInitState(
+                theme = ApplicationTheme.LIGHT
+            )
         )
+        coVerify { settingsAppearanceCollectionStates.setApplicationThemeValue(ApplicationTheme.LIGHT) }
         testObserver.finish()
     }
 
+    private fun getInitState(
+        viewState: SettingsState.ViewState = SettingsState.ViewState.Success,
+        event: SettingsEvent = Idle,
+        analytics: Boolean? = false,
+        personalizedAds: Boolean? = false,
+        performance: Boolean? = false,
+        crashReporter: Boolean = false,
+        theme: ApplicationTheme = ApplicationTheme.SYSTEM,
+        language: ApplicationLanguage = ApplicationLanguage.SYSTEM,
+        version: String = "4.2",
+        email: String = "test@test.test"
+    ) = SettingsState(
+        analytics,
+        crashReporter,
+        email,
+        event,
+        language,
+        performance,
+        personalizedAds,
+        theme,
+        version,
+        viewState
+    )
+
     private fun getSettingsViewModel() = SettingsViewModel(
-        settingsStateHandler,
-        splashScreenStateHandler,
         getScreenDestinationUseCase,
+        loginCheckCompletedHandler,
+        appConfigProvider,
+        getCurrentUserAccountUseCase,
         settingsAppearanceCollectionStates,
         settingsDataChoicesCollectionStates,
         settingsShowErrorProvider,
         settingsStringsProvider,
-        appConfigProvider
+        settingsStateHandler
     )
 
     private fun mockInit(
@@ -911,27 +941,7 @@ internal class SettingsViewModelTest {
         language?.let {
             coEvery { settingsAppearanceCollectionStates.getApplicationLanguageValue() } returns it
         }
+        coEvery { getCurrentUserAccountUseCase() } returns flowOf(WorkSuccess(UserAccountBuilder().setEmail("test@test.test").build()))
     }
 
-    private fun getInitState(
-        viewState: SettingsState.ViewState = SettingsState.ViewState.Success,
-        event: SettingsEvent = Idle,
-        analytics: Boolean? = false,
-        personalizedAds: Boolean? = false,
-        performance: Boolean? = false,
-        crashReporter: Boolean = false,
-        theme: ApplicationTheme = ApplicationTheme.SYSTEM,
-        language: ApplicationLanguage = ApplicationLanguage.SYSTEM,
-        version: String = "4.2"
-    ) = SettingsState(
-        viewState,
-        event,
-        analytics,
-        personalizedAds,
-        performance,
-        crashReporter,
-        theme,
-        language,
-        version
-    )
 }
