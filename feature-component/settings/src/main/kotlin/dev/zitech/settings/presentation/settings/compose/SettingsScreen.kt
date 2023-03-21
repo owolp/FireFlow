@@ -130,7 +130,7 @@ private fun SettingsScreenContent(
         }
         item {
             FireFlowCategoryPreferences.Primary(
-                categoryName = stringResource(R.string.about_application_category),
+                categoryName = stringResource(R.string.more_category),
                 preferences = getAboutApplicationPreferences(
                     state = state
                 )
@@ -259,7 +259,7 @@ private fun getAboutApplicationPreferences(
 
     categoryPreferences.add(
         CategoryPreference.Icon(
-            title = stringResource(R.string.about_application_version),
+            title = stringResource(R.string.more_version),
             icon = FireFlowIcons.Info,
             description = state.version
         )
