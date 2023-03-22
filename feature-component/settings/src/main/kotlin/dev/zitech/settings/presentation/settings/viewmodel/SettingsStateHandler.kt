@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,14 +33,6 @@ internal class SettingsStateHandler @Inject constructor() : MviStateHandler<Sett
     private val mutableState = MutableStateFlow(SettingsState())
     override val state: StateFlow<SettingsState> = mutableState.asStateFlow()
 
-    fun setViewState(value: SettingsState.ViewState) {
-        mutableState.update { it.copy(viewState = value) }
-    }
-
-    fun setEvent(event: SettingsEvent) {
-        mutableState.update { it.copy(event = event) }
-    }
-
     fun resetEvent() {
         setEvent(Idle)
     }
@@ -54,13 +46,28 @@ internal class SettingsStateHandler @Inject constructor() : MviStateHandler<Sett
         }
     }
 
-    fun setPersonalizedAdsState(
-        value: Boolean,
-        buildFlavor: BuildFlavor
-    ) {
-        if (buildFlavor != BuildFlavor.FOSS) {
-            mutableState.update { it.copy(personalizedAds = value) }
-        }
+    fun setAppVersionState(value: String) {
+        mutableState.update { it.copy(version = value) }
+    }
+
+    fun setCrashReporterState(value: Boolean) {
+        mutableState.update { it.copy(crashReporter = value) }
+    }
+
+    fun setEmail(value: String) {
+        mutableState.update { it.copy(email = value) }
+    }
+
+    fun setErrorState(value: SettingsEvent) {
+        mutableState.update { it.copy(event = value) }
+    }
+
+    fun setEvent(event: SettingsEvent) {
+        mutableState.update { it.copy(event = event) }
+    }
+
+    fun setLanguageState(value: ApplicationLanguage) {
+        mutableState.update { it.copy(language = value) }
     }
 
     fun setPerformanceState(
@@ -72,23 +79,20 @@ internal class SettingsStateHandler @Inject constructor() : MviStateHandler<Sett
         }
     }
 
-    fun setCrashReporterState(value: Boolean) {
-        mutableState.update { it.copy(crashReporter = value) }
-    }
-
-    fun setErrorState(value: SettingsEvent) {
-        mutableState.update { it.copy(event = value) }
+    fun setPersonalizedAdsState(
+        value: Boolean,
+        buildFlavor: BuildFlavor
+    ) {
+        if (buildFlavor != BuildFlavor.FOSS) {
+            mutableState.update { it.copy(personalizedAds = value) }
+        }
     }
 
     fun setThemeState(value: ApplicationTheme) {
         mutableState.update { it.copy(theme = value) }
     }
 
-    fun setLanguageState(value: ApplicationLanguage) {
-        mutableState.update { it.copy(language = value) }
-    }
-
-    fun setAppVersionState(value: String) {
-        mutableState.update { it.copy(version = value) }
+    fun setViewState(value: SettingsState.ViewState) {
+        mutableState.update { it.copy(viewState = value) }
     }
 }

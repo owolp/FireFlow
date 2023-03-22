@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,3 +33,6 @@ internal data class OnLanguageSelect(val id: Int) : SettingsIntent
 internal object OnLanguageDismiss : SettingsIntent
 internal object OnRestartApplication : SettingsIntent
 internal object ErrorHandled : SettingsIntent
+internal object OnLogOutClick : SettingsIntent
+internal object OnConfirmLogOutClick : SettingsIntent
+internal object OnConfirmLogOutDismiss : SettingsIntent

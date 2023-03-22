@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,29 +21,11 @@ import dev.zitech.core.common.domain.model.ApplicationLanguage
 import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.core.common.domain.strings.StringsProvider
 import dev.zitech.ds.molecules.dialog.DialogRadioItem
-import dev.zitech.settings.R
 import javax.inject.Inject
 
 internal class SettingsStringsProvider @Inject constructor(
     private val stringsProvider: StringsProvider
 ) {
-
-    fun getDialogThemeTitle(): String =
-        stringsProvider(R.string.appearance_dialog_theme_title)
-
-    fun getDialogThemes(applicationTheme: ApplicationTheme): List<DialogRadioItem> =
-        ApplicationTheme.values().sortedBy { it.id }
-            .map {
-                DialogRadioItem(
-                    id = it.id,
-                    text = stringsProvider(it.text),
-                    selected = applicationTheme.id == it.id,
-                    enabled = true
-                )
-            }
-
-    fun getDialogLanguageTitle(): String =
-        stringsProvider(R.string.appearance_dialog_language_title)
 
     fun getDialogLanguages(applicationLanguage: ApplicationLanguage): List<DialogRadioItem> =
         ApplicationLanguage.values().sortedBy { it.id }
@@ -52,6 +34,17 @@ internal class SettingsStringsProvider @Inject constructor(
                     id = it.id,
                     text = stringsProvider(it.text),
                     selected = applicationLanguage.id == it.id,
+                    enabled = true
+                )
+            }
+
+    fun getDialogThemes(applicationTheme: ApplicationTheme): List<DialogRadioItem> =
+        ApplicationTheme.values().sortedBy { it.id }
+            .map {
+                DialogRadioItem(
+                    id = it.id,
+                    text = stringsProvider(it.text),
+                    selected = applicationTheme.id == it.id,
                     enabled = true
                 )
             }

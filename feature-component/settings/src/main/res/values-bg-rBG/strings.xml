@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright (C) 2022 Zitech Ltd.
+  ~ Copyright (C) 2023 Zitech Ltd.
   ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
@@ -49,8 +49,12 @@
     <string name="cd_appearance_language_click">Променете езика на приложението</string>
     <string name="appearance_dialog_language_title">Език</string>
 
-    <string name="about_application_category">Относно ФайърФлоу</string>
-    <string name="about_application_version">Версия</string>
+    <string name="more_category">Повече</string>
+    <string name="more_version">Версия</string>
+    <string name="more_log_out">Излез</string>
+    <string name="cd_more_log_out_click">Излезте от профила на %s</string>
+    <string name="more_dialog_log_out_title">Потвърдете излизане</string>
+    <string name="more_dialog_log_out_text">Сигурни ли сте, че искате да излезете?</string>
 
     <string name="action_restart">Рестартирай</string>
 </resources>

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,11 @@
 package dev.zitech.settings.presentation.settings.viewmodel.theme
 
 import com.google.common.truth.Truth.assertThat
-import dev.zitech.core.common.DataFactory
 import dev.zitech.core.common.domain.model.ApplicationLanguage
 import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.core.common.domain.strings.StringsProvider
-import dev.zitech.settings.R
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.verify
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -40,20 +37,6 @@ internal class SettingsStringsProviderTest {
         sut = SettingsStringsProvider(
             stringsProvider
         )
-    }
-
-    @Test
-    fun getDialogThemeTitle() {
-        // Arrange
-        val text = DataFactory.createRandomString()
-        every { stringsProvider(R.string.appearance_dialog_theme_title) } returns text
-
-        // Act
-        val result = sut.getDialogThemeTitle()
-
-        // Assert
-        assertThat(result).isEqualTo(text)
-        verify { stringsProvider(R.string.appearance_dialog_theme_title) }
     }
 
     @Test
@@ -88,20 +71,6 @@ internal class SettingsStringsProviderTest {
             assertThat(selected).isFalse()
             assertThat(enabled).isTrue()
         }
-    }
-
-    @Test
-    fun getDialogLanguageTitle() {
-        // Arrange
-        val text = DataFactory.createRandomString()
-        every { stringsProvider(R.string.appearance_dialog_language_title) } returns text
-
-        // Act
-        val result = sut.getDialogLanguageTitle()
-
-        // Assert
-        assertThat(result).isEqualTo(text)
-        verify { stringsProvider(R.string.appearance_dialog_language_title) }
     }
 
     @Test
