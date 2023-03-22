@@ -28,6 +28,7 @@ import dev.zitech.core.common.framework.applicationconfig.FakeAppConfigProvider
 import dev.zitech.core.common.presentation.splash.LoginCheckCompletedHandler
 import dev.zitech.core.persistence.domain.model.UserAccountBuilder
 import dev.zitech.core.persistence.domain.usecase.database.GetCurrentUserAccountUseCase
+import dev.zitech.core.persistence.domain.usecase.database.UpdateUserAccountUseCase
 import dev.zitech.navigation.domain.usecase.GetScreenDestinationUseCase
 import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsAppearanceCollectionStates
 import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsDataChoicesCollectionStates
@@ -55,6 +56,7 @@ internal class SettingsViewModelTest {
     private lateinit var testObserver: TestObserver<SettingsState>
     private val appConfigProvider = FakeAppConfigProvider()
     private val getCurrentUserAccountUseCase = mockk<GetCurrentUserAccountUseCase>()
+    private val updateUserAccountUseCase = mockk<UpdateUserAccountUseCase>()
 
     private val getScreenDestinationUseCase = mockk<GetScreenDestinationUseCase> {
         every { this@mockk.invoke() } returns flowOf(DeepLinkScreenDestination.Current)
@@ -398,9 +400,6 @@ internal class SettingsViewModelTest {
         )
         coEvery { settingsStringsProvider.getDialogLanguages(defaultApplicationLanguage) } returns dialogLanguages
 
-        val dialogTitle = DataFactory.createRandomString()
-        every { settingsStringsProvider.getDialogLanguageTitle() } returns dialogTitle
-
         mockInit(
             analytics = false,
             personalizedAds = false,
@@ -421,7 +420,6 @@ internal class SettingsViewModelTest {
             getInitState(),
             getInitState(
                 event = SelectLanguage(
-                    title = dialogTitle,
                     languages = dialogLanguages
                 )
             )
@@ -806,9 +804,6 @@ internal class SettingsViewModelTest {
     @Test
     fun `WHEN OnThemePreferenceClick THEN send SelectTheme event`() = runTest {
         // Arrange
-        val dialogTitle = DataFactory.createRandomString()
-        every { settingsStringsProvider.getDialogThemeTitle() } returns dialogTitle
-
         val dialogThemes = listOf(
             DialogRadioItemBuilder().setId(DataFactory.createRandomInt()).build(),
             DialogRadioItemBuilder().setId(DataFactory.createRandomInt()).build(),
@@ -838,7 +833,6 @@ internal class SettingsViewModelTest {
             getInitState(),
             getInitState(
                 event = SelectTheme(
-                    title = dialogTitle,
                     themes = dialogThemes
                 )
             )
@@ -904,15 +898,16 @@ internal class SettingsViewModelTest {
     )
 
     private fun getSettingsViewModel() = SettingsViewModel(
-        getScreenDestinationUseCase,
-        loginCheckCompletedHandler,
-        appConfigProvider,
-        getCurrentUserAccountUseCase,
-        settingsAppearanceCollectionStates,
-        settingsDataChoicesCollectionStates,
-        settingsShowErrorProvider,
-        settingsStringsProvider,
-        settingsStateHandler
+        getScreenDestinationUseCase = getScreenDestinationUseCase,
+        loginCheckCompletedHandler = loginCheckCompletedHandler,
+        appConfigProvider = appConfigProvider,
+        getCurrentUserAccountUseCase = getCurrentUserAccountUseCase,
+        settingsAppearanceCollectionStates = settingsAppearanceCollectionStates,
+        settingsDataChoicesCollectionStates = settingsDataChoicesCollectionStates,
+        settingsShowErrorProvider = settingsShowErrorProvider,
+        settingsStringsProvider = settingsStringsProvider,
+        stateHandler = settingsStateHandler,
+        updateUserAccountUseCase = updateUserAccountUseCase
     )
 
     private fun mockInit(

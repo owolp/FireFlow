@@ -32,13 +32,18 @@ import dev.zitech.ds.atoms.loading.FireFlowProgressIndicators
 import dev.zitech.ds.molecules.dialog.FireFlowDialogs
 import dev.zitech.ds.molecules.snackbar.BottomNotifierMessage
 import dev.zitech.ds.molecules.snackbar.rememberSnackbarState
+import dev.zitech.settings.R
+import dev.zitech.settings.presentation.settings.viewmodel.ConfirmLogOut
 import dev.zitech.settings.presentation.settings.viewmodel.ErrorHandled
 import dev.zitech.settings.presentation.settings.viewmodel.Idle
 import dev.zitech.settings.presentation.settings.viewmodel.OnAnalyticsCheckChange
+import dev.zitech.settings.presentation.settings.viewmodel.OnConfirmLogOutClick
+import dev.zitech.settings.presentation.settings.viewmodel.OnConfirmLogOutDismiss
 import dev.zitech.settings.presentation.settings.viewmodel.OnCrashReporterCheckChange
 import dev.zitech.settings.presentation.settings.viewmodel.OnLanguageDismiss
 import dev.zitech.settings.presentation.settings.viewmodel.OnLanguagePreferenceClick
 import dev.zitech.settings.presentation.settings.viewmodel.OnLanguageSelect
+import dev.zitech.settings.presentation.settings.viewmodel.OnLogOutClick
 import dev.zitech.settings.presentation.settings.viewmodel.OnPerformanceCheckChange
 import dev.zitech.settings.presentation.settings.viewmodel.OnPersonalizedAdsCheckChange
 import dev.zitech.settings.presentation.settings.viewmodel.OnRestartApplication
@@ -92,6 +97,9 @@ internal fun SettingsRoute(
                 },
                 onLanguageClick = {
                     viewModel.sendIntent(OnLanguagePreferenceClick)
+                },
+                onLogOutClick = {
+                    viewModel.sendIntent(OnLogOutClick)
                 }
             )
         }
@@ -128,7 +136,7 @@ internal fun SettingsRoute(
         }
         is SelectTheme -> {
             FireFlowDialogs.Radio(
-                title = event.title,
+                title = stringResource(R.string.appearance_dialog_theme_title),
                 radioItems = event.themes,
                 onItemClick = { viewModel.sendIntent(OnThemeSelect(it)) },
                 onDismissRequest = { viewModel.sendIntent(OnThemeDismiss) }
@@ -136,13 +144,21 @@ internal fun SettingsRoute(
         }
         is SelectLanguage -> {
             FireFlowDialogs.Radio(
-                title = event.title,
+                title = stringResource(R.string.appearance_dialog_language_title),
                 radioItems = event.languages,
                 onItemClick = { viewModel.sendIntent(OnLanguageSelect(it)) },
                 onDismissRequest = { viewModel.sendIntent(OnLanguageDismiss) }
             )
         }
         RestartApplication -> restartApplication()
+        is ConfirmLogOut -> {
+            FireFlowDialogs.Alert(
+                title = stringResource(R.string.more_dialog_log_out_title),
+                text = stringResource(R.string.more_dialog_log_out_text),
+                onConfirmButtonClick = { viewModel.sendIntent(OnConfirmLogOutClick) },
+                onDismissRequest = { viewModel.sendIntent(OnConfirmLogOutDismiss) }
+            )
+        }
         Idle -> {
             // NO_OP
         }

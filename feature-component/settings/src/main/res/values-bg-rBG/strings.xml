@@ -52,6 +52,9 @@
     <string name="more_category">Повече</string>
     <string name="more_version">Версия</string>
     <string name="more_log_out">Излез</string>
+    <string name="cd_more_log_out_click">Излезте от профила на %s</string>
+    <string name="more_dialog_log_out_title">Потвърдете излизане</string>
+    <string name="more_dialog_log_out_text">Сигурни ли сте, че искате да излезете?</string>
 
     <string name="action_restart">Рестартирай</string>
 </resources>

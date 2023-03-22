@@ -52,6 +52,9 @@
     <string name="more_category">More</string>
     <string name="more_version">Version</string>
     <string name="more_log_out">Log out</string>
+    <string name="cd_more_log_out_click">Log out from the profile of %s</string>
+    <string name="more_dialog_log_out_title">Confirm Log Out</string>
+    <string name="more_dialog_log_out_text">Are you sure you want to log out?</string>
 
     <string name="action_restart">Restart</string>
 </resources>

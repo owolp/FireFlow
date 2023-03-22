@@ -55,6 +55,7 @@ internal fun SettingsScreen(
     onCrashReporterCheckChange: (checked: Boolean) -> Unit,
     onThemeClick: () -> Unit,
     onLanguageClick: () -> Unit,
+    onLogOutClick: () -> Unit,
     modifier: Modifier = Modifier,
     snackbarState: FireFlowSnackbarState = rememberSnackbarState()
 ) {
@@ -74,14 +75,15 @@ internal fun SettingsScreen(
         }
     ) { innerPadding ->
         SettingsScreenContent(
-            innerPadding,
-            state,
-            onAnalyticsCheckChange,
-            onPersonalizedAdsCheckChange,
-            onPerformanceCheckChange,
-            onCrashReporterCheckChange,
-            onThemeClick,
-            onLanguageClick
+            innerPadding = innerPadding,
+            state = state,
+            onAnalyticsCheckChange = onAnalyticsCheckChange,
+            onPersonalizedAdsCheckChange = onPersonalizedAdsCheckChange,
+            onPerformanceCheckChange = onPerformanceCheckChange,
+            onCrashReporterCheckChange = onCrashReporterCheckChange,
+            onThemeClick = onThemeClick,
+            onLanguageClick = onLanguageClick,
+            onLogOutClick = onLogOutClick
         )
     }
 }
@@ -96,7 +98,8 @@ private fun SettingsScreenContent(
     onPerformanceCheckChange: (checked: Boolean) -> Unit,
     onCrashReporterCheckChange: (checked: Boolean) -> Unit,
     onThemeClick: () -> Unit,
-    onLanguageClick: () -> Unit
+    onLanguageClick: () -> Unit,
+    onLogOutClick: () -> Unit
 ) {
     LazyColumn(
         modifier = Modifier
@@ -132,7 +135,8 @@ private fun SettingsScreenContent(
             FireFlowCategoryPreferences.Primary(
                 categoryName = stringResource(R.string.more_category),
                 preferences = getMorePreferences(
-                    state = state
+                    state = state,
+                    onLogOutClick = onLogOutClick
                 )
             )
         }
@@ -253,7 +257,8 @@ private fun getDataChoicesPreferences(
 
 @Composable
 private fun getMorePreferences(
-    state: SettingsState
+    state: SettingsState,
+    onLogOutClick: () -> Unit
 ): List<CategoryPreference> {
     val categoryPreferences = mutableListOf<CategoryPreference>()
 
@@ -268,7 +273,11 @@ private fun getMorePreferences(
         CategoryPreference.Icon(
             title = stringResource(R.string.more_log_out),
             icon = FireFlowIcons.Logout,
-            description = state.email
+            description = state.email,
+            onClick = Pair(
+                stringResource(R.string.cd_more_log_out_click, state.email),
+                onLogOutClick
+            )
         )
     )
 
@@ -294,7 +303,8 @@ private fun SettingsScreen_Preview() {
             onPerformanceCheckChange = {},
             onCrashReporterCheckChange = {},
             onThemeClick = {},
-            onLanguageClick = {}
+            onLanguageClick = {},
+            onLogOutClick = {}
         )
     }
 }

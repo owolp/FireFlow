@@ -29,13 +29,13 @@ internal data class ShowError(
 ) : SettingsEvent
 
 internal data class SelectTheme(
-    val title: String,
     val themes: List<DialogRadioItem>
 ) : SettingsEvent
 
 internal data class SelectLanguage(
-    val title: String,
     val languages: List<DialogRadioItem>
 ) : SettingsEvent
 
 internal object RestartApplication : SettingsEvent
+
+internal object ConfirmLogOut : SettingsEvent

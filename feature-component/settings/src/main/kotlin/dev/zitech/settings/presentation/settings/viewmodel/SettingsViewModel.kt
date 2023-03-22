@@ -31,6 +31,7 @@ import dev.zitech.core.common.presentation.architecture.DeepLinkViewModel
 import dev.zitech.core.common.presentation.architecture.MviViewModel
 import dev.zitech.core.common.presentation.splash.LoginCheckCompletedHandler
 import dev.zitech.core.persistence.domain.usecase.database.GetCurrentUserAccountUseCase
+import dev.zitech.core.persistence.domain.usecase.database.UpdateUserAccountUseCase
 import dev.zitech.navigation.domain.usecase.GetScreenDestinationUseCase
 import dev.zitech.navigation.presentation.extension.logInState
 import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsAppearanceCollectionStates
@@ -39,6 +40,7 @@ import dev.zitech.settings.presentation.settings.viewmodel.error.SettingsShowErr
 import dev.zitech.settings.presentation.settings.viewmodel.theme.SettingsStringsProvider
 import javax.inject.Inject
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -54,7 +56,8 @@ internal class SettingsViewModel @Inject constructor(
     private val settingsDataChoicesCollectionStates: SettingsDataChoicesCollectionStates,
     private val settingsShowErrorProvider: SettingsShowErrorProvider,
     private val settingsStringsProvider: SettingsStringsProvider,
-    private val stateHandler: SettingsStateHandler
+    private val stateHandler: SettingsStateHandler,
+    private val updateUserAccountUseCase: UpdateUserAccountUseCase
 ) : ViewModel(), MviViewModel<SettingsIntent, SettingsState>, DeepLinkViewModel {
 
     private val tag = Logger.tag(this::class.java)
@@ -86,8 +89,11 @@ internal class SettingsViewModel @Inject constructor(
                 OnLanguagePreferenceClick -> handleOnLanguagePreferenceClick()
                 OnThemeDismiss,
                 OnLanguageDismiss,
-                ErrorHandled -> stateHandler.resetEvent()
+                ErrorHandled,
+                OnConfirmLogOutDismiss -> stateHandler.resetEvent()
                 OnRestartApplication -> stateHandler.setEvent(RestartApplication)
+                OnLogOutClick -> stateHandler.setEvent(ConfirmLogOut)
+                OnConfirmLogOutClick -> handleOnConfirmLogOutClick()
             }
         }
     }
@@ -138,6 +144,13 @@ internal class SettingsViewModel @Inject constructor(
         }
     }
 
+    private suspend fun handleOnConfirmLogOutClick() {
+        getCurrentUserAccountUseCase().first().onSuccess { userAccount ->
+            stateHandler.resetEvent()
+            updateUserAccountUseCase(userAccount.copy(isCurrentUserAccount = false))
+        }
+    }
+
     private suspend fun handleOnCrashReporterCheckChange(checked: Boolean) {
         settingsDataChoicesCollectionStates.setCrashReporterCollection(checked)
         val isEnabled = settingsDataChoicesCollectionStates.getCrashReporterCollectionValue()
@@ -151,7 +164,6 @@ internal class SettingsViewModel @Inject constructor(
     private fun handleOnLanguagePreferenceClick() {
         stateHandler.setEvent(
             SelectLanguage(
-                title = settingsStringsProvider.getDialogLanguageTitle(),
                 languages = settingsStringsProvider.getDialogLanguages(
                     stateHandler.state.value.language
                 )
@@ -198,7 +210,6 @@ internal class SettingsViewModel @Inject constructor(
     private fun handleOnThemeClick() {
         stateHandler.setEvent(
             SelectTheme(
-                title = settingsStringsProvider.getDialogThemeTitle(),
                 themes = settingsStringsProvider.getDialogThemes(
                     stateHandler.state.value.theme
                 )
