@@ -35,6 +35,11 @@ import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.domain.model.database.UserAccount.Companion.STATE_LENGTH
 import dev.zitech.core.persistence.domain.usecase.database.GetUserAccountByStateUseCase
 import dev.zitech.core.persistence.domain.usecase.database.SaveUserAccountUseCase
+import dev.zitech.core.persistence.domain.usecase.database.UpdateCurrentUserAccountUseCase
+import dev.zitech.core.persistence.domain.usecase.database.UpdateCurrentUserAccountUseCase.Email
+import dev.zitech.core.persistence.domain.usecase.database.UpdateCurrentUserAccountUseCase.FireflyId
+import dev.zitech.core.persistence.domain.usecase.database.UpdateCurrentUserAccountUseCase.Role
+import dev.zitech.core.persistence.domain.usecase.database.UpdateCurrentUserAccountUseCase.Type
 import dev.zitech.core.persistence.domain.usecase.database.UpdateUserAccountUseCase
 import dev.zitech.onboarding.domain.usecase.IsOAuthLoginInputValidUseCase
 import dev.zitech.onboarding.domain.validator.ClientIdValidator
@@ -57,7 +62,8 @@ internal class OAuthViewModel @Inject constructor(
     private val oauthStringsProvider: OAuthStringsProvider,
     private val saveUserAccountUseCase: SaveUserAccountUseCase,
     private val stateHandler: OAuthStateHandler,
-    private val updateUserAccountUseCase: UpdateUserAccountUseCase
+    private val updateUserAccountUseCase: UpdateUserAccountUseCase,
+    private val updateCurrentUserAccountUseCase: UpdateCurrentUserAccountUseCase
 ) : ViewModel(), MviViewModel<OAuthIntent, OAuthState> {
 
     private val tag = Logger.tag(this::class.java)
@@ -211,16 +217,14 @@ internal class OAuthViewModel @Inject constructor(
             }
     }
 
-    private suspend fun retrieveFireflyInfo(userAccount: UserAccount) {
+    private suspend fun retrieveFireflyInfo() {
         getFireflyProfileUseCase.get().invoke()
             .onSuccess { fireflyProfile ->
-                updateUserAccountUseCase(
-                    userAccount.copy(
-                        email = fireflyProfile.email,
-                        fireflyId = fireflyProfile.id,
-                        role = fireflyProfile.role,
-                        type = fireflyProfile.type
-                    )
+                updateCurrentUserAccountUseCase(
+                    Email(fireflyProfile.email),
+                    FireflyId(fireflyProfile.id),
+                    Role(fireflyProfile.role),
+                    Type(fireflyProfile.type)
                 ).onSuccess {
                     stateHandler.setLoading(false)
                     stateHandler.setEvent(NavigateToDashboard)
@@ -313,7 +317,7 @@ internal class OAuthViewModel @Inject constructor(
             state = null
         )
         updateUserAccountUseCase(updatedUserAccount).onSuccess {
-            retrieveFireflyInfo(updatedUserAccount)
+            retrieveFireflyInfo()
         }.onError { error ->
             stateHandler.setLoading(false)
             when (error) {
