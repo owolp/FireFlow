@@ -82,7 +82,7 @@ internal fun SettingsScreen(
         snackbarState.showMessage(
             getBottomNotifierMessage(
                 text = R.string.data_choices_analytics_error,
-                onAction = restartApplicationClicked
+                onActionClicked = restartApplicationClicked
             )
         )
         analyticsErrorHandled()
@@ -115,7 +115,7 @@ internal fun SettingsScreen(
         snackbarState.showMessage(
             getBottomNotifierMessage(
                 text = R.string.data_choices_crash_reporter_error,
-                onAction = restartApplicationClicked
+                onActionClicked = restartApplicationClicked
             )
         )
         crashReporterErrorHandled()
@@ -124,7 +124,7 @@ internal fun SettingsScreen(
         snackbarState.showMessage(
             getBottomNotifierMessage(
                 text = R.string.data_choices_personalized_ads_error,
-                onAction = restartApplicationClicked
+                onActionClicked = restartApplicationClicked
             )
         )
         personalizedAdsErrorHandled()
@@ -133,7 +133,7 @@ internal fun SettingsScreen(
         snackbarState.showMessage(
             getBottomNotifierMessage(
                 text = R.string.data_choices_personalized_ads_error,
-                onAction = restartApplicationClicked
+                onActionClicked = restartApplicationClicked
             )
         )
         performanceErrorHandled()
@@ -153,13 +153,13 @@ internal fun SettingsScreen(
         SettingsScreenContent(
             innerPadding = innerPadding,
             state = state,
-            onAnalyticsCheckChange = analyticsChecked,
-            onPersonalizedAdsCheckChange = personalizedAdsChecked,
-            onPerformanceCheckChange = performanceChecked,
-            onCrashReporterCheckChange = crashReporterChecked,
-            onThemeClick = themePreferenceClicked,
-            onLanguageClick = languagePreferenceClicked,
-            onLogOutClick = logOutClicked
+            analyticsChecked = analyticsChecked,
+            personalizedAdsChecked = personalizedAdsChecked,
+            performanceChecked = performanceChecked,
+            crashReporterChecked = crashReporterChecked,
+            themePreferenceClicked = themePreferenceClicked,
+            languagePreferenceClicked = languagePreferenceClicked,
+            logOutClicked = logOutClicked
         )
     }
 }
@@ -167,15 +167,15 @@ internal fun SettingsScreen(
 @Composable
 @OptIn(ExperimentalLayoutApi::class)
 private fun SettingsScreenContent(
+    analyticsChecked: (checked: Boolean) -> Unit,
+    crashReporterChecked: (checked: Boolean) -> Unit,
     innerPadding: PaddingValues,
+    languagePreferenceClicked: () -> Unit,
+    logOutClicked: () -> Unit,
+    performanceChecked: (checked: Boolean) -> Unit,
+    personalizedAdsChecked: (checked: Boolean) -> Unit,
     state: SettingsState,
-    onAnalyticsCheckChange: (checked: Boolean) -> Unit,
-    onPersonalizedAdsCheckChange: (checked: Boolean) -> Unit,
-    onPerformanceCheckChange: (checked: Boolean) -> Unit,
-    onCrashReporterCheckChange: (checked: Boolean) -> Unit,
-    onThemeClick: () -> Unit,
-    onLanguageClick: () -> Unit,
-    onLogOutClick: () -> Unit
+    themePreferenceClicked: () -> Unit
 ) {
     LazyColumn(
         modifier = Modifier
@@ -190,10 +190,10 @@ private fun SettingsScreenContent(
                 categoryName = stringResource(R.string.data_choices_category),
                 preferences = getDataChoicesPreferences(
                     state = state,
-                    onAnalyticsCheckChange = onAnalyticsCheckChange,
-                    onPersonalizedAdsCheckChange = onPersonalizedAdsCheckChange,
-                    onPerformanceCheckChange = onPerformanceCheckChange,
-                    onCrashReporterCheckChange = onCrashReporterCheckChange
+                    analyticsChecked = analyticsChecked,
+                    personalizedAdsChecked = personalizedAdsChecked,
+                    performanceChecked = performanceChecked,
+                    crashReporterChecked = crashReporterChecked
                 )
             )
         }
@@ -202,8 +202,8 @@ private fun SettingsScreenContent(
                 categoryName = stringResource(R.string.appearance_category),
                 preferences = getAppearancePreferences(
                     state = state,
-                    onThemeClick = onThemeClick,
-                    onLanguageClick = onLanguageClick
+                    themePreferenceClicked = themePreferenceClicked,
+                    languagePreferenceClicked = languagePreferenceClicked
                 )
             )
         }
@@ -212,7 +212,7 @@ private fun SettingsScreenContent(
                 categoryName = stringResource(R.string.more_category),
                 preferences = getMorePreferences(
                     state = state,
-                    onLogOutClick = onLogOutClick
+                    logOutClicked = logOutClicked
                 )
             )
         }
@@ -225,8 +225,8 @@ private fun SettingsScreenContent(
 @Composable
 private fun getAppearancePreferences(
     state: SettingsState,
-    onThemeClick: () -> Unit,
-    onLanguageClick: () -> Unit
+    themePreferenceClicked: () -> Unit,
+    languagePreferenceClicked: () -> Unit
 ): List<CategoryPreference> {
     val categoryPreferences = mutableListOf<CategoryPreference>()
 
@@ -235,7 +235,10 @@ private fun getAppearancePreferences(
             title = stringResource(R.string.appearance_theme),
             icon = FireFlowIcons.Brightness6,
             description = stringResource(state.applicationTheme.text),
-            onClick = Pair(stringResource(R.string.cd_appearance_theme_click), onThemeClick)
+            onClick = Pair(
+                stringResource(R.string.cd_appearance_theme_click),
+                themePreferenceClicked
+            )
         )
     )
 
@@ -246,7 +249,7 @@ private fun getAppearancePreferences(
             description = stringResource(state.applicationLanguage.text),
             onClick = Pair(
                 stringResource(R.string.cd_appearance_language_click),
-                onLanguageClick
+                languagePreferenceClicked
             )
         )
     )
@@ -257,10 +260,10 @@ private fun getAppearancePreferences(
 @Composable
 private fun getDataChoicesPreferences(
     state: SettingsState,
-    onAnalyticsCheckChange: (checked: Boolean) -> Unit,
-    onPersonalizedAdsCheckChange: (checked: Boolean) -> Unit,
-    onPerformanceCheckChange: (checked: Boolean) -> Unit,
-    onCrashReporterCheckChange: (checked: Boolean) -> Unit
+    analyticsChecked: (checked: Boolean) -> Unit,
+    personalizedAdsChecked: (checked: Boolean) -> Unit,
+    performanceChecked: (checked: Boolean) -> Unit,
+    crashReporterChecked: (checked: Boolean) -> Unit
 ): List<CategoryPreference> {
     val categoryPreferences = mutableListOf<CategoryPreference>()
 
@@ -270,7 +273,7 @@ private fun getDataChoicesPreferences(
                 title = stringResource(R.string.data_choices_analytics_title),
                 icon = FireFlowIcons.Analytics,
                 checked = state.analytics,
-                onCheckedChanged = onAnalyticsCheckChange,
+                onCheckedChanged = analyticsChecked,
                 cdDescriptionEnabled = stringResource(R.string.cd_data_choices_analytics_enabled),
                 cdDescriptionDisabled = stringResource(R.string.cd_data_choices_analytics_disabled),
                 description = stringResource(R.string.data_choices_analytics_description)
@@ -283,7 +286,7 @@ private fun getDataChoicesPreferences(
                     title = stringResource(R.string.data_choices_personalized_ads_title),
                     icon = FireFlowIcons.AdsClick,
                     checked = state.personalizedAds,
-                    onCheckedChanged = onPersonalizedAdsCheckChange,
+                    onCheckedChanged = personalizedAdsChecked,
                     cdDescriptionEnabled = stringResource(
                         R.string.cd_data_choices_personalized_ads_enabled
                     ),
@@ -301,7 +304,7 @@ private fun getDataChoicesPreferences(
                     title = stringResource(R.string.data_choices_performance_title),
                     icon = FireFlowIcons.Speed,
                     checked = state.performance,
-                    onCheckedChanged = onPerformanceCheckChange,
+                    onCheckedChanged = performanceChecked,
                     cdDescriptionEnabled = stringResource(
                         R.string.cd_data_choices_performance_enabled
                     ),
@@ -319,7 +322,7 @@ private fun getDataChoicesPreferences(
             title = stringResource(R.string.data_choices_crash_reporter_title),
             icon = FireFlowIcons.BugReport,
             checked = state.crashReporter,
-            onCheckedChanged = onCrashReporterCheckChange,
+            onCheckedChanged = crashReporterChecked,
             cdDescriptionEnabled = stringResource(R.string.cd_data_choices_crash_reporter_enabled),
             cdDescriptionDisabled = stringResource(
                 R.string.cd_data_choices_crash_reporter_disabled
@@ -334,7 +337,7 @@ private fun getDataChoicesPreferences(
 @Composable
 private fun getMorePreferences(
     state: SettingsState,
-    onLogOutClick: () -> Unit
+    logOutClicked: () -> Unit
 ): List<CategoryPreference> {
     val categoryPreferences = mutableListOf<CategoryPreference>()
 
@@ -352,7 +355,7 @@ private fun getMorePreferences(
             description = state.email,
             onClick = Pair(
                 stringResource(R.string.cd_more_log_out_click, state.email),
-                onLogOutClick
+                logOutClicked
             )
         )
     )
@@ -363,14 +366,14 @@ private fun getMorePreferences(
 @Composable
 private fun getBottomNotifierMessage(
     text: Int,
-    onAction: () -> Unit
+    onActionClicked: () -> Unit
 ) = BottomNotifierMessage(
     text = stringResource(text),
     state = BottomNotifierMessage.State.ERROR,
     duration = BottomNotifierMessage.Duration.SHORT,
     action = BottomNotifierMessage.Action(
         label = stringResource(R.string.action_restart),
-        onAction = onAction
+        onAction = onActionClicked
     )
 )
 

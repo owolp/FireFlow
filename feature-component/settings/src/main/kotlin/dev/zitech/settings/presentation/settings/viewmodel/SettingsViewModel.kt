@@ -88,7 +88,7 @@ internal class SettingsViewModel @Inject constructor(
     override fun receiveIntent(intent: SettingsIntent) {
         viewModelScope.launch {
             when (intent) {
-                is AnalyticsChecked -> handleOnAnalyticsChecked(intent.checked)
+                is AnalyticsChecked -> handleAnalyticsChecked(intent.checked)
                 AnalyticsErrorHandled -> mutableState.update { it.copy(analyticsError = false) }
                 ConfirmLogOutClicked -> handleConfirmLogOutClicked()
                 ConfirmLogOutDismissed -> mutableState.update { it.copy(confirmLogOut = false) }
@@ -105,7 +105,7 @@ internal class SettingsViewModel @Inject constructor(
                 is LanguageSelected -> handleLanguageSelected(intent.id)
                 LogOutClicked -> mutableState.update { it.copy(confirmLogOut = true) }
                 is RestartApplicationClicked -> intent.restart()
-                is ThemeSelected -> handleOnThemeSelected(intent.id)
+                is ThemeSelected -> handleThemeSelected(intent.id)
                 is PerformanceChecked -> handlePerformanceChecked(intent.checked)
                 PerformanceErrorHandled -> mutableState.update { it.copy(performanceError = false) }
                 is PersonalizedAdsChecked -> handlePersonalizedAdsChecked(
@@ -151,7 +151,7 @@ internal class SettingsViewModel @Inject constructor(
         }
     }
 
-    private suspend fun handleOnAnalyticsChecked(checked: Boolean) {
+    private suspend fun handleAnalyticsChecked(checked: Boolean) {
         if (appConfigProvider.buildFlavor != BuildFlavor.FOSS) {
             settingsDataChoicesCollectionStates.setAnalyticsCollection(checked)
             val isEnabled = settingsDataChoicesCollectionStates.getAnalyticsCollectionValue()
@@ -173,7 +173,7 @@ internal class SettingsViewModel @Inject constructor(
         }
     }
 
-    private suspend fun handleOnThemeSelected(id: Int) {
+    private suspend fun handleThemeSelected(id: Int) {
         mutableState.update { it.copy(selectApplicationTheme = null) }
         ApplicationTheme.values().first { it.id == id }.run {
             settingsAppearanceCollectionStates.setApplicationThemeValue(this)

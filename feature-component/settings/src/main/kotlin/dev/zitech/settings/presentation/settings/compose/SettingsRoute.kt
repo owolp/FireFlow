@@ -51,11 +51,11 @@ import dev.zitech.settings.presentation.settings.viewmodel.ThemeSelected
 @Composable
 internal fun SettingsRoute(
     modifier: Modifier = Modifier,
-    viewModel: SettingsViewModel = hiltViewModel(),
     navigateToAccounts: () -> Unit,
     navigateToError: (error: Error) -> Unit,
     navigateToWelcome: () -> Unit,
-    restartApplication: () -> Unit
+    restartApplication: () -> Unit,
+    viewModel: SettingsViewModel = hiltViewModel()
 ) {
     val screenState by viewModel.state.collectAsStateWithLifecycle()
     val logInState by viewModel.logInState.collectAsStateWithLifecycle()
