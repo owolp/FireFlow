@@ -17,11 +17,13 @@
 
 package dev.zitech.core.common.domain.navigation
 
+import dev.zitech.core.common.domain.error.FireFlowError
+
 sealed class DeepLinkScreenDestination {
     object Accounts : DeepLinkScreenDestination()
     object Current : DeepLinkScreenDestination()
     data class Error(
-        val error: dev.zitech.core.common.domain.error.Error
+        val error: FireFlowError
     ) : DeepLinkScreenDestination()
 
     object Init : DeepLinkScreenDestination()

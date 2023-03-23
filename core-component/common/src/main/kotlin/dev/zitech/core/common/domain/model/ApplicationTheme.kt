@@ -23,7 +23,17 @@ enum class ApplicationTheme(
     val id: Int,
     val text: Int
 ) {
+
     SYSTEM(0, R.string.application_theme_system),
     DARK(1, R.string.application_theme_dark),
-    LIGHT(2, R.string.application_theme_light)
+    LIGHT(2, R.string.application_theme_light);
+
+    companion object {
+        fun getApplicationTheme(id: Int): ApplicationTheme =
+            when (id) {
+                DARK.id -> DARK
+                LIGHT.id -> LIGHT
+                else -> SYSTEM
+            }
+    }
 }

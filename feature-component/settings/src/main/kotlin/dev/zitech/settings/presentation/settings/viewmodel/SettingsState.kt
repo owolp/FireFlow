@@ -17,6 +17,7 @@
 
 package dev.zitech.settings.presentation.settings.viewmodel
 
+import dev.zitech.core.common.domain.error.FireFlowError
 import dev.zitech.core.common.domain.model.ApplicationLanguage
 import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.core.common.presentation.architecture.MviState
@@ -29,6 +30,7 @@ internal data class SettingsState(
     val confirmLogOut: Boolean = false,
     val crashReporter: Boolean = false,
     val crashReporterError: Boolean = false,
+    val fatalError: FireFlowError? = null,
     val email: String = "",
     val performance: Boolean? = null,
     val performanceError: Boolean = false,

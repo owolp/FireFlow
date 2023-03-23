@@ -19,51 +19,19 @@ package dev.zitech.core.common.domain.error
 
 import dev.zitech.core.common.R
 
+typealias FireFlowError = Error
+
 sealed class Error(
-    val uiResId: Int,
-    val debugText: String
+    val debugText: String,
+    val uiResId: Int
 ) {
-
-    object AuthenticationProblem : Error(
-        R.string.authentication_problem,
-        "The authentication type provided is not valid"
-    )
-
-    object BuildTypeUnsupported : Error(R.string.empty, "")
-
-    object NoBrowserInstalled : Error(
-        R.string.no_browser_installed,
-        "No supported browser installed"
-    )
-
-    data class Fatal(
-        val throwable: Throwable,
-        private val type: Type
-    ) : Error(
-        when (type) {
-            Type.DISK -> R.string.disk_exception
-            Type.NETWORK -> R.string.network_exception
-            Type.OS -> R.string.os_exception
-        },
-        when (type) {
-            Type.DISK -> "Disk exception:${throwable.message}"
-            Type.NETWORK -> "Network exception:${throwable.message}"
-            Type.OS -> "OS exception:${throwable.message}"
-        }
-    ) {
-        enum class Type {
-            DISK,
-            NETWORK,
-            OS
-        }
-    }
 
     data class FailedToFetch(
         val key: Any? = null,
         private val type: Type
     ) : Error(
-        R.string.failed_to_fetched,
-        "Failed to fetch remote config for key:$key"
+        "Failed to fetch remote config for key:$key",
+        R.string.failed_to_fetched
     ) {
         enum class Type {
             INIT,
@@ -74,32 +42,69 @@ sealed class Error(
         }
     }
 
-    object NullCurrentUserAccount : Error(
-        R.string.null_current_user_account,
-        "Null current user account"
-    )
-
-    object NullUserAccount : Error(
-        R.string.null_user_account,
-        "Null user account"
-    )
-
-    object NullUserAccountByState : Error(
-        R.string.null_user_account_by_state,
-        "Null user account by state"
-    )
+    data class Fatal(
+        val throwable: Throwable,
+        private val type: Type
+    ) : Error(
+        when (type) {
+            Type.DISK -> "Disk exception:${throwable.message}"
+            Type.NETWORK -> "Network exception:${throwable.message}"
+            Type.OS -> "OS exception:${throwable.message}"
+        },
+        when (type) {
+            Type.DISK -> R.string.disk_exception
+            Type.NETWORK -> R.string.network_exception
+            Type.OS -> R.string.os_exception
+        }
+    ) {
+        enum class Type {
+            DISK,
+            NETWORK,
+            OS
+        }
+    }
 
     data class TokenFailed(
         private val message: String?
     ) : Error(
-        R.string.token_failed,
-        message.orEmpty()
+        message.orEmpty(),
+        R.string.token_failed
     )
 
     data class UserVisible(
         val message: String?
     ) : Error(
-        R.string.empty,
-        message.orEmpty()
+        message.orEmpty(),
+        R.string.empty
+    )
+
+    object AuthenticationProblem : Error(
+        "The authentication type provided is not valid",
+        R.string.authentication_problem
+    )
+
+    object BuildTypeUnsupported : Error(
+        "",
+        R.string.empty
+    )
+
+    object NoBrowserInstalled : Error(
+        "No supported browser installed",
+        R.string.no_browser_installed
+    )
+
+    object NullCurrentUserAccount : Error(
+        "Null current user account",
+        R.string.null_current_user_account
+    )
+
+    object NullUserAccount : Error(
+        "Null user account",
+        R.string.null_user_account
+    )
+
+    object NullUserAccountByState : Error(
+        "Null user account by state",
+        R.string.null_user_account_by_state
     )
 }
