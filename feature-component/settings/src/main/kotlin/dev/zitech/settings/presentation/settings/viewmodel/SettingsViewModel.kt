@@ -55,7 +55,7 @@ internal class SettingsViewModel @Inject constructor(
     private val getCurrentUserAccountUseCase: GetCurrentUserAccountUseCase,
     private val settingsAppearanceCollectionStates: SettingsAppearanceCollectionStates,
     private val settingsDataChoicesCollectionStates: SettingsDataChoicesCollectionStates,
-    private val updateUserAccountUseCase: UpdateUserAccountUseCase
+    private val updateUserAccountUseCase: UpdateUserAccountUseCase,
 ) : ViewModel(), MviViewModel<SettingsIntent, SettingsState>, DeepLinkViewModel {
 
     private val mutableState = MutableStateFlow(SettingsState())
@@ -124,6 +124,34 @@ internal class SettingsViewModel @Inject constructor(
         }
     }
 
+    private suspend fun getCurrentUserEmailAddress() =
+        when (val result = getCurrentUserAccountUseCase().first()) {
+            is WorkSuccess -> result.data.email.orEmpty()
+            is WorkError -> ""
+        }
+
+    private suspend fun handleAnalyticsChecked(checked: Boolean) {
+        if (appConfigProvider.buildFlavor != BuildFlavor.FOSS) {
+            settingsDataChoicesCollectionStates.setAnalyticsCollection(checked)
+            val isEnabled = settingsDataChoicesCollectionStates.getAnalyticsCollectionValue()
+            if (checked == isEnabled) {
+                settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked)
+                mutableState.update {
+                    it.copy(
+                        analytics = checked,
+                        personalizedAds = checked,
+                        performance = checked
+                    )
+                }
+                settingsDataChoicesCollectionStates.setPerformanceCollection(checked)
+            } else {
+                mutableState.update { it.copy(analyticsError = true) }
+            }
+        } else {
+            Logger.e(tag, "Setting analytics on FOSS build is not supported")
+        }
+    }
+
     @Suppress("ForbiddenComment")
     private suspend fun handleConfirmLogOutClicked() {
         mutableState.update { it.copy(confirmLogOut = false) }
@@ -148,36 +176,6 @@ internal class SettingsViewModel @Inject constructor(
         ApplicationLanguage.values().first { it.id == id }.run {
             settingsAppearanceCollectionStates.setApplicationLanguageValue(this)
             mutableState.update { it.copy(applicationLanguage = this) }
-        }
-    }
-
-    private suspend fun handleAnalyticsChecked(checked: Boolean) {
-        if (appConfigProvider.buildFlavor != BuildFlavor.FOSS) {
-            settingsDataChoicesCollectionStates.setAnalyticsCollection(checked)
-            val isEnabled = settingsDataChoicesCollectionStates.getAnalyticsCollectionValue()
-            if (checked == isEnabled) {
-                settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked)
-                mutableState.update {
-                    it.copy(
-                        analytics = checked,
-                        personalizedAds = checked,
-                        performance = checked
-                    )
-                }
-                settingsDataChoicesCollectionStates.setPerformanceCollection(checked)
-            } else {
-                mutableState.update { it.copy(analyticsError = true) }
-            }
-        } else {
-            Logger.e(tag, "Setting analytics on FOSS build is not supported")
-        }
-    }
-
-    private suspend fun handleThemeSelected(id: Int) {
-        mutableState.update { it.copy(selectApplicationTheme = null) }
-        ApplicationTheme.values().first { it.id == id }.run {
-            settingsAppearanceCollectionStates.setApplicationThemeValue(this)
-            mutableState.update { it.copy(applicationTheme = this) }
         }
     }
 
@@ -209,6 +207,14 @@ internal class SettingsViewModel @Inject constructor(
         }
     }
 
+    private suspend fun handleThemeSelected(id: Int) {
+        mutableState.update { it.copy(selectApplicationTheme = null) }
+        ApplicationTheme.values().first { it.id == id }.run {
+            settingsAppearanceCollectionStates.setApplicationThemeValue(this)
+            mutableState.update { it.copy(applicationTheme = this) }
+        }
+    }
+
     private suspend fun setPreferencesStateDefault() {
         mutableState.update {
             it.copy(
@@ -220,10 +226,7 @@ internal class SettingsViewModel @Inject constructor(
                     .getApplicationThemeValue(),
                 crashReporter = settingsDataChoicesCollectionStates
                     .getCrashReporterCollectionValue(),
-                email = when (val result = getCurrentUserAccountUseCase().first()) {
-                    is WorkSuccess -> result.data.email.orEmpty()
-                    is WorkError -> ""
-                },
+                email = getCurrentUserEmailAddress(),
                 performance = settingsDataChoicesCollectionStates
                     .getPerformanceCollectionValue(),
                 personalizedAds = settingsDataChoicesCollectionStates
@@ -237,11 +240,9 @@ internal class SettingsViewModel @Inject constructor(
     private suspend fun setPreferencesStateLimited() {
         mutableState.update {
             it.copy(
-                email = when (val result = getCurrentUserAccountUseCase().first()) {
-                    is WorkSuccess -> result.data.email.orEmpty()
-                    is WorkError -> ""
-                }
+                email = getCurrentUserEmailAddress()
             )
         }
     }
+
 }

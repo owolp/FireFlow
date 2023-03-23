@@ -23,7 +23,7 @@ package dev.zitech.core.common.presentation.architecture
  * Intents can be thought of as user actions that trigger state changes in the ViewModel. Examples of intents might
  * include a button click, a change in the device's configuration, or other user interaction.
  *
- * Implementations of this interface should be data classes or objects to provide a convenient and consistent way of passing
- * data along with the intent.
+ * Implementations of this interface should be data classes or objects to provide a convenient and consistent way of
+ * passing data along with the intent.
  */
 interface MviIntent
