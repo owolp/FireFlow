@@ -29,13 +29,13 @@ import dev.zitech.core.common.domain.model.BuildFlavor
 import dev.zitech.core.common.domain.model.WorkError
 import dev.zitech.core.common.domain.model.WorkSuccess
 import dev.zitech.core.common.domain.model.onError
-import dev.zitech.core.common.domain.model.onSuccess
 import dev.zitech.core.common.domain.navigation.LogInState
 import dev.zitech.core.common.presentation.architecture.DeepLinkViewModel
 import dev.zitech.core.common.presentation.architecture.MviViewModel
 import dev.zitech.core.common.presentation.splash.LoginCheckCompletedHandler
 import dev.zitech.core.persistence.domain.usecase.database.GetCurrentUserAccountUseCase
-import dev.zitech.core.persistence.domain.usecase.database.UpdateUserAccountUseCase
+import dev.zitech.core.persistence.domain.usecase.database.UpdateCurrentUserAccountUseCase
+import dev.zitech.core.persistence.domain.usecase.database.UpdateCurrentUserAccountUseCase.IsCurrentUserAccount
 import dev.zitech.navigation.domain.usecase.GetScreenDestinationUseCase
 import dev.zitech.navigation.presentation.extension.logInState
 import dev.zitech.settings.presentation.settings.viewmodel.collection.AppearanceCollectionStates
@@ -57,7 +57,7 @@ internal class SettingsViewModel @Inject constructor(
     private val getCurrentUserAccountUseCase: GetCurrentUserAccountUseCase,
     private val appearanceCollectionStates: AppearanceCollectionStates,
     private val dataChoicesCollectionStates: DataChoicesCollectionStates,
-    private val updateUserAccountUseCase: UpdateUserAccountUseCase
+    private val updateCurrentUserAccountUseCase: UpdateCurrentUserAccountUseCase
 ) : ViewModel(), MviViewModel<SettingsIntent, SettingsState>, DeepLinkViewModel {
 
     private val mutableState = MutableStateFlow(SettingsState())
@@ -156,33 +156,20 @@ internal class SettingsViewModel @Inject constructor(
 
     private suspend fun handleConfirmLogOutClicked() {
         mutableState.update { it.copy(confirmLogOut = false) }
-        getCurrentUserAccountUseCase().first()
-            .onSuccess { userAccount ->
-                updateUserAccountUseCase(userAccount.copy(isCurrentUserAccount = false))
-                    .onError { error ->
-                        when (error) {
-                            is Error.Fatal -> {
-                                Logger.e(tag, throwable = error.throwable)
-                                mutableState.update { it.copy(fatalError = error) }
-                            }
-                            else -> {
-                                Logger.e(tag, error.debugText)
-                                mutableState.update { it.copy(fatalError = error) }
-                            }
-                        }
-                    }
-            }.onError { error ->
-                when (error) {
-                    is Error.Fatal -> {
-                        Logger.e(tag, throwable = error.throwable)
-                        mutableState.update { it.copy(fatalError = error) }
-                    }
-                    else -> {
-                        Logger.e(tag, error.debugText)
-                        mutableState.update { it.copy(fatalError = error) }
-                    }
+        updateCurrentUserAccountUseCase(
+            IsCurrentUserAccount(false)
+        ).onError { error ->
+            when (error) {
+                is Error.Fatal -> {
+                    Logger.e(tag, throwable = error.throwable)
+                    mutableState.update { it.copy(fatalError = error) }
+                }
+                else -> {
+                    Logger.e(tag, error.debugText)
+                    mutableState.update { it.copy(fatalError = error) }
                 }
             }
+        }
     }
 
     private suspend fun handleCrashReporterChecked(checked: Boolean) {

@@ -24,30 +24,40 @@ import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.domain.model.Work
 import dev.zitech.core.common.domain.model.WorkError
 import dev.zitech.core.common.domain.model.WorkSuccess
-import dev.zitech.core.common.domain.model.onError
 import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.domain.usecase.database.GetCurrentUserAccountUseCase
-import dev.zitech.core.persistence.domain.usecase.database.UpdateUserAccountUseCase
+import dev.zitech.core.persistence.domain.usecase.database.UpdateCurrentUserAccountUseCase
+import dev.zitech.core.persistence.domain.usecase.database.UpdateCurrentUserAccountUseCase.AuthenticationType
 import javax.inject.Inject
 import kotlinx.coroutines.flow.first
 
+/**
+ * Use case for getting a refreshed OAuth token for the current user.
+ *
+ * @property getCurrentUserAccountUseCase Use case for getting the current user account.
+ * @property tokenRepository Repository for refreshing tokens.
+ * @property updateCurrentUserAccountUseCase Use case for updating the current user account with a new token.
+ */
 internal class GetRefreshedTokenUseCase @Inject constructor(
     private val getCurrentUserAccountUseCase: GetCurrentUserAccountUseCase,
-    private val updateUserAccountUseCase: UpdateUserAccountUseCase,
-    private val tokenRepository: TokenRepository
+    private val tokenRepository: TokenRepository,
+    private val updateCurrentUserAccountUseCase: UpdateCurrentUserAccountUseCase
 ) {
 
     private val tag = Logger.tag(this::class.java)
 
+    /**
+     * Gets a refreshed token for the current user.
+     *
+     * @return A [Work] object containing the refreshed token, or an error if the operation failed.
+     */
     suspend operator fun invoke(): Work<Token> =
         when (val currentUserAccountResult = getCurrentUserAccountUseCase().first()) {
             is WorkSuccess -> {
                 val currentUser = currentUserAccountResult.data
-
                 val authenticationType = currentUser.authenticationType
                 if (authenticationType is UserAccount.AuthenticationType.OAuth) {
                     getRefreshedToken(
-                        currentUser = currentUser,
                         clientId = authenticationType.clientId,
                         clientSecret = authenticationType.clientSecret,
                         refreshToken = authenticationType.refreshToken.orEmpty(),
@@ -61,24 +71,23 @@ internal class GetRefreshedTokenUseCase @Inject constructor(
         }
 
     private suspend fun getRefreshedToken(
-        currentUser: UserAccount,
         clientId: String,
         clientSecret: String,
         refreshToken: String,
         oauthCode: String
-    ) =
-        when (
-            val refreshTokenResult = tokenRepository.getRefreshedToken(
-                clientId = clientId,
-                clientSecret = clientSecret,
-                refreshToken = refreshToken
-            )
-        ) {
-            is WorkSuccess -> {
-                val refreshedToken = refreshTokenResult.data
-                updateUserAccountUseCase(
-                    currentUser.copy(
-                        authenticationType = UserAccount.AuthenticationType.OAuth(
+    ): Work<Token> = when (
+        val refreshTokenResult = tokenRepository.getRefreshedToken(
+            clientId = clientId,
+            clientSecret = clientSecret,
+            refreshToken = refreshToken
+        )
+    ) {
+        is WorkSuccess -> {
+            val refreshedToken = refreshTokenResult.data
+            when (
+                val result = updateCurrentUserAccountUseCase(
+                    AuthenticationType(
+                        UserAccount.AuthenticationType.OAuth(
                             accessToken = refreshedToken.accessToken,
                             clientId = clientId,
                             clientSecret = clientSecret,
@@ -86,16 +95,22 @@ internal class GetRefreshedTokenUseCase @Inject constructor(
                             refreshToken = refreshedToken.refreshToken
                         )
                     )
-                ).onError { error ->
-                    when (error) {
+                )
+            ) {
+                is WorkError -> {
+                    when (val error = result.error) {
                         is Error.Fatal -> {
                             Logger.e(tag, throwable = error.throwable)
                         }
                         else -> Logger.e(tag, error.debugText)
                     }
+                    WorkError(result.error)
                 }
-                WorkSuccess(refreshedToken)
+                is WorkSuccess -> {
+                    WorkSuccess(refreshedToken)
+                }
             }
-            is WorkError -> refreshTokenResult
         }
+        is WorkError -> refreshTokenResult
+    }
 }
