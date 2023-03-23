@@ -55,7 +55,7 @@ internal class SettingsViewModel @Inject constructor(
     private val getCurrentUserAccountUseCase: GetCurrentUserAccountUseCase,
     private val appearanceCollectionStates: AppearanceCollectionStates,
     private val dataChoicesCollectionStates: DataChoicesCollectionStates,
-    private val updateUserAccountUseCase: UpdateUserAccountUseCase,
+    private val updateUserAccountUseCase: UpdateUserAccountUseCase
 ) : ViewModel(), MviViewModel<SettingsIntent, SettingsState>, DeepLinkViewModel {
 
     private val mutableState = MutableStateFlow(SettingsState())
@@ -244,5 +244,4 @@ internal class SettingsViewModel @Inject constructor(
             )
         }
     }
-
 }
