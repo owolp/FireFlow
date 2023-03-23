@@ -88,43 +88,70 @@ internal class SettingsViewModel @Inject constructor(
     override fun receiveIntent(intent: SettingsIntent) {
         viewModelScope.launch {
             when (intent) {
+                is AnalyticsChecked -> handleOnAnalyticsChecked(intent.checked)
                 AnalyticsErrorHandled -> mutableState.update { it.copy(analyticsError = false) }
+                ConfirmLogOutClicked -> handleConfirmLogOutClicked()
+                ConfirmLogOutDismissed -> mutableState.update { it.copy(confirmLogOut = false) }
+                is CrashReporterChecked -> handleCrashReporterChecked(intent.checked)
                 CrashReporterErrorHandled -> mutableState.update {
                     it.copy(crashReporterError = false)
                 }
-                is OnAnalyticsCheckChange -> handleOnAnalyticsCheckChange(intent.checked)
-                OnConfirmLogOutClick -> handleOnConfirmLogOutClick()
-                OnConfirmLogOutDismiss -> mutableState.update { it.copy(confirmLogOut = false) }
-                is OnCrashReporterCheckChange -> handleOnCrashReporterCheckChange(intent.checked)
-                OnLanguageDismiss -> mutableState.update {
+                LanguageDismissed -> mutableState.update {
                     it.copy(selectApplicationLanguage = null)
                 }
-                OnLanguagePreferenceClick -> mutableState.update {
+                LanguagePreferenceClicked -> mutableState.update {
                     it.copy(selectApplicationLanguage = it.applicationLanguage)
                 }
-                is OnLanguageSelect -> handleOnLanguageSelect(intent.id)
-                OnLogOutClick -> mutableState.update { it.copy(confirmLogOut = true) }
-                is OnPerformanceCheckChange -> handleOnPerformanceCheckChange(intent.checked)
-                is OnPersonalizedAdsCheckChange -> handleOnPersonalizedAdsCheckChange(
+                is LanguageSelected -> handleLanguageSelected(intent.id)
+                LogOutClicked -> mutableState.update { it.copy(confirmLogOut = true) }
+                is OnRestartApplicationClicked -> intent.restart()
+                is OnThemeSelected -> handleOnThemeSelected(intent.id)
+                is PerformanceChecked -> handlePerformanceChecked(intent.checked)
+                PerformanceErrorHandled -> mutableState.update { it.copy(performanceError = false) }
+                is PersonalizedAdsChecked -> handlePersonalizedAdsChecked(
                     intent.checked
                 )
-                is OnRestartApplication -> intent.restart()
-                OnThemeDismiss -> mutableState.update {
-                    it.copy(selectApplicationTheme = null)
-                }
-                OnThemePreferenceClick -> mutableState.update {
-                    it.copy(selectApplicationTheme = it.applicationTheme)
-                }
-                is OnThemeSelect -> handleOnThemeSelect(intent.id)
-                PerformanceErrorHandled -> mutableState.update { it.copy(performanceError = false) }
                 PersonalizedAdsErrorHandled -> mutableState.update {
                     it.copy(personalizedAdsError = false)
+                }
+                ThemeDismissed -> mutableState.update {
+                    it.copy(selectApplicationTheme = null)
+                }
+                ThemePreferenceClicked -> mutableState.update {
+                    it.copy(selectApplicationTheme = it.applicationTheme)
                 }
             }
         }
     }
 
-    private suspend fun handleOnAnalyticsCheckChange(checked: Boolean) {
+    @Suppress("ForbiddenComment")
+    private suspend fun handleConfirmLogOutClicked() {
+        mutableState.update { it.copy(confirmLogOut = false) }
+        // TODO: Show loading
+        getCurrentUserAccountUseCase().first().onSuccess { userAccount ->
+            updateUserAccountUseCase(userAccount.copy(isCurrentUserAccount = false))
+        }
+    }
+
+    private suspend fun handleCrashReporterChecked(checked: Boolean) {
+        settingsDataChoicesCollectionStates.setCrashReporterCollection(checked)
+        val isEnabled = settingsDataChoicesCollectionStates.getCrashReporterCollectionValue()
+        if (checked == isEnabled) {
+            mutableState.update { it.copy(crashReporter = checked) }
+        } else {
+            mutableState.update { it.copy(crashReporterError = true) }
+        }
+    }
+
+    private fun handleLanguageSelected(id: Int) {
+        mutableState.update { it.copy(selectApplicationLanguage = null) }
+        ApplicationLanguage.values().first { it.id == id }.run {
+            settingsAppearanceCollectionStates.setApplicationLanguageValue(this)
+            mutableState.update { it.copy(applicationLanguage = this) }
+        }
+    }
+
+    private suspend fun handleOnAnalyticsChecked(checked: Boolean) {
         if (appConfigProvider.buildFlavor != BuildFlavor.FOSS) {
             settingsDataChoicesCollectionStates.setAnalyticsCollection(checked)
             val isEnabled = settingsDataChoicesCollectionStates.getAnalyticsCollectionValue()
@@ -146,34 +173,15 @@ internal class SettingsViewModel @Inject constructor(
         }
     }
 
-    @Suppress("ForbiddenComment")
-    private suspend fun handleOnConfirmLogOutClick() {
-        mutableState.update { it.copy(confirmLogOut = false) }
-        // TODO: Show loading
-        getCurrentUserAccountUseCase().first().onSuccess { userAccount ->
-            updateUserAccountUseCase(userAccount.copy(isCurrentUserAccount = false))
+    private suspend fun handleOnThemeSelected(id: Int) {
+        mutableState.update { it.copy(selectApplicationTheme = null) }
+        ApplicationTheme.values().first { it.id == id }.run {
+            settingsAppearanceCollectionStates.setApplicationThemeValue(this)
+            mutableState.update { it.copy(applicationTheme = this) }
         }
     }
 
-    private suspend fun handleOnCrashReporterCheckChange(checked: Boolean) {
-        settingsDataChoicesCollectionStates.setCrashReporterCollection(checked)
-        val isEnabled = settingsDataChoicesCollectionStates.getCrashReporterCollectionValue()
-        if (checked == isEnabled) {
-            mutableState.update { it.copy(crashReporter = checked) }
-        } else {
-            mutableState.update { it.copy(crashReporterError = true) }
-        }
-    }
-
-    private fun handleOnLanguageSelect(id: Int) {
-        mutableState.update { it.copy(selectApplicationLanguage = null) }
-        ApplicationLanguage.values().first { it.id == id }.run {
-            settingsAppearanceCollectionStates.setApplicationLanguageValue(this)
-            mutableState.update { it.copy(applicationLanguage = this) }
-        }
-    }
-
-    private suspend fun handleOnPerformanceCheckChange(checked: Boolean) {
+    private suspend fun handlePerformanceChecked(checked: Boolean) {
         if (appConfigProvider.buildFlavor != BuildFlavor.FOSS) {
             settingsDataChoicesCollectionStates.setPerformanceCollection(checked)
             val isEnabled = settingsDataChoicesCollectionStates.getPerformanceCollectionValue()
@@ -187,7 +195,7 @@ internal class SettingsViewModel @Inject constructor(
         }
     }
 
-    private suspend fun handleOnPersonalizedAdsCheckChange(checked: Boolean) {
+    private suspend fun handlePersonalizedAdsChecked(checked: Boolean) {
         if (appConfigProvider.buildFlavor != BuildFlavor.FOSS) {
             settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked)
             val isEnabled = settingsDataChoicesCollectionStates.getAllowPersonalizedAdsValue()
@@ -198,14 +206,6 @@ internal class SettingsViewModel @Inject constructor(
             }
         } else {
             Logger.e(tag, "Setting personalized ads on FOSS build is not supported")
-        }
-    }
-
-    private suspend fun handleOnThemeSelect(id: Int) {
-        mutableState.update { it.copy(selectApplicationTheme = null) }
-        ApplicationTheme.values().first { it.id == id }.run {
-            settingsAppearanceCollectionStates.setApplicationThemeValue(this)
-            mutableState.update { it.copy(applicationTheme = this) }
         }
     }
 

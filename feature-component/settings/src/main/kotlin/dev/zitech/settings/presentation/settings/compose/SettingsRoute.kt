@@ -28,25 +28,25 @@ import dev.zitech.core.common.domain.error.Error
 import dev.zitech.core.common.domain.navigation.DeepLinkScreenDestination
 import dev.zitech.core.common.domain.navigation.LogInState
 import dev.zitech.ds.atoms.loading.FireFlowProgressIndicators
+import dev.zitech.settings.presentation.settings.viewmodel.AnalyticsChecked
 import dev.zitech.settings.presentation.settings.viewmodel.AnalyticsErrorHandled
+import dev.zitech.settings.presentation.settings.viewmodel.ConfirmLogOutClicked
+import dev.zitech.settings.presentation.settings.viewmodel.ConfirmLogOutDismissed
+import dev.zitech.settings.presentation.settings.viewmodel.CrashReporterChecked
 import dev.zitech.settings.presentation.settings.viewmodel.CrashReporterErrorHandled
-import dev.zitech.settings.presentation.settings.viewmodel.OnAnalyticsCheckChange
-import dev.zitech.settings.presentation.settings.viewmodel.OnConfirmLogOutClick
-import dev.zitech.settings.presentation.settings.viewmodel.OnConfirmLogOutDismiss
-import dev.zitech.settings.presentation.settings.viewmodel.OnCrashReporterCheckChange
-import dev.zitech.settings.presentation.settings.viewmodel.OnLanguageDismiss
-import dev.zitech.settings.presentation.settings.viewmodel.OnLanguagePreferenceClick
-import dev.zitech.settings.presentation.settings.viewmodel.OnLanguageSelect
-import dev.zitech.settings.presentation.settings.viewmodel.OnLogOutClick
-import dev.zitech.settings.presentation.settings.viewmodel.OnPerformanceCheckChange
-import dev.zitech.settings.presentation.settings.viewmodel.OnPersonalizedAdsCheckChange
-import dev.zitech.settings.presentation.settings.viewmodel.OnRestartApplication
-import dev.zitech.settings.presentation.settings.viewmodel.OnThemeDismiss
-import dev.zitech.settings.presentation.settings.viewmodel.OnThemePreferenceClick
-import dev.zitech.settings.presentation.settings.viewmodel.OnThemeSelect
+import dev.zitech.settings.presentation.settings.viewmodel.LanguageDismissed
+import dev.zitech.settings.presentation.settings.viewmodel.LanguagePreferenceClicked
+import dev.zitech.settings.presentation.settings.viewmodel.LanguageSelected
+import dev.zitech.settings.presentation.settings.viewmodel.LogOutClicked
+import dev.zitech.settings.presentation.settings.viewmodel.OnRestartApplicationClicked
+import dev.zitech.settings.presentation.settings.viewmodel.OnThemeSelected
+import dev.zitech.settings.presentation.settings.viewmodel.PerformanceChecked
 import dev.zitech.settings.presentation.settings.viewmodel.PerformanceErrorHandled
+import dev.zitech.settings.presentation.settings.viewmodel.PersonalizedAdsChecked
 import dev.zitech.settings.presentation.settings.viewmodel.PersonalizedAdsErrorHandled
 import dev.zitech.settings.presentation.settings.viewmodel.SettingsViewModel
+import dev.zitech.settings.presentation.settings.viewmodel.ThemeDismissed
+import dev.zitech.settings.presentation.settings.viewmodel.ThemePreferenceClicked
 
 @Composable
 internal fun SettingsRoute(
@@ -71,28 +71,28 @@ internal fun SettingsRoute(
                 modifier = modifier,
                 state = screenState,
                 onAnalyticsCheckChange = { checked ->
-                    viewModel.receiveIntent(OnAnalyticsCheckChange(checked))
+                    viewModel.receiveIntent(AnalyticsChecked(checked))
                 },
                 onPersonalizedAdsCheckChange = { checked ->
-                    viewModel.receiveIntent(OnPersonalizedAdsCheckChange(checked))
+                    viewModel.receiveIntent(PersonalizedAdsChecked(checked))
                 },
                 onPerformanceCheckChange = { checked ->
-                    viewModel.receiveIntent(OnPerformanceCheckChange(checked))
+                    viewModel.receiveIntent(PerformanceChecked(checked))
                 },
                 onCrashReporterCheckChange = { checked ->
-                    viewModel.receiveIntent(OnCrashReporterCheckChange(checked))
+                    viewModel.receiveIntent(CrashReporterChecked(checked))
                 },
                 onThemeClick = {
-                    viewModel.receiveIntent(OnThemePreferenceClick)
+                    viewModel.receiveIntent(ThemePreferenceClicked)
                 },
                 onLanguageClick = {
-                    viewModel.receiveIntent(OnLanguagePreferenceClick)
+                    viewModel.receiveIntent(LanguagePreferenceClicked)
                 },
                 onLogOutClick = {
-                    viewModel.receiveIntent(OnLogOutClick)
+                    viewModel.receiveIntent(LogOutClicked)
                 },
                 onRestartApplication = {
-                    viewModel.receiveIntent(OnRestartApplication(restartApplication))
+                    viewModel.receiveIntent(OnRestartApplicationClicked(restartApplication))
                 },
                 analyticsErrorHandled = {
                     viewModel.receiveIntent(AnalyticsErrorHandled)
@@ -107,22 +107,22 @@ internal fun SettingsRoute(
                     viewModel.receiveIntent(PerformanceErrorHandled)
                 },
                 onThemeSelect = { itemSelected ->
-                    viewModel.receiveIntent(OnThemeSelect(itemSelected))
+                    viewModel.receiveIntent(OnThemeSelected(itemSelected))
                 },
                 onThemeDismiss = {
-                    viewModel.receiveIntent(OnThemeDismiss)
+                    viewModel.receiveIntent(ThemeDismissed)
                 },
                 onLanguageSelect = { itemSelected ->
-                    viewModel.receiveIntent(OnLanguageSelect(itemSelected))
+                    viewModel.receiveIntent(LanguageSelected(itemSelected))
                 },
                 onLanguageDismiss = {
-                    viewModel.receiveIntent(OnLanguageDismiss)
+                    viewModel.receiveIntent(LanguageDismissed)
                 },
                 onConfirmLogOutDismiss = {
-                    viewModel.receiveIntent(OnConfirmLogOutDismiss)
+                    viewModel.receiveIntent(ConfirmLogOutDismissed)
                 },
                 onConfirmLogOutClick = {
-                    viewModel.receiveIntent(OnConfirmLogOutClick)
+                    viewModel.receiveIntent(ConfirmLogOutClicked)
                 }
             )
         }
