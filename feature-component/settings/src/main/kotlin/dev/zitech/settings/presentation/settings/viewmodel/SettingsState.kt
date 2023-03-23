@@ -37,12 +37,11 @@ internal data class SettingsState(
     val selectApplicationLanguage: ApplicationLanguage? = null,
     val selectApplicationTheme: ApplicationTheme? = null,
     val version: String = "",
-    val viewState: ViewState = ViewState.InitScreen,
+    val viewState: ViewState = ViewState.InitScreen
 ) : MviState {
 
     sealed class ViewState {
         object InitScreen : ViewState()
         object Success : ViewState()
     }
-
 }

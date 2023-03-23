@@ -37,10 +37,11 @@ import dev.zitech.navigation.presentation.extension.logInState
 import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsAppearanceCollectionStates
 import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsDataChoicesCollectionStates
 import javax.inject.Inject
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @Suppress("TooManyFunctions")
@@ -52,10 +53,10 @@ internal class SettingsViewModel @Inject constructor(
     private val getCurrentUserAccountUseCase: GetCurrentUserAccountUseCase,
     private val settingsAppearanceCollectionStates: SettingsAppearanceCollectionStates,
     private val settingsDataChoicesCollectionStates: SettingsDataChoicesCollectionStates,
-    private val stateHandler: SettingsStateHandler,
     private val updateUserAccountUseCase: UpdateUserAccountUseCase
 ) : ViewModel(), MviViewModel<SettingsIntent, SettingsState>, DeepLinkViewModel {
 
+    private val mutableState = MutableStateFlow(SettingsState())
     private val tag = Logger.tag(this::class.java)
 
     override val logInState: StateFlow<LogInState> by logInState(
@@ -64,7 +65,7 @@ internal class SettingsViewModel @Inject constructor(
         viewModelScope
     )
 
-    override val screenState: StateFlow<SettingsState> = stateHandler.state
+    override val screenState: StateFlow<SettingsState> = mutableState.asStateFlow()
 
     init {
         getPreferencesState()
@@ -81,51 +82,57 @@ internal class SettingsViewModel @Inject constructor(
                 is OnPerformanceCheckChange -> handleOnPerformanceCheckChange(intent.checked)
                 is OnThemeSelect -> handleOnThemeSelect(intent.id)
                 is OnLanguageSelect -> handleOnLanguageSelect(intent.id)
-                OnThemePreferenceClick -> stateHandler.setSelectApplicationTheme(
-                    stateHandler.state.value.applicationTheme
-                )
-                OnLanguagePreferenceClick -> stateHandler.setSelectApplicationLanguage(
-                    stateHandler.state.value.applicationLanguage
-                )
-                OnThemeDismiss -> stateHandler.setSelectApplicationTheme(null)
-                OnLanguageDismiss -> stateHandler.setSelectApplicationLanguage(null)
-                OnConfirmLogOutDismiss -> stateHandler.setConfirmLogOut(false)
+                OnThemePreferenceClick -> mutableState.update {
+                    it.copy(selectApplicationTheme = it.applicationTheme)
+                }
+                OnLanguagePreferenceClick -> mutableState.update {
+                    it.copy(selectApplicationLanguage = it.applicationLanguage)
+                }
+                OnThemeDismiss -> mutableState.update {
+                    it.copy(selectApplicationTheme = null)
+                }
+                OnLanguageDismiss -> mutableState.update {
+                    it.copy(selectApplicationLanguage = null)
+                }
+                OnConfirmLogOutDismiss -> mutableState.update { it.copy(confirmLogOut = false) }
                 is OnRestartApplication -> intent.restart()
-                OnLogOutClick -> stateHandler.setConfirmLogOut(true)
+                OnLogOutClick -> mutableState.update { it.copy(confirmLogOut = true) }
                 OnConfirmLogOutClick -> handleOnConfirmLogOutClick()
-                AnalyticsErrorHandled -> stateHandler.setAnalyticsError(false)
-                CrashReporterErrorHandled -> stateHandler.setCrashReporterError(false)
-                PerformanceErrorHandled -> stateHandler.setPerformanceError(false)
-                PersonalizedAdsErrorHandled -> stateHandler.setPersonalizedAdsError(false)
+                AnalyticsErrorHandled -> mutableState.update { it.copy(analyticsError = false) }
+                CrashReporterErrorHandled -> mutableState.update {
+                    it.copy(crashReporterError = false)
+                }
+                PerformanceErrorHandled -> mutableState.update { it.copy(performanceError = false) }
+                PersonalizedAdsErrorHandled -> mutableState.update {
+                    it.copy(personalizedAdsError = false)
+                }
             }
         }
     }
 
     private fun getPreferencesState() = viewModelScope.launch {
-        stateHandler.run {
-            setAnalyticsState(
-                settingsDataChoicesCollectionStates.getAnalyticsCollectionValue(),
-                appConfigProvider.buildFlavor
-            )
-            setPersonalizedAds(
-                settingsDataChoicesCollectionStates.getAllowPersonalizedAdsValue(),
-                appConfigProvider.buildFlavor
-            )
-            setPerformance(
-                settingsDataChoicesCollectionStates.getPerformanceCollectionValue(),
-                appConfigProvider.buildFlavor
-            )
-            setCrashReporter(
-                settingsDataChoicesCollectionStates.getCrashReporterCollectionValue()
-            )
-            setApplicationThemeState(settingsAppearanceCollectionStates.getApplicationThemeValue())
-            setApplicationLanguage(settingsAppearanceCollectionStates.getApplicationLanguageValue())
-            setAppVersionState(appConfigProvider.version)
-            setViewState(SettingsState.ViewState.Success)
-
-            getCurrentUserAccountUseCase()
-                .onEach { it.onSuccess { userAccount -> setEmail(userAccount.email.orEmpty()) } }
-                .launchIn(viewModelScope)
+        if (appConfigProvider.buildFlavor != BuildFlavor.FOSS) {
+            mutableState.update {
+                it.copy(
+                    analytics = settingsDataChoicesCollectionStates
+                        .getAnalyticsCollectionValue(),
+                    applicationLanguage = settingsAppearanceCollectionStates
+                        .getApplicationLanguageValue(),
+                    applicationTheme = settingsAppearanceCollectionStates
+                        .getApplicationThemeValue(),
+                    crashReporter = settingsDataChoicesCollectionStates
+                        .getCrashReporterCollectionValue(),
+                    performance = settingsDataChoicesCollectionStates
+                        .getPerformanceCollectionValue(),
+                    personalizedAds = settingsDataChoicesCollectionStates
+                        .getAllowPersonalizedAdsValue(),
+                    version = appConfigProvider.version
+                )
+            }
+        }
+        mutableState.update { it.copy(viewState = SettingsState.ViewState.Success) }
+        getCurrentUserAccountUseCase().first().onSuccess { userAccount ->
+            mutableState.update { it.copy(email = userAccount.email.orEmpty()) }
         }
     }
 
@@ -134,23 +141,27 @@ internal class SettingsViewModel @Inject constructor(
             settingsDataChoicesCollectionStates.setAnalyticsCollection(checked)
             val isEnabled = settingsDataChoicesCollectionStates.getAnalyticsCollectionValue()
             if (checked == isEnabled) {
-                stateHandler.setAnalyticsState(checked, appConfigProvider.buildFlavor)
                 settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked)
-                stateHandler.setPersonalizedAds(checked, appConfigProvider.buildFlavor)
+                mutableState.update {
+                    it.copy(
+                        analytics = checked,
+                        personalizedAds = checked,
+                        performance = checked
+                    )
+                }
                 settingsDataChoicesCollectionStates.setPerformanceCollection(checked)
-                stateHandler.setPerformance(checked, appConfigProvider.buildFlavor)
             } else {
-                stateHandler.setAnalyticsError(true)
+                mutableState.update { it.copy(analyticsError = true) }
             }
         } else {
             Logger.e(tag, "Setting analytics on FOSS build is not supported")
         }
     }
 
+    @Suppress("ForbiddenComment")
     private suspend fun handleOnConfirmLogOutClick() {
-        stateHandler.setConfirmLogOut(false)
+        mutableState.update { it.copy(confirmLogOut = false) }
         // TODO: Show loading
-        stateHandler
         getCurrentUserAccountUseCase().first().onSuccess { userAccount ->
             updateUserAccountUseCase(userAccount.copy(isCurrentUserAccount = false))
         }
@@ -160,17 +171,17 @@ internal class SettingsViewModel @Inject constructor(
         settingsDataChoicesCollectionStates.setCrashReporterCollection(checked)
         val isEnabled = settingsDataChoicesCollectionStates.getCrashReporterCollectionValue()
         if (checked == isEnabled) {
-            stateHandler.setCrashReporter(checked)
+            mutableState.update { it.copy(crashReporter = checked) }
         } else {
-            stateHandler.setCrashReporterError(true)
+            mutableState.update { it.copy(crashReporterError = true) }
         }
     }
 
     private fun handleOnLanguageSelect(id: Int) {
-        stateHandler.setSelectApplicationLanguage(null)
+        mutableState.update { it.copy(selectApplicationLanguage = null) }
         ApplicationLanguage.values().first { it.id == id }.run {
             settingsAppearanceCollectionStates.setApplicationLanguageValue(this)
-            stateHandler.setApplicationLanguage(this)
+            mutableState.update { it.copy(applicationLanguage = this) }
         }
     }
 
@@ -179,9 +190,9 @@ internal class SettingsViewModel @Inject constructor(
             settingsDataChoicesCollectionStates.setPerformanceCollection(checked)
             val isEnabled = settingsDataChoicesCollectionStates.getPerformanceCollectionValue()
             if (checked == isEnabled) {
-                stateHandler.setPerformance(checked, appConfigProvider.buildFlavor)
+                mutableState.update { it.copy(performance = checked) }
             } else {
-                stateHandler.setPerformanceError(true)
+                mutableState.update { it.copy(performanceError = true) }
             }
         } else {
             Logger.e(tag, "Setting performance on FOSS build is not supported")
@@ -193,9 +204,9 @@ internal class SettingsViewModel @Inject constructor(
             settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked)
             val isEnabled = settingsDataChoicesCollectionStates.getAllowPersonalizedAdsValue()
             if (checked == isEnabled) {
-                stateHandler.setPersonalizedAds(checked, appConfigProvider.buildFlavor)
+                mutableState.update { it.copy(personalizedAds = checked) }
             } else {
-                stateHandler.setPersonalizedAdsError(true)
+                mutableState.update { it.copy(personalizedAdsError = true) }
             }
         } else {
             Logger.e(tag, "Setting personalized ads on FOSS build is not supported")
@@ -203,10 +214,10 @@ internal class SettingsViewModel @Inject constructor(
     }
 
     private suspend fun handleOnThemeSelect(id: Int) {
-        stateHandler.setSelectApplicationTheme(null)
+        mutableState.update { it.copy(selectApplicationTheme = null) }
         ApplicationTheme.values().first { it.id == id }.run {
             settingsAppearanceCollectionStates.setApplicationThemeValue(this)
-            stateHandler.setApplicationThemeState(this)
+            mutableState.update { it.copy(applicationTheme = this) }
         }
     }
 }
