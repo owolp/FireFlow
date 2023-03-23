@@ -21,12 +21,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.zitech.core.common.domain.applicationconfig.AppConfigProvider
+import dev.zitech.core.common.domain.error.Error
 import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.domain.model.ApplicationLanguage
 import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.core.common.domain.model.BuildFlavor
 import dev.zitech.core.common.domain.model.WorkError
 import dev.zitech.core.common.domain.model.WorkSuccess
+import dev.zitech.core.common.domain.model.onError
 import dev.zitech.core.common.domain.model.onSuccess
 import dev.zitech.core.common.domain.navigation.LogInState
 import dev.zitech.core.common.presentation.architecture.DeepLinkViewModel
@@ -152,13 +154,35 @@ internal class SettingsViewModel @Inject constructor(
         }
     }
 
-    @Suppress("ForbiddenComment")
     private suspend fun handleConfirmLogOutClicked() {
         mutableState.update { it.copy(confirmLogOut = false) }
-        // TODO: Show loading
-        getCurrentUserAccountUseCase().first().onSuccess { userAccount ->
-            updateUserAccountUseCase(userAccount.copy(isCurrentUserAccount = false))
-        }
+        getCurrentUserAccountUseCase().first()
+            .onSuccess { userAccount ->
+                updateUserAccountUseCase(userAccount.copy(isCurrentUserAccount = false))
+                    .onError { error ->
+                        when (error) {
+                            is Error.Fatal -> {
+                                Logger.e(tag, throwable = error.throwable)
+                                mutableState.update { it.copy(fatalError = error) }
+                            }
+                            else -> {
+                                Logger.e(tag, error.debugText)
+                                mutableState.update { it.copy(fatalError = error) }
+                            }
+                        }
+                    }
+            }.onError { error ->
+                when (error) {
+                    is Error.Fatal -> {
+                        Logger.e(tag, throwable = error.throwable)
+                        mutableState.update { it.copy(fatalError = error) }
+                    }
+                    else -> {
+                        Logger.e(tag, error.debugText)
+                        mutableState.update { it.copy(fatalError = error) }
+                    }
+                }
+            }
     }
 
     private suspend fun handleCrashReporterChecked(checked: Boolean) {
@@ -173,7 +197,7 @@ internal class SettingsViewModel @Inject constructor(
 
     private fun handleLanguageSelected(id: Int) {
         mutableState.update { it.copy(selectApplicationLanguage = null) }
-        ApplicationLanguage.values().first { it.id == id }.run {
+        ApplicationLanguage.getApplicationLanguage(id).run {
             appearanceCollectionStates.setApplicationLanguageValue(this)
             mutableState.update { it.copy(applicationLanguage = this) }
         }
@@ -209,7 +233,7 @@ internal class SettingsViewModel @Inject constructor(
 
     private suspend fun handleThemeSelected(id: Int) {
         mutableState.update { it.copy(selectApplicationTheme = null) }
-        ApplicationTheme.values().first { it.id == id }.run {
+        ApplicationTheme.getApplicationTheme(id).run {
             appearanceCollectionStates.setApplicationThemeValue(this)
             mutableState.update { it.copy(applicationTheme = this) }
         }

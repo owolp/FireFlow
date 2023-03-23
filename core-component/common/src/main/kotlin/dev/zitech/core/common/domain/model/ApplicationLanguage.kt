@@ -27,5 +27,14 @@ enum class ApplicationLanguage(
 ) {
     SYSTEM(0, R.string.application_language_system, null),
     ENGLISH(1, R.string.application_language_english, Locale.ENGLISH),
-    BULGARIAN(2, R.string.application_language_bulgarian, Locale.forLanguageTag("bg-BG"))
+    BULGARIAN(2, R.string.application_language_bulgarian, Locale.forLanguageTag("bg-BG"));
+
+    companion object {
+        fun getApplicationLanguage(id: Int): ApplicationLanguage =
+            when (id) {
+                ENGLISH.id -> ENGLISH
+                BULGARIAN.id -> BULGARIAN
+                else -> SYSTEM
+            }
+    }
 }
