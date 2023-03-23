@@ -81,14 +81,14 @@ internal class SettingsViewModel @Inject constructor(
                 is OnPerformanceCheckChange -> handleOnPerformanceCheckChange(intent.checked)
                 is OnThemeSelect -> handleOnThemeSelect(intent.id)
                 is OnLanguageSelect -> handleOnLanguageSelect(intent.id)
-                OnThemePreferenceClick -> stateHandler.setApplicationTheme(
-                    stateHandler.state.value.theme
+                OnThemePreferenceClick -> stateHandler.setSelectApplicationTheme(
+                    stateHandler.state.value.applicationTheme
                 )
-                OnLanguagePreferenceClick -> stateHandler.setSelectLanguage(
-                    stateHandler.state.value.language
+                OnLanguagePreferenceClick -> stateHandler.setSelectApplicationLanguage(
+                    stateHandler.state.value.applicationLanguage
                 )
-                OnThemeDismiss -> stateHandler.setApplicationTheme(null)
-                OnLanguageDismiss -> stateHandler.setSelectLanguage(null)
+                OnThemeDismiss -> stateHandler.setSelectApplicationTheme(null)
+                OnLanguageDismiss -> stateHandler.setSelectApplicationLanguage(null)
                 OnConfirmLogOutDismiss -> stateHandler.setConfirmLogOut(false)
                 is OnRestartApplication -> intent.restart()
                 OnLogOutClick -> stateHandler.setConfirmLogOut(true)
@@ -107,19 +107,19 @@ internal class SettingsViewModel @Inject constructor(
                 settingsDataChoicesCollectionStates.getAnalyticsCollectionValue(),
                 appConfigProvider.buildFlavor
             )
-            setPersonalizedAdsState(
+            setPersonalizedAds(
                 settingsDataChoicesCollectionStates.getAllowPersonalizedAdsValue(),
                 appConfigProvider.buildFlavor
             )
-            setPerformanceState(
+            setPerformance(
                 settingsDataChoicesCollectionStates.getPerformanceCollectionValue(),
                 appConfigProvider.buildFlavor
             )
-            setCrashReporterState(
+            setCrashReporter(
                 settingsDataChoicesCollectionStates.getCrashReporterCollectionValue()
             )
-            setThemeState(settingsAppearanceCollectionStates.getApplicationThemeValue())
-            setLanguageState(settingsAppearanceCollectionStates.getApplicationLanguageValue())
+            setApplicationThemeState(settingsAppearanceCollectionStates.getApplicationThemeValue())
+            setApplicationLanguage(settingsAppearanceCollectionStates.getApplicationLanguageValue())
             setAppVersionState(appConfigProvider.version)
             setViewState(SettingsState.ViewState.Success)
 
@@ -136,9 +136,9 @@ internal class SettingsViewModel @Inject constructor(
             if (checked == isEnabled) {
                 stateHandler.setAnalyticsState(checked, appConfigProvider.buildFlavor)
                 settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked)
-                stateHandler.setPersonalizedAdsState(checked, appConfigProvider.buildFlavor)
+                stateHandler.setPersonalizedAds(checked, appConfigProvider.buildFlavor)
                 settingsDataChoicesCollectionStates.setPerformanceCollection(checked)
-                stateHandler.setPerformanceState(checked, appConfigProvider.buildFlavor)
+                stateHandler.setPerformance(checked, appConfigProvider.buildFlavor)
             } else {
                 stateHandler.setAnalyticsError(true)
             }
@@ -160,17 +160,17 @@ internal class SettingsViewModel @Inject constructor(
         settingsDataChoicesCollectionStates.setCrashReporterCollection(checked)
         val isEnabled = settingsDataChoicesCollectionStates.getCrashReporterCollectionValue()
         if (checked == isEnabled) {
-            stateHandler.setCrashReporterState(checked)
+            stateHandler.setCrashReporter(checked)
         } else {
             stateHandler.setCrashReporterError(true)
         }
     }
 
     private fun handleOnLanguageSelect(id: Int) {
-        stateHandler.setSelectLanguage(null)
+        stateHandler.setSelectApplicationLanguage(null)
         ApplicationLanguage.values().first { it.id == id }.run {
             settingsAppearanceCollectionStates.setApplicationLanguageValue(this)
-            stateHandler.setLanguageState(this)
+            stateHandler.setApplicationLanguage(this)
         }
     }
 
@@ -179,7 +179,7 @@ internal class SettingsViewModel @Inject constructor(
             settingsDataChoicesCollectionStates.setPerformanceCollection(checked)
             val isEnabled = settingsDataChoicesCollectionStates.getPerformanceCollectionValue()
             if (checked == isEnabled) {
-                stateHandler.setPerformanceState(checked, appConfigProvider.buildFlavor)
+                stateHandler.setPerformance(checked, appConfigProvider.buildFlavor)
             } else {
                 stateHandler.setPerformanceError(true)
             }
@@ -193,7 +193,7 @@ internal class SettingsViewModel @Inject constructor(
             settingsDataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked)
             val isEnabled = settingsDataChoicesCollectionStates.getAllowPersonalizedAdsValue()
             if (checked == isEnabled) {
-                stateHandler.setPersonalizedAdsState(checked, appConfigProvider.buildFlavor)
+                stateHandler.setPersonalizedAds(checked, appConfigProvider.buildFlavor)
             } else {
                 stateHandler.setPersonalizedAdsError(true)
             }
@@ -203,10 +203,10 @@ internal class SettingsViewModel @Inject constructor(
     }
 
     private suspend fun handleOnThemeSelect(id: Int) {
-        stateHandler.setApplicationTheme(null)
+        stateHandler.setSelectApplicationTheme(null)
         ApplicationTheme.values().first { it.id == id }.run {
             settingsAppearanceCollectionStates.setApplicationThemeValue(this)
-            stateHandler.setThemeState(this)
+            stateHandler.setApplicationThemeState(this)
         }
     }
 }

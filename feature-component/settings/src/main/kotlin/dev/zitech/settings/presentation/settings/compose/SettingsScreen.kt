@@ -87,18 +87,18 @@ internal fun SettingsScreen(
         )
         analyticsErrorHandled()
     }
-    if (state.applicationLanguage != null) {
+    if (state.selectApplicationLanguage != null) {
         FireFlowDialogs.Radio(
             title = stringResource(R.string.appearance_dialog_language_title),
-            radioItems = getDialogLanguages(state.applicationLanguage),
+            radioItems = getDialogLanguages(state.selectApplicationLanguage),
             onItemClick = onLanguageSelect,
             onDismissRequest = onLanguageDismiss
         )
     }
-    if (state.applicationTheme != null) {
+    if (state.selectApplicationTheme != null) {
         FireFlowDialogs.Radio(
             title = stringResource(R.string.appearance_dialog_theme_title),
-            radioItems = getDialogThemes(state.applicationTheme),
+            radioItems = getDialogThemes(state.selectApplicationTheme),
             onItemClick = onThemeSelect,
             onDismissRequest = onThemeDismiss
         )
@@ -234,7 +234,7 @@ private fun getAppearancePreferences(
         CategoryPreference.Icon(
             title = stringResource(R.string.appearance_theme),
             icon = FireFlowIcons.Brightness6,
-            description = stringResource(state.theme.text),
+            description = stringResource(state.applicationTheme.text),
             onClick = Pair(stringResource(R.string.cd_appearance_theme_click), onThemeClick)
         )
     )
@@ -243,7 +243,7 @@ private fun getAppearancePreferences(
         CategoryPreference.Icon(
             title = stringResource(R.string.appearance_language),
             icon = FireFlowIcons.Language,
-            description = stringResource(state.language.text),
+            description = stringResource(state.applicationLanguage.text),
             onClick = Pair(
                 stringResource(R.string.cd_appearance_language_click),
                 onLanguageClick
