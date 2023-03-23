@@ -17,14 +17,13 @@
 
 package dev.zitech.core.persistence.domain.usecase.database
 
-import dev.zitech.core.common.domain.error.Error
 import dev.zitech.core.common.domain.model.Work
 import dev.zitech.core.common.domain.model.WorkError
 import dev.zitech.core.common.domain.model.WorkSuccess
 import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
 import javax.inject.Inject
-import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.first
 
 /**
  * Use case for updating the current user account with new values for specified fields.
@@ -44,10 +43,9 @@ class UpdateCurrentUserAccountUseCase @Inject constructor(
      * If unsuccessful, returns [WorkError] with the corresponding error.
      */
     suspend operator fun invoke(vararg fields: Field): Work<Unit> =
-        when (val result = userAccountRepository.getCurrentUserAccount().firstOrNull()) {
+        when (val result = userAccountRepository.getCurrentUserAccount().first()) {
             is WorkError -> WorkError(result.error)
             is WorkSuccess -> handleResultSuccess(result.data, fields)
-            null -> WorkError(Error.NullCurrentUserAccount)
         }
 
     private suspend fun handleResultSuccess(
