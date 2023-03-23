@@ -61,7 +61,8 @@ internal fun FireFlowApp(
     theme: ApplicationTheme?,
     windowSizeClass: WindowSizeClass,
     navController: NavHostController,
-    appState: FireFlowAppState = rememberFireFlowAppState(windowSizeClass, navController)
+    splash: Boolean,
+    appState: FireFlowAppState = rememberFireFlowAppState(windowSizeClass, navController, splash)
 ) {
     FireFlowTheme(
         darkTheme = isDarkTheme(theme)

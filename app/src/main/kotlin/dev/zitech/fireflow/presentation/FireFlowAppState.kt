@@ -44,16 +44,19 @@ import dev.zitech.settings.presentation.navigation.SettingsDestination
 @Composable
 internal fun rememberFireFlowAppState(
     windowSizeClass: WindowSizeClass,
-    navController: NavHostController
-): FireFlowAppState = remember(navController, windowSizeClass) {
-    FireFlowAppState(navController, windowSizeClass)
+    navController: NavHostController,
+    splash: Boolean
+): FireFlowAppState = remember(navController, splash, windowSizeClass) {
+    FireFlowAppState(navController, splash, windowSizeClass)
 }
 
 @Stable
 internal class FireFlowAppState(
     val navController: NavHostController,
+    private val splash: Boolean,
     private val windowSizeClass: WindowSizeClass
 ) {
+
     val currentDestination: NavDestination?
         @Composable get() = navController
             .currentBackStackEntryAsState().value?.destination
@@ -62,13 +65,13 @@ internal class FireFlowAppState(
         @Composable get() = (
             windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact ||
                 windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact
-            ) && isCurrentDestinationTopLevelDestination()
+            ) && isCurrentDestinationTopLevelDestination() && !splash
 
     val shouldShowNavRail: Boolean
         @Composable get() = !(
             windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact ||
                 windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact
-            ) && isCurrentDestinationTopLevelDestination()
+            ) && isCurrentDestinationTopLevelDestination() && !splash
 
     val topLevelDestinations: List<TopLevelDestination> = listOf(
         TopLevelDestination(
@@ -86,6 +89,27 @@ internal class FireFlowAppState(
             iconTextId = settingsR.string.settings
         )
     )
+
+    fun closeApplication() {
+        (navController.context as? AppCompatActivity)?.finish()
+    }
+
+    fun goBack(
+        destination: FireFlowNavigationDestination?,
+        inclusive: Boolean? = DEFAULT_STATE_INCLUSIVE
+    ) {
+        if (destination != null && inclusive != null) {
+            try {
+                val id = navController.getBackStackEntry(destination.route).destination.id
+                navController.popBackStack(id, inclusive)
+            } catch (e: IllegalArgumentException) {
+                Logger.e("FireFlowAppState", e)
+                restartApplication()
+            }
+        } else {
+            navController.popBackStack()
+        }
+    }
 
     fun navigate(
         destination: FireFlowNavigationDestination,
@@ -117,27 +141,6 @@ internal class FireFlowAppState(
                 }
             }
         }
-    }
-
-    fun goBack(
-        destination: FireFlowNavigationDestination?,
-        inclusive: Boolean? = DEFAULT_STATE_INCLUSIVE
-    ) {
-        if (destination != null && inclusive != null) {
-            try {
-                val id = navController.getBackStackEntry(destination.route).destination.id
-                navController.popBackStack(id, inclusive)
-            } catch (e: IllegalArgumentException) {
-                Logger.e("FireFlowAppState", e)
-                restartApplication()
-            }
-        } else {
-            navController.popBackStack()
-        }
-    }
-
-    fun closeApplication() {
-        (navController.context as? AppCompatActivity)?.finish()
     }
 
     fun restartApplication() {

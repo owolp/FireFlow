@@ -40,14 +40,8 @@ import dev.zitech.fireflow.presentation.main.viewmodel.ScreenResumed
 // Using AppCompatActivity, since ComponentActivity doesn't support language change
 internal class MainActivity : AppCompatActivity() {
 
-    private companion object {
-        const val QUERY_PARAMETER_CODE = "code"
-        const val QUERY_PARAMETER_STATE = "state"
-    }
-
-    private val tag = Logger.tag(this::class.java)
-
     private val viewModel: MainViewModel by viewModels()
+    private val tag = Logger.tag(this::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         if (savedInstanceState == null) {
@@ -75,7 +69,8 @@ internal class MainActivity : AppCompatActivity() {
             FireFlowApp(
                 theme = mainState.theme,
                 windowSizeClass = calculateWindowSizeClass(this),
-                navController = navController
+                navController = navController,
+                splash = mainState.splash
             )
         }
     }
@@ -91,5 +86,10 @@ internal class MainActivity : AppCompatActivity() {
                 state = intent.data?.getQueryParameter(QUERY_PARAMETER_STATE)
             )
         )
+    }
+
+    private companion object {
+        const val QUERY_PARAMETER_CODE = "code"
+        const val QUERY_PARAMETER_STATE = "state"
     }
 }
