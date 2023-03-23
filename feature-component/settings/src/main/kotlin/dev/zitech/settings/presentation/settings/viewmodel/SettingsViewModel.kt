@@ -25,6 +25,8 @@ import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.domain.model.ApplicationLanguage
 import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.core.common.domain.model.BuildFlavor
+import dev.zitech.core.common.domain.model.WorkError
+import dev.zitech.core.common.domain.model.WorkSuccess
 import dev.zitech.core.common.domain.model.onSuccess
 import dev.zitech.core.common.domain.navigation.LogInState
 import dev.zitech.core.common.presentation.architecture.DeepLinkViewModel
@@ -68,7 +70,19 @@ internal class SettingsViewModel @Inject constructor(
     override val screenState: StateFlow<SettingsState> = mutableState.asStateFlow()
 
     init {
-        getPreferencesState()
+        viewModelScope.launch {
+            if (appConfigProvider.buildFlavor != BuildFlavor.FOSS) {
+                setPreferencesStateDefault()
+            } else {
+                setPreferencesStateLimited()
+            }
+
+            mutableState.update {
+                it.copy(
+                    viewState = SettingsState.ViewState.Success
+                )
+            }
+        }
     }
 
     override fun sendIntent(intent: SettingsIntent) {
@@ -107,32 +121,6 @@ internal class SettingsViewModel @Inject constructor(
                     it.copy(personalizedAdsError = false)
                 }
             }
-        }
-    }
-
-    private fun getPreferencesState() = viewModelScope.launch {
-        if (appConfigProvider.buildFlavor != BuildFlavor.FOSS) {
-            mutableState.update {
-                it.copy(
-                    analytics = settingsDataChoicesCollectionStates
-                        .getAnalyticsCollectionValue(),
-                    applicationLanguage = settingsAppearanceCollectionStates
-                        .getApplicationLanguageValue(),
-                    applicationTheme = settingsAppearanceCollectionStates
-                        .getApplicationThemeValue(),
-                    crashReporter = settingsDataChoicesCollectionStates
-                        .getCrashReporterCollectionValue(),
-                    performance = settingsDataChoicesCollectionStates
-                        .getPerformanceCollectionValue(),
-                    personalizedAds = settingsDataChoicesCollectionStates
-                        .getAllowPersonalizedAdsValue(),
-                    version = appConfigProvider.version
-                )
-            }
-        }
-        mutableState.update { it.copy(viewState = SettingsState.ViewState.Success) }
-        getCurrentUserAccountUseCase().first().onSuccess { userAccount ->
-            mutableState.update { it.copy(email = userAccount.email.orEmpty()) }
         }
     }
 
@@ -218,6 +206,42 @@ internal class SettingsViewModel @Inject constructor(
         ApplicationTheme.values().first { it.id == id }.run {
             settingsAppearanceCollectionStates.setApplicationThemeValue(this)
             mutableState.update { it.copy(applicationTheme = this) }
+        }
+    }
+
+    private suspend fun setPreferencesStateDefault() {
+        mutableState.update {
+            it.copy(
+                analytics = settingsDataChoicesCollectionStates
+                    .getAnalyticsCollectionValue(),
+                applicationLanguage = settingsAppearanceCollectionStates
+                    .getApplicationLanguageValue(),
+                applicationTheme = settingsAppearanceCollectionStates
+                    .getApplicationThemeValue(),
+                crashReporter = settingsDataChoicesCollectionStates
+                    .getCrashReporterCollectionValue(),
+                email = when (val result = getCurrentUserAccountUseCase().first()) {
+                    is WorkSuccess -> result.data.email.orEmpty()
+                    is WorkError -> ""
+                },
+                performance = settingsDataChoicesCollectionStates
+                    .getPerformanceCollectionValue(),
+                personalizedAds = settingsDataChoicesCollectionStates
+                    .getAllowPersonalizedAdsValue(),
+                version = appConfigProvider.version,
+                viewState = SettingsState.ViewState.Success
+            )
+        }
+    }
+
+    private suspend fun setPreferencesStateLimited() {
+        mutableState.update {
+            it.copy(
+                email = when (val result = getCurrentUserAccountUseCase().first()) {
+                    is WorkSuccess -> result.data.email.orEmpty()
+                    is WorkError -> ""
+                }
+            )
         }
     }
 }
