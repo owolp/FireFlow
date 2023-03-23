@@ -52,26 +52,26 @@ import dev.zitech.settings.presentation.settings.viewmodel.SettingsState
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun SettingsScreen(
-    state: SettingsState,
-    onAnalyticsCheckChange: (checked: Boolean) -> Unit,
-    onPersonalizedAdsCheckChange: (checked: Boolean) -> Unit,
-    onPerformanceCheckChange: (checked: Boolean) -> Unit,
-    onCrashReporterCheckChange: (checked: Boolean) -> Unit,
-    onThemeClick: () -> Unit,
-    onLanguageClick: () -> Unit,
-    onLogOutClick: () -> Unit,
-    onLanguageSelect: (itemSelected: Int) -> Unit,
-    onLanguageDismiss: () -> Unit,
-    onThemeSelect: (itemSelected: Int) -> Unit,
-    onThemeDismiss: () -> Unit,
-    onConfirmLogOutClick: () -> Unit,
-    onConfirmLogOutDismiss: () -> Unit,
-    onRestartApplication: () -> Unit,
-    analyticsErrorHandled: () -> Unit,
-    crashReporterErrorHandled: () -> Unit,
-    personalizedAdsErrorHandled: () -> Unit,
-    performanceErrorHandled: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    analyticsChecked: (checked: Boolean) -> Unit = {},
+    analyticsErrorHandled: () -> Unit = {},
+    confirmLogOutClicked: () -> Unit = {},
+    confirmLogOutDismissed: () -> Unit = {},
+    crashReporterChecked: (checked: Boolean) -> Unit = {},
+    crashReporterErrorHandled: () -> Unit = {},
+    languageDismissed: () -> Unit = {},
+    languagePreferenceClicked: () -> Unit = {},
+    languageSelected: (itemSelected: Int) -> Unit = {},
+    logOutClicked: () -> Unit = {},
+    performanceChecked: (checked: Boolean) -> Unit = {},
+    performanceErrorHandled: () -> Unit = {},
+    personalizedAdsChecked: (checked: Boolean) -> Unit = {},
+    personalizedAdsErrorHandled: () -> Unit = {},
+    restartApplicationClicked: () -> Unit = {},
+    state: SettingsState = SettingsState(),
+    themeDismissed: () -> Unit = {},
+    themePreferenceClicked: () -> Unit = {},
+    themeSelected: (itemSelected: Int) -> Unit = {}
 ) {
     val topAppBarScrollBehavior = FireFlowTopAppBars.topAppBarScrollBehavior(
         ScrollBehavior.ExitUntilCollapsed
@@ -82,7 +82,7 @@ internal fun SettingsScreen(
         snackbarState.showMessage(
             getBottomNotifierMessage(
                 text = R.string.data_choices_analytics_error,
-                onAction = onRestartApplication
+                onAction = restartApplicationClicked
             )
         )
         analyticsErrorHandled()
@@ -91,31 +91,31 @@ internal fun SettingsScreen(
         FireFlowDialogs.Radio(
             title = stringResource(R.string.appearance_dialog_language_title),
             radioItems = getDialogLanguages(state.selectApplicationLanguage),
-            onItemClick = onLanguageSelect,
-            onDismissRequest = onLanguageDismiss
+            onItemClick = languageSelected,
+            onDismissRequest = languageDismissed
         )
     }
     if (state.selectApplicationTheme != null) {
         FireFlowDialogs.Radio(
             title = stringResource(R.string.appearance_dialog_theme_title),
             radioItems = getDialogThemes(state.selectApplicationTheme),
-            onItemClick = onThemeSelect,
-            onDismissRequest = onThemeDismiss
+            onItemClick = themeSelected,
+            onDismissRequest = themeDismissed
         )
     }
     if (state.confirmLogOut) {
         FireFlowDialogs.Alert(
             title = stringResource(R.string.more_dialog_log_out_title),
             text = stringResource(R.string.more_dialog_log_out_text),
-            onConfirmButtonClick = onConfirmLogOutClick,
-            onDismissRequest = onConfirmLogOutDismiss
+            onConfirmButtonClick = confirmLogOutClicked,
+            onDismissRequest = confirmLogOutDismissed
         )
     }
     if (state.crashReporterError) {
         snackbarState.showMessage(
             getBottomNotifierMessage(
                 text = R.string.data_choices_crash_reporter_error,
-                onAction = onRestartApplication
+                onAction = restartApplicationClicked
             )
         )
         crashReporterErrorHandled()
@@ -124,7 +124,7 @@ internal fun SettingsScreen(
         snackbarState.showMessage(
             getBottomNotifierMessage(
                 text = R.string.data_choices_personalized_ads_error,
-                onAction = onRestartApplication
+                onAction = restartApplicationClicked
             )
         )
         personalizedAdsErrorHandled()
@@ -133,7 +133,7 @@ internal fun SettingsScreen(
         snackbarState.showMessage(
             getBottomNotifierMessage(
                 text = R.string.data_choices_personalized_ads_error,
-                onAction = onRestartApplication
+                onAction = restartApplicationClicked
             )
         )
         performanceErrorHandled()
@@ -153,13 +153,13 @@ internal fun SettingsScreen(
         SettingsScreenContent(
             innerPadding = innerPadding,
             state = state,
-            onAnalyticsCheckChange = onAnalyticsCheckChange,
-            onPersonalizedAdsCheckChange = onPersonalizedAdsCheckChange,
-            onPerformanceCheckChange = onPerformanceCheckChange,
-            onCrashReporterCheckChange = onCrashReporterCheckChange,
-            onThemeClick = onThemeClick,
-            onLanguageClick = onLanguageClick,
-            onLogOutClick = onLogOutClick
+            onAnalyticsCheckChange = analyticsChecked,
+            onPersonalizedAdsCheckChange = personalizedAdsChecked,
+            onPerformanceCheckChange = performanceChecked,
+            onCrashReporterCheckChange = crashReporterChecked,
+            onThemeClick = themePreferenceClicked,
+            onLanguageClick = languagePreferenceClicked,
+            onLogOutClick = logOutClicked
         )
     }
 }
@@ -374,42 +374,6 @@ private fun getBottomNotifierMessage(
     )
 )
 
-@Preview(
-    name = "Settings Screen Light Theme",
-    showBackground = true
-)
-@Preview(
-    name = "Settings Screen Dark Theme",
-    uiMode = Configuration.UI_MODE_NIGHT_YES,
-    showBackground = true
-)
-@Composable
-private fun SettingsScreen_Preview() {
-    PreviewFireFlowTheme {
-        SettingsScreen(
-            state = SettingsState(),
-            onAnalyticsCheckChange = {},
-            onPersonalizedAdsCheckChange = {},
-            onPerformanceCheckChange = {},
-            onCrashReporterCheckChange = {},
-            onThemeClick = {},
-            onLanguageClick = {},
-            onLogOutClick = {},
-            onRestartApplication = {},
-            analyticsErrorHandled = {},
-            crashReporterErrorHandled = {},
-            personalizedAdsErrorHandled = {},
-            performanceErrorHandled = {},
-            onLanguageDismiss = {},
-            onLanguageSelect = {},
-            onThemeDismiss = {},
-            onThemeSelect = {},
-            onConfirmLogOutClick = {},
-            onConfirmLogOutDismiss = {}
-        )
-    }
-}
-
 @Composable
 private fun getDialogLanguages(applicationLanguage: ApplicationLanguage): List<DialogRadioItem> =
     ApplicationLanguage.values().sortedBy { it.id }
@@ -433,3 +397,19 @@ private fun getDialogThemes(applicationTheme: ApplicationTheme): List<DialogRadi
                 enabled = true
             )
         }
+
+@Preview(
+    name = "Settings Screen Light Theme",
+    showBackground = true
+)
+@Preview(
+    name = "Settings Screen Dark Theme",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showBackground = true
+)
+@Composable
+private fun SettingsScreen_Preview() {
+    PreviewFireFlowTheme {
+        SettingsScreen()
+    }
+}

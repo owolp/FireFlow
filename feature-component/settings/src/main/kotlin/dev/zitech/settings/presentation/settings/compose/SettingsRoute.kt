@@ -38,15 +38,15 @@ import dev.zitech.settings.presentation.settings.viewmodel.LanguageDismissed
 import dev.zitech.settings.presentation.settings.viewmodel.LanguagePreferenceClicked
 import dev.zitech.settings.presentation.settings.viewmodel.LanguageSelected
 import dev.zitech.settings.presentation.settings.viewmodel.LogOutClicked
-import dev.zitech.settings.presentation.settings.viewmodel.OnRestartApplicationClicked
-import dev.zitech.settings.presentation.settings.viewmodel.OnThemeSelected
 import dev.zitech.settings.presentation.settings.viewmodel.PerformanceChecked
 import dev.zitech.settings.presentation.settings.viewmodel.PerformanceErrorHandled
 import dev.zitech.settings.presentation.settings.viewmodel.PersonalizedAdsChecked
 import dev.zitech.settings.presentation.settings.viewmodel.PersonalizedAdsErrorHandled
+import dev.zitech.settings.presentation.settings.viewmodel.RestartApplicationClicked
 import dev.zitech.settings.presentation.settings.viewmodel.SettingsViewModel
 import dev.zitech.settings.presentation.settings.viewmodel.ThemeDismissed
 import dev.zitech.settings.presentation.settings.viewmodel.ThemePreferenceClicked
+import dev.zitech.settings.presentation.settings.viewmodel.ThemeSelected
 
 @Composable
 internal fun SettingsRoute(
@@ -70,29 +70,29 @@ internal fun SettingsRoute(
             SettingsScreen(
                 modifier = modifier,
                 state = screenState,
-                onAnalyticsCheckChange = { checked ->
+                analyticsChecked = { checked ->
                     viewModel.receiveIntent(AnalyticsChecked(checked))
                 },
-                onPersonalizedAdsCheckChange = { checked ->
+                personalizedAdsChecked = { checked ->
                     viewModel.receiveIntent(PersonalizedAdsChecked(checked))
                 },
-                onPerformanceCheckChange = { checked ->
+                performanceChecked = { checked ->
                     viewModel.receiveIntent(PerformanceChecked(checked))
                 },
-                onCrashReporterCheckChange = { checked ->
+                crashReporterChecked = { checked ->
                     viewModel.receiveIntent(CrashReporterChecked(checked))
                 },
-                onThemeClick = {
+                themePreferenceClicked = {
                     viewModel.receiveIntent(ThemePreferenceClicked)
                 },
-                onLanguageClick = {
+                languagePreferenceClicked = {
                     viewModel.receiveIntent(LanguagePreferenceClicked)
                 },
-                onLogOutClick = {
+                logOutClicked = {
                     viewModel.receiveIntent(LogOutClicked)
                 },
-                onRestartApplication = {
-                    viewModel.receiveIntent(OnRestartApplicationClicked(restartApplication))
+                restartApplicationClicked = {
+                    viewModel.receiveIntent(RestartApplicationClicked(restartApplication))
                 },
                 analyticsErrorHandled = {
                     viewModel.receiveIntent(AnalyticsErrorHandled)
@@ -106,22 +106,22 @@ internal fun SettingsRoute(
                 performanceErrorHandled = {
                     viewModel.receiveIntent(PerformanceErrorHandled)
                 },
-                onThemeSelect = { itemSelected ->
-                    viewModel.receiveIntent(OnThemeSelected(itemSelected))
+                themeSelected = { itemSelected ->
+                    viewModel.receiveIntent(ThemeSelected(itemSelected))
                 },
-                onThemeDismiss = {
+                themeDismissed = {
                     viewModel.receiveIntent(ThemeDismissed)
                 },
-                onLanguageSelect = { itemSelected ->
+                languageSelected = { itemSelected ->
                     viewModel.receiveIntent(LanguageSelected(itemSelected))
                 },
-                onLanguageDismiss = {
+                languageDismissed = {
                     viewModel.receiveIntent(LanguageDismissed)
                 },
-                onConfirmLogOutDismiss = {
+                confirmLogOutDismissed = {
                     viewModel.receiveIntent(ConfirmLogOutDismissed)
                 },
-                onConfirmLogOutClick = {
+                confirmLogOutClicked = {
                     viewModel.receiveIntent(ConfirmLogOutClicked)
                 }
             )

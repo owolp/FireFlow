@@ -104,8 +104,8 @@ internal class SettingsViewModel @Inject constructor(
                 }
                 is LanguageSelected -> handleLanguageSelected(intent.id)
                 LogOutClicked -> mutableState.update { it.copy(confirmLogOut = true) }
-                is OnRestartApplicationClicked -> intent.restart()
-                is OnThemeSelected -> handleOnThemeSelected(intent.id)
+                is RestartApplicationClicked -> intent.restart()
+                is ThemeSelected -> handleOnThemeSelected(intent.id)
                 is PerformanceChecked -> handlePerformanceChecked(intent.checked)
                 PerformanceErrorHandled -> mutableState.update { it.copy(performanceError = false) }
                 is PersonalizedAdsChecked -> handlePersonalizedAdsChecked(

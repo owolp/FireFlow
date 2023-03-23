@@ -20,39 +20,21 @@ package dev.zitech.settings.presentation.settings.viewmodel
 import dev.zitech.core.common.presentation.architecture.MviIntent
 
 internal data class AnalyticsChecked(val checked: Boolean) : SettingsIntent
-
 internal data class CrashReporterChecked(val checked: Boolean) : SettingsIntent
-
 internal data class LanguageSelected(val id: Int) : SettingsIntent
-
-internal data class OnRestartApplicationClicked(val restart: () -> Unit) : SettingsIntent
-
-internal data class OnThemeSelected(val id: Int) : SettingsIntent
-
 internal data class PerformanceChecked(val checked: Boolean) : SettingsIntent
-
 internal data class PersonalizedAdsChecked(val checked: Boolean) : SettingsIntent
-
-internal sealed interface SettingsIntent : MviIntent
-
+internal data class RestartApplicationClicked(val restart: () -> Unit) : SettingsIntent
+internal data class ThemeSelected(val id: Int) : SettingsIntent
 internal object AnalyticsErrorHandled : SettingsIntent
-
 internal object ConfirmLogOutClicked : SettingsIntent
-
 internal object ConfirmLogOutDismissed : SettingsIntent
-
 internal object CrashReporterErrorHandled : SettingsIntent
-
 internal object LanguageDismissed : SettingsIntent
-
 internal object LanguagePreferenceClicked : SettingsIntent
-
 internal object LogOutClicked : SettingsIntent
-
 internal object PerformanceErrorHandled : SettingsIntent
-
 internal object PersonalizedAdsErrorHandled : SettingsIntent
-
 internal object ThemeDismissed : SettingsIntent
-
 internal object ThemePreferenceClicked : SettingsIntent
+internal sealed interface SettingsIntent : MviIntent
