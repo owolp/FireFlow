@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@ import dev.zitech.core.reporter.crash.domain.usecase.SetCrashReporterCollectionU
 import dev.zitech.core.reporter.performance.domain.usecase.SetPerformanceCollectionUseCase
 import javax.inject.Inject
 
-internal class SettingsDataChoicesCollectionStates @Inject constructor(
+internal class DataChoicesCollectionStates @Inject constructor(
     private val getAnalyticsCollectionValueUseCase: GetAnalyticsCollectionValueUseCase,
     private val setAnalyticsCollectionUseCase: SetAnalyticsCollectionUseCase,
     private val getAllowPersonalizedAdsValueUseCase: GetAllowPersonalizedAdsValueUseCase,

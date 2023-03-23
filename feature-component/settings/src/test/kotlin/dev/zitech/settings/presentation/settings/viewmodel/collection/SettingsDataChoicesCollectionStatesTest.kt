@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,11 +47,11 @@ internal class SettingsDataChoicesCollectionStatesTest {
     private val getPerformanceCollectionValueUseCase = mockk<GetPerformanceCollectionValueUseCase>()
     private val setPerformanceCollectionUseCase = mockk<SetPerformanceCollectionUseCase>(relaxed = true)
 
-    private lateinit var sut: SettingsDataChoicesCollectionStates
+    private lateinit var sut: DataChoicesCollectionStates
 
     @BeforeEach
     fun setup() {
-        sut = SettingsDataChoicesCollectionStates(
+        sut = DataChoicesCollectionStates(
             getAnalyticsCollectionValueUseCase,
             setAnalyticsCollectionUseCase,
             getAllowPersonalizedAdsValueUseCase,
