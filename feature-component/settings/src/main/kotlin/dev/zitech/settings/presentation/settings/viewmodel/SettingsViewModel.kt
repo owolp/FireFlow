@@ -36,7 +36,6 @@ import dev.zitech.navigation.domain.usecase.GetScreenDestinationUseCase
 import dev.zitech.navigation.presentation.extension.logInState
 import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsAppearanceCollectionStates
 import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsDataChoicesCollectionStates
-import dev.zitech.settings.presentation.settings.viewmodel.error.SettingsShowErrorProvider
 import javax.inject.Inject
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
@@ -53,7 +52,6 @@ internal class SettingsViewModel @Inject constructor(
     private val getCurrentUserAccountUseCase: GetCurrentUserAccountUseCase,
     private val settingsAppearanceCollectionStates: SettingsAppearanceCollectionStates,
     private val settingsDataChoicesCollectionStates: SettingsDataChoicesCollectionStates,
-    private val settingsShowErrorProvider: SettingsShowErrorProvider,
     private val stateHandler: SettingsStateHandler,
     private val updateUserAccountUseCase: UpdateUserAccountUseCase
 ) : ViewModel(), MviViewModel<SettingsIntent, SettingsState>, DeepLinkViewModel {
@@ -83,15 +81,22 @@ internal class SettingsViewModel @Inject constructor(
                 is OnPerformanceCheckChange -> handleOnPerformanceCheckChange(intent.checked)
                 is OnThemeSelect -> handleOnThemeSelect(intent.id)
                 is OnLanguageSelect -> handleOnLanguageSelect(intent.id)
-                OnThemePreferenceClick -> handleOnThemeClick()
-                OnLanguagePreferenceClick -> handleOnLanguagePreferenceClick()
-                OnThemeDismiss,
-                OnLanguageDismiss,
-                ErrorHandled,
-                OnConfirmLogOutDismiss -> stateHandler.resetEvent()
-                OnRestartApplication -> stateHandler.setEvent(RestartApplication)
-                OnLogOutClick -> stateHandler.setEvent(ConfirmLogOut)
+                OnThemePreferenceClick -> stateHandler.setApplicationTheme(
+                    stateHandler.state.value.theme
+                )
+                OnLanguagePreferenceClick -> stateHandler.setSelectLanguage(
+                    stateHandler.state.value.language
+                )
+                OnThemeDismiss -> stateHandler.setApplicationTheme(null)
+                OnLanguageDismiss -> stateHandler.setSelectLanguage(null)
+                OnConfirmLogOutDismiss -> stateHandler.setConfirmLogOut(false)
+                is OnRestartApplication -> intent.restart()
+                OnLogOutClick -> stateHandler.setConfirmLogOut(true)
                 OnConfirmLogOutClick -> handleOnConfirmLogOutClick()
+                AnalyticsErrorHandled -> stateHandler.setAnalyticsError(false)
+                CrashReporterErrorHandled -> stateHandler.setCrashReporterError(false)
+                PerformanceErrorHandled -> stateHandler.setPerformanceError(false)
+                PersonalizedAdsErrorHandled -> stateHandler.setPersonalizedAdsError(false)
             }
         }
     }
@@ -135,7 +140,7 @@ internal class SettingsViewModel @Inject constructor(
                 settingsDataChoicesCollectionStates.setPerformanceCollection(checked)
                 stateHandler.setPerformanceState(checked, appConfigProvider.buildFlavor)
             } else {
-                stateHandler.setErrorState(settingsShowErrorProvider.analyticsError)
+                stateHandler.setAnalyticsError(true)
             }
         } else {
             Logger.e(tag, "Setting analytics on FOSS build is not supported")
@@ -143,8 +148,10 @@ internal class SettingsViewModel @Inject constructor(
     }
 
     private suspend fun handleOnConfirmLogOutClick() {
+        stateHandler.setConfirmLogOut(false)
+        // TODO: Show loading
+        stateHandler
         getCurrentUserAccountUseCase().first().onSuccess { userAccount ->
-            stateHandler.resetEvent()
             updateUserAccountUseCase(userAccount.copy(isCurrentUserAccount = false))
         }
     }
@@ -155,23 +162,15 @@ internal class SettingsViewModel @Inject constructor(
         if (checked == isEnabled) {
             stateHandler.setCrashReporterState(checked)
         } else {
-            stateHandler.setErrorState(settingsShowErrorProvider.crashReporterError)
+            stateHandler.setCrashReporterError(true)
         }
     }
 
-    private fun handleOnLanguagePreferenceClick() {
-        stateHandler.setEvent(
-            SelectLanguage(
-                applicationLanguage = stateHandler.state.value.language
-            )
-        )
-    }
-
     private fun handleOnLanguageSelect(id: Int) {
+        stateHandler.setSelectLanguage(null)
         ApplicationLanguage.values().first { it.id == id }.run {
             settingsAppearanceCollectionStates.setApplicationLanguageValue(this)
             stateHandler.setLanguageState(this)
-            stateHandler.resetEvent()
         }
     }
 
@@ -182,7 +181,7 @@ internal class SettingsViewModel @Inject constructor(
             if (checked == isEnabled) {
                 stateHandler.setPerformanceState(checked, appConfigProvider.buildFlavor)
             } else {
-                stateHandler.setErrorState(settingsShowErrorProvider.performanceError)
+                stateHandler.setPerformanceError(true)
             }
         } else {
             Logger.e(tag, "Setting performance on FOSS build is not supported")
@@ -196,26 +195,18 @@ internal class SettingsViewModel @Inject constructor(
             if (checked == isEnabled) {
                 stateHandler.setPersonalizedAdsState(checked, appConfigProvider.buildFlavor)
             } else {
-                stateHandler.setErrorState(settingsShowErrorProvider.personalizedAdsError)
+                stateHandler.setPersonalizedAdsError(true)
             }
         } else {
             Logger.e(tag, "Setting personalized ads on FOSS build is not supported")
         }
     }
 
-    private fun handleOnThemeClick() {
-        stateHandler.setEvent(
-            SelectTheme(
-                applicationTheme = stateHandler.state.value.theme
-            )
-        )
-    }
-
     private suspend fun handleOnThemeSelect(id: Int) {
+        stateHandler.setApplicationTheme(null)
         ApplicationTheme.values().first { it.id == id }.run {
             settingsAppearanceCollectionStates.setApplicationThemeValue(this)
             stateHandler.setThemeState(this)
-            stateHandler.resetEvent()
         }
     }
 }

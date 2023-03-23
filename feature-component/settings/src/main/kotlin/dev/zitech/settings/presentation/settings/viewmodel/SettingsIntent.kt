@@ -31,8 +31,11 @@ internal object OnThemeDismiss : SettingsIntent
 internal object OnLanguagePreferenceClick : SettingsIntent
 internal data class OnLanguageSelect(val id: Int) : SettingsIntent
 internal object OnLanguageDismiss : SettingsIntent
-internal object OnRestartApplication : SettingsIntent
-internal object ErrorHandled : SettingsIntent
+internal data class OnRestartApplication(val restart: () -> Unit) : SettingsIntent
 internal object OnLogOutClick : SettingsIntent
 internal object OnConfirmLogOutClick : SettingsIntent
 internal object OnConfirmLogOutDismiss : SettingsIntent
+internal object AnalyticsErrorHandled : SettingsIntent
+internal object CrashReporterErrorHandled : SettingsIntent
+internal object PersonalizedAdsErrorHandled : SettingsIntent
+internal object PerformanceErrorHandled : SettingsIntent

@@ -31,10 +31,11 @@ import kotlinx.coroutines.flow.update
 internal class SettingsStateHandler @Inject constructor() : MviStateHandler<SettingsState> {
 
     private val mutableState = MutableStateFlow(SettingsState())
+
     override val state: StateFlow<SettingsState> = mutableState.asStateFlow()
 
-    fun resetEvent() {
-        setEvent(Idle)
+    fun setAnalyticsError(value: Boolean) {
+        mutableState.update { it.copy(analyticsError = value) }
     }
 
     fun setAnalyticsState(
@@ -50,6 +51,18 @@ internal class SettingsStateHandler @Inject constructor() : MviStateHandler<Sett
         mutableState.update { it.copy(version = value) }
     }
 
+    fun setApplicationTheme(value: ApplicationTheme?) {
+        mutableState.update { it.copy(applicationTheme = value) }
+    }
+
+    fun setConfirmLogOut(value: Boolean) {
+        mutableState.update { it.copy(confirmLogOut = value) }
+    }
+
+    fun setCrashReporterError(value: Boolean) {
+        mutableState.update { it.copy(crashReporterError = value) }
+    }
+
     fun setCrashReporterState(value: Boolean) {
         mutableState.update { it.copy(crashReporter = value) }
     }
@@ -58,16 +71,12 @@ internal class SettingsStateHandler @Inject constructor() : MviStateHandler<Sett
         mutableState.update { it.copy(email = value) }
     }
 
-    fun setErrorState(value: SettingsEvent) {
-        mutableState.update { it.copy(event = value) }
-    }
-
-    fun setEvent(event: SettingsEvent) {
-        mutableState.update { it.copy(event = event) }
-    }
-
     fun setLanguageState(value: ApplicationLanguage) {
         mutableState.update { it.copy(language = value) }
+    }
+
+    fun setPerformanceError(value: Boolean) {
+        mutableState.update { it.copy(performanceError = value) }
     }
 
     fun setPerformanceState(
@@ -79,6 +88,10 @@ internal class SettingsStateHandler @Inject constructor() : MviStateHandler<Sett
         }
     }
 
+    fun setPersonalizedAdsError(value: Boolean) {
+        mutableState.update { it.copy(personalizedAdsError = value) }
+    }
+
     fun setPersonalizedAdsState(
         value: Boolean,
         buildFlavor: BuildFlavor
@@ -86,6 +99,10 @@ internal class SettingsStateHandler @Inject constructor() : MviStateHandler<Sett
         if (buildFlavor != BuildFlavor.FOSS) {
             mutableState.update { it.copy(personalizedAds = value) }
         }
+    }
+
+    fun setSelectLanguage(value: ApplicationLanguage?) {
+        mutableState.update { it.copy(applicationLanguage = value) }
     }
 
     fun setThemeState(value: ApplicationTheme) {

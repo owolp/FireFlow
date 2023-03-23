@@ -23,12 +23,18 @@ import dev.zitech.core.common.presentation.architecture.MviState
 
 internal data class SettingsState(
     val analytics: Boolean? = null,
+    val analyticsError: Boolean = false,
+    val applicationLanguage: ApplicationLanguage? = null,
+    val applicationTheme: ApplicationTheme? = null,
+    val confirmLogOut: Boolean = false,
     val crashReporter: Boolean = false,
+    val crashReporterError: Boolean = false,
     val email: String = "",
-    val event: SettingsEvent = Idle,
     val language: ApplicationLanguage = ApplicationLanguage.SYSTEM,
     val performance: Boolean? = null,
+    val performanceError: Boolean = false,
     val personalizedAds: Boolean? = null,
+    val personalizedAdsError: Boolean = false,
     val theme: ApplicationTheme = ApplicationTheme.SYSTEM,
     val version: String = "",
     val viewState: ViewState = ViewState.InitScreen

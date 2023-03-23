@@ -22,23 +22,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.zitech.core.common.domain.error.Error
-import dev.zitech.core.common.domain.model.ApplicationLanguage
-import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.core.common.domain.navigation.DeepLinkScreenDestination
 import dev.zitech.core.common.domain.navigation.LogInState
 import dev.zitech.ds.atoms.loading.FireFlowProgressIndicators
-import dev.zitech.ds.molecules.dialog.DialogRadioItem
-import dev.zitech.ds.molecules.dialog.FireFlowDialogs
-import dev.zitech.ds.molecules.snackbar.BottomNotifierMessage
-import dev.zitech.ds.molecules.snackbar.rememberSnackbarState
-import dev.zitech.settings.R
-import dev.zitech.settings.presentation.settings.viewmodel.ConfirmLogOut
-import dev.zitech.settings.presentation.settings.viewmodel.ErrorHandled
-import dev.zitech.settings.presentation.settings.viewmodel.Idle
+import dev.zitech.settings.presentation.settings.viewmodel.AnalyticsErrorHandled
+import dev.zitech.settings.presentation.settings.viewmodel.CrashReporterErrorHandled
 import dev.zitech.settings.presentation.settings.viewmodel.OnAnalyticsCheckChange
 import dev.zitech.settings.presentation.settings.viewmodel.OnConfirmLogOutClick
 import dev.zitech.settings.presentation.settings.viewmodel.OnConfirmLogOutDismiss
@@ -53,11 +44,9 @@ import dev.zitech.settings.presentation.settings.viewmodel.OnRestartApplication
 import dev.zitech.settings.presentation.settings.viewmodel.OnThemeDismiss
 import dev.zitech.settings.presentation.settings.viewmodel.OnThemePreferenceClick
 import dev.zitech.settings.presentation.settings.viewmodel.OnThemeSelect
-import dev.zitech.settings.presentation.settings.viewmodel.RestartApplication
-import dev.zitech.settings.presentation.settings.viewmodel.SelectLanguage
-import dev.zitech.settings.presentation.settings.viewmodel.SelectTheme
+import dev.zitech.settings.presentation.settings.viewmodel.PerformanceErrorHandled
+import dev.zitech.settings.presentation.settings.viewmodel.PersonalizedAdsErrorHandled
 import dev.zitech.settings.presentation.settings.viewmodel.SettingsViewModel
-import dev.zitech.settings.presentation.settings.viewmodel.ShowError
 
 @Composable
 internal fun SettingsRoute(
@@ -70,7 +59,6 @@ internal fun SettingsRoute(
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
     val logInState by viewModel.logInState.collectAsStateWithLifecycle()
-    val snackbarState = rememberSnackbarState()
 
     when (val state = logInState) {
         LogInState.InitScreen -> {
@@ -82,7 +70,6 @@ internal fun SettingsRoute(
             SettingsScreen(
                 modifier = modifier,
                 state = screenState,
-                snackbarState = snackbarState,
                 onAnalyticsCheckChange = { checked ->
                     viewModel.sendIntent(OnAnalyticsCheckChange(checked))
                 },
@@ -103,6 +90,39 @@ internal fun SettingsRoute(
                 },
                 onLogOutClick = {
                     viewModel.sendIntent(OnLogOutClick)
+                },
+                onRestartApplication = {
+                    viewModel.sendIntent(OnRestartApplication(restartApplication))
+                },
+                analyticsErrorHandled = {
+                    viewModel.sendIntent(AnalyticsErrorHandled)
+                },
+                crashReporterErrorHandled = {
+                    viewModel.sendIntent(CrashReporterErrorHandled)
+                },
+                personalizedAdsErrorHandled = {
+                    viewModel.sendIntent(PersonalizedAdsErrorHandled)
+                },
+                performanceErrorHandled = {
+                    viewModel.sendIntent(PerformanceErrorHandled)
+                },
+                onThemeSelect = { itemSelected ->
+                    viewModel.sendIntent(OnThemeSelect(itemSelected))
+                },
+                onThemeDismiss = {
+                    viewModel.sendIntent(OnThemeDismiss)
+                },
+                onLanguageSelect = { itemSelected ->
+                    viewModel.sendIntent(OnLanguageSelect(itemSelected))
+                },
+                onLanguageDismiss = {
+                    viewModel.sendIntent(OnLanguageDismiss)
+                },
+                onConfirmLogOutDismiss = {
+                    viewModel.sendIntent(OnConfirmLogOutDismiss)
+                },
+                onConfirmLogOutClick = {
+                    viewModel.sendIntent(OnConfirmLogOutClick)
                 }
             )
         }
@@ -121,73 +141,4 @@ internal fun SettingsRoute(
             }
         }
     }
-
-    when (val event = screenState.event) {
-        is ShowError -> {
-            snackbarState.showMessage(
-                BottomNotifierMessage(
-                    text = stringResource(event.messageResId),
-                    state = BottomNotifierMessage.State.ERROR,
-                    duration = BottomNotifierMessage.Duration.SHORT,
-                    action = BottomNotifierMessage.Action(
-                        label = event.action,
-                        onAction = { viewModel.sendIntent(OnRestartApplication) }
-                    )
-                )
-            )
-            viewModel.sendIntent(ErrorHandled)
-        }
-        is SelectTheme -> {
-            FireFlowDialogs.Radio(
-                title = stringResource(R.string.appearance_dialog_theme_title),
-                radioItems = getDialogThemes(event.applicationTheme),
-                onItemClick = { viewModel.sendIntent(OnThemeSelect(it)) },
-                onDismissRequest = { viewModel.sendIntent(OnThemeDismiss) }
-            )
-        }
-        is SelectLanguage -> {
-            FireFlowDialogs.Radio(
-                title = stringResource(R.string.appearance_dialog_language_title),
-                radioItems = getDialogLanguages(event.applicationLanguage),
-                onItemClick = { viewModel.sendIntent(OnLanguageSelect(it)) },
-                onDismissRequest = { viewModel.sendIntent(OnLanguageDismiss) }
-            )
-        }
-        RestartApplication -> restartApplication()
-        is ConfirmLogOut -> {
-            FireFlowDialogs.Alert(
-                title = stringResource(R.string.more_dialog_log_out_title),
-                text = stringResource(R.string.more_dialog_log_out_text),
-                onConfirmButtonClick = { viewModel.sendIntent(OnConfirmLogOutClick) },
-                onDismissRequest = { viewModel.sendIntent(OnConfirmLogOutDismiss) }
-            )
-        }
-        Idle -> {
-            // NO_OP
-        }
-    }
 }
-
-@Composable
-private fun getDialogLanguages(applicationLanguage: ApplicationLanguage): List<DialogRadioItem> =
-    ApplicationLanguage.values().sortedBy { it.id }
-        .map {
-            DialogRadioItem(
-                id = it.id,
-                text = stringResource(it.text),
-                selected = applicationLanguage.id == it.id,
-                enabled = true
-            )
-        }
-
-@Composable
-private fun getDialogThemes(applicationTheme: ApplicationTheme): List<DialogRadioItem> =
-    ApplicationTheme.values().sortedBy { it.id }
-        .map {
-            DialogRadioItem(
-                id = it.id,
-                text = stringResource(it.text),
-                selected = applicationTheme.id == it.id,
-                enabled = true
-            )
-        }
