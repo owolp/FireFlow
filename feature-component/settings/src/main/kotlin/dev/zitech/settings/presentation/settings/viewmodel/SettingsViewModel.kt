@@ -74,34 +74,34 @@ internal class SettingsViewModel @Inject constructor(
     override fun sendIntent(intent: SettingsIntent) {
         viewModelScope.launch {
             when (intent) {
-                is OnCrashReporterCheckChange -> handleOnCrashReporterCheckChange(intent.checked)
-                is OnAnalyticsCheckChange -> handleOnAnalyticsCheckChange(intent.checked)
-                is OnPersonalizedAdsCheckChange -> handleOnPersonalizedAdsCheckChange(
-                    intent.checked
-                )
-                is OnPerformanceCheckChange -> handleOnPerformanceCheckChange(intent.checked)
-                is OnThemeSelect -> handleOnThemeSelect(intent.id)
-                is OnLanguageSelect -> handleOnLanguageSelect(intent.id)
-                OnThemePreferenceClick -> mutableState.update {
-                    it.copy(selectApplicationTheme = it.applicationTheme)
-                }
-                OnLanguagePreferenceClick -> mutableState.update {
-                    it.copy(selectApplicationLanguage = it.applicationLanguage)
-                }
-                OnThemeDismiss -> mutableState.update {
-                    it.copy(selectApplicationTheme = null)
-                }
-                OnLanguageDismiss -> mutableState.update {
-                    it.copy(selectApplicationLanguage = null)
-                }
-                OnConfirmLogOutDismiss -> mutableState.update { it.copy(confirmLogOut = false) }
-                is OnRestartApplication -> intent.restart()
-                OnLogOutClick -> mutableState.update { it.copy(confirmLogOut = true) }
-                OnConfirmLogOutClick -> handleOnConfirmLogOutClick()
                 AnalyticsErrorHandled -> mutableState.update { it.copy(analyticsError = false) }
                 CrashReporterErrorHandled -> mutableState.update {
                     it.copy(crashReporterError = false)
                 }
+                is OnAnalyticsCheckChange -> handleOnAnalyticsCheckChange(intent.checked)
+                OnConfirmLogOutClick -> handleOnConfirmLogOutClick()
+                OnConfirmLogOutDismiss -> mutableState.update { it.copy(confirmLogOut = false) }
+                is OnCrashReporterCheckChange -> handleOnCrashReporterCheckChange(intent.checked)
+                OnLanguageDismiss -> mutableState.update {
+                    it.copy(selectApplicationLanguage = null)
+                }
+                OnLanguagePreferenceClick -> mutableState.update {
+                    it.copy(selectApplicationLanguage = it.applicationLanguage)
+                }
+                is OnLanguageSelect -> handleOnLanguageSelect(intent.id)
+                OnLogOutClick -> mutableState.update { it.copy(confirmLogOut = true) }
+                is OnPerformanceCheckChange -> handleOnPerformanceCheckChange(intent.checked)
+                is OnPersonalizedAdsCheckChange -> handleOnPersonalizedAdsCheckChange(
+                    intent.checked
+                )
+                is OnRestartApplication -> intent.restart()
+                OnThemeDismiss -> mutableState.update {
+                    it.copy(selectApplicationTheme = null)
+                }
+                OnThemePreferenceClick -> mutableState.update {
+                    it.copy(selectApplicationTheme = it.applicationTheme)
+                }
+                is OnThemeSelect -> handleOnThemeSelect(intent.id)
                 PerformanceErrorHandled -> mutableState.update { it.copy(performanceError = false) }
                 PersonalizedAdsErrorHandled -> mutableState.update {
                     it.copy(personalizedAdsError = false)
