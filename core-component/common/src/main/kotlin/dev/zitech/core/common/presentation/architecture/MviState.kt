@@ -19,6 +19,15 @@ package dev.zitech.core.common.presentation.architecture
 
 import java.util.UUID
 
+/**
+ * The `MviState` interface represents the state of the screen in the Model-View-Intent (MVI) architecture.
+ *
+ * All states in the MVI architecture should be immutable, and changes to the state should be done by creating
+ * a new instance of the state with the updated values.
+ *
+ * Implementations of this interface should be data classes to ensure immutability and provide convenient
+ * copying and updating of the state.
+ */
 interface MviState {
     @Deprecated("Do not use")
     interface Event {

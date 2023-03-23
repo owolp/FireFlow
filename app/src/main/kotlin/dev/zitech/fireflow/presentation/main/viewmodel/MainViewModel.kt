@@ -49,7 +49,7 @@ internal class MainViewModel @Inject constructor(
 
     private val tag = Logger.tag(this::class.java)
 
-    override val screenState: StateFlow<MainState> = stateHandler.state
+    override val state: StateFlow<MainState> = stateHandler.state
 
     init {
         applicationLaunchAnalyticsEvent()

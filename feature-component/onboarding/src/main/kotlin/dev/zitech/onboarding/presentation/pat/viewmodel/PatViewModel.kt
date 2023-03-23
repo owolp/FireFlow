@@ -55,7 +55,7 @@ internal class PatViewModel @Inject constructor(
 
     private val tag = Logger.tag(this::class.java)
 
-    override val screenState: StateFlow<PatState> = stateHandler.state
+    override val state: StateFlow<PatState> = stateHandler.state
 
     override fun receiveIntent(intent: PatIntent) {
         viewModelScope.launch {
@@ -138,8 +138,8 @@ internal class PatViewModel @Inject constructor(
     }
 
     private suspend fun handleOnLoginClick() {
-        val accessToken = screenState.value.pat
-        val serverAddress = screenState.value.serverAddress
+        val accessToken = state.value.pat
+        val serverAddress = state.value.serverAddress
         val state = DataFactory.createRandomString(STATE_LENGTH)
 
         withContext(appDispatchers.io) {
@@ -170,7 +170,7 @@ internal class PatViewModel @Inject constructor(
 
     private fun setLoginEnabled() {
         stateHandler.setLoginEnabled(
-            with(screenState.value) {
+            with(state.value) {
                 isPatLoginInputValidUseCase(
                     personalAccessToken = pat,
                     serverAddress = serverAddress

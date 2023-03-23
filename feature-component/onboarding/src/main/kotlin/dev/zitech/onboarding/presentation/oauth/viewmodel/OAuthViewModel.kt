@@ -62,7 +62,7 @@ internal class OAuthViewModel @Inject constructor(
 
     private val tag = Logger.tag(this::class.java)
 
-    override val screenState: StateFlow<OAuthState> = stateHandler.state
+    override val state: StateFlow<OAuthState> = stateHandler.state
 
     override fun receiveIntent(intent: OAuthIntent) {
         viewModelScope.launch {
@@ -122,9 +122,9 @@ internal class OAuthViewModel @Inject constructor(
     }
 
     private suspend fun handleOnLoginClick() {
-        val clientId = screenState.value.clientId
-        val clientSecret = screenState.value.clientSecret
-        val serverAddress = screenState.value.serverAddress
+        val clientId = state.value.clientId
+        val clientSecret = state.value.clientSecret
+        val serverAddress = state.value.serverAddress
         val state = DataFactory.createRandomString(STATE_LENGTH)
 
         withContext(appDispatchers.io) {
@@ -284,7 +284,7 @@ internal class OAuthViewModel @Inject constructor(
 
     private fun setLoginEnabledOrDisabled() {
         stateHandler.setLoginEnabled(
-            with(screenState.value) {
+            with(state.value) {
                 isOauthLoginInputValidUseCase(
                     clientId = clientId,
                     clientSecret = clientSecret,

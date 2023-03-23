@@ -35,7 +35,7 @@ internal fun AccountsRoute(
     modifier: Modifier = Modifier,
     viewModel: AccountsViewModel = hiltViewModel()
 ) {
-    val screenState by viewModel.screenState.collectAsStateWithLifecycle()
+    val screenState by viewModel.state.collectAsStateWithLifecycle()
 
     when (screenState.event) {
         NavigateToDashboard -> {

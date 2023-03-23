@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,4 +17,13 @@
 
 package dev.zitech.core.common.presentation.architecture
 
+/**
+ * The `MviIntent` interface represents an intention to perform an action in the Model-View-Intent (MVI) architecture.
+ *
+ * Intents can be thought of as user actions that trigger state changes in the ViewModel. Examples of intents might
+ * include a button click, a change in the device's configuration, or other user interaction.
+ *
+ * Implementations of this interface should be data classes or objects to provide a convenient and consistent way of passing
+ * data along with the intent.
+ */
 interface MviIntent

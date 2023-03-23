@@ -47,7 +47,7 @@ internal fun PatRoute(
     modifier: Modifier = Modifier,
     viewModel: PatViewModel = hiltViewModel()
 ) {
-    val screenState by viewModel.screenState.collectAsStateWithLifecycle()
+    val screenState by viewModel.state.collectAsStateWithLifecycle()
     val snackbarState = rememberSnackbarState()
 
     when (val event = screenState.event) {

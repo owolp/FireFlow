@@ -67,7 +67,7 @@ internal class SettingsViewModel @Inject constructor(
         viewModelScope
     )
 
-    override val screenState: StateFlow<SettingsState> = mutableState.asStateFlow()
+    override val state: StateFlow<SettingsState> = mutableState.asStateFlow()
 
     init {
         viewModelScope.launch {
