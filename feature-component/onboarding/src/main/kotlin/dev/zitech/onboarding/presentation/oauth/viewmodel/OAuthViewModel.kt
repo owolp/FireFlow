@@ -64,7 +64,7 @@ internal class OAuthViewModel @Inject constructor(
 
     override val screenState: StateFlow<OAuthState> = stateHandler.state
 
-    override fun sendIntent(intent: OAuthIntent) {
+    override fun receiveIntent(intent: OAuthIntent) {
         viewModelScope.launch {
             when (intent) {
                 OnLoginClick -> handleOnLoginClick()

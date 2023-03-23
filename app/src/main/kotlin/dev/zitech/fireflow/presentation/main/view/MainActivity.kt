@@ -78,7 +78,7 @@ internal class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         Logger.d(tag, "onResume, `intent.data=${intent.data}`")
-        viewModel.sendIntent(
+        viewModel.receiveIntent(
             ScreenResumed(
                 code = intent.data?.getQueryParameter(QUERY_PARAMETER_CODE),
                 host = intent.data?.host,

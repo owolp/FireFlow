@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,5 +21,5 @@ import kotlinx.coroutines.flow.StateFlow
 
 interface MviViewModel<Intent : MviIntent, State : MviState> {
     val screenState: StateFlow<State>
-    fun sendIntent(intent: Intent)
+    fun receiveIntent(intent: Intent)
 }

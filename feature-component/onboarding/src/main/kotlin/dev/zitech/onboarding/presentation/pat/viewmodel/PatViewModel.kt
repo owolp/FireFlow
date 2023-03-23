@@ -57,7 +57,7 @@ internal class PatViewModel @Inject constructor(
 
     override val screenState: StateFlow<PatState> = stateHandler.state
 
-    override fun sendIntent(intent: PatIntent) {
+    override fun receiveIntent(intent: PatIntent) {
         viewModelScope.launch {
             when (intent) {
                 OnLoginClick -> handleOnLoginClick()

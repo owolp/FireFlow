@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@ internal class AccountsViewModel @Inject constructor(
 
     override val screenState: StateFlow<AccountsState> = stateHandler.state
 
-    override fun sendIntent(intent: AccountsIntent) {
+    override fun receiveIntent(intent: AccountsIntent) {
         viewModelScope.launch {
             when (intent) {
                 OnLoginClick -> stateHandler.setEvent(NavigateToDashboard)

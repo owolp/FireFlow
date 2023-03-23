@@ -71,58 +71,58 @@ internal fun SettingsRoute(
                 modifier = modifier,
                 state = screenState,
                 onAnalyticsCheckChange = { checked ->
-                    viewModel.sendIntent(OnAnalyticsCheckChange(checked))
+                    viewModel.receiveIntent(OnAnalyticsCheckChange(checked))
                 },
                 onPersonalizedAdsCheckChange = { checked ->
-                    viewModel.sendIntent(OnPersonalizedAdsCheckChange(checked))
+                    viewModel.receiveIntent(OnPersonalizedAdsCheckChange(checked))
                 },
                 onPerformanceCheckChange = { checked ->
-                    viewModel.sendIntent(OnPerformanceCheckChange(checked))
+                    viewModel.receiveIntent(OnPerformanceCheckChange(checked))
                 },
                 onCrashReporterCheckChange = { checked ->
-                    viewModel.sendIntent(OnCrashReporterCheckChange(checked))
+                    viewModel.receiveIntent(OnCrashReporterCheckChange(checked))
                 },
                 onThemeClick = {
-                    viewModel.sendIntent(OnThemePreferenceClick)
+                    viewModel.receiveIntent(OnThemePreferenceClick)
                 },
                 onLanguageClick = {
-                    viewModel.sendIntent(OnLanguagePreferenceClick)
+                    viewModel.receiveIntent(OnLanguagePreferenceClick)
                 },
                 onLogOutClick = {
-                    viewModel.sendIntent(OnLogOutClick)
+                    viewModel.receiveIntent(OnLogOutClick)
                 },
                 onRestartApplication = {
-                    viewModel.sendIntent(OnRestartApplication(restartApplication))
+                    viewModel.receiveIntent(OnRestartApplication(restartApplication))
                 },
                 analyticsErrorHandled = {
-                    viewModel.sendIntent(AnalyticsErrorHandled)
+                    viewModel.receiveIntent(AnalyticsErrorHandled)
                 },
                 crashReporterErrorHandled = {
-                    viewModel.sendIntent(CrashReporterErrorHandled)
+                    viewModel.receiveIntent(CrashReporterErrorHandled)
                 },
                 personalizedAdsErrorHandled = {
-                    viewModel.sendIntent(PersonalizedAdsErrorHandled)
+                    viewModel.receiveIntent(PersonalizedAdsErrorHandled)
                 },
                 performanceErrorHandled = {
-                    viewModel.sendIntent(PerformanceErrorHandled)
+                    viewModel.receiveIntent(PerformanceErrorHandled)
                 },
                 onThemeSelect = { itemSelected ->
-                    viewModel.sendIntent(OnThemeSelect(itemSelected))
+                    viewModel.receiveIntent(OnThemeSelect(itemSelected))
                 },
                 onThemeDismiss = {
-                    viewModel.sendIntent(OnThemeDismiss)
+                    viewModel.receiveIntent(OnThemeDismiss)
                 },
                 onLanguageSelect = { itemSelected ->
-                    viewModel.sendIntent(OnLanguageSelect(itemSelected))
+                    viewModel.receiveIntent(OnLanguageSelect(itemSelected))
                 },
                 onLanguageDismiss = {
-                    viewModel.sendIntent(OnLanguageDismiss)
+                    viewModel.receiveIntent(OnLanguageDismiss)
                 },
                 onConfirmLogOutDismiss = {
-                    viewModel.sendIntent(OnConfirmLogOutDismiss)
+                    viewModel.receiveIntent(OnConfirmLogOutDismiss)
                 },
                 onConfirmLogOutClick = {
-                    viewModel.sendIntent(OnConfirmLogOutClick)
+                    viewModel.receiveIntent(OnConfirmLogOutClick)
                 }
             )
         }

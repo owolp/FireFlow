@@ -78,7 +78,7 @@ internal class MainViewModel @Inject constructor(
         }
     }
 
-    override fun sendIntent(intent: MainIntent) {
+    override fun receiveIntent(intent: MainIntent) {
         viewModelScope.launch {
             when (intent) {
                 is ScreenResumed -> handleScreenResumed(intent)

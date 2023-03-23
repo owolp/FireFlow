@@ -85,7 +85,7 @@ internal class SettingsViewModel @Inject constructor(
         }
     }
 
-    override fun sendIntent(intent: SettingsIntent) {
+    override fun receiveIntent(intent: SettingsIntent) {
         viewModelScope.launch {
             when (intent) {
                 AnalyticsErrorHandled -> mutableState.update { it.copy(analyticsError = false) }

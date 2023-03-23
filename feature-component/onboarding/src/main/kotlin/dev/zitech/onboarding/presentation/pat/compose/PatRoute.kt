@@ -53,15 +53,15 @@ internal fun PatRoute(
     when (val event = screenState.event) {
         NavigateToDashboard -> {
             navigateToDashboard()
-            viewModel.sendIntent(NavigationHandled)
+            viewModel.receiveIntent(NavigationHandled)
         }
         NavigateBack -> {
             navigateBack()
-            viewModel.sendIntent(NavigationHandled)
+            viewModel.receiveIntent(NavigationHandled)
         }
         is NavigateToError -> {
             navigateToError(event.error)
-            viewModel.sendIntent(NavigationHandled)
+            viewModel.receiveIntent(NavigationHandled)
         }
         is ShowError -> {
             snackbarState.showMessage(
@@ -72,7 +72,7 @@ internal fun PatRoute(
                     duration = BottomNotifierMessage.Duration.SHORT
                 )
             )
-            viewModel.sendIntent(ErrorHandled)
+            viewModel.receiveIntent(ErrorHandled)
         }
         Idle -> {
             // NO_OP
@@ -82,9 +82,9 @@ internal fun PatRoute(
         modifier = modifier,
         patState = screenState,
         snackbarState = snackbarState,
-        onLoginClick = { viewModel.sendIntent(OnLoginClick) },
-        onBackClick = { viewModel.sendIntent(OnBackClick) },
-        onServerAddressChange = { viewModel.sendIntent(OnServerAddressChange(it)) },
-        onPersonalAccessTokenChange = { viewModel.sendIntent(OnPersonalAccessTokenChange(it)) }
+        onLoginClick = { viewModel.receiveIntent(OnLoginClick) },
+        onBackClick = { viewModel.receiveIntent(OnBackClick) },
+        onServerAddressChange = { viewModel.receiveIntent(OnServerAddressChange(it)) },
+        onPersonalAccessTokenChange = { viewModel.receiveIntent(OnPersonalAccessTokenChange(it)) }
     )
 }

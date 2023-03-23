@@ -43,7 +43,7 @@ internal class WelcomeViewModel @Inject constructor(
 
     override val screenState: StateFlow<WelcomeState> = stateHandler.state
 
-    override fun sendIntent(intent: WelcomeIntent) {
+    override fun receiveIntent(intent: WelcomeIntent) {
         viewModelScope.launch {
             when (intent) {
                 OnContinueWithOauthClick -> stateHandler.setEvent(NavigateToOAuth)

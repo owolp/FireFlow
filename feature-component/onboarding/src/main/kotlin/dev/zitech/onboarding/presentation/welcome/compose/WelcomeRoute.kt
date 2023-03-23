@@ -73,23 +73,23 @@ internal fun WelcomeRoute(
     when (val event = screenState.event) {
         NavigateToOAuth -> {
             navigateToOAuth()
-            viewModel.sendIntent(NavigationHandled)
+            viewModel.receiveIntent(NavigationHandled)
         }
         NavigateToPat -> {
             navigateToPat()
-            viewModel.sendIntent(NavigationHandled)
+            viewModel.receiveIntent(NavigationHandled)
         }
         NavigateToDemo -> {
             navigateToDemo()
-            viewModel.sendIntent(NavigationHandled)
+            viewModel.receiveIntent(NavigationHandled)
         }
         NavigateOutOfApp -> {
             navigateOutOfApp()
-            viewModel.sendIntent(NavigationHandled)
+            viewModel.receiveIntent(NavigationHandled)
         }
         is NavigateToError -> {
             navigateToError(event.error)
-            viewModel.sendIntent(NavigationHandled)
+            viewModel.receiveIntent(NavigationHandled)
         }
         is NavigateToFirefly -> {
             LaunchedEffect(Unit) {
@@ -97,7 +97,7 @@ internal fun WelcomeRoute(
                     context,
                     event.url
                 ).onEach { event ->
-                    viewModel.sendIntent(NavigatedToFireflyResult(event))
+                    viewModel.receiveIntent(NavigatedToFireflyResult(event))
                 }.stateIn(coroutineScope)
             }
         }
@@ -105,8 +105,8 @@ internal fun WelcomeRoute(
             FireFlowDialogs.Alert(
                 text = event.text,
                 confirmButton = event.confirm,
-                onConfirmButtonClick = { viewModel.sendIntent(OnShowDemoPositive) },
-                onDismissRequest = { viewModel.sendIntent(OnShowDemoDismiss) }
+                onConfirmButtonClick = { viewModel.receiveIntent(OnShowDemoPositive) },
+                onDismissRequest = { viewModel.receiveIntent(OnShowDemoDismiss) }
             )
         }
         is ShowError -> {
@@ -118,7 +118,7 @@ internal fun WelcomeRoute(
                     duration = BottomNotifierMessage.Duration.SHORT
                 )
             )
-            viewModel.sendIntent(ErrorHandled)
+            viewModel.receiveIntent(ErrorHandled)
         }
         Idle -> {
             // NO_OP
@@ -128,10 +128,10 @@ internal fun WelcomeRoute(
     WelcomeScreen(
         modifier = modifier,
         snackbarState = snackbarState,
-        onContinueWithOauthClick = { viewModel.sendIntent(OnContinueWithOauthClick) },
-        onContinueWithPatClick = { viewModel.sendIntent(OnContinueWithPatClick) },
-        onGetStartedClick = { viewModel.sendIntent(OnGetStartedClick) },
-        onBackClick = { viewModel.sendIntent(OnBackClick) },
-        onFireflyClick = { viewModel.sendIntent(OnFireflyClick) }
+        onContinueWithOauthClick = { viewModel.receiveIntent(OnContinueWithOauthClick) },
+        onContinueWithPatClick = { viewModel.receiveIntent(OnContinueWithPatClick) },
+        onGetStartedClick = { viewModel.receiveIntent(OnGetStartedClick) },
+        onBackClick = { viewModel.receiveIntent(OnBackClick) },
+        onFireflyClick = { viewModel.receiveIntent(OnFireflyClick) }
     )
 }

@@ -43,7 +43,7 @@ internal class DashboardViewModel @Inject constructor(
         viewModelScope
     )
 
-    override fun sendIntent(intent: DashboardIntent) {
+    override fun receiveIntent(intent: DashboardIntent) {
         // NO_OP
     }
 }
