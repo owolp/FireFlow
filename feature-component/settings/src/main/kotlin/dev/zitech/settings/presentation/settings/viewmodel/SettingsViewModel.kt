@@ -37,7 +37,6 @@ import dev.zitech.navigation.presentation.extension.logInState
 import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsAppearanceCollectionStates
 import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsDataChoicesCollectionStates
 import dev.zitech.settings.presentation.settings.viewmodel.error.SettingsShowErrorProvider
-import dev.zitech.settings.presentation.settings.viewmodel.theme.SettingsStringsProvider
 import javax.inject.Inject
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
@@ -55,7 +54,6 @@ internal class SettingsViewModel @Inject constructor(
     private val settingsAppearanceCollectionStates: SettingsAppearanceCollectionStates,
     private val settingsDataChoicesCollectionStates: SettingsDataChoicesCollectionStates,
     private val settingsShowErrorProvider: SettingsShowErrorProvider,
-    private val settingsStringsProvider: SettingsStringsProvider,
     private val stateHandler: SettingsStateHandler,
     private val updateUserAccountUseCase: UpdateUserAccountUseCase
 ) : ViewModel(), MviViewModel<SettingsIntent, SettingsState>, DeepLinkViewModel {
@@ -164,9 +162,7 @@ internal class SettingsViewModel @Inject constructor(
     private fun handleOnLanguagePreferenceClick() {
         stateHandler.setEvent(
             SelectLanguage(
-                languages = settingsStringsProvider.getDialogLanguages(
-                    stateHandler.state.value.language
-                )
+                applicationLanguage = stateHandler.state.value.language
             )
         )
     }
@@ -210,9 +206,7 @@ internal class SettingsViewModel @Inject constructor(
     private fun handleOnThemeClick() {
         stateHandler.setEvent(
             SelectTheme(
-                themes = settingsStringsProvider.getDialogThemes(
-                    stateHandler.state.value.theme
-                )
+                applicationTheme = stateHandler.state.value.theme
             )
         )
     }

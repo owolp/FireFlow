@@ -26,9 +26,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.zitech.core.common.domain.error.Error
+import dev.zitech.core.common.domain.model.ApplicationLanguage
+import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.core.common.domain.navigation.DeepLinkScreenDestination
 import dev.zitech.core.common.domain.navigation.LogInState
 import dev.zitech.ds.atoms.loading.FireFlowProgressIndicators
+import dev.zitech.ds.molecules.dialog.DialogRadioItem
 import dev.zitech.ds.molecules.dialog.FireFlowDialogs
 import dev.zitech.ds.molecules.snackbar.BottomNotifierMessage
 import dev.zitech.ds.molecules.snackbar.rememberSnackbarState
@@ -137,7 +140,7 @@ internal fun SettingsRoute(
         is SelectTheme -> {
             FireFlowDialogs.Radio(
                 title = stringResource(R.string.appearance_dialog_theme_title),
-                radioItems = event.themes,
+                radioItems = getDialogThemes(event.applicationTheme),
                 onItemClick = { viewModel.sendIntent(OnThemeSelect(it)) },
                 onDismissRequest = { viewModel.sendIntent(OnThemeDismiss) }
             )
@@ -145,7 +148,7 @@ internal fun SettingsRoute(
         is SelectLanguage -> {
             FireFlowDialogs.Radio(
                 title = stringResource(R.string.appearance_dialog_language_title),
-                radioItems = event.languages,
+                radioItems = getDialogLanguages(event.applicationLanguage),
                 onItemClick = { viewModel.sendIntent(OnLanguageSelect(it)) },
                 onDismissRequest = { viewModel.sendIntent(OnLanguageDismiss) }
             )
@@ -164,3 +167,27 @@ internal fun SettingsRoute(
         }
     }
 }
+
+@Composable
+private fun getDialogLanguages(applicationLanguage: ApplicationLanguage): List<DialogRadioItem> =
+    ApplicationLanguage.values().sortedBy { it.id }
+        .map {
+            DialogRadioItem(
+                id = it.id,
+                text = stringResource(it.text),
+                selected = applicationLanguage.id == it.id,
+                enabled = true
+            )
+        }
+
+@Composable
+private fun getDialogThemes(applicationTheme: ApplicationTheme): List<DialogRadioItem> =
+    ApplicationTheme.values().sortedBy { it.id }
+        .map {
+            DialogRadioItem(
+                id = it.id,
+                text = stringResource(it.text),
+                selected = applicationTheme.id == it.id,
+                enabled = true
+            )
+        }

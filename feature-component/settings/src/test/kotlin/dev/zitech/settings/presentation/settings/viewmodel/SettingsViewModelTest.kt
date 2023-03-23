@@ -17,7 +17,6 @@
 
 package dev.zitech.settings.presentation.settings.viewmodel
 
-import DialogRadioItemBuilder
 import dev.zitech.core.common.DataFactory
 import dev.zitech.core.common.domain.model.ApplicationLanguage
 import dev.zitech.core.common.domain.model.ApplicationTheme
@@ -33,7 +32,6 @@ import dev.zitech.navigation.domain.usecase.GetScreenDestinationUseCase
 import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsAppearanceCollectionStates
 import dev.zitech.settings.presentation.settings.viewmodel.collection.SettingsDataChoicesCollectionStates
 import dev.zitech.settings.presentation.settings.viewmodel.error.SettingsShowErrorProvider
-import dev.zitech.settings.presentation.settings.viewmodel.theme.SettingsStringsProvider
 import dev.zitech.settings.presentation.test.MainDispatcherRule
 import dev.zitech.settings.presentation.test.TestObserver
 import dev.zitech.settings.presentation.test.test
@@ -67,7 +65,6 @@ internal class SettingsViewModelTest {
     private val settingsDataChoicesCollectionStates = mockk<SettingsDataChoicesCollectionStates>()
     private val settingsShowErrorProvider = mockk<SettingsShowErrorProvider>()
     private val settingsStateHandler = SettingsStateHandler()
-    private val settingsStringsProvider = mockk<SettingsStringsProvider>()
 
     @Test
     fun `WHEN OnAnalyticsCheck GIVEN build config is FOSS THEN do nothing`() = runTest {
@@ -393,13 +390,6 @@ internal class SettingsViewModelTest {
         val defaultApplicationLanguage = ApplicationLanguage.SYSTEM
         coEvery { settingsAppearanceCollectionStates.getApplicationLanguageValue() } returns defaultApplicationLanguage
 
-        val dialogLanguages = listOf(
-            DialogRadioItemBuilder().setId(DataFactory.createRandomInt()).build(),
-            DialogRadioItemBuilder().setId(DataFactory.createRandomInt()).build(),
-            DialogRadioItemBuilder().setId(DataFactory.createRandomInt()).build()
-        )
-        coEvery { settingsStringsProvider.getDialogLanguages(defaultApplicationLanguage) } returns dialogLanguages
-
         mockInit(
             analytics = false,
             personalizedAds = false,
@@ -420,7 +410,7 @@ internal class SettingsViewModelTest {
             getInitState(),
             getInitState(
                 event = SelectLanguage(
-                    languages = dialogLanguages
+                    applicationLanguage = defaultApplicationLanguage
                 )
             )
         )
@@ -804,14 +794,7 @@ internal class SettingsViewModelTest {
     @Test
     fun `WHEN OnThemePreferenceClick THEN send SelectTheme event`() = runTest {
         // Arrange
-        val dialogThemes = listOf(
-            DialogRadioItemBuilder().setId(DataFactory.createRandomInt()).build(),
-            DialogRadioItemBuilder().setId(DataFactory.createRandomInt()).build(),
-            DialogRadioItemBuilder().setId(DataFactory.createRandomInt()).build()
-        )
-
         val defaultUserTheme = ApplicationTheme.SYSTEM
-        coEvery { settingsStringsProvider.getDialogThemes(defaultUserTheme) } returns dialogThemes
 
         mockInit(
             analytics = false,
@@ -833,7 +816,7 @@ internal class SettingsViewModelTest {
             getInitState(),
             getInitState(
                 event = SelectTheme(
-                    themes = dialogThemes
+                    applicationTheme = defaultUserTheme
                 )
             )
         )
@@ -905,7 +888,6 @@ internal class SettingsViewModelTest {
         settingsAppearanceCollectionStates = settingsAppearanceCollectionStates,
         settingsDataChoicesCollectionStates = settingsDataChoicesCollectionStates,
         settingsShowErrorProvider = settingsShowErrorProvider,
-        settingsStringsProvider = settingsStringsProvider,
         stateHandler = settingsStateHandler,
         updateUserAccountUseCase = updateUserAccountUseCase
     )

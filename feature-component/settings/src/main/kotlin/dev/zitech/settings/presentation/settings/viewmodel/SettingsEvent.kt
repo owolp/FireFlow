@@ -17,8 +17,9 @@
 
 package dev.zitech.settings.presentation.settings.viewmodel
 
+import dev.zitech.core.common.domain.model.ApplicationLanguage
+import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.core.common.presentation.architecture.MviState
-import dev.zitech.ds.molecules.dialog.DialogRadioItem
 
 internal sealed interface SettingsEvent : MviState.Event
 
@@ -29,11 +30,11 @@ internal data class ShowError(
 ) : SettingsEvent
 
 internal data class SelectTheme(
-    val themes: List<DialogRadioItem>
+    val applicationTheme: ApplicationTheme
 ) : SettingsEvent
 
 internal data class SelectLanguage(
-    val languages: List<DialogRadioItem>
+    val applicationLanguage: ApplicationLanguage
 ) : SettingsEvent
 
 internal object RestartApplication : SettingsEvent

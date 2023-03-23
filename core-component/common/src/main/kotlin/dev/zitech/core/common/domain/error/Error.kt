@@ -17,11 +17,10 @@
 
 package dev.zitech.core.common.domain.error
 
-import androidx.annotation.StringRes
 import dev.zitech.core.common.R
 
 sealed class Error(
-    @StringRes val uiResId: Int,
+    val uiResId: Int,
     val debugText: String
 ) {
 
