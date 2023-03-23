@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,11 +17,22 @@
 
 package dev.zitech.core.common.domain.navigation
 
+/**
+ * The `LogInState` sealed class represents the possible states related to logging in within the app.
+ *
+ * This sealed class includes three possible states:
+ * - `NotLogged`: Represents the state when a user has not yet logged in, and provides a `DeepLinkScreenDestination`
+ *                object that describes the destination screen for the user to log in.
+ * - `InitScreen`: Represents the initial screen state before a user has attempted to log in.
+ * - `Logged`: Represents the state when a user has successfully logged in.
+ */
 sealed class LogInState {
-    object InitScreen : LogInState()
-    object Logged : LogInState()
 
     data class NotLogged(
         val destination: DeepLinkScreenDestination
     ) : LogInState()
+
+    object InitScreen : LogInState()
+
+    object Logged : LogInState()
 }

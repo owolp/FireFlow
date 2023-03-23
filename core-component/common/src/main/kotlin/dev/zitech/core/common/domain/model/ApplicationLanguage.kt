@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,13 +17,12 @@
 
 package dev.zitech.core.common.domain.model
 
-import androidx.annotation.StringRes
 import dev.zitech.core.common.R
 import java.util.*
 
 enum class ApplicationLanguage(
     val id: Int,
-    @StringRes val text: Int,
+    val text: Int,
     val locale: Locale?
 ) {
     SYSTEM(0, R.string.application_language_system, null),

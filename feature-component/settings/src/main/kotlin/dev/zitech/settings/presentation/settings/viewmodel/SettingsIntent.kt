@@ -19,20 +19,22 @@ package dev.zitech.settings.presentation.settings.viewmodel
 
 import dev.zitech.core.common.presentation.architecture.MviIntent
 
+internal data class AnalyticsChecked(val checked: Boolean) : SettingsIntent
+internal data class CrashReporterChecked(val checked: Boolean) : SettingsIntent
+internal data class LanguageSelected(val id: Int) : SettingsIntent
+internal data class PerformanceChecked(val checked: Boolean) : SettingsIntent
+internal data class PersonalizedAdsChecked(val checked: Boolean) : SettingsIntent
+internal data class RestartApplicationClicked(val restart: () -> Unit) : SettingsIntent
+internal data class ThemeSelected(val id: Int) : SettingsIntent
+internal object AnalyticsErrorHandled : SettingsIntent
+internal object ConfirmLogOutClicked : SettingsIntent
+internal object ConfirmLogOutDismissed : SettingsIntent
+internal object CrashReporterErrorHandled : SettingsIntent
+internal object LanguageDismissed : SettingsIntent
+internal object LanguagePreferenceClicked : SettingsIntent
+internal object LogOutClicked : SettingsIntent
+internal object PerformanceErrorHandled : SettingsIntent
+internal object PersonalizedAdsErrorHandled : SettingsIntent
+internal object ThemeDismissed : SettingsIntent
+internal object ThemePreferenceClicked : SettingsIntent
 internal sealed interface SettingsIntent : MviIntent
-
-internal data class OnAnalyticsCheckChange(val checked: Boolean) : SettingsIntent
-internal data class OnPersonalizedAdsCheckChange(val checked: Boolean) : SettingsIntent
-internal data class OnPerformanceCheckChange(val checked: Boolean) : SettingsIntent
-internal data class OnCrashReporterCheckChange(val checked: Boolean) : SettingsIntent
-internal object OnThemePreferenceClick : SettingsIntent
-internal data class OnThemeSelect(val id: Int) : SettingsIntent
-internal object OnThemeDismiss : SettingsIntent
-internal object OnLanguagePreferenceClick : SettingsIntent
-internal data class OnLanguageSelect(val id: Int) : SettingsIntent
-internal object OnLanguageDismiss : SettingsIntent
-internal object OnRestartApplication : SettingsIntent
-internal object ErrorHandled : SettingsIntent
-internal object OnLogOutClick : SettingsIntent
-internal object OnConfirmLogOutClick : SettingsIntent
-internal object OnConfirmLogOutDismiss : SettingsIntent

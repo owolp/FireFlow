@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,7 +19,23 @@ package dev.zitech.core.common.presentation.architecture
 
 import kotlinx.coroutines.flow.StateFlow
 
+/**
+ * The `MviViewModel` interface defines the contract for a ViewModel in the Model-View-Intent (MVI) architecture.
+ *
+ * @param Intent The type of intent this ViewModel can receive.
+ * @param State The type of state this ViewModel can emit.
+ */
 interface MviViewModel<Intent : MviIntent, State : MviState> {
-    val screenState: StateFlow<State>
-    fun sendIntent(intent: Intent)
+
+    /**
+     * The `state` property is a [StateFlow] that emits the current state of the screen.
+     */
+    val state: StateFlow<State>
+
+    /**
+     * The `receiveIntent` method is called by the View layer to signal an intent to the ViewModel.
+     *
+     * @param intent The [MviIntent] that the ViewModel should handle.
+     */
+    fun receiveIntent(intent: Intent)
 }

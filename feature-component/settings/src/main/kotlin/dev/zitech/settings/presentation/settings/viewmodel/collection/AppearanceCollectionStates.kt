@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@ import dev.zitech.settings.domain.usecase.SetApplicationLanguageValueUseCase
 import javax.inject.Inject
 import kotlinx.coroutines.flow.first
 
-internal class SettingsAppearanceCollectionStates @Inject constructor(
+internal class AppearanceCollectionStates @Inject constructor(
     private val getApplicationThemeValueUseCase: GetApplicationThemeValueUseCase,
     private val setApplicationThemeValueUseCase: SetApplicationThemeValueUseCase,
     private val getApplicationLanguageValueUseCase: GetApplicationLanguageValueUseCase,

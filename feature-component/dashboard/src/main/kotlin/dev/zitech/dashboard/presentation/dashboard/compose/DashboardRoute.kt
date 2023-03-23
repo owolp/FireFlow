@@ -37,7 +37,7 @@ internal fun DashboardRoute(
     navigateToError: (error: Error) -> Unit,
     navigateToWelcome: () -> Unit
 ) {
-    val screenState by viewModel.screenState.collectAsStateWithLifecycle()
+    val screenState by viewModel.state.collectAsStateWithLifecycle()
     val logInState by viewModel.logInState.collectAsStateWithLifecycle()
 
     when (val state = logInState) {

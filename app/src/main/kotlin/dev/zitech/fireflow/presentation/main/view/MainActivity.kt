@@ -47,7 +47,7 @@ internal class MainActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
             installSplashScreen().apply {
                 setKeepOnScreenCondition {
-                    viewModel.screenState.value.splash
+                    viewModel.state.value.splash
                 }
             }
         } else {
@@ -62,7 +62,7 @@ internal class MainActivity : AppCompatActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         setContent {
-            val mainState by viewModel.screenState.collectAsStateWithLifecycle()
+            val mainState by viewModel.state.collectAsStateWithLifecycle()
 
             val navController = rememberNavController()
 
@@ -78,7 +78,7 @@ internal class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         Logger.d(tag, "onResume, `intent.data=${intent.data}`")
-        viewModel.sendIntent(
+        viewModel.receiveIntent(
             ScreenResumed(
                 code = intent.data?.getQueryParameter(QUERY_PARAMETER_CODE),
                 host = intent.data?.host,

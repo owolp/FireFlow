@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,13 +35,13 @@ internal fun AccountsRoute(
     modifier: Modifier = Modifier,
     viewModel: AccountsViewModel = hiltViewModel()
 ) {
-    val screenState by viewModel.screenState.collectAsStateWithLifecycle()
+    val screenState by viewModel.state.collectAsStateWithLifecycle()
 
     when (screenState.event) {
         NavigateToDashboard -> {
             LaunchedEffect(Unit) {
                 navigateToDashboard()
-                viewModel.sendIntent(NavigationHandled)
+                viewModel.receiveIntent(NavigationHandled)
             }
         }
         Idle -> {
@@ -52,6 +52,6 @@ internal fun AccountsRoute(
     AccountsScreen(
         modifier = modifier,
         state = screenState,
-        onLoginClick = { viewModel.sendIntent(OnLoginClick) }
+        onLoginClick = { viewModel.receiveIntent(OnLoginClick) }
     )
 }

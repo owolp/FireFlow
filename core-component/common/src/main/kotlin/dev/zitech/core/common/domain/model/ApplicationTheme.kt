@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,12 +17,11 @@
 
 package dev.zitech.core.common.domain.model
 
-import androidx.annotation.StringRes
 import dev.zitech.core.common.R
 
 enum class ApplicationTheme(
     val id: Int,
-    @StringRes val text: Int
+    val text: Int
 ) {
     SYSTEM(0, R.string.application_theme_system),
     DARK(1, R.string.application_theme_dark),

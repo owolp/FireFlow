@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,16 @@ package dev.zitech.core.common.presentation.architecture
 import dev.zitech.core.common.domain.navigation.LogInState
 import kotlinx.coroutines.flow.StateFlow
 
+/**
+ * The `DeepLinkViewModel` interface represents the ViewModel responsible for handling deep links in the app.
+ *
+ * A deep link is a hyperlink that takes the user directly to a specific screen within an app, bypassing the
+ * home screen.
+ *
+ * The `logInState` property represents the state related to logging in through a deep link. It is implemented as
+ * a `StateFlow` that emits new states whenever the state changes. This property should be observed by the View
+ * to update the UI as necessary.
+ */
 interface DeepLinkViewModel {
     val logInState: StateFlow<LogInState>
 }

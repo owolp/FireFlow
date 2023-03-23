@@ -64,7 +64,7 @@ internal fun OAuthRoute(
     modifier: Modifier = Modifier,
     viewModel: OAuthViewModel = hiltViewModel()
 ) {
-    val screenState by viewModel.screenState.collectAsStateWithLifecycle()
+    val screenState by viewModel.state.collectAsStateWithLifecycle()
     val snackbarState = rememberSnackbarState()
     val context = LocalContext.current
     val coroutineScope = LocalLifecycleOwner.current.lifecycle.coroutineScope
@@ -73,22 +73,22 @@ internal fun OAuthRoute(
         ActivityResultContracts.StartActivityForResult()
     ) { activityResult ->
         if (activityResult.resultCode == RESULT_CANCELED) {
-            viewModel.sendIntent(OnAuthenticationCanceled)
+            viewModel.receiveIntent(OnAuthenticationCanceled)
         }
     }
 
     when (val event = screenState.event) {
         NavigateToDashboard -> {
             navigateToDashboard()
-            viewModel.sendIntent(NavigationHandled)
+            viewModel.receiveIntent(NavigationHandled)
         }
         NavigateBack -> {
             navigateBack()
-            viewModel.sendIntent(NavigationHandled)
+            viewModel.receiveIntent(NavigationHandled)
         }
         is NavigateToError -> {
             navigateToError(event.error)
-            viewModel.sendIntent(NavigationHandled)
+            viewModel.receiveIntent(NavigationHandled)
         }
         is NavigateToFirefly -> {
             LaunchedEffect(Unit) {
@@ -97,7 +97,7 @@ internal fun OAuthRoute(
                     event.url,
                     result
                 ).onEach { event ->
-                    viewModel.sendIntent(NavigatedToFireflyResult(event))
+                    viewModel.receiveIntent(NavigatedToFireflyResult(event))
                 }.stateIn(coroutineScope)
             }
         }
@@ -110,7 +110,7 @@ internal fun OAuthRoute(
                     duration = BottomNotifierMessage.Duration.SHORT
                 )
             )
-            viewModel.sendIntent(ErrorHandled)
+            viewModel.receiveIntent(ErrorHandled)
         }
         Idle -> {
             // NO_OP
@@ -121,14 +121,14 @@ internal fun OAuthRoute(
         modifier = modifier,
         oauthState = screenState,
         snackbarState = snackbarState,
-        onLoginClick = { viewModel.sendIntent(OnLoginClick) },
-        onBackClick = { viewModel.sendIntent(OnBackClick) },
-        onServerAddressChange = { viewModel.sendIntent(OnServerAddressChange(it)) },
-        onClientIdChange = { viewModel.sendIntent(OnClientIdChange(it)) },
-        onClientSecretChange = { viewModel.sendIntent(OnClientSecretChange(it)) }
+        onLoginClick = { viewModel.receiveIntent(OnLoginClick) },
+        onBackClick = { viewModel.receiveIntent(OnBackClick) },
+        onServerAddressChange = { viewModel.receiveIntent(OnServerAddressChange(it)) },
+        onClientIdChange = { viewModel.receiveIntent(OnClientIdChange(it)) },
+        onClientSecretChange = { viewModel.receiveIntent(OnClientSecretChange(it)) }
     )
 
     LaunchedEffect(Unit) {
-        viewModel.sendIntent(OnOauthCode(oauthAuthentication))
+        viewModel.receiveIntent(OnOauthCode(oauthAuthentication))
     }
 }

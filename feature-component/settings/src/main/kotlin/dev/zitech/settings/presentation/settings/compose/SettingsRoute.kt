@@ -22,52 +22,43 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.zitech.core.common.domain.error.Error
 import dev.zitech.core.common.domain.navigation.DeepLinkScreenDestination
 import dev.zitech.core.common.domain.navigation.LogInState
 import dev.zitech.ds.atoms.loading.FireFlowProgressIndicators
-import dev.zitech.ds.molecules.dialog.FireFlowDialogs
-import dev.zitech.ds.molecules.snackbar.BottomNotifierMessage
-import dev.zitech.ds.molecules.snackbar.rememberSnackbarState
-import dev.zitech.settings.R
-import dev.zitech.settings.presentation.settings.viewmodel.ConfirmLogOut
-import dev.zitech.settings.presentation.settings.viewmodel.ErrorHandled
-import dev.zitech.settings.presentation.settings.viewmodel.Idle
-import dev.zitech.settings.presentation.settings.viewmodel.OnAnalyticsCheckChange
-import dev.zitech.settings.presentation.settings.viewmodel.OnConfirmLogOutClick
-import dev.zitech.settings.presentation.settings.viewmodel.OnConfirmLogOutDismiss
-import dev.zitech.settings.presentation.settings.viewmodel.OnCrashReporterCheckChange
-import dev.zitech.settings.presentation.settings.viewmodel.OnLanguageDismiss
-import dev.zitech.settings.presentation.settings.viewmodel.OnLanguagePreferenceClick
-import dev.zitech.settings.presentation.settings.viewmodel.OnLanguageSelect
-import dev.zitech.settings.presentation.settings.viewmodel.OnLogOutClick
-import dev.zitech.settings.presentation.settings.viewmodel.OnPerformanceCheckChange
-import dev.zitech.settings.presentation.settings.viewmodel.OnPersonalizedAdsCheckChange
-import dev.zitech.settings.presentation.settings.viewmodel.OnRestartApplication
-import dev.zitech.settings.presentation.settings.viewmodel.OnThemeDismiss
-import dev.zitech.settings.presentation.settings.viewmodel.OnThemePreferenceClick
-import dev.zitech.settings.presentation.settings.viewmodel.OnThemeSelect
-import dev.zitech.settings.presentation.settings.viewmodel.RestartApplication
-import dev.zitech.settings.presentation.settings.viewmodel.SelectLanguage
-import dev.zitech.settings.presentation.settings.viewmodel.SelectTheme
+import dev.zitech.settings.presentation.settings.viewmodel.AnalyticsChecked
+import dev.zitech.settings.presentation.settings.viewmodel.AnalyticsErrorHandled
+import dev.zitech.settings.presentation.settings.viewmodel.ConfirmLogOutClicked
+import dev.zitech.settings.presentation.settings.viewmodel.ConfirmLogOutDismissed
+import dev.zitech.settings.presentation.settings.viewmodel.CrashReporterChecked
+import dev.zitech.settings.presentation.settings.viewmodel.CrashReporterErrorHandled
+import dev.zitech.settings.presentation.settings.viewmodel.LanguageDismissed
+import dev.zitech.settings.presentation.settings.viewmodel.LanguagePreferenceClicked
+import dev.zitech.settings.presentation.settings.viewmodel.LanguageSelected
+import dev.zitech.settings.presentation.settings.viewmodel.LogOutClicked
+import dev.zitech.settings.presentation.settings.viewmodel.PerformanceChecked
+import dev.zitech.settings.presentation.settings.viewmodel.PerformanceErrorHandled
+import dev.zitech.settings.presentation.settings.viewmodel.PersonalizedAdsChecked
+import dev.zitech.settings.presentation.settings.viewmodel.PersonalizedAdsErrorHandled
+import dev.zitech.settings.presentation.settings.viewmodel.RestartApplicationClicked
 import dev.zitech.settings.presentation.settings.viewmodel.SettingsViewModel
-import dev.zitech.settings.presentation.settings.viewmodel.ShowError
+import dev.zitech.settings.presentation.settings.viewmodel.ThemeDismissed
+import dev.zitech.settings.presentation.settings.viewmodel.ThemePreferenceClicked
+import dev.zitech.settings.presentation.settings.viewmodel.ThemeSelected
 
 @Composable
 internal fun SettingsRoute(
     modifier: Modifier = Modifier,
-    viewModel: SettingsViewModel = hiltViewModel(),
     navigateToAccounts: () -> Unit,
     navigateToError: (error: Error) -> Unit,
     navigateToWelcome: () -> Unit,
-    restartApplication: () -> Unit
+    restartApplication: () -> Unit,
+    viewModel: SettingsViewModel = hiltViewModel()
 ) {
-    val screenState by viewModel.screenState.collectAsStateWithLifecycle()
+    val screenState by viewModel.state.collectAsStateWithLifecycle()
     val logInState by viewModel.logInState.collectAsStateWithLifecycle()
-    val snackbarState = rememberSnackbarState()
 
     when (val state = logInState) {
         LogInState.InitScreen -> {
@@ -79,27 +70,59 @@ internal fun SettingsRoute(
             SettingsScreen(
                 modifier = modifier,
                 state = screenState,
-                snackbarState = snackbarState,
-                onAnalyticsCheckChange = { checked ->
-                    viewModel.sendIntent(OnAnalyticsCheckChange(checked))
+                analyticsChecked = { checked ->
+                    viewModel.receiveIntent(AnalyticsChecked(checked))
                 },
-                onPersonalizedAdsCheckChange = { checked ->
-                    viewModel.sendIntent(OnPersonalizedAdsCheckChange(checked))
+                personalizedAdsChecked = { checked ->
+                    viewModel.receiveIntent(PersonalizedAdsChecked(checked))
                 },
-                onPerformanceCheckChange = { checked ->
-                    viewModel.sendIntent(OnPerformanceCheckChange(checked))
+                performanceChecked = { checked ->
+                    viewModel.receiveIntent(PerformanceChecked(checked))
                 },
-                onCrashReporterCheckChange = { checked ->
-                    viewModel.sendIntent(OnCrashReporterCheckChange(checked))
+                crashReporterChecked = { checked ->
+                    viewModel.receiveIntent(CrashReporterChecked(checked))
                 },
-                onThemeClick = {
-                    viewModel.sendIntent(OnThemePreferenceClick)
+                themePreferenceClicked = {
+                    viewModel.receiveIntent(ThemePreferenceClicked)
                 },
-                onLanguageClick = {
-                    viewModel.sendIntent(OnLanguagePreferenceClick)
+                languagePreferenceClicked = {
+                    viewModel.receiveIntent(LanguagePreferenceClicked)
                 },
-                onLogOutClick = {
-                    viewModel.sendIntent(OnLogOutClick)
+                logOutClicked = {
+                    viewModel.receiveIntent(LogOutClicked)
+                },
+                restartApplicationClicked = {
+                    viewModel.receiveIntent(RestartApplicationClicked(restartApplication))
+                },
+                analyticsErrorHandled = {
+                    viewModel.receiveIntent(AnalyticsErrorHandled)
+                },
+                crashReporterErrorHandled = {
+                    viewModel.receiveIntent(CrashReporterErrorHandled)
+                },
+                personalizedAdsErrorHandled = {
+                    viewModel.receiveIntent(PersonalizedAdsErrorHandled)
+                },
+                performanceErrorHandled = {
+                    viewModel.receiveIntent(PerformanceErrorHandled)
+                },
+                themeSelected = { itemSelected ->
+                    viewModel.receiveIntent(ThemeSelected(itemSelected))
+                },
+                themeDismissed = {
+                    viewModel.receiveIntent(ThemeDismissed)
+                },
+                languageSelected = { itemSelected ->
+                    viewModel.receiveIntent(LanguageSelected(itemSelected))
+                },
+                languageDismissed = {
+                    viewModel.receiveIntent(LanguageDismissed)
+                },
+                confirmLogOutDismissed = {
+                    viewModel.receiveIntent(ConfirmLogOutDismissed)
+                },
+                confirmLogOutClicked = {
+                    viewModel.receiveIntent(ConfirmLogOutClicked)
                 }
             )
         }
@@ -116,51 +139,6 @@ internal fun SettingsRoute(
                     }
                 }
             }
-        }
-    }
-
-    when (val event = screenState.event) {
-        is ShowError -> {
-            snackbarState.showMessage(
-                BottomNotifierMessage(
-                    text = stringResource(event.messageResId),
-                    state = BottomNotifierMessage.State.ERROR,
-                    duration = BottomNotifierMessage.Duration.SHORT,
-                    action = BottomNotifierMessage.Action(
-                        label = event.action,
-                        onAction = { viewModel.sendIntent(OnRestartApplication) }
-                    )
-                )
-            )
-            viewModel.sendIntent(ErrorHandled)
-        }
-        is SelectTheme -> {
-            FireFlowDialogs.Radio(
-                title = stringResource(R.string.appearance_dialog_theme_title),
-                radioItems = event.themes,
-                onItemClick = { viewModel.sendIntent(OnThemeSelect(it)) },
-                onDismissRequest = { viewModel.sendIntent(OnThemeDismiss) }
-            )
-        }
-        is SelectLanguage -> {
-            FireFlowDialogs.Radio(
-                title = stringResource(R.string.appearance_dialog_language_title),
-                radioItems = event.languages,
-                onItemClick = { viewModel.sendIntent(OnLanguageSelect(it)) },
-                onDismissRequest = { viewModel.sendIntent(OnLanguageDismiss) }
-            )
-        }
-        RestartApplication -> restartApplication()
-        is ConfirmLogOut -> {
-            FireFlowDialogs.Alert(
-                title = stringResource(R.string.more_dialog_log_out_title),
-                text = stringResource(R.string.more_dialog_log_out_text),
-                onConfirmButtonClick = { viewModel.sendIntent(OnConfirmLogOutClick) },
-                onDismissRequest = { viewModel.sendIntent(OnConfirmLogOutDismiss) }
-            )
-        }
-        Idle -> {
-            // NO_OP
         }
     }
 }
