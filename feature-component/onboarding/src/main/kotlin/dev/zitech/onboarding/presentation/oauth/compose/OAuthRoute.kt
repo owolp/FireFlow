@@ -56,9 +56,9 @@ import kotlinx.coroutines.flow.stateIn
 internal fun OAuthRoute(
     modifier: Modifier = Modifier,
     navigateBack: () -> Unit,
-    navigateToDashboard: () -> Unit,
     navigateToError: (error: Error) -> Unit,
     oauthAuthentication: OAuthAuthentication,
+    stepCompleted: () -> Unit,
     viewModel: OAuthViewModel = hiltViewModel()
 ) {
     val screenState by viewModel.state.collectAsStateWithLifecycle()
@@ -110,7 +110,7 @@ internal fun OAuthRoute(
         viewModel.receiveIntent(StepClosedHandled)
     }
     if (screenState.stepCompleted) {
-        navigateToDashboard()
+        stepCompleted()
         viewModel.receiveIntent(StepCompletedHandled)
     }
 

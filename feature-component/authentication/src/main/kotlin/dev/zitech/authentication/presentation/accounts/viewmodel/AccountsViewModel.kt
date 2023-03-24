@@ -22,21 +22,26 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.zitech.core.common.presentation.architecture.MviViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @HiltViewModel
-internal class AccountsViewModel @Inject constructor(
-    private val stateHandler: AccountsStateHandler
-) : ViewModel(), MviViewModel<AccountsIntent, AccountsState> {
+internal class AccountsViewModel @Inject constructor() :
+    ViewModel(),
+    MviViewModel<AccountsIntent, AccountsState> {
 
-    override val state: StateFlow<AccountsState> = stateHandler.state
+    private val mutableState = MutableStateFlow(AccountsState())
+
+    override val state: StateFlow<AccountsState> = mutableState.asStateFlow()
 
     override fun receiveIntent(intent: AccountsIntent) {
         viewModelScope.launch {
             when (intent) {
-                OnLoginClick -> stateHandler.setEvent(NavigateToDashboard)
-                NavigationHandled -> stateHandler.resetEvent()
+                LoginClicked -> mutableState.update { it.copy(homeScreen = true) }
+                HomeScreenHandled -> mutableState.update { it.copy(homeScreen = false) }
             }
         }
     }
