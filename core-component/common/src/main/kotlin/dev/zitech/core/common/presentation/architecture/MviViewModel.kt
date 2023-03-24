@@ -47,7 +47,7 @@ abstract class MviViewModel<Intent : MviIntent, State : MviState>(
      *
      * @param intent The [MviIntent] that the ViewModel should handle.
      */
-    protected abstract fun receiveIntent(intent: Intent)
+    abstract fun receiveIntent(intent: Intent)
 
     /**
      * Updates the state of the screen using the given [stateUpdate] function.
