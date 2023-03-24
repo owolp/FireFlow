@@ -27,11 +27,10 @@ internal object NavigateToOAuth : WelcomeEvent
 internal object NavigateToPat : WelcomeEvent
 internal object NavigateToDemo : WelcomeEvent
 internal data class NavigateToFirefly(val url: String) : WelcomeEvent
-
 internal object NavigateOutOfApp : WelcomeEvent
 internal data class ShowDemoWarning(
-    val text: String,
-    val confirm: String
+    val confirm: String,
+    val text: String
 ) : WelcomeEvent
 
 internal data class ShowError(

@@ -25,11 +25,11 @@ internal class WelcomeStringsProvider @Inject constructor(
     private val stringsProvider: StringsProvider
 ) {
 
-    fun getDemoDialogText(): String =
-        stringsProvider(R.string.welcome_demo_dialog_text)
-
     fun getDemoDialogConfirm(): String =
         stringsProvider(R.string.welcome_demo_dialog_confirm)
+
+    fun getDemoDialogText(): String =
+        stringsProvider(R.string.welcome_demo_dialog_text)
 
     fun getFireflyHomePageUrl(): String =
         stringsProvider(R.string.firefly_iii_home_page_url)

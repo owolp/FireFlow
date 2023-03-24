@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,13 +27,14 @@ import kotlinx.coroutines.flow.update
 internal class WelcomeStateHandler @Inject constructor() : MviStateHandler<WelcomeState> {
 
     private val mutableState = MutableStateFlow(WelcomeState())
-    override val state: StateFlow<WelcomeState> = mutableState.asStateFlow()
 
-    fun setEvent(event: WelcomeEvent) {
-        mutableState.update { it.copy(event = event) }
-    }
+    override val state: StateFlow<WelcomeState> = mutableState.asStateFlow()
 
     fun resetEvent() {
         mutableState.update { it.copy(event = Idle) }
+    }
+
+    fun setEvent(event: WelcomeEvent) {
+        mutableState.update { it.copy(event = event) }
     }
 }

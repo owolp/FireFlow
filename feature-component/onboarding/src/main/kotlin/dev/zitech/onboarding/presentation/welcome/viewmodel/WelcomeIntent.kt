@@ -30,6 +30,5 @@ internal object OnFireflyClick : WelcomeIntent
 internal object OnShowDemoPositive : WelcomeIntent
 internal object OnShowDemoDismiss : WelcomeIntent
 internal data class NavigatedToFireflyResult(val result: Work<Unit>) : WelcomeIntent
-
 internal object NavigationHandled : WelcomeIntent
 internal object ErrorHandled : WelcomeIntent

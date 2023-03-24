@@ -34,9 +34,9 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 internal class WelcomeViewModel @Inject constructor(
+    private val saveUserAccountUseCase: SaveUserAccountUseCase,
     private val stateHandler: WelcomeStateHandler,
-    private val welcomeStringsProvider: WelcomeStringsProvider,
-    private val saveUserAccountUseCase: SaveUserAccountUseCase
+    private val welcomeStringsProvider: WelcomeStringsProvider
 ) : ViewModel(), MviViewModel<WelcomeIntent, WelcomeState> {
 
     private val tag = Logger.tag(this::class.java)
@@ -58,26 +58,6 @@ internal class WelcomeViewModel @Inject constructor(
                 ErrorHandled -> stateHandler.resetEvent()
             }
         }
-    }
-
-    private fun handleOnGetStartedClick() {
-        stateHandler.setEvent(
-            ShowDemoWarning(
-                text = welcomeStringsProvider.getDemoDialogText(),
-                confirm = welcomeStringsProvider.getDemoDialogConfirm()
-            )
-        )
-    }
-
-    private fun handleOnFireflyClick() {
-        stateHandler.setEvent(NavigateToFirefly(welcomeStringsProvider.getFireflyHomePageUrl()))
-    }
-
-    @Suppress("ForbiddenComment")
-    private suspend fun handleOnShowDemoPositive() {
-        // TODO: Dev usage
-        saveUserAccountUseCase(null, "", "", true, "", "")
-        stateHandler.setEvent(NavigateToDemo)
     }
 
     private suspend fun handleNavigatedToFireflyResult(result: Work<Unit>) {
@@ -102,5 +82,25 @@ internal class WelcomeViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    private fun handleOnFireflyClick() {
+        stateHandler.setEvent(NavigateToFirefly(welcomeStringsProvider.getFireflyHomePageUrl()))
+    }
+
+    private fun handleOnGetStartedClick() {
+        stateHandler.setEvent(
+            ShowDemoWarning(
+                text = welcomeStringsProvider.getDemoDialogText(),
+                confirm = welcomeStringsProvider.getDemoDialogConfirm()
+            )
+        )
+    }
+
+    @Suppress("ForbiddenComment")
+    private suspend fun handleOnShowDemoPositive() {
+        // TODO: Dev usage
+        saveUserAccountUseCase(null, "", "", true, "", "")
+        stateHandler.setEvent(NavigateToDemo)
     }
 }
