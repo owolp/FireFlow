@@ -18,7 +18,7 @@
 <resources>
 
     <string name="oauth_server_address">Адрес на сървъра</string>
-    <string name="oauth_client_id">ID на клиента</string>
-    <string name="oauth_client_secret">Тайна на клиента</string>
+    <string name="oauth_client_id">Клиентско ID</string>
+    <string name="oauth_client_secret">Клиентска тайна</string>
     <string name="oauth_login">Влизане</string>
 </resources>

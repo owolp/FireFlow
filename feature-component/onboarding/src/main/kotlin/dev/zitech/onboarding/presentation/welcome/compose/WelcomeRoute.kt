@@ -43,7 +43,7 @@ import dev.zitech.onboarding.presentation.welcome.viewmodel.FatalErrorHandled
 import dev.zitech.onboarding.presentation.welcome.viewmodel.FireflyClicked
 import dev.zitech.onboarding.presentation.welcome.viewmodel.GetStartedClicked
 import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigatedToFireflyResult
-import dev.zitech.onboarding.presentation.welcome.viewmodel.NotFatalErrorHandled
+import dev.zitech.onboarding.presentation.welcome.viewmodel.NonFatalErrorHandled
 import dev.zitech.onboarding.presentation.welcome.viewmodel.OAuthHandled
 import dev.zitech.onboarding.presentation.welcome.viewmodel.PatHandled
 import dev.zitech.onboarding.presentation.welcome.viewmodel.QuitAppHandled
@@ -82,7 +82,7 @@ internal fun WelcomeRoute(
         navigateToError(fireFlowError)
         viewModel.receiveIntent(FatalErrorHandled)
     }
-    if (screenState.firefly) {
+    if (screenState.fireflyAuthentication) {
         val fireFlyHomePageUrl = stringResource(R.string.firefly_iii_home_page_url)
         LaunchedEffect(Unit) {
             Browser.openUrl(
@@ -101,7 +101,7 @@ internal fun WelcomeRoute(
                 duration = BottomNotifierMessage.Duration.SHORT
             )
         )
-        viewModel.receiveIntent(NotFatalErrorHandled)
+        viewModel.receiveIntent(NonFatalErrorHandled)
     }
     if (screenState.oauth) {
         navigateToOAuth()

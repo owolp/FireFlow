@@ -30,7 +30,7 @@ internal object DemoWarningDismissed : WelcomeIntent
 internal object FatalErrorHandled : WelcomeIntent
 internal object FireflyClicked : WelcomeIntent
 internal object GetStartedClicked : WelcomeIntent
-internal object NotFatalErrorHandled : WelcomeIntent
+internal object NonFatalErrorHandled : WelcomeIntent
 internal object OAuthHandled : WelcomeIntent
 internal object PatHandled : WelcomeIntent
 internal object QuitAppHandled : WelcomeIntent

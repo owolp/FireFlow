@@ -53,10 +53,10 @@ internal class WelcomeViewModel @Inject constructor(
                 DemoPositiveClicked -> handleOnShowDemoPositive()
                 DemoWarningDismissed -> mutableState.update { it.copy(demoWarning = false) }
                 FatalErrorHandled -> mutableState.update { it.copy(fatalError = null) }
-                FireflyClicked -> mutableState.update { it.copy(firefly = true) }
+                FireflyClicked -> mutableState.update { it.copy(fireflyAuthentication = true) }
                 GetStartedClicked -> mutableState.update { it.copy(demoWarning = true) }
                 is NavigatedToFireflyResult -> handleNavigatedToFireflyResult(intent.result)
-                NotFatalErrorHandled -> mutableState.update { it.copy(nonFatalError = null) }
+                NonFatalErrorHandled -> mutableState.update { it.copy(nonFatalError = null) }
                 OAuthHandled -> mutableState.update { it.copy(oauth = false) }
                 PatHandled -> mutableState.update { it.copy(pat = false) }
                 QuitAppHandled -> mutableState.update { it.copy(quitApp = false) }
@@ -65,7 +65,7 @@ internal class WelcomeViewModel @Inject constructor(
     }
 
     private suspend fun handleNavigatedToFireflyResult(result: Work<Unit>) {
-        mutableState.update { it.copy(firefly = false) }
+        mutableState.update { it.copy(fireflyAuthentication = false) }
         result.onError { error ->
             when (error) {
                 is Error.NoBrowserInstalled,
