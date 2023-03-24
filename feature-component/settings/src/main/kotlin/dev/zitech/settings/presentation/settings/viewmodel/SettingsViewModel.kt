@@ -17,7 +17,6 @@
 
 package dev.zitech.settings.presentation.settings.viewmodel
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.zitech.core.common.domain.applicationconfig.AppConfigProvider
@@ -42,9 +41,7 @@ import dev.zitech.navigation.presentation.extension.logInState
 import dev.zitech.settings.presentation.settings.viewmodel.collection.AppearanceCollectionStates
 import dev.zitech.settings.presentation.settings.viewmodel.collection.DataChoicesCollectionStates
 import javax.inject.Inject
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
@@ -58,9 +55,8 @@ internal class SettingsViewModel @Inject constructor(
     private val appearanceCollectionStates: AppearanceCollectionStates,
     private val dataChoicesCollectionStates: DataChoicesCollectionStates,
     private val updateCurrentUserAccountUseCase: UpdateCurrentUserAccountUseCase
-) : ViewModel(), MviViewModel<SettingsIntent, SettingsState>, DeepLinkViewModel {
+) : MviViewModel<SettingsIntent, SettingsState>(SettingsState()), DeepLinkViewModel {
 
-    private val mutableState = MutableStateFlow(SettingsState())
     private val tag = Logger.tag(this::class.java)
 
     override val logInState: StateFlow<LogInState> by logInState(
@@ -68,8 +64,6 @@ internal class SettingsViewModel @Inject constructor(
         loginCheckCompletedHandler,
         viewModelScope
     )
-
-    override val state: StateFlow<SettingsState> = mutableState.asStateFlow()
 
     init {
         viewModelScope.launch {
@@ -79,7 +73,7 @@ internal class SettingsViewModel @Inject constructor(
                 setPreferencesStateLimited()
             }
 
-            mutableState.updateState {
+            updateState {
                 copy(
                     viewState = SettingsState.ViewState.Success
                 )
@@ -91,38 +85,38 @@ internal class SettingsViewModel @Inject constructor(
         viewModelScope.launch {
             when (intent) {
                 is AnalyticsChecked -> handleAnalyticsChecked(intent.checked)
-                AnalyticsErrorHandled -> mutableState.updateState { copy(analyticsError = false) }
+                AnalyticsErrorHandled -> updateState { copy(analyticsError = false) }
                 ConfirmLogOutClicked -> handleConfirmLogOutClicked()
-                ConfirmLogOutDismissed -> mutableState.updateState { copy(confirmLogOut = false) }
+                ConfirmLogOutDismissed -> updateState { copy(confirmLogOut = false) }
                 is CrashReporterChecked -> handleCrashReporterChecked(intent.checked)
-                CrashReporterErrorHandled -> mutableState.updateState {
+                CrashReporterErrorHandled -> updateState {
                     copy(crashReporterError = false)
                 }
-                FatalErrorHandled -> mutableState.updateState { copy(fatalError = null) }
-                LanguageDismissed -> mutableState.updateState {
+                FatalErrorHandled -> updateState { copy(fatalError = null) }
+                LanguageDismissed -> updateState {
                     copy(selectApplicationLanguage = null)
                 }
-                LanguagePreferenceClicked -> mutableState.updateState {
+                LanguagePreferenceClicked -> updateState {
                     copy(selectApplicationLanguage = this.applicationLanguage)
                 }
                 is LanguageSelected -> handleLanguageSelected(intent.id)
-                LogOutClicked -> mutableState.updateState { copy(confirmLogOut = true) }
+                LogOutClicked -> updateState { copy(confirmLogOut = true) }
                 is RestartApplicationClicked -> intent.restart()
                 is ThemeSelected -> handleThemeSelected(intent.id)
                 is PerformanceChecked -> handlePerformanceChecked(intent.checked)
-                PerformanceErrorHandled -> mutableState.updateState {
+                PerformanceErrorHandled -> updateState {
                     copy(performanceError = false)
                 }
                 is PersonalizedAdsChecked -> handlePersonalizedAdsChecked(
                     intent.checked
                 )
-                PersonalizedAdsErrorHandled -> mutableState.updateState {
+                PersonalizedAdsErrorHandled -> updateState {
                     copy(personalizedAdsError = false)
                 }
-                ThemeDismissed -> mutableState.updateState {
+                ThemeDismissed -> updateState {
                     copy(selectApplicationTheme = null)
                 }
-                ThemePreferenceClicked -> mutableState.updateState {
+                ThemePreferenceClicked -> updateState {
                     copy(selectApplicationTheme = this.applicationTheme)
                 }
             }
@@ -141,7 +135,7 @@ internal class SettingsViewModel @Inject constructor(
             val isEnabled = dataChoicesCollectionStates.getAnalyticsCollectionValue()
             if (checked == isEnabled) {
                 dataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked)
-                mutableState.updateState {
+                updateState {
                     copy(
                         analytics = checked,
                         personalizedAds = checked,
@@ -150,7 +144,7 @@ internal class SettingsViewModel @Inject constructor(
                 }
                 dataChoicesCollectionStates.setPerformanceCollection(checked)
             } else {
-                mutableState.updateState { copy(analyticsError = true) }
+                updateState { copy(analyticsError = true) }
             }
         } else {
             Logger.e(tag, "Setting analytics on FOSS build is not supported")
@@ -158,18 +152,18 @@ internal class SettingsViewModel @Inject constructor(
     }
 
     private suspend fun handleConfirmLogOutClicked() {
-        mutableState.updateState { copy(confirmLogOut = false) }
+        updateState { copy(confirmLogOut = false) }
         updateCurrentUserAccountUseCase(
             IsCurrentUserAccount(false)
         ).onError { error ->
             when (error) {
                 is Error.Fatal -> {
                     Logger.e(tag, throwable = error.throwable)
-                    mutableState.updateState { copy(fatalError = error) }
+                    updateState { copy(fatalError = error) }
                 }
                 else -> {
                     Logger.e(tag, error.debugText)
-                    mutableState.updateState { copy(fatalError = error) }
+                    updateState { copy(fatalError = error) }
                 }
             }
         }
@@ -179,17 +173,17 @@ internal class SettingsViewModel @Inject constructor(
         dataChoicesCollectionStates.setCrashReporterCollection(checked)
         val isEnabled = dataChoicesCollectionStates.getCrashReporterCollectionValue()
         if (checked == isEnabled) {
-            mutableState.updateState { copy(crashReporter = checked) }
+            updateState { copy(crashReporter = checked) }
         } else {
-            mutableState.updateState { copy(crashReporterError = true) }
+            updateState { copy(crashReporterError = true) }
         }
     }
 
     private fun handleLanguageSelected(id: Int) {
-        mutableState.updateState { copy(selectApplicationLanguage = null) }
+        updateState { copy(selectApplicationLanguage = null) }
         ApplicationLanguage.getApplicationLanguage(id).run {
             appearanceCollectionStates.setApplicationLanguageValue(this)
-            mutableState.updateState { copy(applicationLanguage = this@run) }
+            updateState { copy(applicationLanguage = this@run) }
         }
     }
 
@@ -198,9 +192,9 @@ internal class SettingsViewModel @Inject constructor(
             dataChoicesCollectionStates.setPerformanceCollection(checked)
             val isEnabled = dataChoicesCollectionStates.getPerformanceCollectionValue()
             if (checked == isEnabled) {
-                mutableState.updateState { copy(performance = checked) }
+                updateState { copy(performance = checked) }
             } else {
-                mutableState.updateState { copy(performanceError = true) }
+                updateState { copy(performanceError = true) }
             }
         } else {
             Logger.e(tag, "Setting performance on FOSS build is not supported")
@@ -212,9 +206,9 @@ internal class SettingsViewModel @Inject constructor(
             dataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked)
             val isEnabled = dataChoicesCollectionStates.getAllowPersonalizedAdsValue()
             if (checked == isEnabled) {
-                mutableState.updateState { copy(personalizedAds = checked) }
+                updateState { copy(personalizedAds = checked) }
             } else {
-                mutableState.updateState { copy(personalizedAdsError = true) }
+                updateState { copy(personalizedAdsError = true) }
             }
         } else {
             Logger.e(tag, "Setting personalized ads on FOSS build is not supported")
@@ -222,15 +216,15 @@ internal class SettingsViewModel @Inject constructor(
     }
 
     private suspend fun handleThemeSelected(id: Int) {
-        mutableState.updateState { copy(selectApplicationTheme = null) }
+        updateState { copy(selectApplicationTheme = null) }
         ApplicationTheme.getApplicationTheme(id).run {
             appearanceCollectionStates.setApplicationThemeValue(this)
-            mutableState.updateState { copy(applicationTheme = this@run) }
+            updateState { copy(applicationTheme = this@run) }
         }
     }
 
     private suspend fun setPreferencesStateDefault() {
-        mutableState.updateState {
+        updateState {
             copy(
                 analytics = dataChoicesCollectionStates
                     .getAnalyticsCollectionValue(),
@@ -252,7 +246,7 @@ internal class SettingsViewModel @Inject constructor(
     }
 
     private suspend fun setPreferencesStateLimited() {
-        mutableState.updateState {
+        updateState {
             copy(
                 email = getCurrentUserEmailAddress()
             )

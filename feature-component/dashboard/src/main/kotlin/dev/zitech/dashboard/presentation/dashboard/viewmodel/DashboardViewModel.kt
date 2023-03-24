@@ -17,7 +17,6 @@
 
 package dev.zitech.dashboard.presentation.dashboard.viewmodel
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.zitech.core.common.domain.navigation.LogInState
@@ -27,25 +26,19 @@ import dev.zitech.core.common.presentation.splash.LoginCheckCompletedHandler
 import dev.zitech.navigation.domain.usecase.GetScreenDestinationUseCase
 import dev.zitech.navigation.presentation.extension.logInState
 import javax.inject.Inject
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 
 @HiltViewModel
 internal class DashboardViewModel @Inject constructor(
     getScreenDestinationUseCase: GetScreenDestinationUseCase,
     loginCheckCompletedHandler: LoginCheckCompletedHandler
-) : ViewModel(), MviViewModel<DashboardIntent, DashboardState>, DeepLinkViewModel {
-
-    private val mutableState = MutableStateFlow(DashboardState)
+) : MviViewModel<DashboardIntent, DashboardState>(DashboardState), DeepLinkViewModel {
 
     override val logInState: StateFlow<LogInState> by logInState(
         getScreenDestinationUseCase,
         loginCheckCompletedHandler,
         viewModelScope
     )
-
-    override val state: StateFlow<DashboardState> = mutableState.asStateFlow()
 
     override fun receiveIntent(intent: DashboardIntent) {
         // NO_OP

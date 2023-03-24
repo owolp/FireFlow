@@ -17,7 +17,6 @@
 
 package dev.zitech.onboarding.presentation.pat.viewmodel
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.zitech.core.common.DataFactory
@@ -27,7 +26,6 @@ import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.domain.model.onError
 import dev.zitech.core.common.domain.model.onSuccess
 import dev.zitech.core.common.presentation.architecture.MviViewModel
-import dev.zitech.core.common.presentation.architecture.updateState
 import dev.zitech.core.network.domain.usecase.GetFireflyProfileUseCase
 import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.domain.model.database.UserAccount.Companion.STATE_LENGTH
@@ -38,9 +36,6 @@ import dev.zitech.core.persistence.domain.usecase.database.UpdateUserAccountUseC
 import dev.zitech.onboarding.domain.usecase.IsPatLoginInputValidUseCase
 import javax.inject.Inject
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -53,24 +48,21 @@ internal class PatViewModel @Inject constructor(
     private val removeStaleUserAccountsUseCase: RemoveStaleUserAccountsUseCase,
     private val saveUserAccountUseCase: SaveUserAccountUseCase,
     private val updateUserAccountUseCase: UpdateUserAccountUseCase
-) : ViewModel(), MviViewModel<PatIntent, PatState> {
+) : MviViewModel<PatIntent, PatState>(PatState()) {
 
-    private val mutableState = MutableStateFlow(PatState())
     private val tag = Logger.tag(this::class.java)
-
-    override val state: StateFlow<PatState> = mutableState.asStateFlow()
 
     override fun receiveIntent(intent: PatIntent) {
         viewModelScope.launch {
             when (intent) {
-                BackClicked -> mutableState.updateState { copy(stepClosed = true) }
-                FatalErrorHandled -> mutableState.updateState { copy(fatalError = null) }
+                BackClicked -> updateState { copy(stepClosed = true) }
+                FatalErrorHandled -> updateState { copy(fatalError = null) }
                 LoginClicked -> handleLoginClicked()
-                NonFatalErrorHandled -> mutableState.updateState { copy(nonFatalError = null) }
+                NonFatalErrorHandled -> updateState { copy(nonFatalError = null) }
                 is PersonalAccessTokenChanged -> handlePersonalAccessTokenChanged(intent)
                 is ServerAddressChanged -> handleServerAddressChanged(intent)
-                StepClosedHandled -> mutableState.updateState { copy(stepClosed = false) }
-                StepCompletedHandled -> mutableState.updateState { copy(stepCompleted = false) }
+                StepClosedHandled -> updateState { copy(stepClosed = false) }
+                StepCompletedHandled -> updateState { copy(stepCompleted = false) }
             }
         }
     }
@@ -88,26 +80,26 @@ internal class PatViewModel @Inject constructor(
                 )
             }.onError { error ->
                 removeStaleUserAccountsUseCase()
-                mutableState.updateState { copy(loading = false) }
+                updateState { copy(loading = false) }
                 when (error) {
                     is Error.UserVisible,
                     is Error.TokenFailed -> {
-                        mutableState.updateState { copy(nonFatalError = error) }
+                        updateState { copy(nonFatalError = error) }
                     }
                     is Error.Fatal -> {
                         Logger.e(tag, throwable = error.throwable)
-                        mutableState.updateState { copy(fatalError = error) }
+                        updateState { copy(fatalError = error) }
                     }
                     else -> {
                         Logger.e(tag, error.debugText)
-                        mutableState.updateState { copy(fatalError = error) }
+                        updateState { copy(fatalError = error) }
                     }
                 }
             }
     }
 
     private suspend fun getUserAccountByState(state: String) {
-        mutableState.updateState { copy(loading = true) }
+        updateState { copy(loading = true) }
         getUserAccountByStateUseCase(state)
             .onSuccess { userAccount ->
                 val authenticationType = userAccount.authenticationType
@@ -115,7 +107,7 @@ internal class PatViewModel @Inject constructor(
                     val accessToken = authenticationType.accessToken
                     checkToken(userAccount, accessToken)
                 } else {
-                    mutableState.updateState {
+                    updateState {
                         copy(
                             loading = false,
                             fatalError = Error.AuthenticationProblem
@@ -124,18 +116,18 @@ internal class PatViewModel @Inject constructor(
                 }
             }.onError { error ->
                 removeStaleUserAccountsUseCase()
-                mutableState.updateState { copy(loading = false) }
+                updateState { copy(loading = false) }
                 when (error) {
                     is Error.UserVisible -> {
-                        mutableState.updateState { copy(nonFatalError = error) }
+                        updateState { copy(nonFatalError = error) }
                     }
                     is Error.Fatal -> {
                         Logger.e(tag, throwable = error.throwable)
-                        mutableState.updateState { copy(fatalError = error) }
+                        updateState { copy(fatalError = error) }
                     }
                     else -> {
                         Logger.e(tag, error.debugText)
-                        mutableState.updateState { copy(fatalError = error) }
+                        updateState { copy(fatalError = error) }
                     }
                 }
             }
@@ -148,7 +140,7 @@ internal class PatViewModel @Inject constructor(
 
         withContext(appDispatchers.io) {
             delay(LOADING_DELAY_IN_MILLISECONDS)
-            mutableState.updateState { copy(loading = true) }
+            updateState { copy(loading = true) }
         }
         saveUserAccountUseCase(
             accessToken = accessToken,
@@ -159,25 +151,25 @@ internal class PatViewModel @Inject constructor(
             getUserAccountByState(state)
         }.onError { error ->
             removeStaleUserAccountsUseCase()
-            mutableState.updateState { copy(loading = false) }
+            updateState { copy(loading = false) }
             when (error) {
                 is Error.UserVisible -> {
-                    mutableState.updateState { copy(nonFatalError = error) }
+                    updateState { copy(nonFatalError = error) }
                 }
                 is Error.Fatal -> {
                     Logger.e(tag, throwable = error.throwable)
-                    mutableState.updateState { copy(fatalError = error) }
+                    updateState { copy(fatalError = error) }
                 }
                 else -> {
                     Logger.e(tag, error.debugText)
-                    mutableState.updateState { copy(fatalError = error) }
+                    updateState { copy(fatalError = error) }
                 }
             }
         }
     }
 
     private fun handlePersonalAccessTokenChanged(intent: PersonalAccessTokenChanged) {
-        mutableState.updateState {
+        updateState {
             copy(
                 pat = intent.pat.trim()
             )
@@ -186,7 +178,7 @@ internal class PatViewModel @Inject constructor(
     }
 
     private fun handleServerAddressChanged(intent: ServerAddressChanged) {
-        mutableState.updateState {
+        updateState {
             copy(
                 serverAddress = intent.serverAddress.trim()
             )
@@ -195,7 +187,7 @@ internal class PatViewModel @Inject constructor(
     }
 
     private fun setLoginState() {
-        mutableState.updateState {
+        updateState {
             copy(
                 loginEnabled = with(state.value) {
                     isPatLoginInputValidUseCase(
@@ -229,7 +221,7 @@ internal class PatViewModel @Inject constructor(
                 type = type
             )
         ).onSuccess {
-            mutableState.updateState {
+            updateState {
                 copy(
                     loading = false,
                     stepCompleted = true
@@ -237,18 +229,18 @@ internal class PatViewModel @Inject constructor(
             }
         }.onError { error ->
             removeStaleUserAccountsUseCase()
-            mutableState.updateState { copy(loading = false) }
+            updateState { copy(loading = false) }
             when (error) {
                 is Error.UserVisible -> {
-                    mutableState.updateState { copy(nonFatalError = error) }
+                    updateState { copy(nonFatalError = error) }
                 }
                 is Error.Fatal -> {
                     Logger.e(tag, throwable = error.throwable)
-                    mutableState.updateState { copy(fatalError = error) }
+                    updateState { copy(fatalError = error) }
                 }
                 else -> {
                     Logger.e(tag, error.debugText)
-                    mutableState.updateState { copy(fatalError = error) }
+                    updateState { copy(fatalError = error) }
                 }
             }
         }

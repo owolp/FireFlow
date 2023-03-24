@@ -17,25 +17,45 @@
 
 package dev.zitech.core.common.presentation.architecture
 
+import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 /**
- * The `MviViewModel` interface defines the contract for a ViewModel in the Model-View-Intent (MVI) architecture.
+ * An abstract base class for implementing Model-View-Intent (MVI) architecture
  *
- * @param Intent The type of intent this ViewModel can receive.
- * @param State The type of state this ViewModel can emit.
+ * @param initialState The initial state of the screen.
  */
-interface MviViewModel<Intent : MviIntent, State : MviState> {
+abstract class MviViewModel<Intent : MviIntent, State : MviState>(
+    initialState: State
+) : ViewModel() {
 
     /**
-     * The `state` property is a [StateFlow] that emits the current state of the screen.
+     * The mutable state of the screen.
+     */
+    protected val mutableState: MutableStateFlow<State> = MutableStateFlow(initialState)
+
+    /**
+     * The immutable state of the screen.
      */
     val state: StateFlow<State>
+        get() = mutableState.asStateFlow()
 
     /**
-     * The `receiveIntent` method is called by the View layer to signal an intent to the ViewModel.
+     * Receives an intent from the View layer and updates the ViewModel's state accordingly.
      *
      * @param intent The [MviIntent] that the ViewModel should handle.
      */
-    fun receiveIntent(intent: Intent)
+    protected abstract fun receiveIntent(intent: Intent)
+
+    /**
+     * Updates the state of the screen using the given [stateUpdate] function.
+     *
+     * @param stateUpdate A function that takes the current state of the screen and returns a new
+     * state based on it.
+     */
+    protected inline fun updateState(stateUpdate: State.() -> State) {
+        mutableState.value = mutableState.value.stateUpdate()
+    }
 }

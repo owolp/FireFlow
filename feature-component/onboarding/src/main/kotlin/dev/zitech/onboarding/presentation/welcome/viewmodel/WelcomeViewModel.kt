@@ -17,7 +17,6 @@
 
 package dev.zitech.onboarding.presentation.welcome.viewmodel
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.zitech.core.common.domain.error.Error
@@ -25,60 +24,53 @@ import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.domain.model.Work
 import dev.zitech.core.common.domain.model.onError
 import dev.zitech.core.common.presentation.architecture.MviViewModel
-import dev.zitech.core.common.presentation.architecture.updateState
 import dev.zitech.core.persistence.domain.usecase.database.SaveUserAccountUseCase
 import javax.inject.Inject
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 @HiltViewModel
 internal class WelcomeViewModel @Inject constructor(
     private val saveUserAccountUseCase: SaveUserAccountUseCase
-) : ViewModel(), MviViewModel<WelcomeIntent, WelcomeState> {
+) : MviViewModel<WelcomeIntent, WelcomeState>(WelcomeState()) {
 
-    private val mutableState = MutableStateFlow(WelcomeState())
     private val tag = Logger.tag(this::class.java)
-
-    override val state: StateFlow<WelcomeState> = mutableState.asStateFlow()
 
     override fun receiveIntent(intent: WelcomeIntent) {
         viewModelScope.launch {
             when (intent) {
-                BackClicked -> mutableState.updateState { copy(quitApp = true) }
-                ContinueWithOauthClicked -> mutableState.updateState { copy(oauth = true) }
-                ContinueWithPatClicked -> mutableState.updateState { copy(pat = true) }
-                DemoHandled -> mutableState.updateState { copy(demo = false) }
+                BackClicked -> updateState { copy(quitApp = true) }
+                ContinueWithOauthClicked -> updateState { copy(oauth = true) }
+                ContinueWithPatClicked -> updateState { copy(pat = true) }
+                DemoHandled -> updateState { copy(demo = false) }
                 DemoPositiveClicked -> handleOnShowDemoPositive()
-                DemoWarningDismissed -> mutableState.updateState { copy(demoWarning = false) }
-                FatalErrorHandled -> mutableState.updateState { copy(fatalError = null) }
-                FireflyClicked -> mutableState.updateState { copy(fireflyAuthentication = true) }
-                GetStartedClicked -> mutableState.updateState { copy(demoWarning = true) }
+                DemoWarningDismissed -> updateState { copy(demoWarning = false) }
+                FatalErrorHandled -> updateState { copy(fatalError = null) }
+                FireflyClicked -> updateState { copy(fireflyAuthentication = true) }
+                GetStartedClicked -> updateState { copy(demoWarning = true) }
                 is NavigatedToFireflyResult -> handleNavigatedToFireflyResult(intent.result)
-                NonFatalErrorHandled -> mutableState.updateState { copy(nonFatalError = null) }
-                OAuthHandled -> mutableState.updateState { copy(oauth = false) }
-                PatHandled -> mutableState.updateState { copy(pat = false) }
-                QuitAppHandled -> mutableState.updateState { copy(quitApp = false) }
+                NonFatalErrorHandled -> updateState { copy(nonFatalError = null) }
+                OAuthHandled -> updateState { copy(oauth = false) }
+                PatHandled -> updateState { copy(pat = false) }
+                QuitAppHandled -> updateState { copy(quitApp = false) }
             }
         }
     }
 
     private suspend fun handleNavigatedToFireflyResult(result: Work<Unit>) {
-        mutableState.updateState { copy(fireflyAuthentication = false) }
+        updateState { copy(fireflyAuthentication = false) }
         result.onError { error ->
             when (error) {
                 is Error.NoBrowserInstalled,
                 is Error.UserVisible -> {
-                    mutableState.updateState { copy(nonFatalError = error) }
+                    updateState { copy(nonFatalError = error) }
                 }
                 is Error.Fatal -> {
                     Logger.e(tag, throwable = error.throwable)
-                    mutableState.updateState { copy(fatalError = error) }
+                    updateState { copy(fatalError = error) }
                 }
                 else -> {
                     Logger.e(tag, error.debugText)
-                    mutableState.updateState { copy(fatalError = error) }
+                    updateState { copy(fatalError = error) }
                 }
             }
         }
@@ -88,7 +80,7 @@ internal class WelcomeViewModel @Inject constructor(
     private suspend fun handleOnShowDemoPositive() {
         // TODO: Dev usage
         saveUserAccountUseCase(null, "", "", true, "", "")
-        mutableState.updateState {
+        updateState {
             copy(
                 demoWarning = false,
                 demo = true

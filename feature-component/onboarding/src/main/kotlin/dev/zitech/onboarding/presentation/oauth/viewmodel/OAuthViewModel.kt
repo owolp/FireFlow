@@ -17,7 +17,6 @@
 
 package dev.zitech.onboarding.presentation.oauth.viewmodel
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.zitech.authenticator.domain.model.Token
@@ -30,7 +29,6 @@ import dev.zitech.core.common.domain.model.Work
 import dev.zitech.core.common.domain.model.onError
 import dev.zitech.core.common.domain.model.onSuccess
 import dev.zitech.core.common.presentation.architecture.MviViewModel
-import dev.zitech.core.common.presentation.architecture.updateState
 import dev.zitech.core.network.domain.usecase.GetFireflyProfileUseCase
 import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.domain.model.database.UserAccount.Companion.STATE_LENGTH
@@ -47,9 +45,6 @@ import dev.zitech.onboarding.domain.validator.ClientIdValidator
 import dev.zitech.onboarding.presentation.oauth.model.OAuthAuthentication
 import javax.inject.Inject
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -65,28 +60,25 @@ internal class OAuthViewModel @Inject constructor(
     private val saveUserAccountUseCase: SaveUserAccountUseCase,
     private val updateCurrentUserAccountUseCase: UpdateCurrentUserAccountUseCase,
     private val updateUserAccountUseCase: UpdateUserAccountUseCase
-) : ViewModel(), MviViewModel<OAuthIntent, OAuthState> {
+) : MviViewModel<OAuthIntent, OAuthState>(OAuthState()) {
 
-    private val mutableState = MutableStateFlow(OAuthState())
     private val tag = Logger.tag(this::class.java)
-
-    override val state: StateFlow<OAuthState> = mutableState.asStateFlow()
 
     override fun receiveIntent(intent: OAuthIntent) {
         viewModelScope.launch {
             when (intent) {
-                AuthenticationCanceled -> mutableState.updateState { copy(loading = false) }
-                BackClicked -> mutableState.updateState { copy(stepClosed = true) }
+                AuthenticationCanceled -> updateState { copy(loading = false) }
+                BackClicked -> updateState { copy(stepClosed = true) }
                 is ClientIdChanged -> handleClientIdChanged(intent)
                 is ClientSecretChanged -> handleClientSecretChanged(intent)
-                FatalErrorHandled -> mutableState.updateState { copy(fatalError = null) }
+                FatalErrorHandled -> updateState { copy(fatalError = null) }
                 LoginClicked -> handleLoginClicked()
                 is NavigatedToFireflyResult -> handleNavigatedToFireflyResult(intent.result)
-                NonFatalErrorHandled -> mutableState.updateState { copy(nonFatalError = null) }
+                NonFatalErrorHandled -> updateState { copy(nonFatalError = null) }
                 is OauthCodeReceived -> handleOAuthCodeReceived(intent.authentication)
                 is ServerAddressChanged -> handleServerAddressChanged(intent)
-                StepClosedHandled -> mutableState.updateState { copy(stepClosed = false) }
-                StepCompletedHandled -> mutableState.updateState { copy(stepCompleted = false) }
+                StepClosedHandled -> updateState { copy(stepClosed = false) }
+                StepCompletedHandled -> updateState { copy(stepCompleted = false) }
             }
         }
     }
@@ -94,14 +86,14 @@ internal class OAuthViewModel @Inject constructor(
     private fun handleClientIdChanged(intent: ClientIdChanged) {
         with(intent.clientId.trim()) {
             if (clientIdValidator(this) || this.isEmpty()) {
-                mutableState.updateState { copy(clientId = this@with) }
+                updateState { copy(clientId = this@with) }
                 setLoginState()
             }
         }
     }
 
     private fun handleClientSecretChanged(intent: ClientSecretChanged) {
-        mutableState.updateState {
+        updateState {
             copy(
                 clientSecret = intent.clientSecret.trim()
             )
@@ -117,7 +109,7 @@ internal class OAuthViewModel @Inject constructor(
 
         withContext(appDispatchers.io) {
             delay(LOADING_DELAY_IN_MILLISECONDS)
-            mutableState.updateState { copy(loading = true) }
+            updateState { copy(loading = true) }
         }
         saveUserAccountUseCase(
             clientId = clientId,
@@ -126,37 +118,37 @@ internal class OAuthViewModel @Inject constructor(
             serverAddress = serverAddress,
             state = state
         ).onSuccess {
-            mutableState.updateState {
+            updateState {
                 copy(
                     fireflyAuthentication = state,
                     loading = true
                 )
             }
         }.onError { error ->
-            mutableState.updateState { copy(loading = false) }
+            updateState { copy(loading = false) }
             when (error) {
                 is Error.UserVisible -> {
-                    mutableState.updateState { copy(nonFatalError = error) }
+                    updateState { copy(nonFatalError = error) }
                 }
                 is Error.Fatal -> {
                     Logger.e(tag, throwable = error.throwable)
-                    mutableState.updateState { copy(fatalError = error) }
+                    updateState { copy(fatalError = error) }
                 }
                 else -> {
                     Logger.e(tag, error.debugText)
-                    mutableState.updateState { copy(fatalError = error) }
+                    updateState { copy(fatalError = error) }
                 }
             }
         }
     }
 
     private suspend fun handleNavigatedToFireflyResult(result: Work<Unit>) {
-        mutableState.updateState { copy(loading = false) }
+        updateState { copy(loading = false) }
         result.onError { error ->
             when (error) {
                 is Error.NoBrowserInstalled,
                 is Error.UserVisible -> {
-                    mutableState.updateState {
+                    updateState {
                         copy(
                             fireflyAuthentication = null,
                             nonFatalError = error
@@ -165,11 +157,11 @@ internal class OAuthViewModel @Inject constructor(
                 }
                 is Error.Fatal -> {
                     Logger.e(tag, throwable = error.throwable)
-                    mutableState.updateState { copy(fatalError = error) }
+                    updateState { copy(fatalError = error) }
                 }
                 else -> {
                     Logger.e(tag, error.debugText)
-                    mutableState.updateState { copy(fatalError = error) }
+                    updateState { copy(fatalError = error) }
                 }
             }
         }
@@ -184,14 +176,14 @@ internal class OAuthViewModel @Inject constructor(
     }
 
     private suspend fun handleScreenOpenedFromDeepLink(state: String, code: String) {
-        mutableState.updateState { copy(loading = true) }
+        updateState { copy(loading = true) }
         getUserAccountByStateUseCase(state)
             .onSuccess { userAccount ->
                 val authenticationType = userAccount.authenticationType
                 if (authenticationType is UserAccount.AuthenticationType.OAuth) {
                     val clientId = authenticationType.clientId
                     val clientSecret = authenticationType.clientSecret
-                    mutableState.updateState {
+                    updateState {
                         copy(
                             clientId = clientId,
                             clientSecret = clientSecret,
@@ -200,7 +192,7 @@ internal class OAuthViewModel @Inject constructor(
                     }
                     retrieveToken(userAccount, clientId, clientSecret, code)
                 } else {
-                    mutableState.updateState {
+                    updateState {
                         copy(
                             loading = false,
                             fatalError = Error.AuthenticationProblem
@@ -208,25 +200,25 @@ internal class OAuthViewModel @Inject constructor(
                     }
                 }
             }.onError { error ->
-                mutableState.updateState { copy(loading = false) }
+                updateState { copy(loading = false) }
                 when (error) {
                     is Error.UserVisible -> {
-                        mutableState.updateState { copy(nonFatalError = error) }
+                        updateState { copy(nonFatalError = error) }
                     }
                     is Error.Fatal -> {
                         Logger.e(tag, throwable = error.throwable)
-                        mutableState.updateState { copy(fatalError = error) }
+                        updateState { copy(fatalError = error) }
                     }
                     else -> {
                         Logger.e(tag, error.debugText)
-                        mutableState.updateState { copy(fatalError = error) }
+                        updateState { copy(fatalError = error) }
                     }
                 }
             }
     }
 
     private fun handleServerAddressChanged(intent: ServerAddressChanged) {
-        mutableState.updateState {
+        updateState {
             copy(
                 serverAddress = intent.serverAddress.trim()
             )
@@ -243,42 +235,42 @@ internal class OAuthViewModel @Inject constructor(
                     Role(fireflyProfile.role),
                     Type(fireflyProfile.type)
                 ).onSuccess {
-                    mutableState.updateState {
+                    updateState {
                         copy(
                             loading = false,
                             stepCompleted = true
                         )
                     }
                 }.onError { error ->
-                    mutableState.updateState { copy(loading = false) }
+                    updateState { copy(loading = false) }
                     when (error) {
                         is Error.UserVisible -> {
-                            mutableState.updateState { copy(nonFatalError = error) }
+                            updateState { copy(nonFatalError = error) }
                         }
                         is Error.Fatal -> {
                             Logger.e(tag, throwable = error.throwable)
-                            mutableState.updateState { copy(fatalError = error) }
+                            updateState { copy(fatalError = error) }
                         }
                         else -> {
                             Logger.e(tag, error.debugText)
-                            mutableState.updateState { copy(fatalError = error) }
+                            updateState { copy(fatalError = error) }
                         }
                     }
                 }
             }.onError { error ->
-                mutableState.updateState { copy(loading = false) }
+                updateState { copy(loading = false) }
                 when (error) {
                     is Error.UserVisible,
                     is Error.TokenFailed -> {
-                        mutableState.updateState { copy(nonFatalError = error) }
+                        updateState { copy(nonFatalError = error) }
                     }
                     is Error.Fatal -> {
                         Logger.e(tag, throwable = error.throwable)
-                        mutableState.updateState { copy(fatalError = error) }
+                        updateState { copy(fatalError = error) }
                     }
                     else -> {
                         Logger.e(tag, error.debugText)
-                        mutableState.updateState { copy(fatalError = error) }
+                        updateState { copy(fatalError = error) }
                     }
                 }
             }
@@ -297,25 +289,25 @@ internal class OAuthViewModel @Inject constructor(
         ).onSuccess { accessToken ->
             updateUserAccount(accessToken, userAccount, clientId, clientSecret, code)
         }.onError { error ->
-            mutableState.updateState { copy(loading = false) }
+            updateState { copy(loading = false) }
             when (error) {
                 is Error.UserVisible -> {
-                    mutableState.updateState { copy(nonFatalError = error) }
+                    updateState { copy(nonFatalError = error) }
                 }
                 is Error.Fatal -> {
                     Logger.e(tag, throwable = error.throwable)
-                    mutableState.updateState { copy(fatalError = error) }
+                    updateState { copy(fatalError = error) }
                 }
                 else -> {
                     Logger.e(tag, error.debugText)
-                    mutableState.updateState { copy(fatalError = error) }
+                    updateState { copy(fatalError = error) }
                 }
             }
         }
     }
 
     private fun setLoginState() {
-        mutableState.updateState {
+        updateState {
             copy(
                 loginEnabled = with(state.value) {
                     isOauthLoginInputValidUseCase(
@@ -349,18 +341,18 @@ internal class OAuthViewModel @Inject constructor(
         updateUserAccountUseCase(updatedUserAccount).onSuccess {
             retrieveFireflyInfo()
         }.onError { error ->
-            mutableState.updateState { copy(loading = false) }
+            updateState { copy(loading = false) }
             when (error) {
                 is Error.UserVisible -> {
-                    mutableState.updateState { copy(nonFatalError = error) }
+                    updateState { copy(nonFatalError = error) }
                 }
                 is Error.Fatal -> {
                     Logger.e(tag, throwable = error.throwable)
-                    mutableState.updateState { copy(fatalError = error) }
+                    updateState { copy(fatalError = error) }
                 }
                 else -> {
                     Logger.e(tag, error.debugText)
-                    mutableState.updateState { copy(fatalError = error) }
+                    updateState { copy(fatalError = error) }
                 }
             }
         }

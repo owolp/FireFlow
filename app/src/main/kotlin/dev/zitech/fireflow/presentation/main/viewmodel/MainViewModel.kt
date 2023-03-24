@@ -17,12 +17,10 @@
 
 package dev.zitech.fireflow.presentation.main.viewmodel
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.presentation.architecture.MviViewModel
-import dev.zitech.core.common.presentation.architecture.updateState
 import dev.zitech.core.common.presentation.splash.LoginCheckCompletedHandler
 import dev.zitech.core.persistence.domain.usecase.database.RemoveStaleUserAccountsUseCase
 import dev.zitech.core.persistence.domain.usecase.preferences.GetApplicationThemeValueUseCase
@@ -32,9 +30,6 @@ import dev.zitech.fireflow.presentation.model.LaunchState
 import dev.zitech.fireflow.presentation.model.LaunchState.Status.Error
 import dev.zitech.fireflow.presentation.model.LaunchState.Status.Success
 import javax.inject.Inject
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.onEach
@@ -47,12 +42,9 @@ internal class MainViewModel @Inject constructor(
     private val initializeRemoteConfiguratorUseCase: InitializeRemoteConfiguratorUseCase,
     private val loginCheckHandler: LoginCheckCompletedHandler,
     private val removeStaleUserAccountsUseCase: RemoveStaleUserAccountsUseCase
-) : ViewModel(), MviViewModel<MainIntent, MainState> {
+) : MviViewModel<MainIntent, MainState>(MainState()) {
 
-    private val mutableState = MutableStateFlow(MainState())
     private val tag = Logger.tag(this::class.java)
-
-    override val state: StateFlow<MainState> = mutableState.asStateFlow()
 
     init {
         applicationLaunchAnalyticsEvent()
@@ -77,7 +69,7 @@ internal class MainViewModel @Inject constructor(
                     removeStaleUserAccountsUseCase()
                 }
             }
-            mutableState.updateState { copy(databaseCleanCompleted = true) }
+            updateState { copy(databaseCleanCompleted = true) }
         }
     }
 
@@ -92,7 +84,7 @@ internal class MainViewModel @Inject constructor(
             }.onEach { launchState ->
                 when (val status = launchState.status) {
                     is Success -> {
-                        mutableState.updateState {
+                        updateState {
                             copy(
                                 theme = status.theme,
                                 mandatoryStepsCompleted = true
