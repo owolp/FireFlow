@@ -57,8 +57,8 @@ internal fun OAuthRoute(
     modifier: Modifier = Modifier,
     navigateBack: () -> Unit,
     navigateToError: (error: Error) -> Unit,
+    navigateToNext: () -> Unit,
     oauthAuthentication: OAuthAuthentication,
-    stepCompleted: () -> Unit,
     viewModel: OAuthViewModel = hiltViewModel()
 ) {
     val screenState by viewModel.state.collectAsStateWithLifecycle()
@@ -110,7 +110,7 @@ internal fun OAuthRoute(
         viewModel.receiveIntent(StepClosedHandled)
     }
     if (screenState.stepCompleted) {
-        stepCompleted()
+        navigateToNext()
         viewModel.receiveIntent(StepCompletedHandled)
     }
 

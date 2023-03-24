@@ -74,7 +74,7 @@ fun NavGraphBuilder.onboardingGraph(
             oauthAuthentication = OAuthAuthentication(code, state),
             navigateBack = navigateBack,
             navigateToError = navigateToError,
-            stepCompleted = navigateToDashboard
+            navigateToNext = navigateToDashboard
         )
     }
     composable(route = PatDestination.route) {

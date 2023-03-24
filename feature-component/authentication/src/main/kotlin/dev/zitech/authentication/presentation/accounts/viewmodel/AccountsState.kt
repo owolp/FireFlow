@@ -20,5 +20,5 @@ package dev.zitech.authentication.presentation.accounts.viewmodel
 import dev.zitech.core.common.presentation.architecture.MviState
 
 internal data class AccountsState(
-    val homeScreen: Boolean = false
+    val home: Boolean = false
 ) : MviState

@@ -26,7 +26,7 @@ fun NavGraphBuilder.authenticationGraph(
 ) {
     composable(route = AccountsDestination.route) {
         AccountsRoute(
-            homeScreen = navigateToDashboard
+            navigateToHome = navigateToDashboard
         )
     }
 }

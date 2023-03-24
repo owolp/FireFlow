@@ -40,8 +40,8 @@ internal class AccountsViewModel @Inject constructor() :
     override fun receiveIntent(intent: AccountsIntent) {
         viewModelScope.launch {
             when (intent) {
-                LoginClicked -> mutableState.update { it.copy(homeScreen = true) }
-                HomeScreenHandled -> mutableState.update { it.copy(homeScreen = false) }
+                LoginClicked -> mutableState.update { it.copy(home = true) }
+                HomeHandled -> mutableState.update { it.copy(home = false) }
             }
         }
     }

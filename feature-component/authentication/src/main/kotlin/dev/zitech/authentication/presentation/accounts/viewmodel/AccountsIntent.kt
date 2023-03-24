@@ -21,4 +21,4 @@ import dev.zitech.core.common.presentation.architecture.MviIntent
 
 internal sealed interface AccountsIntent : MviIntent
 internal object LoginClicked : AccountsIntent
-internal object HomeScreenHandled : AccountsIntent
+internal object HomeHandled : AccountsIntent

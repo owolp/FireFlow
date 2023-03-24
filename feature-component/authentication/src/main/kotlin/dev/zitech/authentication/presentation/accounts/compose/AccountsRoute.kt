@@ -23,20 +23,20 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.zitech.authentication.presentation.accounts.viewmodel.AccountsViewModel
-import dev.zitech.authentication.presentation.accounts.viewmodel.HomeScreenHandled
+import dev.zitech.authentication.presentation.accounts.viewmodel.HomeHandled
 import dev.zitech.authentication.presentation.accounts.viewmodel.LoginClicked
 
 @Composable
 internal fun AccountsRoute(
-    homeScreen: () -> Unit,
+    navigateToHome: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: AccountsViewModel = hiltViewModel()
 ) {
     val screenState by viewModel.state.collectAsStateWithLifecycle()
 
-    if (screenState.homeScreen) {
-        homeScreen()
-        viewModel.receiveIntent(HomeScreenHandled)
+    if (screenState.home) {
+        navigateToHome()
+        viewModel.receiveIntent(HomeHandled)
     }
 
     AccountsScreen(
