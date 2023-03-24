@@ -24,83 +24,75 @@ import dev.zitech.core.common.domain.error.Error
 import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.domain.model.Work
 import dev.zitech.core.common.domain.model.onError
-import dev.zitech.core.common.domain.model.onSuccess
 import dev.zitech.core.common.presentation.architecture.MviViewModel
 import dev.zitech.core.persistence.domain.usecase.database.SaveUserAccountUseCase
-import dev.zitech.onboarding.presentation.welcome.viewmodel.resoure.WelcomeStringsProvider
 import javax.inject.Inject
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @HiltViewModel
 internal class WelcomeViewModel @Inject constructor(
-    private val saveUserAccountUseCase: SaveUserAccountUseCase,
-    private val stateHandler: WelcomeStateHandler,
-    private val welcomeStringsProvider: WelcomeStringsProvider
+    private val saveUserAccountUseCase: SaveUserAccountUseCase
 ) : ViewModel(), MviViewModel<WelcomeIntent, WelcomeState> {
 
+    private val mutableState = MutableStateFlow(WelcomeState())
     private val tag = Logger.tag(this::class.java)
 
-    override val state: StateFlow<WelcomeState> = stateHandler.state
+    override val state: StateFlow<WelcomeState> = mutableState.asStateFlow()
 
     override fun receiveIntent(intent: WelcomeIntent) {
         viewModelScope.launch {
             when (intent) {
-                OnContinueWithOauthClick -> stateHandler.setEvent(NavigateToOAuth)
-                OnContinueWithPatClick -> stateHandler.setEvent(NavigateToPat)
-                OnGetStartedClick -> handleOnGetStartedClick()
-                OnBackClick -> stateHandler.setEvent(NavigateOutOfApp)
-                OnFireflyClick -> handleOnFireflyClick()
-                OnShowDemoPositive -> handleOnShowDemoPositive()
+                BackClicked -> mutableState.update { it.copy(quitApp = true) }
+                ContinueWithOauthClicked -> mutableState.update { it.copy(oauth = true) }
+                ContinueWithPatClicked -> mutableState.update { it.copy(pat = true) }
+                DemoHandled -> mutableState.update { it.copy(demo = false) }
+                DemoPositiveClicked -> handleOnShowDemoPositive()
+                DemoWarningDismissed -> mutableState.update { it.copy(demoWarning = false) }
+                FatalErrorHandled -> mutableState.update { it.copy(fatalError = null) }
+                FireflyClicked -> mutableState.update { it.copy(firefly = true) }
+                GetStartedClicked -> mutableState.update { it.copy(demoWarning = true) }
                 is NavigatedToFireflyResult -> handleNavigatedToFireflyResult(intent.result)
-                NavigationHandled,
-                OnShowDemoDismiss,
-                ErrorHandled -> stateHandler.resetEvent()
+                NotFatalErrorHandled -> mutableState.update { it.copy(nonFatalError = null) }
+                OAuthHandled -> mutableState.update { it.copy(oauth = false) }
+                PatHandled -> mutableState.update { it.copy(pat = false) }
+                QuitAppHandled -> mutableState.update { it.copy(quitApp = false) }
             }
         }
     }
 
     private suspend fun handleNavigatedToFireflyResult(result: Work<Unit>) {
-        result.onSuccess {
-            stateHandler.resetEvent()
-        }.onError { error ->
+        mutableState.update { it.copy(firefly = false) }
+        result.onError { error ->
             when (error) {
-                is Error.NoBrowserInstalled -> {
-                    stateHandler.setEvent(
-                        ShowError(messageResId = error.uiResId)
-                    )
+                is Error.NoBrowserInstalled,
+                is Error.UserVisible -> {
+                    mutableState.update { it.copy(nonFatalError = error) }
                 }
                 is Error.Fatal -> {
                     Logger.e(tag, throwable = error.throwable)
-                    stateHandler.setEvent(NavigateToError(error))
+                    mutableState.update { it.copy(fatalError = error) }
                 }
-                is Error.UserVisible ->
-                    stateHandler.setEvent(ShowError(text = error.message))
                 else -> {
                     Logger.e(tag, error.debugText)
-                    stateHandler.setEvent(NavigateToError(error))
+                    mutableState.update { it.copy(fatalError = error) }
                 }
             }
         }
-    }
-
-    private fun handleOnFireflyClick() {
-        stateHandler.setEvent(NavigateToFirefly(welcomeStringsProvider.getFireflyHomePageUrl()))
-    }
-
-    private fun handleOnGetStartedClick() {
-        stateHandler.setEvent(
-            ShowDemoWarning(
-                text = welcomeStringsProvider.getDemoDialogText(),
-                confirm = welcomeStringsProvider.getDemoDialogConfirm()
-            )
-        )
     }
 
     @Suppress("ForbiddenComment")
     private suspend fun handleOnShowDemoPositive() {
         // TODO: Dev usage
         saveUserAccountUseCase(null, "", "", true, "", "")
-        stateHandler.setEvent(NavigateToDemo)
+        mutableState.update {
+            it.copy(
+                demoWarning = false,
+                demo = true
+            )
+        }
     }
 }

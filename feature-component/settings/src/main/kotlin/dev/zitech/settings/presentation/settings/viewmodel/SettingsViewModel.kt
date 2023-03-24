@@ -98,6 +98,7 @@ internal class SettingsViewModel @Inject constructor(
                 CrashReporterErrorHandled -> mutableState.update {
                     it.copy(crashReporterError = false)
                 }
+                FatalErrorHandled -> mutableState.update { it.copy(fatalError = null) }
                 LanguageDismissed -> mutableState.update {
                     it.copy(selectApplicationLanguage = null)
                 }

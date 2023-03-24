@@ -32,25 +32,21 @@ import dev.zitech.core.common.framework.browser.Browser
 import dev.zitech.ds.molecules.dialog.FireFlowDialogs
 import dev.zitech.ds.molecules.snackbar.BottomNotifierMessage
 import dev.zitech.ds.molecules.snackbar.rememberSnackbarState
-import dev.zitech.onboarding.presentation.welcome.viewmodel.ErrorHandled
-import dev.zitech.onboarding.presentation.welcome.viewmodel.Idle
-import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigateOutOfApp
-import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigateToDemo
-import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigateToError
-import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigateToFirefly
-import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigateToOAuth
-import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigateToPat
+import dev.zitech.onboarding.R
+import dev.zitech.onboarding.presentation.welcome.viewmodel.BackClicked
+import dev.zitech.onboarding.presentation.welcome.viewmodel.ContinueWithOauthClicked
+import dev.zitech.onboarding.presentation.welcome.viewmodel.ContinueWithPatClicked
+import dev.zitech.onboarding.presentation.welcome.viewmodel.DemoHandled
+import dev.zitech.onboarding.presentation.welcome.viewmodel.DemoPositiveClicked
+import dev.zitech.onboarding.presentation.welcome.viewmodel.DemoWarningDismissed
+import dev.zitech.onboarding.presentation.welcome.viewmodel.FatalErrorHandled
+import dev.zitech.onboarding.presentation.welcome.viewmodel.FireflyClicked
+import dev.zitech.onboarding.presentation.welcome.viewmodel.GetStartedClicked
 import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigatedToFireflyResult
-import dev.zitech.onboarding.presentation.welcome.viewmodel.NavigationHandled
-import dev.zitech.onboarding.presentation.welcome.viewmodel.OnBackClick
-import dev.zitech.onboarding.presentation.welcome.viewmodel.OnContinueWithOauthClick
-import dev.zitech.onboarding.presentation.welcome.viewmodel.OnContinueWithPatClick
-import dev.zitech.onboarding.presentation.welcome.viewmodel.OnFireflyClick
-import dev.zitech.onboarding.presentation.welcome.viewmodel.OnGetStartedClick
-import dev.zitech.onboarding.presentation.welcome.viewmodel.OnShowDemoDismiss
-import dev.zitech.onboarding.presentation.welcome.viewmodel.OnShowDemoPositive
-import dev.zitech.onboarding.presentation.welcome.viewmodel.ShowDemoWarning
-import dev.zitech.onboarding.presentation.welcome.viewmodel.ShowError
+import dev.zitech.onboarding.presentation.welcome.viewmodel.NotFatalErrorHandled
+import dev.zitech.onboarding.presentation.welcome.viewmodel.OAuthHandled
+import dev.zitech.onboarding.presentation.welcome.viewmodel.PatHandled
+import dev.zitech.onboarding.presentation.welcome.viewmodel.QuitAppHandled
 import dev.zitech.onboarding.presentation.welcome.viewmodel.WelcomeViewModel
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
@@ -70,68 +66,63 @@ internal fun WelcomeRoute(
     val context = LocalContext.current
     val coroutineScope = LocalLifecycleOwner.current.lifecycle.coroutineScope
 
-    when (val event = screenState.event) {
-        NavigateToOAuth -> {
-            navigateToOAuth()
-            viewModel.receiveIntent(NavigationHandled)
+    if (screenState.demo) {
+        navigateToDemo()
+        viewModel.receiveIntent(DemoHandled)
+    }
+    if (screenState.demoWarning) {
+        FireFlowDialogs.Alert(
+            text = stringResource(R.string.welcome_demo_dialog_text),
+            confirmButton = stringResource(R.string.welcome_demo_dialog_confirm),
+            onConfirmButtonClick = { viewModel.receiveIntent(DemoPositiveClicked) },
+            onDismissRequest = { viewModel.receiveIntent(DemoWarningDismissed) }
+        )
+    }
+    screenState.fatalError?.let { fireFlowError ->
+        navigateToError(fireFlowError)
+        viewModel.receiveIntent(FatalErrorHandled)
+    }
+    if (screenState.firefly) {
+        val fireFlyHomePageUrl = stringResource(R.string.firefly_iii_home_page_url)
+        LaunchedEffect(Unit) {
+            Browser.openUrl(
+                context,
+                fireFlyHomePageUrl
+            ).onEach { event ->
+                viewModel.receiveIntent(NavigatedToFireflyResult(event))
+            }.stateIn(coroutineScope)
         }
-        NavigateToPat -> {
-            navigateToPat()
-            viewModel.receiveIntent(NavigationHandled)
-        }
-        NavigateToDemo -> {
-            navigateToDemo()
-            viewModel.receiveIntent(NavigationHandled)
-        }
-        NavigateOutOfApp -> {
-            navigateOutOfApp()
-            viewModel.receiveIntent(NavigationHandled)
-        }
-        is NavigateToError -> {
-            navigateToError(event.error)
-            viewModel.receiveIntent(NavigationHandled)
-        }
-        is NavigateToFirefly -> {
-            LaunchedEffect(Unit) {
-                Browser.openUrl(
-                    context,
-                    event.url
-                ).onEach { event ->
-                    viewModel.receiveIntent(NavigatedToFireflyResult(event))
-                }.stateIn(coroutineScope)
-            }
-        }
-        is ShowDemoWarning -> {
-            FireFlowDialogs.Alert(
-                text = event.text,
-                confirmButton = event.confirm,
-                onConfirmButtonClick = { viewModel.receiveIntent(OnShowDemoPositive) },
-                onDismissRequest = { viewModel.receiveIntent(OnShowDemoDismiss) }
+    }
+    screenState.nonFatalError?.let { fireFlowError ->
+        snackbarState.showMessage(
+            BottomNotifierMessage(
+                text = stringResource(fireFlowError.uiResId),
+                state = BottomNotifierMessage.State.ERROR,
+                duration = BottomNotifierMessage.Duration.SHORT
             )
-        }
-        is ShowError -> {
-            snackbarState.showMessage(
-                BottomNotifierMessage(
-                    text = event.messageResId?.let { stringResource(it) }
-                        ?: event.text.orEmpty(),
-                    state = BottomNotifierMessage.State.ERROR,
-                    duration = BottomNotifierMessage.Duration.SHORT
-                )
-            )
-            viewModel.receiveIntent(ErrorHandled)
-        }
-        Idle -> {
-            // NO_OP
-        }
+        )
+        viewModel.receiveIntent(NotFatalErrorHandled)
+    }
+    if (screenState.oauth) {
+        navigateToOAuth()
+        viewModel.receiveIntent(OAuthHandled)
+    }
+    if (screenState.pat) {
+        navigateToPat()
+        viewModel.receiveIntent(PatHandled)
+    }
+    if (screenState.quitApp) {
+        navigateOutOfApp()
+        viewModel.receiveIntent(QuitAppHandled)
     }
 
     WelcomeScreen(
         modifier = modifier,
         snackbarState = snackbarState,
-        onContinueWithOauthClick = { viewModel.receiveIntent(OnContinueWithOauthClick) },
-        onContinueWithPatClick = { viewModel.receiveIntent(OnContinueWithPatClick) },
-        onGetStartedClick = { viewModel.receiveIntent(OnGetStartedClick) },
-        onBackClick = { viewModel.receiveIntent(OnBackClick) },
-        onFireflyClick = { viewModel.receiveIntent(OnFireflyClick) }
+        continueWithOauthClicked = { viewModel.receiveIntent(ContinueWithOauthClicked) },
+        continueWithPatClicked = { viewModel.receiveIntent(ContinueWithPatClicked) },
+        getStartedClicked = { viewModel.receiveIntent(GetStartedClicked) },
+        backClicked = { viewModel.receiveIntent(BackClicked) },
+        fireflyClicked = { viewModel.receiveIntent(FireflyClicked) }
     )
 }

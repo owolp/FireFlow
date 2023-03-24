@@ -30,6 +30,7 @@ internal object AnalyticsErrorHandled : SettingsIntent
 internal object ConfirmLogOutClicked : SettingsIntent
 internal object ConfirmLogOutDismissed : SettingsIntent
 internal object CrashReporterErrorHandled : SettingsIntent
+internal object FatalErrorHandled : SettingsIntent
 internal object LanguageDismissed : SettingsIntent
 internal object LanguagePreferenceClicked : SettingsIntent
 internal object LogOutClicked : SettingsIntent

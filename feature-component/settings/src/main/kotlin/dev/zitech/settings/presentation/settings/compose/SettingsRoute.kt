@@ -22,18 +22,27 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.zitech.core.common.domain.error.Error
+import dev.zitech.core.common.domain.model.ApplicationLanguage
+import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.core.common.domain.navigation.DeepLinkScreenDestination
 import dev.zitech.core.common.domain.navigation.LogInState
 import dev.zitech.ds.atoms.loading.FireFlowProgressIndicators
+import dev.zitech.ds.molecules.dialog.DialogRadioItem
+import dev.zitech.ds.molecules.dialog.FireFlowDialogs
+import dev.zitech.ds.molecules.snackbar.BottomNotifierMessage
+import dev.zitech.ds.molecules.snackbar.rememberSnackbarState
+import dev.zitech.settings.R
 import dev.zitech.settings.presentation.settings.viewmodel.AnalyticsChecked
 import dev.zitech.settings.presentation.settings.viewmodel.AnalyticsErrorHandled
 import dev.zitech.settings.presentation.settings.viewmodel.ConfirmLogOutClicked
 import dev.zitech.settings.presentation.settings.viewmodel.ConfirmLogOutDismissed
 import dev.zitech.settings.presentation.settings.viewmodel.CrashReporterChecked
 import dev.zitech.settings.presentation.settings.viewmodel.CrashReporterErrorHandled
+import dev.zitech.settings.presentation.settings.viewmodel.FatalErrorHandled
 import dev.zitech.settings.presentation.settings.viewmodel.LanguageDismissed
 import dev.zitech.settings.presentation.settings.viewmodel.LanguagePreferenceClicked
 import dev.zitech.settings.presentation.settings.viewmodel.LanguageSelected
@@ -59,6 +68,92 @@ internal fun SettingsRoute(
 ) {
     val screenState by viewModel.state.collectAsStateWithLifecycle()
     val logInState by viewModel.logInState.collectAsStateWithLifecycle()
+    val snackbarState = rememberSnackbarState()
+
+    if (screenState.analyticsError) {
+        snackbarState.showMessage(
+            getBottomNotifierMessage(
+                text = R.string.data_choices_analytics_error,
+                onActionClicked = {
+                    viewModel.receiveIntent(RestartApplicationClicked(restartApplication))
+                }
+            )
+        )
+        viewModel.receiveIntent(AnalyticsErrorHandled)
+    }
+    screenState.selectApplicationLanguage?.let { applicationLanguage ->
+        FireFlowDialogs.Radio(
+            title = stringResource(R.string.appearance_dialog_language_title),
+            radioItems = getDialogLanguages(applicationLanguage),
+            onItemClick = { itemSelected ->
+                viewModel.receiveIntent(LanguageSelected(itemSelected))
+            },
+            onDismissRequest = {
+                viewModel.receiveIntent(LanguageDismissed)
+            }
+        )
+    }
+    screenState.selectApplicationTheme?.let { applicationTheme ->
+        FireFlowDialogs.Radio(
+            title = stringResource(R.string.appearance_dialog_theme_title),
+            radioItems = getDialogThemes(applicationTheme),
+            onItemClick = { itemSelected ->
+                viewModel.receiveIntent(ThemeSelected(itemSelected))
+            },
+            onDismissRequest = {
+                viewModel.receiveIntent(ThemeDismissed)
+            }
+        )
+    }
+    if (screenState.confirmLogOut) {
+        FireFlowDialogs.Alert(
+            title = stringResource(R.string.more_dialog_log_out_title),
+            text = stringResource(R.string.more_dialog_log_out_text),
+            onConfirmButtonClick = {
+                viewModel.receiveIntent(ConfirmLogOutClicked)
+            },
+            onDismissRequest = {
+                viewModel.receiveIntent(ConfirmLogOutDismissed)
+            }
+        )
+    }
+    if (screenState.crashReporterError) {
+        snackbarState.showMessage(
+            getBottomNotifierMessage(
+                text = R.string.data_choices_crash_reporter_error,
+                onActionClicked = {
+                    viewModel.receiveIntent(RestartApplicationClicked(restartApplication))
+                }
+            )
+        )
+        viewModel.receiveIntent(CrashReporterErrorHandled)
+    }
+    screenState.fatalError?.let { fireFlowError ->
+        navigateToError(fireFlowError)
+        viewModel.receiveIntent(FatalErrorHandled)
+    }
+    if (screenState.personalizedAdsError) {
+        snackbarState.showMessage(
+            getBottomNotifierMessage(
+                text = R.string.data_choices_personalized_ads_error,
+                onActionClicked = {
+                    viewModel.receiveIntent(RestartApplicationClicked(restartApplication))
+                }
+            )
+        )
+        viewModel.receiveIntent(PersonalizedAdsErrorHandled)
+    }
+    if (screenState.performanceError) {
+        snackbarState.showMessage(
+            getBottomNotifierMessage(
+                text = R.string.data_choices_personalized_ads_error,
+                onActionClicked = {
+                    viewModel.receiveIntent(RestartApplicationClicked(restartApplication))
+                }
+            )
+        )
+        viewModel.receiveIntent(PerformanceErrorHandled)
+    }
 
     when (val state = logInState) {
         LogInState.InitScreen -> {
@@ -70,6 +165,7 @@ internal fun SettingsRoute(
             SettingsScreen(
                 modifier = modifier,
                 state = screenState,
+                snackbarState = snackbarState,
                 analyticsChecked = { checked ->
                     viewModel.receiveIntent(AnalyticsChecked(checked))
                 },
@@ -90,39 +186,6 @@ internal fun SettingsRoute(
                 },
                 logOutClicked = {
                     viewModel.receiveIntent(LogOutClicked)
-                },
-                restartApplicationClicked = {
-                    viewModel.receiveIntent(RestartApplicationClicked(restartApplication))
-                },
-                analyticsErrorHandled = {
-                    viewModel.receiveIntent(AnalyticsErrorHandled)
-                },
-                crashReporterErrorHandled = {
-                    viewModel.receiveIntent(CrashReporterErrorHandled)
-                },
-                personalizedAdsErrorHandled = {
-                    viewModel.receiveIntent(PersonalizedAdsErrorHandled)
-                },
-                performanceErrorHandled = {
-                    viewModel.receiveIntent(PerformanceErrorHandled)
-                },
-                themeSelected = { itemSelected ->
-                    viewModel.receiveIntent(ThemeSelected(itemSelected))
-                },
-                themeDismissed = {
-                    viewModel.receiveIntent(ThemeDismissed)
-                },
-                languageSelected = { itemSelected ->
-                    viewModel.receiveIntent(LanguageSelected(itemSelected))
-                },
-                languageDismissed = {
-                    viewModel.receiveIntent(LanguageDismissed)
-                },
-                confirmLogOutDismissed = {
-                    viewModel.receiveIntent(ConfirmLogOutDismissed)
-                },
-                confirmLogOutClicked = {
-                    viewModel.receiveIntent(ConfirmLogOutClicked)
                 }
             )
         }
@@ -142,3 +205,41 @@ internal fun SettingsRoute(
         }
     }
 }
+
+@Composable
+private fun getBottomNotifierMessage(
+    text: Int,
+    onActionClicked: () -> Unit
+) = BottomNotifierMessage(
+    text = stringResource(text),
+    state = BottomNotifierMessage.State.ERROR,
+    duration = BottomNotifierMessage.Duration.SHORT,
+    action = BottomNotifierMessage.Action(
+        label = stringResource(R.string.action_restart),
+        onAction = onActionClicked
+    )
+)
+
+@Composable
+private fun getDialogLanguages(applicationLanguage: ApplicationLanguage): List<DialogRadioItem> =
+    ApplicationLanguage.values().sortedBy { it.id }
+        .map {
+            DialogRadioItem(
+                id = it.id,
+                text = stringResource(it.text),
+                selected = applicationLanguage.id == it.id,
+                enabled = true
+            )
+        }
+
+@Composable
+private fun getDialogThemes(applicationTheme: ApplicationTheme): List<DialogRadioItem> =
+    ApplicationTheme.values().sortedBy { it.id }
+        .map {
+            DialogRadioItem(
+                id = it.id,
+                text = stringResource(it.text),
+                selected = applicationTheme.id == it.id,
+                enabled = true
+            )
+        }
