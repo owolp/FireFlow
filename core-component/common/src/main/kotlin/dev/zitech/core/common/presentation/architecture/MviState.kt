@@ -18,6 +18,8 @@
 package dev.zitech.core.common.presentation.architecture
 
 import java.util.UUID
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.update
 
 /**
  * The `MviState` interface represents the state of the screen in the Model-View-Intent (MVI) architecture.
@@ -34,4 +36,15 @@ interface MviState {
         val uniqueId: String
             get() = UUID.randomUUID().toString()
     }
+}
+
+/**
+ * Updates the state of this [MutableStateFlow] by applying the given [transform] function to the current state.
+ * The [transform] function should return a modified copy of the current state with the desired changes.
+ *
+ * @param transform The function that takes the current state of type [T] and returns a modified copy of type [T].
+ * @throws TypeCastException if the actual type of [T] does not match the reified type parameter.
+ */
+inline fun <reified T : MviState> MutableStateFlow<T>.updateState(transform: T.() -> T) {
+    this.update { currentState -> transform(currentState) }
 }

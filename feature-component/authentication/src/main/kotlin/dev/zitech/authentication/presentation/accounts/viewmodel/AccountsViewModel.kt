@@ -21,11 +21,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.zitech.core.common.presentation.architecture.MviViewModel
+import dev.zitech.core.common.presentation.architecture.updateState
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -40,8 +40,8 @@ internal class AccountsViewModel @Inject constructor() :
     override fun receiveIntent(intent: AccountsIntent) {
         viewModelScope.launch {
             when (intent) {
-                LoginClicked -> mutableState.update { it.copy(home = true) }
-                HomeHandled -> mutableState.update { it.copy(home = false) }
+                LoginClicked -> mutableState.updateState { copy(home = true) }
+                HomeHandled -> mutableState.updateState { copy(home = false) }
             }
         }
     }
