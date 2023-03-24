@@ -22,6 +22,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.presentation.architecture.MviViewModel
+import dev.zitech.core.common.presentation.architecture.updateState
 import dev.zitech.core.common.presentation.splash.LoginCheckCompletedHandler
 import dev.zitech.core.persistence.domain.usecase.database.RemoveStaleUserAccountsUseCase
 import dev.zitech.core.persistence.domain.usecase.preferences.GetApplicationThemeValueUseCase
@@ -31,7 +32,9 @@ import dev.zitech.fireflow.presentation.model.LaunchState
 import dev.zitech.fireflow.presentation.model.LaunchState.Status.Error
 import dev.zitech.fireflow.presentation.model.LaunchState.Status.Success
 import javax.inject.Inject
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.onEach
@@ -39,21 +42,43 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 internal class MainViewModel @Inject constructor(
-    private val stateHandler: MainStateHandler,
-    private val loginCheckHandler: LoginCheckCompletedHandler,
+    applicationLaunchAnalyticsEvent: ApplicationLaunchAnalyticsEvent,
     private val getApplicationThemeValueUseCase: GetApplicationThemeValueUseCase,
     private val initializeRemoteConfiguratorUseCase: InitializeRemoteConfiguratorUseCase,
-    private val removeStaleUserAccountsUseCase: RemoveStaleUserAccountsUseCase,
-    applicationLaunchAnalyticsEvent: ApplicationLaunchAnalyticsEvent
+    private val loginCheckHandler: LoginCheckCompletedHandler,
+    private val removeStaleUserAccountsUseCase: RemoveStaleUserAccountsUseCase
 ) : ViewModel(), MviViewModel<MainIntent, MainState> {
 
+    private val mutableState = MutableStateFlow(MainState())
     private val tag = Logger.tag(this::class.java)
 
-    override val state: StateFlow<MainState> = stateHandler.state
+    override val state: StateFlow<MainState> = mutableState.asStateFlow()
 
     init {
         applicationLaunchAnalyticsEvent()
         startMandatoryChecks()
+    }
+
+    override fun receiveIntent(intent: MainIntent) {
+        viewModelScope.launch {
+            when (intent) {
+                is ScreenResumed -> handleScreenResumed(intent)
+            }
+        }
+    }
+
+    private fun ScreenResumed.resumingFromOauthDeepLink() =
+        code != null && host != null && scheme != null && state != null
+
+    private fun handleScreenResumed(intent: ScreenResumed) {
+        viewModelScope.launch {
+            with(intent) {
+                if (!resumingFromOauthDeepLink()) {
+                    removeStaleUserAccountsUseCase()
+                }
+            }
+            mutableState.updateState { copy(databaseCleanCompleted = true) }
+        }
     }
 
     private fun startMandatoryChecks() {
@@ -67,8 +92,12 @@ internal class MainViewModel @Inject constructor(
             }.onEach { launchState ->
                 when (val status = launchState.status) {
                     is Success -> {
-                        stateHandler.setTheme(status.theme)
-                        stateHandler.setMandatoryCompleted(true)
+                        mutableState.updateState {
+                            copy(
+                                theme = status.theme,
+                                mandatoryStepsCompleted = true
+                            )
+                        }
                     }
                     is Error -> {
                         Logger.e(tag, exception = status.cause)
@@ -77,26 +106,4 @@ internal class MainViewModel @Inject constructor(
             }.collect()
         }
     }
-
-    override fun receiveIntent(intent: MainIntent) {
-        viewModelScope.launch {
-            when (intent) {
-                is ScreenResumed -> handleScreenResumed(intent)
-            }
-        }
-    }
-
-    private fun handleScreenResumed(intent: ScreenResumed) {
-        viewModelScope.launch {
-            with(intent) {
-                if (!resumingFromOauthDeepLink()) {
-                    removeStaleUserAccountsUseCase()
-                }
-            }
-            stateHandler.setDatabaseCleanCompleted(true)
-        }
-    }
-
-    private fun ScreenResumed.resumingFromOauthDeepLink() =
-        code != null && host != null && scheme != null && state != null
 }

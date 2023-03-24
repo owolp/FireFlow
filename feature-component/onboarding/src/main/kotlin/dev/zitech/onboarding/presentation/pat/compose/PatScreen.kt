@@ -64,16 +64,16 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun PatScreen(
-    patState: PatState,
-    onLoginClick: () -> Unit,
-    onBackClick: () -> Unit,
-    onServerAddressChange: (String) -> Unit,
-    onPersonalAccessTokenChange: (String) -> Unit,
     modifier: Modifier = Modifier,
+    backClicked: () -> Unit = {},
+    loginClicked: () -> Unit = {},
+    patState: PatState = PatState(),
+    personalAccessTokenChanged: (String) -> Unit = {},
+    serverAddressChanged: (String) -> Unit = {},
     snackbarState: FireFlowSnackbarState = rememberSnackbarState()
 ) {
     BackHandler(enabled = true) {
-        if (!patState.loading) onBackClick()
+        if (!patState.loading) backClicked()
     }
 
     FireFlowScaffolds.Primary(
@@ -84,17 +84,17 @@ internal fun PatScreen(
         topBar = {
             FireFlowTopAppBars.BackNavigation(
                 onNavigationClick = {
-                    if (!patState.loading) onBackClick()
+                    if (!patState.loading) backClicked()
                 }
             )
         }
     ) { innerPadding ->
         PatScreenContent(
-            innerPadding,
-            patState,
-            onLoginClick,
-            onServerAddressChange,
-            onPersonalAccessTokenChange
+            innerPadding = innerPadding,
+            state = patState,
+            loginClicked = loginClicked,
+            serverAddressChanged = serverAddressChanged,
+            personalAccessTokenChanged = personalAccessTokenChanged
         )
     }
 }
@@ -104,9 +104,9 @@ internal fun PatScreen(
 private fun PatScreenContent(
     innerPadding: PaddingValues,
     state: PatState,
-    onLoginClick: () -> Unit,
-    onServerAddressChange: (String) -> Unit,
-    onPersonalAccessTokenChange: (String) -> Unit
+    loginClicked: () -> Unit,
+    serverAddressChanged: (String) -> Unit,
+    personalAccessTokenChanged: (String) -> Unit
 ) {
     val focusManager = LocalFocusManager.current
     val logInViewRequester = remember { BringIntoViewRequester() }
@@ -133,7 +133,7 @@ private fun PatScreenContent(
             keyboardActions = KeyboardActions(
                 onNext = { focusManager.moveFocus(FocusDirection.Down) }
             ),
-            onValueChanged = onServerAddressChange
+            onValueChanged = serverAddressChanged
         )
         FireFlowInputForm.TitleAndInput(
             modifier = Modifier
@@ -155,11 +155,11 @@ private fun PatScreenContent(
                 onDone = {
                     focusManager.clearFocus()
                     if (state.loginEnabled) {
-                        onLoginClick()
+                        loginClicked()
                     }
                 }
             ),
-            onValueChanged = onPersonalAccessTokenChange
+            onValueChanged = personalAccessTokenChanged
         )
         FireFlowSpacers.Vertical(modifier = Modifier.weight(1F))
         FireFlowButtons.Filled.OnSurfaceTint(
@@ -169,7 +169,7 @@ private fun PatScreenContent(
             text = stringResource(R.string.pat_login),
             enabled = state.loginEnabled && !state.loading,
             loading = state.loading,
-            onClick = onLoginClick
+            onClick = loginClicked
         )
         FireFlowSpacers.Vertical()
     }
@@ -187,12 +187,6 @@ private fun PatScreenContent(
 @Composable
 private fun PatScreen_Preview() {
     PreviewFireFlowTheme {
-        PatScreen(
-            patState = PatState(),
-            onLoginClick = {},
-            onBackClick = {},
-            onServerAddressChange = {},
-            onPersonalAccessTokenChange = {}
-        )
+        PatScreen()
     }
 }

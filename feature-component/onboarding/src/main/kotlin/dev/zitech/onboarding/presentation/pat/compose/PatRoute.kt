@@ -26,65 +26,57 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.zitech.core.common.domain.error.Error
 import dev.zitech.ds.molecules.snackbar.BottomNotifierMessage
 import dev.zitech.ds.molecules.snackbar.rememberSnackbarState
-import dev.zitech.onboarding.presentation.pat.viewmodel.ErrorHandled
-import dev.zitech.onboarding.presentation.pat.viewmodel.Idle
-import dev.zitech.onboarding.presentation.pat.viewmodel.NavigateBack
-import dev.zitech.onboarding.presentation.pat.viewmodel.NavigateToDashboard
-import dev.zitech.onboarding.presentation.pat.viewmodel.NavigateToError
-import dev.zitech.onboarding.presentation.pat.viewmodel.NavigationHandled
-import dev.zitech.onboarding.presentation.pat.viewmodel.OnBackClick
-import dev.zitech.onboarding.presentation.pat.viewmodel.OnLoginClick
-import dev.zitech.onboarding.presentation.pat.viewmodel.OnPersonalAccessTokenChange
-import dev.zitech.onboarding.presentation.pat.viewmodel.OnServerAddressChange
+import dev.zitech.onboarding.presentation.pat.viewmodel.BackClicked
+import dev.zitech.onboarding.presentation.pat.viewmodel.FatalErrorHandled
+import dev.zitech.onboarding.presentation.pat.viewmodel.LoginClicked
+import dev.zitech.onboarding.presentation.pat.viewmodel.NonFatalErrorHandled
 import dev.zitech.onboarding.presentation.pat.viewmodel.PatViewModel
-import dev.zitech.onboarding.presentation.pat.viewmodel.ShowError
+import dev.zitech.onboarding.presentation.pat.viewmodel.PersonalAccessTokenChanged
+import dev.zitech.onboarding.presentation.pat.viewmodel.ServerAddressChanged
+import dev.zitech.onboarding.presentation.pat.viewmodel.StepClosedHandled
+import dev.zitech.onboarding.presentation.pat.viewmodel.StepCompletedHandled
 
 @Composable
 internal fun PatRoute(
-    navigateToDashboard: () -> Unit,
+    modifier: Modifier = Modifier,
     navigateBack: () -> Unit,
     navigateToError: (error: Error) -> Unit,
-    modifier: Modifier = Modifier,
+    navigateToNext: () -> Unit,
     viewModel: PatViewModel = hiltViewModel()
 ) {
     val screenState by viewModel.state.collectAsStateWithLifecycle()
     val snackbarState = rememberSnackbarState()
 
-    when (val event = screenState.event) {
-        NavigateToDashboard -> {
-            navigateToDashboard()
-            viewModel.receiveIntent(NavigationHandled)
-        }
-        NavigateBack -> {
-            navigateBack()
-            viewModel.receiveIntent(NavigationHandled)
-        }
-        is NavigateToError -> {
-            navigateToError(event.error)
-            viewModel.receiveIntent(NavigationHandled)
-        }
-        is ShowError -> {
-            snackbarState.showMessage(
-                BottomNotifierMessage(
-                    text = event.messageResId?.let { stringResource(it) }
-                        ?: event.text.orEmpty(),
-                    state = BottomNotifierMessage.State.ERROR,
-                    duration = BottomNotifierMessage.Duration.SHORT
-                )
-            )
-            viewModel.receiveIntent(ErrorHandled)
-        }
-        Idle -> {
-            // NO_OP
-        }
+    screenState.fatalError?.let { fireFlowError ->
+        navigateToError(fireFlowError)
+        viewModel.receiveIntent(FatalErrorHandled)
     }
+    screenState.nonFatalError?.let { fireFlowError ->
+        snackbarState.showMessage(
+            BottomNotifierMessage(
+                text = stringResource(fireFlowError.uiResId),
+                state = BottomNotifierMessage.State.ERROR,
+                duration = BottomNotifierMessage.Duration.SHORT
+            )
+        )
+        viewModel.receiveIntent(NonFatalErrorHandled)
+    }
+    if (screenState.stepClosed) {
+        navigateBack()
+        viewModel.receiveIntent(StepClosedHandled)
+    }
+    if (screenState.stepCompleted) {
+        navigateToNext()
+        viewModel.receiveIntent(StepCompletedHandled)
+    }
+
     PatScreen(
         modifier = modifier,
         patState = screenState,
         snackbarState = snackbarState,
-        onLoginClick = { viewModel.receiveIntent(OnLoginClick) },
-        onBackClick = { viewModel.receiveIntent(OnBackClick) },
-        onServerAddressChange = { viewModel.receiveIntent(OnServerAddressChange(it)) },
-        onPersonalAccessTokenChange = { viewModel.receiveIntent(OnPersonalAccessTokenChange(it)) }
+        loginClicked = { viewModel.receiveIntent(LoginClicked) },
+        backClicked = { viewModel.receiveIntent(BackClicked) },
+        serverAddressChanged = { viewModel.receiveIntent(ServerAddressChanged(it)) },
+        personalAccessTokenChanged = { viewModel.receiveIntent(PersonalAccessTokenChanged(it)) }
     )
 }

@@ -17,12 +17,10 @@
 
 package dev.zitech.core.common.di
 
-import android.content.Context
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import dev.zitech.core.common.data.repository.CacheRepositoryImpl
 import dev.zitech.core.common.domain.cache.CacheRepository
@@ -30,27 +28,10 @@ import dev.zitech.core.common.domain.dispatcher.AppDispatchers
 import dev.zitech.core.common.domain.dispatcher.AppDispatchersImpl
 import dev.zitech.core.common.domain.scope.AppScopes
 import dev.zitech.core.common.domain.scope.AppScopesImpl
-import dev.zitech.core.common.domain.strings.StringsProvider
-import dev.zitech.core.common.framework.strings.StringsProviderImpl
 import dev.zitech.core.common.presentation.splash.LoginCheckCompletedHandler
 import javax.inject.Singleton
 
 internal interface CommonModule {
-
-    @InstallIn(SingletonComponent::class)
-    @Module
-    object CommonSingletonProvidesModule {
-
-        @Singleton
-        @Provides
-        fun stringsProvider(@ApplicationContext applicationContext: Context): StringsProvider =
-            StringsProviderImpl(applicationContext)
-
-        @Singleton
-        @Provides
-        fun loginCheckCompletedHandler(): LoginCheckCompletedHandler =
-            LoginCheckCompletedHandler()
-    }
 
     @InstallIn(SingletonComponent::class)
     @Module
@@ -69,5 +50,15 @@ internal interface CommonModule {
         fun cacheRepository(
             cacheRepositoryImpl: CacheRepositoryImpl
         ): CacheRepository
+    }
+
+    @InstallIn(SingletonComponent::class)
+    @Module
+    object CommonSingletonProvidesModule {
+
+        @Singleton
+        @Provides
+        fun loginCheckCompletedHandler(): LoginCheckCompletedHandler =
+            LoginCheckCompletedHandler()
     }
 }

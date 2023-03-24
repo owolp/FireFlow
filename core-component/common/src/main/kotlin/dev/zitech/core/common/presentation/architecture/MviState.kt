@@ -17,7 +17,6 @@
 
 package dev.zitech.core.common.presentation.architecture
 
-import java.util.UUID
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 
@@ -30,13 +29,7 @@ import kotlinx.coroutines.flow.update
  * Implementations of this interface should be data classes to ensure immutability and provide convenient
  * copying and updating of the state.
  */
-interface MviState {
-    @Deprecated("Do not use")
-    interface Event {
-        val uniqueId: String
-            get() = UUID.randomUUID().toString()
-    }
-}
+interface MviState
 
 /**
  * Updates the state of this [MutableStateFlow] by applying the given [transform] function to the current state.
@@ -45,6 +38,7 @@ interface MviState {
  * @param transform The function that takes the current state of type [T] and returns a modified copy of type [T].
  * @throws TypeCastException if the actual type of [T] does not match the reified type parameter.
  */
+
 inline fun <reified T : MviState> MutableStateFlow<T>.updateState(transform: T.() -> T) {
     this.update { currentState -> transform(currentState) }
 }

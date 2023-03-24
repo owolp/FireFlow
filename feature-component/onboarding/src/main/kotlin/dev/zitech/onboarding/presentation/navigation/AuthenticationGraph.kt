@@ -79,7 +79,7 @@ fun NavGraphBuilder.onboardingGraph(
     }
     composable(route = PatDestination.route) {
         PatRoute(
-            navigateToDashboard = navigateToDashboard,
+            navigateToNext = navigateToDashboard,
             navigateBack = navigateBack,
             navigateToError = navigateToError
         )
