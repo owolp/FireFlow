@@ -18,40 +18,30 @@
 package dev.zitech.authentication.presentation.accounts.compose
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.zitech.authentication.presentation.accounts.viewmodel.AccountsViewModel
-import dev.zitech.authentication.presentation.accounts.viewmodel.Idle
-import dev.zitech.authentication.presentation.accounts.viewmodel.NavigateToDashboard
-import dev.zitech.authentication.presentation.accounts.viewmodel.NavigationHandled
-import dev.zitech.authentication.presentation.accounts.viewmodel.OnLoginClick
+import dev.zitech.authentication.presentation.accounts.viewmodel.HomeHandled
+import dev.zitech.authentication.presentation.accounts.viewmodel.LoginClicked
 
 @Composable
 internal fun AccountsRoute(
-    navigateToDashboard: () -> Unit,
+    navigateToHome: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: AccountsViewModel = hiltViewModel()
 ) {
     val screenState by viewModel.state.collectAsStateWithLifecycle()
 
-    when (screenState.event) {
-        NavigateToDashboard -> {
-            LaunchedEffect(Unit) {
-                navigateToDashboard()
-                viewModel.receiveIntent(NavigationHandled)
-            }
-        }
-        Idle -> {
-            // NO_OP
-        }
+    if (screenState.home) {
+        navigateToHome()
+        viewModel.receiveIntent(HomeHandled)
     }
 
     AccountsScreen(
-        modifier = modifier,
-        state = screenState,
-        onLoginClick = { viewModel.receiveIntent(OnLoginClick) }
+        accountsState = screenState,
+        loginClicked = { viewModel.receiveIntent(LoginClicked) },
+        modifier = modifier
     )
 }

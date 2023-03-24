@@ -34,34 +34,31 @@ import dev.zitech.core.common.domain.error.Error
 import dev.zitech.core.common.framework.browser.Browser
 import dev.zitech.ds.molecules.snackbar.BottomNotifierMessage
 import dev.zitech.ds.molecules.snackbar.rememberSnackbarState
+import dev.zitech.onboarding.R
 import dev.zitech.onboarding.presentation.oauth.model.OAuthAuthentication
-import dev.zitech.onboarding.presentation.oauth.viewmodel.ErrorHandled
-import dev.zitech.onboarding.presentation.oauth.viewmodel.Idle
-import dev.zitech.onboarding.presentation.oauth.viewmodel.NavigateBack
-import dev.zitech.onboarding.presentation.oauth.viewmodel.NavigateToDashboard
-import dev.zitech.onboarding.presentation.oauth.viewmodel.NavigateToError
-import dev.zitech.onboarding.presentation.oauth.viewmodel.NavigateToFirefly
+import dev.zitech.onboarding.presentation.oauth.viewmodel.AuthenticationCanceled
+import dev.zitech.onboarding.presentation.oauth.viewmodel.BackClicked
+import dev.zitech.onboarding.presentation.oauth.viewmodel.ClientIdChanged
+import dev.zitech.onboarding.presentation.oauth.viewmodel.ClientSecretChanged
+import dev.zitech.onboarding.presentation.oauth.viewmodel.FatalErrorHandled
+import dev.zitech.onboarding.presentation.oauth.viewmodel.LoginClicked
 import dev.zitech.onboarding.presentation.oauth.viewmodel.NavigatedToFireflyResult
-import dev.zitech.onboarding.presentation.oauth.viewmodel.NavigationHandled
+import dev.zitech.onboarding.presentation.oauth.viewmodel.NonFatalErrorHandled
 import dev.zitech.onboarding.presentation.oauth.viewmodel.OAuthViewModel
-import dev.zitech.onboarding.presentation.oauth.viewmodel.OnAuthenticationCanceled
-import dev.zitech.onboarding.presentation.oauth.viewmodel.OnBackClick
-import dev.zitech.onboarding.presentation.oauth.viewmodel.OnClientIdChange
-import dev.zitech.onboarding.presentation.oauth.viewmodel.OnClientSecretChange
-import dev.zitech.onboarding.presentation.oauth.viewmodel.OnLoginClick
-import dev.zitech.onboarding.presentation.oauth.viewmodel.OnOauthCode
-import dev.zitech.onboarding.presentation.oauth.viewmodel.OnServerAddressChange
-import dev.zitech.onboarding.presentation.oauth.viewmodel.ShowError
+import dev.zitech.onboarding.presentation.oauth.viewmodel.OauthCodeReceived
+import dev.zitech.onboarding.presentation.oauth.viewmodel.ServerAddressChanged
+import dev.zitech.onboarding.presentation.oauth.viewmodel.StepClosedHandled
+import dev.zitech.onboarding.presentation.oauth.viewmodel.StepCompletedHandled
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 
 @Composable
 internal fun OAuthRoute(
-    oauthAuthentication: OAuthAuthentication,
-    navigateToDashboard: () -> Unit,
+    modifier: Modifier = Modifier,
     navigateBack: () -> Unit,
     navigateToError: (error: Error) -> Unit,
-    modifier: Modifier = Modifier,
+    navigateToNext: () -> Unit,
+    oauthAuthentication: OAuthAuthentication,
     viewModel: OAuthViewModel = hiltViewModel()
 ) {
     val screenState by viewModel.state.collectAsStateWithLifecycle()
@@ -73,62 +70,62 @@ internal fun OAuthRoute(
         ActivityResultContracts.StartActivityForResult()
     ) { activityResult ->
         if (activityResult.resultCode == RESULT_CANCELED) {
-            viewModel.receiveIntent(OnAuthenticationCanceled)
+            viewModel.receiveIntent(AuthenticationCanceled)
         }
     }
 
-    when (val event = screenState.event) {
-        NavigateToDashboard -> {
-            navigateToDashboard()
-            viewModel.receiveIntent(NavigationHandled)
+    screenState.fatalError?.let { fireFlowError ->
+        navigateToError(fireFlowError)
+        viewModel.receiveIntent(FatalErrorHandled)
+    }
+    screenState.fireflyAuthentication?.let { state ->
+        val url = stringResource(
+            R.string.firefly_iii_new_access_token_url,
+            screenState.serverAddress,
+            screenState.clientId,
+            state
+        )
+        LaunchedEffect(Unit) {
+            Browser.openUrl(
+                context,
+                url,
+                result
+            ).onEach { event ->
+                viewModel.receiveIntent(NavigatedToFireflyResult(event))
+            }.stateIn(coroutineScope)
         }
-        NavigateBack -> {
-            navigateBack()
-            viewModel.receiveIntent(NavigationHandled)
-        }
-        is NavigateToError -> {
-            navigateToError(event.error)
-            viewModel.receiveIntent(NavigationHandled)
-        }
-        is NavigateToFirefly -> {
-            LaunchedEffect(Unit) {
-                Browser.openUrl(
-                    context,
-                    event.url,
-                    result
-                ).onEach { event ->
-                    viewModel.receiveIntent(NavigatedToFireflyResult(event))
-                }.stateIn(coroutineScope)
-            }
-        }
-        is ShowError -> {
-            snackbarState.showMessage(
-                BottomNotifierMessage(
-                    text = event.messageResId?.let { stringResource(it) }
-                        ?: event.text.orEmpty(),
-                    state = BottomNotifierMessage.State.ERROR,
-                    duration = BottomNotifierMessage.Duration.SHORT
-                )
+    }
+    screenState.nonFatalError?.let { fireFlowError ->
+        snackbarState.showMessage(
+            BottomNotifierMessage(
+                text = stringResource(fireFlowError.uiResId),
+                state = BottomNotifierMessage.State.ERROR,
+                duration = BottomNotifierMessage.Duration.SHORT
             )
-            viewModel.receiveIntent(ErrorHandled)
-        }
-        Idle -> {
-            // NO_OP
-        }
+        )
+        viewModel.receiveIntent(NonFatalErrorHandled)
+    }
+    if (screenState.stepClosed) {
+        navigateBack()
+        viewModel.receiveIntent(StepClosedHandled)
+    }
+    if (screenState.stepCompleted) {
+        navigateToNext()
+        viewModel.receiveIntent(StepCompletedHandled)
     }
 
     OAuthScreen(
+        backClicked = { viewModel.receiveIntent(BackClicked) },
+        clientIdChanged = { viewModel.receiveIntent(ClientIdChanged(it)) },
+        clientSecretChanged = { viewModel.receiveIntent(ClientSecretChanged(it)) },
+        loginClicked = { viewModel.receiveIntent(LoginClicked) },
         modifier = modifier,
         oauthState = screenState,
-        snackbarState = snackbarState,
-        onLoginClick = { viewModel.receiveIntent(OnLoginClick) },
-        onBackClick = { viewModel.receiveIntent(OnBackClick) },
-        onServerAddressChange = { viewModel.receiveIntent(OnServerAddressChange(it)) },
-        onClientIdChange = { viewModel.receiveIntent(OnClientIdChange(it)) },
-        onClientSecretChange = { viewModel.receiveIntent(OnClientSecretChange(it)) }
+        serverAddressChanged = { viewModel.receiveIntent(ServerAddressChanged(it)) },
+        snackbarState = snackbarState
     )
 
     LaunchedEffect(Unit) {
-        viewModel.receiveIntent(OnOauthCode(oauthAuthentication))
+        viewModel.receiveIntent(OauthCodeReceived(oauthAuthentication))
     }
 }

@@ -21,15 +21,16 @@ import dev.zitech.core.common.domain.model.Work
 import dev.zitech.core.common.presentation.architecture.MviIntent
 import dev.zitech.onboarding.presentation.oauth.model.OAuthAuthentication
 
-internal sealed interface OAuthIntent : MviIntent
-
-internal object OnLoginClick : OAuthIntent
-internal object OnBackClick : OAuthIntent
-internal data class OnServerAddressChange(val serverAddress: String) : OAuthIntent
-internal data class OnClientIdChange(val clientId: String) : OAuthIntent
-internal data class OnClientSecretChange(val clientSecret: String) : OAuthIntent
-internal data class OnOauthCode(val authentication: OAuthAuthentication) : OAuthIntent
-internal object OnAuthenticationCanceled : OAuthIntent
+internal data class ClientIdChanged(val clientId: String) : OAuthIntent
+internal data class ClientSecretChanged(val clientSecret: String) : OAuthIntent
 internal data class NavigatedToFireflyResult(val result: Work<Unit>) : OAuthIntent
-internal object NavigationHandled : OAuthIntent
-internal object ErrorHandled : OAuthIntent
+internal data class OauthCodeReceived(val authentication: OAuthAuthentication) : OAuthIntent
+internal data class ServerAddressChanged(val serverAddress: String) : OAuthIntent
+internal object AuthenticationCanceled : OAuthIntent
+internal object BackClicked : OAuthIntent
+internal object LoginClicked : OAuthIntent
+internal object FatalErrorHandled : OAuthIntent
+internal object NonFatalErrorHandled : OAuthIntent
+internal object StepClosedHandled : OAuthIntent
+internal object StepCompletedHandled : OAuthIntent
+internal sealed interface OAuthIntent : MviIntent

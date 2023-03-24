@@ -17,7 +17,6 @@
 
 package dev.zitech.onboarding.presentation.pat.viewmodel
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.zitech.core.common.DataFactory
@@ -37,7 +36,6 @@ import dev.zitech.core.persistence.domain.usecase.database.UpdateUserAccountUseC
 import dev.zitech.onboarding.domain.usecase.IsPatLoginInputValidUseCase
 import javax.inject.Inject
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -49,29 +47,22 @@ internal class PatViewModel @Inject constructor(
     private val isPatLoginInputValidUseCase: IsPatLoginInputValidUseCase,
     private val removeStaleUserAccountsUseCase: RemoveStaleUserAccountsUseCase,
     private val saveUserAccountUseCase: SaveUserAccountUseCase,
-    private val stateHandler: PatStateHandler,
     private val updateUserAccountUseCase: UpdateUserAccountUseCase
-) : ViewModel(), MviViewModel<PatIntent, PatState> {
+) : MviViewModel<PatIntent, PatState>(PatState()) {
 
     private val tag = Logger.tag(this::class.java)
-
-    override val state: StateFlow<PatState> = stateHandler.state
 
     override fun receiveIntent(intent: PatIntent) {
         viewModelScope.launch {
             when (intent) {
-                OnLoginClick -> handleOnLoginClick()
-                NavigationHandled -> stateHandler.resetEvent()
-                OnBackClick -> stateHandler.setEvent(NavigateBack)
-                is OnPersonalAccessTokenChange -> {
-                    stateHandler.setPersonalAccessToken(intent.pat)
-                    setLoginEnabled()
-                }
-                is OnServerAddressChange -> {
-                    stateHandler.setServerAddress(intent.serverAddress)
-                    setLoginEnabled()
-                }
-                ErrorHandled -> stateHandler.resetEvent()
+                BackClicked -> updateState { copy(stepClosed = true) }
+                FatalErrorHandled -> updateState { copy(fatalError = null) }
+                LoginClicked -> handleLoginClicked()
+                NonFatalErrorHandled -> updateState { copy(nonFatalError = null) }
+                is PersonalAccessTokenChanged -> handlePersonalAccessTokenChanged(intent)
+                is ServerAddressChanged -> handleServerAddressChanged(intent)
+                StepClosedHandled -> updateState { copy(stepClosed = false) }
+                StepCompletedHandled -> updateState { copy(stepCompleted = false) }
             }
         }
     }
@@ -89,22 +80,26 @@ internal class PatViewModel @Inject constructor(
                 )
             }.onError { error ->
                 removeStaleUserAccountsUseCase()
-                stateHandler.setLoading(false)
+                updateState { copy(loading = false) }
                 when (error) {
+                    is Error.UserVisible,
+                    is Error.TokenFailed -> {
+                        updateState { copy(nonFatalError = error) }
+                    }
                     is Error.Fatal -> {
                         Logger.e(tag, throwable = error.throwable)
-                        stateHandler.setEvent(NavigateToError(error))
+                        updateState { copy(fatalError = error) }
                     }
-                    is Error.UserVisible,
-                    is Error.TokenFailed ->
-                        stateHandler.setEvent(ShowError(messageResId = error.uiResId))
-                    else -> Logger.e(tag, error.debugText)
+                    else -> {
+                        Logger.e(tag, error.debugText)
+                        updateState { copy(fatalError = error) }
+                    }
                 }
             }
     }
 
     private suspend fun getUserAccountByState(state: String) {
-        stateHandler.setLoading(true)
+        updateState { copy(loading = true) }
         getUserAccountByStateUseCase(state)
             .onSuccess { userAccount ->
                 val authenticationType = userAccount.authenticationType
@@ -112,39 +107,40 @@ internal class PatViewModel @Inject constructor(
                     val accessToken = authenticationType.accessToken
                     checkToken(userAccount, accessToken)
                 } else {
-                    stateHandler.setLoading(false)
-                    stateHandler.setEvent(
-                        NavigateToError(Error.AuthenticationProblem)
-                    )
+                    updateState {
+                        copy(
+                            loading = false,
+                            fatalError = Error.AuthenticationProblem
+                        )
+                    }
                 }
             }.onError { error ->
                 removeStaleUserAccountsUseCase()
-                stateHandler.setLoading(false)
+                updateState { copy(loading = false) }
                 when (error) {
-                    is Error.NullUserAccountByState -> {
-                        Logger.e(tag, error.debugText)
-                        stateHandler.setEvent(NavigateToError(error))
+                    is Error.UserVisible -> {
+                        updateState { copy(nonFatalError = error) }
                     }
                     is Error.Fatal -> {
                         Logger.e(tag, throwable = error.throwable)
-                        stateHandler.setEvent(NavigateToError(error))
+                        updateState { copy(fatalError = error) }
                     }
                     else -> {
                         Logger.e(tag, error.debugText)
-                        stateHandler.setEvent(ShowError(messageResId = error.uiResId))
+                        updateState { copy(fatalError = error) }
                     }
                 }
             }
     }
 
-    private suspend fun handleOnLoginClick() {
+    private suspend fun handleLoginClicked() {
         val accessToken = state.value.pat
         val serverAddress = state.value.serverAddress
         val state = DataFactory.createRandomString(STATE_LENGTH)
 
         withContext(appDispatchers.io) {
             delay(LOADING_DELAY_IN_MILLISECONDS)
-            stateHandler.setLoading(true)
+            updateState { copy(loading = true) }
         }
         saveUserAccountUseCase(
             accessToken = accessToken,
@@ -155,28 +151,52 @@ internal class PatViewModel @Inject constructor(
             getUserAccountByState(state)
         }.onError { error ->
             removeStaleUserAccountsUseCase()
-            stateHandler.setLoading(false)
+            updateState { copy(loading = false) }
             when (error) {
+                is Error.UserVisible -> {
+                    updateState { copy(nonFatalError = error) }
+                }
                 is Error.Fatal -> {
                     Logger.e(tag, throwable = error.throwable)
-                    stateHandler.setEvent(NavigateToError(error))
+                    updateState { copy(fatalError = error) }
                 }
-                is Error.UserVisible ->
-                    stateHandler.setEvent(ShowError(text = error.message))
-                else -> Logger.e(tag, error.debugText)
+                else -> {
+                    Logger.e(tag, error.debugText)
+                    updateState { copy(fatalError = error) }
+                }
             }
         }
     }
 
-    private fun setLoginEnabled() {
-        stateHandler.setLoginEnabled(
-            with(state.value) {
-                isPatLoginInputValidUseCase(
-                    personalAccessToken = pat,
-                    serverAddress = serverAddress
-                )
-            }
-        )
+    private fun handlePersonalAccessTokenChanged(intent: PersonalAccessTokenChanged) {
+        updateState {
+            copy(
+                pat = intent.pat.trim()
+            )
+        }
+        setLoginState()
+    }
+
+    private fun handleServerAddressChanged(intent: ServerAddressChanged) {
+        updateState {
+            copy(
+                serverAddress = intent.serverAddress.trim()
+            )
+        }
+        setLoginState()
+    }
+
+    private fun setLoginState() {
+        updateState {
+            copy(
+                loginEnabled = with(state.value) {
+                    isPatLoginInputValidUseCase(
+                        personalAccessToken = pat,
+                        serverAddress = serverAddress
+                    )
+                }
+            )
+        }
     }
 
     @Suppress("LongParameterList")
@@ -201,23 +221,26 @@ internal class PatViewModel @Inject constructor(
                 type = type
             )
         ).onSuccess {
-            stateHandler.setLoading(false)
-            stateHandler.setEvent(NavigateToDashboard)
+            updateState {
+                copy(
+                    loading = false,
+                    stepCompleted = true
+                )
+            }
         }.onError { error ->
             removeStaleUserAccountsUseCase()
-            stateHandler.setLoading(false)
+            updateState { copy(loading = false) }
             when (error) {
-                is Error.NullUserAccount -> {
-                    Logger.e(tag, error.debugText)
-                    stateHandler.setEvent(NavigateToError(error))
+                is Error.UserVisible -> {
+                    updateState { copy(nonFatalError = error) }
                 }
                 is Error.Fatal -> {
                     Logger.e(tag, throwable = error.throwable)
-                    stateHandler.setEvent(NavigateToError(error))
+                    updateState { copy(fatalError = error) }
                 }
                 else -> {
                     Logger.e(tag, error.debugText)
-                    stateHandler.setEvent(ShowError(messageResId = error.uiResId))
+                    updateState { copy(fatalError = error) }
                 }
             }
         }

@@ -19,11 +19,13 @@ package dev.zitech.onboarding.presentation.pat.viewmodel
 
 import dev.zitech.core.common.presentation.architecture.MviIntent
 
-internal sealed interface PatIntent : MviIntent
+internal data class PersonalAccessTokenChanged(val pat: String) : PatIntent
+internal data class ServerAddressChanged(val serverAddress: String) : PatIntent
+internal object BackClicked : PatIntent
+internal object FatalErrorHandled : PatIntent
+internal object LoginClicked : PatIntent
+internal object NonFatalErrorHandled : PatIntent
+internal object StepClosedHandled : PatIntent
+internal object StepCompletedHandled : PatIntent
 
-internal object OnLoginClick : PatIntent
-internal object OnBackClick : PatIntent
-internal data class OnServerAddressChange(val serverAddress: String) : PatIntent
-internal data class OnPersonalAccessTokenChange(val pat: String) : PatIntent
-internal object NavigationHandled : PatIntent
-internal object ErrorHandled : PatIntent
+internal sealed interface PatIntent : MviIntent

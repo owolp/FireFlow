@@ -70,16 +70,16 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun WelcomeScreen(
-    onContinueWithOauthClick: () -> Unit,
-    onContinueWithPatClick: () -> Unit,
-    onGetStartedClick: () -> Unit,
-    onBackClick: () -> Unit,
-    onFireflyClick: () -> Unit,
     modifier: Modifier = Modifier,
+    backClicked: () -> Unit = {},
+    continueWithOauthClicked: () -> Unit = {},
+    continueWithPatClicked: () -> Unit = {},
+    fireflyClicked: () -> Unit = {},
+    getStartedClicked: () -> Unit = {},
     snackbarState: FireFlowSnackbarState = rememberSnackbarState()
 ) {
     BackHandler(enabled = true) {
-        onBackClick()
+        backClicked()
     }
 
     FireFlowScaffolds.Primary(
@@ -88,11 +88,11 @@ internal fun WelcomeScreen(
         snackbarState = snackbarState
     ) { innerPadding ->
         WelcomeScreenContent(
-            innerPadding,
-            onContinueWithOauthClick,
-            onContinueWithPatClick,
-            onGetStartedClick,
-            onFireflyClick
+            innerPadding = innerPadding,
+            continueWithOauthClicked = continueWithOauthClicked,
+            continueWithPatClicked = continueWithPatClicked,
+            fireflyClicked = fireflyClicked,
+            getStartedClicked = getStartedClicked
         )
     }
 }
@@ -101,10 +101,10 @@ internal fun WelcomeScreen(
 @OptIn(ExperimentalLayoutApi::class, ExperimentalFoundationApi::class)
 private fun WelcomeScreenContent(
     innerPadding: PaddingValues,
-    onContinueWithOauthCLick: () -> Unit,
-    onContinueWithPatClick: () -> Unit,
-    onGetStartedClick: () -> Unit,
-    onFireflyClick: () -> Unit
+    continueWithOauthClicked: () -> Unit,
+    continueWithPatClicked: () -> Unit,
+    fireflyClicked: () -> Unit,
+    getStartedClicked: () -> Unit
 ) {
     val fireflyIIIViewRequester = remember { BringIntoViewRequester() }
     val coroutineScope = rememberCoroutineScope()
@@ -136,7 +136,7 @@ private fun WelcomeScreenContent(
             FireFlowButtons.Filled.OnSurfaceTint(
                 modifier = Modifier.fillMaxWidth(),
                 text = stringResource(R.string.welcome_button_get_started),
-                onClick = onGetStartedClick
+                onClick = getStartedClicked
             )
             FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.s)
             FireFlowExpandableTextCards.Transparent.Icon(
@@ -157,7 +157,7 @@ private fun WelcomeScreenContent(
                             .fillMaxWidth()
                             .padding(horizontal = FireFlowTheme.space.s),
                         text = stringResource(R.string.welcome_button_continue_with_oauth),
-                        onClick = onContinueWithOauthCLick
+                        onClick = continueWithOauthClicked
                     )
                     FireFlowButtons.Filled.OnSurfaceTint(
                         modifier = Modifier
@@ -166,7 +166,7 @@ private fun WelcomeScreenContent(
                         text = stringResource(
                             R.string.welcome_button_continue_with_personal_access_token
                         ),
-                        onClick = onContinueWithPatClick
+                        onClick = continueWithPatClicked
                     )
                     FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.s)
                     Row(
@@ -185,7 +185,7 @@ private fun WelcomeScreenContent(
                         FireFlowClickableTexts.LabelSmall(
                             text = getFireflyInfoAnnotatedString(),
                             color = FireFlowTheme.colors.onSurface
-                        ) { onFireflyClick() }
+                        ) { fireflyClicked() }
                     }
                 },
                 onClick = { isExpanded ->
@@ -230,12 +230,6 @@ private fun getFireflyInfoAnnotatedString() = buildAnnotatedString {
 @Composable
 private fun WelcomeScreen_Preview() {
     PreviewFireFlowTheme {
-        WelcomeScreen(
-            onContinueWithOauthClick = {},
-            onContinueWithPatClick = {},
-            onGetStartedClick = {},
-            onBackClick = {},
-            onFireflyClick = {}
-        )
+        WelcomeScreen()
     }
 }

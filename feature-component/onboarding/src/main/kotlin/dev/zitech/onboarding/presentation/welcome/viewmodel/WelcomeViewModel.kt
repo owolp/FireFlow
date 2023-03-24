@@ -17,90 +17,74 @@
 
 package dev.zitech.onboarding.presentation.welcome.viewmodel
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.zitech.core.common.domain.error.Error
 import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.domain.model.Work
 import dev.zitech.core.common.domain.model.onError
-import dev.zitech.core.common.domain.model.onSuccess
 import dev.zitech.core.common.presentation.architecture.MviViewModel
 import dev.zitech.core.persistence.domain.usecase.database.SaveUserAccountUseCase
-import dev.zitech.onboarding.presentation.welcome.viewmodel.resoure.WelcomeStringsProvider
 import javax.inject.Inject
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 @HiltViewModel
 internal class WelcomeViewModel @Inject constructor(
-    private val stateHandler: WelcomeStateHandler,
-    private val welcomeStringsProvider: WelcomeStringsProvider,
     private val saveUserAccountUseCase: SaveUserAccountUseCase
-) : ViewModel(), MviViewModel<WelcomeIntent, WelcomeState> {
+) : MviViewModel<WelcomeIntent, WelcomeState>(WelcomeState()) {
 
     private val tag = Logger.tag(this::class.java)
-
-    override val state: StateFlow<WelcomeState> = stateHandler.state
 
     override fun receiveIntent(intent: WelcomeIntent) {
         viewModelScope.launch {
             when (intent) {
-                OnContinueWithOauthClick -> stateHandler.setEvent(NavigateToOAuth)
-                OnContinueWithPatClick -> stateHandler.setEvent(NavigateToPat)
-                OnGetStartedClick -> handleOnGetStartedClick()
-                OnBackClick -> stateHandler.setEvent(NavigateOutOfApp)
-                OnFireflyClick -> handleOnFireflyClick()
-                OnShowDemoPositive -> handleOnShowDemoPositive()
+                BackClicked -> updateState { copy(quitApp = true) }
+                ContinueWithOauthClicked -> updateState { copy(oauth = true) }
+                ContinueWithPatClicked -> updateState { copy(pat = true) }
+                DemoHandled -> updateState { copy(demo = false) }
+                DemoPositiveClicked -> handleOnShowDemoPositive()
+                DemoWarningDismissed -> updateState { copy(demoWarning = false) }
+                FatalErrorHandled -> updateState { copy(fatalError = null) }
+                FireflyClicked -> updateState { copy(fireflyAuthentication = true) }
+                GetStartedClicked -> updateState { copy(demoWarning = true) }
                 is NavigatedToFireflyResult -> handleNavigatedToFireflyResult(intent.result)
-                NavigationHandled,
-                OnShowDemoDismiss,
-                ErrorHandled -> stateHandler.resetEvent()
+                NonFatalErrorHandled -> updateState { copy(nonFatalError = null) }
+                OAuthHandled -> updateState { copy(oauth = false) }
+                PatHandled -> updateState { copy(pat = false) }
+                QuitAppHandled -> updateState { copy(quitApp = false) }
             }
         }
     }
 
-    private fun handleOnGetStartedClick() {
-        stateHandler.setEvent(
-            ShowDemoWarning(
-                text = welcomeStringsProvider.getDemoDialogText(),
-                confirm = welcomeStringsProvider.getDemoDialogConfirm()
-            )
-        )
-    }
-
-    private fun handleOnFireflyClick() {
-        stateHandler.setEvent(NavigateToFirefly(welcomeStringsProvider.getFireflyHomePageUrl()))
+    private suspend fun handleNavigatedToFireflyResult(result: Work<Unit>) {
+        updateState { copy(fireflyAuthentication = false) }
+        result.onError { error ->
+            when (error) {
+                is Error.NoBrowserInstalled,
+                is Error.UserVisible -> {
+                    updateState { copy(nonFatalError = error) }
+                }
+                is Error.Fatal -> {
+                    Logger.e(tag, throwable = error.throwable)
+                    updateState { copy(fatalError = error) }
+                }
+                else -> {
+                    Logger.e(tag, error.debugText)
+                    updateState { copy(fatalError = error) }
+                }
+            }
+        }
     }
 
     @Suppress("ForbiddenComment")
     private suspend fun handleOnShowDemoPositive() {
         // TODO: Dev usage
         saveUserAccountUseCase(null, "", "", true, "", "")
-        stateHandler.setEvent(NavigateToDemo)
-    }
-
-    private suspend fun handleNavigatedToFireflyResult(result: Work<Unit>) {
-        result.onSuccess {
-            stateHandler.resetEvent()
-        }.onError { error ->
-            when (error) {
-                is Error.NoBrowserInstalled -> {
-                    stateHandler.setEvent(
-                        ShowError(messageResId = error.uiResId)
-                    )
-                }
-                is Error.Fatal -> {
-                    Logger.e(tag, throwable = error.throwable)
-                    stateHandler.setEvent(NavigateToError(error))
-                }
-                is Error.UserVisible ->
-                    stateHandler.setEvent(ShowError(text = error.message))
-                else -> {
-                    Logger.e(tag, error.debugText)
-                    stateHandler.setEvent(NavigateToError(error))
-                }
-            }
+        updateState {
+            copy(
+                demoWarning = false,
+                demo = true
+            )
         }
     }
 }

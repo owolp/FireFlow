@@ -20,16 +20,18 @@ package dev.zitech.onboarding.presentation.welcome.viewmodel
 import dev.zitech.core.common.domain.model.Work
 import dev.zitech.core.common.presentation.architecture.MviIntent
 
-internal sealed interface WelcomeIntent : MviIntent
-
-internal object OnContinueWithOauthClick : WelcomeIntent
-internal object OnContinueWithPatClick : WelcomeIntent
-internal object OnGetStartedClick : WelcomeIntent
-internal object OnBackClick : WelcomeIntent
-internal object OnFireflyClick : WelcomeIntent
-internal object OnShowDemoPositive : WelcomeIntent
-internal object OnShowDemoDismiss : WelcomeIntent
 internal data class NavigatedToFireflyResult(val result: Work<Unit>) : WelcomeIntent
-
-internal object NavigationHandled : WelcomeIntent
-internal object ErrorHandled : WelcomeIntent
+internal object BackClicked : WelcomeIntent
+internal object ContinueWithOauthClicked : WelcomeIntent
+internal object ContinueWithPatClicked : WelcomeIntent
+internal object DemoHandled : WelcomeIntent
+internal object DemoPositiveClicked : WelcomeIntent
+internal object DemoWarningDismissed : WelcomeIntent
+internal object FatalErrorHandled : WelcomeIntent
+internal object FireflyClicked : WelcomeIntent
+internal object GetStartedClicked : WelcomeIntent
+internal object NonFatalErrorHandled : WelcomeIntent
+internal object OAuthHandled : WelcomeIntent
+internal object PatHandled : WelcomeIntent
+internal object QuitAppHandled : WelcomeIntent
+internal sealed interface WelcomeIntent : MviIntent

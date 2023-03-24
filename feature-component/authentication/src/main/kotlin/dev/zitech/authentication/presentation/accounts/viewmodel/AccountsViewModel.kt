@@ -17,26 +17,23 @@
 
 package dev.zitech.authentication.presentation.accounts.viewmodel
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.zitech.core.common.presentation.architecture.MviViewModel
 import javax.inject.Inject
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 @HiltViewModel
-internal class AccountsViewModel @Inject constructor(
-    private val stateHandler: AccountsStateHandler
-) : ViewModel(), MviViewModel<AccountsIntent, AccountsState> {
-
-    override val state: StateFlow<AccountsState> = stateHandler.state
+internal class AccountsViewModel @Inject constructor() :
+    MviViewModel<AccountsIntent, AccountsState>(
+        AccountsState()
+    ) {
 
     override fun receiveIntent(intent: AccountsIntent) {
         viewModelScope.launch {
             when (intent) {
-                OnLoginClick -> stateHandler.setEvent(NavigateToDashboard)
-                NavigationHandled -> stateHandler.resetEvent()
+                LoginClicked -> updateState { copy(home = true) }
+                HomeHandled -> updateState { copy(home = false) }
             }
         }
     }

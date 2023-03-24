@@ -64,17 +64,17 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun OAuthScreen(
-    oauthState: OAuthState,
-    onLoginClick: () -> Unit,
-    onBackClick: () -> Unit,
-    onServerAddressChange: (String) -> Unit,
-    onClientIdChange: (String) -> Unit,
-    onClientSecretChange: (String) -> Unit,
     modifier: Modifier = Modifier,
+    backClicked: () -> Unit = {},
+    clientIdChanged: (String) -> Unit = {},
+    clientSecretChanged: (String) -> Unit = {},
+    loginClicked: () -> Unit = {},
+    oauthState: OAuthState = OAuthState(),
+    serverAddressChanged: (String) -> Unit = {},
     snackbarState: FireFlowSnackbarState = rememberSnackbarState()
 ) {
     BackHandler(enabled = true) {
-        if (!oauthState.loading) onBackClick()
+        if (!oauthState.loading) backClicked()
     }
 
     FireFlowScaffolds.Primary(
@@ -85,18 +85,18 @@ internal fun OAuthScreen(
         topBar = {
             FireFlowTopAppBars.BackNavigation(
                 onNavigationClick = {
-                    if (!oauthState.loading) onBackClick()
+                    if (!oauthState.loading) backClicked()
                 }
             )
         }
     ) { innerPadding ->
         OAuthScreenContent(
-            innerPadding,
-            oauthState,
-            onLoginClick,
-            onServerAddressChange,
-            onClientIdChange,
-            onClientSecretChange
+            clientIdChanged = clientIdChanged,
+            clientSecretChanged = clientSecretChanged,
+            innerPadding = innerPadding,
+            loginClicked = loginClicked,
+            serverAddressChanged = serverAddressChanged,
+            state = oauthState
         )
     }
 }
@@ -104,12 +104,12 @@ internal fun OAuthScreen(
 @OptIn(ExperimentalLayoutApi::class, ExperimentalFoundationApi::class)
 @Composable
 private fun OAuthScreenContent(
+    clientIdChanged: (String) -> Unit,
+    clientSecretChanged: (String) -> Unit,
     innerPadding: PaddingValues,
-    state: OAuthState,
-    onLoginClick: () -> Unit,
-    onServerAddressChange: (String) -> Unit,
-    onClientIdChange: (String) -> Unit,
-    onClientSecretChange: (String) -> Unit
+    loginClicked: () -> Unit,
+    serverAddressChanged: (String) -> Unit,
+    state: OAuthState
 ) {
     val focusManager = LocalFocusManager.current
     val logInViewRequester = remember { BringIntoViewRequester() }
@@ -136,7 +136,7 @@ private fun OAuthScreenContent(
             keyboardActions = KeyboardActions(
                 onNext = { focusManager.moveFocus(FocusDirection.Down) }
             ),
-            onValueChanged = onServerAddressChange
+            onValueChanged = serverAddressChanged
         )
         FireFlowInputForm.TitleAndInput(
             modifier = Modifier.fillMaxWidth(),
@@ -150,7 +150,7 @@ private fun OAuthScreenContent(
             keyboardActions = KeyboardActions(
                 onNext = { focusManager.moveFocus(FocusDirection.Down) }
             ),
-            onValueChanged = onClientIdChange
+            onValueChanged = clientIdChanged
         )
         FireFlowInputForm.TitleAndInput(
             modifier = Modifier
@@ -172,11 +172,11 @@ private fun OAuthScreenContent(
                 onDone = {
                     focusManager.clearFocus()
                     if (state.loginEnabled) {
-                        onLoginClick()
+                        loginClicked()
                     }
                 }
             ),
-            onValueChanged = onClientSecretChange
+            onValueChanged = clientSecretChanged
         )
         FireFlowSpacers.Vertical(modifier = Modifier.weight(1F))
         FireFlowButtons.Filled.OnSurfaceTint(
@@ -186,7 +186,7 @@ private fun OAuthScreenContent(
             text = stringResource(R.string.oauth_login),
             enabled = state.loginEnabled && !state.loading,
             loading = state.loading,
-            onClick = onLoginClick
+            onClick = loginClicked
         )
         FireFlowSpacers.Vertical()
     }
@@ -204,13 +204,6 @@ private fun OAuthScreenContent(
 @Composable
 private fun OauthScreen_Preview() {
     PreviewFireFlowTheme {
-        OAuthScreen(
-            oauthState = OAuthState(),
-            onLoginClick = {},
-            onBackClick = {},
-            onClientSecretChange = {},
-            onClientIdChange = {},
-            onServerAddressChange = {}
-        )
+        OAuthScreen()
     }
 }

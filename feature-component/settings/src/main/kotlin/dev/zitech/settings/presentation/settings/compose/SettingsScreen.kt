@@ -31,13 +31,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import dev.zitech.core.common.domain.model.ApplicationLanguage
-import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.ds.atoms.icon.FireFlowIcons
 import dev.zitech.ds.atoms.spacer.FireFlowSpacers
-import dev.zitech.ds.molecules.dialog.DialogRadioItem
-import dev.zitech.ds.molecules.dialog.FireFlowDialogs
-import dev.zitech.ds.molecules.snackbar.BottomNotifierMessage
+import dev.zitech.ds.molecules.snackbar.FireFlowSnackbarState
 import dev.zitech.ds.molecules.snackbar.rememberSnackbarState
 import dev.zitech.ds.molecules.topappbar.FireFlowTopAppBars
 import dev.zitech.ds.molecules.topappbar.ScrollBehavior
@@ -54,90 +50,18 @@ import dev.zitech.settings.presentation.settings.viewmodel.SettingsState
 internal fun SettingsScreen(
     modifier: Modifier = Modifier,
     analyticsChecked: (checked: Boolean) -> Unit = {},
-    analyticsErrorHandled: () -> Unit = {},
-    confirmLogOutClicked: () -> Unit = {},
-    confirmLogOutDismissed: () -> Unit = {},
     crashReporterChecked: (checked: Boolean) -> Unit = {},
-    crashReporterErrorHandled: () -> Unit = {},
-    languageDismissed: () -> Unit = {},
     languagePreferenceClicked: () -> Unit = {},
-    languageSelected: (itemSelected: Int) -> Unit = {},
     logOutClicked: () -> Unit = {},
     performanceChecked: (checked: Boolean) -> Unit = {},
-    performanceErrorHandled: () -> Unit = {},
     personalizedAdsChecked: (checked: Boolean) -> Unit = {},
-    personalizedAdsErrorHandled: () -> Unit = {},
-    restartApplicationClicked: () -> Unit = {},
+    snackbarState: FireFlowSnackbarState = rememberSnackbarState(),
     state: SettingsState = SettingsState(),
-    themeDismissed: () -> Unit = {},
-    themePreferenceClicked: () -> Unit = {},
-    themeSelected: (itemSelected: Int) -> Unit = {}
+    themePreferenceClicked: () -> Unit = {}
 ) {
     val topAppBarScrollBehavior = FireFlowTopAppBars.topAppBarScrollBehavior(
         ScrollBehavior.ExitUntilCollapsed
     )
-    val snackbarState = rememberSnackbarState()
-
-    if (state.analyticsError) {
-        snackbarState.showMessage(
-            getBottomNotifierMessage(
-                text = R.string.data_choices_analytics_error,
-                onActionClicked = restartApplicationClicked
-            )
-        )
-        analyticsErrorHandled()
-    }
-    if (state.selectApplicationLanguage != null) {
-        FireFlowDialogs.Radio(
-            title = stringResource(R.string.appearance_dialog_language_title),
-            radioItems = getDialogLanguages(state.selectApplicationLanguage),
-            onItemClick = languageSelected,
-            onDismissRequest = languageDismissed
-        )
-    }
-    if (state.selectApplicationTheme != null) {
-        FireFlowDialogs.Radio(
-            title = stringResource(R.string.appearance_dialog_theme_title),
-            radioItems = getDialogThemes(state.selectApplicationTheme),
-            onItemClick = themeSelected,
-            onDismissRequest = themeDismissed
-        )
-    }
-    if (state.confirmLogOut) {
-        FireFlowDialogs.Alert(
-            title = stringResource(R.string.more_dialog_log_out_title),
-            text = stringResource(R.string.more_dialog_log_out_text),
-            onConfirmButtonClick = confirmLogOutClicked,
-            onDismissRequest = confirmLogOutDismissed
-        )
-    }
-    if (state.crashReporterError) {
-        snackbarState.showMessage(
-            getBottomNotifierMessage(
-                text = R.string.data_choices_crash_reporter_error,
-                onActionClicked = restartApplicationClicked
-            )
-        )
-        crashReporterErrorHandled()
-    }
-    if (state.personalizedAdsError) {
-        snackbarState.showMessage(
-            getBottomNotifierMessage(
-                text = R.string.data_choices_personalized_ads_error,
-                onActionClicked = restartApplicationClicked
-            )
-        )
-        personalizedAdsErrorHandled()
-    }
-    if (state.performanceError) {
-        snackbarState.showMessage(
-            getBottomNotifierMessage(
-                text = R.string.data_choices_personalized_ads_error,
-                onActionClicked = restartApplicationClicked
-            )
-        )
-        performanceErrorHandled()
-    }
 
     FireFlowScaffolds.Primary(
         modifier = modifier
@@ -362,44 +286,6 @@ private fun getMorePreferences(
 
     return categoryPreferences
 }
-
-@Composable
-private fun getBottomNotifierMessage(
-    text: Int,
-    onActionClicked: () -> Unit
-) = BottomNotifierMessage(
-    text = stringResource(text),
-    state = BottomNotifierMessage.State.ERROR,
-    duration = BottomNotifierMessage.Duration.SHORT,
-    action = BottomNotifierMessage.Action(
-        label = stringResource(R.string.action_restart),
-        onAction = onActionClicked
-    )
-)
-
-@Composable
-private fun getDialogLanguages(applicationLanguage: ApplicationLanguage): List<DialogRadioItem> =
-    ApplicationLanguage.values().sortedBy { it.id }
-        .map {
-            DialogRadioItem(
-                id = it.id,
-                text = stringResource(it.text),
-                selected = applicationLanguage.id == it.id,
-                enabled = true
-            )
-        }
-
-@Composable
-private fun getDialogThemes(applicationTheme: ApplicationTheme): List<DialogRadioItem> =
-    ApplicationTheme.values().sortedBy { it.id }
-        .map {
-            DialogRadioItem(
-                id = it.id,
-                text = stringResource(it.text),
-                selected = applicationTheme.id == it.id,
-                enabled = true
-            )
-        }
 
 @Preview(
     name = "Settings Screen Light Theme",

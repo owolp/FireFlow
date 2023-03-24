@@ -17,7 +17,6 @@
 
 package dev.zitech.dashboard.presentation.dashboard.viewmodel
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.zitech.core.common.domain.navigation.LogInState
@@ -31,12 +30,10 @@ import kotlinx.coroutines.flow.StateFlow
 
 @HiltViewModel
 internal class DashboardViewModel @Inject constructor(
-    stateHandler: DashboardStateHandler,
-    loginCheckCompletedHandler: LoginCheckCompletedHandler,
-    getScreenDestinationUseCase: GetScreenDestinationUseCase
-) : ViewModel(), MviViewModel<DashboardIntent, DashboardState>, DeepLinkViewModel {
+    getScreenDestinationUseCase: GetScreenDestinationUseCase,
+    loginCheckCompletedHandler: LoginCheckCompletedHandler
+) : MviViewModel<DashboardIntent, DashboardState>(DashboardState), DeepLinkViewModel {
 
-    override val state: StateFlow<DashboardState> = stateHandler.state
     override val logInState: StateFlow<LogInState> by logInState(
         getScreenDestinationUseCase,
         loginCheckCompletedHandler,

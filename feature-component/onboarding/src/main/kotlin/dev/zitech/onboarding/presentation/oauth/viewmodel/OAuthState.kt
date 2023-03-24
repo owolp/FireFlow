@@ -17,13 +17,18 @@
 
 package dev.zitech.onboarding.presentation.oauth.viewmodel
 
+import dev.zitech.core.common.domain.error.FireFlowError
 import dev.zitech.core.common.presentation.architecture.MviState
 
 internal data class OAuthState(
     val clientId: String = "",
     val clientSecret: String = "",
-    val event: OAuthEvent = Idle,
+    val fatalError: FireFlowError? = null,
+    val fireflyAuthentication: String? = null,
     val loading: Boolean = false,
     val loginEnabled: Boolean = false,
-    val serverAddress: String = ""
+    val nonFatalError: FireFlowError? = null,
+    val serverAddress: String = "",
+    val stepClosed: Boolean = false,
+    val stepCompleted: Boolean = false
 ) : MviState

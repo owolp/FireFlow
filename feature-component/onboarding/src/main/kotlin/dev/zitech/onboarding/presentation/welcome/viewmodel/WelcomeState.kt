@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,8 +17,16 @@
 
 package dev.zitech.onboarding.presentation.welcome.viewmodel
 
+import dev.zitech.core.common.domain.error.FireFlowError
 import dev.zitech.core.common.presentation.architecture.MviState
 
 internal data class WelcomeState(
-    val event: WelcomeEvent = Idle
+    val demo: Boolean = false,
+    val demoWarning: Boolean = false,
+    val fatalError: FireFlowError? = null,
+    val fireflyAuthentication: Boolean = false,
+    val nonFatalError: FireFlowError? = null,
+    val oauth: Boolean = false,
+    val pat: Boolean = false,
+    val quitApp: Boolean = false
 ) : MviState

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,8 +36,8 @@ import dev.zitech.ds.templates.scaffold.FireFlowScaffolds
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun AccountsScreen(
-    state: AccountsState,
-    onLoginClick: () -> Unit,
+    accountsState: AccountsState,
+    loginClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val topAppBarScrollBehavior = FireFlowTopAppBars.topAppBarScrollBehavior(
@@ -54,9 +54,9 @@ internal fun AccountsScreen(
         }
     ) { innerPadding ->
         AccountsContent(
-            innerPadding,
-            state,
-            onLoginClick
+            innerPadding = innerPadding,
+            loginClicked = loginClicked,
+            state = accountsState
         )
     }
 }
@@ -64,14 +64,14 @@ internal fun AccountsScreen(
 @Composable
 private fun AccountsContent(
     innerPadding: PaddingValues,
-    state: AccountsState,
-    onLoginClick: () -> Unit
+    loginClicked: () -> Unit,
+    state: AccountsState
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        FireFlowButtons.Text.OnSurface(text = "Login", onClick = onLoginClick)
+        FireFlowButtons.Text.OnSurface(text = "Login", onClick = loginClicked)
     }
 }

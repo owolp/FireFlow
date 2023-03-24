@@ -32,10 +32,10 @@ import dev.zitech.ds.atoms.loading.FireFlowProgressIndicators
 @Composable
 internal fun DashboardRoute(
     modifier: Modifier = Modifier,
-    viewModel: DashboardViewModel = hiltViewModel(),
     navigateToAccounts: () -> Unit,
     navigateToError: (error: Error) -> Unit,
-    navigateToWelcome: () -> Unit
+    navigateToWelcome: () -> Unit,
+    viewModel: DashboardViewModel = hiltViewModel()
 ) {
     val screenState by viewModel.state.collectAsStateWithLifecycle()
     val logInState by viewModel.logInState.collectAsStateWithLifecycle()

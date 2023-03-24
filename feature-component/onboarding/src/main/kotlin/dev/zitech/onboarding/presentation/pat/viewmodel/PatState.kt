@@ -17,12 +17,16 @@
 
 package dev.zitech.onboarding.presentation.pat.viewmodel
 
+import dev.zitech.core.common.domain.error.FireFlowError
 import dev.zitech.core.common.presentation.architecture.MviState
 
 internal data class PatState(
-    val event: PatEvent = Idle,
+    val fatalError: FireFlowError? = null,
     val loading: Boolean = false,
     val loginEnabled: Boolean = false,
+    val nonFatalError: FireFlowError? = null,
     val pat: String = "",
-    val serverAddress: String = ""
+    val serverAddress: String = "",
+    val stepClosed: Boolean = false,
+    val stepCompleted: Boolean = false
 ) : MviState
