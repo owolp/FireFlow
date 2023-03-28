@@ -21,18 +21,16 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.zitech.authenticator.domain.model.Token
 import dev.zitech.authenticator.domain.usecase.GetAccessTokenUseCase
-import dev.zitech.core.common.DataFactory
 import dev.zitech.core.common.domain.dispatcher.AppDispatchers
 import dev.zitech.core.common.domain.error.Error
-import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.domain.model.Work
 import dev.zitech.core.common.domain.model.onError
 import dev.zitech.core.common.domain.model.onSuccess
 import dev.zitech.core.common.presentation.architecture.MviViewModel
 import dev.zitech.core.network.domain.usecase.GetFireflyProfileUseCase
 import dev.zitech.core.persistence.domain.model.database.UserAccount
-import dev.zitech.core.persistence.domain.model.database.UserAccount.Companion.STATE_LENGTH
 import dev.zitech.core.persistence.domain.usecase.database.GetUserAccountByStateUseCase
+import dev.zitech.core.persistence.domain.usecase.database.RemoveStaleUserAccountsUseCase
 import dev.zitech.core.persistence.domain.usecase.database.SaveUserAccountUseCase
 import dev.zitech.core.persistence.domain.usecase.database.UpdateCurrentUserAccountUseCase
 import dev.zitech.core.persistence.domain.usecase.database.UpdateCurrentUserAccountUseCase.Email
@@ -57,12 +55,11 @@ internal class OAuthViewModel @Inject constructor(
     private val getFireflyProfileUseCase: dagger.Lazy<GetFireflyProfileUseCase>,
     private val getUserAccountByStateUseCase: GetUserAccountByStateUseCase,
     private val isOauthLoginInputValidUseCase: IsOAuthLoginInputValidUseCase,
+    private val removeStaleUserAccountsUseCase: RemoveStaleUserAccountsUseCase,
     private val saveUserAccountUseCase: SaveUserAccountUseCase,
     private val updateCurrentUserAccountUseCase: UpdateCurrentUserAccountUseCase,
     private val updateUserAccountUseCase: UpdateUserAccountUseCase
 ) : MviViewModel<OAuthIntent, OAuthState>(OAuthState()) {
-
-    private val tag = Logger.tag(this::class.java)
 
     override fun receiveIntent(intent: OAuthIntent) {
         viewModelScope.launch {
@@ -101,11 +98,19 @@ internal class OAuthViewModel @Inject constructor(
         setLoginState()
     }
 
+    private suspend fun handleError(error: Error) {
+        removeStaleUserAccountsUseCase()
+        when (error) {
+            is Error.UserVisible -> updateState { copy(loading = false, nonFatalError = error) }
+            else -> updateState { copy(loading = false, fatalError = error) }
+        }
+    }
+
     private suspend fun handleLoginClicked() {
         val clientId = state.value.clientId
         val clientSecret = state.value.clientSecret
         val serverAddress = state.value.serverAddress
-        val state = DataFactory.createRandomString(STATE_LENGTH)
+        val state = UserAccount.getRandomState()
 
         withContext(appDispatchers.io) {
             delay(LOADING_DELAY_IN_MILLISECONDS)
@@ -124,44 +129,32 @@ internal class OAuthViewModel @Inject constructor(
                     loading = true
                 )
             }
-        }.onError { error ->
-            updateState { copy(loading = false) }
-            when (error) {
-                is Error.UserVisible -> {
-                    updateState { copy(nonFatalError = error) }
-                }
-                is Error.Fatal -> {
-                    Logger.e(tag, throwable = error.throwable)
-                    updateState { copy(fatalError = error) }
-                }
-                else -> {
-                    Logger.e(tag, error.debugText)
-                    updateState { copy(fatalError = error) }
-                }
-            }
-        }
+        }.onError(::handleError)
     }
 
     private suspend fun handleNavigatedToFireflyResult(result: Work<Unit>) {
-        updateState { copy(loading = false) }
-        result.onError { error ->
+        result.onSuccess {
+            updateState { copy(loading = false) }
+        }.onError { error ->
             when (error) {
                 is Error.NoBrowserInstalled,
                 is Error.UserVisible -> {
                     updateState {
                         copy(
+                            loading = false,
                             fireflyAuthentication = null,
                             nonFatalError = error
                         )
                     }
                 }
-                is Error.Fatal -> {
-                    Logger.e(tag, throwable = error.throwable)
-                    updateState { copy(fatalError = error) }
-                }
                 else -> {
-                    Logger.e(tag, error.debugText)
-                    updateState { copy(fatalError = error) }
+                    updateState {
+                        copy(
+                            loading = false,
+                            fireflyAuthentication = null,
+                            fatalError = error
+                        )
+                    }
                 }
             }
         }
@@ -199,22 +192,7 @@ internal class OAuthViewModel @Inject constructor(
                         )
                     }
                 }
-            }.onError { error ->
-                updateState { copy(loading = false) }
-                when (error) {
-                    is Error.UserVisible -> {
-                        updateState { copy(nonFatalError = error) }
-                    }
-                    is Error.Fatal -> {
-                        Logger.e(tag, throwable = error.throwable)
-                        updateState { copy(fatalError = error) }
-                    }
-                    else -> {
-                        Logger.e(tag, error.debugText)
-                        updateState { copy(fatalError = error) }
-                    }
-                }
-            }
+            }.onError(::handleError)
     }
 
     private fun handleServerAddressChanged(intent: ServerAddressChanged) {
@@ -241,39 +219,8 @@ internal class OAuthViewModel @Inject constructor(
                             stepCompleted = true
                         )
                     }
-                }.onError { error ->
-                    updateState { copy(loading = false) }
-                    when (error) {
-                        is Error.UserVisible -> {
-                            updateState { copy(nonFatalError = error) }
-                        }
-                        is Error.Fatal -> {
-                            Logger.e(tag, throwable = error.throwable)
-                            updateState { copy(fatalError = error) }
-                        }
-                        else -> {
-                            Logger.e(tag, error.debugText)
-                            updateState { copy(fatalError = error) }
-                        }
-                    }
-                }
-            }.onError { error ->
-                updateState { copy(loading = false) }
-                when (error) {
-                    is Error.UserVisible,
-                    is Error.TokenFailed -> {
-                        updateState { copy(nonFatalError = error) }
-                    }
-                    is Error.Fatal -> {
-                        Logger.e(tag, throwable = error.throwable)
-                        updateState { copy(fatalError = error) }
-                    }
-                    else -> {
-                        Logger.e(tag, error.debugText)
-                        updateState { copy(fatalError = error) }
-                    }
-                }
-            }
+                }.onError(::handleError)
+            }.onError(::handleError)
     }
 
     private suspend fun retrieveToken(
@@ -288,22 +235,7 @@ internal class OAuthViewModel @Inject constructor(
             code = code
         ).onSuccess { accessToken ->
             updateUserAccount(accessToken, userAccount, clientId, clientSecret, code)
-        }.onError { error ->
-            updateState { copy(loading = false) }
-            when (error) {
-                is Error.UserVisible -> {
-                    updateState { copy(nonFatalError = error) }
-                }
-                is Error.Fatal -> {
-                    Logger.e(tag, throwable = error.throwable)
-                    updateState { copy(fatalError = error) }
-                }
-                else -> {
-                    Logger.e(tag, error.debugText)
-                    updateState { copy(fatalError = error) }
-                }
-            }
-        }
+        }.onError(::handleError)
     }
 
     private fun setLoginState() {
@@ -340,22 +272,7 @@ internal class OAuthViewModel @Inject constructor(
         )
         updateUserAccountUseCase(updatedUserAccount).onSuccess {
             retrieveFireflyInfo()
-        }.onError { error ->
-            updateState { copy(loading = false) }
-            when (error) {
-                is Error.UserVisible -> {
-                    updateState { copy(nonFatalError = error) }
-                }
-                is Error.Fatal -> {
-                    Logger.e(tag, throwable = error.throwable)
-                    updateState { copy(fatalError = error) }
-                }
-                else -> {
-                    Logger.e(tag, error.debugText)
-                    updateState { copy(fatalError = error) }
-                }
-            }
-        }
+        }.onError(::handleError)
     }
 
     private companion object {

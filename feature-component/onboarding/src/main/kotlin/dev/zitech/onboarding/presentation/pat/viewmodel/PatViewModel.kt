@@ -19,16 +19,13 @@ package dev.zitech.onboarding.presentation.pat.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.zitech.core.common.DataFactory
 import dev.zitech.core.common.domain.dispatcher.AppDispatchers
 import dev.zitech.core.common.domain.error.Error
-import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.domain.model.onError
 import dev.zitech.core.common.domain.model.onSuccess
 import dev.zitech.core.common.presentation.architecture.MviViewModel
 import dev.zitech.core.network.domain.usecase.GetFireflyProfileUseCase
 import dev.zitech.core.persistence.domain.model.database.UserAccount
-import dev.zitech.core.persistence.domain.model.database.UserAccount.Companion.STATE_LENGTH
 import dev.zitech.core.persistence.domain.usecase.database.GetUserAccountByStateUseCase
 import dev.zitech.core.persistence.domain.usecase.database.RemoveStaleUserAccountsUseCase
 import dev.zitech.core.persistence.domain.usecase.database.SaveUserAccountUseCase
@@ -49,8 +46,6 @@ internal class PatViewModel @Inject constructor(
     private val saveUserAccountUseCase: SaveUserAccountUseCase,
     private val updateUserAccountUseCase: UpdateUserAccountUseCase
 ) : MviViewModel<PatIntent, PatState>(PatState()) {
-
-    private val tag = Logger.tag(this::class.java)
 
     override fun receiveIntent(intent: PatIntent) {
         viewModelScope.launch {
@@ -78,24 +73,7 @@ internal class PatViewModel @Inject constructor(
                     type = fireflyProfile.type,
                     userAccount = userAccount
                 )
-            }.onError { error ->
-                removeStaleUserAccountsUseCase()
-                updateState { copy(loading = false) }
-                when (error) {
-                    is Error.UserVisible,
-                    is Error.TokenFailed -> {
-                        updateState { copy(nonFatalError = error) }
-                    }
-                    is Error.Fatal -> {
-                        Logger.e(tag, throwable = error.throwable)
-                        updateState { copy(fatalError = error) }
-                    }
-                    else -> {
-                        Logger.e(tag, error.debugText)
-                        updateState { copy(fatalError = error) }
-                    }
-                }
-            }
+            }.onError(::handleError)
     }
 
     private suspend fun getUserAccountByState(state: String) {
@@ -114,29 +92,21 @@ internal class PatViewModel @Inject constructor(
                         )
                     }
                 }
-            }.onError { error ->
-                removeStaleUserAccountsUseCase()
-                updateState { copy(loading = false) }
-                when (error) {
-                    is Error.UserVisible -> {
-                        updateState { copy(nonFatalError = error) }
-                    }
-                    is Error.Fatal -> {
-                        Logger.e(tag, throwable = error.throwable)
-                        updateState { copy(fatalError = error) }
-                    }
-                    else -> {
-                        Logger.e(tag, error.debugText)
-                        updateState { copy(fatalError = error) }
-                    }
-                }
-            }
+            }.onError(::handleError)
+    }
+
+    private suspend fun handleError(error: Error) {
+        removeStaleUserAccountsUseCase()
+        when (error) {
+            is Error.UserVisible -> updateState { copy(loading = false, nonFatalError = error) }
+            else -> updateState { copy(loading = false, fatalError = error) }
+        }
     }
 
     private suspend fun handleLoginClicked() {
         val accessToken = state.value.pat
         val serverAddress = state.value.serverAddress
-        val state = DataFactory.createRandomString(STATE_LENGTH)
+        val state = UserAccount.getRandomState()
 
         withContext(appDispatchers.io) {
             delay(LOADING_DELAY_IN_MILLISECONDS)
@@ -149,23 +119,7 @@ internal class PatViewModel @Inject constructor(
             state = state
         ).onSuccess {
             getUserAccountByState(state)
-        }.onError { error ->
-            removeStaleUserAccountsUseCase()
-            updateState { copy(loading = false) }
-            when (error) {
-                is Error.UserVisible -> {
-                    updateState { copy(nonFatalError = error) }
-                }
-                is Error.Fatal -> {
-                    Logger.e(tag, throwable = error.throwable)
-                    updateState { copy(fatalError = error) }
-                }
-                else -> {
-                    Logger.e(tag, error.debugText)
-                    updateState { copy(fatalError = error) }
-                }
-            }
-        }
+        }.onError(::handleError)
     }
 
     private fun handlePersonalAccessTokenChanged(intent: PersonalAccessTokenChanged) {
@@ -208,42 +162,25 @@ internal class PatViewModel @Inject constructor(
         type: String,
         userAccount: UserAccount
     ) {
-        updateUserAccountUseCase(
-            userAccount.copy(
-                authenticationType = UserAccount.AuthenticationType.Pat(
-                    accessToken = accessToken
-                ),
-                email = email,
-                fireflyId = fireflyId,
-                isCurrentUserAccount = true,
-                role = role,
-                state = null,
-                type = type
-            )
-        ).onSuccess {
+        val updatedUserAccount = userAccount.copy(
+            authenticationType = UserAccount.AuthenticationType.Pat(
+                accessToken = accessToken
+            ),
+            email = email,
+            fireflyId = fireflyId,
+            isCurrentUserAccount = true,
+            role = role,
+            state = null,
+            type = type
+        )
+        updateUserAccountUseCase(updatedUserAccount).onSuccess {
             updateState {
                 copy(
                     loading = false,
                     stepCompleted = true
                 )
             }
-        }.onError { error ->
-            removeStaleUserAccountsUseCase()
-            updateState { copy(loading = false) }
-            when (error) {
-                is Error.UserVisible -> {
-                    updateState { copy(nonFatalError = error) }
-                }
-                is Error.Fatal -> {
-                    Logger.e(tag, throwable = error.throwable)
-                    updateState { copy(fatalError = error) }
-                }
-                else -> {
-                    Logger.e(tag, error.debugText)
-                    updateState { copy(fatalError = error) }
-                }
-            }
-        }
+        }.onError(::handleError)
     }
 
     private companion object {

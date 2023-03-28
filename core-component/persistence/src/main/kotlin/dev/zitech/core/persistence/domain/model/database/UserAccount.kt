@@ -17,6 +17,8 @@
 
 package dev.zitech.core.persistence.domain.model.database
 
+import dev.zitech.core.common.DataFactory
+
 data class UserAccount(
     val authenticationType: AuthenticationType? = null,
     val email: String? = null,
@@ -46,6 +48,9 @@ data class UserAccount(
     }
 
     companion object {
-        const val STATE_LENGTH = 10
+        private const val STATE_LENGTH = 10
+
+        fun getRandomState(): String =
+            DataFactory.createRandomString(STATE_LENGTH)
     }
 }
