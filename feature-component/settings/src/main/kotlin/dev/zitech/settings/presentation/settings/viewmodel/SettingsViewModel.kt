@@ -31,7 +31,6 @@ import dev.zitech.core.common.domain.model.onError
 import dev.zitech.core.common.domain.navigation.LogInState
 import dev.zitech.core.common.presentation.architecture.DeepLinkViewModel
 import dev.zitech.core.common.presentation.architecture.MviViewModel
-import dev.zitech.core.common.presentation.architecture.updateState
 import dev.zitech.core.common.presentation.splash.LoginCheckCompletedHandler
 import dev.zitech.core.persistence.domain.usecase.database.GetCurrentUserAccountUseCase
 import dev.zitech.core.persistence.domain.usecase.database.UpdateCurrentUserAccountUseCase
@@ -51,9 +50,9 @@ internal class SettingsViewModel @Inject constructor(
     getScreenDestinationUseCase: GetScreenDestinationUseCase,
     loginCheckCompletedHandler: LoginCheckCompletedHandler,
     private val appConfigProvider: AppConfigProvider,
-    private val getCurrentUserAccountUseCase: GetCurrentUserAccountUseCase,
     private val appearanceCollectionStates: AppearanceCollectionStates,
     private val dataChoicesCollectionStates: DataChoicesCollectionStates,
+    private val getCurrentUserAccountUseCase: GetCurrentUserAccountUseCase,
     private val updateCurrentUserAccountUseCase: UpdateCurrentUserAccountUseCase
 ) : MviViewModel<SettingsIntent, SettingsState>(SettingsState()), DeepLinkViewModel {
 

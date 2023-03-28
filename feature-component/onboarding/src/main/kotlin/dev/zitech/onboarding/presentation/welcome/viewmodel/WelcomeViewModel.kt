@@ -20,9 +20,9 @@ package dev.zitech.onboarding.presentation.welcome.viewmodel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.zitech.core.common.domain.error.Error
-import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.domain.model.Work
 import dev.zitech.core.common.domain.model.onError
+import dev.zitech.core.common.domain.model.onSuccess
 import dev.zitech.core.common.presentation.architecture.MviViewModel
 import dev.zitech.core.persistence.domain.usecase.database.SaveUserAccountUseCase
 import javax.inject.Inject
@@ -32,8 +32,6 @@ import kotlinx.coroutines.launch
 internal class WelcomeViewModel @Inject constructor(
     private val saveUserAccountUseCase: SaveUserAccountUseCase
 ) : MviViewModel<WelcomeIntent, WelcomeState>(WelcomeState()) {
-
-    private val tag = Logger.tag(this::class.java)
 
     override fun receiveIntent(intent: WelcomeIntent) {
         viewModelScope.launch {
@@ -57,20 +55,16 @@ internal class WelcomeViewModel @Inject constructor(
     }
 
     private suspend fun handleNavigatedToFireflyResult(result: Work<Unit>) {
-        updateState { copy(fireflyAuthentication = false) }
-        result.onError { error ->
+        result.onSuccess {
+            updateState { copy(fireflyAuthentication = false) }
+        }.onError { error ->
             when (error) {
                 is Error.NoBrowserInstalled,
                 is Error.UserVisible -> {
-                    updateState { copy(nonFatalError = error) }
-                }
-                is Error.Fatal -> {
-                    Logger.e(tag, throwable = error.throwable)
-                    updateState { copy(fatalError = error) }
+                    updateState { copy(fireflyAuthentication = false, nonFatalError = error) }
                 }
                 else -> {
-                    Logger.e(tag, error.debugText)
-                    updateState { copy(fatalError = error) }
+                    updateState { copy(fireflyAuthentication = false, fatalError = error) }
                 }
             }
         }

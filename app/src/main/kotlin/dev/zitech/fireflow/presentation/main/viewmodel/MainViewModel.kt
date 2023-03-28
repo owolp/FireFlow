@@ -30,8 +30,8 @@ import dev.zitech.fireflow.presentation.model.LaunchState
 import dev.zitech.fireflow.presentation.model.LaunchState.Status.Error
 import dev.zitech.fireflow.presentation.model.LaunchState.Status.Success
 import javax.inject.Inject
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
@@ -74,28 +74,26 @@ internal class MainViewModel @Inject constructor(
     }
 
     private fun startMandatoryChecks() {
-        viewModelScope.launch {
-            combine(
-                loginCheckHandler.loginCheckState,
-                getApplicationThemeValueUseCase(),
-                initializeRemoteConfiguratorUseCase()
-            ) { _, themeResult, _ ->
-                LaunchState(Success(themeResult))
-            }.onEach { launchState ->
-                when (val status = launchState.status) {
-                    is Success -> {
-                        updateState {
-                            copy(
-                                theme = status.theme,
-                                mandatoryStepsCompleted = true
-                            )
-                        }
-                    }
-                    is Error -> {
-                        Logger.e(tag, exception = status.cause)
+        combine(
+            loginCheckHandler.loginCheckState,
+            getApplicationThemeValueUseCase(),
+            initializeRemoteConfiguratorUseCase()
+        ) { _, themeResult, _ ->
+            LaunchState(Success(themeResult))
+        }.onEach { launchState ->
+            when (val status = launchState.status) {
+                is Success -> {
+                    updateState {
+                        copy(
+                            theme = status.theme,
+                            mandatoryStepsCompleted = true
+                        )
                     }
                 }
-            }.collect()
-        }
+                is Error -> {
+                    Logger.e(tag, exception = status.cause)
+                }
+            }
+        }.launchIn(viewModelScope)
     }
 }
