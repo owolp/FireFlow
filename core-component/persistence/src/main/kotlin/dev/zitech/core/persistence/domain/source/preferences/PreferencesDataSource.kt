@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,7 +19,6 @@ package dev.zitech.core.persistence.domain.source.preferences
 
 import kotlinx.coroutines.flow.Flow
 
-@Suppress("TooManyFunctions")
 internal interface PreferencesDataSource {
 
     fun getBoolean(key: String, defaultValue: Boolean): Flow<Boolean>

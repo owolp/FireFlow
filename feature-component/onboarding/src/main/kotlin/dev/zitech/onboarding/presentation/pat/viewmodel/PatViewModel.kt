@@ -153,7 +153,6 @@ internal class PatViewModel @Inject constructor(
         }
     }
 
-    @Suppress("LongParameterList")
     private suspend fun updateUserAccount(
         accessToken: String,
         email: String,

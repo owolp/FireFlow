@@ -119,7 +119,7 @@ complexity:
   LongParameterList:
     active: true
     excludes: [ '**/data/source/**', '**/repository/database/**' ]
-    functionThreshold: 6
+    functionThreshold: 10
     constructorThreshold: 18
     ignoreDefaultParameters: false
     ignoreDataClasses: true
@@ -145,7 +145,7 @@ complexity:
     ignoreStringsRegex: '$^'
   TooManyFunctions:
     active: true
-    excludes: [ '**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**', '**/di/**', '**/atoms/**', '**/molecules/**', '**/organisms/**' ]
+    excludes: [ '**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**', '**/di/**', '**/atoms/**', '**/molecules/**', '**/organisms/**', '**/source/**' ]
     thresholdInFiles: 11
     thresholdInClasses: 11
     thresholdInInterfaces: 11
@@ -154,6 +154,7 @@ complexity:
     ignoreDeprecated: false
     ignorePrivate: false
     ignoreOverridden: false
+    ignoreAnnotated: [ 'HiltViewModel' ]
 
 coroutines:
   active: true

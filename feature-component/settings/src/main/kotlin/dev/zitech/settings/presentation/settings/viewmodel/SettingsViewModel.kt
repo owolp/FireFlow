@@ -44,7 +44,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
-@Suppress("TooManyFunctions")
 @HiltViewModel
 internal class SettingsViewModel @Inject constructor(
     getScreenDestinationUseCase: GetScreenDestinationUseCase,
