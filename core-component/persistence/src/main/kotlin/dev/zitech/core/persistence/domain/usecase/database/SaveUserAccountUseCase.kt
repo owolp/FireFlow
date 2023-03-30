@@ -23,7 +23,7 @@ import javax.inject.Inject
 
 @Suppress("LongParameterList")
 class SaveUserAccountUseCase @Inject constructor(
-    private val userAccountRepository: UserAccountRepository
+    private val userAccountRepository: UserAccountRepository,
 ) {
 
     suspend operator fun invoke(
@@ -32,13 +32,14 @@ class SaveUserAccountUseCase @Inject constructor(
         clientSecret: String? = null,
         isCurrentUserAccount: Boolean,
         serverAddress: String,
-        state: String
+        state: String,
     ): Work<Long> =
-        userAccountRepository.saveUserAccount(clientId = clientId,
+        userAccountRepository.saveUserAccount(
+            clientId = clientId,
             clientSecret = clientSecret,
             isCurrentUserAccount = isCurrentUserAccount,
             accessToken = accessToken,
             serverAddress = serverAddress,
-            state = state
+            state = state,
         )
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@ internal class ApplicationLaunchAnalyticsEventTest {
     private val remoteAnalytics = FakeAnalyticsReporter()
     private val analyticsRepository = AnalyticsRepositoryImpl(
         appConfigProvider,
-        remoteAnalytics
+        remoteAnalytics,
     )
 
     private lateinit var sut: ApplicationLaunchAnalyticsEvent
@@ -40,7 +40,7 @@ internal class ApplicationLaunchAnalyticsEventTest {
     @BeforeEach
     fun setup() {
         sut = ApplicationLaunchAnalyticsEvent(
-            analyticsRepository
+            analyticsRepository,
         )
     }
 
@@ -56,7 +56,7 @@ internal class ApplicationLaunchAnalyticsEventTest {
         // Assert
         assertThat(remoteAnalytics.events).hasSize(1)
         assertThat(remoteAnalytics.events).containsKey(
-            ApplicationLaunchEvent().name
+            ApplicationLaunchEvent().name,
         )
     }
 
@@ -72,7 +72,7 @@ internal class ApplicationLaunchAnalyticsEventTest {
         // Assert
         assertThat(remoteAnalytics.events).hasSize(1)
         assertThat(remoteAnalytics.events).containsKey(
-            ApplicationLaunchEvent().name
+            ApplicationLaunchEvent().name,
         )
     }
 }

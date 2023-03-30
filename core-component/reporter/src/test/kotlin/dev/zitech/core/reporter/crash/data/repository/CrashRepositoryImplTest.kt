@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,9 +18,9 @@
 package dev.zitech.core.reporter.crash.data.repository
 
 import com.google.common.truth.Truth.assertThat
-import dev.zitech.core.reporter.crash.framework.FakeCrashReporter
 import dev.zitech.core.common.framework.applicationconfig.FakeAppConfigProvider
 import dev.zitech.core.reporter.crash.domain.repository.CrashRepository
+import dev.zitech.core.reporter.crash.framework.FakeCrashReporter
 import io.mockk.mockkClass
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -36,7 +36,7 @@ internal class CrashRepositoryImplTest {
     fun setup() {
         sut = CrashRepositoryImpl(
             appConfigProvider,
-            crashReporter
+            crashReporter,
         )
     }
 

@@ -50,15 +50,14 @@ internal class GetUserAccountsUseCaseTest {
         // Arrange
         coEvery { userAccountRepository.getUserAccounts() } returns flowOf(
             WorkSuccess(
-                listOf(mockk(), mockk(), mockk())
-            )
+                listOf(mockk(), mockk(), mockk()),
+            ),
         )
 
         // Act & Assert
         sut().test {
             assertThat((awaitItem() as WorkSuccess).data).hasSize(3)
             awaitComplete()
-
         }
         coVerify { userAccountRepository.getUserAccounts() }
         confirmVerified(userAccountRepository)
@@ -71,8 +70,8 @@ internal class GetUserAccountsUseCaseTest {
         val error = Error.NullUserAccount
         coEvery { userAccountRepository.getUserAccounts() } returns flowOf(
             WorkError(
-                error = error
-            )
+                error = error,
+            ),
         )
 
         // Act & Assert

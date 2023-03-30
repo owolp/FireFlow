@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,7 +37,9 @@ internal class SetCrashReporterCollectionUseCaseTest {
     private val crashRepository = mockk<CrashRepository>(relaxUnitFun = true)
     private val getUserLoggedStateUseCase = mockk<GetUserLoggedStateUseCase>()
     private val getCrashReporterCollectionValueUseCase = mockk<GetCrashReporterCollectionValueUseCase>()
-    private val saveCrashReporterCollectionValueUseCase = mockk<SaveCrashReporterCollectionValueUseCase>(relaxUnitFun = true)
+    private val saveCrashReporterCollectionValueUseCase = mockk<SaveCrashReporterCollectionValueUseCase>(
+        relaxUnitFun = true,
+    )
 
     private lateinit var sut: SetCrashReporterCollectionUseCase
 
@@ -47,7 +49,7 @@ internal class SetCrashReporterCollectionUseCaseTest {
             crashRepository,
             getUserLoggedStateUseCase,
             getCrashReporterCollectionValueUseCase,
-            saveCrashReporterCollectionValueUseCase
+            saveCrashReporterCollectionValueUseCase,
         )
     }
 

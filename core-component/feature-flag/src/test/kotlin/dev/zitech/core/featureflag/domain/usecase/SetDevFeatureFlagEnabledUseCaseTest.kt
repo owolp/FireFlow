@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ internal class SetDevFeatureFlagEnabledUseCaseTest {
     @BeforeEach
     fun setUp() {
         sut = SetDevFeatureFlagEnabledUseCase(
-            savePreferencesRepository = savePreferencesRepository
+            savePreferencesRepository = savePreferencesRepository,
         )
     }
 
@@ -52,20 +52,20 @@ internal class SetDevFeatureFlagEnabledUseCaseTest {
             savePreferencesRepository.saveBoolean(
                 preferenceType = preferenceType,
                 key = key,
-                value = value
+                value = value,
             )
         } just Runs
 
         sut(
             key = key,
-            value = value
+            value = value,
         )
 
         coVerify {
             savePreferencesRepository.saveBoolean(
                 preferenceType = preferenceType,
                 key = key,
-                value = value
+                value = value,
             )
         }
     }

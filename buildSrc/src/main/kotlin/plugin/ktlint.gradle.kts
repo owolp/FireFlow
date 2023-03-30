@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,7 +31,6 @@ val inputFiles = project.fileTree(mapOf("dir" to "src", "include" to "**/*.kt"))
 val kotlinFiles = "**/*.kt"
 val kotlinScriptFiles = "**/*.kts"
 val buildFiles = "**/build/**"
-val testFiles = "**/*Test.kt"
 
 val ktlintCheck by tasks.creating(JavaExec::class) {
     description = "Runs Ktlint on the whole project at once."
@@ -48,7 +47,6 @@ val ktlintCheck by tasks.creating(JavaExec::class) {
         kotlinFiles,
         kotlinScriptFiles,
         "!$buildFiles",
-        "!$testFiles"
     )
 }
 
@@ -65,6 +63,5 @@ val ktlintFormat by tasks.creating(JavaExec::class) {
         kotlinFiles,
         kotlinScriptFiles,
         "!$buildFiles",
-        "!$testFiles"
     )
 }

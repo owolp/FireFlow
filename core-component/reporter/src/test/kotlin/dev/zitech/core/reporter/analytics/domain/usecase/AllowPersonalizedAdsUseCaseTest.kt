@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,7 +37,9 @@ internal class AllowPersonalizedAdsUseCaseTest {
     private val analyticsRepository = mockk<AnalyticsRepository>(relaxUnitFun = true)
     private val getUserLoggedStateUseCase = mockk<GetUserLoggedStateUseCase>()
     private val getAllowPersonalizedAdsValueUseCase = mockk<GetAllowPersonalizedAdsValueUseCase>()
-    private val saveAllowPersonalizedAdsValueUseCase = mockk<SaveAllowPersonalizedAdsValueUseCase>(relaxUnitFun = true)
+    private val saveAllowPersonalizedAdsValueUseCase = mockk<SaveAllowPersonalizedAdsValueUseCase>(
+        relaxUnitFun = true,
+    )
 
     private lateinit var sut: AllowPersonalizedAdsUseCase
 
@@ -47,7 +49,7 @@ internal class AllowPersonalizedAdsUseCaseTest {
             analyticsRepository,
             getUserLoggedStateUseCase,
             getAllowPersonalizedAdsValueUseCase,
-            saveAllowPersonalizedAdsValueUseCase
+            saveAllowPersonalizedAdsValueUseCase,
         )
     }
 

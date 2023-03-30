@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,7 +40,9 @@ internal class SetPerformanceCollectionUseCaseTest {
     private val getUserLoggedStateUseCase = mockk<GetUserLoggedStateUseCase>()
     private val getPerformanceCollectionValueUseCase = mockk<GetPerformanceCollectionValueUseCase>()
     private val getBooleanConfigValueUseCase = mockk<GetBooleanConfigValueUseCase>()
-    private val savePerformanceCollectionValueUseCase = mockk<SavePerformanceCollectionValueUseCase>(relaxUnitFun = true)
+    private val savePerformanceCollectionValueUseCase = mockk<SavePerformanceCollectionValueUseCase>(
+        relaxUnitFun = true,
+    )
 
     private lateinit var sut: SetPerformanceCollectionUseCase
 
@@ -51,7 +53,7 @@ internal class SetPerformanceCollectionUseCaseTest {
             getUserLoggedStateUseCase,
             getPerformanceCollectionValueUseCase,
             getBooleanConfigValueUseCase,
-            savePerformanceCollectionValueUseCase
+            savePerformanceCollectionValueUseCase,
         )
     }
 
@@ -81,7 +83,9 @@ internal class SetPerformanceCollectionUseCaseTest {
         coEvery { getPerformanceCollectionValueUseCase() } returns performanceCollectionEnabled
 
         val booleanConfigValue = DataFactory.createRandomBoolean()
-        coEvery { getBooleanConfigValueUseCase(BooleanConfig.PERFORMANCE_COLLECTION_ENABLED) } returns booleanConfigValue
+        coEvery {
+            getBooleanConfigValueUseCase(BooleanConfig.PERFORMANCE_COLLECTION_ENABLED)
+        } returns booleanConfigValue
 
         val expectedResult = performanceCollectionEnabled && booleanConfigValue
 
