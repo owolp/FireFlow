@@ -34,8 +34,7 @@ class SaveUserAccountUseCase @Inject constructor(
         serverAddress: String,
         state: String
     ): Work<Long> =
-        userAccountRepository.saveUserAccount(
-            clientId = clientId,
+        userAccountRepository.saveUserAccount(clientId = clientId,
             clientSecret = clientSecret,
             isCurrentUserAccount = isCurrentUserAccount,
             accessToken = accessToken,
