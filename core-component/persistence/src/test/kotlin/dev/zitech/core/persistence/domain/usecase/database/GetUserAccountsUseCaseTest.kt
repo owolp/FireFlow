@@ -58,7 +58,6 @@ internal class GetUserAccountsUseCaseTest {
         sut().test {
             assertThat((awaitItem() as WorkSuccess).data).hasSize(3)
             awaitComplete()
-
         }
         coVerify { userAccountRepository.getUserAccounts() }
         confirmVerified(userAccountRepository)

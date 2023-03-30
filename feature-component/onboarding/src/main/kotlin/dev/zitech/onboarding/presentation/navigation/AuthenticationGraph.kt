@@ -29,7 +29,6 @@ import dev.zitech.onboarding.presentation.oauth.model.OAuthAuthentication
 import dev.zitech.onboarding.presentation.pat.compose.PatRoute
 import dev.zitech.onboarding.presentation.welcome.compose.WelcomeRoute
 
-@Suppress("LongParameterList")
 fun NavGraphBuilder.onboardingGraph(
     navigateToOAuth: () -> Unit,
     navigateToPat: () -> Unit,

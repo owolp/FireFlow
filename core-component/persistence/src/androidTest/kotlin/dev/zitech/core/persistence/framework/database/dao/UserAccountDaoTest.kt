@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,7 +44,8 @@ internal class UserAccountDaoTest {
     fun setup() {
         database = Room.inMemoryDatabaseBuilder(
             ApplicationProvider.getApplicationContext(),
-            FireFlowDatabase::class.java)
+            FireFlowDatabase::class.java
+        )
             .allowMainThreadQueries()
             .build()
 
@@ -220,7 +221,9 @@ internal class UserAccountDaoTest {
     @Test
     fun removeCurrentUserAccount() = runBlocking {
         // Arrange
-        val userAccountEntity1 = UserAccountEntityFactory.createUserAccountEntity(isCurrentUserAccount = true)
+        val userAccountEntity1 = UserAccountEntityFactory.createUserAccountEntity(
+            isCurrentUserAccount = true
+        )
         sut.saveUserAccount(userAccountEntity1)
 
         // Act

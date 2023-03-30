@@ -33,10 +33,9 @@ import dev.zitech.core.common.presentation.architecture.DeepLinkViewModel
 import dev.zitech.core.common.presentation.architecture.MviViewModel
 import dev.zitech.core.common.presentation.splash.LoginCheckCompletedHandler
 import dev.zitech.core.persistence.domain.usecase.database.GetCurrentUserAccountUseCase
-import dev.zitech.core.persistence.domain.usecase.database.UpdateCurrentUserAccountUseCase
-import dev.zitech.core.persistence.domain.usecase.database.UpdateCurrentUserAccountUseCase.IsCurrentUserAccount
 import dev.zitech.navigation.domain.usecase.GetScreenDestinationUseCase
 import dev.zitech.navigation.presentation.extension.logInState
+import dev.zitech.settings.domain.usecase.LogOutCurrentUserUseCase
 import dev.zitech.settings.presentation.settings.viewmodel.collection.AppearanceCollectionStates
 import dev.zitech.settings.presentation.settings.viewmodel.collection.DataChoicesCollectionStates
 import javax.inject.Inject
@@ -44,7 +43,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
-@Suppress("TooManyFunctions")
 @HiltViewModel
 internal class SettingsViewModel @Inject constructor(
     getScreenDestinationUseCase: GetScreenDestinationUseCase,
@@ -53,7 +51,7 @@ internal class SettingsViewModel @Inject constructor(
     private val appearanceCollectionStates: AppearanceCollectionStates,
     private val dataChoicesCollectionStates: DataChoicesCollectionStates,
     private val getCurrentUserAccountUseCase: GetCurrentUserAccountUseCase,
-    private val updateCurrentUserAccountUseCase: UpdateCurrentUserAccountUseCase
+    private val logOutCurrentUserUseCase: LogOutCurrentUserUseCase
 ) : MviViewModel<SettingsIntent, SettingsState>(SettingsState()), DeepLinkViewModel {
 
     private val tag = Logger.tag(this::class.java)
@@ -152,9 +150,7 @@ internal class SettingsViewModel @Inject constructor(
 
     private suspend fun handleConfirmLogOutClicked() {
         updateState { copy(confirmLogOut = false) }
-        updateCurrentUserAccountUseCase(
-            IsCurrentUserAccount(false)
-        ).onError { error ->
+        logOutCurrentUserUseCase().onError { error ->
             when (error) {
                 is Error.Fatal -> {
                     Logger.e(tag, throwable = error.throwable)

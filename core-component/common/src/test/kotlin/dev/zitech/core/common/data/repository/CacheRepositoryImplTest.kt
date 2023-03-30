@@ -76,7 +76,6 @@ internal class CacheRepositoryImplTest {
         }
     }
 
-
     @Nested
     @DisplayName("WHEN removeCache")
     inner class RemoveCache {

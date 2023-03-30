@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -57,8 +57,10 @@ internal class RemovePreferencesRepositoryImplTest {
     inner class Boolean {
 
         @Test
-        @DisplayName("WHEN called with PreferenceType.DEVELOPMENT THEN return result from " +
-            "developmentPreferencesDataSource")
+        @DisplayName(
+            "WHEN called with PreferenceType.DEVELOPMENT THEN return result from " +
+                "developmentPreferencesDataSource"
+        )
         fun developmentPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.DEVELOPMENT
 
@@ -75,7 +77,9 @@ internal class RemovePreferencesRepositoryImplTest {
         }
 
         @Test
-        @DisplayName("WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource")
+        @DisplayName(
+            "WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource"
+        )
         fun securedPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.SECURED
 
@@ -92,7 +96,9 @@ internal class RemovePreferencesRepositoryImplTest {
         }
 
         @Test
-        @DisplayName("WHEN called with PreferenceType.STANDARD THEN return result from standardPreferencesDataSource")
+        @DisplayName(
+            "WHEN called with PreferenceType.STANDARD THEN return result from standardPreferencesDataSource"
+        )
         fun standardPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.STANDARD
 
@@ -113,8 +119,10 @@ internal class RemovePreferencesRepositoryImplTest {
     inner class Float {
 
         @Test
-        @DisplayName("WHEN called with PreferenceType.DEVELOPMENT THEN return result from " +
-            "developmentPreferencesDataSource")
+        @DisplayName(
+            "WHEN called with PreferenceType.DEVELOPMENT THEN return result from " +
+                "developmentPreferencesDataSource"
+        )
         fun developmentPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.DEVELOPMENT
 
@@ -131,7 +139,9 @@ internal class RemovePreferencesRepositoryImplTest {
         }
 
         @Test
-        @DisplayName("WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource")
+        @DisplayName(
+            "WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource"
+        )
         fun securedPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.SECURED
 
@@ -148,7 +158,9 @@ internal class RemovePreferencesRepositoryImplTest {
         }
 
         @Test
-        @DisplayName("WHEN called with PreferenceType.STANDARD THEN return result from standardPreferencesDataSource")
+        @DisplayName(
+            "WHEN called with PreferenceType.STANDARD THEN return result from standardPreferencesDataSource"
+        )
         fun standardPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.STANDARD
 
@@ -169,8 +181,10 @@ internal class RemovePreferencesRepositoryImplTest {
     inner class Int {
 
         @Test
-        @DisplayName("WHEN called with PreferenceType.DEVELOPMENT THEN return result from " +
-            "developmentPreferencesDataSource")
+        @DisplayName(
+            "WHEN called with PreferenceType.DEVELOPMENT THEN return result from " +
+                "developmentPreferencesDataSource"
+        )
         fun developmentPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.DEVELOPMENT
 
@@ -187,7 +201,9 @@ internal class RemovePreferencesRepositoryImplTest {
         }
 
         @Test
-        @DisplayName("WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource")
+        @DisplayName(
+            "WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource"
+        )
         fun securedPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.SECURED
 
@@ -204,7 +220,9 @@ internal class RemovePreferencesRepositoryImplTest {
         }
 
         @Test
-        @DisplayName("WHEN called with PreferenceType.STANDARD THEN return result from standardPreferencesDataSource")
+        @DisplayName(
+            "WHEN called with PreferenceType.STANDARD THEN return result from standardPreferencesDataSource"
+        )
         fun standardPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.STANDARD
 
@@ -225,8 +243,10 @@ internal class RemovePreferencesRepositoryImplTest {
     inner class Long {
 
         @Test
-        @DisplayName("WHEN called with PreferenceType.DEVELOPMENT THEN return result from " +
-            "developmentPreferencesDataSource")
+        @DisplayName(
+            "WHEN called with PreferenceType.DEVELOPMENT THEN return result from " +
+                "developmentPreferencesDataSource"
+        )
         fun developmentPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.DEVELOPMENT
 
@@ -243,7 +263,9 @@ internal class RemovePreferencesRepositoryImplTest {
         }
 
         @Test
-        @DisplayName("WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource")
+        @DisplayName(
+            "WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource"
+        )
         fun securedPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.SECURED
 
@@ -260,7 +282,9 @@ internal class RemovePreferencesRepositoryImplTest {
         }
 
         @Test
-        @DisplayName("WHEN called with PreferenceType.STANDARD THEN return result from standardPreferencesDataSource")
+        @DisplayName(
+            "WHEN called with PreferenceType.STANDARD THEN return result from standardPreferencesDataSource"
+        )
         fun standardPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.STANDARD
 
@@ -281,8 +305,10 @@ internal class RemovePreferencesRepositoryImplTest {
     inner class String {
 
         @Test
-        @DisplayName("WHEN called with PreferenceType.DEVELOPMENT THEN return result from " +
-            "developmentPreferencesDataSource")
+        @DisplayName(
+            "WHEN called with PreferenceType.DEVELOPMENT THEN return result from " +
+                "developmentPreferencesDataSource"
+        )
         fun developmentPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.DEVELOPMENT
 
@@ -299,7 +325,9 @@ internal class RemovePreferencesRepositoryImplTest {
         }
 
         @Test
-        @DisplayName("WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource")
+        @DisplayName(
+            "WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource"
+        )
         fun securedPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.SECURED
 
@@ -316,7 +344,9 @@ internal class RemovePreferencesRepositoryImplTest {
         }
 
         @Test
-        @DisplayName("WHEN called with PreferenceType.STANDARD THEN return result from standardPreferencesDataSource")
+        @DisplayName(
+            "WHEN called with PreferenceType.STANDARD THEN return result from standardPreferencesDataSource"
+        )
         fun standardPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.STANDARD
 
@@ -337,8 +367,10 @@ internal class RemovePreferencesRepositoryImplTest {
     inner class RemoveAll {
 
         @Test
-        @DisplayName("WHEN called with PreferenceType.DEVELOPMENT THEN return result from " +
-            "developmentPreferencesDataSource")
+        @DisplayName(
+            "WHEN called with PreferenceType.DEVELOPMENT THEN return result from " +
+                "developmentPreferencesDataSource"
+        )
         fun developmentPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.DEVELOPMENT
 
@@ -355,7 +387,9 @@ internal class RemovePreferencesRepositoryImplTest {
         }
 
         @Test
-        @DisplayName("WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource")
+        @DisplayName(
+            "WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource"
+        )
         fun securePreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.SECURED
 
@@ -372,7 +406,9 @@ internal class RemovePreferencesRepositoryImplTest {
         }
 
         @Test
-        @DisplayName("WHEN called with PreferenceType.STANDARD THEN return result from standardPreferencesDataSource")
+        @DisplayName(
+            "WHEN called with PreferenceType.STANDARD THEN return result from standardPreferencesDataSource"
+        )
         fun sharedPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.STANDARD
 

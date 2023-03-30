@@ -58,7 +58,9 @@ internal class InMemoryCacheTest {
 
             // Assert
             assertThat(sut.data).isEqualTo(expectedResult)
-            assertThat(sut.cacheExpirationTimeMillis).isEqualTo((currentTimeMillis + lifetimeMillis).toBigInteger())
+            assertThat(sut.cacheExpirationTimeMillis).isEqualTo(
+                (currentTimeMillis + lifetimeMillis).toBigInteger()
+            )
             assertThat(cacheRepository.caches).contains(sut)
             assertThat(cacheRepository.caches).hasSize(1)
         }

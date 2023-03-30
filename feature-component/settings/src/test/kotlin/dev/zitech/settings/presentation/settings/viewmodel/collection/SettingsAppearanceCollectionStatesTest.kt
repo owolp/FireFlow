@@ -37,9 +37,13 @@ import org.junit.jupiter.api.Test
 internal class SettingsAppearanceCollectionStatesTest {
 
     private val getApplicationThemeValueUseCase = mockk<GetApplicationThemeValueUseCase>()
-    private val setApplicationThemeValueUseCase = mockk<SetApplicationThemeValueUseCase>(relaxed = true)
+    private val setApplicationThemeValueUseCase = mockk<SetApplicationThemeValueUseCase>(
+        relaxed = true
+    )
     private val getApplicationLanguageValueUseCase = mockk<GetApplicationLanguageValueUseCase>()
-    private val setApplicationLanguageValueUseCase = mockk<SetApplicationLanguageValueUseCase>(relaxed = true)
+    private val setApplicationLanguageValueUseCase = mockk<SetApplicationLanguageValueUseCase>(
+        relaxed = true
+    )
 
     private lateinit var sut: AppearanceCollectionStates
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -77,7 +77,9 @@ internal class FeatureFlagRepositoryImplTest {
         }
 
         @Test
-        @DisplayName("WHEN BuildMode Release THEN add prodFeatureFlagProvider and remoteFeatureFlagProvider")
+        @DisplayName(
+            "WHEN BuildMode Release THEN add prodFeatureFlagProvider and remoteFeatureFlagProvider"
+        )
         fun isDebugModeFalse() {
             every { appConfigProvider.buildMode } returns BuildMode.RELEASE
 
@@ -136,8 +138,12 @@ internal class FeatureFlagRepositoryImplTest {
                 fun devFeatureFlagProviderHigherThanProdFeatureFlagProvider() = runBlocking {
                     val feature = mockkClass(Feature::class)
 
-                    coEvery { prodFeatureFlagProvider getProperty "priority" } returns PRIORITY_MINIMUM
-                    coEvery { devFeatureFlagProvider getProperty "priority" } returns PRIORITY_MEDIUM
+                    coEvery {
+                        prodFeatureFlagProvider getProperty "priority"
+                    } returns PRIORITY_MINIMUM
+                    coEvery {
+                        devFeatureFlagProvider getProperty "priority"
+                    } returns PRIORITY_MEDIUM
 
                     coEvery { prodFeatureFlagProvider.hasFeature(feature) } returns true
                     coEvery { devFeatureFlagProvider.hasFeature(feature) } returns true
@@ -195,8 +201,12 @@ internal class FeatureFlagRepositoryImplTest {
                 fun prodFeatureFlagProviderHigherThanDevFeatureFlagProvider() = runBlocking {
                     val feature = mockkClass(Feature::class)
 
-                    coEvery { prodFeatureFlagProvider getProperty "priority" } returns PRIORITY_MEDIUM
-                    coEvery { devFeatureFlagProvider getProperty "priority" } returns PRIORITY_MINIMUM
+                    coEvery {
+                        prodFeatureFlagProvider getProperty "priority"
+                    } returns PRIORITY_MEDIUM
+                    coEvery {
+                        devFeatureFlagProvider getProperty "priority"
+                    } returns PRIORITY_MINIMUM
 
                     coEvery { prodFeatureFlagProvider.hasFeature(feature) } returns true
                     coEvery { devFeatureFlagProvider.hasFeature(feature) } returns true
@@ -254,8 +264,12 @@ internal class FeatureFlagRepositoryImplTest {
                 fun prodFeatureFlagProviderHigherThanDevFeatureFlagProvider() = runBlocking {
                     val feature = mockkClass(Feature::class)
 
-                    coEvery { remoteFeatureFlagProvider getProperty "priority" } returns PRIORITY_MEDIUM
-                    coEvery { devFeatureFlagProvider getProperty "priority" } returns PRIORITY_MINIMUM
+                    coEvery {
+                        remoteFeatureFlagProvider getProperty "priority"
+                    } returns PRIORITY_MEDIUM
+                    coEvery {
+                        devFeatureFlagProvider getProperty "priority"
+                    } returns PRIORITY_MINIMUM
 
                     coEvery { remoteFeatureFlagProvider.hasFeature(feature) } returns true
                     coEvery { devFeatureFlagProvider.hasFeature(feature) } returns true
@@ -342,8 +356,12 @@ internal class FeatureFlagRepositoryImplTest {
                 fun devFeatureFlagProviderHigherThanProdFeatureFlagProvider() = runBlocking {
                     val feature = mockkClass(Feature::class)
 
-                    coEvery { prodFeatureFlagProvider getProperty "priority" } returns PRIORITY_MINIMUM
-                    coEvery { devFeatureFlagProvider getProperty "priority" } returns PRIORITY_MEDIUM
+                    coEvery {
+                        prodFeatureFlagProvider getProperty "priority"
+                    } returns PRIORITY_MINIMUM
+                    coEvery {
+                        devFeatureFlagProvider getProperty "priority"
+                    } returns PRIORITY_MEDIUM
 
                     coEvery { prodFeatureFlagProvider.hasFeature(feature) } returns true
                     coEvery { devFeatureFlagProvider.hasFeature(feature) } returns true
@@ -381,7 +399,6 @@ internal class FeatureFlagRepositoryImplTest {
                     assertThat(result).isFalse()
                 }
 
-
                 @Test
                 @DisplayName("hasFeature false")
                 fun hasFeatureFalse() = runBlocking {
@@ -402,8 +419,12 @@ internal class FeatureFlagRepositoryImplTest {
                 fun prodFeatureFlagProviderHigherThanDevFeatureFlagProvider() = runBlocking {
                     val feature = mockkClass(Feature::class)
 
-                    coEvery { remoteFeatureFlagProvider getProperty "priority" } returns PRIORITY_MEDIUM
-                    coEvery { devFeatureFlagProvider getProperty "priority" } returns PRIORITY_MINIMUM
+                    coEvery {
+                        remoteFeatureFlagProvider getProperty "priority"
+                    } returns PRIORITY_MEDIUM
+                    coEvery {
+                        devFeatureFlagProvider getProperty "priority"
+                    } returns PRIORITY_MINIMUM
 
                     coEvery { remoteFeatureFlagProvider.hasFeature(feature) } returns true
                     coEvery { devFeatureFlagProvider.hasFeature(feature) } returns true
@@ -441,7 +462,6 @@ internal class FeatureFlagRepositoryImplTest {
                     assertThat(result).isFalse()
                 }
 
-
                 @Test
                 @DisplayName("hasFeature false")
                 fun hasFeatureFalse() = runBlocking {
@@ -462,8 +482,12 @@ internal class FeatureFlagRepositoryImplTest {
                 fun prodFeatureFlagProviderHigherThanDevFeatureFlagProvider() = runBlocking {
                     val feature = mockkClass(Feature::class)
 
-                    coEvery { prodFeatureFlagProvider getProperty "priority" } returns PRIORITY_MEDIUM
-                    coEvery { devFeatureFlagProvider getProperty "priority" } returns PRIORITY_MINIMUM
+                    coEvery {
+                        prodFeatureFlagProvider getProperty "priority"
+                    } returns PRIORITY_MEDIUM
+                    coEvery {
+                        devFeatureFlagProvider getProperty "priority"
+                    } returns PRIORITY_MINIMUM
 
                     coEvery { prodFeatureFlagProvider.hasFeature(feature) } returns true
                     coEvery { devFeatureFlagProvider.hasFeature(feature) } returns true

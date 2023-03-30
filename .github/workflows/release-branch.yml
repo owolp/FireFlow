@@ -39,7 +39,7 @@ jobs:
       - name: Install Dependencies
         run: gem install bundler && bundle install
 
-      - name: Run Fastlane Ktlint Lane
+      - name: Run Fastlane Detekt Lane
         run: fastlane detekt
 
   unit_test:

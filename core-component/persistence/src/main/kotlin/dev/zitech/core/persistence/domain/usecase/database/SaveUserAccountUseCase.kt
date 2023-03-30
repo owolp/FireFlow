@@ -21,7 +21,6 @@ import dev.zitech.core.common.domain.model.Work
 import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
 import javax.inject.Inject
 
-@Suppress("LongParameterList")
 class SaveUserAccountUseCase @Inject constructor(
     private val userAccountRepository: UserAccountRepository
 ) {

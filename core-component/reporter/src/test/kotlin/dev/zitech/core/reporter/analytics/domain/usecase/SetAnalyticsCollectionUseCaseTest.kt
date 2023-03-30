@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,7 +37,9 @@ internal class SetAnalyticsCollectionUseCaseTest {
     private val analyticsRepository = mockk<AnalyticsRepository>(relaxUnitFun = true)
     private val getUserLoggedStateUseCase = mockk<GetUserLoggedStateUseCase>()
     private val getAnalyticsCollectionValueUseCase = mockk<GetAnalyticsCollectionValueUseCase>()
-    private val saveAnalyticsCollectionValueUseCase = mockk<SaveAnalyticsCollectionValueUseCase>(relaxUnitFun = true)
+    private val saveAnalyticsCollectionValueUseCase = mockk<SaveAnalyticsCollectionValueUseCase>(
+        relaxUnitFun = true
+    )
 
     private lateinit var sut: SetAnalyticsCollectionUseCase
 

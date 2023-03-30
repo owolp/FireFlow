@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -57,8 +57,10 @@ internal class SavePreferencesRepositoryImplTest {
     inner class Boolean {
 
         @Test
-        @DisplayName("WHEN called with PreferenceType.DEVELOPMENT THEN return result from " +
-            "developmentPreferencesDataSource")
+        @DisplayName(
+            "WHEN called with PreferenceType.DEVELOPMENT THEN return result from " +
+                "developmentPreferencesDataSource"
+        )
         fun developmentPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.DEVELOPMENT
             val value = DataFactory.createRandomBoolean()
@@ -76,7 +78,9 @@ internal class SavePreferencesRepositoryImplTest {
         }
 
         @Test
-        @DisplayName("WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource")
+        @DisplayName(
+            "WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource"
+        )
         fun securedPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.SECURED
             val value = DataFactory.createRandomBoolean()
@@ -94,7 +98,9 @@ internal class SavePreferencesRepositoryImplTest {
         }
 
         @Test
-        @DisplayName("WHEN called with PreferenceType.STANDARD THEN return result from standardPreferencesDataSource")
+        @DisplayName(
+            "WHEN called with PreferenceType.STANDARD THEN return result from standardPreferencesDataSource"
+        )
         fun standardPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.STANDARD
             val value = DataFactory.createRandomBoolean()
@@ -116,8 +122,10 @@ internal class SavePreferencesRepositoryImplTest {
     inner class Float {
 
         @Test
-        @DisplayName("WHEN called with PreferenceType.DEVELOPMENT THEN return result from " +
-            "developmentPreferencesDataSource")
+        @DisplayName(
+            "WHEN called with PreferenceType.DEVELOPMENT THEN return result from " +
+                "developmentPreferencesDataSource"
+        )
         fun developmentPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.DEVELOPMENT
             val value = DataFactory.createRandomDouble().toFloat()
@@ -135,7 +143,9 @@ internal class SavePreferencesRepositoryImplTest {
         }
 
         @Test
-        @DisplayName("WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource")
+        @DisplayName(
+            "WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource"
+        )
         fun securedPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.SECURED
             val value = DataFactory.createRandomDouble().toFloat()
@@ -153,7 +163,9 @@ internal class SavePreferencesRepositoryImplTest {
         }
 
         @Test
-        @DisplayName("WHEN called with PreferenceType.STANDARD THEN return result from standardPreferencesDataSource")
+        @DisplayName(
+            "WHEN called with PreferenceType.STANDARD THEN return result from standardPreferencesDataSource"
+        )
         fun standardPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.STANDARD
             val value = DataFactory.createRandomDouble().toFloat()
@@ -175,8 +187,10 @@ internal class SavePreferencesRepositoryImplTest {
     inner class Int {
 
         @Test
-        @DisplayName("WHEN called with PreferenceType.DEVELOPMENT THEN return result from " +
-            "developmentPreferencesDataSource")
+        @DisplayName(
+            "WHEN called with PreferenceType.DEVELOPMENT THEN return result from " +
+                "developmentPreferencesDataSource"
+        )
         fun developmentPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.DEVELOPMENT
             val value = DataFactory.createRandomInt()
@@ -194,7 +208,9 @@ internal class SavePreferencesRepositoryImplTest {
         }
 
         @Test
-        @DisplayName("WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource")
+        @DisplayName(
+            "WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource"
+        )
         fun securedPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.SECURED
             val value = DataFactory.createRandomInt()
@@ -212,7 +228,9 @@ internal class SavePreferencesRepositoryImplTest {
         }
 
         @Test
-        @DisplayName("WHEN called with PreferenceType.STANDARD THEN return result from standardPreferencesDataSource")
+        @DisplayName(
+            "WHEN called with PreferenceType.STANDARD THEN return result from standardPreferencesDataSource"
+        )
         fun standardPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.STANDARD
             val value = DataFactory.createRandomInt()
@@ -234,8 +252,10 @@ internal class SavePreferencesRepositoryImplTest {
     inner class Long {
 
         @Test
-        @DisplayName("WHEN called with PreferenceType.DEVELOPMENT THEN return result from " +
-            "developmentPreferencesDataSource")
+        @DisplayName(
+            "WHEN called with PreferenceType.DEVELOPMENT THEN return result from " +
+                "developmentPreferencesDataSource"
+        )
         fun developmentPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.DEVELOPMENT
             val value = DataFactory.createRandomLong()
@@ -253,7 +273,9 @@ internal class SavePreferencesRepositoryImplTest {
         }
 
         @Test
-        @DisplayName("WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource")
+        @DisplayName(
+            "WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource"
+        )
         fun securedPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.SECURED
             val value = DataFactory.createRandomLong()
@@ -271,7 +293,9 @@ internal class SavePreferencesRepositoryImplTest {
         }
 
         @Test
-        @DisplayName("WHEN called with PreferenceType.STANDARD THEN return result from standardPreferencesDataSource")
+        @DisplayName(
+            "WHEN called with PreferenceType.STANDARD THEN return result from standardPreferencesDataSource"
+        )
         fun standardPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.STANDARD
             val value = DataFactory.createRandomLong()
@@ -293,8 +317,10 @@ internal class SavePreferencesRepositoryImplTest {
     inner class String {
 
         @Test
-        @DisplayName("WHEN called with PreferenceType.DEVELOPMENT THEN return result from " +
-            "developmentPreferencesDataSource")
+        @DisplayName(
+            "WHEN called with PreferenceType.DEVELOPMENT THEN return result from " +
+                "developmentPreferencesDataSource"
+        )
         fun developmentPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.DEVELOPMENT
             val value = DataFactory.createRandomString()
@@ -312,7 +338,9 @@ internal class SavePreferencesRepositoryImplTest {
         }
 
         @Test
-        @DisplayName("WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource")
+        @DisplayName(
+            "WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource"
+        )
         fun securedPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.SECURED
             val value = DataFactory.createRandomString()
@@ -330,7 +358,9 @@ internal class SavePreferencesRepositoryImplTest {
         }
 
         @Test
-        @DisplayName("WHEN called with PreferenceType.STANDARD THEN return result from standardPreferencesDataSource")
+        @DisplayName(
+            "WHEN called with PreferenceType.STANDARD THEN return result from standardPreferencesDataSource"
+        )
         fun standardPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.STANDARD
             val value = DataFactory.createRandomString()

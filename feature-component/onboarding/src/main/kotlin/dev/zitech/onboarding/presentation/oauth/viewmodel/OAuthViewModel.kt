@@ -46,7 +46,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-@Suppress("TooManyFunctions")
 @HiltViewModel
 internal class OAuthViewModel @Inject constructor(
     private val appDispatchers: AppDispatchers,
