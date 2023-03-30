@@ -57,7 +57,7 @@ internal class FeatureFlagRepositoryImplTest {
             appConfigProvider = appConfigProvider,
             devFeatureFlagProvider = devFeatureFlagProvider,
             prodFeatureFlagProvider = prodFeatureFlagProvider,
-            remoteFeatureFlagProvider = remoteFeatureFlagProvider,
+            remoteFeatureFlagProvider = remoteFeatureFlagProvider
         )
     }
 
@@ -78,7 +78,7 @@ internal class FeatureFlagRepositoryImplTest {
 
         @Test
         @DisplayName(
-            "WHEN BuildMode Release THEN add prodFeatureFlagProvider and remoteFeatureFlagProvider",
+            "WHEN BuildMode Release THEN add prodFeatureFlagProvider and remoteFeatureFlagProvider"
         )
         fun isDebugModeFalse() {
             every { appConfigProvider.buildMode } returns BuildMode.RELEASE
@@ -308,7 +308,7 @@ internal class FeatureFlagRepositoryImplTest {
                 confirmVerified(
                     devFeatureFlagProvider,
                     prodFeatureFlagProvider,
-                    remoteFeatureFlagProvider,
+                    remoteFeatureFlagProvider
                 )
             }
         }
@@ -526,7 +526,7 @@ internal class FeatureFlagRepositoryImplTest {
                 confirmVerified(
                     devFeatureFlagProvider,
                     prodFeatureFlagProvider,
-                    remoteFeatureFlagProvider,
+                    remoteFeatureFlagProvider
                 )
             }
         }

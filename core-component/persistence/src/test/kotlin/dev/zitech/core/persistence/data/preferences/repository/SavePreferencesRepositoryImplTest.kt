@@ -49,7 +49,7 @@ internal class SavePreferencesRepositoryImplTest {
         sut = SavePreferencesRepositoryImpl(
             developmentPreferencesDataSource = developmentPreferencesDataSource,
             securedPreferencesDataSource = securedPreferencesDataSource,
-            standardPreferencesDataSource = standardPreferencesDataSource,
+            standardPreferencesDataSource = standardPreferencesDataSource
         )
     }
 
@@ -59,7 +59,7 @@ internal class SavePreferencesRepositoryImplTest {
         @Test
         @DisplayName(
             "WHEN called with PreferenceType.DEVELOPMENT THEN return result from " +
-                "developmentPreferencesDataSource",
+                "developmentPreferencesDataSource"
         )
         fun developmentPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.DEVELOPMENT
@@ -73,13 +73,13 @@ internal class SavePreferencesRepositoryImplTest {
             confirmVerified(
                 developmentPreferencesDataSource,
                 securedPreferencesDataSource,
-                standardPreferencesDataSource,
+                standardPreferencesDataSource
             )
         }
 
         @Test
         @DisplayName(
-            "WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource",
+            "WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource"
         )
         fun securedPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.SECURED
@@ -93,13 +93,13 @@ internal class SavePreferencesRepositoryImplTest {
             confirmVerified(
                 developmentPreferencesDataSource,
                 securedPreferencesDataSource,
-                standardPreferencesDataSource,
+                standardPreferencesDataSource
             )
         }
 
         @Test
         @DisplayName(
-            "WHEN called with PreferenceType.STANDARD THEN return result from standardPreferencesDataSource",
+            "WHEN called with PreferenceType.STANDARD THEN return result from standardPreferencesDataSource"
         )
         fun standardPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.STANDARD
@@ -113,7 +113,7 @@ internal class SavePreferencesRepositoryImplTest {
             confirmVerified(
                 developmentPreferencesDataSource,
                 securedPreferencesDataSource,
-                standardPreferencesDataSource,
+                standardPreferencesDataSource
             )
         }
     }
@@ -124,7 +124,7 @@ internal class SavePreferencesRepositoryImplTest {
         @Test
         @DisplayName(
             "WHEN called with PreferenceType.DEVELOPMENT THEN return result from " +
-                "developmentPreferencesDataSource",
+                "developmentPreferencesDataSource"
         )
         fun developmentPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.DEVELOPMENT
@@ -138,13 +138,13 @@ internal class SavePreferencesRepositoryImplTest {
             confirmVerified(
                 developmentPreferencesDataSource,
                 securedPreferencesDataSource,
-                standardPreferencesDataSource,
+                standardPreferencesDataSource
             )
         }
 
         @Test
         @DisplayName(
-            "WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource",
+            "WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource"
         )
         fun securedPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.SECURED
@@ -158,13 +158,13 @@ internal class SavePreferencesRepositoryImplTest {
             confirmVerified(
                 developmentPreferencesDataSource,
                 securedPreferencesDataSource,
-                standardPreferencesDataSource,
+                standardPreferencesDataSource
             )
         }
 
         @Test
         @DisplayName(
-            "WHEN called with PreferenceType.STANDARD THEN return result from standardPreferencesDataSource",
+            "WHEN called with PreferenceType.STANDARD THEN return result from standardPreferencesDataSource"
         )
         fun standardPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.STANDARD
@@ -178,7 +178,7 @@ internal class SavePreferencesRepositoryImplTest {
             confirmVerified(
                 developmentPreferencesDataSource,
                 securedPreferencesDataSource,
-                standardPreferencesDataSource,
+                standardPreferencesDataSource
             )
         }
     }
@@ -189,7 +189,7 @@ internal class SavePreferencesRepositoryImplTest {
         @Test
         @DisplayName(
             "WHEN called with PreferenceType.DEVELOPMENT THEN return result from " +
-                "developmentPreferencesDataSource",
+                "developmentPreferencesDataSource"
         )
         fun developmentPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.DEVELOPMENT
@@ -203,13 +203,13 @@ internal class SavePreferencesRepositoryImplTest {
             confirmVerified(
                 developmentPreferencesDataSource,
                 securedPreferencesDataSource,
-                standardPreferencesDataSource,
+                standardPreferencesDataSource
             )
         }
 
         @Test
         @DisplayName(
-            "WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource",
+            "WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource"
         )
         fun securedPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.SECURED
@@ -223,13 +223,13 @@ internal class SavePreferencesRepositoryImplTest {
             confirmVerified(
                 developmentPreferencesDataSource,
                 securedPreferencesDataSource,
-                standardPreferencesDataSource,
+                standardPreferencesDataSource
             )
         }
 
         @Test
         @DisplayName(
-            "WHEN called with PreferenceType.STANDARD THEN return result from standardPreferencesDataSource",
+            "WHEN called with PreferenceType.STANDARD THEN return result from standardPreferencesDataSource"
         )
         fun standardPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.STANDARD
@@ -243,7 +243,7 @@ internal class SavePreferencesRepositoryImplTest {
             confirmVerified(
                 developmentPreferencesDataSource,
                 securedPreferencesDataSource,
-                standardPreferencesDataSource,
+                standardPreferencesDataSource
             )
         }
     }
@@ -254,7 +254,7 @@ internal class SavePreferencesRepositoryImplTest {
         @Test
         @DisplayName(
             "WHEN called with PreferenceType.DEVELOPMENT THEN return result from " +
-                "developmentPreferencesDataSource",
+                "developmentPreferencesDataSource"
         )
         fun developmentPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.DEVELOPMENT
@@ -268,13 +268,13 @@ internal class SavePreferencesRepositoryImplTest {
             confirmVerified(
                 developmentPreferencesDataSource,
                 securedPreferencesDataSource,
-                standardPreferencesDataSource,
+                standardPreferencesDataSource
             )
         }
 
         @Test
         @DisplayName(
-            "WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource",
+            "WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource"
         )
         fun securedPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.SECURED
@@ -288,13 +288,13 @@ internal class SavePreferencesRepositoryImplTest {
             confirmVerified(
                 developmentPreferencesDataSource,
                 securedPreferencesDataSource,
-                standardPreferencesDataSource,
+                standardPreferencesDataSource
             )
         }
 
         @Test
         @DisplayName(
-            "WHEN called with PreferenceType.STANDARD THEN return result from standardPreferencesDataSource",
+            "WHEN called with PreferenceType.STANDARD THEN return result from standardPreferencesDataSource"
         )
         fun standardPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.STANDARD
@@ -308,7 +308,7 @@ internal class SavePreferencesRepositoryImplTest {
             confirmVerified(
                 developmentPreferencesDataSource,
                 securedPreferencesDataSource,
-                standardPreferencesDataSource,
+                standardPreferencesDataSource
             )
         }
     }
@@ -319,7 +319,7 @@ internal class SavePreferencesRepositoryImplTest {
         @Test
         @DisplayName(
             "WHEN called with PreferenceType.DEVELOPMENT THEN return result from " +
-                "developmentPreferencesDataSource",
+                "developmentPreferencesDataSource"
         )
         fun developmentPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.DEVELOPMENT
@@ -333,13 +333,13 @@ internal class SavePreferencesRepositoryImplTest {
             confirmVerified(
                 developmentPreferencesDataSource,
                 securedPreferencesDataSource,
-                standardPreferencesDataSource,
+                standardPreferencesDataSource
             )
         }
 
         @Test
         @DisplayName(
-            "WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource",
+            "WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource"
         )
         fun securedPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.SECURED
@@ -353,13 +353,13 @@ internal class SavePreferencesRepositoryImplTest {
             confirmVerified(
                 developmentPreferencesDataSource,
                 securedPreferencesDataSource,
-                standardPreferencesDataSource,
+                standardPreferencesDataSource
             )
         }
 
         @Test
         @DisplayName(
-            "WHEN called with PreferenceType.STANDARD THEN return result from standardPreferencesDataSource",
+            "WHEN called with PreferenceType.STANDARD THEN return result from standardPreferencesDataSource"
         )
         fun standardPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.STANDARD
@@ -373,7 +373,7 @@ internal class SavePreferencesRepositoryImplTest {
             confirmVerified(
                 developmentPreferencesDataSource,
                 securedPreferencesDataSource,
-                standardPreferencesDataSource,
+                standardPreferencesDataSource
             )
         }
     }

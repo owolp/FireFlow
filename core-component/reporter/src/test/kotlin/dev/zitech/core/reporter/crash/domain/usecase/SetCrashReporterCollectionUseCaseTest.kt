@@ -38,7 +38,7 @@ internal class SetCrashReporterCollectionUseCaseTest {
     private val getUserLoggedStateUseCase = mockk<GetUserLoggedStateUseCase>()
     private val getCrashReporterCollectionValueUseCase = mockk<GetCrashReporterCollectionValueUseCase>()
     private val saveCrashReporterCollectionValueUseCase = mockk<SaveCrashReporterCollectionValueUseCase>(
-        relaxUnitFun = true,
+        relaxUnitFun = true
     )
 
     private lateinit var sut: SetCrashReporterCollectionUseCase
@@ -49,7 +49,7 @@ internal class SetCrashReporterCollectionUseCaseTest {
             crashRepository,
             getUserLoggedStateUseCase,
             getCrashReporterCollectionValueUseCase,
-            saveCrashReporterCollectionValueUseCase,
+            saveCrashReporterCollectionValueUseCase
         )
     }
 

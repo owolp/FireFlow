@@ -38,7 +38,7 @@ internal class IsFeatureEnabledUseCaseTest {
     @BeforeEach
     fun setup() {
         sut = IsFeatureEnabledUseCase(
-            featureFlagRepository = featureFlagRepository,
+            featureFlagRepository = featureFlagRepository
         )
     }
 

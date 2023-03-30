@@ -36,7 +36,7 @@ internal class CrashRepositoryImplTest {
     fun setup() {
         sut = CrashRepositoryImpl(
             appConfigProvider,
-            crashReporter,
+            crashReporter
         )
     }
 

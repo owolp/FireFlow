@@ -38,7 +38,7 @@ internal class AllowPersonalizedAdsUseCaseTest {
     private val getUserLoggedStateUseCase = mockk<GetUserLoggedStateUseCase>()
     private val getAllowPersonalizedAdsValueUseCase = mockk<GetAllowPersonalizedAdsValueUseCase>()
     private val saveAllowPersonalizedAdsValueUseCase = mockk<SaveAllowPersonalizedAdsValueUseCase>(
-        relaxUnitFun = true,
+        relaxUnitFun = true
     )
 
     private lateinit var sut: AllowPersonalizedAdsUseCase
@@ -49,7 +49,7 @@ internal class AllowPersonalizedAdsUseCaseTest {
             analyticsRepository,
             getUserLoggedStateUseCase,
             getAllowPersonalizedAdsValueUseCase,
-            saveAllowPersonalizedAdsValueUseCase,
+            saveAllowPersonalizedAdsValueUseCase
         )
     }
 

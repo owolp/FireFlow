@@ -46,7 +46,7 @@ val ktlintCheck by tasks.creating(JavaExec::class) {
         "--android",
         kotlinFiles,
         kotlinScriptFiles,
-        "!$buildFiles",
+        "!$buildFiles"
     )
 }
 
@@ -62,6 +62,6 @@ val ktlintFormat by tasks.creating(JavaExec::class) {
         "-F",
         kotlinFiles,
         kotlinScriptFiles,
-        "!$buildFiles",
+        "!$buildFiles"
     )
 }

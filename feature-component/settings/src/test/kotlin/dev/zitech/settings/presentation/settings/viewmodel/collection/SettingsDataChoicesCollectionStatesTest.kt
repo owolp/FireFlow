@@ -42,15 +42,15 @@ internal class SettingsDataChoicesCollectionStatesTest {
     private val setAnalyticsCollectionUseCase = mockk<SetAnalyticsCollectionUseCase>(relaxed = true)
     private val getAllowPersonalizedAdsValueUseCase = mockk<GetAllowPersonalizedAdsValueUseCase>()
     private val allowPersonalizedAdsUseCase = mockk<AllowPersonalizedAdsUseCase>(
-        relaxUnitFun = true,
+        relaxUnitFun = true
     )
     private val getCrashReporterCollectionValueUseCase = mockk<GetCrashReporterCollectionValueUseCase>()
     private val setCrashReporterCollectionUseCase = mockk<SetCrashReporterCollectionUseCase>(
-        relaxed = true,
+        relaxed = true
     )
     private val getPerformanceCollectionValueUseCase = mockk<GetPerformanceCollectionValueUseCase>()
     private val setPerformanceCollectionUseCase = mockk<SetPerformanceCollectionUseCase>(
-        relaxed = true,
+        relaxed = true
     )
 
     private lateinit var sut: DataChoicesCollectionStates
@@ -65,7 +65,7 @@ internal class SettingsDataChoicesCollectionStatesTest {
             getCrashReporterCollectionValueUseCase,
             setCrashReporterCollectionUseCase,
             getPerformanceCollectionValueUseCase,
-            setPerformanceCollectionUseCase,
+            setPerformanceCollectionUseCase
         )
     }
 

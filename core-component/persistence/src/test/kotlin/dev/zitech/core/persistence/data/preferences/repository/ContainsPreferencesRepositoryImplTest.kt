@@ -50,7 +50,7 @@ internal class ContainsPreferencesRepositoryImplTest {
         sut = ContainsPreferencesRepositoryImpl(
             developmentPreferencesDataSource = developmentPreferencesDataSource,
             securedPreferencesDataSource = securedPreferencesDataSource,
-            standardPreferencesDataSource = standardPreferencesDataSource,
+            standardPreferencesDataSource = standardPreferencesDataSource
         )
     }
 
@@ -60,14 +60,14 @@ internal class ContainsPreferencesRepositoryImplTest {
         @Test
         @DisplayName(
             "WHEN called with PreferenceType.DEVELOPMENT THEN return result " +
-                "from developmentPreferencesDataSource",
+                "from developmentPreferencesDataSource"
         )
         fun developmentPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.DEVELOPMENT
             val flowResult = DataFactory.createRandomBoolean()
 
             every { developmentPreferencesDataSource.containsBoolean(key) } returns flowOf(
-                flowResult,
+                flowResult
             )
 
             sut.containsBoolean(preferenceType, key).test {
@@ -78,20 +78,20 @@ internal class ContainsPreferencesRepositoryImplTest {
             confirmVerified(
                 developmentPreferencesDataSource,
                 securedPreferencesDataSource,
-                standardPreferencesDataSource,
+                standardPreferencesDataSource
             )
         }
 
         @Test
         @DisplayName(
-            "WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource",
+            "WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource"
         )
         fun securedPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.SECURED
             val flowResult = DataFactory.createRandomBoolean()
 
             every { securedPreferencesDataSource.containsBoolean(key) } returns flowOf(
-                flowResult,
+                flowResult
             )
 
             sut.containsBoolean(preferenceType, key).test {
@@ -102,20 +102,20 @@ internal class ContainsPreferencesRepositoryImplTest {
             confirmVerified(
                 developmentPreferencesDataSource,
                 securedPreferencesDataSource,
-                standardPreferencesDataSource,
+                standardPreferencesDataSource
             )
         }
 
         @Test
         @DisplayName(
-            "WHEN called with PreferenceType.STANDARD THEN return result from standardPreferencesDataSource",
+            "WHEN called with PreferenceType.STANDARD THEN return result from standardPreferencesDataSource"
         )
         fun standardPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.STANDARD
             val flowResult = DataFactory.createRandomBoolean()
 
             every { standardPreferencesDataSource.containsBoolean(key) } returns flowOf(
-                flowResult,
+                flowResult
             )
 
             sut.containsBoolean(preferenceType, key).test {
@@ -126,7 +126,7 @@ internal class ContainsPreferencesRepositoryImplTest {
             confirmVerified(
                 developmentPreferencesDataSource,
                 securedPreferencesDataSource,
-                standardPreferencesDataSource,
+                standardPreferencesDataSource
             )
         }
     }
@@ -137,14 +137,14 @@ internal class ContainsPreferencesRepositoryImplTest {
         @Test
         @DisplayName(
             "WHEN called with PreferenceType.DEVELOPMENT THEN return result " +
-                "from developmentPreferencesDataSource",
+                "from developmentPreferencesDataSource"
         )
         fun developmentPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.DEVELOPMENT
             val flowResult = DataFactory.createRandomBoolean()
 
             every { developmentPreferencesDataSource.containsFloat(key) } returns flowOf(
-                flowResult,
+                flowResult
             )
 
             sut.containsFloat(preferenceType, key).test {
@@ -155,20 +155,20 @@ internal class ContainsPreferencesRepositoryImplTest {
             confirmVerified(
                 developmentPreferencesDataSource,
                 securedPreferencesDataSource,
-                standardPreferencesDataSource,
+                standardPreferencesDataSource
             )
         }
 
         @Test
         @DisplayName(
-            "WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource",
+            "WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource"
         )
         fun securedPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.SECURED
             val flowResult = DataFactory.createRandomBoolean()
 
             every { securedPreferencesDataSource.containsFloat(key) } returns flowOf(
-                flowResult,
+                flowResult
             )
 
             sut.containsFloat(preferenceType, key).test {
@@ -179,20 +179,20 @@ internal class ContainsPreferencesRepositoryImplTest {
             confirmVerified(
                 developmentPreferencesDataSource,
                 securedPreferencesDataSource,
-                standardPreferencesDataSource,
+                standardPreferencesDataSource
             )
         }
 
         @Test
         @DisplayName(
-            "WHEN called with PreferenceType.STANDARD THEN return result from standardPreferencesDataSource",
+            "WHEN called with PreferenceType.STANDARD THEN return result from standardPreferencesDataSource"
         )
         fun standardPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.STANDARD
             val flowResult = DataFactory.createRandomBoolean()
 
             every { standardPreferencesDataSource.containsFloat(key) } returns flowOf(
-                flowResult,
+                flowResult
             )
 
             sut.containsFloat(preferenceType, key).test {
@@ -203,7 +203,7 @@ internal class ContainsPreferencesRepositoryImplTest {
             confirmVerified(
                 developmentPreferencesDataSource,
                 securedPreferencesDataSource,
-                standardPreferencesDataSource,
+                standardPreferencesDataSource
             )
         }
     }
@@ -214,14 +214,14 @@ internal class ContainsPreferencesRepositoryImplTest {
         @Test
         @DisplayName(
             "WHEN called with PreferenceType.DEVELOPMENT THEN return result " +
-                "from developmentPreferencesDataSource",
+                "from developmentPreferencesDataSource"
         )
         fun developmentPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.DEVELOPMENT
             val flowResult = DataFactory.createRandomBoolean()
 
             every { developmentPreferencesDataSource.containsInt(key) } returns flowOf(
-                flowResult,
+                flowResult
             )
 
             sut.containsInt(preferenceType, key).test {
@@ -232,20 +232,20 @@ internal class ContainsPreferencesRepositoryImplTest {
             confirmVerified(
                 developmentPreferencesDataSource,
                 securedPreferencesDataSource,
-                standardPreferencesDataSource,
+                standardPreferencesDataSource
             )
         }
 
         @Test
         @DisplayName(
-            "WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource",
+            "WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource"
         )
         fun securedPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.SECURED
             val flowResult = DataFactory.createRandomBoolean()
 
             every { securedPreferencesDataSource.containsInt(key) } returns flowOf(
-                flowResult,
+                flowResult
             )
 
             sut.containsInt(preferenceType, key).test {
@@ -256,20 +256,20 @@ internal class ContainsPreferencesRepositoryImplTest {
             confirmVerified(
                 developmentPreferencesDataSource,
                 securedPreferencesDataSource,
-                standardPreferencesDataSource,
+                standardPreferencesDataSource
             )
         }
 
         @Test
         @DisplayName(
-            "WHEN called with PreferenceType.STANDARD THEN return result from standardPreferencesDataSource",
+            "WHEN called with PreferenceType.STANDARD THEN return result from standardPreferencesDataSource"
         )
         fun standardPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.STANDARD
             val flowResult = DataFactory.createRandomBoolean()
 
             every { standardPreferencesDataSource.containsInt(key) } returns flowOf(
-                flowResult,
+                flowResult
             )
 
             sut.containsInt(preferenceType, key).test {
@@ -280,7 +280,7 @@ internal class ContainsPreferencesRepositoryImplTest {
             confirmVerified(
                 developmentPreferencesDataSource,
                 securedPreferencesDataSource,
-                standardPreferencesDataSource,
+                standardPreferencesDataSource
             )
         }
     }
@@ -291,14 +291,14 @@ internal class ContainsPreferencesRepositoryImplTest {
         @Test
         @DisplayName(
             "WHEN called with PreferenceType.DEVELOPMENT THEN return result " +
-                "from developmentPreferencesDataSource",
+                "from developmentPreferencesDataSource"
         )
         fun developmentPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.DEVELOPMENT
             val flowResult = DataFactory.createRandomBoolean()
 
             every { developmentPreferencesDataSource.containsLong(key) } returns flowOf(
-                flowResult,
+                flowResult
             )
 
             sut.containsLong(preferenceType, key).test {
@@ -309,20 +309,20 @@ internal class ContainsPreferencesRepositoryImplTest {
             confirmVerified(
                 developmentPreferencesDataSource,
                 securedPreferencesDataSource,
-                standardPreferencesDataSource,
+                standardPreferencesDataSource
             )
         }
 
         @Test
         @DisplayName(
-            "WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource",
+            "WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource"
         )
         fun securedPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.SECURED
             val flowResult = DataFactory.createRandomBoolean()
 
             every { securedPreferencesDataSource.containsLong(key) } returns flowOf(
-                flowResult,
+                flowResult
             )
 
             sut.containsLong(preferenceType, key).test {
@@ -333,20 +333,20 @@ internal class ContainsPreferencesRepositoryImplTest {
             confirmVerified(
                 developmentPreferencesDataSource,
                 securedPreferencesDataSource,
-                standardPreferencesDataSource,
+                standardPreferencesDataSource
             )
         }
 
         @Test
         @DisplayName(
-            "WHEN called with PreferenceType.STANDARD THEN return result from standardPreferencesDataSource",
+            "WHEN called with PreferenceType.STANDARD THEN return result from standardPreferencesDataSource"
         )
         fun standardPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.STANDARD
             val flowResult = DataFactory.createRandomBoolean()
 
             every { standardPreferencesDataSource.containsLong(key) } returns flowOf(
-                flowResult,
+                flowResult
             )
 
             sut.containsLong(preferenceType, key).test {
@@ -357,7 +357,7 @@ internal class ContainsPreferencesRepositoryImplTest {
             confirmVerified(
                 developmentPreferencesDataSource,
                 securedPreferencesDataSource,
-                standardPreferencesDataSource,
+                standardPreferencesDataSource
             )
         }
     }
@@ -368,14 +368,14 @@ internal class ContainsPreferencesRepositoryImplTest {
         @Test
         @DisplayName(
             "WHEN called with PreferenceType.DEVELOPMENT THEN return result " +
-                "from developmentPreferencesDataSource",
+                "from developmentPreferencesDataSource"
         )
         fun developmentPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.DEVELOPMENT
             val flowResult = DataFactory.createRandomBoolean()
 
             every { developmentPreferencesDataSource.containsString(key) } returns flowOf(
-                flowResult,
+                flowResult
             )
 
             sut.containsString(preferenceType, key).test {
@@ -386,20 +386,20 @@ internal class ContainsPreferencesRepositoryImplTest {
             confirmVerified(
                 developmentPreferencesDataSource,
                 securedPreferencesDataSource,
-                standardPreferencesDataSource,
+                standardPreferencesDataSource
             )
         }
 
         @Test
         @DisplayName(
-            "WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource",
+            "WHEN called with PreferenceType.SECURED THEN return result from securedPreferencesDataSource"
         )
         fun securedPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.SECURED
             val flowResult = DataFactory.createRandomBoolean()
 
             every { securedPreferencesDataSource.containsString(key) } returns flowOf(
-                flowResult,
+                flowResult
             )
 
             sut.containsString(preferenceType, key).test {
@@ -410,20 +410,20 @@ internal class ContainsPreferencesRepositoryImplTest {
             confirmVerified(
                 developmentPreferencesDataSource,
                 securedPreferencesDataSource,
-                standardPreferencesDataSource,
+                standardPreferencesDataSource
             )
         }
 
         @Test
         @DisplayName(
-            "WHEN called with PreferenceType.STANDARD THEN return result from standardPreferencesDataSource",
+            "WHEN called with PreferenceType.STANDARD THEN return result from standardPreferencesDataSource"
         )
         fun standardPreferencesDataSource() = runBlocking {
             val preferenceType = PreferenceType.STANDARD
             val flowResult = DataFactory.createRandomBoolean()
 
             every { standardPreferencesDataSource.containsString(key) } returns flowOf(
-                flowResult,
+                flowResult
             )
 
             sut.containsString(preferenceType, key).test {
@@ -434,7 +434,7 @@ internal class ContainsPreferencesRepositoryImplTest {
             confirmVerified(
                 developmentPreferencesDataSource,
                 securedPreferencesDataSource,
-                standardPreferencesDataSource,
+                standardPreferencesDataSource
             )
         }
     }

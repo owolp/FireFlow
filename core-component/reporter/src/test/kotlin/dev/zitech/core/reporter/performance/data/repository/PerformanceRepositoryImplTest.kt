@@ -36,7 +36,7 @@ internal class PerformanceRepositoryImplTest {
     fun setup() {
         sut = PerformanceRepositoryImpl(
             appConfigProvider,
-            performanceReporter,
+            performanceReporter
         )
     }
 

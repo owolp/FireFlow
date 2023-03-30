@@ -41,7 +41,7 @@ internal class IsDevFeatureFlagEnabledUseCaseTest {
     @BeforeEach
     fun setUp() {
         sut = IsDevFeatureFlagEnabledUseCase(
-            getPreferencesRepository = getPreferencesRepository,
+            getPreferencesRepository = getPreferencesRepository
         )
     }
 
@@ -61,7 +61,7 @@ internal class IsDevFeatureFlagEnabledUseCaseTest {
             getPreferencesRepository.getBoolean(
                 preferenceType = preferenceType,
                 key = key,
-                defaultValue = defaultValue,
+                defaultValue = defaultValue
             )
         } returns flowOf(result)
 
@@ -73,7 +73,7 @@ internal class IsDevFeatureFlagEnabledUseCaseTest {
             getPreferencesRepository.getBoolean(
                 preferenceType = preferenceType,
                 key = key,
-                defaultValue = defaultValue,
+                defaultValue = defaultValue
             )
         }
     }

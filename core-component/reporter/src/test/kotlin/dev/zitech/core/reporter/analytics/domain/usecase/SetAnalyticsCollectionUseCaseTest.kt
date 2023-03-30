@@ -38,7 +38,7 @@ internal class SetAnalyticsCollectionUseCaseTest {
     private val getUserLoggedStateUseCase = mockk<GetUserLoggedStateUseCase>()
     private val getAnalyticsCollectionValueUseCase = mockk<GetAnalyticsCollectionValueUseCase>()
     private val saveAnalyticsCollectionValueUseCase = mockk<SaveAnalyticsCollectionValueUseCase>(
-        relaxUnitFun = true,
+        relaxUnitFun = true
     )
 
     private lateinit var sut: SetAnalyticsCollectionUseCase
@@ -49,7 +49,7 @@ internal class SetAnalyticsCollectionUseCaseTest {
             analyticsRepository,
             getUserLoggedStateUseCase,
             getAnalyticsCollectionValueUseCase,
-            saveAnalyticsCollectionValueUseCase,
+            saveAnalyticsCollectionValueUseCase
         )
     }
 

@@ -42,7 +42,7 @@ internal class GetApplicationThemeValueUseCaseTest {
     fun setup() {
         sut = GetApplicationThemeValueUseCase(
             getPreferencesRepository,
-            intToApplicationThemeMapper,
+            intToApplicationThemeMapper
         )
     }
 
@@ -53,7 +53,7 @@ internal class GetApplicationThemeValueUseCaseTest {
         getPreferencesRepository.saveInt(
             PreferenceType.STANDARD,
             IntPreference.APPLICATION_THEME.key,
-            ApplicationTheme.DARK.id,
+            ApplicationTheme.DARK.id
         )
 
         sut().test {

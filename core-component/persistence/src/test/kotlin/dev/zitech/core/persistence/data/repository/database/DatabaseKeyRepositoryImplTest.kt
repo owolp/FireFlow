@@ -45,19 +45,19 @@ internal class DatabaseKeyRepositoryImplTest {
         ContainsPreferencesRepositoryImpl(
             fakePreferencesDataSource,
             fakePreferencesDataSource,
-            fakePreferencesDataSource,
+            fakePreferencesDataSource
         )
     private val getPreferencesRepository: GetPreferencesRepository =
         GetPreferencesRepositoryImpl(
             fakePreferencesDataSource,
             fakePreferencesDataSource,
-            fakePreferencesDataSource,
+            fakePreferencesDataSource
         )
     private val savePreferencesRepository: SavePreferencesRepository =
         SavePreferencesRepositoryImpl(
             fakePreferencesDataSource,
             fakePreferencesDataSource,
-            fakePreferencesDataSource,
+            fakePreferencesDataSource
         )
 
     private lateinit var sut: DatabaseKeyRepository
@@ -67,7 +67,7 @@ internal class DatabaseKeyRepositoryImplTest {
         sut = DatabaseKeyRepositoryImpl(
             containsPreferencesRepository,
             getPreferencesRepository,
-            savePreferencesRepository,
+            savePreferencesRepository
         )
     }
 
@@ -89,7 +89,7 @@ internal class DatabaseKeyRepositoryImplTest {
         val expectedValue = value.toCharArray()
         fakePreferencesDataSource.saveString(
             KEY_SECURE_STORAGE_SECURED_DATABASE,
-            value,
+            value
         )
 
         // Act

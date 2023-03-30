@@ -32,7 +32,7 @@ internal class ApplicationLaunchAnalyticsEventTest {
     private val remoteAnalytics = FakeAnalyticsReporter()
     private val analyticsRepository = AnalyticsRepositoryImpl(
         appConfigProvider,
-        remoteAnalytics,
+        remoteAnalytics
     )
 
     private lateinit var sut: ApplicationLaunchAnalyticsEvent
@@ -40,7 +40,7 @@ internal class ApplicationLaunchAnalyticsEventTest {
     @BeforeEach
     fun setup() {
         sut = ApplicationLaunchAnalyticsEvent(
-            analyticsRepository,
+            analyticsRepository
         )
     }
 
@@ -56,7 +56,7 @@ internal class ApplicationLaunchAnalyticsEventTest {
         // Assert
         assertThat(remoteAnalytics.events).hasSize(1)
         assertThat(remoteAnalytics.events).containsKey(
-            ApplicationLaunchEvent().name,
+            ApplicationLaunchEvent().name
         )
     }
 
@@ -72,7 +72,7 @@ internal class ApplicationLaunchAnalyticsEventTest {
         // Assert
         assertThat(remoteAnalytics.events).hasSize(1)
         assertThat(remoteAnalytics.events).containsKey(
-            ApplicationLaunchEvent().name,
+            ApplicationLaunchEvent().name
         )
     }
 }

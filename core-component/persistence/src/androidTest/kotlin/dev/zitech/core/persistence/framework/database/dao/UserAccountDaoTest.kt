@@ -44,7 +44,7 @@ internal class UserAccountDaoTest {
     fun setup() {
         database = Room.inMemoryDatabaseBuilder(
             ApplicationProvider.getApplicationContext(),
-            FireFlowDatabase::class.java,
+            FireFlowDatabase::class.java
         )
             .allowMainThreadQueries()
             .build()
@@ -85,7 +85,7 @@ internal class UserAccountDaoTest {
         fun oneCurrentUserAccount() = runBlocking {
             // Arrange
             val userAccountEntity = UserAccountEntityFactory.createUserAccountEntity(
-                isCurrentUserAccount = true,
+                isCurrentUserAccount = true
             )
             sut.saveUserAccount(userAccountEntity)
 
@@ -104,15 +104,15 @@ internal class UserAccountDaoTest {
             // Arrange
             val userAccountEntity1 = UserAccountEntityFactory.createUserAccountEntity(
                 id = 1,
-                isCurrentUserAccount = true,
+                isCurrentUserAccount = true
             )
             val userAccountEntity2 = UserAccountEntityFactory.createUserAccountEntity(
                 id = 2,
-                isCurrentUserAccount = true,
+                isCurrentUserAccount = true
             )
             val userAccountEntity3 = UserAccountEntityFactory.createUserAccountEntity(
                 id = 3,
-                isCurrentUserAccount = true,
+                isCurrentUserAccount = true
             )
             sut.saveUserAccount(userAccountEntity1)
             sut.saveUserAccount(userAccountEntity3)
@@ -143,7 +143,7 @@ internal class UserAccountDaoTest {
         fun oneCurrentUserAccount() = runBlocking {
             // Arrange
             val userAccountEntity = UserAccountEntityFactory.createUserAccountEntity(
-                isCurrentUserAccount = true,
+                isCurrentUserAccount = true
             )
             sut.saveUserAccount(userAccountEntity)
 
@@ -160,15 +160,15 @@ internal class UserAccountDaoTest {
             // Arrange
             val userAccountEntity1 = UserAccountEntityFactory.createUserAccountEntity(
                 id = 1,
-                isCurrentUserAccount = true,
+                isCurrentUserAccount = true
             )
             val userAccountEntity2 = UserAccountEntityFactory.createUserAccountEntity(
                 id = 2,
-                isCurrentUserAccount = true,
+                isCurrentUserAccount = true
             )
             val userAccountEntity3 = UserAccountEntityFactory.createUserAccountEntity(
                 id = 3,
-                isCurrentUserAccount = true,
+                isCurrentUserAccount = true
             )
             sut.saveUserAccount(userAccountEntity1)
             sut.saveUserAccount(userAccountEntity3)
@@ -222,7 +222,7 @@ internal class UserAccountDaoTest {
     fun removeCurrentUserAccount() = runBlocking {
         // Arrange
         val userAccountEntity1 = UserAccountEntityFactory.createUserAccountEntity(
-            isCurrentUserAccount = true,
+            isCurrentUserAccount = true
         )
         sut.saveUserAccount(userAccountEntity1)
 

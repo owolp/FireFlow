@@ -41,7 +41,7 @@ internal class SetPerformanceCollectionUseCaseTest {
     private val getPerformanceCollectionValueUseCase = mockk<GetPerformanceCollectionValueUseCase>()
     private val getBooleanConfigValueUseCase = mockk<GetBooleanConfigValueUseCase>()
     private val savePerformanceCollectionValueUseCase = mockk<SavePerformanceCollectionValueUseCase>(
-        relaxUnitFun = true,
+        relaxUnitFun = true
     )
 
     private lateinit var sut: SetPerformanceCollectionUseCase
@@ -53,7 +53,7 @@ internal class SetPerformanceCollectionUseCaseTest {
             getUserLoggedStateUseCase,
             getPerformanceCollectionValueUseCase,
             getBooleanConfigValueUseCase,
-            savePerformanceCollectionValueUseCase,
+            savePerformanceCollectionValueUseCase
         )
     }
 

@@ -39,7 +39,7 @@ internal class AnalyticsRepositoryImplTest {
     fun setup() {
         sut = AnalyticsRepositoryImpl(
             appConfigProvider,
-            analyticsReporter,
+            analyticsReporter
         )
     }
 
@@ -98,7 +98,7 @@ internal class AnalyticsRepositoryImplTest {
         // Arrange
         appConfigProvider.setBuildFlavor(BuildFlavor.PLAY)
         val analyticsEvent = AnalyticsEventFactory.createAnalyticsEvent(
-            providers = listOf(AnalyticsProvider.HUAWEI),
+            providers = listOf(AnalyticsProvider.HUAWEI)
         )
 
         // Act
@@ -114,7 +114,7 @@ internal class AnalyticsRepositoryImplTest {
         // Arrange
         appConfigProvider.setBuildFlavor(BuildFlavor.PLAY)
         val analyticsEvent = AnalyticsEventFactory.createAnalyticsEvent(
-            providers = listOf(AnalyticsProvider.FIREBASE),
+            providers = listOf(AnalyticsProvider.FIREBASE)
         )
 
         // Act
@@ -131,7 +131,7 @@ internal class AnalyticsRepositoryImplTest {
         // Arrange
         appConfigProvider.setBuildFlavor(BuildFlavor.GALLERY)
         val analyticsEvent = AnalyticsEventFactory.createAnalyticsEvent(
-            providers = listOf(AnalyticsProvider.FIREBASE),
+            providers = listOf(AnalyticsProvider.FIREBASE)
         )
 
         // Act
@@ -147,7 +147,7 @@ internal class AnalyticsRepositoryImplTest {
         // Arrange
         appConfigProvider.setBuildFlavor(BuildFlavor.GALLERY)
         val analyticsEvent = AnalyticsEventFactory.createAnalyticsEvent(
-            providers = listOf(AnalyticsProvider.HUAWEI),
+            providers = listOf(AnalyticsProvider.HUAWEI)
         )
 
         // Act

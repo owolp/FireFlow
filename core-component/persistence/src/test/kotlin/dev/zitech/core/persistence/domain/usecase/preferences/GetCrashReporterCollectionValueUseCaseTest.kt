@@ -47,7 +47,7 @@ internal class GetCrashReporterCollectionValueUseCaseTest {
         getPreferencesRepository.saveBoolean(
             PreferenceType.STANDARD,
             BooleanPreference.CRASH_REPORTER_COLLECTION.key,
-            true,
+            true
         )
 
         // Act

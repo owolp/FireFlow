@@ -41,7 +41,7 @@ internal class ConfigRepositoryImplTest {
     @BeforeEach
     fun setup() {
         sut = ConfigRepositoryImpl(
-            fakeConfigProviderSource,
+            fakeConfigProviderSource
         )
     }
 
