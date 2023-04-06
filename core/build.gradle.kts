@@ -15,22 +15,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+plugins {
+    id(BuildPlugins.KOTLIN_ANDROID)
+    id(BuildPlugins.LIBRARY)
+    kotlin(BuildPlugins.KAPT)
+}
 
-include(":app")
-include(":core")
-include(":core-component:core")
-include(":core-component:authenticator")
-include(":core-component:common")
-include(":core-component:feature-flag")
-include(":core-component:navigation")
-include(":core-component:network")
-include(":core-component:persistence")
-include(":core-component:remote-config")
-include(":core-component:reporter")
-include(":design-system")
-include(":feature-component:feature")
-include(":feature-component:authentication")
-include(":feature-component:dashboard")
-include(":feature-component:onboarding")
-include(":feature-component:settings")
+android {
+    namespace = "dev.zitech.fireflow.core"
+}
+
+kapt {
+    correctErrorTypes = true
+}
