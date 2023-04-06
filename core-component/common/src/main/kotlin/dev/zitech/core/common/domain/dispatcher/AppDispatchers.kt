@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,12 +21,14 @@ import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 
+@Deprecated("Modules")
 interface AppDispatchers {
     val default: CoroutineDispatcher
     val main: CoroutineDispatcher
     val io: CoroutineDispatcher
 }
 
+@Deprecated("Modules")
 internal class AppDispatchersImpl @Inject constructor() : AppDispatchers {
     override val default: CoroutineDispatcher = Dispatchers.Default
     override val main: CoroutineDispatcher = Dispatchers.Main

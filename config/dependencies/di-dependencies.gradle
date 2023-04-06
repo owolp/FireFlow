@@ -15,11 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.common.domain.logger
-
-import timber.log.Timber
-
-@Deprecated("Modules")
-interface ErrorTree {
-    operator fun invoke(): Timber.Tree
+dependencies {
+    implementation libs.google.dagger.hilt.android
+    kapt libs.google.dagger.hilt.compiler
 }

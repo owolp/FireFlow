@@ -84,6 +84,7 @@ android {
 }
 
 dependencies {
+    implementation(projects.core)
     implementation(projects.coreComponent.core)
     implementation(projects.designSystem)
     implementation(projects.featureComponent.feature)

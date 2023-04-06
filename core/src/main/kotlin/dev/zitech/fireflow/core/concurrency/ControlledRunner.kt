@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.common.domain.concurrency
+package dev.zitech.fireflow.core.concurrency
 
 import java.util.concurrent.atomic.AtomicReference
 import kotlinx.coroutines.CoroutineStart.LAZY
@@ -36,7 +36,6 @@ import kotlinx.coroutines.yield
  * be run. This is useful in situations where a new event implies that the previous work is no
  * longer relevant such as sorting or filtering a list.
  */
-@Deprecated("Modules")
 @Suppress("LoopWithTooManyJumpStatements")
 class ControlledRunner<T> {
     /**

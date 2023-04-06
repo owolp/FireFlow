@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.common.domain.concurrency
+package dev.zitech.fireflow.core.concurrency
 
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -27,7 +27,6 @@ import kotlinx.coroutines.sync.withLock
  * calling the block passed. Any future calls to [afterPrevious] while the current block is running
  * will wait for the current block to complete before starting.
  */
-@Deprecated("Modules")
 class SingleRunner {
     /**
      * A coroutine mutex implements a lock that may only be taken by one coroutine at a time.

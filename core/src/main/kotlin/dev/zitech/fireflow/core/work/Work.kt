@@ -15,17 +15,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.common.domain.model
+package dev.zitech.fireflow.core.work
 
-import dev.zitech.core.common.domain.error.Error
+import dev.zitech.fireflow.core.error.Error
 
-@Deprecated("Modules")
 sealed interface Work<out T : Any>
 
-@Deprecated("Modules")
 data class WorkSuccess<out T : Any>(val data: T) : Work<T>
 
-@Deprecated("Modules")
 data class WorkError<T : Any>(val error: Error) : Work<T>
 
 suspend fun <T : Any> Work<T>.onSuccess(

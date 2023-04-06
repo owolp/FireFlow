@@ -15,23 +15,30 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.fireflow.di
+package dev.zitech.fireflow.core.di
 
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import dev.zitech.fireflow.core.applicationconfig.AppConfigProvider
-import dev.zitech.fireflow.framework.AppConfigProviderImpl
+import dev.zitech.fireflow.core.dispatcher.AppDispatchers
+import dev.zitech.fireflow.core.dispatcher.AppDispatchersImpl
+import dev.zitech.fireflow.core.scope.AppScopes
+import dev.zitech.fireflow.core.scope.AppScopesImpl
 import javax.inject.Singleton
 
-internal interface AppModule {
+internal interface CoreModule {
 
     @InstallIn(SingletonComponent::class)
     @Module
-    interface SingletonBindsModule {
+    interface SingletonBinds {
+
         @Singleton
         @Binds
-        fun appConfigProvider(appConfigProviderImpl: AppConfigProviderImpl): AppConfigProvider
+        fun appDispatchers(appDispatchersImpl: AppDispatchersImpl): AppDispatchers
+
+        @Singleton
+        @Binds
+        fun appScopes(appScopesImpl: AppScopesImpl): AppScopes
     }
 }

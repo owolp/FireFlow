@@ -15,11 +15,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.common.domain.logger
+package dev.zitech.fireflow.core.time
 
-import timber.log.Timber
-
-@Deprecated("Modules")
-interface ErrorTree {
-    operator fun invoke(): Timber.Tree
+object TimeHelper {
+    fun getCurrentTime(): Long = System.currentTimeMillis()
 }

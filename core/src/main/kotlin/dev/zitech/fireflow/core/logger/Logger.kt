@@ -15,13 +15,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.common.domain.logger
+package dev.zitech.fireflow.core.logger
 
 import timber.log.Timber
 
 private const val TIMBER_MAX_TAG_LENGTH = 23
 
-@Deprecated("Modules")
 @Suppress("TooManyFunctions")
 object Logger {
 

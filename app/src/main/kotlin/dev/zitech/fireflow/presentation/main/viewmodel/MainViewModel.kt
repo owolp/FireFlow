@@ -19,13 +19,13 @@ package dev.zitech.fireflow.presentation.main.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.core.common.presentation.architecture.MviViewModel
 import dev.zitech.core.common.presentation.splash.LoginCheckCompletedHandler
 import dev.zitech.core.persistence.domain.usecase.database.RemoveStaleUserAccountsUseCase
 import dev.zitech.core.persistence.domain.usecase.preferences.GetApplicationThemeValueUseCase
 import dev.zitech.core.remoteconfig.domain.usecase.InitializeRemoteConfiguratorUseCase
 import dev.zitech.core.reporter.analytics.domain.usecase.event.ApplicationLaunchAnalyticsEvent
+import dev.zitech.fireflow.core.logger.Logger
 import dev.zitech.fireflow.presentation.model.LaunchState
 import dev.zitech.fireflow.presentation.model.LaunchState.Status.Error
 import dev.zitech.fireflow.presentation.model.LaunchState.Status.Success

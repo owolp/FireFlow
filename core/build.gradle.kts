@@ -15,6 +15,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+apply(from = "$rootDir/config/dependencies/di-dependencies.gradle")
+apply(from = "$rootDir/config/dependencies/kotlin-dependencies.gradle")
+
 plugins {
     id(BuildPlugins.KOTLIN_ANDROID)
     id(BuildPlugins.LIBRARY)
@@ -27,4 +30,8 @@ android {
 
 kapt {
     correctErrorTypes = true
+}
+
+dependencies {
+    implementation(libs.jakewharton.timber)
 }

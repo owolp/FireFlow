@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,8 +19,8 @@ package dev.zitech.fireflow.initializer
 
 import android.content.Context
 import androidx.startup.Initializer
-import dev.zitech.core.common.domain.scope.AppScopes
 import dev.zitech.core.reporter.performance.domain.usecase.SetPerformanceCollectionUseCase
+import dev.zitech.fireflow.core.scope.AppScopes
 import dev.zitech.fireflow.di.InitializerEntryPoint
 import javax.inject.Inject
 

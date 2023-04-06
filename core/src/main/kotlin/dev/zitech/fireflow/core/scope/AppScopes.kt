@@ -15,21 +15,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.common.domain.scope
+package dev.zitech.fireflow.core.scope
 
-import dev.zitech.core.common.domain.dispatcher.AppDispatchers
+import dev.zitech.fireflow.core.dispatcher.AppDispatchers
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 
-@Deprecated("Modules")
 interface AppScopes {
     val singleton: CoroutineScope
     fun singletonLaunch(func: suspend CoroutineScope.() -> Unit)
 }
 
-@Deprecated("Modules")
 internal class AppScopesImpl @Inject constructor(
     appDispatchers: AppDispatchers
 ) : AppScopes {

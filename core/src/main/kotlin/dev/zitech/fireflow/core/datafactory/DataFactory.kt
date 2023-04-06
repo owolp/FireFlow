@@ -15,12 +15,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.common
+package dev.zitech.fireflow.core.datafactory
 
 import java.util.UUID
 import kotlin.random.Random
 
-@Deprecated("Modules")
 object DataFactory {
 
     fun createRandomString(length: Int? = null): String = if (length != null) {
