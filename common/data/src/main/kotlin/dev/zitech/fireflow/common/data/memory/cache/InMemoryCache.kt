@@ -15,14 +15,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.common.domain.cache
+package dev.zitech.fireflow.common.data.memory.cache
 
 import androidx.annotation.VisibleForTesting
-import dev.zitech.core.common.domain.logger.Logger
-import dev.zitech.core.common.framework.time.TimeHelper
+import dev.zitech.fireflow.common.domain.model.cache.Cache
+import dev.zitech.fireflow.common.domain.repository.cache.CacheRepository
+import dev.zitech.fireflow.core.logger.Logger
+import dev.zitech.fireflow.core.time.TimeHelper
 import java.math.BigInteger
 
-@Deprecated("Modules")
 open class InMemoryCache<T : Any>(
     private val cacheRepository: CacheRepository,
     private val lifetimeMillis: Int = Int.MAX_VALUE

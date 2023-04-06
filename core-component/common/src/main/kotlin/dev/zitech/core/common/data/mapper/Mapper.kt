@@ -17,14 +17,17 @@
 
 package dev.zitech.core.common.data.mapper
 
+@Deprecated("Modules")
 interface Mapper<in I, out O> {
     operator fun invoke(input: I): O
 }
 
+@Deprecated("Modules")
 interface DomainMapper<in E, out D> {
     fun toDomain(input: E): D
 }
 
+@Deprecated("Modules")
 interface EntityMapper<in D, out E> {
     fun toEntity(input: D): E
 }

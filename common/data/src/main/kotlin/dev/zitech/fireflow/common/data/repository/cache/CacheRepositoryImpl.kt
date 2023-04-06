@@ -15,14 +15,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.common.data.repository
+package dev.zitech.fireflow.common.data.repository.cache
 
 import androidx.annotation.VisibleForTesting
-import dev.zitech.core.common.domain.cache.Cache
-import dev.zitech.core.common.domain.cache.CacheRepository
+import dev.zitech.fireflow.common.domain.model.cache.Cache
+import dev.zitech.fireflow.common.domain.repository.cache.CacheRepository
 import javax.inject.Inject
 
-@Deprecated("Modules")
 internal class CacheRepositoryImpl @Inject constructor() : CacheRepository {
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
@@ -34,15 +33,15 @@ internal class CacheRepositoryImpl @Inject constructor() : CacheRepository {
         }
     }
 
-    override fun removeCache(cache: Cache) {
-        if (caches.contains(cache)) {
-            caches.remove(cache)
-        }
-    }
-
     override fun invalidateCaches() {
         caches.forEach {
             it.invalidate()
+        }
+    }
+
+    override fun removeCache(cache: Cache) {
+        if (caches.contains(cache)) {
+            caches.remove(cache)
         }
     }
 }

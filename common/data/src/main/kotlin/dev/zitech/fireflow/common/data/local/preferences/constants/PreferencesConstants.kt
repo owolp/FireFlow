@@ -15,11 +15,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.common.domain.cache
+package dev.zitech.fireflow.common.data.local.preferences.constants
 
-@Deprecated("Modules")
-interface CacheRepository {
-    fun addCache(cache: Cache)
-    fun removeCache(cache: Cache)
-    fun invalidateCaches()
+object PreferencesConstants {
+
+    const val DEVELOPMENT_PREFERENCES_NAME = "development_preferences"
+    const val SECURED_PREFERENCES_NAME = "secured_preferences"
+    const val STANDARD_PREFERENCES_NAME = "standard_preferences"
 }

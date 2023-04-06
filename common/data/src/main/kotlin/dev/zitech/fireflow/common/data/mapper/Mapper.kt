@@ -15,11 +15,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.common.domain.cache
+package dev.zitech.fireflow.common.data.mapper
 
-@Deprecated("Modules")
-interface CacheRepository {
-    fun addCache(cache: Cache)
-    fun removeCache(cache: Cache)
-    fun invalidateCaches()
+interface DomainMapper<in E, out D> {
+    fun toDomain(input: E): D
+}
+
+interface EntityMapper<in D, out E> {
+    fun toEntity(input: D): E
 }

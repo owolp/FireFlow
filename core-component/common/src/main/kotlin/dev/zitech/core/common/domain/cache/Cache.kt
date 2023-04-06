@@ -17,6 +17,7 @@
 
 package dev.zitech.core.common.domain.cache
 
+@Deprecated("Modules")
 interface Cache {
     fun invalidate()
 }

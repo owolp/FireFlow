@@ -31,3 +31,8 @@ android {
 kapt {
     correctErrorTypes = true
 }
+
+dependencies {
+    implementation(projects.core)
+    implementation(projects.common.domain)
+}

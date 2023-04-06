@@ -17,6 +17,7 @@
 
 package dev.zitech.core.common.data.preferences
 
+@Deprecated("Modules")
 object PreferencesConstants {
 
     const val DEVELOPMENT_PREFERENCES_NAME = "development_preferences"

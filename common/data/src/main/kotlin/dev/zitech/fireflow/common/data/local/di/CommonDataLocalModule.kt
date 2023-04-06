@@ -15,11 +15,26 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.common.domain.cache
+package dev.zitech.fireflow.common.data.local.di
 
-@Deprecated("Modules")
-interface CacheRepository {
-    fun addCache(cache: Cache)
-    fun removeCache(cache: Cache)
-    fun invalidateCaches()
+import dagger.Binds
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import dev.zitech.fireflow.common.data.repository.cache.CacheRepositoryImpl
+import dev.zitech.fireflow.common.domain.repository.cache.CacheRepository
+import javax.inject.Singleton
+
+internal interface CommonDataLocalModule {
+
+    @InstallIn(SingletonComponent::class)
+    @Module
+    interface SingletonBinds {
+
+        @Singleton
+        @Binds
+        fun cacheRepository(
+            cacheRepositoryImpl: CacheRepositoryImpl
+        ): CacheRepository
+    }
 }

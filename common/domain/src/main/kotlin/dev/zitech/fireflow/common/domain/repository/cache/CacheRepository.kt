@@ -15,11 +15,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.common.domain.cache
+package dev.zitech.fireflow.common.domain.repository.cache
 
-@Deprecated("Modules")
+import dev.zitech.fireflow.common.domain.model.cache.Cache
+
 interface CacheRepository {
     fun addCache(cache: Cache)
-    fun removeCache(cache: Cache)
     fun invalidateCaches()
+    fun removeCache(cache: Cache)
 }
