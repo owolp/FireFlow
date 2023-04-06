@@ -19,6 +19,10 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 include(":app")
 include(":core")
+include(":common:data")
+include(":common:domain")
+include(":common:presentation")
+
 include(":core-component:core")
 include(":core-component:authenticator")
 include(":core-component:common")
