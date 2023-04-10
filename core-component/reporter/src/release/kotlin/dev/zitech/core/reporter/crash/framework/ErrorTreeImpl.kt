@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,6 +31,7 @@ import javax.net.ssl.SSLHandshakeException
 import kotlin.coroutines.cancellation.CancellationException
 import timber.log.Timber
 
+@Deprecated("Modules")
 class ErrorTreeImpl @Inject constructor(
     private val logDebugInfoUseCase: LogDebugInfoUseCase,
     private val recordCrashExceptionUseCase: RecordCrashExceptionUseCase

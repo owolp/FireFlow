@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@ import dev.zitech.core.reporter.analytics.domain.reporter.AnalyticsReporter
 import dev.zitech.core.reporter.analytics.domain.repository.AnalyticsRepository
 import javax.inject.Inject
 
+@Deprecated("Modules")
 internal class AnalyticsRepositoryImpl @Inject constructor(
     private val appConfigProvider: AppConfigProvider,
     private val analyticsReporter: AnalyticsReporter

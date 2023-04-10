@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@ import com.google.firebase.ktx.Firebase
 import dev.zitech.core.reporter.analytics.domain.reporter.AnalyticsReporter
 import javax.inject.Inject
 
+@Deprecated("Modules")
 @Suppress("UnusedPrivateMember", "UNUSED_PARAMETER")
 internal class AnalyticsReporterImpl @Inject constructor(
     context: Context

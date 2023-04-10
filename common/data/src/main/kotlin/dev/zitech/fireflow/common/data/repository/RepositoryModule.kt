@@ -22,9 +22,13 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dev.zitech.fireflow.common.data.repository.cache.CacheRepositoryImpl
-import dev.zitech.fireflow.common.data.repository.crash.CrashRepositoryImpl
+import dev.zitech.fireflow.common.data.repository.reporter.analytics.AnalyticsRepositoryImpl
+import dev.zitech.fireflow.common.data.repository.reporter.crash.CrashRepositoryImpl
+import dev.zitech.fireflow.common.data.repository.reporter.performance.PerformanceRepositoryImpl
 import dev.zitech.fireflow.common.domain.repository.cache.CacheRepository
-import dev.zitech.fireflow.common.domain.repository.crash.CrashRepository
+import dev.zitech.fireflow.common.domain.repository.reporter.AnalyticsRepository
+import dev.zitech.fireflow.common.domain.repository.reporter.CrashRepository
+import dev.zitech.fireflow.common.domain.repository.reporter.PerformanceRepository
 import javax.inject.Singleton
 
 internal interface RepositoryModule {
@@ -41,8 +45,20 @@ internal interface RepositoryModule {
 
         @Singleton
         @Binds
+        fun analyticsRepository(
+            analyticsRepositoryImpl: AnalyticsRepositoryImpl
+        ): AnalyticsRepository
+
+        @Singleton
+        @Binds
         fun crashRepository(
             crashRepositoryImpl: CrashRepositoryImpl
         ): CrashRepository
+
+        @Singleton
+        @Binds
+        fun performanceRepository(
+            performanceRepositoryImpl: PerformanceRepositoryImpl
+        ): PerformanceRepository
     }
 }
