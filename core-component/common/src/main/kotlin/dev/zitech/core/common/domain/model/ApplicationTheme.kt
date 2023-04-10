@@ -19,6 +19,7 @@ package dev.zitech.core.common.domain.model
 
 import dev.zitech.core.common.R
 
+@Deprecated("Modules")
 enum class ApplicationTheme(
     val id: Int,
     val text: Int

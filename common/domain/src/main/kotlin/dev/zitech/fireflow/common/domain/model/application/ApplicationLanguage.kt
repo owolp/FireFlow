@@ -15,26 +15,26 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.fireflow.common.data.local.di
+package dev.zitech.fireflow.common.domain.model.application
 
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import dev.zitech.fireflow.common.data.repository.cache.CacheRepositoryImpl
-import dev.zitech.fireflow.common.domain.repository.cache.CacheRepository
-import javax.inject.Singleton
+import dev.zitech.fireflow.common.domain.R
+import java.util.Locale
 
-internal interface CommonDataLocalModule {
+enum class ApplicationLanguage(
+    val id: Int,
+    val text: Int,
+    val locale: Locale?
+) {
+    SYSTEM(0, R.string.application_language_system, null),
+    ENGLISH(1, R.string.application_language_english, Locale.ENGLISH),
+    BULGARIAN(2, R.string.application_language_bulgarian, Locale.forLanguageTag("bg-BG"));
 
-    @InstallIn(SingletonComponent::class)
-    @Module
-    interface SingletonBinds {
-
-        @Singleton
-        @Binds
-        fun cacheRepository(
-            cacheRepositoryImpl: CacheRepositoryImpl
-        ): CacheRepository
+    companion object {
+        fun getApplicationLanguage(id: Int): ApplicationLanguage =
+            when (id) {
+                ENGLISH.id -> ENGLISH
+                BULGARIAN.id -> BULGARIAN
+                else -> SYSTEM
+            }
     }
 }

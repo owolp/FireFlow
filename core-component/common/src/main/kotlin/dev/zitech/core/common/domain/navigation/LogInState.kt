@@ -26,6 +26,7 @@ package dev.zitech.core.common.domain.navigation
  * - `InitScreen`: Represents the initial screen state before a user has attempted to log in.
  * - `Logged`: Represents the state when a user has successfully logged in.
  */
+@Deprecated("Modules")
 sealed class LogInState {
 
     data class NotLogged(

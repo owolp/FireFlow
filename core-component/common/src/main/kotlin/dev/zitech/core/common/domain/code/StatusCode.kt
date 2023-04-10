@@ -19,6 +19,7 @@
 
 package dev.zitech.core.common.domain.code
 
+@Deprecated("Modules")
 enum class StatusCode(val code: Int) {
     Unknown(0),
 

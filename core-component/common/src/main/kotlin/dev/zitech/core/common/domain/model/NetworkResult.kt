@@ -21,14 +21,19 @@ import dev.zitech.core.common.domain.code.StatusCode
 import dev.zitech.core.common.domain.error.Error
 import dev.zitech.core.common.domain.error.Error.Fatal.Type.NETWORK
 
+@Deprecated("Modules")
 sealed interface NetworkResult<out T : Any>
 
+@Deprecated("Modules")
 data class NetworkSuccess<out T : Any>(val data: T) : NetworkResult<T>
+
+@Deprecated("Modules")
 data class NetworkError<T : Any>(
     val statusCode: StatusCode,
     val message: String? = null
 ) : NetworkResult<T>
 
+@Deprecated("Modules")
 data class NetworkException<out T : Any>(val throwable: Throwable) : NetworkResult<T>
 
 suspend fun <T : Any> NetworkResult<T>.onSuccess(

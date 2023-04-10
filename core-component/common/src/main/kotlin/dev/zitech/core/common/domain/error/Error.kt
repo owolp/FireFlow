@@ -21,6 +21,7 @@ import dev.zitech.core.common.R
 
 typealias FireFlowError = Error
 
+@Deprecated("Modules")
 sealed class Error(
     val debugText: String,
     val uiResId: Int

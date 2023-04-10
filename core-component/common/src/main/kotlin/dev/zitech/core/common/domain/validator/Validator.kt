@@ -17,6 +17,7 @@
 
 package dev.zitech.core.common.domain.validator
 
+@Deprecated("Modules")
 interface Validator<T> {
     operator fun invoke(input: T): Boolean
 }

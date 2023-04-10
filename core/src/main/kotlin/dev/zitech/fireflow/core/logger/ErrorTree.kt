@@ -20,5 +20,6 @@ package dev.zitech.fireflow.core.logger
 import timber.log.Timber
 
 interface ErrorTree {
+
     operator fun invoke(): Timber.Tree
 }

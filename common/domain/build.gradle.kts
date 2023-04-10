@@ -31,3 +31,7 @@ android {
 kapt {
     correctErrorTypes = true
 }
+
+dependencies {
+    implementation(libs.androidx.compose.runtime)
+}

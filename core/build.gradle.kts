@@ -33,5 +33,7 @@ kapt {
 }
 
 dependencies {
+    implementation(libs.androidx.compose.runtime)
+
     implementation(libs.jakewharton.timber)
 }

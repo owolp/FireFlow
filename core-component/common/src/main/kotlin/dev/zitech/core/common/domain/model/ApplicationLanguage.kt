@@ -20,6 +20,7 @@ package dev.zitech.core.common.domain.model
 import dev.zitech.core.common.R
 import java.util.*
 
+@Deprecated("Modules")
 enum class ApplicationLanguage(
     val id: Int,
     val text: Int,

@@ -19,6 +19,7 @@ package dev.zitech.core.common.domain.navigation
 
 import dev.zitech.core.common.domain.error.FireFlowError
 
+@Deprecated("Modules")
 sealed class DeepLinkScreenDestination {
     object Accounts : DeepLinkScreenDestination()
     object Current : DeepLinkScreenDestination()
