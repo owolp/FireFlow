@@ -37,4 +37,17 @@ dependencies {
     implementation(projects.common.domain)
 
     implementation(libs.androidx.compose.runtime)
+
+    fossImplementation(libs.acra.http)
+
+    playImplementation(platform(libs.google.firebase.bom))
+    playImplementation("com.google.firebase:firebase-analytics-ktx")
+    playImplementation("com.google.firebase:firebase-config-ktx")
+    playImplementation("com.google.firebase:firebase-crashlytics-ktx")
+    playImplementation("com.google.firebase:firebase-perf-ktx")
+
+    galleryImplementation(libs.huawei.agconnect.crash)
+    galleryImplementation(libs.huawei.agconnect.apms)
+    galleryImplementation(libs.huawei.agconnect.remoteconfig)
+    galleryImplementation(libs.huawei.hms.hianalytics)
 }
