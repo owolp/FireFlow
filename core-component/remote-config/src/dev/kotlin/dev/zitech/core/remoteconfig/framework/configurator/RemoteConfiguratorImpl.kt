@@ -24,6 +24,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
+@Deprecated("Modules")
 internal class RemoteConfiguratorImpl @Inject constructor() : RemoteConfigurator {
 
     override fun init(): Flow<Work<Unit>> =

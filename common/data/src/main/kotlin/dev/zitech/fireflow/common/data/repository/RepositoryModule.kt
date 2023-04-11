@@ -22,10 +22,12 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dev.zitech.fireflow.common.data.repository.cache.CacheRepositoryImpl
+import dev.zitech.fireflow.common.data.repository.configurator.ConfiguratorRepositoryImpl
 import dev.zitech.fireflow.common.data.repository.reporter.analytics.AnalyticsRepositoryImpl
 import dev.zitech.fireflow.common.data.repository.reporter.crash.CrashRepositoryImpl
 import dev.zitech.fireflow.common.data.repository.reporter.performance.PerformanceRepositoryImpl
 import dev.zitech.fireflow.common.domain.repository.cache.CacheRepository
+import dev.zitech.fireflow.common.domain.repository.configurator.ConfiguratorRepository
 import dev.zitech.fireflow.common.domain.repository.reporter.AnalyticsRepository
 import dev.zitech.fireflow.common.domain.repository.reporter.CrashRepository
 import dev.zitech.fireflow.common.domain.repository.reporter.PerformanceRepository
@@ -42,6 +44,12 @@ internal interface RepositoryModule {
         fun cacheRepository(
             cacheRepositoryImpl: CacheRepositoryImpl
         ): CacheRepository
+
+        @Singleton
+        @Binds
+        fun configuratorRepository(
+            configuratorRepositoryImpl: ConfiguratorRepositoryImpl
+        ): ConfiguratorRepository
 
         @Singleton
         @Binds

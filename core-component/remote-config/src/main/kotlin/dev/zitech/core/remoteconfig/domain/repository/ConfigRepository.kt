@@ -24,6 +24,7 @@ import dev.zitech.core.remoteconfig.domain.model.LongConfig
 import dev.zitech.core.remoteconfig.domain.model.StringConfig
 import kotlinx.coroutines.flow.Flow
 
+@Deprecated("Modules")
 interface ConfigRepository {
     fun init(): Flow<Work<Unit>>
 

@@ -27,6 +27,7 @@ import dev.zitech.core.remoteconfig.domain.source.ConfigProviderSource
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 
+@Deprecated("Modules")
 internal class ConfigRepositoryImpl @Inject constructor(
     private val configProviderSource: ConfigProviderSource
 ) : ConfigRepository {

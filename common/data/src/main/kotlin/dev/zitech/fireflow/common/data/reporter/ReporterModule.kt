@@ -29,7 +29,7 @@ import dev.zitech.fireflow.common.data.reporter.performance.PerformanceReporter
 import dev.zitech.fireflow.common.data.reporter.performance.PerformanceReporterImpl
 import javax.inject.Singleton
 
-internal interface RemoteReporterModule {
+internal interface ReporterModule {
 
     @InstallIn(SingletonComponent::class)
     @Module

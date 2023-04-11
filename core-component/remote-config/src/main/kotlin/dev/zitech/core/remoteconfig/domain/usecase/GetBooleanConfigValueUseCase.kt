@@ -23,6 +23,7 @@ import dev.zitech.core.remoteconfig.domain.model.BooleanConfig
 import dev.zitech.core.remoteconfig.domain.repository.ConfigRepository
 import javax.inject.Inject
 
+@Deprecated("Modules")
 class GetBooleanConfigValueUseCase @Inject constructor(
     private val configRepository: ConfigRepository
 ) {

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@ import dev.zitech.core.remoteconfig.domain.model.StringConfig
 import dev.zitech.core.remoteconfig.domain.repository.ConfigRepository
 import javax.inject.Inject
 
+@Deprecated("Modules")
 class GetStringConfigsUseCase @Inject constructor(
     private val configRepository: ConfigRepository
 ) {

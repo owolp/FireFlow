@@ -22,6 +22,7 @@ import dev.zitech.core.remoteconfig.framework.configurator.RemoteConfigurator
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 
+@Deprecated("Modules")
 class InitializeRemoteConfiguratorUseCase @Inject constructor(
     private val remoteConfigurator: RemoteConfigurator
 ) {

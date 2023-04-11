@@ -34,6 +34,7 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
+@Deprecated("Modules")
 @ExperimentalCoroutinesApi
 internal class RemoteConfiguratorImpl @Inject constructor(
     private val getDefaultConfigValuesUseCase: GetDefaultConfigValuesUseCase

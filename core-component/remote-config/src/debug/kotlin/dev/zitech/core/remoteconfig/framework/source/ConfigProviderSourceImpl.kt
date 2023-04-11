@@ -28,6 +28,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
+@Deprecated("Modules")
 internal class ConfigProviderSourceImpl @Inject constructor() : ConfigProviderSource {
 
     override fun init(): Flow<Work<Unit>> = flowOf(WorkSuccess(Unit))

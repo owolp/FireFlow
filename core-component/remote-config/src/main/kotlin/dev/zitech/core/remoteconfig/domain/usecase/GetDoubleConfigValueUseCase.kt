@@ -23,6 +23,7 @@ import dev.zitech.core.remoteconfig.domain.model.DoubleConfig
 import dev.zitech.core.remoteconfig.domain.repository.ConfigRepository
 import javax.inject.Inject
 
+@Deprecated("Modules")
 class GetDoubleConfigValueUseCase @Inject constructor(
     private val configRepository: ConfigRepository
 ) {

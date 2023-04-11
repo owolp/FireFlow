@@ -33,5 +33,7 @@ kapt {
 }
 
 dependencies {
+    implementation(projects.core)
+
     implementation(libs.androidx.compose.runtime)
 }

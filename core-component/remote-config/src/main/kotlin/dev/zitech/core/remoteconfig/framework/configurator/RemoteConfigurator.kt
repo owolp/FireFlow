@@ -20,6 +20,7 @@ package dev.zitech.core.remoteconfig.framework.configurator
 import dev.zitech.core.common.domain.model.Work
 import kotlinx.coroutines.flow.Flow
 
+@Deprecated("Modules")
 interface RemoteConfigurator {
 
     fun init(): Flow<Work<Unit>>
