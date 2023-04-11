@@ -22,7 +22,6 @@ include(":core")
 include(":common:data")
 include(":common:domain")
 include(":common:presentation")
-include(":common:presentation-framework")
 
 include(":core-component:core")
 include(":core-component:authenticator")

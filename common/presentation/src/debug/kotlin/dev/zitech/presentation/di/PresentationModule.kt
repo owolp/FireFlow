@@ -15,29 +15,24 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-apply(from = "$rootDir/config/dependencies/di-dependencies.gradle")
-apply(from = "$rootDir/config/dependencies/kotlin-dependencies.gradle")
+package dev.zitech.presentation.di
 
-plugins {
-    id(BuildPlugins.KOTLIN_ANDROID)
-    id(BuildPlugins.LIBRARY)
-    kotlin(BuildPlugins.KAPT)
-}
+import dagger.Binds
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import dev.zitech.fireflow.core.logger.ErrorTree
+import dev.zitech.presentation.logger.ErrorTreeImpl
+import javax.inject.Singleton
 
-android {
-    namespace = "dev.zitech.fireflow.common.presentation.framework"
-}
+internal interface PresentationModule {
 
-kapt {
-    correctErrorTypes = true
-}
+    @InstallIn(SingletonComponent::class)
+    @Module
+    interface SingletonBinds {
 
-dependencies {
-    api(projects.common.presentation)
-    implementation(projects.core)
-    implementation(projects.common.domain)
-
-    implementation(libs.androidx.compose.runtime)
-
-    implementation(libs.jakewharton.timber)
+        @Singleton
+        @Binds
+        fun errorTree(errorTreeImpl: ErrorTreeImpl): ErrorTree
+    }
 }

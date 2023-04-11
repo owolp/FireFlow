@@ -15,24 +15,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.presentation.framework.di
+package dev.zitech.presentation.logger
 
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
 import dev.zitech.fireflow.core.logger.ErrorTree
-import dev.zitech.presentation.framework.logger.ErrorTreeImpl
-import javax.inject.Singleton
+import javax.inject.Inject
+import timber.log.Timber
 
-internal interface PresentationModule {
+class ErrorTreeImpl @Inject constructor() : ErrorTree {
 
-    @InstallIn(SingletonComponent::class)
-    @Module
-    interface SingletonBinds {
-
-        @Singleton
-        @Binds
-        fun errorTree(errorTreeImpl: ErrorTreeImpl): ErrorTree
-    }
+    override operator fun invoke(): Timber.Tree =
+        object : Timber.DebugTree() {
+            override fun createStackElementTag(element: StackTraceElement) =
+                "(${element.fileName}:${element.lineNumber})#${element.methodName}"
+        }
 }

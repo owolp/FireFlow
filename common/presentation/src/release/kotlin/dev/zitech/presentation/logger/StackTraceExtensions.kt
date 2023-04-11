@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.presentation.framework.logger
+package dev.zitech.presentation.logger
 
 import java.util.regex.Pattern
 

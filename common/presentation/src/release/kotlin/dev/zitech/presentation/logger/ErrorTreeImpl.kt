@@ -15,10 +15,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.presentation.framework.logger
+package dev.zitech.presentation.logger
 
 import android.util.Log
-import dev.zitech.fireflow.common.domain.repository.crash.CrashRepository
+import dev.zitech.fireflow.common.domain.repository.reporter.CrashRepository
 import dev.zitech.fireflow.core.logger.ErrorTree
 import java.io.IOException
 import java.net.SocketException
