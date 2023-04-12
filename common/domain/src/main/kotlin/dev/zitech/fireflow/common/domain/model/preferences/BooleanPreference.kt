@@ -15,9 +15,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.persistence.domain.model.preferences
+package dev.zitech.fireflow.common.domain.model.preferences
 
-@Deprecated("Modules")
 enum class BooleanPreference(
     override val key: String,
     override val title: String,

@@ -17,12 +17,22 @@
 
 package dev.zitech.fireflow.common.data.source
 
+import android.content.Context
 import dagger.Binds
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import dev.zitech.fireflow.common.data.source.annotation.DevelopmentPreferencesDataSource
+import dev.zitech.fireflow.common.data.source.annotation.SecuredPreferencesDataSource
+import dev.zitech.fireflow.common.data.source.annotation.StandardPreferencesDataSource
 import dev.zitech.fireflow.common.data.source.configurator.ConfiguratorProviderSource
 import dev.zitech.fireflow.common.data.source.configurator.ConfiguratorProviderSourceImpl
+import dev.zitech.fireflow.common.data.source.preferences.PreferencesDataSource
+import dev.zitech.fireflow.common.data.source.preferences.PreferencesFactory
+import dev.zitech.fireflow.common.domain.model.preferences.PreferenceType
+import dev.zitech.fireflow.core.dispatcher.AppDispatchers
 import javax.inject.Singleton
 
 internal interface SourceModule {
@@ -34,5 +44,46 @@ internal interface SourceModule {
         @Singleton
         @Binds
         fun configuratorProviderSource(configuratorProviderSourceImpl: ConfiguratorProviderSourceImpl): ConfiguratorProviderSource
+    }
+
+    @InstallIn(SingletonComponent::class)
+    @Module
+    object SingletonProvides {
+
+        @DevelopmentPreferencesDataSource
+        @Singleton
+        @Provides
+        fun developmentPreferencesDataSource(
+            appDispatchers: AppDispatchers,
+            @ApplicationContext applicationContext: Context
+        ): PreferencesDataSource = PreferencesFactory.createsPreferences(
+            appDispatchers,
+            applicationContext,
+            PreferenceType.DEVELOPMENT
+        )
+
+        @SecuredPreferencesDataSource
+        @Singleton
+        @Provides
+        fun securedPreferencesDataSource(
+            appDispatchers: AppDispatchers,
+            @ApplicationContext applicationContext: Context
+        ): PreferencesDataSource = PreferencesFactory.createsPreferences(
+            appDispatchers,
+            applicationContext,
+            PreferenceType.SECURED
+        )
+
+        @StandardPreferencesDataSource
+        @Singleton
+        @Provides
+        fun standardPreferencesDataSource(
+            appDispatchers: AppDispatchers,
+            @ApplicationContext applicationContext: Context
+        ): PreferencesDataSource = PreferencesFactory.createsPreferences(
+            appDispatchers,
+            applicationContext,
+            PreferenceType.STANDARD
+        )
     }
 }

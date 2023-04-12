@@ -15,11 +15,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.fireflow.common.data.local.preferences.constants
+package dev.zitech.fireflow.common.data.source.annotation
 
-object PreferencesConstants {
+import javax.inject.Qualifier
 
-    const val DEVELOPMENT_PREFERENCES_NAME = "development_preferences"
-    const val SECURED_PREFERENCES_NAME = "secured_preferences"
-    const val STANDARD_PREFERENCES_NAME = "standard_preferences"
-}
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+internal annotation class StandardPreferencesDataSource

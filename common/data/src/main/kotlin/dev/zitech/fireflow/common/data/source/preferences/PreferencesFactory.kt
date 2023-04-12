@@ -15,20 +15,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.persistence.framework.preference.factory
+package dev.zitech.fireflow.common.data.source.preferences
 
 import android.content.Context
-import dev.zitech.core.common.data.preferences.PreferencesConstants.DEVELOPMENT_PREFERENCES_NAME
-import dev.zitech.core.common.data.preferences.PreferencesConstants.SECURED_PREFERENCES_NAME
-import dev.zitech.core.common.data.preferences.PreferencesConstants.STANDARD_PREFERENCES_NAME
-import dev.zitech.core.common.domain.dispatcher.AppDispatchers
-import dev.zitech.core.persistence.domain.model.preferences.PreferenceType
-import dev.zitech.core.persistence.domain.source.preferences.PreferencesDataSource
-import dev.zitech.core.persistence.framework.preference.source.SecuredPreferencesDataSource
-import dev.zitech.core.persistence.framework.preference.source.StandardPreferencesDataSource
+import dev.zitech.fireflow.common.domain.model.preferences.PreferenceType
+import dev.zitech.fireflow.core.dispatcher.AppDispatchers
 
-@Deprecated("Modules")
 internal object PreferencesFactory {
+
+    private const val DEVELOPMENT_PREFERENCES_NAME = "development_preferences"
+    private const val SECURED_PREFERENCES_NAME = "secured_preferences"
+    private const val STANDARD_PREFERENCES_NAME = "standard_preferences"
 
     fun createsPreferences(
         appDispatchers: AppDispatchers,

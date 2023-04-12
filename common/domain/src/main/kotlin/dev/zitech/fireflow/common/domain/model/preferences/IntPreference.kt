@@ -15,11 +15,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.persistence.di.annotation
+package dev.zitech.fireflow.common.domain.model.preferences
 
-import javax.inject.Qualifier
+enum class IntPreference(
+    override val key: String,
+    override val title: String,
+    override val explanation: String,
+    override val defaultValue: Int
+) : Preference<Int> {
 
-@Deprecated("Modules")
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
-internal annotation class DevelopmentPreferencesDataSource
+    APPLICATION_THEME(
+        key = "application_theme",
+        title = "Application Theme",
+        explanation = "Set application theme.",
+        defaultValue = 0
+    )
+}

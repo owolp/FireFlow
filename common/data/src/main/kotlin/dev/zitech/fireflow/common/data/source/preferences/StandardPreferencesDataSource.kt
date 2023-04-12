@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.persistence.framework.preference.source
+package dev.zitech.fireflow.common.data.source.preferences
 
 import android.content.Context
 import androidx.datastore.core.DataStore
@@ -28,9 +28,8 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import dev.zitech.core.common.domain.dispatcher.AppDispatchers
-import dev.zitech.core.common.domain.logger.Logger
-import dev.zitech.core.persistence.domain.source.preferences.PreferencesDataSource
+import dev.zitech.fireflow.core.dispatcher.AppDispatchers
+import dev.zitech.fireflow.core.logger.Logger
 import java.io.IOException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -38,11 +37,10 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
-@Deprecated("Modules")
 internal class StandardPreferencesDataSource(
+    context: Context,
     private val appDispatchers: AppDispatchers,
-    private val fileName: String,
-    context: Context
+    private val fileName: String
 ) : PreferencesDataSource {
 
     private val Context.dataStore: DataStore<DataStorePreferences> by preferencesDataStore(
@@ -50,31 +48,6 @@ internal class StandardPreferencesDataSource(
     )
 
     private val preferenceDataStore: DataStore<DataStorePreferences> = context.dataStore
-
-    override fun getBoolean(key: String, defaultValue: Boolean): Flow<Boolean> =
-        getDataStorePreferences().map { preferences ->
-            preferences[booleanPreferencesKey(key)] ?: defaultValue
-        }
-
-    override fun getFloat(key: String, defaultValue: Float): Flow<Float> =
-        getDataStorePreferences().map { preferences ->
-            preferences[floatPreferencesKey(key)] ?: defaultValue
-        }
-
-    override fun getInt(key: String, defaultValue: Int): Flow<Int> =
-        getDataStorePreferences().map { preferences ->
-            preferences[intPreferencesKey(key)] ?: defaultValue
-        }
-
-    override fun getLong(key: String, defaultValue: Long): Flow<Long> =
-        getDataStorePreferences().map { preferences ->
-            preferences[longPreferencesKey(key)] ?: defaultValue
-        }
-
-    override fun getString(key: String, defaultValue: String?): Flow<String?> =
-        getDataStorePreferences().map { preferences ->
-            preferences[stringPreferencesKey(key)] ?: defaultValue
-        }
 
     override fun containsBoolean(key: String): Flow<Boolean> =
         getDataStorePreferences().map { preferences ->
@@ -101,42 +74,39 @@ internal class StandardPreferencesDataSource(
             preferences.contains(stringPreferencesKey(key))
         }
 
-    override suspend fun saveBoolean(key: String, value: Boolean) {
-        withContext(appDispatchers.io) {
-            preferenceDataStore.edit { preferences ->
-                preferences[booleanPreferencesKey(key)] = value
-            }
+    override fun getBoolean(key: String, defaultValue: Boolean): Flow<Boolean> =
+        getDataStorePreferences().map { preferences ->
+            preferences[booleanPreferencesKey(key)] ?: defaultValue
         }
-    }
 
-    override suspend fun saveFloat(key: String, value: Float) {
-        withContext(appDispatchers.io) {
-            preferenceDataStore.edit { preferences ->
-                preferences[floatPreferencesKey(key)] = value
-            }
+    override fun getFloat(key: String, defaultValue: Float): Flow<Float> =
+        getDataStorePreferences().map { preferences ->
+            preferences[floatPreferencesKey(key)] ?: defaultValue
         }
-    }
 
-    override suspend fun saveInt(key: String, value: Int) {
-        withContext(appDispatchers.io) {
-            preferenceDataStore.edit { preferences ->
-                preferences[intPreferencesKey(key)] = value
-            }
+    override fun getInt(key: String, defaultValue: Int): Flow<Int> =
+        getDataStorePreferences().map { preferences ->
+            preferences[intPreferencesKey(key)] ?: defaultValue
         }
-    }
 
-    override suspend fun saveLong(key: String, value: Long) {
-        withContext(appDispatchers.io) {
-            preferenceDataStore.edit { preferences ->
-                preferences[longPreferencesKey(key)] = value
-            }
+    override fun getLong(key: String, defaultValue: Long): Flow<Long> =
+        getDataStorePreferences().map { preferences ->
+            preferences[longPreferencesKey(key)] ?: defaultValue
         }
-    }
 
-    override suspend fun saveString(key: String, value: String) {
+    override fun getString(key: String, defaultValue: String?): Flow<String?> =
+        getDataStorePreferences().map { preferences ->
+            preferences[stringPreferencesKey(key)] ?: defaultValue
+        }
+
+    override suspend fun removeAll() {
         withContext(appDispatchers.io) {
-            preferenceDataStore.edit { preferences ->
-                preferences[stringPreferencesKey(key)] = value
+            try {
+                preferenceDataStore.edit { preferences ->
+                    preferences.clear()
+                }
+            } catch (exception: IOException) {
+                Logger.e(fileName, exception)
             }
         }
     }
@@ -201,14 +171,42 @@ internal class StandardPreferencesDataSource(
         }
     }
 
-    override suspend fun removeAll() {
+    override suspend fun saveBoolean(key: String, value: Boolean) {
         withContext(appDispatchers.io) {
-            try {
-                preferenceDataStore.edit { preferences ->
-                    preferences.clear()
-                }
-            } catch (exception: IOException) {
-                Logger.e(fileName, exception)
+            preferenceDataStore.edit { preferences ->
+                preferences[booleanPreferencesKey(key)] = value
+            }
+        }
+    }
+
+    override suspend fun saveFloat(key: String, value: Float) {
+        withContext(appDispatchers.io) {
+            preferenceDataStore.edit { preferences ->
+                preferences[floatPreferencesKey(key)] = value
+            }
+        }
+    }
+
+    override suspend fun saveInt(key: String, value: Int) {
+        withContext(appDispatchers.io) {
+            preferenceDataStore.edit { preferences ->
+                preferences[intPreferencesKey(key)] = value
+            }
+        }
+    }
+
+    override suspend fun saveLong(key: String, value: Long) {
+        withContext(appDispatchers.io) {
+            preferenceDataStore.edit { preferences ->
+                preferences[longPreferencesKey(key)] = value
+            }
+        }
+    }
+
+    override suspend fun saveString(key: String, value: String) {
+        withContext(appDispatchers.io) {
+            preferenceDataStore.edit { preferences ->
+                preferences[stringPreferencesKey(key)] = value
             }
         }
     }

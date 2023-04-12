@@ -15,24 +15,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.persistence.framework.preference.source
+package dev.zitech.fireflow.common.data.source.preferences
 
 import android.content.Context
 import androidx.core.content.edit
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
-import dev.zitech.core.common.domain.dispatcher.AppDispatchers
-import dev.zitech.core.persistence.domain.source.preferences.PreferencesDataSource
+import dev.zitech.fireflow.core.dispatcher.AppDispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 
-@Deprecated("Modules")
 internal class SecuredPreferencesDataSource(
-    private val appDispatchers: AppDispatchers,
+    context: Context,
     fileName: String,
-    context: Context
+    private val appDispatchers: AppDispatchers
 ) : PreferencesDataSource {
 
     private val keyGenParameterSpec = MasterKeys.AES256_GCM_SPEC
@@ -44,26 +42,6 @@ internal class SecuredPreferencesDataSource(
         EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
         EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
     )
-
-    override fun getBoolean(key: String, defaultValue: Boolean): Flow<Boolean> =
-        flowOf(encryptedSecuredPreferences.getBoolean(key, defaultValue))
-            .flowOn(appDispatchers.io)
-
-    override fun getFloat(key: String, defaultValue: Float): Flow<Float> =
-        flowOf(encryptedSecuredPreferences.getFloat(key, defaultValue))
-            .flowOn(appDispatchers.io)
-
-    override fun getInt(key: String, defaultValue: Int): Flow<Int> =
-        flowOf(encryptedSecuredPreferences.getInt(key, defaultValue))
-            .flowOn(appDispatchers.io)
-
-    override fun getLong(key: String, defaultValue: Long): Flow<Long> =
-        flowOf(encryptedSecuredPreferences.getLong(key, defaultValue))
-            .flowOn(appDispatchers.io)
-
-    override fun getString(key: String, defaultValue: String?): Flow<String?> =
-        flowOf(encryptedSecuredPreferences.getString(key, defaultValue))
-            .flowOn(appDispatchers.io)
 
     override fun containsBoolean(key: String): Flow<Boolean> =
         flowOf(encryptedSecuredPreferences.contains(key))
@@ -85,42 +63,30 @@ internal class SecuredPreferencesDataSource(
         flowOf(encryptedSecuredPreferences.contains(key))
             .flowOn(appDispatchers.io)
 
-    override suspend fun saveBoolean(key: String, value: Boolean) {
-        withContext(appDispatchers.io) {
-            encryptedSecuredPreferences.edit(commit = true) {
-                putBoolean(key, value)
-            }
-        }
-    }
+    override fun getBoolean(key: String, defaultValue: Boolean): Flow<Boolean> =
+        flowOf(encryptedSecuredPreferences.getBoolean(key, defaultValue))
+            .flowOn(appDispatchers.io)
 
-    override suspend fun saveFloat(key: String, value: Float) {
-        withContext(appDispatchers.io) {
-            encryptedSecuredPreferences.edit(commit = true) {
-                putFloat(key, value)
-            }
-        }
-    }
+    override fun getFloat(key: String, defaultValue: Float): Flow<Float> =
+        flowOf(encryptedSecuredPreferences.getFloat(key, defaultValue))
+            .flowOn(appDispatchers.io)
 
-    override suspend fun saveInt(key: String, value: Int) {
-        withContext(appDispatchers.io) {
-            encryptedSecuredPreferences.edit(commit = true) {
-                putInt(key, value)
-            }
-        }
-    }
+    override fun getInt(key: String, defaultValue: Int): Flow<Int> =
+        flowOf(encryptedSecuredPreferences.getInt(key, defaultValue))
+            .flowOn(appDispatchers.io)
 
-    override suspend fun saveLong(key: String, value: Long) {
-        withContext(appDispatchers.io) {
-            encryptedSecuredPreferences.edit(commit = true) {
-                putLong(key, value)
-            }
-        }
-    }
+    override fun getLong(key: String, defaultValue: Long): Flow<Long> =
+        flowOf(encryptedSecuredPreferences.getLong(key, defaultValue))
+            .flowOn(appDispatchers.io)
 
-    override suspend fun saveString(key: String, value: String) {
+    override fun getString(key: String, defaultValue: String?): Flow<String?> =
+        flowOf(encryptedSecuredPreferences.getString(key, defaultValue))
+            .flowOn(appDispatchers.io)
+
+    override suspend fun removeAll() {
         withContext(appDispatchers.io) {
             encryptedSecuredPreferences.edit(commit = true) {
-                putString(key, value)
+                clear()
             }
         }
     }
@@ -165,10 +131,42 @@ internal class SecuredPreferencesDataSource(
         }
     }
 
-    override suspend fun removeAll() {
+    override suspend fun saveBoolean(key: String, value: Boolean) {
         withContext(appDispatchers.io) {
             encryptedSecuredPreferences.edit(commit = true) {
-                clear()
+                putBoolean(key, value)
+            }
+        }
+    }
+
+    override suspend fun saveFloat(key: String, value: Float) {
+        withContext(appDispatchers.io) {
+            encryptedSecuredPreferences.edit(commit = true) {
+                putFloat(key, value)
+            }
+        }
+    }
+
+    override suspend fun saveInt(key: String, value: Int) {
+        withContext(appDispatchers.io) {
+            encryptedSecuredPreferences.edit(commit = true) {
+                putInt(key, value)
+            }
+        }
+    }
+
+    override suspend fun saveLong(key: String, value: Long) {
+        withContext(appDispatchers.io) {
+            encryptedSecuredPreferences.edit(commit = true) {
+                putLong(key, value)
+            }
+        }
+    }
+
+    override suspend fun saveString(key: String, value: String) {
+        withContext(appDispatchers.io) {
+            encryptedSecuredPreferences.edit(commit = true) {
+                putString(key, value)
             }
         }
     }

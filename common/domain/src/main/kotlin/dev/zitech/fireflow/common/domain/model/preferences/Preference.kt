@@ -15,11 +15,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.persistence.di.annotation
+package dev.zitech.fireflow.common.domain.model.preferences
 
-import javax.inject.Qualifier
-
-@Deprecated("Modules")
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
-internal annotation class DevelopmentPreferencesDataSource
+internal interface Preference<T> {
+    val key: String
+    val title: String
+    val explanation: String
+    val defaultValue: T
+}
