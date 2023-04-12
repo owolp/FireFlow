@@ -72,6 +72,9 @@
                 android:name="dev.zitech.fireflow.initializer.DependencyGraphInitializer"
                 android:value="androidx.startup" />
             <meta-data
+                android:name="dev.zitech.fireflow.initializer.FeatureFlagInitializer"
+                android:value="androidx.startup" />
+            <meta-data
                 android:name="dev.zitech.fireflow.initializer.LoggerInitializer"
                 android:value="androidx.startup" />
             <meta-data

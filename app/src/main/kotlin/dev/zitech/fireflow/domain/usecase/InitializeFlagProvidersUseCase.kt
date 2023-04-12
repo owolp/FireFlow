@@ -15,13 +15,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.featureflag.domain.usecase
+package dev.zitech.fireflow.domain.usecase
 
 import dev.zitech.core.featureflag.domain.repository.FeatureFlagRepository
 import javax.inject.Inject
 
-@Deprecated("Modules")
-class InitializeFlagProvidersUseCase @Inject constructor(
+internal class InitializeFlagProvidersUseCase @Inject constructor(
     private val featureFlagRepository: FeatureFlagRepository
 ) {
 
