@@ -84,7 +84,7 @@ jetbrains-kotlin-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-
 jetbrains-kotlin-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
-mockk-mockk = "io.mockk:mockk:1.13.4"
+mockk-mockk = "io.mockk:mockk:1.13.5"
 squareup-moshi-moshi = { module = "com.squareup.moshi:moshi", version.ref = "moshi" }
 squareup-moshi-kotlin-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", version.ref = "moshi" }
 squareup-leakcanary-android = "com.squareup.leakcanary:leakcanary-android:2.10"
