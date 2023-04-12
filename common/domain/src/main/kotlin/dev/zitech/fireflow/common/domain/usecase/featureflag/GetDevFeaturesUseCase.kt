@@ -15,21 +15,20 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.featureflag.domain.usecase
+package dev.zitech.fireflow.common.domain.usecase.featureflag
 
-import dev.zitech.core.featureflag.domain.model.ProdFeature
-import dev.zitech.core.featureflag.domain.repository.FeatureFlagRepository
+import dev.zitech.fireflow.common.domain.model.featureflag.DevFeature
+import dev.zitech.fireflow.common.domain.repository.featureflag.FeatureFlagRepository
 import javax.inject.Inject
 
-@Deprecated("Modules")
-class GetProdFeaturesUseCase @Inject constructor(
+class GetDevFeaturesUseCase @Inject constructor(
     private val featureFlagRepository: FeatureFlagRepository
 ) {
 
-    suspend operator fun invoke(): List<Pair<ProdFeature, Boolean>> {
-        val features = mutableListOf<Pair<ProdFeature, Boolean>>()
+    suspend operator fun invoke(): List<Pair<DevFeature, Boolean>> {
+        val features = mutableListOf<Pair<DevFeature, Boolean>>()
 
-        featureFlagRepository.getProdFeatures().forEach { feature ->
+        featureFlagRepository.getDevFeatures().forEach { feature ->
             features.add(
                 Pair(
                     feature,
