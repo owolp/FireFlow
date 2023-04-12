@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,6 +17,11 @@
 
 package dev.zitech.core.featureflag.data.provider
 
+@Deprecated("Modules")
 internal const val PRIORITY_MINIMUM = 0
+
+@Deprecated("Modules")
 internal const val PRIORITY_MEDIUM = 1
+
+@Deprecated("Modules")
 internal const val PRIORITY_MAXIMUM = 2

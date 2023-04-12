@@ -24,6 +24,7 @@ import dev.zitech.core.featureflag.domain.provider.FeatureFlagProvider
 import dev.zitech.core.remoteconfig.framework.configurator.RemoteConfigurator
 import javax.inject.Inject
 
+@Deprecated("Modules")
 internal class RemoteFeatureFlagProvider @Inject constructor(
     private val remoteConfigurator: RemoteConfigurator
 ) : FeatureFlagProvider {

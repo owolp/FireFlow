@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@ import dev.zitech.core.featureflag.domain.model.Feature
  * feature) and to avoid that every provider has to provide a value for every feature. (e.g. no
  * "Remote Config tool" configuration needed, unless you want the toggle to be remote)
  */
+@Deprecated("Modules")
 internal interface FeatureFlagProvider {
 
     val priority: Int

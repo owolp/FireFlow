@@ -19,18 +19,26 @@ package dev.zitech.fireflow.common.data.repository
 
 import dagger.Binds
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dev.zitech.fireflow.common.data.repository.cache.CacheRepositoryImpl
 import dev.zitech.fireflow.common.data.repository.configurator.ConfiguratorRepositoryImpl
+import dev.zitech.fireflow.common.data.repository.featureflag.FeatureFlagRepositoryImpl
 import dev.zitech.fireflow.common.data.repository.reporter.analytics.AnalyticsRepositoryImpl
 import dev.zitech.fireflow.common.data.repository.reporter.crash.CrashRepositoryImpl
 import dev.zitech.fireflow.common.data.repository.reporter.performance.PerformanceRepositoryImpl
+import dev.zitech.fireflow.common.data.source.annotation.DevFeatureFlagSource as DevFeatureFlagSourceAnnotation
+import dev.zitech.fireflow.common.data.source.annotation.ProdFeatureFlagSource as ProdFeatureFlagSourceAnnotation
+import dev.zitech.fireflow.common.data.source.annotation.RemoteFeatureFlagSource as RemoteFeatureFlagSourceAnnotation
+import dev.zitech.fireflow.common.data.source.featureflag.FeatureFlagSource
 import dev.zitech.fireflow.common.domain.repository.cache.CacheRepository
 import dev.zitech.fireflow.common.domain.repository.configurator.ConfiguratorRepository
+import dev.zitech.fireflow.common.domain.repository.featureflag.FeatureFlagRepository
 import dev.zitech.fireflow.common.domain.repository.reporter.AnalyticsRepository
 import dev.zitech.fireflow.common.domain.repository.reporter.CrashRepository
 import dev.zitech.fireflow.common.domain.repository.reporter.PerformanceRepository
+import dev.zitech.fireflow.core.applicationconfig.AppConfigProvider
 import javax.inject.Singleton
 
 internal interface RepositoryModule {
@@ -68,5 +76,24 @@ internal interface RepositoryModule {
         fun performanceRepository(
             performanceRepositoryImpl: PerformanceRepositoryImpl
         ): PerformanceRepository
+    }
+
+    @InstallIn(SingletonComponent::class)
+    @Module
+    object SingletonProvides {
+
+        @Singleton
+        @Provides
+        fun featureFlagRepository(
+            appConfigProvider: AppConfigProvider,
+            @DevFeatureFlagSourceAnnotation devFeatureFlagSource: FeatureFlagSource,
+            @ProdFeatureFlagSourceAnnotation prodFeatureFlagSource: FeatureFlagSource,
+            @RemoteFeatureFlagSourceAnnotation remoteFeatureFlagSource: FeatureFlagSource
+        ): FeatureFlagRepository = FeatureFlagRepositoryImpl(
+            appConfigProvider,
+            devFeatureFlagSource,
+            prodFeatureFlagSource,
+            remoteFeatureFlagSource
+        )
     }
 }

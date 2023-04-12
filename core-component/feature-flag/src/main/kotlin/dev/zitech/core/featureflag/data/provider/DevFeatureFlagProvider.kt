@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@ import dev.zitech.core.featureflag.domain.usecase.SetDevFeatureFlagEnabledUseCas
 import javax.inject.Inject
 import kotlinx.coroutines.flow.first
 
+@Deprecated("Modules")
 internal class DevFeatureFlagProvider @Inject constructor(
     private val isDevFeatureFlagEnabledUseCase: IsDevFeatureFlagEnabledUseCase,
     private val setDevFeatureFlagEnabledUseCase: SetDevFeatureFlagEnabledUseCase

@@ -24,11 +24,18 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import dev.zitech.fireflow.common.data.source.annotation.DevFeatureFlagSource as DevFeatureFlagSourceAnnotation
 import dev.zitech.fireflow.common.data.source.annotation.DevelopmentPreferencesDataSource
+import dev.zitech.fireflow.common.data.source.annotation.ProdFeatureFlagSource as ProdFeatureFlagSourceAnnotation
+import dev.zitech.fireflow.common.data.source.annotation.RemoteFeatureFlagSource as RemoteFeatureFlagSourceAnnotation
 import dev.zitech.fireflow.common.data.source.annotation.SecuredPreferencesDataSource
 import dev.zitech.fireflow.common.data.source.annotation.StandardPreferencesDataSource
 import dev.zitech.fireflow.common.data.source.configurator.ConfiguratorProviderSource
 import dev.zitech.fireflow.common.data.source.configurator.ConfiguratorProviderSourceImpl
+import dev.zitech.fireflow.common.data.source.featureflag.DevFeatureFlagSource
+import dev.zitech.fireflow.common.data.source.featureflag.FeatureFlagSource
+import dev.zitech.fireflow.common.data.source.featureflag.ProdFeatureFlagSource
+import dev.zitech.fireflow.common.data.source.featureflag.RemoteFeatureFlagSource
 import dev.zitech.fireflow.common.data.source.preferences.PreferencesDataSource
 import dev.zitech.fireflow.common.data.source.preferences.PreferencesFactory
 import dev.zitech.fireflow.common.domain.model.preferences.PreferenceType
@@ -44,11 +51,34 @@ internal interface SourceModule {
         @Singleton
         @Binds
         fun configuratorProviderSource(configuratorProviderSourceImpl: ConfiguratorProviderSourceImpl): ConfiguratorProviderSource
+
+        @ProdFeatureFlagSourceAnnotation
+        @Singleton
+        @Binds
+        fun prodFeatureFlagSource(
+            prodFeatureFlagSource: ProdFeatureFlagSource
+        ): FeatureFlagSource
+
+        @RemoteFeatureFlagSourceAnnotation
+        @Singleton
+        @Binds
+        fun remoteFeatureFlagSource(
+            remoteFeatureFlagSource: RemoteFeatureFlagSource
+        ): FeatureFlagSource
     }
 
     @InstallIn(SingletonComponent::class)
     @Module
     object SingletonProvides {
+
+        @DevFeatureFlagSourceAnnotation
+        @Singleton
+        @Provides
+        fun devFeatureFlagSource(
+            @DevelopmentPreferencesDataSource developmentPreferencesDataSource: PreferencesDataSource
+        ): FeatureFlagSource = DevFeatureFlagSource(
+            developmentPreferencesDataSource
+        )
 
         @DevelopmentPreferencesDataSource
         @Singleton

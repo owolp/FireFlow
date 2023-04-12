@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ import dev.zitech.core.featureflag.domain.provider.FeatureFlagProvider
 import dev.zitech.core.remoteconfig.framework.configurator.RemoteConfigurator
 import javax.inject.Inject
 
+@Deprecated("Modules")
 @Suppress("UnusedPrivateMember", "UNUSED_PARAMETER")
 internal class RemoteFeatureFlagProvider @Inject constructor(
     private val remoteConfigurator: RemoteConfigurator

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ package dev.zitech.core.featureflag.domain.model
  * development)
  * e.g develop a feature, test it, release it, then remove it and the feature remains in the app
  */
+@Deprecated("Modules")
 enum class ProdFeature(
     override val key: String,
     override val title: String,
