@@ -85,6 +85,7 @@ android {
 
 dependencies {
     implementation(projects.core)
+    implementation(projects.common.data)
     implementation(projects.common.domain)
     implementation(projects.coreComponent.core)
     implementation(projects.designSystem)
