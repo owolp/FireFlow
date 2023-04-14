@@ -30,6 +30,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
+@Deprecated("Modules")
 internal class UserAccountRepositoryImpl @Inject constructor(
     private val networkDetailsInMemoryCache: InMemoryCache<NetworkDetails>,
     private val userAccountDatabaseSource: UserAccountSource
@@ -45,6 +46,7 @@ internal class UserAccountRepositoryImpl @Inject constructor(
                             serverAddress = userAccountResult.data.serverAddress
                         )
                     }
+
                     is WorkError -> {
                         // NO_OP
                     }
@@ -87,6 +89,7 @@ internal class UserAccountRepositoryImpl @Inject constructor(
                     serverAddress = serverAddress
                 )
             }
+
             is WorkError -> {
                 // NO_OP
             }
@@ -108,6 +111,7 @@ internal class UserAccountRepositoryImpl @Inject constructor(
                     WorkError(Error.NullUserAccount)
                 }
             }
+
             is WorkError -> WorkError(updateUserAccountResult.error)
         }
 

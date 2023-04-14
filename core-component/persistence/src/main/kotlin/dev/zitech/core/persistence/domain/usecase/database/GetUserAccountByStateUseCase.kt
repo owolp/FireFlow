@@ -22,6 +22,7 @@ import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.domain.repository.database.UserAccountRepository
 import javax.inject.Inject
 
+@Deprecated("Modules")
 class GetUserAccountByStateUseCase @Inject constructor(
     private val userAccountRepository: UserAccountRepository
 ) {

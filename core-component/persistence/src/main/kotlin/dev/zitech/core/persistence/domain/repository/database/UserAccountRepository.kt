@@ -21,6 +21,7 @@ import dev.zitech.core.common.domain.model.Work
 import dev.zitech.core.persistence.domain.model.database.UserAccount
 import kotlinx.coroutines.flow.Flow
 
+@Deprecated("Modules")
 interface UserAccountRepository {
 
     fun getCurrentUserAccount(): Flow<Work<UserAccount>>

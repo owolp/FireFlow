@@ -30,6 +30,7 @@ import kotlinx.coroutines.flow.first
  *
  * @param userAccountRepository The repository that provides access to user account data.
  */
+@Deprecated("Modules")
 class UpdateCurrentUserAccountUseCase @Inject constructor(
     private val userAccountRepository: UserAccountRepository
 ) {

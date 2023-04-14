@@ -15,10 +15,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.fireflow.common.data.source.annotation
+package dev.zitech.fireflow.common.data.repository.user
 
-import javax.inject.Qualifier
-
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
-internal annotation class StandardPreferencesDataSource
+data class NetworkDetails(
+    val userId: Long,
+    val serverAddress: String
+)

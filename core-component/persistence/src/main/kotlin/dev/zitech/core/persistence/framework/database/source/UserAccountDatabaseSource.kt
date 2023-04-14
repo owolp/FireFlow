@@ -33,6 +33,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 
+@Deprecated("Modules")
 internal class UserAccountDatabaseSource @Inject constructor(
     private val userAccountDao: UserAccountDao,
     private val userAccountMapper: UserAccountMapper

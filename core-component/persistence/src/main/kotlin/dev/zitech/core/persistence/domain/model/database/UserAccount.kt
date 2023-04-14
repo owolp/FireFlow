@@ -19,6 +19,7 @@ package dev.zitech.core.persistence.domain.model.database
 
 import dev.zitech.core.common.DataFactory
 
+@Deprecated("Modules")
 data class UserAccount(
     val authenticationType: AuthenticationType? = null,
     val email: String? = null,

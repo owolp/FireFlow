@@ -23,6 +23,7 @@ import dev.zitech.core.persistence.domain.repository.database.UserAccountReposit
 import javax.inject.Inject
 import kotlinx.coroutines.flow.firstOrNull
 
+@Deprecated("Modules")
 class GetUserLoggedStateUseCase @Inject constructor(
     private val userAccountRepository: UserAccountRepository
 ) {

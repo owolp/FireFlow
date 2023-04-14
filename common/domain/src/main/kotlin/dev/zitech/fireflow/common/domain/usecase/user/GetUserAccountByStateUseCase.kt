@@ -15,10 +15,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.fireflow.common.data.source.annotation
+package dev.zitech.fireflow.common.domain.usecase.user
 
-import javax.inject.Qualifier
+import dev.zitech.fireflow.common.domain.model.user.UserAccount
+import dev.zitech.fireflow.common.domain.repository.user.UserAccountRepository
+import dev.zitech.fireflow.core.work.Work
+import javax.inject.Inject
 
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
-internal annotation class DevelopmentPreferencesDataSource
+class GetUserAccountByStateUseCase @Inject constructor(
+    private val userAccountRepository: UserAccountRepository
+) {
+
+    suspend operator fun invoke(state: String): Work<UserAccount> =
+        userAccountRepository.getUserAccountByState(state)
+}

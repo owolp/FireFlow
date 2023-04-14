@@ -23,6 +23,7 @@ import dev.zitech.core.common.domain.model.Work
 import dev.zitech.core.common.domain.model.WorkError
 import dev.zitech.core.common.domain.model.WorkSuccess
 
+@Deprecated("Modules")
 @Suppress("TooGenericExceptionCaught")
 internal suspend fun <T : Any> handleDb(
     execute: suspend () -> T

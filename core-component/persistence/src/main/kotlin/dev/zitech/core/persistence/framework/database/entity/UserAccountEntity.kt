@@ -20,6 +20,7 @@ package dev.zitech.core.persistence.framework.database.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+@Deprecated("Modules")
 @Entity(
     tableName = "user_accounts"
 )

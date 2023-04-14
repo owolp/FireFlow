@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.fireflow.common.data.reporter
+package dev.zitech.fireflow.common.data.reporter.di
 
 import dagger.Binds
 import dagger.Module

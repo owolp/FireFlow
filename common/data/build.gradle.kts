@@ -17,6 +17,7 @@
 
 apply(from = "$rootDir/config/dependencies/di-dependencies.gradle")
 apply(from = "$rootDir/config/dependencies/kotlin-dependencies.gradle")
+apply(from = "$rootDir/config/dependencies/room-dependencies.gradle")
 
 plugins {
     id(BuildPlugins.KOTLIN_ANDROID)

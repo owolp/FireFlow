@@ -26,6 +26,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
+@Deprecated("Modules")
 class RemoveStaleUserAccountsUseCase @Inject constructor(
     private val userAccountRepository: UserAccountRepository
 ) {

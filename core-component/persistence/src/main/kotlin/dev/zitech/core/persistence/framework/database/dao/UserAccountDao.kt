@@ -25,6 +25,7 @@ import androidx.room.Update
 import dev.zitech.core.persistence.framework.database.entity.UserAccountEntity
 import kotlinx.coroutines.flow.Flow
 
+@Deprecated("Modules")
 @Dao
 internal interface UserAccountDao {
 

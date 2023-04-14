@@ -15,10 +15,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.fireflow.common.data.source.annotation
+package dev.zitech.fireflow.common.data.source.di.annotation
 
 import javax.inject.Qualifier
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
-internal annotation class DevFeatureFlagSource
+internal annotation class ProdFeatureFlagSource

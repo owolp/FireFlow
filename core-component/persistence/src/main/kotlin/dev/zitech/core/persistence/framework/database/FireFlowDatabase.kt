@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ import androidx.room.RoomDatabase
 import dev.zitech.core.persistence.framework.database.dao.UserAccountDao
 import dev.zitech.core.persistence.framework.database.entity.UserAccountEntity
 
+@Deprecated("Modules")
 @Database(
     entities = [
         UserAccountEntity::class

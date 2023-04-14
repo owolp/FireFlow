@@ -15,10 +15,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.fireflow.common.data.source.annotation
+package dev.zitech.fireflow.common.domain.usecase.user
 
-import javax.inject.Qualifier
+import dev.zitech.fireflow.common.domain.model.user.UserAccount
+import dev.zitech.fireflow.common.domain.repository.user.UserAccountRepository
+import dev.zitech.fireflow.core.work.Work
+import javax.inject.Inject
+import kotlinx.coroutines.flow.Flow
 
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
-internal annotation class RemoteFeatureFlagSource
+class GetCurrentUserAccountUseCase @Inject constructor(
+    private val userAccountRepository: UserAccountRepository
+) {
+
+    operator fun invoke(): Flow<Work<UserAccount>> =
+        userAccountRepository.getCurrentUserAccount()
+}

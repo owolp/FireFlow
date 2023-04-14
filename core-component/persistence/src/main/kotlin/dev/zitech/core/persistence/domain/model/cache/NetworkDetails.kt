@@ -17,6 +17,7 @@
 
 package dev.zitech.core.persistence.domain.model.cache
 
+@Deprecated("Modules")
 data class NetworkDetails(
     val userId: Long,
     val serverAddress: String

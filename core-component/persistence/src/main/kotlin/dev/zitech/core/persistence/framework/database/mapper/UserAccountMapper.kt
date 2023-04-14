@@ -23,6 +23,7 @@ import dev.zitech.core.persistence.domain.model.database.UserAccount
 import dev.zitech.core.persistence.framework.database.entity.UserAccountEntity
 import javax.inject.Inject
 
+@Deprecated("Modules")
 internal class UserAccountMapper @Inject constructor() :
     DomainMapper<UserAccountEntity, UserAccount>,
     EntityMapper<UserAccount, UserAccountEntity> {

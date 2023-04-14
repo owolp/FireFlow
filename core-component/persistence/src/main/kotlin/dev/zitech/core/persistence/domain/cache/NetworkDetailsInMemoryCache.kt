@@ -22,6 +22,7 @@ import dev.zitech.core.common.domain.cache.InMemoryCache
 import dev.zitech.core.persistence.domain.model.cache.NetworkDetails
 import javax.inject.Inject
 
+@Deprecated("Modules")
 class NetworkDetailsInMemoryCache @Inject constructor(
     cacheRepository: CacheRepository
 ) : InMemoryCache<NetworkDetails>(cacheRepository)
