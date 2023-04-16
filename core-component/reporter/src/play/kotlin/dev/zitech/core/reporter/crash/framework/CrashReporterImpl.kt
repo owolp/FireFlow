@@ -24,7 +24,7 @@ import dev.zitech.core.reporter.crash.domain.reporter.CrashReporter
 import javax.inject.Inject
 
 @Deprecated("Modules")
-@Suppress("UnusedPrivateMember", "UNUSED_PARAMETER")
+@Suppress("UnusedPrivateMember")
 internal class CrashReporterImpl @Inject constructor(
     private val application: Application
 ) : CrashReporter {

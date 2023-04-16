@@ -27,6 +27,8 @@ import dev.zitech.fireflow.common.data.local.database.common.CommonDatabase
 import dev.zitech.fireflow.common.data.local.database.common.dao.UserAccountDao
 import dev.zitech.fireflow.common.data.local.database.factory.DatabaseFactory
 import dev.zitech.fireflow.common.data.local.database.factory.FireFlowDatabase
+import dev.zitech.fireflow.common.data.source.preferences.PreferencesDataSource
+import dev.zitech.fireflow.core.concurrency.SingleRunner
 import javax.inject.Singleton
 import kotlinx.coroutines.runBlocking
 
@@ -39,12 +41,22 @@ internal interface DatabaseModule {
         @Singleton
         @Provides
         fun commonDatabase(
-            @ApplicationContext applicationContext: Context
+            databaseFactory: DatabaseFactory
         ): CommonDatabase = runBlocking {
-            DatabaseFactory(
-                context = applicationContext
-            ).createDatabase(FireFlowDatabase.Common)
+            databaseFactory.createDatabase(FireFlowDatabase.Common)
         }
+
+        @Singleton
+        @Provides
+        fun databaseFactory(
+            @ApplicationContext applicationContext: Context,
+            @dev.zitech.fireflow.common.data.source.di.annotation.SecuredPreferencesDataSource
+            securedPreferencesDataSource: PreferencesDataSource
+        ): DatabaseFactory = DatabaseFactory(
+            applicationContext,
+            securedPreferencesDataSource,
+            SingleRunner()
+        )
 
         @Singleton
         @Provides

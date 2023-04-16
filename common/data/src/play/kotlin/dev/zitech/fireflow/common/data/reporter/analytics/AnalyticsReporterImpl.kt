@@ -24,7 +24,7 @@ import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
 import javax.inject.Inject
 
-@Suppress("UnusedPrivateMember", "UNUSED_PARAMETER")
+@Suppress("UnusedPrivateMember")
 internal class AnalyticsReporterImpl @Inject constructor(
     context: Context
 ) : AnalyticsReporter {

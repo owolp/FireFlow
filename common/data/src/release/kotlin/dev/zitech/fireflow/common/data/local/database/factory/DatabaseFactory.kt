@@ -22,9 +22,12 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import dev.zitech.fireflow.common.data.source.preferences.PreferencesDataSource
 import dev.zitech.fireflow.core.concurrency.SingleRunner
+import dev.zitech.fireflow.core.datafactory.DataFactory
 import javax.inject.Inject
+import kotlinx.coroutines.flow.first
+import net.sqlcipher.database.SQLiteDatabase
+import net.sqlcipher.database.SupportFactory
 
-@Suppress("UnusedPrivateMember")
 internal class DatabaseFactory @Inject constructor(
     private val context: Context,
     private val securedPreferencesDataSource: PreferencesDataSource,
@@ -40,6 +43,37 @@ internal class DatabaseFactory @Inject constructor(
             fireFlowDatabase.name
         )
 
+        if (!isSecuredStorageKeySaved()) {
+            saveSecuredStorageKey()
+        }
+
+        val databaseKey = securedPreferencesDataSource
+            .getString(KEY_SECURED_STORAGE_SECURED_DATABASE, "")
+            .first()?.toCharArray()!!
+
+        roomBuilder.openHelperFactory(
+            SupportFactory(
+                SQLiteDatabase.getBytes(
+                    databaseKey
+                )
+            )
+        )
+
         roomBuilder.build()
+    }
+
+    suspend fun isSecuredStorageKeySaved() =
+        !securedPreferencesDataSource.containsString(KEY_SECURED_STORAGE_SECURED_DATABASE).first()
+
+    suspend fun saveSecuredStorageKey() {
+        securedPreferencesDataSource.saveString(
+            KEY_SECURED_STORAGE_SECURED_DATABASE,
+            DataFactory.createRandomString(ENCRYPTION_LENGTH)
+        )
+    }
+
+    companion object {
+        private const val ENCRYPTION_LENGTH = 20
+        private const val KEY_SECURED_STORAGE_SECURED_DATABASE = "secured_database"
     }
 }

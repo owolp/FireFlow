@@ -21,7 +21,7 @@ import dev.zitech.fireflow.common.data.remote.configurator.RemoteConfigurator
 import dev.zitech.fireflow.common.domain.model.featureflag.Feature
 import javax.inject.Inject
 
-@Suppress("UnusedPrivateMember", "UNUSED_PARAMETER")
+@Suppress("UnusedPrivateMember")
 internal class RemoteFeatureFlagSource @Inject constructor(
     private val remoteConfigurator: RemoteConfigurator
 ) : FeatureFlagSource {

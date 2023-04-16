@@ -22,12 +22,13 @@ import androidx.core.content.edit
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
 import dev.zitech.fireflow.core.dispatcher.AppDispatchers
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 
-internal class SecuredPreferencesDataSource(
+internal class SecuredPreferencesDataSource @Inject constructor(
     context: Context,
     fileName: String,
     private val appDispatchers: AppDispatchers

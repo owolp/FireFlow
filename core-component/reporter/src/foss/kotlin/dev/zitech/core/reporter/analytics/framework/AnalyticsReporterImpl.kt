@@ -22,7 +22,7 @@ import dev.zitech.core.reporter.analytics.domain.reporter.AnalyticsReporter
 import javax.inject.Inject
 
 @Deprecated("Modules")
-@Suppress("UnusedPrivateMember", "UNUSED_PARAMETER")
+@Suppress("UnusedPrivateMember")
 internal class AnalyticsReporterImpl @Inject constructor(
     context: Context
 ) : AnalyticsReporter {

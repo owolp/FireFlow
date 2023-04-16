@@ -23,7 +23,7 @@ import dev.zitech.core.remoteconfig.framework.configurator.RemoteConfigurator
 import javax.inject.Inject
 
 @Deprecated("Modules")
-@Suppress("UnusedPrivateMember", "UNUSED_PARAMETER")
+@Suppress("UnusedPrivateMember")
 internal class RemoteFeatureFlagProvider @Inject constructor(
     private val remoteConfigurator: RemoteConfigurator
 ) : FeatureFlagProvider {

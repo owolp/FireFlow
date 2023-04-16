@@ -31,13 +31,14 @@ import androidx.datastore.preferences.preferencesDataStore
 import dev.zitech.fireflow.core.dispatcher.AppDispatchers
 import dev.zitech.fireflow.core.logger.Logger
 import java.io.IOException
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
-internal class StandardPreferencesDataSource(
+internal class StandardPreferencesDataSource @Inject constructor(
     context: Context,
     private val appDispatchers: AppDispatchers,
     private val fileName: String
