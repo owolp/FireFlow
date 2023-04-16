@@ -56,6 +56,7 @@ import dev.zitech.core.persistence.framework.preference.factory.PreferencesFacto
 import javax.inject.Singleton
 import kotlinx.coroutines.runBlocking
 
+@Deprecated("Modules")
 internal interface PersistenceModule {
 
     @InstallIn(SingletonComponent::class)

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@ import dev.zitech.core.persistence.domain.repository.preferences.SavePreferences
 import javax.inject.Inject
 import kotlinx.coroutines.flow.first
 
+@Deprecated("Modules")
 class DatabaseKeyRepositoryImpl @Inject constructor(
     private val containsPreferencesRepository: ContainsPreferencesRepository,
     private val getPreferencesRepository: GetPreferencesRepository,

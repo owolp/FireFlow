@@ -62,7 +62,7 @@ dependencies {
     implementation(libs.google.dagger.hilt.android)
     kapt(libs.google.dagger.hilt.compiler)
     implementation(libs.jetbrains.kotlin.coroutines.android)
-    releaseImplementation(libs.zetetic.sqlcipher)
+    implementation(libs.zetetic.sqlcipher)
 
     androidTestImplementation(libs.androidx.test.core)
     androidTestImplementation(libs.androidx.arch.core.testing)

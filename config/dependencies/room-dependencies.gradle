@@ -30,5 +30,5 @@ dependencies {
     implementation libs.androidx.room.ktx
     kapt libs.androidx.room.compiler
     implementation libs.jetbrains.kotlin.coroutines.android
-    implementation libs.zetetic.sqlcipher
+    releaseImplementation libs.zetetic.sqlcipher
 }

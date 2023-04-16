@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@ import javax.inject.Inject
 import net.sqlcipher.database.SQLiteDatabase
 import net.sqlcipher.database.SupportFactory
 
+@Deprecated("Modules")
 internal class DatabaseFactory @Inject constructor(
     private val context: Context,
     private val appConfigProvider: AppConfigProvider,
