@@ -32,3 +32,7 @@ dependencies {
     implementation libs.jetbrains.kotlin.coroutines.android
     releaseImplementation libs.zetetic.sqlcipher
 }
+
+kapt {
+    correctErrorTypes = true
+}

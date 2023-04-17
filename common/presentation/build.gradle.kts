@@ -28,10 +28,6 @@ android {
     namespace = "dev.zitech.fireflow.common.presentation"
 }
 
-kapt {
-    correctErrorTypes = true
-}
-
 dependencies {
     implementation(projects.core)
     implementation(projects.common.domain)

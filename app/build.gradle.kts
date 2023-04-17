@@ -21,6 +21,8 @@ import com.google.firebase.perf.plugin.FirebasePerfExtension
 import com.huawei.agconnect.apms.plugin.APMSExtension
 
 apply(from = "$rootDir/config/dependencies/compose-dependencies.gradle")
+apply(from = "$rootDir/config/dependencies/di-dependencies.gradle")
+apply(from = "$rootDir/config/dependencies/kotlin-dependencies.gradle")
 
 plugins {
     id(BuildPlugins.APPLICATION)
@@ -104,16 +106,9 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.startup)
     implementation(libs.google.material)
-    implementation(libs.google.dagger.hilt.android)
-    kapt(libs.google.dagger.hilt.compiler)
     implementation(libs.jakewharton.process.phoenix)
-    implementation(libs.jetbrains.kotlin.coroutines.android)
 
     debugImplementation(libs.squareup.leakcanary.android)
-}
-
-kapt {
-    correctErrorTypes = true
 }
 
 fun ApplicationProductFlavor.disableFirebaseCrashlyticsMappingFileUpload() {
