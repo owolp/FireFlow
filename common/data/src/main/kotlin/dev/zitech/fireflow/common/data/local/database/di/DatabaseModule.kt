@@ -26,7 +26,7 @@ import dagger.hilt.components.SingletonComponent
 import dev.zitech.fireflow.common.data.local.database.common.CommonDatabase
 import dev.zitech.fireflow.common.data.local.database.common.dao.UserAccountDao
 import dev.zitech.fireflow.common.data.local.database.factory.DatabaseFactory
-import dev.zitech.fireflow.common.data.local.database.factory.FireFlowDatabase
+import dev.zitech.fireflow.common.data.local.database.factory.DatabaseTitle
 import dev.zitech.fireflow.common.data.source.preferences.PreferencesDataSource
 import dev.zitech.fireflow.core.concurrency.SingleRunner
 import javax.inject.Singleton
@@ -43,7 +43,7 @@ internal interface DatabaseModule {
         fun commonDatabase(
             databaseFactory: DatabaseFactory
         ): CommonDatabase = runBlocking {
-            databaseFactory.createDatabase(FireFlowDatabase.Common)
+            databaseFactory.createDatabase(DatabaseTitle.FireFlow)
         }
 
         @Singleton

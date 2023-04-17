@@ -32,12 +32,12 @@ internal class DatabaseFactory @Inject constructor(
 ) {
 
     suspend inline fun <reified T : RoomDatabase> createDatabase(
-        fireFlowDatabase: FireFlowDatabase
+        databaseTitle: DatabaseTitle
     ): T = singleRunner.afterPrevious {
         val roomBuilder = Room.databaseBuilder(
             context,
             T::class.java,
-            fireFlowDatabase.name
+            databaseTitle.name
         )
 
         roomBuilder.build()

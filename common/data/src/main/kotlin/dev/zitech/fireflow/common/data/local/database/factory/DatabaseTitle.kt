@@ -17,8 +17,8 @@
 
 package dev.zitech.fireflow.common.data.local.database.factory
 
-private const val COMMON_DATABASE = "common_database"
+private const val FIRE_FLOW = "fire_flow"
 
-sealed class FireFlowDatabase(val name: String) {
-    object Common : FireFlowDatabase(COMMON_DATABASE)
+internal sealed class DatabaseTitle(val name: String) {
+    object FireFlow : DatabaseTitle(FIRE_FLOW)
 }
