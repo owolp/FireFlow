@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.common.presentation.architecture
+package dev.zitech.fireflow.common.presentation.architecture
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,7 +27,6 @@ import kotlinx.coroutines.flow.asStateFlow
  *
  * @param initialState The initial state of the screen.
  */
-@Deprecated("Modules")
 abstract class MviViewModel<Intent : MviIntent, State : MviState>(
     initialState: State
 ) : ViewModel() {

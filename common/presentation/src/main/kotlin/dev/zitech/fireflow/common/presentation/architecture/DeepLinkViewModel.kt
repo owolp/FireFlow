@@ -15,9 +15,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.common.presentation.architecture
+package dev.zitech.fireflow.common.presentation.architecture
 
-import dev.zitech.core.common.domain.navigation.LogInState
+import dev.zitech.fireflow.common.presentation.navigation.state.LogInState
 import kotlinx.coroutines.flow.StateFlow
 
 /**
@@ -30,7 +30,6 @@ import kotlinx.coroutines.flow.StateFlow
  * a `StateFlow` that emits new states whenever the state changes. This property should be observed by the View
  * to update the UI as necessary.
  */
-@Deprecated("Modules")
 interface DeepLinkViewModel {
     val logInState: StateFlow<LogInState>
 }

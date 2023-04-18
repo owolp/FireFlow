@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.common.presentation.architecture
+package dev.zitech.fireflow.common.presentation.architecture
 
 /**
  * The `MviIntent` interface represents an intention to perform an action in the Model-View-Intent (MVI) architecture.
@@ -26,5 +26,4 @@ package dev.zitech.core.common.presentation.architecture
  * Implementations of this interface should be data classes or objects to provide a convenient and consistent way of
  * passing data along with the intent.
  */
-@Deprecated("Modules")
 interface MviIntent

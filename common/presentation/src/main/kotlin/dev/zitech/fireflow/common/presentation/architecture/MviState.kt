@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.common.presentation.architecture
+package dev.zitech.fireflow.common.presentation.architecture
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
@@ -29,7 +29,6 @@ import kotlinx.coroutines.flow.update
  * Implementations of this interface should be data classes to ensure immutability and provide convenient
  * copying and updating of the state.
  */
-@Deprecated("Modules")
 interface MviState
 
 /**
@@ -40,7 +39,6 @@ interface MviState
  * @throws TypeCastException if the actual type of [T] does not match the reified type parameter.
  */
 
-@Deprecated("Modules")
 inline fun <reified T : MviState> MutableStateFlow<T>.updateState(transform: T.() -> T) {
     this.update { currentState -> transform(currentState) }
 }
