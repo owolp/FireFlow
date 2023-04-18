@@ -15,7 +15,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.fireflow.common.presentation.navigation
+package dev.zitech.fireflow.common.presentation.navigation.state
+
+import dev.zitech.fireflow.common.presentation.navigation.deeplink.DeepLinkScreenDestination
 
 /**
  * The `LogInState` sealed class represents the possible states related to logging in within the app.

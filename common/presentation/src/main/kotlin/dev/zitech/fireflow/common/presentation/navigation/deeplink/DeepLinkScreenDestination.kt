@@ -15,20 +15,21 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.common.presentation.splash
+package dev.zitech.fireflow.common.presentation.navigation.deeplink
 
-import javax.inject.Inject
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import dev.zitech.fireflow.core.error.FireFlowError
 
-@Deprecated("Modules")
-class LoginCheckCompletedHandler @Inject constructor() {
+sealed class DeepLinkScreenDestination {
 
-    private val mutableLoginCheckState = MutableStateFlow(false)
-    val loginCheckState: StateFlow<Boolean> = mutableLoginCheckState.asStateFlow()
+    data class Error(
+        val error: FireFlowError
+    ) : DeepLinkScreenDestination()
 
-    suspend operator fun invoke(show: Boolean) {
-        mutableLoginCheckState.emit(show)
-    }
+    object Accounts : DeepLinkScreenDestination()
+
+    object Current : DeepLinkScreenDestination()
+
+    object Init : DeepLinkScreenDestination()
+
+    object Welcome : DeepLinkScreenDestination()
 }

@@ -15,20 +15,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.common.presentation.splash
+package dev.zitech.fireflow.common.presentation.navigation.destination
 
-import javax.inject.Inject
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import dev.zitech.ds.atoms.icon.Icon
 
-@Deprecated("Modules")
-class LoginCheckCompletedHandler @Inject constructor() {
-
-    private val mutableLoginCheckState = MutableStateFlow(false)
-    val loginCheckState: StateFlow<Boolean> = mutableLoginCheckState.asStateFlow()
-
-    suspend operator fun invoke(show: Boolean) {
-        mutableLoginCheckState.emit(show)
-    }
-}
+data class TopLevelDestination(
+    override val route: String,
+    override val destination: String,
+    val selectedIcon: Icon,
+    val unselectedIcon: Icon,
+    val iconTextId: Int
+) : FireFlowNavigationDestination

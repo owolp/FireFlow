@@ -15,12 +15,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.navigation.presentation.extension
+package dev.zitech.fireflow.common.presentation.navigation.state
 
-import dev.zitech.core.common.domain.navigation.DeepLinkScreenDestination
-import dev.zitech.core.common.domain.navigation.LogInState
-import dev.zitech.core.common.presentation.splash.LoginCheckCompletedHandler
-import dev.zitech.navigation.domain.usecase.GetScreenDestinationUseCase
+import dev.zitech.fireflow.common.presentation.navigation.ScreenDestinationProvider
+import dev.zitech.fireflow.common.presentation.navigation.deeplink.DeepLinkScreenDestination
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 import kotlinx.coroutines.CoroutineScope
@@ -30,9 +28,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
-@Deprecated("Modules")
 fun logInState(
-    getScreenDestinationUseCase: GetScreenDestinationUseCase,
+    getScreenDestinationUseCase: ScreenDestinationProvider,
     loginCheckCompletedHandler: LoginCheckCompletedHandler,
     coroutineScope: CoroutineScope
 ): ReadOnlyProperty<Any, StateFlow<LogInState>> =
@@ -55,8 +52,10 @@ fun logInState(
                         is DeepLinkScreenDestination.Error,
                         DeepLinkScreenDestination.Welcome ->
                             LogInState.NotLogged(destination)
+
                         DeepLinkScreenDestination.Current ->
                             LogInState.Logged
+
                         DeepLinkScreenDestination.Init ->
                             LogInState.InitScreen
                     }.also {

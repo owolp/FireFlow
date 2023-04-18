@@ -31,6 +31,7 @@ android {
 dependencies {
     implementation(projects.core)
     implementation(projects.common.domain)
+    api(projects.designSystem)
 
     implementation(libs.androidx.compose.runtime)
 

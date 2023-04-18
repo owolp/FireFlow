@@ -15,14 +15,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.common.presentation.splash
+package dev.zitech.fireflow.common.presentation.navigation.state
 
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-@Deprecated("Modules")
 class LoginCheckCompletedHandler @Inject constructor() {
 
     private val mutableLoginCheckState = MutableStateFlow(false)

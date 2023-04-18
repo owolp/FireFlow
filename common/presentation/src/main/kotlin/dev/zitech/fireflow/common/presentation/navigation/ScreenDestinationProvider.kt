@@ -15,16 +15,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.navigation.domain.usecase
+package dev.zitech.fireflow.common.presentation.navigation
 
-import dev.zitech.core.common.domain.error.Error
-import dev.zitech.core.common.domain.model.WorkError
-import dev.zitech.core.common.domain.model.WorkSuccess
-import dev.zitech.core.common.domain.model.onError
-import dev.zitech.core.common.domain.model.onSuccess
-import dev.zitech.core.common.domain.navigation.DeepLinkScreenDestination
-import dev.zitech.core.persistence.domain.usecase.database.GetCurrentUserAccountUseCase
-import dev.zitech.core.persistence.domain.usecase.database.GetUserAccountsUseCase
+import dev.zitech.fireflow.common.domain.usecase.user.GetCurrentUserAccountUseCase
+import dev.zitech.fireflow.common.domain.usecase.user.GetUserAccountsUseCase
+import dev.zitech.fireflow.common.presentation.navigation.deeplink.DeepLinkScreenDestination
+import dev.zitech.fireflow.core.error.Error
+import dev.zitech.fireflow.core.work.WorkError
+import dev.zitech.fireflow.core.work.WorkSuccess
+import dev.zitech.fireflow.core.work.onError
+import dev.zitech.fireflow.core.work.onSuccess
 import javax.inject.Inject
 import kotlinx.coroutines.channels.ProducerScope
 import kotlinx.coroutines.flow.Flow
@@ -33,8 +33,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.onEach
 
-@Deprecated("Modules")
-class GetScreenDestinationUseCase @Inject constructor(
+class ScreenDestinationProvider @Inject constructor(
     private val getCurrentUserAccountUseCase: GetCurrentUserAccountUseCase,
     private val getUserAccountsUseCase: GetUserAccountsUseCase
 ) {
@@ -49,6 +48,7 @@ class GetScreenDestinationUseCase @Inject constructor(
                             is Error.NullCurrentUserAccount -> {
                                 handleNullCurrentUserAccount()
                             }
+
                             else -> send(DeepLinkScreenDestination.Error(result.error))
                         }
                     }

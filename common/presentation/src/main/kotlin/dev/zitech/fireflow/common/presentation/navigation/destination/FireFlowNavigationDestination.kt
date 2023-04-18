@@ -15,20 +15,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.fireflow.common.presentation.navigation
+package dev.zitech.fireflow.common.presentation.navigation.destination
 
-import dev.zitech.fireflow.core.error.FireFlowError
-
-sealed class DeepLinkScreenDestination {
-    data class Error(
-        val error: FireFlowError
-    ) : DeepLinkScreenDestination()
-
-    object Accounts : DeepLinkScreenDestination()
-
-    object Current : DeepLinkScreenDestination()
-
-    object Init : DeepLinkScreenDestination()
-
-    object Welcome : DeepLinkScreenDestination()
+interface FireFlowNavigationDestination {
+    val route: String
+    val destination: String
 }

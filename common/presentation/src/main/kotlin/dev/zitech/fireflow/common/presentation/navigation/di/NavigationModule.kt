@@ -15,31 +15,30 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.navigation.di
+package dev.zitech.fireflow.common.presentation.navigation.di
 
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import dev.zitech.core.persistence.domain.usecase.database.GetCurrentUserAccountUseCase
-import dev.zitech.core.persistence.domain.usecase.database.GetUserAccountsUseCase
-import dev.zitech.navigation.domain.usecase.GetScreenDestinationUseCase
+import dev.zitech.fireflow.common.domain.usecase.user.GetCurrentUserAccountUseCase
+import dev.zitech.fireflow.common.domain.usecase.user.GetUserAccountsUseCase
+import dev.zitech.fireflow.common.presentation.navigation.ScreenDestinationProvider
 import javax.inject.Singleton
 
-@Deprecated("Modules")
 internal interface NavigationModule {
 
     @InstallIn(SingletonComponent::class)
     @Module
-    object NavigationSingletonProvidesModule {
+    object SingletonProvides {
 
         @Singleton
         @Provides
-        fun getScreenDestinationUseCase(
+        fun screenDestinationProvider(
             getCurrentUserAccountUseCase: GetCurrentUserAccountUseCase,
             getUserAccountsUseCase: GetUserAccountsUseCase
-        ): GetScreenDestinationUseCase =
-            GetScreenDestinationUseCase(
+        ): ScreenDestinationProvider =
+            ScreenDestinationProvider(
                 getCurrentUserAccountUseCase,
                 getUserAccountsUseCase
             )

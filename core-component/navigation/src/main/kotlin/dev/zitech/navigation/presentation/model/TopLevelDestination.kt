@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@ package dev.zitech.navigation.presentation.model
 
 import dev.zitech.ds.atoms.icon.Icon
 
+@Deprecated("Modules")
 data class TopLevelDestination(
     override val route: String,
     override val destination: String,
