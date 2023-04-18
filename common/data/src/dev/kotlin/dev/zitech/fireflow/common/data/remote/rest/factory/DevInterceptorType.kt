@@ -15,20 +15,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.fireflow.common.data.local.database.common
+package dev.zitech.fireflow.common.data.remote.rest.factory
 
-import androidx.room.Database
-import androidx.room.RoomDatabase
-import dev.zitech.fireflow.common.data.local.database.common.dao.UserAccountDao
-import dev.zitech.fireflow.common.data.local.database.common.entity.UserAccountEntity
-
-@Database(
-    entities = [
-        UserAccountEntity::class
-    ],
-    version = 1
-)
-internal abstract class CommonDatabase : RoomDatabase() {
-
-    abstract fun userAccountDao(): UserAccountDao
-}
+object Debugger : InterceptorType
+object HttpInspector : InterceptorType
+object HttpLogging : InterceptorType

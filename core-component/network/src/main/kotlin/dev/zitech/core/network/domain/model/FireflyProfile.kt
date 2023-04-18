@@ -17,6 +17,7 @@
 
 package dev.zitech.core.network.domain.model
 
+@Deprecated("Modules")
 data class FireflyProfile(
     val email: String,
     val id: String,

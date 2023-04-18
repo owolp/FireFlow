@@ -24,6 +24,7 @@ import retrofit2.Call
 import retrofit2.CallAdapter
 import retrofit2.Retrofit
 
+@Deprecated("Modules")
 internal class NetworkResultCallAdapterFactory private constructor() : CallAdapter.Factory() {
 
     companion object {

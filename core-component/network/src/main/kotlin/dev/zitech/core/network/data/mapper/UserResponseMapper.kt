@@ -22,6 +22,7 @@ import dev.zitech.core.network.data.model.UserResponse
 import dev.zitech.core.network.domain.model.FireflyProfile
 import javax.inject.Inject
 
+@Deprecated("Modules")
 internal class UserResponseMapper @Inject constructor() :
     DomainMapper<UserResponse, FireflyProfile> {
 

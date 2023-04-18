@@ -20,12 +20,14 @@ package dev.zitech.core.network.data.model
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
+@Deprecated("Modules")
 @JsonClass(generateAdapter = true)
 data class UserResponse(
     @Json(name = "data")
     val data: GetUserDataResponse
 )
 
+@Deprecated("Modules")
 @JsonClass(generateAdapter = true)
 data class GetUserDataResponse(
     @Json(name = "attributes")
@@ -36,6 +38,7 @@ data class GetUserDataResponse(
     val type: String
 )
 
+@Deprecated("Modules")
 @JsonClass(generateAdapter = true)
 data class GetUserDataAttributesResponse(
     @Json(name = "email")

@@ -15,27 +15,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.fireflow.common.data.local.database.common.entity
+package dev.zitech.fireflow.common.domain.model.authentication
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-
-@Entity(
-    tableName = "user_accounts"
-)
-internal data class UserAccountEntity(
-    @PrimaryKey(autoGenerate = true)
-    val id: Long? = null,
-    val accessToken: String? = null,
-    val clientId: String? = null,
-    val clientSecret: String? = null,
-    val email: String? = null,
-    val fireflyId: String? = null,
-    val isCurrentUserAccount: Boolean,
-    val oauthCode: String? = null,
-    val refreshToken: String? = null,
-    val role: String? = null,
-    val serverAddress: String,
-    val state: String? = null,
-    val type: String? = null
+data class Token(
+    val accessToken: String,
+    val refreshToken: String
 )

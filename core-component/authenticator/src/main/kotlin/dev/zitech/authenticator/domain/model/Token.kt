@@ -17,6 +17,7 @@
 
 package dev.zitech.authenticator.domain.model
 
+@Deprecated("Modules")
 data class Token(
     val accessToken: String,
     val refreshToken: String

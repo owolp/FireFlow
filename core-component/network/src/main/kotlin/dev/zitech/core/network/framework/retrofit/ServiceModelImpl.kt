@@ -26,6 +26,7 @@ import dev.zitech.core.persistence.domain.model.cache.NetworkDetails
 import javax.inject.Inject
 import kotlinx.coroutines.runBlocking
 
+@Deprecated("Modules")
 internal class ServiceModelImpl @Inject constructor(
     private val retrofitModel: RetrofitModel,
     private val networkDetailsInMemoryCache: InMemoryCache<NetworkDetails>

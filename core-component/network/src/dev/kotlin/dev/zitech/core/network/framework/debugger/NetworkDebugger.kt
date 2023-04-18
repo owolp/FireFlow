@@ -19,6 +19,7 @@ package dev.zitech.core.network.framework.debugger
 
 import com.facebook.flipper.plugins.network.NetworkFlipperPlugin
 
+@Deprecated("Modules")
 object NetworkDebugger {
 
     val networkFlipperPlugin by lazy { NetworkFlipperPlugin() }

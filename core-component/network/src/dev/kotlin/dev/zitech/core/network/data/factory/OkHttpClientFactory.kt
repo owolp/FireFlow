@@ -22,6 +22,7 @@ import javax.inject.Inject
 import okhttp3.Authenticator
 import okhttp3.OkHttpClient
 
+@Deprecated("Modules")
 internal class OkHttpClientFactory @Inject constructor(
     private val interceptorFactory: InterceptorFactory,
     private val refreshTokenAuthenticator: Authenticator

@@ -23,6 +23,7 @@ import dev.zitech.core.network.domain.model.FireflyProfile
 import dev.zitech.core.network.domain.repository.FireflyProfileRepository
 import javax.inject.Inject
 
+@Deprecated("Modules")
 internal class FireflyProfileRepositoryImpl @Inject constructor(
     private val aboutRemoteSource: AboutSource
 ) : FireflyProfileRepository {

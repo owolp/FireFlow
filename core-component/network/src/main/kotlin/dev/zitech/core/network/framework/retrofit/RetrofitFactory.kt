@@ -22,6 +22,7 @@ import javax.inject.Inject
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
+@Deprecated("Modules")
 internal class RetrofitFactory @Inject constructor(
     private val okHttpClientFactory: OkHttpClientFactory
 ) {

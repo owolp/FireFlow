@@ -24,6 +24,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import dev.zitech.fireflow.common.data.source.about.AboutRemoteSource
+import dev.zitech.fireflow.common.data.source.about.AboutSource
 import dev.zitech.fireflow.common.data.source.configurator.ConfiguratorProviderSource
 import dev.zitech.fireflow.common.data.source.configurator.ConfiguratorProviderSourceImpl
 import dev.zitech.fireflow.common.data.source.di.annotation.DevFeatureFlagSource as DevFeatureFlagSourceAnnotation
@@ -38,6 +40,8 @@ import dev.zitech.fireflow.common.data.source.featureflag.ProdFeatureFlagSource
 import dev.zitech.fireflow.common.data.source.featureflag.RemoteFeatureFlagSource
 import dev.zitech.fireflow.common.data.source.preferences.PreferencesDataSource
 import dev.zitech.fireflow.common.data.source.preferences.PreferencesFactory
+import dev.zitech.fireflow.common.data.source.token.OAuthRemoteSource
+import dev.zitech.fireflow.common.data.source.token.OAuthSource
 import dev.zitech.fireflow.common.data.source.user.UserAccountDatabaseSource
 import dev.zitech.fireflow.common.data.source.user.UserAccountSource
 import dev.zitech.fireflow.common.domain.model.preferences.PreferenceType
@@ -67,6 +71,18 @@ internal interface SourceModule {
         fun remoteFeatureFlagSource(
             remoteFeatureFlagSource: RemoteFeatureFlagSource
         ): FeatureFlagSource
+
+        @Singleton
+        @Binds
+        fun aboutRemoteSource(
+            aboutRemoteSource: AboutRemoteSource
+        ): AboutSource
+
+        @Singleton
+        @Binds
+        fun oAuthRemoteSource(
+            oAuthRemoteSource: OAuthRemoteSource
+        ): OAuthSource
 
         @Singleton
         @Binds

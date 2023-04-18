@@ -19,6 +19,7 @@ package dev.zitech.authenticator.di.annotation
 
 import javax.inject.Qualifier
 
+@Deprecated("Modules")
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class InterceptorAuthentication

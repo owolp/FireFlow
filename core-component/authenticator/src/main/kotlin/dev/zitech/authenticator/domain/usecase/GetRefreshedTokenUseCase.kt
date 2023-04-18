@@ -31,6 +31,7 @@ import dev.zitech.core.persistence.domain.usecase.database.UpdateCurrentUserAcco
 import javax.inject.Inject
 import kotlinx.coroutines.flow.first
 
+@Deprecated("Modules")
 /**
  * Use case for getting a refreshed OAuth token for the current user.
  *

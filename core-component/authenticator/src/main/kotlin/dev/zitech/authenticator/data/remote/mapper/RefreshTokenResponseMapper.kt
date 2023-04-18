@@ -22,6 +22,7 @@ import dev.zitech.authenticator.domain.model.Token
 import dev.zitech.core.common.data.mapper.DomainMapper
 import javax.inject.Inject
 
+@Deprecated("Modules")
 internal class RefreshTokenResponseMapper @Inject constructor() :
     DomainMapper<RefreshTokenResponse, Token> {
 

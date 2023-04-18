@@ -15,16 +15,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.fireflow.common.data.mapper.user
+package dev.zitech.fireflow.common.data.local.database.mapper
 
-import dev.zitech.fireflow.common.data.local.database.common.entity.UserAccountEntity
+import dev.zitech.fireflow.common.data.local.database.entity.UserAccountEntity
 import dev.zitech.fireflow.common.data.mapper.DomainMapper
-import dev.zitech.fireflow.common.data.mapper.EntityMapper
 import dev.zitech.fireflow.common.domain.model.user.UserAccount
 import dev.zitech.fireflow.common.domain.model.user.UserAuthenticationType
 import javax.inject.Inject
 
-internal class UserAccountMapper @Inject constructor() :
+internal class UserAccountEntityMapper @Inject constructor() :
     DomainMapper<UserAccountEntity, UserAccount>,
     EntityMapper<UserAccount, UserAccountEntity> {
 

@@ -15,24 +15,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.fireflow.common.data.remote
+package dev.zitech.fireflow.common.data.remote.rest.retrofit.model
 
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import dev.zitech.fireflow.common.data.remote.configurator.RemoteConfigurator
-import dev.zitech.fireflow.common.data.remote.configurator.RemoteConfiguratorImpl
-import javax.inject.Singleton
+import retrofit2.Retrofit
 
-internal interface RemoteModule {
-
-    @InstallIn(SingletonComponent::class)
-    @Module
-    interface SingletonBinds {
-
-        @Singleton
-        @Binds
-        fun remoteConfigurator(remoteConfiguratorImpl: RemoteConfiguratorImpl): RemoteConfigurator
-    }
+internal interface RetrofitModel {
+    suspend operator fun invoke(
+        userId: Long,
+        serverAddress: String
+    ): Retrofit
 }

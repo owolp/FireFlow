@@ -22,6 +22,7 @@ import java.lang.reflect.Type
 import retrofit2.Call
 import retrofit2.CallAdapter
 
+@Deprecated("Modules")
 internal class NetworkResultCallAdapter(
     private val resultType: Type
 ) : CallAdapter<Type, Call<NetworkResult<Type>>> {

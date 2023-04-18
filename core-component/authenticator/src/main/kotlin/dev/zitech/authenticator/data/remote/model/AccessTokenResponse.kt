@@ -20,6 +20,7 @@ package dev.zitech.authenticator.data.remote.model
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
+@Deprecated("Modules")
 @JsonClass(generateAdapter = true)
 data class AccessTokenResponse(
     @Json(name = "access_token")

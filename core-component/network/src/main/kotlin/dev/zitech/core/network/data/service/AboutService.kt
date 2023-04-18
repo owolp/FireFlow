@@ -21,6 +21,7 @@ import dev.zitech.core.common.domain.model.NetworkResult
 import dev.zitech.core.network.data.model.UserResponse
 import retrofit2.http.GET
 
+@Deprecated("Modules")
 interface AboutService {
 
     @GET("api/v1/about/user")

@@ -23,6 +23,7 @@ import dev.zitech.authenticator.domain.repository.TokenRepository
 import dev.zitech.core.common.domain.model.Work
 import javax.inject.Inject
 
+@Deprecated("Modules")
 internal class TokenRepositoryImpl @Inject constructor(
     private val oAuthRemoteSource: OAuthSource
 ) : TokenRepository {

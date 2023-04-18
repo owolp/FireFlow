@@ -15,11 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.fireflow.common.data.mapper
-
-interface DomainMapper<in E, out D> {
-    fun toDomain(input: E): D
-}
+package dev.zitech.fireflow.common.data.local.database.mapper
 
 interface EntityMapper<in D, out E> {
     fun toEntity(input: D): E

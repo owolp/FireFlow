@@ -27,6 +27,7 @@ import javax.inject.Inject
 import okhttp3.Interceptor
 import okhttp3.logging.HttpLoggingInterceptor
 
+@Deprecated("Modules")
 internal class InterceptorFactory @Inject constructor(
     private val context: Context,
     private val authenticationInterceptor: Interceptor

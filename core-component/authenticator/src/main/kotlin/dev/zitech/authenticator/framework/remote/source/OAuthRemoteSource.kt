@@ -26,6 +26,7 @@ import dev.zitech.core.common.domain.model.Work
 import dev.zitech.core.common.domain.model.mapToWork
 import javax.inject.Inject
 
+@Deprecated("Modules")
 internal class OAuthRemoteSource @Inject constructor(
     private val oAuthService: OAuthService,
     private val accessTokenResponseMapper: AccessTokenResponseMapper,

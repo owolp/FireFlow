@@ -17,10 +17,10 @@
 
 package dev.zitech.fireflow.common.data.source.user
 
-import dev.zitech.fireflow.common.data.local.database.common.dao.UserAccountDao
-import dev.zitech.fireflow.common.data.local.database.common.entity.UserAccountEntity
+import dev.zitech.fireflow.common.data.local.database.dao.UserAccountDao
+import dev.zitech.fireflow.common.data.local.database.entity.UserAccountEntity
 import dev.zitech.fireflow.common.data.local.database.handleDb
-import dev.zitech.fireflow.common.data.mapper.user.UserAccountMapper
+import dev.zitech.fireflow.common.data.local.database.mapper.UserAccountEntityMapper
 import dev.zitech.fireflow.common.domain.model.user.UserAccount
 import dev.zitech.fireflow.core.error.Error
 import dev.zitech.fireflow.core.error.Error.Fatal.Type.DISK
@@ -34,13 +34,13 @@ import kotlinx.coroutines.flow.map
 
 internal class UserAccountDatabaseSource @Inject constructor(
     private val userAccountDao: UserAccountDao,
-    private val userAccountMapper: UserAccountMapper
+    private val userAccountEntityMapper: UserAccountEntityMapper
 ) : UserAccountSource {
 
     override fun getCurrentUserAccount(): Flow<Work<UserAccount>> =
         userAccountDao.getCurrentUserAccount().map { userAccountEntity ->
             if (userAccountEntity != null) {
-                WorkSuccess(userAccountMapper.toDomain(userAccountEntity))
+                WorkSuccess(userAccountEntityMapper.toDomain(userAccountEntity))
             } else {
                 WorkError(Error.NullCurrentUserAccount)
             }
@@ -51,7 +51,7 @@ internal class UserAccountDatabaseSource @Inject constructor(
     override suspend fun getUserAccountByState(state: String): Work<UserAccount> = try {
         val userAccountEntity = userAccountDao.getUserAccountByState(state)
         if (userAccountEntity != null) {
-            WorkSuccess(userAccountMapper.toDomain(userAccountEntity))
+            WorkSuccess(userAccountEntityMapper.toDomain(userAccountEntity))
         } else {
             WorkError(Error.NullUserAccountByState)
         }
@@ -61,7 +61,7 @@ internal class UserAccountDatabaseSource @Inject constructor(
 
     override fun getUserAccounts(): Flow<Work<List<UserAccount>>> =
         userAccountDao.getUserAccounts().map { userAccountEntities ->
-            WorkSuccess(userAccountEntities.map(userAccountMapper::toDomain))
+            WorkSuccess(userAccountEntities.map(userAccountEntityMapper::toDomain))
         }.catch { throwable ->
             WorkError<List<UserAccount>>(Error.Fatal(throwable, DISK))
         }
@@ -98,6 +98,6 @@ internal class UserAccountDatabaseSource @Inject constructor(
 
     override suspend fun updateUserAccount(userAccount: UserAccount): Work<Int> =
         handleDb {
-            userAccountDao.updateUserAccount(userAccountMapper.toEntity(userAccount))
+            userAccountDao.updateUserAccount(userAccountEntityMapper.toEntity(userAccount))
         }
 }

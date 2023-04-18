@@ -20,6 +20,7 @@ package dev.zitech.authenticator.data.source
 import dev.zitech.authenticator.domain.model.Token
 import dev.zitech.core.common.domain.model.Work
 
+@Deprecated("Modules")
 internal interface OAuthSource {
 
     suspend fun getAccessToken(

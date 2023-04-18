@@ -20,6 +20,7 @@ package dev.zitech.core.network.domain.retrofit
 import dev.zitech.authenticator.data.remote.service.OAuthService
 import dev.zitech.core.network.data.service.AboutService
 
+@Deprecated("Modules")
 internal interface ServiceModel {
     val aboutService: AboutService
     val oAuthService: OAuthService

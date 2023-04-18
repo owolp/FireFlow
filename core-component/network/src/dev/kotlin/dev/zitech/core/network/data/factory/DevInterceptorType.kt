@@ -17,6 +17,11 @@
 
 package dev.zitech.core.network.data.factory
 
+@Deprecated("Modules")
 object Debugger : InterceptorType
+
+@Deprecated("Modules")
 object HttpInspector : InterceptorType
+
+@Deprecated("Modules")
 object HttpLogging : InterceptorType

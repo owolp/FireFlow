@@ -24,6 +24,7 @@ import dev.zitech.core.common.domain.model.NetworkResult
 import dev.zitech.core.common.domain.model.NetworkSuccess
 import retrofit2.Response
 
+@Deprecated("Modules")
 @Suppress("TooGenericExceptionCaught")
 internal fun <T : Any> handleApi(
     execute: () -> Response<T>

@@ -27,6 +27,7 @@ import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Response
 
+@Deprecated("Modules")
 internal class AuthenticationInterceptor @Inject constructor(
     private val getCurrentUserAccountAccessTokenUseCase: GetCurrentUserAccountAccessTokenUseCase
 ) : Interceptor {

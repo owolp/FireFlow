@@ -20,6 +20,7 @@ package dev.zitech.authenticator.domain.repository
 import dev.zitech.authenticator.domain.model.Token
 import dev.zitech.core.common.domain.model.Work
 
+@Deprecated("Modules")
 interface TokenRepository {
 
     suspend fun getAccessToken(

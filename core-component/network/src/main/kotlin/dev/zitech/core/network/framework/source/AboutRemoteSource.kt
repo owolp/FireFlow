@@ -25,6 +25,7 @@ import dev.zitech.core.network.data.source.AboutSource
 import dev.zitech.core.network.domain.model.FireflyProfile
 import javax.inject.Inject
 
+@Deprecated("Modules")
 internal class AboutRemoteSource @Inject constructor(
     private val aboutService: AboutService,
     private val userResponseMapper: UserResponseMapper

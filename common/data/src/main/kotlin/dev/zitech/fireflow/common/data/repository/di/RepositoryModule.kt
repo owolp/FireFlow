@@ -26,9 +26,11 @@ import dev.zitech.fireflow.common.data.memory.cache.InMemoryCache
 import dev.zitech.fireflow.common.data.repository.cache.CacheRepositoryImpl
 import dev.zitech.fireflow.common.data.repository.configurator.ConfiguratorRepositoryImpl
 import dev.zitech.fireflow.common.data.repository.featureflag.FeatureFlagRepositoryImpl
+import dev.zitech.fireflow.common.data.repository.profile.FireflyProfileRepositoryImpl
 import dev.zitech.fireflow.common.data.repository.reporter.analytics.AnalyticsRepositoryImpl
 import dev.zitech.fireflow.common.data.repository.reporter.crash.CrashRepositoryImpl
 import dev.zitech.fireflow.common.data.repository.reporter.performance.PerformanceRepositoryImpl
+import dev.zitech.fireflow.common.data.repository.token.TokenRepositoryImpl
 import dev.zitech.fireflow.common.data.repository.user.NetworkDetails
 import dev.zitech.fireflow.common.data.repository.user.NetworkDetailsInMemoryCache
 import dev.zitech.fireflow.common.data.repository.user.UserAccountRepositoryImpl
@@ -37,9 +39,11 @@ import dev.zitech.fireflow.common.data.source.di.annotation.ProdFeatureFlagSourc
 import dev.zitech.fireflow.common.data.source.di.annotation.RemoteFeatureFlagSource as RemoteFeatureFlagSourceAnnotation
 import dev.zitech.fireflow.common.data.source.featureflag.FeatureFlagSource
 import dev.zitech.fireflow.common.data.source.user.UserAccountSource
+import dev.zitech.fireflow.common.domain.repository.authentication.TokenRepository
 import dev.zitech.fireflow.common.domain.repository.cache.CacheRepository
 import dev.zitech.fireflow.common.domain.repository.configurator.ConfiguratorRepository
 import dev.zitech.fireflow.common.domain.repository.featureflag.FeatureFlagRepository
+import dev.zitech.fireflow.common.domain.repository.profile.FireflyProfileRepository
 import dev.zitech.fireflow.common.domain.repository.reporter.AnalyticsRepository
 import dev.zitech.fireflow.common.domain.repository.reporter.CrashRepository
 import dev.zitech.fireflow.common.domain.repository.reporter.PerformanceRepository
@@ -58,6 +62,12 @@ internal interface RepositoryModule {
         fun cacheRepository(
             cacheRepositoryImpl: CacheRepositoryImpl
         ): CacheRepository
+
+        @Singleton
+        @Binds
+        fun fireflyProfileRepository(
+            fireflyProfileRepositoryImpl: FireflyProfileRepositoryImpl
+        ): FireflyProfileRepository
 
         @Singleton
         @Binds
@@ -88,6 +98,12 @@ internal interface RepositoryModule {
         fun networkDetailsInMemoryCache(
             networkDetailsInMemoryCache: NetworkDetailsInMemoryCache
         ): InMemoryCache<NetworkDetails>
+
+        @Singleton
+        @Binds
+        fun tokenRepository(
+            tokenRepositoryImpl: TokenRepositoryImpl
+        ): TokenRepository
     }
 
     @InstallIn(SingletonComponent::class)

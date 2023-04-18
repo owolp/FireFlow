@@ -19,6 +19,7 @@ package dev.zitech.core.network.domain.retrofit
 
 import retrofit2.Retrofit
 
+@Deprecated("Modules")
 internal interface RetrofitModel {
     suspend operator fun invoke(
         userId: Long,

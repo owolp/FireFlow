@@ -38,6 +38,16 @@ dependencies {
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.androidx.security.crypto)
 
+    implementation(libs.squareup.moshi.moshi)
+    kapt(libs.squareup.moshi.kotlin.codegen)
+    implementation(libs.squareup.retrofit2.retrofit)
+    implementation(libs.squareup.retrofit2.converter.moshi)
+
+    devImplementation(libs.chuckerteam.chucker)
+    devImplementation(libs.facebook.flipper.flipper)
+    devApi(libs.facebook.flipper.network.plugin)
+    devImplementation(libs.squareup.okhttp3.logging.intereceptor)
+
     fossImplementation(libs.acra.http)
 
     playImplementation(platform(libs.google.firebase.bom))

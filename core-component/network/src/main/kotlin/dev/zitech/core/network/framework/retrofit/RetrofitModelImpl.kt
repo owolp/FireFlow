@@ -24,6 +24,7 @@ import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
 import retrofit2.Retrofit
 
+@Deprecated("Modules")
 internal class RetrofitModelImpl @Inject constructor(
     private val retrofitFactory: RetrofitFactory,
     private val controlledRunner: ControlledRunner<Retrofit>

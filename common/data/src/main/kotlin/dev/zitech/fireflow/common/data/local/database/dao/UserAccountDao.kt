@@ -15,14 +15,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.fireflow.common.data.local.database.common.dao
+package dev.zitech.fireflow.common.data.local.database.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import dev.zitech.fireflow.common.data.local.database.common.entity.UserAccountEntity
+import dev.zitech.fireflow.common.data.local.database.entity.UserAccountEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

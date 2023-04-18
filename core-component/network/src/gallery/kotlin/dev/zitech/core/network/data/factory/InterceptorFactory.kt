@@ -21,6 +21,7 @@ import android.content.Context
 import javax.inject.Inject
 import okhttp3.Interceptor
 
+@Deprecated("Modules")
 internal class InterceptorFactory @Inject constructor(
     @Suppress("UnusedPrivateMember") context: Context,
     private val authenticationInterceptor: Interceptor

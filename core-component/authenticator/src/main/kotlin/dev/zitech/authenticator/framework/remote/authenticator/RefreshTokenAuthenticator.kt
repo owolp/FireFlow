@@ -33,6 +33,7 @@ import okhttp3.Request
 import okhttp3.Response
 import okhttp3.Route
 
+@Deprecated("Modules")
 internal class RefreshTokenAuthenticator @Inject constructor(
     private val getCurrentUserAccountUseCase: dagger.Lazy<GetCurrentUserAccountUseCase>,
     private val getRefreshedTokenUseCase: dagger.Lazy<GetRefreshedTokenUseCase>

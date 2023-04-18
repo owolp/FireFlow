@@ -25,13 +25,12 @@ import dev.zitech.authenticator.data.repository.TokenRepositoryImpl
 import dev.zitech.authenticator.data.source.OAuthSource
 import dev.zitech.authenticator.di.annotation.InterceptorAuthentication
 import dev.zitech.authenticator.domain.repository.TokenRepository
-import dev.zitech.authenticator.framework.remote.authenticator.RefreshTokenAuthenticator
 import dev.zitech.authenticator.framework.remote.interceptor.AuthenticationInterceptor
 import dev.zitech.authenticator.framework.remote.source.OAuthRemoteSource
 import javax.inject.Singleton
-import okhttp3.Authenticator
 import okhttp3.Interceptor
 
+@Deprecated("Modules")
 internal interface AuthenticatorModule {
 
     @InstallIn(SingletonComponent::class)
@@ -45,11 +44,11 @@ internal interface AuthenticatorModule {
             authenticationInterceptor: AuthenticationInterceptor
         ): Interceptor
 
-        @Singleton
-        @Binds
-        fun refreshTokenAuthenticator(
-            refreshTokenAuthenticator: RefreshTokenAuthenticator
-        ): Authenticator
+//        @Singleton
+//        @Binds
+//        fun refreshTokenAuthenticator(
+//            refreshTokenAuthenticator: RefreshTokenAuthenticator
+//        ): Authenticator
 
         @Singleton
         @Binds

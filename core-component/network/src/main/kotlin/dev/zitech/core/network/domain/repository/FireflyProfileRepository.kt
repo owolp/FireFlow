@@ -20,6 +20,7 @@ package dev.zitech.core.network.domain.repository
 import dev.zitech.core.common.domain.model.Work
 import dev.zitech.core.network.domain.model.FireflyProfile
 
+@Deprecated("Modules")
 interface FireflyProfileRepository {
 
     suspend fun getFireflyProfile(): Work<FireflyProfile>
