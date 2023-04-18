@@ -33,6 +33,7 @@ dependencies {
     implementation(projects.common.domain)
     api(projects.designSystem)
 
+    implementation(libs.androidx.browser)
     implementation(libs.androidx.compose.runtime)
 
     implementation(libs.jakewharton.timber)

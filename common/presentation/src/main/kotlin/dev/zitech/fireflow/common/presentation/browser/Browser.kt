@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.common.framework.browser
+package dev.zitech.fireflow.common.presentation.browser
 
 import android.content.ActivityNotFoundException
 import android.content.Context
@@ -23,14 +23,13 @@ import android.content.Intent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.net.toUri
-import dev.zitech.core.common.domain.error.Error
-import dev.zitech.core.common.domain.error.Error.Fatal.Type.OS
-import dev.zitech.core.common.domain.model.WorkError
-import dev.zitech.core.common.domain.model.WorkSuccess
+import dev.zitech.fireflow.core.error.Error
+import dev.zitech.fireflow.core.error.Error.Fatal.Type.OS
+import dev.zitech.fireflow.core.work.WorkError
+import dev.zitech.fireflow.core.work.WorkSuccess
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
 
-@Deprecated("Modules")
 object Browser {
 
     @Suppress("TooGenericExceptionCaught", "SwallowedException")
