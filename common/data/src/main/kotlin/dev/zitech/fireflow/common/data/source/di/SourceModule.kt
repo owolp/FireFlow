@@ -56,7 +56,9 @@ internal interface SourceModule {
 
         @Singleton
         @Binds
-        fun configuratorProviderSource(configuratorProviderSourceImpl: ConfiguratorProviderSourceImpl): ConfiguratorProviderSource
+        fun configuratorProviderSource(
+            configuratorProviderSourceImpl: ConfiguratorProviderSourceImpl
+        ): ConfiguratorProviderSource
 
         @ProdFeatureFlagSourceAnnotation
         @Singleton
