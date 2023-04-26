@@ -58,10 +58,10 @@ internal class RefreshTokenAuthenticator @Inject constructor(
         authenticationType: UserAuthenticationType?,
         response: Response
     ): Request? = if (authenticationType is UserAuthenticationType.OAuth) {
-        if (response.code == UNAUTHENTICATED_CODE) {
+        if (response.code() == UNAUTHENTICATED_CODE) {
             getRefreshedToken(response)
         } else {
-            Logger.e(tag, message = "Response code not handled=${response.code}")
+            Logger.e(tag, message = "Response code not handled=${response.code()}")
             null
         }
     } else {
@@ -77,7 +77,7 @@ internal class RefreshTokenAuthenticator @Inject constructor(
                 val accessToken = refreshedTokenResult.data.accessToken
                 @Suppress("SENSELESS_COMPARISON")
                 if (accessToken != null) {
-                    response.request.newBuilder()
+                    response.request().newBuilder()
                         .removeHeader(HEADER_AUTHORIZATION_KEY)
                         .addHeader(
                             HEADER_AUTHORIZATION_KEY,
