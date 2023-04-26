@@ -88,7 +88,7 @@ mockk-mockk = "io.mockk:mockk:1.13.5"
 squareup-moshi-moshi = { module = "com.squareup.moshi:moshi", version.ref = "moshi" }
 squareup-moshi-kotlin-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", version.ref = "moshi" }
 squareup-leakcanary-android = "com.squareup.leakcanary:leakcanary-android:2.10"
-squareup-okhttp3-logging-intereceptor = "com.squareup.okhttp3:logging-interceptor:4.11.0"
+squareup-okhttp3-bom = "com.squareup.okhttp3:okhttp-bom:4.11.0"
 squareup-retrofit2-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 squareup-retrofit2-converter-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "retrofit" }
 zetetic-sqlcipher = "net.zetetic:android-database-sqlcipher:4.5.3"
