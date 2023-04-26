@@ -17,7 +17,7 @@
 
 package dev.zitech.onboarding.presentation.navigation
 
-import dev.zitech.navigation.presentation.model.FireFlowNavigationDestination
+import dev.zitech.fireflow.common.presentation.navigation.destination.FireFlowNavigationDestination
 
 private const val DESTINATION = "onboarding"
 

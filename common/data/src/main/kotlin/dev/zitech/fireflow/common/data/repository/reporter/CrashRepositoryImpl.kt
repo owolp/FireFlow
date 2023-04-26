@@ -15,18 +15,29 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.fireflow.common.data.repository.reporter.crash
+package dev.zitech.fireflow.common.data.repository.reporter
 
 import dev.zitech.fireflow.common.data.reporter.crash.CrashReporter
+import dev.zitech.fireflow.common.data.source.preferences.PreferencesDataSource
+import dev.zitech.fireflow.common.domain.model.preferences.BooleanPreference
 import dev.zitech.fireflow.common.domain.repository.reporter.CrashRepository
 import dev.zitech.fireflow.core.applicationconfig.AppConfigProvider
+import dev.zitech.fireflow.core.applicationconfig.BuildFlavor
 import dev.zitech.fireflow.core.applicationconfig.BuildMode
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 internal class CrashRepositoryImpl @Inject constructor(
     private val appConfigProvider: AppConfigProvider,
-    private val crashReporter: CrashReporter
+    private val crashReporter: CrashReporter,
+    private val preferencesDataSource: PreferencesDataSource
 ) : CrashRepository {
+
+    override fun getCollectionEnabled(): Flow<Boolean> =
+        preferencesDataSource.getBoolean(
+            BooleanPreference.CRASH_REPORTER_COLLECTION.key,
+            BooleanPreference.CRASH_REPORTER_COLLECTION.defaultValue
+        )
 
     override fun init() {
         crashReporter.init()
@@ -40,15 +51,22 @@ internal class CrashRepositoryImpl @Inject constructor(
         crashReporter.recordException(throwable)
     }
 
+    override suspend fun setCollectionEnabled(enabled: Boolean) {
+        when {
+            appConfigProvider.buildMode == BuildMode.RELEASE || appConfigProvider.buildFlavor == BuildFlavor.DEV -> {
+                crashReporter.setCollectionEnabled(enabled)
+                preferencesDataSource.saveBoolean(
+                    BooleanPreference.CRASH_REPORTER_COLLECTION.key,
+                    enabled
+                )
+            }
+            else -> {
+                // When debug on any other flavor, we don't want to have collection enabled
+            }
+        }
+    }
+
     override fun setCustomKey(key: String, value: Any) {
         crashReporter.setCustomKey(key, value)
     }
-
-    override fun setCollectionEnabled(enabled: Boolean) =
-        crashReporter.setCollectionEnabled(
-            when (appConfigProvider.buildMode) {
-                BuildMode.RELEASE -> enabled
-                BuildMode.DEBUG -> false
-            }
-        )
 }

@@ -19,22 +19,22 @@ package dev.zitech.settings.presentation.settings.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.zitech.core.common.domain.applicationconfig.AppConfigProvider
-import dev.zitech.core.common.domain.error.Error
-import dev.zitech.core.common.domain.logger.Logger
-import dev.zitech.core.common.domain.model.ApplicationLanguage
-import dev.zitech.core.common.domain.model.ApplicationTheme
-import dev.zitech.core.common.domain.model.BuildFlavor
-import dev.zitech.core.common.domain.model.WorkError
-import dev.zitech.core.common.domain.model.WorkSuccess
-import dev.zitech.core.common.domain.model.onError
-import dev.zitech.core.common.domain.navigation.LogInState
-import dev.zitech.core.common.presentation.architecture.DeepLinkViewModel
-import dev.zitech.core.common.presentation.architecture.MviViewModel
-import dev.zitech.core.common.presentation.splash.LoginCheckCompletedHandler
-import dev.zitech.core.persistence.domain.usecase.database.GetCurrentUserAccountUseCase
-import dev.zitech.navigation.domain.usecase.GetScreenDestinationUseCase
-import dev.zitech.navigation.presentation.extension.logInState
+import dev.zitech.fireflow.common.domain.model.application.ApplicationLanguage
+import dev.zitech.fireflow.common.domain.model.application.ApplicationTheme
+import dev.zitech.fireflow.common.domain.usecase.user.GetCurrentUserAccountUseCase
+import dev.zitech.fireflow.common.presentation.architecture.DeepLinkViewModel
+import dev.zitech.fireflow.common.presentation.architecture.MviViewModel
+import dev.zitech.fireflow.common.presentation.navigation.ScreenDestinationProvider
+import dev.zitech.fireflow.common.presentation.navigation.state.LogInState
+import dev.zitech.fireflow.common.presentation.navigation.state.LoginCheckCompletedHandler
+import dev.zitech.fireflow.common.presentation.navigation.state.logInState
+import dev.zitech.fireflow.core.applicationconfig.AppConfigProvider
+import dev.zitech.fireflow.core.applicationconfig.BuildFlavor
+import dev.zitech.fireflow.core.error.Error
+import dev.zitech.fireflow.core.logger.Logger
+import dev.zitech.fireflow.core.work.WorkError
+import dev.zitech.fireflow.core.work.WorkSuccess
+import dev.zitech.fireflow.core.work.onError
 import dev.zitech.settings.domain.usecase.LogOutCurrentUserUseCase
 import dev.zitech.settings.presentation.settings.viewmodel.collection.AppearanceCollectionStates
 import dev.zitech.settings.presentation.settings.viewmodel.collection.DataChoicesCollectionStates
@@ -45,8 +45,8 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 internal class SettingsViewModel @Inject constructor(
-    getScreenDestinationUseCase: GetScreenDestinationUseCase,
     loginCheckCompletedHandler: LoginCheckCompletedHandler,
+    screenDestinationProvider: ScreenDestinationProvider,
     private val appConfigProvider: AppConfigProvider,
     private val appearanceCollectionStates: AppearanceCollectionStates,
     private val dataChoicesCollectionStates: DataChoicesCollectionStates,
@@ -57,7 +57,7 @@ internal class SettingsViewModel @Inject constructor(
     private val tag = Logger.tag(this::class.java)
 
     override val logInState: StateFlow<LogInState> by logInState(
-        getScreenDestinationUseCase,
+        screenDestinationProvider,
         loginCheckCompletedHandler,
         viewModelScope
     )
@@ -89,13 +89,16 @@ internal class SettingsViewModel @Inject constructor(
                 CrashReporterErrorHandled -> updateState {
                     copy(crashReporterError = false)
                 }
+
                 FatalErrorHandled -> updateState { copy(fatalError = null) }
                 LanguageDismissed -> updateState {
                     copy(selectApplicationLanguage = null)
                 }
+
                 LanguagePreferenceClicked -> updateState {
                     copy(selectApplicationLanguage = this.applicationLanguage)
                 }
+
                 is LanguageSelected -> handleLanguageSelected(intent.id)
                 LogOutClicked -> updateState { copy(confirmLogOut = true) }
                 is RestartApplicationClicked -> intent.restart()
@@ -104,15 +107,19 @@ internal class SettingsViewModel @Inject constructor(
                 PerformanceErrorHandled -> updateState {
                     copy(performanceError = false)
                 }
+
                 is PersonalizedAdsChecked -> handlePersonalizedAdsChecked(
                     intent.checked
                 )
+
                 PersonalizedAdsErrorHandled -> updateState {
                     copy(personalizedAdsError = false)
                 }
+
                 ThemeDismissed -> updateState {
                     copy(selectApplicationTheme = null)
                 }
+
                 ThemePreferenceClicked -> updateState {
                     copy(selectApplicationTheme = this.applicationTheme)
                 }
@@ -156,6 +163,7 @@ internal class SettingsViewModel @Inject constructor(
                     Logger.e(tag, throwable = error.throwable)
                     updateState { copy(fatalError = error) }
                 }
+
                 else -> {
                     Logger.e(tag, error.debugText)
                     updateState { copy(fatalError = error) }

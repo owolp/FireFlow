@@ -33,11 +33,13 @@ internal class GetCrashReporterCollectionValueUseCaseTest {
 
     private val getPreferencesRepository = FakePreferencesRepository()
 
-    private lateinit var sut: GetCrashReporterCollectionValueUseCase
+    private lateinit var sut: dev.zitech.settings.domain.usecase.reporter.GetCrashReporterCollectionValueUseCase
 
     @BeforeEach
     fun setup() {
-        sut = GetCrashReporterCollectionValueUseCase(getPreferencesRepository)
+        sut = dev.zitech.settings.domain.usecase.reporter.GetCrashReporterCollectionValueUseCase(
+            getPreferencesRepository
+        )
     }
 
     @Test

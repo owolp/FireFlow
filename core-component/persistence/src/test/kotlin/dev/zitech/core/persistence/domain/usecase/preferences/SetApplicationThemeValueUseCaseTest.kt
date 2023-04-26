@@ -22,7 +22,7 @@ import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.core.persistence.data.preferences.repository.FakePreferencesRepository
 import dev.zitech.core.persistence.domain.model.preferences.IntPreference
 import dev.zitech.core.persistence.domain.model.preferences.PreferenceType
-import dev.zitech.core.persistence.framework.preference.mapper.ApplicationThemeToIntMapper
+import dev.zitech.settings.domain.mapper.ApplicationThemeToIntMapper
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
@@ -33,13 +33,14 @@ import org.junit.jupiter.api.Test
 internal class SetApplicationThemeValueUseCaseTest {
 
     private val savePreferencesRepository = FakePreferencesRepository()
-    private val applicationThemeToIntMapper = ApplicationThemeToIntMapper()
+    private val applicationThemeToIntMapper =
+        dev.zitech.settings.domain.mapper.ApplicationThemeToIntMapper()
 
-    private lateinit var sut: SetApplicationThemeValueUseCase
+    private lateinit var sut: dev.zitech.settings.domain.usecase.SetApplicationThemeValueUseCase
 
     @BeforeEach
     fun setup() {
-        sut = SetApplicationThemeValueUseCase(
+        sut = dev.zitech.settings.domain.usecase.SetApplicationThemeValueUseCase(
             savePreferencesRepository,
             applicationThemeToIntMapper
         )

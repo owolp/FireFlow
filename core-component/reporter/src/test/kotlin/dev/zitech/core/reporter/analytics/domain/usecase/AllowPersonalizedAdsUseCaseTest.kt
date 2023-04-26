@@ -20,9 +20,9 @@ package dev.zitech.core.reporter.analytics.domain.usecase
 import dev.zitech.core.common.DataFactory
 import dev.zitech.core.persistence.domain.model.database.UserLoggedState
 import dev.zitech.core.persistence.domain.usecase.database.GetUserLoggedStateUseCase
-import dev.zitech.core.persistence.domain.usecase.preferences.GetAllowPersonalizedAdsValueUseCase
-import dev.zitech.core.persistence.domain.usecase.preferences.SaveAllowPersonalizedAdsValueUseCase
 import dev.zitech.core.reporter.analytics.domain.repository.AnalyticsRepository
+import dev.zitech.settings.domain.usecase.analytics.GetAllowPersonalizedAdsValueUseCase
+import dev.zitech.settings.domain.usecase.analytics.SaveAllowPersonalizedAdsValueUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -36,16 +36,16 @@ internal class AllowPersonalizedAdsUseCaseTest {
 
     private val analyticsRepository = mockk<AnalyticsRepository>(relaxUnitFun = true)
     private val getUserLoggedStateUseCase = mockk<GetUserLoggedStateUseCase>()
-    private val getAllowPersonalizedAdsValueUseCase = mockk<GetAllowPersonalizedAdsValueUseCase>()
-    private val saveAllowPersonalizedAdsValueUseCase = mockk<SaveAllowPersonalizedAdsValueUseCase>(
+    private val getAllowPersonalizedAdsValueUseCase = mockk<dev.zitech.settings.domain.usecase.analytics.GetAllowPersonalizedAdsValueUseCase>()
+    private val saveAllowPersonalizedAdsValueUseCase = mockk<dev.zitech.settings.domain.usecase.analytics.SaveAllowPersonalizedAdsValueUseCase>(
         relaxUnitFun = true
     )
 
-    private lateinit var sut: AllowPersonalizedAdsUseCase
+    private lateinit var sut: dev.zitech.settings.domain.usecase.analytics.AllowPersonalizedAdsUseCase
 
     @BeforeEach
     fun setup() {
-        sut = AllowPersonalizedAdsUseCase(
+        sut = dev.zitech.settings.domain.usecase.analytics.AllowPersonalizedAdsUseCase(
             analyticsRepository,
             getUserLoggedStateUseCase,
             getAllowPersonalizedAdsValueUseCase,

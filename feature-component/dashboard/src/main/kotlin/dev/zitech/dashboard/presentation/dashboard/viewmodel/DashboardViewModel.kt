@@ -19,23 +19,23 @@ package dev.zitech.dashboard.presentation.dashboard.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.zitech.core.common.domain.navigation.LogInState
-import dev.zitech.core.common.presentation.architecture.DeepLinkViewModel
-import dev.zitech.core.common.presentation.architecture.MviViewModel
-import dev.zitech.core.common.presentation.splash.LoginCheckCompletedHandler
-import dev.zitech.navigation.domain.usecase.GetScreenDestinationUseCase
-import dev.zitech.navigation.presentation.extension.logInState
+import dev.zitech.fireflow.common.presentation.architecture.DeepLinkViewModel
+import dev.zitech.fireflow.common.presentation.architecture.MviViewModel
+import dev.zitech.fireflow.common.presentation.navigation.ScreenDestinationProvider
+import dev.zitech.fireflow.common.presentation.navigation.state.LogInState
+import dev.zitech.fireflow.common.presentation.navigation.state.LoginCheckCompletedHandler
+import dev.zitech.fireflow.common.presentation.navigation.state.logInState
 import javax.inject.Inject
 import kotlinx.coroutines.flow.StateFlow
 
 @HiltViewModel
 internal class DashboardViewModel @Inject constructor(
-    getScreenDestinationUseCase: GetScreenDestinationUseCase,
-    loginCheckCompletedHandler: LoginCheckCompletedHandler
+    loginCheckCompletedHandler: LoginCheckCompletedHandler,
+    screenDestinationProvider: ScreenDestinationProvider
 ) : MviViewModel<DashboardIntent, DashboardState>(DashboardState), DeepLinkViewModel {
 
     override val logInState: StateFlow<LogInState> by logInState(
-        getScreenDestinationUseCase,
+        screenDestinationProvider,
         loginCheckCompletedHandler,
         viewModelScope
     )

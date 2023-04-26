@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,21 +15,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.persistence.domain.usecase.preferences
+package dev.zitech.fireflow.common.domain.usecase.application
 
-import dev.zitech.core.persistence.domain.model.preferences.BooleanPreference
-import dev.zitech.core.persistence.domain.model.preferences.PreferenceType
-import dev.zitech.core.persistence.domain.repository.preferences.SavePreferencesRepository
+import dev.zitech.fireflow.common.domain.model.application.ApplicationTheme
+import dev.zitech.fireflow.common.domain.repository.application.ApplicationRepository
 import javax.inject.Inject
 
-class SaveAllowPersonalizedAdsValueUseCase @Inject constructor(
-    private val savePreferencesRepository: SavePreferencesRepository
+class SetApplicationThemeValueUseCase @Inject constructor(
+    private val applicationRepository: ApplicationRepository
 ) {
 
-    suspend operator fun invoke(value: Boolean) =
-        savePreferencesRepository.saveBoolean(
-            PreferenceType.STANDARD,
-            BooleanPreference.PERSONALIZED_ADS.key,
-            value
-        )
+    suspend operator fun invoke(applicationTheme: ApplicationTheme) =
+        applicationRepository.setApplicationTheme(applicationTheme)
 }

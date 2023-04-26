@@ -17,6 +17,7 @@
 
 apply(from = "$rootDir/config/dependencies/compose-dependencies.gradle")
 apply(from = "$rootDir/config/dependencies/di-dependencies.gradle")
+apply(from = "$rootDir/config/dependencies/feature-dependencies.gradle")
 apply(from = "$rootDir/config/dependencies/kotlin-dependencies.gradle")
 apply(from = "$rootDir/config/dependencies/test-dependencies.gradle")
 
@@ -32,9 +33,6 @@ android {
 }
 
 dependencies {
-    implementation(projects.coreComponent.core)
-    implementation(projects.designSystem)
-
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)

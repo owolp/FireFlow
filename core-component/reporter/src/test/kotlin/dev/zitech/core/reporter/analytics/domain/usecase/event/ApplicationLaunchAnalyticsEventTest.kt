@@ -21,8 +21,8 @@ import com.google.common.truth.Truth.assertThat
 import dev.zitech.core.common.domain.model.BuildFlavor
 import dev.zitech.core.common.framework.applicationconfig.FakeAppConfigProvider
 import dev.zitech.core.reporter.analytics.data.repository.AnalyticsRepositoryImpl
-import dev.zitech.core.reporter.analytics.domain.model.event.ApplicationLaunchEvent
 import dev.zitech.core.reporter.analytics.framework.FakeAnalyticsReporter
+import dev.zitech.fireflow.common.domain.model.event.ApplicationLaunchEvent
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -35,11 +35,11 @@ internal class ApplicationLaunchAnalyticsEventTest {
         remoteAnalytics
     )
 
-    private lateinit var sut: ApplicationLaunchAnalyticsEvent
+    private lateinit var sut: dev.zitech.fireflow.domain.usecase.ApplicationLaunchAnalyticsEvent
 
     @BeforeEach
     fun setup() {
-        sut = ApplicationLaunchAnalyticsEvent(
+        sut = dev.zitech.fireflow.domain.usecase.ApplicationLaunchAnalyticsEvent(
             analyticsRepository
         )
     }
@@ -56,7 +56,7 @@ internal class ApplicationLaunchAnalyticsEventTest {
         // Assert
         assertThat(remoteAnalytics.events).hasSize(1)
         assertThat(remoteAnalytics.events).containsKey(
-            ApplicationLaunchEvent().name
+            dev.zitech.fireflow.common.domain.model.event.ApplicationLaunchEvent().name
         )
     }
 
@@ -72,7 +72,7 @@ internal class ApplicationLaunchAnalyticsEventTest {
         // Assert
         assertThat(remoteAnalytics.events).hasSize(1)
         assertThat(remoteAnalytics.events).containsKey(
-            ApplicationLaunchEvent().name
+            dev.zitech.fireflow.common.domain.model.event.ApplicationLaunchEvent().name
         )
     }
 }

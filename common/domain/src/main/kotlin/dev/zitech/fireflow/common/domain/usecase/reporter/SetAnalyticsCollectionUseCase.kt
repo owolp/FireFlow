@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,31 +15,26 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.reporter.analytics.domain.usecase
+package dev.zitech.fireflow.common.domain.usecase.reporter
 
-import dev.zitech.core.persistence.domain.model.database.UserLoggedState.LOGGED_IN
-import dev.zitech.core.persistence.domain.model.database.UserLoggedState.LOGGED_OUT
-import dev.zitech.core.persistence.domain.usecase.database.GetUserLoggedStateUseCase
-import dev.zitech.core.persistence.domain.usecase.preferences.GetAnalyticsCollectionValueUseCase
-import dev.zitech.core.persistence.domain.usecase.preferences.SaveAnalyticsCollectionValueUseCase
-import dev.zitech.core.reporter.analytics.domain.repository.AnalyticsRepository
+import dev.zitech.fireflow.common.domain.model.user.UserLoggedState
+import dev.zitech.fireflow.common.domain.repository.reporter.AnalyticsRepository
+import dev.zitech.fireflow.common.domain.usecase.user.GetUserLoggedStateUseCase
 import javax.inject.Inject
 
 class SetAnalyticsCollectionUseCase @Inject constructor(
     private val analyticsRepository: AnalyticsRepository,
-    private val getUserLoggedStateUseCase: GetUserLoggedStateUseCase,
     private val getAnalyticsCollectionValueUseCase: GetAnalyticsCollectionValueUseCase,
-    private val saveAnalyticsCollectionValueUseCase: SaveAnalyticsCollectionValueUseCase
+    private val getUserLoggedStateUseCase: GetUserLoggedStateUseCase
 ) {
 
     suspend operator fun invoke(enabled: Boolean? = null) =
         (
             enabled ?: when (getUserLoggedStateUseCase()) {
-                LOGGED_IN -> getAnalyticsCollectionValueUseCase()
-                LOGGED_OUT -> false
+                UserLoggedState.LOGGED_IN -> getAnalyticsCollectionValueUseCase()
+                UserLoggedState.LOGGED_OUT -> false
             }
             ).run {
             analyticsRepository.setCollectionEnabled(this)
-            saveAnalyticsCollectionValueUseCase(this)
         }
 }

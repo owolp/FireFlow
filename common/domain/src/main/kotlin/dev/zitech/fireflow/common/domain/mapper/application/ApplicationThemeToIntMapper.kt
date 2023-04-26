@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,15 +15,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.settings.domain.usecase
+package dev.zitech.fireflow.common.domain.mapper.application
 
-import dev.zitech.core.common.domain.model.ApplicationLanguage
-import dev.zitech.settings.frawework.locale.ApplicationLocale
+import dev.zitech.fireflow.common.domain.mapper.Mapper
+import dev.zitech.fireflow.common.domain.model.application.ApplicationTheme
 import javax.inject.Inject
 
-internal class GetApplicationLanguageValueUseCase @Inject constructor(
-    private val applicationLocale: ApplicationLocale
-) {
+class ApplicationThemeToIntMapper @Inject constructor() : Mapper<ApplicationTheme, Int> {
 
-    operator fun invoke(): ApplicationLanguage = applicationLocale.get()
+    override fun invoke(input: ApplicationTheme): Int =
+        when (input) {
+            ApplicationTheme.SYSTEM -> ApplicationTheme.SYSTEM.id
+            ApplicationTheme.DARK -> ApplicationTheme.DARK.id
+            ApplicationTheme.LIGHT -> ApplicationTheme.LIGHT.id
+        }
 }

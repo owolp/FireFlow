@@ -23,11 +23,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import dev.zitech.core.common.domain.error.Error
-import dev.zitech.core.common.domain.navigation.DeepLinkScreenDestination
-import dev.zitech.core.common.domain.navigation.LogInState
 import dev.zitech.dashboard.presentation.dashboard.viewmodel.DashboardViewModel
 import dev.zitech.ds.atoms.loading.FireFlowProgressIndicators
+import dev.zitech.fireflow.common.presentation.navigation.deeplink.DeepLinkScreenDestination
+import dev.zitech.fireflow.common.presentation.navigation.state.LogInState
+import dev.zitech.fireflow.core.error.Error
 
 @Composable
 internal fun DashboardRoute(
@@ -44,18 +44,21 @@ internal fun DashboardRoute(
         LogInState.InitScreen -> {
             FireFlowProgressIndicators.Magnifier()
         }
+
         LogInState.Logged -> {
             DashboardScreen(
                 modifier = modifier,
                 state = screenState
             )
         }
+
         is LogInState.NotLogged -> {
             LaunchedEffect(Unit) {
                 when (val destination = state.destination) {
                     DeepLinkScreenDestination.Accounts -> navigateToAccounts()
                     is DeepLinkScreenDestination.Error ->
                         navigateToError(destination.error)
+
                     DeepLinkScreenDestination.Welcome -> navigateToWelcome()
                     DeepLinkScreenDestination.Current,
                     DeepLinkScreenDestination.Init -> {

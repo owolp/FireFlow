@@ -23,13 +23,17 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dev.zitech.fireflow.common.data.memory.cache.InMemoryCache
+import dev.zitech.fireflow.common.data.reporter.analytics.AnalyticsReporter
+import dev.zitech.fireflow.common.data.reporter.crash.CrashReporter
+import dev.zitech.fireflow.common.data.reporter.performance.PerformanceReporter
+import dev.zitech.fireflow.common.data.repository.application.ApplicationRepositoryImpl
 import dev.zitech.fireflow.common.data.repository.cache.CacheRepositoryImpl
 import dev.zitech.fireflow.common.data.repository.configurator.ConfiguratorRepositoryImpl
 import dev.zitech.fireflow.common.data.repository.featureflag.FeatureFlagRepositoryImpl
 import dev.zitech.fireflow.common.data.repository.profile.FireflyProfileRepositoryImpl
-import dev.zitech.fireflow.common.data.repository.reporter.analytics.AnalyticsRepositoryImpl
-import dev.zitech.fireflow.common.data.repository.reporter.crash.CrashRepositoryImpl
-import dev.zitech.fireflow.common.data.repository.reporter.performance.PerformanceRepositoryImpl
+import dev.zitech.fireflow.common.data.repository.reporter.AnalyticsRepositoryImpl
+import dev.zitech.fireflow.common.data.repository.reporter.CrashRepositoryImpl
+import dev.zitech.fireflow.common.data.repository.reporter.PerformanceRepositoryImpl
 import dev.zitech.fireflow.common.data.repository.token.TokenRepositoryImpl
 import dev.zitech.fireflow.common.data.repository.user.NetworkDetails
 import dev.zitech.fireflow.common.data.repository.user.NetworkDetailsInMemoryCache
@@ -37,8 +41,13 @@ import dev.zitech.fireflow.common.data.repository.user.UserAccountRepositoryImpl
 import dev.zitech.fireflow.common.data.source.di.annotation.DevFeatureFlagSource as DevFeatureFlagSourceAnnotation
 import dev.zitech.fireflow.common.data.source.di.annotation.ProdFeatureFlagSource as ProdFeatureFlagSourceAnnotation
 import dev.zitech.fireflow.common.data.source.di.annotation.RemoteFeatureFlagSource as RemoteFeatureFlagSourceAnnotation
+import dev.zitech.fireflow.common.data.source.di.annotation.StandardPreferencesDataSource
 import dev.zitech.fireflow.common.data.source.featureflag.FeatureFlagSource
+import dev.zitech.fireflow.common.data.source.preferences.PreferencesDataSource
 import dev.zitech.fireflow.common.data.source.user.UserAccountSource
+import dev.zitech.fireflow.common.domain.mapper.application.ApplicationThemeToIntMapper
+import dev.zitech.fireflow.common.domain.mapper.application.IntToApplicationThemeMapper
+import dev.zitech.fireflow.common.domain.repository.application.ApplicationRepository
 import dev.zitech.fireflow.common.domain.repository.authentication.TokenRepository
 import dev.zitech.fireflow.common.domain.repository.cache.CacheRepository
 import dev.zitech.fireflow.common.domain.repository.configurator.ConfiguratorRepository
@@ -77,24 +86,6 @@ internal interface RepositoryModule {
 
         @Singleton
         @Binds
-        fun analyticsRepository(
-            analyticsRepositoryImpl: AnalyticsRepositoryImpl
-        ): AnalyticsRepository
-
-        @Singleton
-        @Binds
-        fun crashRepository(
-            crashRepositoryImpl: CrashRepositoryImpl
-        ): CrashRepository
-
-        @Singleton
-        @Binds
-        fun performanceRepository(
-            performanceRepositoryImpl: PerformanceRepositoryImpl
-        ): PerformanceRepository
-
-        @Singleton
-        @Binds
         fun networkDetailsInMemoryCache(
             networkDetailsInMemoryCache: NetworkDetailsInMemoryCache
         ): InMemoryCache<NetworkDetails>
@@ -112,6 +103,18 @@ internal interface RepositoryModule {
 
         @Singleton
         @Provides
+        fun applicationRepository(
+            @StandardPreferencesDataSource preferencesDataSource: PreferencesDataSource,
+            intToApplicationThemeMapper: IntToApplicationThemeMapper,
+            applicationThemeToIntMapper: ApplicationThemeToIntMapper
+        ): ApplicationRepository = ApplicationRepositoryImpl(
+            preferencesDataSource,
+            intToApplicationThemeMapper,
+            applicationThemeToIntMapper
+        )
+
+        @Singleton
+        @Provides
         fun featureFlagRepository(
             appConfigProvider: AppConfigProvider,
             @DevFeatureFlagSourceAnnotation devFeatureFlagSource: FeatureFlagSource,
@@ -122,6 +125,42 @@ internal interface RepositoryModule {
             devFeatureFlagSource,
             prodFeatureFlagSource,
             remoteFeatureFlagSource
+        )
+
+        @Singleton
+        @Provides
+        fun analyticsRepository(
+            appConfigProvider: AppConfigProvider,
+            analyticsReporter: AnalyticsReporter,
+            @StandardPreferencesDataSource preferencesDataSource: PreferencesDataSource
+        ): AnalyticsRepository = AnalyticsRepositoryImpl(
+            appConfigProvider,
+            analyticsReporter,
+            preferencesDataSource
+        )
+
+        @Singleton
+        @Provides
+        fun crashRepository(
+            appConfigProvider: AppConfigProvider,
+            crashReporter: CrashReporter,
+            @StandardPreferencesDataSource preferencesDataSource: PreferencesDataSource
+        ): CrashRepository = CrashRepositoryImpl(
+            appConfigProvider,
+            crashReporter,
+            preferencesDataSource
+        )
+
+        @Singleton
+        @Provides
+        fun performanceRepository(
+            appConfigProvider: AppConfigProvider,
+            performanceReporter: PerformanceReporter,
+            @StandardPreferencesDataSource preferencesDataSource: PreferencesDataSource
+        ): PerformanceRepository = PerformanceRepositoryImpl(
+            appConfigProvider,
+            performanceReporter,
+            preferencesDataSource
         )
 
         @Singleton

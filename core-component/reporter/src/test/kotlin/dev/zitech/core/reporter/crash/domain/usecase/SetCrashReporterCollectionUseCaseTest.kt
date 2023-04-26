@@ -20,9 +20,9 @@ package dev.zitech.core.reporter.crash.domain.usecase
 import dev.zitech.core.common.DataFactory
 import dev.zitech.core.persistence.domain.model.database.UserLoggedState
 import dev.zitech.core.persistence.domain.usecase.database.GetUserLoggedStateUseCase
-import dev.zitech.core.persistence.domain.usecase.preferences.GetCrashReporterCollectionValueUseCase
-import dev.zitech.core.persistence.domain.usecase.preferences.SaveCrashReporterCollectionValueUseCase
 import dev.zitech.core.reporter.crash.domain.repository.CrashRepository
+import dev.zitech.settings.domain.usecase.reporter.GetCrashReporterCollectionValueUseCase
+import dev.zitech.settings.domain.usecase.reporter.SaveCrashReporterCollectionValueUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -36,16 +36,16 @@ internal class SetCrashReporterCollectionUseCaseTest {
 
     private val crashRepository = mockk<CrashRepository>(relaxUnitFun = true)
     private val getUserLoggedStateUseCase = mockk<GetUserLoggedStateUseCase>()
-    private val getCrashReporterCollectionValueUseCase = mockk<GetCrashReporterCollectionValueUseCase>()
-    private val saveCrashReporterCollectionValueUseCase = mockk<SaveCrashReporterCollectionValueUseCase>(
+    private val getCrashReporterCollectionValueUseCase = mockk<dev.zitech.settings.domain.usecase.reporter.GetCrashReporterCollectionValueUseCase>()
+    private val saveCrashReporterCollectionValueUseCase = mockk<dev.zitech.settings.domain.usecase.reporter.SaveCrashReporterCollectionValueUseCase>(
         relaxUnitFun = true
     )
 
-    private lateinit var sut: SetCrashReporterCollectionUseCase
+    private lateinit var sut: dev.zitech.settings.domain.usecase.reporter.SetCrashReporterCollectionUseCase
 
     @BeforeEach
     fun setup() {
-        sut = SetCrashReporterCollectionUseCase(
+        sut = dev.zitech.settings.domain.usecase.reporter.SetCrashReporterCollectionUseCase(
             crashRepository,
             getUserLoggedStateUseCase,
             getCrashReporterCollectionValueUseCase,

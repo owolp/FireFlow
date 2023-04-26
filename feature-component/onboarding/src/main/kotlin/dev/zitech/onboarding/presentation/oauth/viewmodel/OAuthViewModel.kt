@@ -19,25 +19,26 @@ package dev.zitech.onboarding.presentation.oauth.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.zitech.authenticator.domain.model.Token
-import dev.zitech.authenticator.domain.usecase.GetAccessTokenUseCase
-import dev.zitech.core.common.domain.dispatcher.AppDispatchers
-import dev.zitech.core.common.domain.error.Error
-import dev.zitech.core.common.domain.model.Work
-import dev.zitech.core.common.domain.model.onError
-import dev.zitech.core.common.domain.model.onSuccess
-import dev.zitech.core.common.presentation.architecture.MviViewModel
-import dev.zitech.core.network.domain.usecase.GetFireflyProfileUseCase
-import dev.zitech.core.persistence.domain.model.database.UserAccount
-import dev.zitech.core.persistence.domain.usecase.database.GetUserAccountByStateUseCase
-import dev.zitech.core.persistence.domain.usecase.database.RemoveStaleUserAccountsUseCase
-import dev.zitech.core.persistence.domain.usecase.database.SaveUserAccountUseCase
-import dev.zitech.core.persistence.domain.usecase.database.UpdateCurrentUserAccountUseCase
-import dev.zitech.core.persistence.domain.usecase.database.UpdateCurrentUserAccountUseCase.Email
-import dev.zitech.core.persistence.domain.usecase.database.UpdateCurrentUserAccountUseCase.FireflyId
-import dev.zitech.core.persistence.domain.usecase.database.UpdateCurrentUserAccountUseCase.Role
-import dev.zitech.core.persistence.domain.usecase.database.UpdateCurrentUserAccountUseCase.Type
-import dev.zitech.core.persistence.domain.usecase.database.UpdateUserAccountUseCase
+import dev.zitech.fireflow.common.domain.model.authentication.Token
+import dev.zitech.fireflow.common.domain.model.user.UserAccount
+import dev.zitech.fireflow.common.domain.model.user.UserAuthenticationType
+import dev.zitech.fireflow.common.domain.usecase.profile.GetFireflyProfileUseCase
+import dev.zitech.fireflow.common.domain.usecase.user.GetUserAccountByStateUseCase
+import dev.zitech.fireflow.common.domain.usecase.user.RemoveStaleUserAccountsUseCase
+import dev.zitech.fireflow.common.domain.usecase.user.SaveUserAccountUseCase
+import dev.zitech.fireflow.common.domain.usecase.user.UpdateCurrentUserAccountUseCase
+import dev.zitech.fireflow.common.domain.usecase.user.UpdateCurrentUserAccountUseCase.Email
+import dev.zitech.fireflow.common.domain.usecase.user.UpdateCurrentUserAccountUseCase.FireflyId
+import dev.zitech.fireflow.common.domain.usecase.user.UpdateCurrentUserAccountUseCase.Role
+import dev.zitech.fireflow.common.domain.usecase.user.UpdateCurrentUserAccountUseCase.Type
+import dev.zitech.fireflow.common.domain.usecase.user.UpdateUserAccountUseCase
+import dev.zitech.fireflow.common.presentation.architecture.MviViewModel
+import dev.zitech.fireflow.core.dispatcher.AppDispatchers
+import dev.zitech.fireflow.core.error.Error
+import dev.zitech.fireflow.core.work.Work
+import dev.zitech.fireflow.core.work.onError
+import dev.zitech.fireflow.core.work.onSuccess
+import dev.zitech.onboarding.domain.usecase.GetAccessTokenUseCase
 import dev.zitech.onboarding.domain.usecase.IsOAuthLoginInputValidUseCase
 import dev.zitech.onboarding.domain.validator.ClientIdValidator
 import dev.zitech.onboarding.presentation.oauth.model.OAuthAuthentication
@@ -146,6 +147,7 @@ internal class OAuthViewModel @Inject constructor(
                         )
                     }
                 }
+
                 else -> {
                     updateState {
                         copy(
@@ -172,7 +174,7 @@ internal class OAuthViewModel @Inject constructor(
         getUserAccountByStateUseCase(state)
             .onSuccess { userAccount ->
                 val authenticationType = userAccount.authenticationType
-                if (authenticationType is UserAccount.AuthenticationType.OAuth) {
+                if (authenticationType is UserAuthenticationType.OAuth) {
                     val clientId = authenticationType.clientId
                     val clientSecret = authenticationType.clientSecret
                     updateState {
@@ -259,7 +261,7 @@ internal class OAuthViewModel @Inject constructor(
         oauthCode: String
     ) {
         val updatedUserAccount = userAccount.copy(
-            authenticationType = UserAccount.AuthenticationType.OAuth(
+            authenticationType = UserAuthenticationType.OAuth(
                 accessToken = accessToken.accessToken,
                 clientId = clientId,
                 clientSecret = clientSecret,

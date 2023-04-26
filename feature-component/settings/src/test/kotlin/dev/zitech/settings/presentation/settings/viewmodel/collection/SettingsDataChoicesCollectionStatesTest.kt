@@ -19,14 +19,14 @@ package dev.zitech.settings.presentation.settings.viewmodel.collection
 
 import com.google.common.truth.Truth.assertThat
 import dev.zitech.core.common.DataFactory
-import dev.zitech.core.persistence.domain.usecase.preferences.GetAllowPersonalizedAdsValueUseCase
-import dev.zitech.core.persistence.domain.usecase.preferences.GetAnalyticsCollectionValueUseCase
-import dev.zitech.core.persistence.domain.usecase.preferences.GetCrashReporterCollectionValueUseCase
-import dev.zitech.core.persistence.domain.usecase.preferences.GetPerformanceCollectionValueUseCase
 import dev.zitech.core.reporter.analytics.domain.usecase.AllowPersonalizedAdsUseCase
 import dev.zitech.core.reporter.analytics.domain.usecase.SetAnalyticsCollectionUseCase
 import dev.zitech.core.reporter.crash.domain.usecase.SetCrashReporterCollectionUseCase
 import dev.zitech.core.reporter.performance.domain.usecase.SetPerformanceCollectionUseCase
+import dev.zitech.fireflow.common.domain.usecase.reporter.GetAllowPersonalizedAdsValueUseCase
+import dev.zitech.fireflow.common.domain.usecase.reporter.GetAnalyticsCollectionValueUseCase
+import dev.zitech.fireflow.common.domain.usecase.reporter.GetCrashReporterCollectionValueUseCase
+import dev.zitech.fireflow.common.domain.usecase.reporter.GetPerformanceCollectionValueUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

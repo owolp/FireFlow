@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,11 +15,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.persistence.framework.preference.mapper
+package dev.zitech.fireflow.common.domain.mapper.application
 
-import dev.zitech.core.common.data.mapper.Mapper
-import dev.zitech.core.common.domain.logger.Logger
-import dev.zitech.core.common.domain.model.ApplicationTheme
+import dev.zitech.fireflow.common.domain.mapper.Mapper
+import dev.zitech.fireflow.common.domain.model.application.ApplicationTheme
+import dev.zitech.fireflow.core.logger.Logger
 import javax.inject.Inject
 
 class IntToApplicationThemeMapper @Inject constructor() : Mapper<Int, ApplicationTheme> {

@@ -17,7 +17,7 @@
 
 package dev.zitech.fireflow.presentation.model
 
-import dev.zitech.core.common.domain.model.ApplicationTheme
+import dev.zitech.fireflow.common.domain.model.application.ApplicationTheme
 
 internal data class LaunchState(
     val status: Status

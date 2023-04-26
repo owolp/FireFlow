@@ -25,10 +25,10 @@ import com.facebook.flipper.plugins.navigation.NavigationFlipperPlugin
 import com.facebook.flipper.plugins.sharedpreferences.SharedPreferencesFlipperPlugin
 import com.facebook.flipper.plugins.sharedpreferences.SharedPreferencesFlipperPlugin.SharedPreferencesDescriptor
 import com.facebook.soloader.SoLoader
-import dev.zitech.core.common.data.preferences.PreferencesConstants.DEVELOPMENT_PREFERENCES_NAME
-import dev.zitech.core.common.data.preferences.PreferencesConstants.SECURED_PREFERENCES_NAME
-import dev.zitech.core.common.data.preferences.PreferencesConstants.STANDARD_PREFERENCES_NAME
-import dev.zitech.core.network.framework.debugger.NetworkDebugger.networkFlipperPlugin
+import dev.zitech.fireflow.common.data.remote.rest.debugger.NetworkDebugger.networkFlipperPlugin
+import dev.zitech.fireflow.common.data.source.preferences.DEVELOPMENT_PREFERENCES_NAME
+import dev.zitech.fireflow.common.data.source.preferences.SECURED_PREFERENCES_NAME
+import dev.zitech.fireflow.common.data.source.preferences.STANDARD_PREFERENCES_NAME
 
 object Debugger {
 

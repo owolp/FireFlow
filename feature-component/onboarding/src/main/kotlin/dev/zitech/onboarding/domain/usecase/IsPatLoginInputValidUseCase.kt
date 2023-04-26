@@ -17,7 +17,7 @@
 
 package dev.zitech.onboarding.domain.usecase
 
-import dev.zitech.core.common.domain.validator.Validator
+import dev.zitech.fireflow.common.presentation.validator.Validator
 import dev.zitech.onboarding.di.annotation.ValidatorPat
 import dev.zitech.onboarding.di.annotation.ValidatorServerAddress
 import javax.inject.Inject

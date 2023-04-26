@@ -17,8 +17,8 @@
 
 package dev.zitech.onboarding.presentation.oauth.viewmodel
 
-import dev.zitech.core.common.domain.model.Work
-import dev.zitech.core.common.presentation.architecture.MviIntent
+import dev.zitech.fireflow.common.presentation.architecture.MviIntent
+import dev.zitech.fireflow.core.work.Work
 import dev.zitech.onboarding.presentation.oauth.model.OAuthAuthentication
 
 internal data class ClientIdChanged(val clientId: String) : OAuthIntent

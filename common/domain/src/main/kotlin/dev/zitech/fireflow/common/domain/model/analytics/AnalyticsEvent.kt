@@ -18,8 +18,8 @@
 package dev.zitech.fireflow.common.domain.model.analytics
 
 interface AnalyticsEvent {
-    val name: String
     val description: String
+    val name: String
     val params: Map<String, Any?>
     val providers: List<AnalyticsProvider>
 }

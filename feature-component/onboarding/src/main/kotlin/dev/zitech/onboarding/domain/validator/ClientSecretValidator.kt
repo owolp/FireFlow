@@ -17,7 +17,7 @@
 
 package dev.zitech.onboarding.domain.validator
 
-import dev.zitech.core.common.domain.validator.Validator
+import dev.zitech.fireflow.common.presentation.validator.Validator
 import javax.inject.Inject
 
 internal class ClientSecretValidator @Inject constructor() : Validator<String> {

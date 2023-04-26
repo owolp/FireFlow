@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@ package dev.zitech.settings.domain.usecase
 
 import com.google.common.truth.Truth.assertThat
 import dev.zitech.core.common.domain.model.ApplicationLanguage
+import dev.zitech.settings.domain.usecase.application.GetApplicationLanguageValueUseCase
 import dev.zitech.settings.frawework.locale.ApplicationLocale
 import io.mockk.coVerify
 import io.mockk.every

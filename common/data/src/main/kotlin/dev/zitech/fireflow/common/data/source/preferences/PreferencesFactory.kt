@@ -21,11 +21,11 @@ import android.content.Context
 import dev.zitech.fireflow.common.domain.model.preferences.PreferenceType
 import dev.zitech.fireflow.core.dispatcher.AppDispatchers
 
-internal object PreferencesFactory {
+const val DEVELOPMENT_PREFERENCES_NAME = "development_preferences"
+const val SECURED_PREFERENCES_NAME = "secured_preferences"
+const val STANDARD_PREFERENCES_NAME = "standard_preferences"
 
-    private const val DEVELOPMENT_PREFERENCES_NAME = "development_preferences"
-    private const val SECURED_PREFERENCES_NAME = "secured_preferences"
-    private const val STANDARD_PREFERENCES_NAME = "standard_preferences"
+internal object PreferencesFactory {
 
     fun createsPreferences(
         appDispatchers: AppDispatchers,
@@ -40,6 +40,7 @@ internal object PreferencesFactory {
                     context = context
                 )
             }
+
             PreferenceType.SECURED -> {
                 SecuredPreferencesDataSource(
                     appDispatchers = appDispatchers,
@@ -47,6 +48,7 @@ internal object PreferencesFactory {
                     context = context
                 )
             }
+
             PreferenceType.STANDARD -> {
                 StandardPreferencesDataSource(
                     appDispatchers = appDispatchers,

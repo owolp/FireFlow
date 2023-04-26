@@ -17,7 +17,7 @@
 
 package dev.zitech.authentication.presentation.accounts.viewmodel
 
-import dev.zitech.core.common.presentation.architecture.MviIntent
+import dev.zitech.fireflow.common.presentation.architecture.MviIntent
 
 internal sealed interface AccountsIntent : MviIntent
 internal object LoginClicked : AccountsIntent

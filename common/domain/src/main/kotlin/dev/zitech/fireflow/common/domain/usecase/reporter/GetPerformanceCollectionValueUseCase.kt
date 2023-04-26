@@ -15,25 +15,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.fireflow.common.data.repository.reporter.performance
+package dev.zitech.fireflow.common.domain.usecase.reporter
 
-import dev.zitech.fireflow.common.data.reporter.performance.PerformanceReporter
 import dev.zitech.fireflow.common.domain.repository.reporter.PerformanceRepository
-import dev.zitech.fireflow.core.applicationconfig.AppConfigProvider
-import dev.zitech.fireflow.core.applicationconfig.BuildMode
 import javax.inject.Inject
+import kotlinx.coroutines.flow.first
 
-internal class PerformanceRepositoryImpl @Inject constructor(
-    private val appConfigProvider: AppConfigProvider,
-    private val performanceReporter: PerformanceReporter
-) : PerformanceRepository {
+class GetPerformanceCollectionValueUseCase @Inject constructor(
+    private val performanceRepository: PerformanceRepository
+) {
 
-    override fun setCollectionEnabled(enabled: Boolean) {
-        performanceReporter.setCollectionEnabled(
-            when (appConfigProvider.buildMode) {
-                BuildMode.RELEASE -> enabled
-                BuildMode.DEBUG -> false
-            }
-        )
-    }
+    suspend operator fun invoke(): Boolean =
+        performanceRepository.getCollectionEnabled().first()
 }

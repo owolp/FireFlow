@@ -18,10 +18,13 @@
 package dev.zitech.fireflow.common.domain.repository.reporter
 
 import dev.zitech.fireflow.common.domain.model.analytics.AnalyticsEvent
+import kotlinx.coroutines.flow.Flow
 
 interface AnalyticsRepository {
 
-    fun allowPersonalizedAds(enabled: Boolean)
-    fun setCollectionEnabled(enabled: Boolean)
+    fun getAllowPersonalizedAds(): Flow<Boolean>
+    fun getCollectionEnabled(): Flow<Boolean>
     fun logEvent(analyticsEvent: AnalyticsEvent)
+    suspend fun setAllowPersonalizedAds(enabled: Boolean)
+    suspend fun setCollectionEnabled(enabled: Boolean)
 }

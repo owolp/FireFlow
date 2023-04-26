@@ -17,8 +17,8 @@
 
 package dev.zitech.onboarding.presentation.welcome.viewmodel
 
-import dev.zitech.core.common.domain.error.FireFlowError
-import dev.zitech.core.common.presentation.architecture.MviState
+import dev.zitech.fireflow.common.presentation.architecture.MviState
+import dev.zitech.fireflow.core.error.FireFlowError
 
 internal data class WelcomeState(
     val demo: Boolean = false,

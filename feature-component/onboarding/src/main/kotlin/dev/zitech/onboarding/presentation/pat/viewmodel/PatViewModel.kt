@@ -19,17 +19,18 @@ package dev.zitech.onboarding.presentation.pat.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.zitech.core.common.domain.dispatcher.AppDispatchers
-import dev.zitech.core.common.domain.error.Error
-import dev.zitech.core.common.domain.model.onError
-import dev.zitech.core.common.domain.model.onSuccess
-import dev.zitech.core.common.presentation.architecture.MviViewModel
-import dev.zitech.core.network.domain.usecase.GetFireflyProfileUseCase
-import dev.zitech.core.persistence.domain.model.database.UserAccount
-import dev.zitech.core.persistence.domain.usecase.database.GetUserAccountByStateUseCase
-import dev.zitech.core.persistence.domain.usecase.database.RemoveStaleUserAccountsUseCase
-import dev.zitech.core.persistence.domain.usecase.database.SaveUserAccountUseCase
-import dev.zitech.core.persistence.domain.usecase.database.UpdateUserAccountUseCase
+import dev.zitech.fireflow.common.domain.model.user.UserAccount
+import dev.zitech.fireflow.common.domain.model.user.UserAuthenticationType
+import dev.zitech.fireflow.common.domain.usecase.profile.GetFireflyProfileUseCase
+import dev.zitech.fireflow.common.domain.usecase.user.GetUserAccountByStateUseCase
+import dev.zitech.fireflow.common.domain.usecase.user.RemoveStaleUserAccountsUseCase
+import dev.zitech.fireflow.common.domain.usecase.user.SaveUserAccountUseCase
+import dev.zitech.fireflow.common.domain.usecase.user.UpdateUserAccountUseCase
+import dev.zitech.fireflow.common.presentation.architecture.MviViewModel
+import dev.zitech.fireflow.core.dispatcher.AppDispatchers
+import dev.zitech.fireflow.core.error.Error
+import dev.zitech.fireflow.core.work.onError
+import dev.zitech.fireflow.core.work.onSuccess
 import dev.zitech.onboarding.domain.usecase.IsPatLoginInputValidUseCase
 import javax.inject.Inject
 import kotlinx.coroutines.delay
@@ -81,7 +82,7 @@ internal class PatViewModel @Inject constructor(
         getUserAccountByStateUseCase(state)
             .onSuccess { userAccount ->
                 val authenticationType = userAccount.authenticationType
-                if (authenticationType is UserAccount.AuthenticationType.Pat) {
+                if (authenticationType is UserAuthenticationType.Pat) {
                     val accessToken = authenticationType.accessToken
                     checkToken(userAccount, accessToken)
                 } else {
@@ -162,7 +163,7 @@ internal class PatViewModel @Inject constructor(
         userAccount: UserAccount
     ) {
         val updatedUserAccount = userAccount.copy(
-            authenticationType = UserAccount.AuthenticationType.Pat(
+            authenticationType = UserAuthenticationType.Pat(
                 accessToken = accessToken
             ),
             email = email,

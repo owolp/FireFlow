@@ -22,7 +22,7 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
-import dev.zitech.core.common.domain.validator.Validator
+import dev.zitech.fireflow.common.presentation.validator.Validator
 import dev.zitech.onboarding.di.annotation.ValidatorClientId
 import dev.zitech.onboarding.di.annotation.ValidatorClientSecret
 import dev.zitech.onboarding.di.annotation.ValidatorPat

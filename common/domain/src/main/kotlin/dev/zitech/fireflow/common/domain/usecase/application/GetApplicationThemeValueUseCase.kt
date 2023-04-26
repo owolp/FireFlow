@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,16 +15,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.reporter.analytics.domain.model.event
+package dev.zitech.fireflow.common.domain.usecase.application
 
-import dev.zitech.core.reporter.analytics.domain.model.AnalyticsProvider
+import dev.zitech.fireflow.common.domain.model.application.ApplicationTheme
+import dev.zitech.fireflow.common.domain.repository.application.ApplicationRepository
+import javax.inject.Inject
+import kotlinx.coroutines.flow.Flow
 
-class ApplicationLaunchEvent(
-    override val name: String = "application.launch",
-    override val description: String = "Application Launched",
-    override val params: Map<String, Any?> = emptyMap(),
-    override val providers: List<AnalyticsProvider> = listOf(
-        AnalyticsProvider.FIREBASE,
-        AnalyticsProvider.HUAWEI
-    )
-) : AnalyticsEvent
+class GetApplicationThemeValueUseCase @Inject constructor(
+    private val applicationRepository: ApplicationRepository
+) {
+
+    operator fun invoke(): Flow<ApplicationTheme> =
+        applicationRepository.getApplicationTheme()
+}

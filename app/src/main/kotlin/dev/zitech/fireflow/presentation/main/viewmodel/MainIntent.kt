@@ -17,7 +17,7 @@
 
 package dev.zitech.fireflow.presentation.main.viewmodel
 
-import dev.zitech.core.common.presentation.architecture.MviIntent
+import dev.zitech.fireflow.common.presentation.architecture.MviIntent
 
 internal sealed interface MainIntent : MviIntent
 

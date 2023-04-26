@@ -20,11 +20,11 @@ package dev.zitech.core.reporter.performance.domain.usecase
 import dev.zitech.core.common.DataFactory
 import dev.zitech.core.persistence.domain.model.database.UserLoggedState
 import dev.zitech.core.persistence.domain.usecase.database.GetUserLoggedStateUseCase
-import dev.zitech.core.persistence.domain.usecase.preferences.GetPerformanceCollectionValueUseCase
-import dev.zitech.core.persistence.domain.usecase.preferences.SavePerformanceCollectionValueUseCase
 import dev.zitech.core.remoteconfig.domain.model.BooleanConfig
 import dev.zitech.core.remoteconfig.domain.usecase.GetBooleanConfigValueUseCase
 import dev.zitech.core.reporter.performance.domain.repository.PerformanceRepository
+import dev.zitech.settings.domain.usecase.reporter.GetPerformanceCollectionValueUseCase
+import dev.zitech.settings.domain.usecase.reporter.SavePerformanceCollectionValueUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -38,17 +38,17 @@ internal class SetPerformanceCollectionUseCaseTest {
 
     private val performanceRepository = mockk<PerformanceRepository>(relaxUnitFun = true)
     private val getUserLoggedStateUseCase = mockk<GetUserLoggedStateUseCase>()
-    private val getPerformanceCollectionValueUseCase = mockk<GetPerformanceCollectionValueUseCase>()
+    private val getPerformanceCollectionValueUseCase = mockk<dev.zitech.settings.domain.usecase.reporter.GetPerformanceCollectionValueUseCase>()
     private val getBooleanConfigValueUseCase = mockk<GetBooleanConfigValueUseCase>()
-    private val savePerformanceCollectionValueUseCase = mockk<SavePerformanceCollectionValueUseCase>(
+    private val savePerformanceCollectionValueUseCase = mockk<dev.zitech.settings.domain.usecase.reporter.SavePerformanceCollectionValueUseCase>(
         relaxUnitFun = true
     )
 
-    private lateinit var sut: SetPerformanceCollectionUseCase
+    private lateinit var sut: dev.zitech.settings.domain.usecase.reporter.SetPerformanceCollectionUseCase
 
     @BeforeEach
     fun setup() {
-        sut = SetPerformanceCollectionUseCase(
+        sut = dev.zitech.settings.domain.usecase.reporter.SetPerformanceCollectionUseCase(
             performanceRepository,
             getUserLoggedStateUseCase,
             getPerformanceCollectionValueUseCase,

@@ -20,9 +20,9 @@ package dev.zitech.core.reporter.analytics.domain.usecase
 import dev.zitech.core.common.DataFactory
 import dev.zitech.core.persistence.domain.model.database.UserLoggedState
 import dev.zitech.core.persistence.domain.usecase.database.GetUserLoggedStateUseCase
-import dev.zitech.core.persistence.domain.usecase.preferences.GetAnalyticsCollectionValueUseCase
-import dev.zitech.core.persistence.domain.usecase.preferences.SaveAnalyticsCollectionValueUseCase
 import dev.zitech.core.reporter.analytics.domain.repository.AnalyticsRepository
+import dev.zitech.settings.domain.usecase.analytics.GetAnalyticsCollectionValueUseCase
+import dev.zitech.settings.domain.usecase.analytics.SaveAnalyticsCollectionValueUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -36,16 +36,16 @@ internal class SetAnalyticsCollectionUseCaseTest {
 
     private val analyticsRepository = mockk<AnalyticsRepository>(relaxUnitFun = true)
     private val getUserLoggedStateUseCase = mockk<GetUserLoggedStateUseCase>()
-    private val getAnalyticsCollectionValueUseCase = mockk<GetAnalyticsCollectionValueUseCase>()
-    private val saveAnalyticsCollectionValueUseCase = mockk<SaveAnalyticsCollectionValueUseCase>(
+    private val getAnalyticsCollectionValueUseCase = mockk<dev.zitech.settings.domain.usecase.analytics.GetAnalyticsCollectionValueUseCase>()
+    private val saveAnalyticsCollectionValueUseCase = mockk<dev.zitech.settings.domain.usecase.analytics.SaveAnalyticsCollectionValueUseCase>(
         relaxUnitFun = true
     )
 
-    private lateinit var sut: SetAnalyticsCollectionUseCase
+    private lateinit var sut: dev.zitech.settings.domain.usecase.analytics.SetAnalyticsCollectionUseCase
 
     @BeforeEach
     fun setup() {
-        sut = SetAnalyticsCollectionUseCase(
+        sut = dev.zitech.settings.domain.usecase.analytics.SetAnalyticsCollectionUseCase(
             analyticsRepository,
             getUserLoggedStateUseCase,
             getAnalyticsCollectionValueUseCase,

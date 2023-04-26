@@ -17,7 +17,7 @@
 
 package dev.zitech.fireflow.domain.usecase
 
-import dev.zitech.core.featureflag.domain.repository.FeatureFlagRepository
+import dev.zitech.fireflow.common.domain.repository.featureflag.FeatureFlagRepository
 import javax.inject.Inject
 
 internal class InitializeFlagProvidersUseCase @Inject constructor(

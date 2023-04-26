@@ -20,10 +20,10 @@ package dev.zitech.settings.presentation.settings.viewmodel.collection
 import com.google.common.truth.Truth.assertThat
 import dev.zitech.core.common.domain.model.ApplicationLanguage
 import dev.zitech.core.common.domain.model.ApplicationTheme
-import dev.zitech.core.persistence.domain.usecase.preferences.GetApplicationThemeValueUseCase
-import dev.zitech.core.persistence.domain.usecase.preferences.SetApplicationThemeValueUseCase
-import dev.zitech.settings.domain.usecase.GetApplicationLanguageValueUseCase
-import dev.zitech.settings.domain.usecase.SetApplicationLanguageValueUseCase
+import dev.zitech.fireflow.common.domain.usecase.application.GetApplicationThemeValueUseCase
+import dev.zitech.fireflow.common.domain.usecase.application.SetApplicationThemeValueUseCase
+import dev.zitech.settings.domain.usecase.application.GetApplicationLanguageValueUseCase
+import dev.zitech.settings.domain.usecase.application.SetApplicationLanguageValueUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

@@ -19,7 +19,7 @@ package dev.zitech.authentication.presentation.accounts.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.zitech.core.common.presentation.architecture.MviViewModel
+import dev.zitech.fireflow.common.presentation.architecture.MviViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 

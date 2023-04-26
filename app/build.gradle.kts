@@ -89,7 +89,7 @@ dependencies {
     implementation(projects.core)
     implementation(projects.common.data)
     implementation(projects.common.domain)
-    implementation(projects.coreComponent.core)
+    implementation(projects.common.presentation)
     implementation(projects.designSystem)
     implementation(projects.featureComponent.feature)
 

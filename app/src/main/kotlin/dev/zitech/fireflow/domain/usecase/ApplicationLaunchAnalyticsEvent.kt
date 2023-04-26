@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,17 +15,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.settings.domain.usecase
+package dev.zitech.fireflow.domain.usecase
 
-import dev.zitech.core.common.domain.model.ApplicationLanguage
-import dev.zitech.settings.frawework.locale.ApplicationLocale
+import dev.zitech.fireflow.common.domain.model.event.ApplicationLaunchEvent
+import dev.zitech.fireflow.common.domain.repository.reporter.AnalyticsRepository
 import javax.inject.Inject
 
-internal class SetApplicationLanguageValueUseCase @Inject constructor(
-    private val applicationLocale: ApplicationLocale
+internal class ApplicationLaunchAnalyticsEvent @Inject constructor(
+    private val analyticsRepository: AnalyticsRepository
 ) {
 
-    operator fun invoke(applicationLanguage: ApplicationLanguage) {
-        applicationLocale.set(applicationLanguage)
+    operator fun invoke() {
+        analyticsRepository.logEvent(ApplicationLaunchEvent())
     }
 }

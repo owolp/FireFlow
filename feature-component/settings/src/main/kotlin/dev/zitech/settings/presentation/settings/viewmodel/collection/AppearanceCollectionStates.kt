@@ -17,25 +17,24 @@
 
 package dev.zitech.settings.presentation.settings.viewmodel.collection
 
-import dev.zitech.core.common.domain.model.ApplicationLanguage
-import dev.zitech.core.common.domain.model.ApplicationTheme
-import dev.zitech.core.persistence.domain.usecase.preferences.GetApplicationThemeValueUseCase
-import dev.zitech.core.persistence.domain.usecase.preferences.SetApplicationThemeValueUseCase
-import dev.zitech.settings.domain.usecase.GetApplicationLanguageValueUseCase
-import dev.zitech.settings.domain.usecase.SetApplicationLanguageValueUseCase
+import dev.zitech.fireflow.common.domain.model.application.ApplicationLanguage
+import dev.zitech.fireflow.common.domain.model.application.ApplicationTheme
+import dev.zitech.fireflow.common.domain.usecase.application.GetApplicationThemeValueUseCase
+import dev.zitech.fireflow.common.domain.usecase.application.SetApplicationThemeValueUseCase
+import dev.zitech.settings.domain.usecase.application.GetApplicationLanguageValueUseCase
+import dev.zitech.settings.domain.usecase.application.SetApplicationLanguageValueUseCase
 import javax.inject.Inject
 import kotlinx.coroutines.flow.first
 
 internal class AppearanceCollectionStates @Inject constructor(
-    private val getApplicationThemeValueUseCase: GetApplicationThemeValueUseCase,
-    private val setApplicationThemeValueUseCase: SetApplicationThemeValueUseCase,
     private val getApplicationLanguageValueUseCase: GetApplicationLanguageValueUseCase,
-    private val setApplicationLanguageValueUseCase: SetApplicationLanguageValueUseCase
+    private val getApplicationThemeValueUseCase: GetApplicationThemeValueUseCase,
+    private val setApplicationLanguageValueUseCase: SetApplicationLanguageValueUseCase,
+    private val setApplicationThemeValueUseCase: SetApplicationThemeValueUseCase
 ) {
 
-    suspend fun setApplicationThemeValue(applicationTheme: ApplicationTheme) {
-        setApplicationThemeValueUseCase(applicationTheme)
-    }
+    fun getApplicationLanguageValue(): ApplicationLanguage =
+        getApplicationLanguageValueUseCase()
 
     suspend fun getApplicationThemeValue(): ApplicationTheme =
         getApplicationThemeValueUseCase().first()
@@ -44,6 +43,7 @@ internal class AppearanceCollectionStates @Inject constructor(
         setApplicationLanguageValueUseCase(applicationLanguage)
     }
 
-    fun getApplicationLanguageValue(): ApplicationLanguage =
-        getApplicationLanguageValueUseCase()
+    suspend fun setApplicationThemeValue(applicationTheme: ApplicationTheme) {
+        setApplicationThemeValueUseCase(applicationTheme)
+    }
 }

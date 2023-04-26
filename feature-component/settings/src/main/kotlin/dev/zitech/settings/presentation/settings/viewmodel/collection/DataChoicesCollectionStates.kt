@@ -17,52 +17,52 @@
 
 package dev.zitech.settings.presentation.settings.viewmodel.collection
 
-import dev.zitech.core.persistence.domain.usecase.preferences.GetAllowPersonalizedAdsValueUseCase
-import dev.zitech.core.persistence.domain.usecase.preferences.GetAnalyticsCollectionValueUseCase
-import dev.zitech.core.persistence.domain.usecase.preferences.GetCrashReporterCollectionValueUseCase
-import dev.zitech.core.persistence.domain.usecase.preferences.GetPerformanceCollectionValueUseCase
-import dev.zitech.core.reporter.analytics.domain.usecase.AllowPersonalizedAdsUseCase
-import dev.zitech.core.reporter.analytics.domain.usecase.SetAnalyticsCollectionUseCase
-import dev.zitech.core.reporter.crash.domain.usecase.SetCrashReporterCollectionUseCase
-import dev.zitech.core.reporter.performance.domain.usecase.SetPerformanceCollectionUseCase
+import dev.zitech.fireflow.common.domain.usecase.reporter.GetAllowPersonalizedAdsValueUseCase
+import dev.zitech.fireflow.common.domain.usecase.reporter.GetAnalyticsCollectionValueUseCase
+import dev.zitech.fireflow.common.domain.usecase.reporter.GetCrashReporterCollectionValueUseCase
+import dev.zitech.fireflow.common.domain.usecase.reporter.GetPerformanceCollectionValueUseCase
+import dev.zitech.fireflow.common.domain.usecase.reporter.SetAllowPersonalizedAdsUseCase
+import dev.zitech.fireflow.common.domain.usecase.reporter.SetAnalyticsCollectionUseCase
+import dev.zitech.fireflow.common.domain.usecase.reporter.SetCrashReporterCollectionUseCase
+import dev.zitech.fireflow.common.domain.usecase.reporter.SetPerformanceCollectionUseCase
 import javax.inject.Inject
 
 internal class DataChoicesCollectionStates @Inject constructor(
-    private val getAnalyticsCollectionValueUseCase: GetAnalyticsCollectionValueUseCase,
-    private val setAnalyticsCollectionUseCase: SetAnalyticsCollectionUseCase,
     private val getAllowPersonalizedAdsValueUseCase: GetAllowPersonalizedAdsValueUseCase,
-    private val allowPersonalizedAdsUseCase: AllowPersonalizedAdsUseCase,
+    private val getAnalyticsCollectionValueUseCase: GetAnalyticsCollectionValueUseCase,
     private val getCrashReporterCollectionValueUseCase: GetCrashReporterCollectionValueUseCase,
-    private val setCrashReporterCollectionUseCase: SetCrashReporterCollectionUseCase,
     private val getPerformanceCollectionValueUseCase: GetPerformanceCollectionValueUseCase,
+    private val setAllowPersonalizedAdsUseCase: SetAllowPersonalizedAdsUseCase,
+    private val setAnalyticsCollectionUseCase: SetAnalyticsCollectionUseCase,
+    private val setCrashReporterCollectionUseCase: SetCrashReporterCollectionUseCase,
     private val setPerformanceCollectionUseCase: SetPerformanceCollectionUseCase
 ) {
+
+    suspend fun getAllowPersonalizedAdsValue(): Boolean =
+        getAllowPersonalizedAdsValueUseCase()
+
+    suspend fun getAnalyticsCollectionValue(): Boolean =
+        getAnalyticsCollectionValueUseCase()
+
+    suspend fun getCrashReporterCollectionValue(): Boolean =
+        getCrashReporterCollectionValueUseCase()
+
+    suspend fun getPerformanceCollectionValue(): Boolean =
+        getPerformanceCollectionValueUseCase()
+
+    suspend fun setAllowPersonalizedAdsValue(checked: Boolean) {
+        setAllowPersonalizedAdsUseCase(checked)
+    }
 
     suspend fun setAnalyticsCollection(checked: Boolean) {
         setAnalyticsCollectionUseCase(checked)
     }
 
-    suspend fun getAnalyticsCollectionValue(): Boolean =
-        getAnalyticsCollectionValueUseCase()
-
-    suspend fun setAllowPersonalizedAdsValue(checked: Boolean) {
-        allowPersonalizedAdsUseCase(checked)
-    }
-
-    suspend fun getAllowPersonalizedAdsValue(): Boolean =
-        getAllowPersonalizedAdsValueUseCase()
-
     suspend fun setCrashReporterCollection(checked: Boolean) {
         setCrashReporterCollectionUseCase(checked)
     }
 
-    suspend fun getCrashReporterCollectionValue(): Boolean =
-        getCrashReporterCollectionValueUseCase()
-
     suspend fun setPerformanceCollection(checked: Boolean) {
         setPerformanceCollectionUseCase(checked)
     }
-
-    suspend fun getPerformanceCollectionValue(): Boolean =
-        getPerformanceCollectionValueUseCase()
 }

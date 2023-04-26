@@ -19,8 +19,8 @@ package dev.zitech.fireflow.initializer
 
 import android.content.Context
 import androidx.startup.Initializer
-import dev.zitech.core.featureflag.domain.model.DevFeature
-import dev.zitech.core.featureflag.domain.usecase.IsFeatureEnabledUseCase
+import dev.zitech.fireflow.common.domain.model.featureflag.DevFeature
+import dev.zitech.fireflow.common.domain.usecase.featureflag.IsFeatureEnabledUseCase
 import dev.zitech.fireflow.core.scope.AppScopes
 import dev.zitech.fireflow.di.DebugInitializerEntryPoint
 import dev.zitech.fireflow.framework.leak.MemoryLeakDetector

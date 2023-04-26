@@ -23,7 +23,7 @@ import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.core.persistence.data.preferences.repository.FakePreferencesRepository
 import dev.zitech.core.persistence.domain.model.preferences.IntPreference
 import dev.zitech.core.persistence.domain.model.preferences.PreferenceType
-import dev.zitech.core.persistence.framework.preference.mapper.IntToApplicationThemeMapper
+import dev.zitech.settings.domain.mapper.IntToApplicationThemeMapper
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
@@ -33,14 +33,15 @@ import org.junit.jupiter.api.Test
 @ExperimentalCoroutinesApi
 internal class GetApplicationThemeValueUseCaseTest {
 
-    private val intToApplicationThemeMapper = IntToApplicationThemeMapper()
+    private val intToApplicationThemeMapper =
+        dev.zitech.settings.domain.mapper.IntToApplicationThemeMapper()
     private val getPreferencesRepository = FakePreferencesRepository()
 
-    private lateinit var sut: GetApplicationThemeValueUseCase
+    private lateinit var sut: dev.zitech.settings.domain.usecase.GetApplicationThemeValueUseCase
 
     @BeforeEach
     fun setup() {
-        sut = GetApplicationThemeValueUseCase(
+        sut = dev.zitech.settings.domain.usecase.GetApplicationThemeValueUseCase(
             getPreferencesRepository,
             intToApplicationThemeMapper
         )

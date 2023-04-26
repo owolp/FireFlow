@@ -15,17 +15,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.reporter.analytics.domain.usecase.event
-
-import dev.zitech.core.reporter.analytics.domain.model.event.ApplicationLaunchEvent
-import dev.zitech.core.reporter.analytics.domain.repository.AnalyticsRepository
-import javax.inject.Inject
-
-class ApplicationLaunchAnalyticsEvent @Inject constructor(
-    private val analyticsRepository: AnalyticsRepository
-) {
-
-    operator fun invoke() {
-        analyticsRepository.logEvent(ApplicationLaunchEvent())
-    }
+dependencies {
+    implementation projects.core
+    implementation projects.common.domain
+    implementation projects.common.data
+    implementation projects.common.presentation
+    implementation projects.designSystem
 }

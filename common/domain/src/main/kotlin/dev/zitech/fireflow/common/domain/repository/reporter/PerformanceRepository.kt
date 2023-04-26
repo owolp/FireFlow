@@ -17,7 +17,10 @@
 
 package dev.zitech.fireflow.common.domain.repository.reporter
 
+import kotlinx.coroutines.flow.Flow
+
 interface PerformanceRepository {
 
-    fun setCollectionEnabled(enabled: Boolean)
+    fun getCollectionEnabled(): Flow<Boolean>
+    suspend fun setCollectionEnabled(enabled: Boolean)
 }

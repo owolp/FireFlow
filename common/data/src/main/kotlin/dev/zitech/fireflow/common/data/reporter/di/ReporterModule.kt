@@ -17,9 +17,12 @@
 
 package dev.zitech.fireflow.common.data.reporter.di
 
+import android.content.Context
 import dagger.Binds
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import dev.zitech.fireflow.common.data.reporter.analytics.AnalyticsReporter
 import dev.zitech.fireflow.common.data.reporter.analytics.AnalyticsReporterImpl
@@ -37,14 +40,23 @@ internal interface ReporterModule {
 
         @Singleton
         @Binds
-        fun analyticsReporter(analyticsReporterImpl: AnalyticsReporterImpl): AnalyticsReporter
-
-        @Singleton
-        @Binds
         fun crashReporter(crashReporterImpl: CrashReporterImpl): CrashReporter
 
         @Singleton
         @Binds
         fun performanceReporter(performanceReporterImpl: PerformanceReporterImpl): PerformanceReporter
+    }
+
+    @InstallIn(SingletonComponent::class)
+    @Module
+    object SingletonProvidesModule {
+
+        @Singleton
+        @Provides
+        fun analyticsReporter(
+            @ApplicationContext context: Context
+        ): AnalyticsReporter = AnalyticsReporterImpl(
+            context
+        )
     }
 }

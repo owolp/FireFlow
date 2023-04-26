@@ -19,8 +19,8 @@ package dev.zitech.fireflow.initializer
 
 import android.content.Context
 import androidx.startup.Initializer
-import dev.zitech.core.reporter.analytics.domain.usecase.AllowPersonalizedAdsUseCase
-import dev.zitech.core.reporter.analytics.domain.usecase.SetAnalyticsCollectionUseCase
+import dev.zitech.fireflow.common.domain.usecase.reporter.SetAllowPersonalizedAdsUseCase
+import dev.zitech.fireflow.common.domain.usecase.reporter.SetAnalyticsCollectionUseCase
 import dev.zitech.fireflow.core.scope.AppScopes
 import dev.zitech.fireflow.di.InitializerEntryPoint
 import javax.inject.Inject
@@ -31,7 +31,7 @@ internal class AnalyticsReporterInitializer : Initializer<Unit> {
     lateinit var appScopes: AppScopes
 
     @Inject
-    lateinit var allowPersonalizedAdsValueUseCase: AllowPersonalizedAdsUseCase
+    lateinit var allowPersonalizedAdsValueUseCase: SetAllowPersonalizedAdsUseCase
 
     @Inject
     lateinit var setAnalyticsCollectionUseCase: SetAnalyticsCollectionUseCase

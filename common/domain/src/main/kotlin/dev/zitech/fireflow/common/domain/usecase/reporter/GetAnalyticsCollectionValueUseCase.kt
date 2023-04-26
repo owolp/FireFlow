@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,22 +15,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.persistence.domain.usecase.preferences
+package dev.zitech.fireflow.common.domain.usecase.reporter
 
-import dev.zitech.core.persistence.domain.model.preferences.BooleanPreference
-import dev.zitech.core.persistence.domain.model.preferences.PreferenceType
-import dev.zitech.core.persistence.domain.repository.preferences.GetPreferencesRepository
+import dev.zitech.fireflow.common.domain.repository.reporter.AnalyticsRepository
 import javax.inject.Inject
 import kotlinx.coroutines.flow.first
 
-class GetPerformanceCollectionValueUseCase @Inject constructor(
-    private val getPreferencesRepository: GetPreferencesRepository
+class GetAnalyticsCollectionValueUseCase @Inject constructor(
+    private val analyticsRepository: AnalyticsRepository
 ) {
 
     suspend operator fun invoke(): Boolean =
-        getPreferencesRepository.getBoolean(
-            PreferenceType.STANDARD,
-            BooleanPreference.PERFORMANCE_COLLECTION.key,
-            BooleanPreference.PERFORMANCE_COLLECTION.defaultValue
-        ).first()
+        analyticsRepository.getCollectionEnabled().first()
 }

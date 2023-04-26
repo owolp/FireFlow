@@ -17,10 +17,10 @@
 
 package dev.zitech.settings.presentation.settings.viewmodel
 
-import dev.zitech.core.common.domain.error.FireFlowError
-import dev.zitech.core.common.domain.model.ApplicationLanguage
-import dev.zitech.core.common.domain.model.ApplicationTheme
-import dev.zitech.core.common.presentation.architecture.MviState
+import dev.zitech.fireflow.common.domain.model.application.ApplicationLanguage
+import dev.zitech.fireflow.common.domain.model.application.ApplicationTheme
+import dev.zitech.fireflow.common.presentation.architecture.MviState
+import dev.zitech.fireflow.core.error.FireFlowError
 
 internal data class SettingsState(
     val analytics: Boolean? = null,

@@ -15,20 +15,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.authenticator.domain.usecase
+package dev.zitech.fireflow.common.domain.model.event
 
-import dev.zitech.authenticator.domain.model.Token
-import dev.zitech.authenticator.domain.repository.TokenRepository
-import dev.zitech.core.common.domain.model.Work
-import javax.inject.Inject
+import dev.zitech.fireflow.common.domain.model.analytics.AnalyticsEvent
+import dev.zitech.fireflow.common.domain.model.analytics.AnalyticsProvider
 
-class GetAccessTokenUseCase @Inject constructor(
-    private val tokenRepository: TokenRepository
-) {
-
-    suspend operator fun invoke(
-        clientId: String,
-        clientSecret: String,
-        code: String
-    ): Work<Token> = tokenRepository.getAccessToken(clientId, clientSecret, code)
-}
+class ApplicationLaunchEvent(
+    override val description: String = "Application Launched",
+    override val name: String = "application.launch",
+    override val params: Map<String, Any?> = emptyMap(),
+    override val providers: List<AnalyticsProvider> = listOf(
+        AnalyticsProvider.FIREBASE,
+        AnalyticsProvider.HUAWEI
+    )
+) : AnalyticsEvent

@@ -17,10 +17,13 @@
 
 package dev.zitech.fireflow.common.domain.repository.reporter
 
+import kotlinx.coroutines.flow.Flow
+
 interface CrashRepository {
+    fun getCollectionEnabled(): Flow<Boolean>
     fun init()
     fun log(message: String)
     fun recordException(throwable: Throwable)
-    fun setCollectionEnabled(enabled: Boolean)
+    suspend fun setCollectionEnabled(enabled: Boolean)
     fun setCustomKey(key: String, value: Any)
 }

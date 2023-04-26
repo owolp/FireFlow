@@ -25,11 +25,11 @@ import org.junit.jupiter.api.Test
 
 internal class ApplicationThemeToIntMapperTest {
 
-    private lateinit var sut: ApplicationThemeToIntMapper
+    private lateinit var sut: dev.zitech.settings.domain.mapper.ApplicationThemeToIntMapper
 
     @BeforeEach
     fun setup() {
-        sut = ApplicationThemeToIntMapper()
+        sut = dev.zitech.settings.domain.mapper.ApplicationThemeToIntMapper()
     }
 
     @Test

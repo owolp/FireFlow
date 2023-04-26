@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,21 +15,20 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.core.persistence.domain.usecase.preferences
+package dev.zitech.onboarding.domain.usecase
 
-import dev.zitech.core.persistence.domain.model.preferences.BooleanPreference
-import dev.zitech.core.persistence.domain.model.preferences.PreferenceType
-import dev.zitech.core.persistence.domain.repository.preferences.SavePreferencesRepository
+import dev.zitech.fireflow.common.domain.model.authentication.Token
+import dev.zitech.fireflow.common.domain.repository.authentication.TokenRepository
+import dev.zitech.fireflow.core.work.Work
 import javax.inject.Inject
 
-class SaveAnalyticsCollectionValueUseCase @Inject constructor(
-    private val savePreferencesRepository: SavePreferencesRepository
+class GetAccessTokenUseCase @Inject constructor(
+    private val tokenRepository: TokenRepository
 ) {
 
-    suspend operator fun invoke(value: Boolean) =
-        savePreferencesRepository.saveBoolean(
-            PreferenceType.STANDARD,
-            BooleanPreference.ANALYTICS_COLLECTION.key,
-            value
-        )
+    suspend operator fun invoke(
+        clientId: String,
+        clientSecret: String,
+        code: String
+    ): Work<Token> = tokenRepository.getAccessToken(clientId, clientSecret, code)
 }
