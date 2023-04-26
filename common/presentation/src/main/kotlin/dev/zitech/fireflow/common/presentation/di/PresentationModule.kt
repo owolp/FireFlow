@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.presentation.di
+package dev.zitech.fireflow.common.presentation.di
 
 import dagger.Binds
 import dagger.Module
