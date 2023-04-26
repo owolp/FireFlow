@@ -24,8 +24,8 @@ import dev.zitech.fireflow.common.domain.repository.reporter.CrashRepository
 import dev.zitech.fireflow.core.applicationconfig.AppConfigProvider
 import dev.zitech.fireflow.core.applicationconfig.BuildFlavor
 import dev.zitech.fireflow.core.applicationconfig.BuildMode
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
+import kotlinx.coroutines.flow.Flow
 
 internal class CrashRepositoryImpl @Inject constructor(
     private val appConfigProvider: AppConfigProvider,

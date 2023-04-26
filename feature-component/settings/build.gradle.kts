@@ -38,5 +38,4 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
     testImplementation(testFixtures(projects.designSystem))
-    testImplementation(testFixtures(projects.coreComponent.persistence))
 }
