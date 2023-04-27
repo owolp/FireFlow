@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
 
 package dev.zitech.settings.frawework.locale
 
-import dev.zitech.core.common.domain.model.ApplicationLanguage
+import dev.zitech.fireflow.common.domain.model.application.ApplicationLanguage
 
 internal interface ApplicationLocale {
 

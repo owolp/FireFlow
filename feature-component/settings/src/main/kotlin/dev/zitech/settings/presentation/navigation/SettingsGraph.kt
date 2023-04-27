@@ -19,7 +19,7 @@ package dev.zitech.settings.presentation.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import dev.zitech.core.common.domain.error.Error
+import dev.zitech.fireflow.core.error.Error
 import dev.zitech.settings.presentation.settings.compose.SettingsRoute
 
 fun NavGraphBuilder.settingsGraph(

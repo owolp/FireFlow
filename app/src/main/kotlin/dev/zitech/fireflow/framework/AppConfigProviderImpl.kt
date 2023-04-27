@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,10 +17,10 @@
 
 package dev.zitech.fireflow.framework
 
-import dev.zitech.core.common.domain.applicationconfig.AppConfigProvider
-import dev.zitech.core.common.domain.model.BuildFlavor
-import dev.zitech.core.common.domain.model.BuildMode
 import dev.zitech.fireflow.BuildConfig
+import dev.zitech.fireflow.core.applicationconfig.AppConfigProvider
+import dev.zitech.fireflow.core.applicationconfig.BuildFlavor
+import dev.zitech.fireflow.core.applicationconfig.BuildMode
 import javax.inject.Inject
 
 internal class AppConfigProviderImpl @Inject constructor() : AppConfigProvider {

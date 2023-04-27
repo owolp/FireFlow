@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@ import androidx.appcompat.app.AppCompatDelegate.getApplicationLocales
 import androidx.appcompat.app.AppCompatDelegate.setApplicationLocales
 import androidx.core.os.LocaleListCompat.forLanguageTags
 import androidx.core.os.LocaleListCompat.getEmptyLocaleList
-import dev.zitech.core.common.domain.model.ApplicationLanguage
+import dev.zitech.fireflow.common.domain.model.application.ApplicationLanguage
 import javax.inject.Inject
 
 internal class ApplicationLocaleImpl @Inject constructor() : ApplicationLocale {

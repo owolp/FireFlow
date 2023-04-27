@@ -17,8 +17,8 @@
 
 package dev.zitech.onboarding.presentation.oauth.viewmodel
 
-import dev.zitech.core.common.domain.error.FireFlowError
-import dev.zitech.core.common.presentation.architecture.MviState
+import dev.zitech.fireflow.common.presentation.architecture.MviState
+import dev.zitech.fireflow.core.error.FireFlowError
 
 internal data class OAuthState(
     val clientId: String = "",

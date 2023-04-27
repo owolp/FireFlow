@@ -23,9 +23,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import dev.zitech.core.common.domain.error.Error
 import dev.zitech.ds.molecules.snackbar.BottomNotifierMessage
 import dev.zitech.ds.molecules.snackbar.rememberSnackbarState
+import dev.zitech.fireflow.core.error.Error
 import dev.zitech.onboarding.presentation.pat.viewmodel.BackClicked
 import dev.zitech.onboarding.presentation.pat.viewmodel.FatalErrorHandled
 import dev.zitech.onboarding.presentation.pat.viewmodel.LoginClicked

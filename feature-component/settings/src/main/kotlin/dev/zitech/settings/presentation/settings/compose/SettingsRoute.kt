@@ -25,16 +25,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import dev.zitech.core.common.domain.error.Error
-import dev.zitech.core.common.domain.model.ApplicationLanguage
-import dev.zitech.core.common.domain.model.ApplicationTheme
-import dev.zitech.core.common.domain.navigation.DeepLinkScreenDestination
-import dev.zitech.core.common.domain.navigation.LogInState
 import dev.zitech.ds.atoms.loading.FireFlowProgressIndicators
 import dev.zitech.ds.molecules.dialog.DialogRadioItem
 import dev.zitech.ds.molecules.dialog.FireFlowDialogs
 import dev.zitech.ds.molecules.snackbar.BottomNotifierMessage
 import dev.zitech.ds.molecules.snackbar.rememberSnackbarState
+import dev.zitech.fireflow.common.domain.model.application.ApplicationLanguage
+import dev.zitech.fireflow.common.domain.model.application.ApplicationTheme
+import dev.zitech.fireflow.common.presentation.navigation.deeplink.DeepLinkScreenDestination
+import dev.zitech.fireflow.common.presentation.navigation.state.LogInState
+import dev.zitech.fireflow.core.error.Error
 import dev.zitech.settings.R
 import dev.zitech.settings.presentation.settings.viewmodel.AnalyticsChecked
 import dev.zitech.settings.presentation.settings.viewmodel.AnalyticsErrorHandled
@@ -161,6 +161,7 @@ internal fun SettingsRoute(
                 modifier = Modifier.fillMaxSize()
             )
         }
+
         LogInState.Logged -> {
             SettingsScreen(
                 modifier = modifier,
@@ -189,12 +190,14 @@ internal fun SettingsRoute(
                 }
             )
         }
+
         is LogInState.NotLogged -> {
             LaunchedEffect(Unit) {
                 when (val destination = state.destination) {
                     DeepLinkScreenDestination.Accounts -> navigateToAccounts()
                     is DeepLinkScreenDestination.Error ->
                         navigateToError(destination.error)
+
                     DeepLinkScreenDestination.Welcome -> navigateToWelcome()
                     DeepLinkScreenDestination.Current,
                     DeepLinkScreenDestination.Init -> {

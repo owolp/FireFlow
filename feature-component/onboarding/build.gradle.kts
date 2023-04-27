@@ -16,6 +16,9 @@
  */
 
 apply(from = "$rootDir/config/dependencies/compose-dependencies.gradle")
+apply(from = "$rootDir/config/dependencies/di-dependencies.gradle")
+apply(from = "$rootDir/config/dependencies/feature-dependencies.gradle")
+apply(from = "$rootDir/config/dependencies/kotlin-dependencies.gradle")
 apply(from = "$rootDir/config/dependencies/test-dependencies.gradle")
 
 plugins {
@@ -27,17 +30,4 @@ plugins {
 
 android {
     namespace = "dev.zitech.onboarding"
-}
-
-dependencies {
-    implementation(projects.coreComponent.core)
-    implementation(projects.designSystem)
-
-    implementation(libs.google.dagger.hilt.android)
-    kapt(libs.google.dagger.hilt.compiler)
-    implementation(libs.jetbrains.kotlin.coroutines.android)
-}
-
-kapt {
-    correctErrorTypes = true
 }

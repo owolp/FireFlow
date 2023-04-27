@@ -17,7 +17,7 @@
 
 package dev.zitech.onboarding.domain.validator
 
-import dev.zitech.core.common.domain.validator.Validator
+import dev.zitech.fireflow.common.presentation.validator.Validator
 import java.util.regex.Pattern
 import javax.inject.Inject
 

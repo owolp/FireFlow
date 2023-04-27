@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import dev.zitech.core.common.domain.applicationconfig.AppConfigProvider
+import dev.zitech.fireflow.core.applicationconfig.AppConfigProvider
 import dev.zitech.fireflow.framework.AppConfigProviderImpl
 import javax.inject.Singleton
 
@@ -30,6 +30,7 @@ internal interface AppModule {
     @InstallIn(SingletonComponent::class)
     @Module
     interface SingletonBindsModule {
+
         @Singleton
         @Binds
         fun appConfigProvider(appConfigProviderImpl: AppConfigProviderImpl): AppConfigProvider

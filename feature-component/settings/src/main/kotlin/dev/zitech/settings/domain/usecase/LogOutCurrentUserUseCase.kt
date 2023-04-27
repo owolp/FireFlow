@@ -17,12 +17,12 @@
 
 package dev.zitech.settings.domain.usecase
 
-import dev.zitech.core.common.domain.cache.CacheRepository
-import dev.zitech.core.common.domain.model.Work
-import dev.zitech.core.common.domain.model.WorkError
-import dev.zitech.core.common.domain.model.WorkSuccess
-import dev.zitech.core.persistence.domain.usecase.database.UpdateCurrentUserAccountUseCase
-import dev.zitech.core.persistence.domain.usecase.database.UpdateCurrentUserAccountUseCase.IsCurrentUserAccount
+import dev.zitech.fireflow.common.domain.repository.cache.CacheRepository
+import dev.zitech.fireflow.common.domain.usecase.user.UpdateCurrentUserAccountUseCase
+import dev.zitech.fireflow.common.domain.usecase.user.UpdateCurrentUserAccountUseCase.IsCurrentUserAccount
+import dev.zitech.fireflow.core.work.Work
+import dev.zitech.fireflow.core.work.WorkError
+import dev.zitech.fireflow.core.work.WorkSuccess
 import javax.inject.Inject
 
 internal class LogOutCurrentUserUseCase @Inject constructor(

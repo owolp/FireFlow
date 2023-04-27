@@ -19,12 +19,12 @@ package dev.zitech.onboarding.presentation.welcome.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.zitech.core.common.domain.error.Error
-import dev.zitech.core.common.domain.model.Work
-import dev.zitech.core.common.domain.model.onError
-import dev.zitech.core.common.domain.model.onSuccess
-import dev.zitech.core.common.presentation.architecture.MviViewModel
-import dev.zitech.core.persistence.domain.usecase.database.SaveUserAccountUseCase
+import dev.zitech.fireflow.common.domain.usecase.user.SaveUserAccountUseCase
+import dev.zitech.fireflow.common.presentation.architecture.MviViewModel
+import dev.zitech.fireflow.core.error.Error
+import dev.zitech.fireflow.core.work.Work
+import dev.zitech.fireflow.core.work.onError
+import dev.zitech.fireflow.core.work.onSuccess
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 

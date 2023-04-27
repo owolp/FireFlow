@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@ import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
 import dev.zitech.fireflow.initializer.AnalyticsReporterInitializer
 import dev.zitech.fireflow.initializer.CrashReporterInitializer
+import dev.zitech.fireflow.initializer.FeatureFlagInitializer
 import dev.zitech.fireflow.initializer.LoggerInitializer
 import dev.zitech.fireflow.initializer.PerformanceReporterInitializer
 
@@ -46,6 +47,7 @@ internal interface InitializerEntryPoint {
 
     fun inject(analyticsReporterInitializer: AnalyticsReporterInitializer)
     fun inject(crashReporterInitializer: CrashReporterInitializer)
+    fun inject(featureFlagInitializer: FeatureFlagInitializer)
     fun inject(loggerInitializer: LoggerInitializer)
     fun inject(performanceReporterInitializer: PerformanceReporterInitializer)
 }

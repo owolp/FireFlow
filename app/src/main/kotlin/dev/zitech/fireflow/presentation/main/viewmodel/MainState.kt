@@ -17,8 +17,8 @@
 
 package dev.zitech.fireflow.presentation.main.viewmodel
 
-import dev.zitech.core.common.domain.model.ApplicationTheme
-import dev.zitech.core.common.presentation.architecture.MviState
+import dev.zitech.fireflow.common.domain.model.application.ApplicationTheme
+import dev.zitech.fireflow.common.presentation.architecture.MviState
 
 data class MainState(
     val databaseCleanCompleted: Boolean = false,

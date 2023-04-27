@@ -17,7 +17,7 @@
 
 package dev.zitech.settings.presentation.settings.viewmodel
 
-import dev.zitech.core.common.presentation.architecture.MviIntent
+import dev.zitech.fireflow.common.presentation.architecture.MviIntent
 
 internal data class AnalyticsChecked(val checked: Boolean) : SettingsIntent
 internal data class CrashReporterChecked(val checked: Boolean) : SettingsIntent

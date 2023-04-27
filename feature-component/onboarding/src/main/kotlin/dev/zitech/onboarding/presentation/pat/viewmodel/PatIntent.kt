@@ -17,7 +17,7 @@
 
 package dev.zitech.onboarding.presentation.pat.viewmodel
 
-import dev.zitech.core.common.presentation.architecture.MviIntent
+import dev.zitech.fireflow.common.presentation.architecture.MviIntent
 
 internal data class PersonalAccessTokenChanged(val pat: String) : PatIntent
 internal data class ServerAddressChanged(val serverAddress: String) : PatIntent

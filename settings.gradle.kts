@@ -18,16 +18,13 @@
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 include(":app")
-include(":core-component:core")
-include(":core-component:authenticator")
-include(":core-component:common")
-include(":core-component:feature-flag")
-include(":core-component:navigation")
-include(":core-component:network")
-include(":core-component:persistence")
-include(":core-component:remote-config")
-include(":core-component:reporter")
+include(":core")
+include(":common:data")
+include(":common:domain")
+include(":common:presentation")
+
 include(":design-system")
+
 include(":feature-component:feature")
 include(":feature-component:authentication")
 include(":feature-component:dashboard")

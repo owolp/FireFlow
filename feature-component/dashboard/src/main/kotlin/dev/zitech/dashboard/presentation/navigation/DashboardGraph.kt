@@ -19,8 +19,8 @@ package dev.zitech.dashboard.presentation.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import dev.zitech.core.common.domain.error.Error
 import dev.zitech.dashboard.presentation.dashboard.compose.DashboardRoute
+import dev.zitech.fireflow.core.error.Error
 
 fun NavGraphBuilder.dashboardGraph(
     navigateToAccounts: () -> Unit,

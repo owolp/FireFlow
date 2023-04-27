@@ -39,7 +39,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
-import dev.zitech.core.common.domain.model.ApplicationTheme
 import dev.zitech.ds.atoms.background.FireFlowBackground
 import dev.zitech.ds.atoms.icon.Icon
 import dev.zitech.ds.atoms.navigation.FireFlowNavigationBar
@@ -49,8 +48,9 @@ import dev.zitech.ds.atoms.navigation.FireFlowNavigationRailItem.Primary
 import dev.zitech.ds.atoms.text.FireFlowTexts
 import dev.zitech.ds.templates.scaffold.FireFlowScaffolds
 import dev.zitech.ds.theme.FireFlowTheme
+import dev.zitech.fireflow.common.domain.model.application.ApplicationTheme
+import dev.zitech.fireflow.common.presentation.navigation.destination.TopLevelDestination
 import dev.zitech.fireflow.presentation.navigation.FireFlowNavHost
-import dev.zitech.navigation.presentation.model.TopLevelDestination
 
 @OptIn(
     ExperimentalMaterial3Api::class,
@@ -156,6 +156,7 @@ private fun FireFlowBottomBar(
                             imageVector = icon.imageVector,
                             contentDescription = null
                         )
+
                         is Icon.DrawableResourceIcon -> Icon(
                             painter = painterResource(id = icon.id),
                             contentDescription = null
@@ -197,6 +198,7 @@ private fun FireFlowNavRail(
                             imageVector = icon.imageVector,
                             contentDescription = null
                         )
+
                         is Icon.DrawableResourceIcon -> Icon(
                             painter = painterResource(id = icon.id),
                             contentDescription = null

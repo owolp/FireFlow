@@ -17,6 +17,6 @@
 
 package dev.zitech.dashboard.presentation.dashboard.viewmodel
 
-import dev.zitech.core.common.presentation.architecture.MviState
+import dev.zitech.fireflow.common.presentation.architecture.MviState
 
 internal object DashboardState : MviState

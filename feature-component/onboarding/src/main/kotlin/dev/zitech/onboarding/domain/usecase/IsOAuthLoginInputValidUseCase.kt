@@ -17,7 +17,7 @@
 
 package dev.zitech.onboarding.domain.usecase
 
-import dev.zitech.core.common.domain.validator.Validator
+import dev.zitech.fireflow.common.presentation.validator.Validator
 import dev.zitech.onboarding.di.annotation.ValidatorClientId
 import dev.zitech.onboarding.di.annotation.ValidatorClientSecret
 import dev.zitech.onboarding.di.annotation.ValidatorServerAddress

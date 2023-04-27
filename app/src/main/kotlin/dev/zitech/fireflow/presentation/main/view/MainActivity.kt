@@ -29,8 +29,8 @@ import androidx.core.view.WindowCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import dev.zitech.core.common.domain.logger.Logger
 import dev.zitech.fireflow.R
+import dev.zitech.fireflow.core.logger.Logger
 import dev.zitech.fireflow.presentation.FireFlowApp
 import dev.zitech.fireflow.presentation.main.viewmodel.MainViewModel
 import dev.zitech.fireflow.presentation.main.viewmodel.ScreenResumed
