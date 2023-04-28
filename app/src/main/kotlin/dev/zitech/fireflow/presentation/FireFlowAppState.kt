@@ -29,13 +29,13 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.jakewharton.processphoenix.ProcessPhoenix
-import dev.zitech.dashboard.R as dashboardR
-import dev.zitech.dashboard.presentation.navigation.DashboardDestination
+import dev.zitech.dashboard.fireflow.presentation.navigation.DashboardDestination
 import dev.zitech.ds.atoms.icon.FireFlowIcons
 import dev.zitech.ds.atoms.icon.Icon
 import dev.zitech.fireflow.common.presentation.navigation.destination.FireFlowNavigationDestination
 import dev.zitech.fireflow.common.presentation.navigation.destination.TopLevelDestination
 import dev.zitech.fireflow.core.logger.Logger
+import dev.zitech.fireflow.dashboard.R as dashboardR
 import dev.zitech.fireflow.presentation.navigation.NavDirection.Companion.DEFAULT_STATE_INCLUSIVE
 import dev.zitech.fireflow.presentation.navigation.NavDirection.Companion.DEFAULT_STATE_RESTORE_STATE
 import dev.zitech.settings.R as settingsR

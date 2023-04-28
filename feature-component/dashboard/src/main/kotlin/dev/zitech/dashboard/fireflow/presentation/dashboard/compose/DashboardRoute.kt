@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.dashboard.presentation.dashboard.compose
+package dev.zitech.dashboard.fireflow.presentation.dashboard.compose
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -23,7 +23,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import dev.zitech.dashboard.presentation.dashboard.viewmodel.DashboardViewModel
+import dev.zitech.dashboard.fireflow.presentation.dashboard.viewmodel.DashboardViewModel
 import dev.zitech.ds.atoms.loading.FireFlowProgressIndicators
 import dev.zitech.fireflow.common.presentation.navigation.deeplink.DeepLinkScreenDestination
 import dev.zitech.fireflow.common.presentation.navigation.state.LogInState

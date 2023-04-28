@@ -15,8 +15,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.dashboard.presentation.dashboard.viewmodel
+package dev.zitech.dashboard.fireflow.presentation.dashboard.viewmodel
 
-import dev.zitech.fireflow.common.presentation.architecture.MviState
+import dev.zitech.fireflow.common.presentation.architecture.MviIntent
 
-internal object DashboardState : MviState
+internal sealed interface DashboardIntent : MviIntent

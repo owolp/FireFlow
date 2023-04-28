@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,14 +15,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.dashboard.presentation.dashboard.compose
+package dev.zitech.dashboard.fireflow.presentation.dashboard.compose
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import dev.zitech.dashboard.R
-import dev.zitech.dashboard.presentation.dashboard.viewmodel.DashboardState
+import dev.zitech.fireflow.dashboard.R
+import dev.zitech.dashboard.fireflow.presentation.dashboard.viewmodel.DashboardState
 import dev.zitech.ds.molecules.topappbar.FireFlowTopAppBars
 import dev.zitech.ds.molecules.topappbar.ScrollBehavior
 import dev.zitech.ds.templates.scaffold.FireFlowScaffolds

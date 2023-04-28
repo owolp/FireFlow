@@ -15,23 +15,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.dashboard.presentation.navigation
+package dev.zitech.dashboard.fireflow.presentation.dashboard.viewmodel
 
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
-import dev.zitech.dashboard.presentation.dashboard.compose.DashboardRoute
-import dev.zitech.fireflow.core.error.Error
+import dev.zitech.fireflow.common.presentation.architecture.MviState
 
-fun NavGraphBuilder.dashboardGraph(
-    navigateToAccounts: () -> Unit,
-    navigateToError: (error: Error) -> Unit,
-    navigateToWelcome: () -> Unit
-) {
-    composable(route = DashboardDestination.route) {
-        DashboardRoute(
-            navigateToAccounts = navigateToAccounts,
-            navigateToError = navigateToError,
-            navigateToWelcome = navigateToWelcome
-        )
-    }
-}
+internal object DashboardState : MviState

@@ -15,13 +15,23 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.dashboard.presentation.navigation
+package dev.zitech.dashboard.fireflow.presentation.navigation
 
-import dev.zitech.fireflow.common.presentation.navigation.destination.FireFlowNavigationDestination
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.compose.composable
+import dev.zitech.dashboard.fireflow.presentation.dashboard.compose.DashboardRoute
+import dev.zitech.fireflow.core.error.Error
 
-private const val DESTINATION = "dashboard"
-
-object DashboardDestination : FireFlowNavigationDestination {
-    override val route: String = "dashboard_route"
-    override val destination: String = DESTINATION
+fun NavGraphBuilder.dashboardGraph(
+    navigateToAccounts: () -> Unit,
+    navigateToError: (error: Error) -> Unit,
+    navigateToWelcome: () -> Unit
+) {
+    composable(route = DashboardDestination.route) {
+        DashboardRoute(
+            navigateToAccounts = navigateToAccounts,
+            navigateToError = navigateToError,
+            navigateToWelcome = navigateToWelcome
+        )
+    }
 }

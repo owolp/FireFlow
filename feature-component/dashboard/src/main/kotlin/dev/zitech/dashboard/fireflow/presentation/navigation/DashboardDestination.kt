@@ -15,8 +15,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.dashboard.presentation.dashboard.viewmodel
+package dev.zitech.dashboard.fireflow.presentation.navigation
 
-import dev.zitech.fireflow.common.presentation.architecture.MviIntent
+import dev.zitech.fireflow.common.presentation.navigation.destination.FireFlowNavigationDestination
 
-internal sealed interface DashboardIntent : MviIntent
+private const val DESTINATION = "dashboard"
+
+object DashboardDestination : FireFlowNavigationDestination {
+    override val route: String = "dashboard_route"
+    override val destination: String = DESTINATION
+}
