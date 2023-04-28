@@ -29,7 +29,7 @@ plugins {
 }
 
 android {
-    namespace = "dev.zitech.settings"
+    namespace = "dev.zitech.fireflow.settings"
 }
 
 dependencies {

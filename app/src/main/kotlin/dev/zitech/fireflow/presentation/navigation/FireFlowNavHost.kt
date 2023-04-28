@@ -21,15 +21,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import dev.zitech.authentication.presentation.navigation.AccountsDestination
-import dev.zitech.authentication.presentation.navigation.authenticationGraph
-import dev.zitech.dashboard.presentation.navigation.DashboardDestination
-import dev.zitech.dashboard.presentation.navigation.dashboardGraph
-import dev.zitech.onboarding.presentation.navigation.OAuthDestination
-import dev.zitech.onboarding.presentation.navigation.PatDestination
-import dev.zitech.onboarding.presentation.navigation.WelcomeDestination
-import dev.zitech.onboarding.presentation.navigation.onboardingGraph
-import dev.zitech.settings.presentation.navigation.settingsGraph
+import dev.zitech.dashboard.fireflow.presentation.navigation.DashboardDestination
+import dev.zitech.dashboard.fireflow.presentation.navigation.dashboardGraph
+import dev.zitech.fireflow.authentication.presentation.navigation.AccountsDestination
+import dev.zitech.fireflow.authentication.presentation.navigation.authenticationGraph
+import dev.zitech.fireflow.onboarding.presentation.navigation.OAuthDestination
+import dev.zitech.fireflow.onboarding.presentation.navigation.PatDestination
+import dev.zitech.fireflow.onboarding.presentation.navigation.WelcomeDestination
+import dev.zitech.fireflow.onboarding.presentation.navigation.onboardingGraph
+import dev.zitech.fireflow.settings.presentation.navigation.settingsGraph
 
 @Suppress("ForbiddenComment")
 @Composable

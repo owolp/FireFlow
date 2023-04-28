@@ -39,17 +39,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
-import dev.zitech.ds.atoms.background.FireFlowBackground
-import dev.zitech.ds.atoms.icon.Icon
-import dev.zitech.ds.atoms.navigation.FireFlowNavigationBar
-import dev.zitech.ds.atoms.navigation.FireFlowNavigationBarItem.Primary
-import dev.zitech.ds.atoms.navigation.FireFlowNavigationRail
-import dev.zitech.ds.atoms.navigation.FireFlowNavigationRailItem.Primary
-import dev.zitech.ds.atoms.text.FireFlowTexts
-import dev.zitech.ds.templates.scaffold.FireFlowScaffolds
-import dev.zitech.ds.theme.FireFlowTheme
 import dev.zitech.fireflow.common.domain.model.application.ApplicationTheme
 import dev.zitech.fireflow.common.presentation.navigation.destination.TopLevelDestination
+import dev.zitech.fireflow.ds.atoms.background.FireFlowBackground
+import dev.zitech.fireflow.ds.atoms.icon.Icon
+import dev.zitech.fireflow.ds.atoms.navigation.FireFlowNavigationBar
+import dev.zitech.fireflow.ds.atoms.navigation.FireFlowNavigationBarItem.Primary
+import dev.zitech.fireflow.ds.atoms.navigation.FireFlowNavigationRail
+import dev.zitech.fireflow.ds.atoms.navigation.FireFlowNavigationRailItem.Primary
+import dev.zitech.fireflow.ds.atoms.text.FireFlowTexts
+import dev.zitech.fireflow.ds.templates.scaffold.FireFlowScaffolds
+import dev.zitech.fireflow.ds.theme.FireFlowTheme
 import dev.zitech.fireflow.presentation.navigation.FireFlowNavHost
 
 @OptIn(

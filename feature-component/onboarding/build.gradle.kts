@@ -29,5 +29,5 @@ plugins {
 }
 
 android {
-    namespace = "dev.zitech.onboarding"
+    namespace = "dev.zitech.fireflow.onboarding"
 }

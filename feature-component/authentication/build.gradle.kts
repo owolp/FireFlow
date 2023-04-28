@@ -29,5 +29,5 @@ plugins {
 }
 
 android {
-    namespace = "dev.zitech.authentication"
+    namespace = "dev.zitech.fireflow.authentication"
 }

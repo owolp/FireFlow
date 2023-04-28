@@ -17,7 +17,7 @@
 
 package dev.zitech.fireflow.common.presentation.navigation.destination
 
-import dev.zitech.ds.atoms.icon.Icon
+import dev.zitech.fireflow.ds.atoms.icon.Icon
 
 data class TopLevelDestination(
     override val route: String,

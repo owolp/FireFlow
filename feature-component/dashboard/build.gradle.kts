@@ -29,5 +29,5 @@ plugins {
 }
 
 android {
-    namespace = "dev.zitech.dashboard"
+    namespace = "dev.zitech.fireflow.dashboard"
 }
