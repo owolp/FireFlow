@@ -15,19 +15,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-apply(from = "$rootDir/config/dependencies/compose-dependencies.gradle")
-apply(from = "$rootDir/config/dependencies/di-dependencies.gradle")
-apply(from = "$rootDir/config/dependencies/feature-dependencies.gradle")
-apply(from = "$rootDir/config/dependencies/kotlin-dependencies.gradle")
-apply(from = "$rootDir/config/dependencies/test-dependencies.gradle")
+package dev.zitech.fireflow.onboarding.domain.validator
 
-plugins {
-    id(BuildPlugins.KOTLIN_ANDROID)
-    id(BuildPlugins.LIBRARY)
-    id(BuildPlugins.JUNIT5)
-    kotlin(BuildPlugins.KAPT)
-}
+import dev.zitech.fireflow.common.presentation.validator.Validator
+import java.util.regex.Pattern
+import javax.inject.Inject
 
-android {
-    namespace = "dev.zitech.fireflow.onboarding"
+internal class ClientIdValidator @Inject constructor() : Validator<String> {
+
+    companion object {
+        /*
+            The number must start with a digit between 1 and 9 and
+            then it might be followed by digit(s)
+         */
+        private const val NUMBER_REGEX = "^[1-9]\\d*\$"
+    }
+
+    override fun invoke(input: String): Boolean =
+        Pattern.compile(NUMBER_REGEX).matcher(input).matches()
 }

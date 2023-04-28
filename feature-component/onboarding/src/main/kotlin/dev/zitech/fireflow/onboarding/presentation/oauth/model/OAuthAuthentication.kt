@@ -15,19 +15,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-apply(from = "$rootDir/config/dependencies/compose-dependencies.gradle")
-apply(from = "$rootDir/config/dependencies/di-dependencies.gradle")
-apply(from = "$rootDir/config/dependencies/feature-dependencies.gradle")
-apply(from = "$rootDir/config/dependencies/kotlin-dependencies.gradle")
-apply(from = "$rootDir/config/dependencies/test-dependencies.gradle")
+package dev.zitech.fireflow.onboarding.presentation.oauth.model
 
-plugins {
-    id(BuildPlugins.KOTLIN_ANDROID)
-    id(BuildPlugins.LIBRARY)
-    id(BuildPlugins.JUNIT5)
-    kotlin(BuildPlugins.KAPT)
-}
-
-android {
-    namespace = "dev.zitech.fireflow.onboarding"
-}
+data class OAuthAuthentication(
+    val code: String?,
+    val state: String?
+)

@@ -15,19 +15,21 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-apply(from = "$rootDir/config/dependencies/compose-dependencies.gradle")
-apply(from = "$rootDir/config/dependencies/di-dependencies.gradle")
-apply(from = "$rootDir/config/dependencies/feature-dependencies.gradle")
-apply(from = "$rootDir/config/dependencies/kotlin-dependencies.gradle")
-apply(from = "$rootDir/config/dependencies/test-dependencies.gradle")
+package dev.zitech.fireflow.onboarding.domain.usecase
 
-plugins {
-    id(BuildPlugins.KOTLIN_ANDROID)
-    id(BuildPlugins.LIBRARY)
-    id(BuildPlugins.JUNIT5)
-    kotlin(BuildPlugins.KAPT)
-}
+import dev.zitech.fireflow.common.presentation.validator.Validator
+import dev.zitech.fireflow.onboarding.di.annotation.ValidatorPat
+import dev.zitech.fireflow.onboarding.di.annotation.ValidatorServerAddress
+import javax.inject.Inject
 
-android {
-    namespace = "dev.zitech.fireflow.onboarding"
+internal class IsPatLoginInputValidUseCase @Inject constructor(
+    @ValidatorPat private val patValidator: Validator<String>,
+    @ValidatorServerAddress private val serverAddressValidator: Validator<String>
+) {
+
+    operator fun invoke(
+        personalAccessToken: String,
+        serverAddress: String
+    ): Boolean = patValidator(personalAccessToken) &&
+        serverAddressValidator(serverAddress)
 }

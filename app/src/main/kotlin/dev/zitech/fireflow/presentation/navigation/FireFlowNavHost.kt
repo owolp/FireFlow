@@ -25,10 +25,10 @@ import dev.zitech.dashboard.fireflow.presentation.navigation.DashboardDestinatio
 import dev.zitech.dashboard.fireflow.presentation.navigation.dashboardGraph
 import dev.zitech.fireflow.authentication.presentation.navigation.AccountsDestination
 import dev.zitech.fireflow.authentication.presentation.navigation.authenticationGraph
-import dev.zitech.onboarding.presentation.navigation.OAuthDestination
-import dev.zitech.onboarding.presentation.navigation.PatDestination
-import dev.zitech.onboarding.presentation.navigation.WelcomeDestination
-import dev.zitech.onboarding.presentation.navigation.onboardingGraph
+import dev.zitech.fireflow.onboarding.presentation.navigation.OAuthDestination
+import dev.zitech.fireflow.onboarding.presentation.navigation.PatDestination
+import dev.zitech.fireflow.onboarding.presentation.navigation.WelcomeDestination
+import dev.zitech.fireflow.onboarding.presentation.navigation.onboardingGraph
 import dev.zitech.settings.presentation.navigation.settingsGraph
 
 @Suppress("ForbiddenComment")

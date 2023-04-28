@@ -15,19 +15,20 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-apply(from = "$rootDir/config/dependencies/compose-dependencies.gradle")
-apply(from = "$rootDir/config/dependencies/di-dependencies.gradle")
-apply(from = "$rootDir/config/dependencies/feature-dependencies.gradle")
-apply(from = "$rootDir/config/dependencies/kotlin-dependencies.gradle")
-apply(from = "$rootDir/config/dependencies/test-dependencies.gradle")
+package dev.zitech.fireflow.onboarding.domain.usecase
 
-plugins {
-    id(BuildPlugins.KOTLIN_ANDROID)
-    id(BuildPlugins.LIBRARY)
-    id(BuildPlugins.JUNIT5)
-    kotlin(BuildPlugins.KAPT)
-}
+import dev.zitech.fireflow.common.domain.model.authentication.Token
+import dev.zitech.fireflow.common.domain.repository.authentication.TokenRepository
+import dev.zitech.fireflow.core.work.Work
+import javax.inject.Inject
 
-android {
-    namespace = "dev.zitech.fireflow.onboarding"
+class GetAccessTokenUseCase @Inject constructor(
+    private val tokenRepository: TokenRepository
+) {
+
+    suspend operator fun invoke(
+        clientId: String,
+        clientSecret: String,
+        code: String
+    ): Work<Token> = tokenRepository.getAccessToken(clientId, clientSecret, code)
 }

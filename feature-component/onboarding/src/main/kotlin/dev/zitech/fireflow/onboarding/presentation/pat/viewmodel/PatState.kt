@@ -15,19 +15,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-apply(from = "$rootDir/config/dependencies/compose-dependencies.gradle")
-apply(from = "$rootDir/config/dependencies/di-dependencies.gradle")
-apply(from = "$rootDir/config/dependencies/feature-dependencies.gradle")
-apply(from = "$rootDir/config/dependencies/kotlin-dependencies.gradle")
-apply(from = "$rootDir/config/dependencies/test-dependencies.gradle")
+package dev.zitech.fireflow.onboarding.presentation.pat.viewmodel
 
-plugins {
-    id(BuildPlugins.KOTLIN_ANDROID)
-    id(BuildPlugins.LIBRARY)
-    id(BuildPlugins.JUNIT5)
-    kotlin(BuildPlugins.KAPT)
-}
+import dev.zitech.fireflow.common.presentation.architecture.MviState
+import dev.zitech.fireflow.core.error.FireFlowError
 
-android {
-    namespace = "dev.zitech.fireflow.onboarding"
-}
+internal data class PatState(
+    val fatalError: FireFlowError? = null,
+    val loading: Boolean = false,
+    val loginEnabled: Boolean = false,
+    val nonFatalError: FireFlowError? = null,
+    val pat: String = "",
+    val serverAddress: String = "",
+    val stepClosed: Boolean = false,
+    val stepCompleted: Boolean = false
+) : MviState
