@@ -29,7 +29,7 @@ import dev.zitech.fireflow.onboarding.presentation.navigation.OAuthDestination
 import dev.zitech.fireflow.onboarding.presentation.navigation.PatDestination
 import dev.zitech.fireflow.onboarding.presentation.navigation.WelcomeDestination
 import dev.zitech.fireflow.onboarding.presentation.navigation.onboardingGraph
-import dev.zitech.settings.presentation.navigation.settingsGraph
+import dev.zitech.fireflow.settings.presentation.navigation.settingsGraph
 
 @Suppress("ForbiddenComment")
 @Composable

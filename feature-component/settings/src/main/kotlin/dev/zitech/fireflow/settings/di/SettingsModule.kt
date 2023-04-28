@@ -15,17 +15,24 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.settings.domain.usecase.application
+package dev.zitech.fireflow.settings.di
 
-import dev.zitech.fireflow.common.domain.model.application.ApplicationLanguage
-import dev.zitech.settings.frawework.locale.ApplicationLocale
-import javax.inject.Inject
+import dagger.Binds
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.android.scopes.ViewModelScoped
+import dev.zitech.fireflow.settings.frawework.locale.ApplicationLocale
+import dev.zitech.fireflow.settings.frawework.locale.ApplicationLocaleImpl
 
-internal class SetApplicationLanguageValueUseCase @Inject constructor(
-    private val applicationLocale: ApplicationLocale
-) {
+internal interface SettingsModule {
 
-    operator fun invoke(applicationLanguage: ApplicationLanguage) {
-        applicationLocale.set(applicationLanguage)
+    @InstallIn(ViewModelComponent::class)
+    @Module
+    interface ViewModelComponentModule {
+
+        @Binds
+        @ViewModelScoped
+        fun applicationLocale(applicationLocaleImpl: ApplicationLocaleImpl): ApplicationLocale
     }
 }

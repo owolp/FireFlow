@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.settings.presentation.settings.compose
+package dev.zitech.fireflow.settings.presentation.settings.compose
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
@@ -42,8 +42,8 @@ import dev.zitech.ds.organisms.categoryprefrence.FireFlowCategoryPreferences
 import dev.zitech.ds.templates.scaffold.FireFlowScaffolds
 import dev.zitech.ds.theme.FireFlowTheme
 import dev.zitech.ds.theme.PreviewFireFlowTheme
-import dev.zitech.settings.R
-import dev.zitech.settings.presentation.settings.viewmodel.SettingsState
+import dev.zitech.fireflow.settings.R
+import dev.zitech.fireflow.settings.presentation.settings.viewmodel.SettingsState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

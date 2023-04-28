@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,24 +15,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.settings.di
+package dev.zitech.fireflow.settings.presentation.navigation
 
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
-import dagger.hilt.android.scopes.ViewModelScoped
-import dev.zitech.settings.frawework.locale.ApplicationLocale
-import dev.zitech.settings.frawework.locale.ApplicationLocaleImpl
+import dev.zitech.fireflow.common.presentation.navigation.destination.FireFlowNavigationDestination
 
-internal interface SettingsModule {
+private const val DESTINATION = "settings"
 
-    @InstallIn(ViewModelComponent::class)
-    @Module
-    interface ViewModelComponentModule {
-
-        @Binds
-        @ViewModelScoped
-        fun applicationLocale(applicationLocaleImpl: ApplicationLocaleImpl): ApplicationLocale
-    }
+object SettingsDestination : FireFlowNavigationDestination {
+    override val route: String = "settings_route"
+    override val destination: String = DESTINATION
 }

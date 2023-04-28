@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.settings.presentation.settings.viewmodel.collection
+package dev.zitech.fireflow.settings.presentation.settings.viewmodel.collection
 
 import dev.zitech.fireflow.common.domain.usecase.reporter.GetAllowPersonalizedAdsValueUseCase
 import dev.zitech.fireflow.common.domain.usecase.reporter.GetAnalyticsCollectionValueUseCase

@@ -15,12 +15,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.settings.presentation.navigation
+package dev.zitech.fireflow.settings.presentation.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import dev.zitech.fireflow.core.error.Error
-import dev.zitech.settings.presentation.settings.compose.SettingsRoute
+import dev.zitech.fireflow.settings.presentation.settings.compose.SettingsRoute
 
 fun NavGraphBuilder.settingsGraph(
     navigateToAccounts: () -> Unit,

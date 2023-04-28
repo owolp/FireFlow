@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.settings.domain.usecase
+package dev.zitech.fireflow.settings.domain.usecase
 
 import dev.zitech.fireflow.common.domain.repository.cache.CacheRepository
 import dev.zitech.fireflow.common.domain.usecase.user.UpdateCurrentUserAccountUseCase

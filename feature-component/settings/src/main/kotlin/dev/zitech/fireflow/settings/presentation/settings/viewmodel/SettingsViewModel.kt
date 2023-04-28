@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.settings.presentation.settings.viewmodel
+package dev.zitech.fireflow.settings.presentation.settings.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -35,9 +35,9 @@ import dev.zitech.fireflow.core.logger.Logger
 import dev.zitech.fireflow.core.work.WorkError
 import dev.zitech.fireflow.core.work.WorkSuccess
 import dev.zitech.fireflow.core.work.onError
-import dev.zitech.settings.domain.usecase.LogOutCurrentUserUseCase
-import dev.zitech.settings.presentation.settings.viewmodel.collection.AppearanceCollectionStates
-import dev.zitech.settings.presentation.settings.viewmodel.collection.DataChoicesCollectionStates
+import dev.zitech.fireflow.settings.domain.usecase.LogOutCurrentUserUseCase
+import dev.zitech.fireflow.settings.presentation.settings.viewmodel.collection.AppearanceCollectionStates
+import dev.zitech.fireflow.settings.presentation.settings.viewmodel.collection.DataChoicesCollectionStates
 import javax.inject.Inject
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first

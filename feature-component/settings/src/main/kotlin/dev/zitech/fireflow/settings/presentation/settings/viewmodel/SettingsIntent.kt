@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.settings.presentation.settings.viewmodel
+package dev.zitech.fireflow.settings.presentation.settings.viewmodel
 
 import dev.zitech.fireflow.common.presentation.architecture.MviIntent
 

@@ -38,8 +38,8 @@ import dev.zitech.fireflow.core.logger.Logger
 import dev.zitech.fireflow.dashboard.R as dashboardR
 import dev.zitech.fireflow.presentation.navigation.NavDirection.Companion.DEFAULT_STATE_INCLUSIVE
 import dev.zitech.fireflow.presentation.navigation.NavDirection.Companion.DEFAULT_STATE_RESTORE_STATE
-import dev.zitech.settings.R as settingsR
-import dev.zitech.settings.presentation.navigation.SettingsDestination
+import dev.zitech.fireflow.settings.R as settingsR
+import dev.zitech.fireflow.settings.presentation.navigation.SettingsDestination
 
 @Composable
 internal fun rememberFireFlowAppState(

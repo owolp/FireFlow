@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.settings.presentation.settings.compose
+package dev.zitech.fireflow.settings.presentation.settings.compose
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -35,27 +35,27 @@ import dev.zitech.fireflow.common.domain.model.application.ApplicationTheme
 import dev.zitech.fireflow.common.presentation.navigation.deeplink.DeepLinkScreenDestination
 import dev.zitech.fireflow.common.presentation.navigation.state.LogInState
 import dev.zitech.fireflow.core.error.Error
-import dev.zitech.settings.R
-import dev.zitech.settings.presentation.settings.viewmodel.AnalyticsChecked
-import dev.zitech.settings.presentation.settings.viewmodel.AnalyticsErrorHandled
-import dev.zitech.settings.presentation.settings.viewmodel.ConfirmLogOutClicked
-import dev.zitech.settings.presentation.settings.viewmodel.ConfirmLogOutDismissed
-import dev.zitech.settings.presentation.settings.viewmodel.CrashReporterChecked
-import dev.zitech.settings.presentation.settings.viewmodel.CrashReporterErrorHandled
-import dev.zitech.settings.presentation.settings.viewmodel.FatalErrorHandled
-import dev.zitech.settings.presentation.settings.viewmodel.LanguageDismissed
-import dev.zitech.settings.presentation.settings.viewmodel.LanguagePreferenceClicked
-import dev.zitech.settings.presentation.settings.viewmodel.LanguageSelected
-import dev.zitech.settings.presentation.settings.viewmodel.LogOutClicked
-import dev.zitech.settings.presentation.settings.viewmodel.PerformanceChecked
-import dev.zitech.settings.presentation.settings.viewmodel.PerformanceErrorHandled
-import dev.zitech.settings.presentation.settings.viewmodel.PersonalizedAdsChecked
-import dev.zitech.settings.presentation.settings.viewmodel.PersonalizedAdsErrorHandled
-import dev.zitech.settings.presentation.settings.viewmodel.RestartApplicationClicked
-import dev.zitech.settings.presentation.settings.viewmodel.SettingsViewModel
-import dev.zitech.settings.presentation.settings.viewmodel.ThemeDismissed
-import dev.zitech.settings.presentation.settings.viewmodel.ThemePreferenceClicked
-import dev.zitech.settings.presentation.settings.viewmodel.ThemeSelected
+import dev.zitech.fireflow.settings.R
+import dev.zitech.fireflow.settings.presentation.settings.viewmodel.AnalyticsChecked
+import dev.zitech.fireflow.settings.presentation.settings.viewmodel.AnalyticsErrorHandled
+import dev.zitech.fireflow.settings.presentation.settings.viewmodel.ConfirmLogOutClicked
+import dev.zitech.fireflow.settings.presentation.settings.viewmodel.ConfirmLogOutDismissed
+import dev.zitech.fireflow.settings.presentation.settings.viewmodel.CrashReporterChecked
+import dev.zitech.fireflow.settings.presentation.settings.viewmodel.CrashReporterErrorHandled
+import dev.zitech.fireflow.settings.presentation.settings.viewmodel.FatalErrorHandled
+import dev.zitech.fireflow.settings.presentation.settings.viewmodel.LanguageDismissed
+import dev.zitech.fireflow.settings.presentation.settings.viewmodel.LanguagePreferenceClicked
+import dev.zitech.fireflow.settings.presentation.settings.viewmodel.LanguageSelected
+import dev.zitech.fireflow.settings.presentation.settings.viewmodel.LogOutClicked
+import dev.zitech.fireflow.settings.presentation.settings.viewmodel.PerformanceChecked
+import dev.zitech.fireflow.settings.presentation.settings.viewmodel.PerformanceErrorHandled
+import dev.zitech.fireflow.settings.presentation.settings.viewmodel.PersonalizedAdsChecked
+import dev.zitech.fireflow.settings.presentation.settings.viewmodel.PersonalizedAdsErrorHandled
+import dev.zitech.fireflow.settings.presentation.settings.viewmodel.RestartApplicationClicked
+import dev.zitech.fireflow.settings.presentation.settings.viewmodel.SettingsViewModel
+import dev.zitech.fireflow.settings.presentation.settings.viewmodel.ThemeDismissed
+import dev.zitech.fireflow.settings.presentation.settings.viewmodel.ThemePreferenceClicked
+import dev.zitech.fireflow.settings.presentation.settings.viewmodel.ThemeSelected
 
 @Composable
 internal fun SettingsRoute(

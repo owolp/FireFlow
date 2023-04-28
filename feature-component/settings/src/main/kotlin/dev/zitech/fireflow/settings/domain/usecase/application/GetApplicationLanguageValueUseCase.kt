@@ -15,13 +15,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.settings.presentation.navigation
+package dev.zitech.fireflow.settings.domain.usecase.application
 
-import dev.zitech.fireflow.common.presentation.navigation.destination.FireFlowNavigationDestination
+import dev.zitech.fireflow.common.domain.model.application.ApplicationLanguage
+import dev.zitech.fireflow.settings.frawework.locale.ApplicationLocale
+import javax.inject.Inject
 
-private const val DESTINATION = "settings"
+internal class GetApplicationLanguageValueUseCase @Inject constructor(
+    private val applicationLocale: ApplicationLocale
+) {
 
-object SettingsDestination : FireFlowNavigationDestination {
-    override val route: String = "settings_route"
-    override val destination: String = DESTINATION
+    operator fun invoke(): ApplicationLanguage = applicationLocale.get()
 }

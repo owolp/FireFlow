@@ -15,15 +15,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.settings.domain.usecase.application
+package dev.zitech.fireflow.settings.frawework.locale
 
 import dev.zitech.fireflow.common.domain.model.application.ApplicationLanguage
-import dev.zitech.settings.frawework.locale.ApplicationLocale
-import javax.inject.Inject
 
-internal class GetApplicationLanguageValueUseCase @Inject constructor(
-    private val applicationLocale: ApplicationLocale
-) {
+internal interface ApplicationLocale {
 
-    operator fun invoke(): ApplicationLanguage = applicationLocale.get()
+    fun set(applicationLanguage: ApplicationLanguage)
+    fun get(): ApplicationLanguage
 }

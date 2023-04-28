@@ -15,14 +15,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.settings.presentation.settings.viewmodel.collection
+package dev.zitech.fireflow.settings.presentation.settings.viewmodel.collection
 
 import dev.zitech.fireflow.common.domain.model.application.ApplicationLanguage
 import dev.zitech.fireflow.common.domain.model.application.ApplicationTheme
 import dev.zitech.fireflow.common.domain.usecase.application.GetApplicationThemeValueUseCase
 import dev.zitech.fireflow.common.domain.usecase.application.SetApplicationThemeValueUseCase
-import dev.zitech.settings.domain.usecase.application.GetApplicationLanguageValueUseCase
-import dev.zitech.settings.domain.usecase.application.SetApplicationLanguageValueUseCase
+import dev.zitech.fireflow.settings.domain.usecase.application.GetApplicationLanguageValueUseCase
+import dev.zitech.fireflow.settings.domain.usecase.application.SetApplicationLanguageValueUseCase
 import javax.inject.Inject
 import kotlinx.coroutines.flow.first
 

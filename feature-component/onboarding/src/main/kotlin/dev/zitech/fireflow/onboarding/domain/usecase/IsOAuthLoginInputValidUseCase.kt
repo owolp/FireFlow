@@ -34,6 +34,6 @@ internal class IsOAuthLoginInputValidUseCase @Inject constructor(
         clientSecret: String,
         serverAddress: String
     ): Boolean = clientIdValidator(clientId) &&
-            clientSecretValidator(clientSecret) &&
-            serverAddressValidator(serverAddress)
+        clientSecretValidator(clientSecret) &&
+        serverAddressValidator(serverAddress)
 }
