@@ -22,10 +22,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import dev.zitech.dashboard.fireflow.presentation.dashboard.viewmodel.DashboardState
-import dev.zitech.ds.molecules.topappbar.FireFlowTopAppBars
-import dev.zitech.ds.molecules.topappbar.ScrollBehavior
-import dev.zitech.ds.templates.scaffold.FireFlowScaffolds
 import dev.zitech.fireflow.dashboard.R
+import dev.zitech.fireflow.ds.molecules.topappbar.FireFlowTopAppBars
+import dev.zitech.fireflow.ds.molecules.topappbar.ScrollBehavior
+import dev.zitech.fireflow.ds.templates.scaffold.FireFlowScaffolds
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -27,11 +27,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.coroutineScope
-import dev.zitech.ds.molecules.dialog.FireFlowDialogs
-import dev.zitech.ds.molecules.snackbar.BottomNotifierMessage
-import dev.zitech.ds.molecules.snackbar.rememberSnackbarState
 import dev.zitech.fireflow.common.presentation.browser.Browser
 import dev.zitech.fireflow.core.error.Error
+import dev.zitech.fireflow.ds.molecules.dialog.FireFlowDialogs
+import dev.zitech.fireflow.ds.molecules.snackbar.BottomNotifierMessage
+import dev.zitech.fireflow.ds.molecules.snackbar.rememberSnackbarState
 import dev.zitech.fireflow.onboarding.R
 import dev.zitech.fireflow.onboarding.presentation.welcome.viewmodel.BackClicked
 import dev.zitech.fireflow.onboarding.presentation.welcome.viewmodel.ContinueWithOauthClicked

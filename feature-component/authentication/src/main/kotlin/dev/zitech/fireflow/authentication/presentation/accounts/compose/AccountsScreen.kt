@@ -26,12 +26,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import dev.zitech.ds.atoms.button.FireFlowButtons
-import dev.zitech.ds.molecules.topappbar.FireFlowTopAppBars
-import dev.zitech.ds.molecules.topappbar.ScrollBehavior
-import dev.zitech.ds.templates.scaffold.FireFlowScaffolds
 import dev.zitech.fireflow.authentication.R
 import dev.zitech.fireflow.authentication.presentation.accounts.viewmodel.AccountsState
+import dev.zitech.fireflow.ds.atoms.button.FireFlowButtons
+import dev.zitech.fireflow.ds.molecules.topappbar.FireFlowTopAppBars
+import dev.zitech.fireflow.ds.molecules.topappbar.ScrollBehavior
+import dev.zitech.fireflow.ds.templates.scaffold.FireFlowScaffolds
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

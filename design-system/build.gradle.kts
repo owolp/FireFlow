@@ -23,7 +23,7 @@ plugins {
 }
 
 android {
-    namespace = "dev.zitech.ds"
+    namespace = "dev.zitech.fireflow.ds"
 
     testFixtures {
         enable = true

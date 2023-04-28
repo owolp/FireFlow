@@ -24,10 +24,10 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.zitech.dashboard.fireflow.presentation.dashboard.viewmodel.DashboardViewModel
-import dev.zitech.ds.atoms.loading.FireFlowProgressIndicators
 import dev.zitech.fireflow.common.presentation.navigation.deeplink.DeepLinkScreenDestination
 import dev.zitech.fireflow.common.presentation.navigation.state.LogInState
 import dev.zitech.fireflow.core.error.Error
+import dev.zitech.fireflow.ds.atoms.loading.FireFlowProgressIndicators
 
 @Composable
 internal fun DashboardRoute(
