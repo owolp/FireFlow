@@ -91,4 +91,4 @@ squareup-leakcanary-android = "com.squareup.leakcanary:leakcanary-android:2.10"
 squareup-okhttp3-bom = "com.squareup.okhttp3:okhttp-bom:4.11.0"
 squareup-retrofit2-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 squareup-retrofit2-converter-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "retrofit" }
-zetetic-sqlcipher = "net.zetetic:android-database-sqlcipher:4.5.3"
+zetetic-sqlcipher = "net.zetetic:android-database-sqlcipher:4.5.4"
