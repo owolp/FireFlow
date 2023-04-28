@@ -15,13 +15,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.authentication.presentation.navigation
+package dev.zitech.fireflow.authentication.presentation.navigation
 
-import dev.zitech.fireflow.common.presentation.navigation.destination.FireFlowNavigationDestination
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.compose.composable
+import dev.zitech.fireflow.authentication.presentation.accounts.compose.AccountsRoute
 
-private const val DESTINATION = "authentication"
-
-object AccountsDestination : FireFlowNavigationDestination {
-    override val route: String = "accounts_route"
-    override val destination: String = DESTINATION
+fun NavGraphBuilder.authenticationGraph(
+    navigateToDashboard: () -> Unit
+) {
+    composable(route = AccountsDestination.route) {
+        AccountsRoute(
+            navigateToHome = navigateToDashboard
+        )
+    }
 }

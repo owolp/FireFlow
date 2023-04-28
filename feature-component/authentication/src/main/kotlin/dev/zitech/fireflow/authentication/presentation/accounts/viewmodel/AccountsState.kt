@@ -15,18 +15,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.authentication.presentation.navigation
+package dev.zitech.fireflow.authentication.presentation.accounts.viewmodel
 
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
-import dev.zitech.authentication.presentation.accounts.compose.AccountsRoute
+import dev.zitech.fireflow.common.presentation.architecture.MviState
 
-fun NavGraphBuilder.authenticationGraph(
-    navigateToDashboard: () -> Unit
-) {
-    composable(route = AccountsDestination.route) {
-        AccountsRoute(
-            navigateToHome = navigateToDashboard
-        )
-    }
-}
+internal data class AccountsState(
+    val home: Boolean = false
+) : MviState

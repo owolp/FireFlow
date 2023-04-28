@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.authentication.presentation.accounts.viewmodel
+package dev.zitech.fireflow.authentication.presentation.accounts.viewmodel
 
 import dev.zitech.fireflow.common.presentation.architecture.MviIntent
 

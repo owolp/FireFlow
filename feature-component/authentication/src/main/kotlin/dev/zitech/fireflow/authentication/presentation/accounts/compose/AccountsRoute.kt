@@ -15,16 +15,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.authentication.presentation.accounts.compose
+package dev.zitech.fireflow.authentication.presentation.accounts.compose
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import dev.zitech.authentication.presentation.accounts.viewmodel.AccountsViewModel
-import dev.zitech.authentication.presentation.accounts.viewmodel.HomeHandled
-import dev.zitech.authentication.presentation.accounts.viewmodel.LoginClicked
+import dev.zitech.fireflow.authentication.presentation.accounts.viewmodel.AccountsViewModel
+import dev.zitech.fireflow.authentication.presentation.accounts.viewmodel.HomeHandled
+import dev.zitech.fireflow.authentication.presentation.accounts.viewmodel.LoginClicked
 
 @Composable
 internal fun AccountsRoute(

@@ -21,10 +21,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import dev.zitech.authentication.presentation.navigation.AccountsDestination
-import dev.zitech.authentication.presentation.navigation.authenticationGraph
 import dev.zitech.dashboard.presentation.navigation.DashboardDestination
 import dev.zitech.dashboard.presentation.navigation.dashboardGraph
+import dev.zitech.fireflow.authentication.presentation.navigation.AccountsDestination
+import dev.zitech.fireflow.authentication.presentation.navigation.authenticationGraph
 import dev.zitech.onboarding.presentation.navigation.OAuthDestination
 import dev.zitech.onboarding.presentation.navigation.PatDestination
 import dev.zitech.onboarding.presentation.navigation.WelcomeDestination

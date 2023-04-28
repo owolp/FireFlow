@@ -15,10 +15,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.authentication.presentation.accounts.viewmodel
+package dev.zitech.fireflow.authentication.presentation.navigation
 
-import dev.zitech.fireflow.common.presentation.architecture.MviState
+import dev.zitech.fireflow.common.presentation.navigation.destination.FireFlowNavigationDestination
 
-internal data class AccountsState(
-    val home: Boolean = false
-) : MviState
+private const val DESTINATION = "authentication"
+
+object AccountsDestination : FireFlowNavigationDestination {
+    override val route: String = "accounts_route"
+    override val destination: String = DESTINATION
+}
