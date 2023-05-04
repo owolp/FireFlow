@@ -15,7 +15,7 @@ kotlin = "1.8.20"
 moshi = "1.14.0"
 navigation = "2.5.3"
 retrofit = "2.9.0"
-room = "2.5.1"
+room = "2.6.0-alpha01"
 
 [libraries]
 acra-http = "ch.acra:acra-http:5.9.7"
