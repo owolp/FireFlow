@@ -60,12 +60,17 @@ jobs:
       - name: Run Fastlane Debug Release Unit Tests Lane
         run: fastlane dev_debug_unit_tests
 
+  code_coverage:
+    name: Upload coverage reports to Codecov
+    uses: codecov/codecov-action@v3
+
   assemble_dev:
     name: Assemble Dev
     needs:
       - lint
       - detekt
       - unit_test
+      - code_coverage
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
