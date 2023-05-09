@@ -21,23 +21,23 @@ import dev.zitech.fireflow.common.data.remote.rest.code.StatusCode
 import dev.zitech.fireflow.core.error.Error
 import dev.zitech.fireflow.core.error.Error.Fatal.Type.NETWORK
 import dev.zitech.fireflow.core.work.OperationResult
-import dev.zitech.fireflow.core.work.OperationResult.Success
 
-sealed interface NetworkResponse<out T : Any>
+sealed interface NetworkResponse<out T : Any> {
 
-data class NetworkSuccess<out T : Any>(val data: T) : NetworkResponse<T>
+    data class Success<out T : Any>(val data: T) : NetworkResponse<T>
 
-data class NetworkError<T : Any>(
-    val message: String? = null,
-    val statusCode: StatusCode
-) : NetworkResponse<T>
+    data class Error<T : Any>(
+        val message: String? = null,
+        val statusCode: StatusCode
+    ) : NetworkResponse<T>
 
-data class NetworkException<out T : Any>(val throwable: Throwable) : NetworkResponse<T>
+    data class Exception<out T : Any>(val throwable: Throwable) : NetworkResponse<T>
+}
 
 suspend fun <T : Any> NetworkResponse<T>.onSuccess(
     executable: suspend (T) -> Unit
 ): NetworkResponse<T> = apply {
-    if (this is NetworkSuccess<T>) {
+    if (this is NetworkResponse.Success<T>) {
         executable(data)
     }
 }
@@ -45,7 +45,7 @@ suspend fun <T : Any> NetworkResponse<T>.onSuccess(
 suspend fun <T : Any> NetworkResponse<T>.onError(
     executable: suspend (statusCode: StatusCode, message: String) -> Unit
 ): NetworkResponse<T> = apply {
-    if (this is NetworkError) {
+    if (this is NetworkResponse.Error) {
         executable(statusCode, message.orEmpty())
     }
 }
@@ -53,7 +53,7 @@ suspend fun <T : Any> NetworkResponse<T>.onError(
 suspend fun <T : Any> NetworkResponse<T>.onException(
     executable: suspend (throwable: Throwable) -> Unit
 ): NetworkResponse<T> = apply {
-    if (this is NetworkException) {
+    if (this is NetworkResponse.Exception) {
         executable(throwable)
     }
 }
@@ -62,9 +62,9 @@ fun <T : Any, R : Any> NetworkResponse<T>.mapToWork(
     transformSuccess: (T) -> R
 ): OperationResult<R> =
     when (this) {
-        is NetworkSuccess -> Success(transformSuccess(data))
-        is NetworkError -> OperationResult.Failure(getError(statusCode, message))
-        is NetworkException -> OperationResult.Failure(getError(throwable))
+        is NetworkResponse.Success -> OperationResult.Success(transformSuccess(data))
+        is NetworkResponse.Error -> OperationResult.Failure(getError(statusCode, message))
+        is NetworkResponse.Exception -> OperationResult.Failure(getError(throwable))
     }
 
 fun getError(statusCode: StatusCode, message: String?): Error =

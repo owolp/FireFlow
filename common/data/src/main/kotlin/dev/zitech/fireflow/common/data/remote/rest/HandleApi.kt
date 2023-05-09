@@ -18,10 +18,7 @@
 package dev.zitech.fireflow.common.data.remote.rest
 
 import dev.zitech.fireflow.common.data.remote.rest.code.StatusCode
-import dev.zitech.fireflow.common.data.remote.rest.result.NetworkError
-import dev.zitech.fireflow.common.data.remote.rest.result.NetworkException
 import dev.zitech.fireflow.common.data.remote.rest.result.NetworkResponse
-import dev.zitech.fireflow.common.data.remote.rest.result.NetworkSuccess
 import retrofit2.Response
 
 @Suppress("TooGenericExceptionCaught")
@@ -31,15 +28,15 @@ internal fun <T : Any> handleApi(
     val response = execute()
     val body = response.body()
     if (response.isSuccessful && body != null) {
-        NetworkSuccess(body)
+        NetworkResponse.Success(body)
     } else {
-        NetworkError(
+        NetworkResponse.Error(
             statusCode = getStatusCodeFromResponse(response),
             message = response.message()
         )
     }
 } catch (throwable: Throwable) {
-    NetworkException(
+    NetworkResponse.Exception(
         throwable = throwable
     )
 }

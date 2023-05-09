@@ -18,7 +18,6 @@
 package dev.zitech.fireflow.common.data.remote.rest.retrofit
 
 import dev.zitech.fireflow.common.data.remote.rest.handleApi
-import dev.zitech.fireflow.common.data.remote.rest.result.NetworkException
 import dev.zitech.fireflow.common.data.remote.rest.result.NetworkResponse
 import okhttp3.Request
 import okio.Timeout
@@ -44,7 +43,7 @@ internal class NetworkResultCall<T : Any>(
             }
 
             override fun onFailure(call: Call<T>, t: Throwable) {
-                val networkResult = NetworkException<T>(t)
+                val networkResult = NetworkResponse.Exception<T>(t)
                 callback.onResponse(this@NetworkResultCall, Response.success(networkResult))
             }
         })
