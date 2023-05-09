@@ -17,6 +17,7 @@
 
 apply(from = "$rootDir/config/dependencies/compose-dependencies.gradle")
 
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     id(BuildPlugins.KOTLIN_ANDROID)
     id(BuildPlugins.LIBRARY)

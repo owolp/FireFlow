@@ -21,6 +21,7 @@ apply(from = "$rootDir/config/dependencies/feature-dependencies.gradle")
 apply(from = "$rootDir/config/dependencies/kotlin-dependencies.gradle")
 apply(from = "$rootDir/config/dependencies/test-dependencies.gradle")
 
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     id(BuildPlugins.KOTLIN_ANDROID)
     id(BuildPlugins.LIBRARY)
