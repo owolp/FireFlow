@@ -19,7 +19,7 @@ package dev.zitech.fireflow.common.data.remote.rest.retrofit
 
 import dev.zitech.fireflow.common.data.remote.rest.handleApi
 import dev.zitech.fireflow.common.data.remote.rest.result.NetworkException
-import dev.zitech.fireflow.common.data.remote.rest.result.NetworkResult
+import dev.zitech.fireflow.common.data.remote.rest.result.NetworkResponse
 import okhttp3.Request
 import okio.Timeout
 import retrofit2.Call
@@ -28,15 +28,15 @@ import retrofit2.Response
 
 internal class NetworkResultCall<T : Any>(
     private val proxy: Call<T>
-) : Call<NetworkResult<T>> {
+) : Call<NetworkResponse<T>> {
 
     override fun cancel() {
         proxy.cancel()
     }
 
-    override fun clone(): Call<NetworkResult<T>> = NetworkResultCall(proxy.clone())
+    override fun clone(): Call<NetworkResponse<T>> = NetworkResultCall(proxy.clone())
 
-    override fun enqueue(callback: Callback<NetworkResult<T>>) {
+    override fun enqueue(callback: Callback<NetworkResponse<T>>) {
         proxy.enqueue(object : Callback<T> {
             override fun onResponse(call: Call<T>, response: Response<T>) {
                 val networkResult = handleApi { response }
@@ -50,7 +50,7 @@ internal class NetworkResultCall<T : Any>(
         })
     }
 
-    override fun execute(): Response<NetworkResult<T>> = throw NotImplementedError()
+    override fun execute(): Response<NetworkResponse<T>> = throw NotImplementedError()
 
     override fun isCanceled(): Boolean = proxy.isCanceled
 

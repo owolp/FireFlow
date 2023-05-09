@@ -23,42 +23,42 @@ import dev.zitech.fireflow.core.error.Error.Fatal.Type.NETWORK
 import dev.zitech.fireflow.core.work.OperationResult
 import dev.zitech.fireflow.core.work.OperationResult.Success
 
-sealed interface NetworkResult<out T : Any>
+sealed interface NetworkResponse<out T : Any>
 
-data class NetworkSuccess<out T : Any>(val data: T) : NetworkResult<T>
+data class NetworkSuccess<out T : Any>(val data: T) : NetworkResponse<T>
 
 data class NetworkError<T : Any>(
     val message: String? = null,
     val statusCode: StatusCode
-) : NetworkResult<T>
+) : NetworkResponse<T>
 
-data class NetworkException<out T : Any>(val throwable: Throwable) : NetworkResult<T>
+data class NetworkException<out T : Any>(val throwable: Throwable) : NetworkResponse<T>
 
-suspend fun <T : Any> NetworkResult<T>.onSuccess(
+suspend fun <T : Any> NetworkResponse<T>.onSuccess(
     executable: suspend (T) -> Unit
-): NetworkResult<T> = apply {
+): NetworkResponse<T> = apply {
     if (this is NetworkSuccess<T>) {
         executable(data)
     }
 }
 
-suspend fun <T : Any> NetworkResult<T>.onError(
+suspend fun <T : Any> NetworkResponse<T>.onError(
     executable: suspend (statusCode: StatusCode, message: String) -> Unit
-): NetworkResult<T> = apply {
+): NetworkResponse<T> = apply {
     if (this is NetworkError) {
         executable(statusCode, message.orEmpty())
     }
 }
 
-suspend fun <T : Any> NetworkResult<T>.onException(
+suspend fun <T : Any> NetworkResponse<T>.onException(
     executable: suspend (throwable: Throwable) -> Unit
-): NetworkResult<T> = apply {
+): NetworkResponse<T> = apply {
     if (this is NetworkException) {
         executable(throwable)
     }
 }
 
-fun <T : Any, R : Any> NetworkResult<T>.mapToWork(
+fun <T : Any, R : Any> NetworkResponse<T>.mapToWork(
     transformSuccess: (T) -> R
 ): OperationResult<R> =
     when (this) {

@@ -18,11 +18,11 @@
 package dev.zitech.fireflow.common.data.remote.rest.service
 
 import dev.zitech.fireflow.common.data.remote.rest.response.user.UserResponse
-import dev.zitech.fireflow.common.data.remote.rest.result.NetworkResult
+import dev.zitech.fireflow.common.data.remote.rest.result.NetworkResponse
 import retrofit2.http.GET
 
 internal interface AboutService {
 
     @GET("api/v1/about/user")
-    suspend fun getUser(): NetworkResult<UserResponse>
+    suspend fun getUser(): NetworkResponse<UserResponse>
 }
