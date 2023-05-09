@@ -150,18 +150,9 @@ dependencies {
 
 kover {
     excludeJavaCode()
-
-    useKoverTool()
 }
 
 koverReport {
-
-    androidReports("devDebug") {
-        html {
-            onCheck = false
-            setReportDir(file("${project.rootDir}/reports/kover/"))
-        }
-    }
 
     filters {
         excludes {
@@ -175,6 +166,13 @@ koverReport {
                 "*_Impl*",
                 "*JsonAdapter*"
             )
+        }
+    }
+
+    androidReports("devDebug") {
+        html {
+            onCheck = false
+            setReportDir(file("${project.rootDir}/reports/kover/"))
         }
     }
 }
