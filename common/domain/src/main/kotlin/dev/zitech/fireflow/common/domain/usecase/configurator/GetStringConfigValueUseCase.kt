@@ -19,8 +19,8 @@ package dev.zitech.fireflow.common.domain.usecase.configurator
 
 import dev.zitech.fireflow.common.domain.model.configurator.StringConfig
 import dev.zitech.fireflow.common.domain.repository.configurator.ConfiguratorRepository
-import dev.zitech.fireflow.core.work.OperationResult.Failure
-import dev.zitech.fireflow.core.work.OperationResult.Success
+import dev.zitech.fireflow.core.result.OperationResult.Failure
+import dev.zitech.fireflow.core.result.OperationResult.Success
 import javax.inject.Inject
 
 class GetStringConfigValueUseCase @Inject constructor(

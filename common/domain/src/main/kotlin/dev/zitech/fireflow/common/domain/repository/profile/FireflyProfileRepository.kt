@@ -18,7 +18,7 @@
 package dev.zitech.fireflow.common.domain.repository.profile
 
 import dev.zitech.fireflow.common.domain.model.profile.FireflyProfile
-import dev.zitech.fireflow.core.work.OperationResult
+import dev.zitech.fireflow.core.result.OperationResult
 
 interface FireflyProfileRepository {
 

@@ -20,7 +20,7 @@ package dev.zitech.fireflow.common.data.remote.rest.result
 import dev.zitech.fireflow.common.data.remote.rest.code.StatusCode
 import dev.zitech.fireflow.core.error.Error
 import dev.zitech.fireflow.core.error.Error.Fatal.Type.NETWORK
-import dev.zitech.fireflow.core.work.OperationResult
+import dev.zitech.fireflow.core.result.OperationResult
 
 /**
  * Represents the network response of an operation, which can be a success, an error, or an exception.

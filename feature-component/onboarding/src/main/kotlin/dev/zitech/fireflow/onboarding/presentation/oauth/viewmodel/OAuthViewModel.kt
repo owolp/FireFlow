@@ -35,9 +35,9 @@ import dev.zitech.fireflow.common.domain.usecase.user.UpdateUserAccountUseCase
 import dev.zitech.fireflow.common.presentation.architecture.MviViewModel
 import dev.zitech.fireflow.core.dispatcher.AppDispatchers
 import dev.zitech.fireflow.core.error.Error
-import dev.zitech.fireflow.core.work.OperationResult
-import dev.zitech.fireflow.core.work.onFailure
-import dev.zitech.fireflow.core.work.onSuccess
+import dev.zitech.fireflow.core.result.OperationResult
+import dev.zitech.fireflow.core.result.onFailure
+import dev.zitech.fireflow.core.result.onSuccess
 import dev.zitech.fireflow.onboarding.domain.usecase.GetAccessTokenUseCase
 import dev.zitech.fireflow.onboarding.domain.usecase.IsOAuthLoginInputValidUseCase
 import dev.zitech.fireflow.onboarding.domain.validator.ClientIdValidator

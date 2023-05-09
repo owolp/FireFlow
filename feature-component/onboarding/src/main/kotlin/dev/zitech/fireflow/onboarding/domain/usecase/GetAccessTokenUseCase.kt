@@ -19,7 +19,7 @@ package dev.zitech.fireflow.onboarding.domain.usecase
 
 import dev.zitech.fireflow.common.domain.model.authentication.Token
 import dev.zitech.fireflow.common.domain.repository.authentication.TokenRepository
-import dev.zitech.fireflow.core.work.OperationResult
+import dev.zitech.fireflow.core.result.OperationResult
 import javax.inject.Inject
 
 class GetAccessTokenUseCase @Inject constructor(

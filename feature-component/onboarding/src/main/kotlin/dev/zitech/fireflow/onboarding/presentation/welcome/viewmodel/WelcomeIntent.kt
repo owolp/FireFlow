@@ -18,7 +18,7 @@
 package dev.zitech.fireflow.onboarding.presentation.welcome.viewmodel
 
 import dev.zitech.fireflow.common.presentation.architecture.MviIntent
-import dev.zitech.fireflow.core.work.OperationResult
+import dev.zitech.fireflow.core.result.OperationResult
 
 internal data class NavigatedToFireflyResult(val result: OperationResult<Unit>) : WelcomeIntent
 internal object BackClicked : WelcomeIntent

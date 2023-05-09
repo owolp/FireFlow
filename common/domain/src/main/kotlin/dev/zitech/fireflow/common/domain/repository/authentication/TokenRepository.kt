@@ -18,7 +18,7 @@
 package dev.zitech.fireflow.common.domain.repository.authentication
 
 import dev.zitech.fireflow.common.domain.model.authentication.Token
-import dev.zitech.fireflow.core.work.OperationResult
+import dev.zitech.fireflow.core.result.OperationResult
 
 interface TokenRepository {
 

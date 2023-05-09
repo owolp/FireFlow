@@ -25,9 +25,9 @@ import dev.zitech.fireflow.common.domain.usecase.user.UpdateCurrentUserAccountUs
 import dev.zitech.fireflow.common.domain.usecase.user.UpdateCurrentUserAccountUseCase.AuthenticationType
 import dev.zitech.fireflow.core.error.Error
 import dev.zitech.fireflow.core.logger.Logger
-import dev.zitech.fireflow.core.work.OperationResult
-import dev.zitech.fireflow.core.work.OperationResult.Failure
-import dev.zitech.fireflow.core.work.OperationResult.Success
+import dev.zitech.fireflow.core.result.OperationResult
+import dev.zitech.fireflow.core.result.OperationResult.Failure
+import dev.zitech.fireflow.core.result.OperationResult.Success
 import javax.inject.Inject
 import kotlinx.coroutines.flow.first
 

@@ -21,10 +21,10 @@ import dev.zitech.fireflow.common.domain.usecase.user.GetCurrentUserAccountUseCa
 import dev.zitech.fireflow.common.domain.usecase.user.GetUserAccountsUseCase
 import dev.zitech.fireflow.common.presentation.navigation.deeplink.DeepLinkScreenDestination
 import dev.zitech.fireflow.core.error.Error
-import dev.zitech.fireflow.core.work.OperationResult.Failure
-import dev.zitech.fireflow.core.work.OperationResult.Success
-import dev.zitech.fireflow.core.work.onFailure
-import dev.zitech.fireflow.core.work.onSuccess
+import dev.zitech.fireflow.core.result.OperationResult.Failure
+import dev.zitech.fireflow.core.result.OperationResult.Success
+import dev.zitech.fireflow.core.result.onFailure
+import dev.zitech.fireflow.core.result.onSuccess
 import javax.inject.Inject
 import kotlinx.coroutines.channels.ProducerScope
 import kotlinx.coroutines.flow.Flow

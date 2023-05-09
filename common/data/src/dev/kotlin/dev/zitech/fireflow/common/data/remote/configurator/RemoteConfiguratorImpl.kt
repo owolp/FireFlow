@@ -18,8 +18,8 @@
 package dev.zitech.fireflow.common.data.remote.configurator
 
 import dev.zitech.fireflow.core.error.Error.BuildTypeUnsupported
-import dev.zitech.fireflow.core.work.OperationResult
-import dev.zitech.fireflow.core.work.OperationResult.Failure
+import dev.zitech.fireflow.core.result.OperationResult
+import dev.zitech.fireflow.core.result.OperationResult.Failure
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf

@@ -24,9 +24,9 @@ import dev.zitech.fireflow.common.data.local.database.mapper.UserAccountEntityMa
 import dev.zitech.fireflow.common.domain.model.user.UserAccount
 import dev.zitech.fireflow.core.error.Error
 import dev.zitech.fireflow.core.error.Error.Fatal.Type.DISK
-import dev.zitech.fireflow.core.work.OperationResult
-import dev.zitech.fireflow.core.work.OperationResult.Failure
-import dev.zitech.fireflow.core.work.OperationResult.Success
+import dev.zitech.fireflow.core.result.OperationResult
+import dev.zitech.fireflow.core.result.OperationResult.Failure
+import dev.zitech.fireflow.core.result.OperationResult.Success
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch

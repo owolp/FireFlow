@@ -19,7 +19,7 @@ package dev.zitech.fireflow.common.domain.usecase.user
 
 import dev.zitech.fireflow.common.domain.model.user.UserLoggedState
 import dev.zitech.fireflow.common.domain.repository.user.UserAccountRepository
-import dev.zitech.fireflow.core.work.OperationResult.Success
+import dev.zitech.fireflow.core.result.OperationResult.Success
 import javax.inject.Inject
 import kotlinx.coroutines.flow.firstOrNull
 

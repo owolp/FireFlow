@@ -18,7 +18,7 @@
 package dev.zitech.fireflow.common.domain.repository.user
 
 import dev.zitech.fireflow.common.domain.model.user.UserAccount
-import dev.zitech.fireflow.core.work.OperationResult
+import dev.zitech.fireflow.core.result.OperationResult
 import kotlinx.coroutines.flow.Flow
 
 interface UserAccountRepository {

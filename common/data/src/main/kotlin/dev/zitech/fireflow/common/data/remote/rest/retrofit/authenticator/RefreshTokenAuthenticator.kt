@@ -23,8 +23,8 @@ import dev.zitech.fireflow.common.domain.model.user.UserAuthenticationType
 import dev.zitech.fireflow.common.domain.usecase.token.GetRefreshedTokenUseCase
 import dev.zitech.fireflow.common.domain.usecase.user.GetCurrentUserAccountUseCase
 import dev.zitech.fireflow.core.logger.Logger
-import dev.zitech.fireflow.core.work.OperationResult.Failure
-import dev.zitech.fireflow.core.work.OperationResult.Success
+import dev.zitech.fireflow.core.result.OperationResult.Failure
+import dev.zitech.fireflow.core.result.OperationResult.Success
 import javax.inject.Inject
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking

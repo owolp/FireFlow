@@ -19,7 +19,7 @@ package dev.zitech.fireflow.common.domain.usecase.user
 
 import dev.zitech.fireflow.common.domain.model.user.UserAccount
 import dev.zitech.fireflow.common.domain.repository.user.UserAccountRepository
-import dev.zitech.fireflow.core.work.OperationResult
+import dev.zitech.fireflow.core.result.OperationResult
 import javax.inject.Inject
 
 class GetUserAccountByStateUseCase @Inject constructor(

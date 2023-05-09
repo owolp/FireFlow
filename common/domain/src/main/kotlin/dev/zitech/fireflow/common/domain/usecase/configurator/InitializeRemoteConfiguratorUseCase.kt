@@ -18,7 +18,7 @@
 package dev.zitech.fireflow.common.domain.usecase.configurator
 
 import dev.zitech.fireflow.common.domain.repository.configurator.ConfiguratorRepository
-import dev.zitech.fireflow.core.work.OperationResult
+import dev.zitech.fireflow.core.result.OperationResult
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 

@@ -32,9 +32,9 @@ import dev.zitech.fireflow.core.applicationconfig.AppConfigProvider
 import dev.zitech.fireflow.core.applicationconfig.BuildFlavor
 import dev.zitech.fireflow.core.error.Error
 import dev.zitech.fireflow.core.logger.Logger
-import dev.zitech.fireflow.core.work.OperationResult.Failure
-import dev.zitech.fireflow.core.work.OperationResult.Success
-import dev.zitech.fireflow.core.work.onFailure
+import dev.zitech.fireflow.core.result.OperationResult.Failure
+import dev.zitech.fireflow.core.result.OperationResult.Success
+import dev.zitech.fireflow.core.result.onFailure
 import dev.zitech.fireflow.settings.domain.usecase.LogOutCurrentUserUseCase
 import dev.zitech.fireflow.settings.presentation.settings.viewmodel.collection.AppearanceCollectionStates
 import dev.zitech.fireflow.settings.presentation.settings.viewmodel.collection.DataChoicesCollectionStates

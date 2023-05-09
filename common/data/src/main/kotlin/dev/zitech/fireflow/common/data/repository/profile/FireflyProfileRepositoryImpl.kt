@@ -20,7 +20,7 @@ package dev.zitech.fireflow.common.data.repository.profile
 import dev.zitech.fireflow.common.data.source.about.AboutSource
 import dev.zitech.fireflow.common.domain.model.profile.FireflyProfile
 import dev.zitech.fireflow.common.domain.repository.profile.FireflyProfileRepository
-import dev.zitech.fireflow.core.work.OperationResult
+import dev.zitech.fireflow.core.result.OperationResult
 import javax.inject.Inject
 
 internal class FireflyProfileRepositoryImpl @Inject constructor(

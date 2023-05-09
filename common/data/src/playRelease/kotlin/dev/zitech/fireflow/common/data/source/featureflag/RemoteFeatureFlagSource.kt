@@ -19,8 +19,8 @@ package dev.zitech.fireflow.common.data.source.featureflag
 
 import dev.zitech.fireflow.common.data.remote.configurator.RemoteConfigurator
 import dev.zitech.fireflow.common.domain.model.featureflag.Feature
-import dev.zitech.fireflow.core.work.WorkError
-import dev.zitech.fireflow.core.work.WorkSuccess
+import dev.zitech.fireflow.core.result.OperationResult.Failure
+import dev.zitech.fireflow.core.result.OperationResult.Success
 import javax.inject.Inject
 
 internal class RemoteFeatureFlagSource @Inject constructor(
@@ -36,7 +36,7 @@ internal class RemoteFeatureFlagSource @Inject constructor(
 
     override suspend fun isFeatureEnabled(feature: Feature): Boolean =
         when (val result = remoteConfigurator.getBoolean(feature.key)) {
-            is WorkSuccess -> result.data
-            is WorkError -> feature.defaultValue
+            is Success -> result.data
+            is Failure -> feature.defaultValue
         }
 }

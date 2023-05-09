@@ -15,11 +15,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.fireflow.core.work
+package dev.zitech.fireflow.core.result
 
 import dev.zitech.fireflow.core.error.Error
-import dev.zitech.fireflow.core.work.OperationResult.Failure
-import dev.zitech.fireflow.core.work.OperationResult.Success
+import dev.zitech.fireflow.core.result.OperationResult.Failure
+import dev.zitech.fireflow.core.result.OperationResult.Success
 
 /**
  * Represents the result of an operation that can either be successful or a failure.

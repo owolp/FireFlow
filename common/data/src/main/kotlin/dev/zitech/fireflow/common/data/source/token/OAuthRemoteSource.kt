@@ -22,7 +22,7 @@ import dev.zitech.fireflow.common.data.remote.rest.mapper.token.RefreshTokenResp
 import dev.zitech.fireflow.common.data.remote.rest.result.mapToWork
 import dev.zitech.fireflow.common.data.remote.rest.service.OAuthService
 import dev.zitech.fireflow.common.domain.model.authentication.Token
-import dev.zitech.fireflow.core.work.OperationResult
+import dev.zitech.fireflow.core.result.OperationResult
 import javax.inject.Inject
 
 internal class OAuthRemoteSource @Inject constructor(

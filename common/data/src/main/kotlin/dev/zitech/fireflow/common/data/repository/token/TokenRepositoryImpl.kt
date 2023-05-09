@@ -20,7 +20,7 @@ package dev.zitech.fireflow.common.data.repository.token
 import dev.zitech.fireflow.common.data.source.token.OAuthSource
 import dev.zitech.fireflow.common.domain.model.authentication.Token
 import dev.zitech.fireflow.common.domain.repository.authentication.TokenRepository
-import dev.zitech.fireflow.core.work.OperationResult
+import dev.zitech.fireflow.core.result.OperationResult
 import javax.inject.Inject
 
 internal class TokenRepositoryImpl @Inject constructor(

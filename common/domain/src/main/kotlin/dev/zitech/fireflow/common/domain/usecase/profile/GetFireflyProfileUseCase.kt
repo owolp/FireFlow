@@ -19,7 +19,7 @@ package dev.zitech.fireflow.common.domain.usecase.profile
 
 import dev.zitech.fireflow.common.domain.model.profile.FireflyProfile
 import dev.zitech.fireflow.common.domain.repository.profile.FireflyProfileRepository
-import dev.zitech.fireflow.core.work.OperationResult
+import dev.zitech.fireflow.core.result.OperationResult
 import javax.inject.Inject
 
 class GetFireflyProfileUseCase @Inject constructor(

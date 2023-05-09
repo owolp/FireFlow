@@ -25,8 +25,8 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.net.toUri
 import dev.zitech.fireflow.core.error.Error
 import dev.zitech.fireflow.core.error.Error.Fatal.Type.OS
-import dev.zitech.fireflow.core.work.OperationResult.Failure
-import dev.zitech.fireflow.core.work.OperationResult.Success
+import dev.zitech.fireflow.core.result.OperationResult.Failure
+import dev.zitech.fireflow.core.result.OperationResult.Success
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
 
