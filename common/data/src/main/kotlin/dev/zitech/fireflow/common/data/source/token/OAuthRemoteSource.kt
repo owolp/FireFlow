@@ -22,7 +22,7 @@ import dev.zitech.fireflow.common.data.remote.rest.mapper.token.RefreshTokenResp
 import dev.zitech.fireflow.common.data.remote.rest.result.mapToWork
 import dev.zitech.fireflow.common.data.remote.rest.service.OAuthService
 import dev.zitech.fireflow.common.domain.model.authentication.Token
-import dev.zitech.fireflow.core.work.Work
+import dev.zitech.fireflow.core.result.OperationResult
 import javax.inject.Inject
 
 internal class OAuthRemoteSource @Inject constructor(
@@ -35,7 +35,7 @@ internal class OAuthRemoteSource @Inject constructor(
         clientId: String,
         clientSecret: String,
         code: String
-    ): Work<Token> = oAuthService.postAccessToken(
+    ): OperationResult<Token> = oAuthService.postAccessToken(
         clientId = clientId,
         clientSecret = clientSecret,
         code = code
@@ -45,7 +45,7 @@ internal class OAuthRemoteSource @Inject constructor(
         clientId: String,
         clientSecret: String,
         refreshToken: String
-    ): Work<Token> = oAuthService.postRefreshToken(
+    ): OperationResult<Token> = oAuthService.postRefreshToken(
         clientId = clientId,
         clientSecret = clientSecret,
         refreshToken = refreshToken

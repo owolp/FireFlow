@@ -19,8 +19,8 @@ package dev.zitech.fireflow.common.domain.usecase.configurator
 
 import dev.zitech.fireflow.common.domain.model.configurator.DoubleConfig
 import dev.zitech.fireflow.common.domain.repository.configurator.ConfiguratorRepository
-import dev.zitech.fireflow.core.work.WorkError
-import dev.zitech.fireflow.core.work.WorkSuccess
+import dev.zitech.fireflow.core.result.OperationResult.Failure
+import dev.zitech.fireflow.core.result.OperationResult.Success
 import javax.inject.Inject
 
 class GetDoubleConfigValueUseCase @Inject constructor(
@@ -29,7 +29,7 @@ class GetDoubleConfigValueUseCase @Inject constructor(
 
     suspend operator fun invoke(config: DoubleConfig): Double =
         when (val result = configuratorRepository.getDoubleValue(config)) {
-            is WorkSuccess -> result.data
-            is WorkError -> config.defaultValue
+            is Success -> result.data
+            is Failure -> config.defaultValue
         }
 }

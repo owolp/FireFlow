@@ -21,7 +21,7 @@ import dev.zitech.fireflow.common.data.remote.rest.mapper.user.UserResponseMappe
 import dev.zitech.fireflow.common.data.remote.rest.result.mapToWork
 import dev.zitech.fireflow.common.data.remote.rest.service.AboutService
 import dev.zitech.fireflow.common.domain.model.profile.FireflyProfile
-import dev.zitech.fireflow.core.work.Work
+import dev.zitech.fireflow.core.result.OperationResult
 import javax.inject.Inject
 
 internal class AboutRemoteSource @Inject constructor(
@@ -29,6 +29,6 @@ internal class AboutRemoteSource @Inject constructor(
     private val userResponseMapper: UserResponseMapper
 ) : AboutSource {
 
-    override suspend fun getFireflyProfile(): Work<FireflyProfile> =
+    override suspend fun getFireflyProfile(): OperationResult<FireflyProfile> =
         aboutService.getUser().mapToWork(userResponseMapper::toDomain)
 }

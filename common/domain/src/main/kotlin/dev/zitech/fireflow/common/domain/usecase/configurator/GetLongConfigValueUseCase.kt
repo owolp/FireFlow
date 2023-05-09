@@ -19,8 +19,8 @@ package dev.zitech.fireflow.common.domain.usecase.configurator
 
 import dev.zitech.fireflow.common.domain.model.configurator.LongConfig
 import dev.zitech.fireflow.common.domain.repository.configurator.ConfiguratorRepository
-import dev.zitech.fireflow.core.work.WorkError
-import dev.zitech.fireflow.core.work.WorkSuccess
+import dev.zitech.fireflow.core.result.OperationResult.Failure
+import dev.zitech.fireflow.core.result.OperationResult.Success
 import javax.inject.Inject
 
 class GetLongConfigValueUseCase @Inject constructor(
@@ -29,7 +29,7 @@ class GetLongConfigValueUseCase @Inject constructor(
 
     suspend operator fun invoke(config: LongConfig): Long =
         when (val result = configuratorRepository.getLongValue(config)) {
-            is WorkSuccess -> result.data
-            is WorkError -> config.defaultValue
+            is Success -> result.data
+            is Failure -> config.defaultValue
         }
 }

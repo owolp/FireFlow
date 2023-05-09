@@ -18,7 +18,7 @@
 package dev.zitech.fireflow.common.data.source.token
 
 import dev.zitech.fireflow.common.domain.model.authentication.Token
-import dev.zitech.fireflow.core.work.Work
+import dev.zitech.fireflow.core.result.OperationResult
 
 internal interface OAuthSource {
 
@@ -26,11 +26,11 @@ internal interface OAuthSource {
         clientId: String,
         clientSecret: String,
         code: String
-    ): Work<Token>
+    ): OperationResult<Token>
 
     suspend fun getRefreshedToken(
         clientId: String,
         clientSecret: String,
         refreshToken: String
-    ): Work<Token>
+    ): OperationResult<Token>
 }

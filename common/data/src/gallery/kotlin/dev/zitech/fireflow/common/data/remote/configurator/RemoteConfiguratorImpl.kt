@@ -25,29 +25,27 @@ import dev.zitech.fireflow.core.error.Error.FailedToFetch.Type.DOUBLE
 import dev.zitech.fireflow.core.error.Error.FailedToFetch.Type.LONG
 import dev.zitech.fireflow.core.error.Error.FailedToFetch.Type.STRING
 import dev.zitech.fireflow.core.logger.Logger
-import dev.zitech.fireflow.core.work.Work
-import dev.zitech.fireflow.core.work.WorkError
-import dev.zitech.fireflow.core.work.WorkSuccess
+import dev.zitech.fireflow.core.result.OperationResult
+import dev.zitech.fireflow.core.result.OperationResult.Failure
+import dev.zitech.fireflow.core.result.OperationResult.Success
 import javax.inject.Inject
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
-@OptIn(ExperimentalCoroutinesApi::class)
 internal class RemoteConfiguratorImpl @Inject constructor() : RemoteConfigurator {
 
     private val huaweiRemoteConfig = AGConnectConfig.getInstance()
 
     @Suppress("TooGenericExceptionCaught")
-    override fun getBoolean(key: String): Work<Boolean> =
+    override fun getBoolean(key: String): OperationResult<Boolean> =
         try {
-            WorkSuccess(
+            Success(
                 huaweiRemoteConfig.getValueAsBoolean(key)
             )
         } catch (e: Exception) {
             logError("getBoolean $key", e)
-            WorkError(
+            Failure(
                 Error.FailedToFetch(
                     key = key,
                     type = BOOLEAN
@@ -56,14 +54,14 @@ internal class RemoteConfiguratorImpl @Inject constructor() : RemoteConfigurator
         }
 
     @Suppress("TooGenericExceptionCaught")
-    override fun getDouble(key: String): Work<Double> =
+    override fun getDouble(key: String): OperationResult<Double> =
         try {
-            WorkSuccess(
+            Success(
                 huaweiRemoteConfig.getValueAsDouble(key)
             )
         } catch (e: Exception) {
             logError("getDouble $key", e)
-            WorkError(
+            Failure(
                 Error.FailedToFetch(
                     key = key,
                     type = DOUBLE
@@ -72,14 +70,14 @@ internal class RemoteConfiguratorImpl @Inject constructor() : RemoteConfigurator
         }
 
     @Suppress("TooGenericExceptionCaught")
-    override fun getLong(key: String): Work<Long> =
+    override fun getLong(key: String): OperationResult<Long> =
         try {
-            WorkSuccess(
+            Success(
                 huaweiRemoteConfig.getValueAsLong(key)
             )
         } catch (e: Exception) {
             logError("getLong $key", e)
-            WorkError(
+            Failure(
                 Error.FailedToFetch(
                     key = key,
                     type = LONG
@@ -88,14 +86,14 @@ internal class RemoteConfiguratorImpl @Inject constructor() : RemoteConfigurator
         }
 
     @Suppress("TooGenericExceptionCaught")
-    override fun getString(key: String): Work<String> =
+    override fun getString(key: String): OperationResult<String> =
         try {
-            WorkSuccess(
+            Success(
                 huaweiRemoteConfig.getValueAsString(key)
             )
         } catch (e: Exception) {
             logError("getString $key", e)
-            WorkError(
+            Failure(
                 Error.FailedToFetch(
                     key = key,
                     type = STRING
@@ -103,7 +101,7 @@ internal class RemoteConfiguratorImpl @Inject constructor() : RemoteConfigurator
             )
         }
 
-    override fun init(): Flow<Work<Unit>> = callbackFlow {
+    override fun init(): Flow<OperationResult<Unit>> = callbackFlow {
         logInfo("Set default values")
         huaweiRemoteConfig
             .applyDefault(getDefaultConfigValues())
@@ -117,7 +115,7 @@ internal class RemoteConfiguratorImpl @Inject constructor() : RemoteConfigurator
                 logInfo("Applied completed")
 
                 if (!isClosedForSend) {
-                    trySend(WorkSuccess(Unit))
+                    trySend(Success(Unit))
                 } else {
                     logError("fetch addOnSuccessListener isClosedForSend=true")
                 }
@@ -129,7 +127,7 @@ internal class RemoteConfiguratorImpl @Inject constructor() : RemoteConfigurator
 
                 if (!isClosedForSend) {
                     trySend(
-                        WorkError(
+                        Failure(
                             Error.FailedToFetch(
                                 type = Error.FailedToFetch.Type.INIT
                             )

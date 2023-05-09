@@ -22,7 +22,7 @@ import dev.zitech.fireflow.common.domain.model.configurator.BooleanConfig
 import dev.zitech.fireflow.common.domain.model.configurator.DoubleConfig
 import dev.zitech.fireflow.common.domain.model.configurator.LongConfig
 import dev.zitech.fireflow.common.domain.model.configurator.StringConfig
-import dev.zitech.fireflow.core.work.Work
+import dev.zitech.fireflow.core.result.OperationResult
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 
@@ -30,18 +30,18 @@ internal class ConfiguratorProviderSourceImpl @Inject constructor(
     private val remoteConfigurator: RemoteConfigurator
 ) : ConfiguratorProviderSource {
 
-    override fun getBoolean(config: BooleanConfig): Work<Boolean> =
+    override fun getBoolean(config: BooleanConfig): OperationResult<Boolean> =
         remoteConfigurator.getBoolean(config.key)
 
-    override fun getDouble(config: DoubleConfig): Work<Double> =
+    override fun getDouble(config: DoubleConfig): OperationResult<Double> =
         remoteConfigurator.getDouble(config.key)
 
-    override fun getLong(config: LongConfig): Work<Long> =
+    override fun getLong(config: LongConfig): OperationResult<Long> =
         remoteConfigurator.getLong(config.key)
 
-    override fun getString(config: StringConfig): Work<String> =
+    override fun getString(config: StringConfig): OperationResult<String> =
         remoteConfigurator.getString(config.key)
 
-    override fun init(): Flow<Work<Unit>> =
+    override fun init(): Flow<OperationResult<Unit>> =
         remoteConfigurator.init()
 }

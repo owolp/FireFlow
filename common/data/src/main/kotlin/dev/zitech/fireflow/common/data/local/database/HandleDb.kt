@@ -19,15 +19,15 @@ package dev.zitech.fireflow.common.data.local.database
 
 import dev.zitech.fireflow.core.error.Error
 import dev.zitech.fireflow.core.error.Error.Fatal.Type.DISK
-import dev.zitech.fireflow.core.work.Work
-import dev.zitech.fireflow.core.work.WorkError
-import dev.zitech.fireflow.core.work.WorkSuccess
+import dev.zitech.fireflow.core.result.OperationResult
+import dev.zitech.fireflow.core.result.OperationResult.Failure
+import dev.zitech.fireflow.core.result.OperationResult.Success
 
 @Suppress("TooGenericExceptionCaught")
 suspend fun <T : Any> handleDb(
     execute: suspend () -> T
-): Work<T> = try {
-    WorkSuccess(execute())
+): OperationResult<T> = try {
+    Success(execute())
 } catch (throwable: Throwable) {
-    WorkError(Error.Fatal(throwable, DISK))
+    Failure(Error.Fatal(throwable, DISK))
 }

@@ -23,7 +23,7 @@ import dev.zitech.fireflow.common.domain.model.configurator.DoubleConfig
 import dev.zitech.fireflow.common.domain.model.configurator.LongConfig
 import dev.zitech.fireflow.common.domain.model.configurator.StringConfig
 import dev.zitech.fireflow.common.domain.repository.configurator.ConfiguratorRepository
-import dev.zitech.fireflow.core.work.Work
+import dev.zitech.fireflow.core.result.OperationResult
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 
@@ -34,27 +34,27 @@ internal class ConfiguratorRepositoryImpl @Inject constructor(
     override fun getBooleanConfigs(): List<BooleanConfig> =
         BooleanConfig.values().toList()
 
-    override suspend fun getBooleanValue(config: BooleanConfig): Work<Boolean> =
+    override suspend fun getBooleanValue(config: BooleanConfig): OperationResult<Boolean> =
         configuratorProviderSource.getBoolean(config)
 
     override fun getDoubleConfigs(): List<DoubleConfig> =
         DoubleConfig.values().toList()
 
-    override suspend fun getDoubleValue(config: DoubleConfig): Work<Double> =
+    override suspend fun getDoubleValue(config: DoubleConfig): OperationResult<Double> =
         configuratorProviderSource.getDouble(config)
 
     override fun getLongConfigs(): List<LongConfig> =
         LongConfig.values().toList()
 
-    override suspend fun getLongValue(config: LongConfig): Work<Long> =
+    override suspend fun getLongValue(config: LongConfig): OperationResult<Long> =
         configuratorProviderSource.getLong(config)
 
     override fun getStringConfigs(): List<StringConfig> =
         StringConfig.values().toList()
 
-    override suspend fun getStringValue(config: StringConfig): Work<String> =
+    override suspend fun getStringValue(config: StringConfig): OperationResult<String> =
         configuratorProviderSource.getString(config)
 
-    override fun init(): Flow<Work<Unit>> =
+    override fun init(): Flow<OperationResult<Unit>> =
         configuratorProviderSource.init()
 }

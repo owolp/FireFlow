@@ -19,9 +19,9 @@ package dev.zitech.fireflow.common.domain.usecase.user
 
 import dev.zitech.fireflow.common.domain.repository.user.UserAccountRepository
 import dev.zitech.fireflow.core.error.Error
-import dev.zitech.fireflow.core.work.Work
-import dev.zitech.fireflow.core.work.WorkError
-import dev.zitech.fireflow.core.work.WorkSuccess
+import dev.zitech.fireflow.core.result.OperationResult
+import dev.zitech.fireflow.core.result.OperationResult.Failure
+import dev.zitech.fireflow.core.result.OperationResult.Success
 import javax.inject.Inject
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -31,7 +31,7 @@ class RemoveStaleUserAccountsUseCase @Inject constructor(
 ) {
 
     @Suppress("RedundantAsync", "TooGenericExceptionCaught")
-    suspend operator fun invoke(): Work<Unit> = coroutineScope {
+    suspend operator fun invoke(): OperationResult<Unit> = coroutineScope {
         try {
             val jobOAuth = async {
                 userAccountRepository.removeUserAccountsWithStateAndNoToken()
@@ -40,15 +40,15 @@ class RemoveStaleUserAccountsUseCase @Inject constructor(
                 userAccountRepository.removeUserAccountsWithStateAndTokenAndNoClientIdAndSecret()
             }.await()
 
-            if (jobOAuth is WorkSuccess && jobPat is WorkSuccess) {
-                WorkSuccess(Unit)
-            } else if (jobOAuth is WorkError) {
-                WorkError(jobOAuth.error)
+            if (jobOAuth is Success && jobPat is Success) {
+                Success(Unit)
+            } else if (jobOAuth is Failure) {
+                Failure(jobOAuth.error)
             } else {
-                WorkError((jobPat as WorkError).error)
+                Failure((jobPat as Failure).error)
             }
         } catch (e: Exception) {
-            WorkError(
+            Failure(
                 Error.Fatal(
                     throwable = e,
                     type = Error.Fatal.Type.OS

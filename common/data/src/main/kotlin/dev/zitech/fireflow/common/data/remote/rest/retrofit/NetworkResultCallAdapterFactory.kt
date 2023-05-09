@@ -17,7 +17,7 @@
 
 package dev.zitech.fireflow.common.data.remote.rest.retrofit
 
-import dev.zitech.fireflow.common.data.remote.rest.result.NetworkResult
+import dev.zitech.fireflow.common.data.remote.rest.result.NetworkResponse
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 import retrofit2.Call
@@ -35,7 +35,7 @@ internal class NetworkResultCallAdapterFactory : CallAdapter.Factory() {
         if (getRawType(returnType) != Call::class.java) return null
 
         val callType = getParameterUpperBound(0, returnType as ParameterizedType)
-        if (getRawType(callType) != NetworkResult::class.java) return null
+        if (getRawType(callType) != NetworkResponse::class.java) return null
 
         val resultType = getParameterUpperBound(0, callType as ParameterizedType)
         return NetworkResultCallAdapter(resultType)

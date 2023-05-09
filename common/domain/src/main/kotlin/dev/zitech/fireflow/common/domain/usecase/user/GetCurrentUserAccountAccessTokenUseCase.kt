@@ -18,8 +18,8 @@
 package dev.zitech.fireflow.common.domain.usecase.user
 
 import dev.zitech.fireflow.common.domain.repository.user.UserAccountRepository
-import dev.zitech.fireflow.core.work.WorkError
-import dev.zitech.fireflow.core.work.WorkSuccess
+import dev.zitech.fireflow.core.result.OperationResult.Failure
+import dev.zitech.fireflow.core.result.OperationResult.Success
 import javax.inject.Inject
 import kotlinx.coroutines.flow.first
 
@@ -29,7 +29,7 @@ class GetCurrentUserAccountAccessTokenUseCase @Inject constructor(
 
     suspend operator fun invoke(): String? =
         when (val result = userAccountRepository.getCurrentUserAccount().first()) {
-            is WorkSuccess -> result.data.authenticationType?.accessToken
-            is WorkError -> null
+            is Success -> result.data.authenticationType?.accessToken
+            is Failure -> null
         }
 }

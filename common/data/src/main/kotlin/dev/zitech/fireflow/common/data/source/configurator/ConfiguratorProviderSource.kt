@@ -21,14 +21,14 @@ import dev.zitech.fireflow.common.domain.model.configurator.BooleanConfig
 import dev.zitech.fireflow.common.domain.model.configurator.DoubleConfig
 import dev.zitech.fireflow.common.domain.model.configurator.LongConfig
 import dev.zitech.fireflow.common.domain.model.configurator.StringConfig
-import dev.zitech.fireflow.core.work.Work
+import dev.zitech.fireflow.core.result.OperationResult
 import kotlinx.coroutines.flow.Flow
 
 internal interface ConfiguratorProviderSource {
 
-    fun getBoolean(config: BooleanConfig): Work<Boolean>
-    fun getDouble(config: DoubleConfig): Work<Double>
-    fun getLong(config: LongConfig): Work<Long>
-    fun getString(config: StringConfig): Work<String>
-    fun init(): Flow<Work<Unit>>
+    fun getBoolean(config: BooleanConfig): OperationResult<Boolean>
+    fun getDouble(config: DoubleConfig): OperationResult<Double>
+    fun getLong(config: LongConfig): OperationResult<Long>
+    fun getString(config: StringConfig): OperationResult<String>
+    fun init(): Flow<OperationResult<Unit>>
 }

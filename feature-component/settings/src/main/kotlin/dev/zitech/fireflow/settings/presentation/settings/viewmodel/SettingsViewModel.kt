@@ -32,9 +32,9 @@ import dev.zitech.fireflow.core.applicationconfig.AppConfigProvider
 import dev.zitech.fireflow.core.applicationconfig.BuildFlavor
 import dev.zitech.fireflow.core.error.Error
 import dev.zitech.fireflow.core.logger.Logger
-import dev.zitech.fireflow.core.work.WorkError
-import dev.zitech.fireflow.core.work.WorkSuccess
-import dev.zitech.fireflow.core.work.onError
+import dev.zitech.fireflow.core.result.OperationResult.Failure
+import dev.zitech.fireflow.core.result.OperationResult.Success
+import dev.zitech.fireflow.core.result.onFailure
 import dev.zitech.fireflow.settings.domain.usecase.LogOutCurrentUserUseCase
 import dev.zitech.fireflow.settings.presentation.settings.viewmodel.collection.AppearanceCollectionStates
 import dev.zitech.fireflow.settings.presentation.settings.viewmodel.collection.DataChoicesCollectionStates
@@ -129,8 +129,8 @@ internal class SettingsViewModel @Inject constructor(
 
     private suspend fun getCurrentUserEmailAddress() =
         when (val result = getCurrentUserAccountUseCase().first()) {
-            is WorkSuccess -> result.data.email.orEmpty()
-            is WorkError -> ""
+            is Success -> result.data.email.orEmpty()
+            is Failure -> ""
         }
 
     private suspend fun handleAnalyticsChecked(checked: Boolean) {
@@ -157,7 +157,7 @@ internal class SettingsViewModel @Inject constructor(
 
     private suspend fun handleConfirmLogOutClicked() {
         updateState { copy(confirmLogOut = false) }
-        logOutCurrentUserUseCase().onError { error ->
+        logOutCurrentUserUseCase().onFailure { error ->
             when (error) {
                 is Error.Fatal -> {
                     Logger.e(tag, throwable = error.throwable)

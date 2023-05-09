@@ -19,7 +19,7 @@ package dev.zitech.fireflow.common.domain.usecase.user
 
 import dev.zitech.fireflow.common.domain.model.user.UserAccount
 import dev.zitech.fireflow.common.domain.repository.user.UserAccountRepository
-import dev.zitech.fireflow.core.work.Work
+import dev.zitech.fireflow.core.result.OperationResult
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 
@@ -27,6 +27,6 @@ class GetUserAccountsUseCase @Inject constructor(
     private val userAccountRepository: UserAccountRepository
 ) {
 
-    operator fun invoke(): Flow<Work<List<UserAccount>>> =
+    operator fun invoke(): Flow<OperationResult<List<UserAccount>>> =
         userAccountRepository.getUserAccounts()
 }

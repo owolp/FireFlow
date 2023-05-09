@@ -18,7 +18,7 @@
 package dev.zitech.fireflow.common.domain.repository.authentication
 
 import dev.zitech.fireflow.common.domain.model.authentication.Token
-import dev.zitech.fireflow.core.work.Work
+import dev.zitech.fireflow.core.result.OperationResult
 
 interface TokenRepository {
 
@@ -26,11 +26,11 @@ interface TokenRepository {
         clientId: String,
         clientSecret: String,
         code: String
-    ): Work<Token>
+    ): OperationResult<Token>
 
     suspend fun getRefreshedToken(
         clientId: String,
         clientSecret: String,
         refreshToken: String
-    ): Work<Token>
+    ): OperationResult<Token>
 }

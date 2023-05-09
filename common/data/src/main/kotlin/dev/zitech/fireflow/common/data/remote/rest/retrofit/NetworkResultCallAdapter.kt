@@ -17,16 +17,16 @@
 
 package dev.zitech.fireflow.common.data.remote.rest.retrofit
 
-import dev.zitech.fireflow.common.data.remote.rest.result.NetworkResult
+import dev.zitech.fireflow.common.data.remote.rest.result.NetworkResponse
 import java.lang.reflect.Type
 import retrofit2.Call
 import retrofit2.CallAdapter
 
 internal class NetworkResultCallAdapter(
     private val resultType: Type
-) : CallAdapter<Type, Call<NetworkResult<Type>>> {
+) : CallAdapter<Type, Call<NetworkResponse<Type>>> {
 
-    override fun adapt(call: Call<Type>): Call<NetworkResult<Type>> = NetworkResultCall(call)
+    override fun adapt(call: Call<Type>): Call<NetworkResponse<Type>> = NetworkResultCall(call)
 
     override fun responseType(): Type = resultType
 }

@@ -35,9 +35,9 @@ import dev.zitech.fireflow.common.domain.usecase.user.UpdateUserAccountUseCase
 import dev.zitech.fireflow.common.presentation.architecture.MviViewModel
 import dev.zitech.fireflow.core.dispatcher.AppDispatchers
 import dev.zitech.fireflow.core.error.Error
-import dev.zitech.fireflow.core.work.Work
-import dev.zitech.fireflow.core.work.onError
-import dev.zitech.fireflow.core.work.onSuccess
+import dev.zitech.fireflow.core.result.OperationResult
+import dev.zitech.fireflow.core.result.onFailure
+import dev.zitech.fireflow.core.result.onSuccess
 import dev.zitech.fireflow.onboarding.domain.usecase.GetAccessTokenUseCase
 import dev.zitech.fireflow.onboarding.domain.usecase.IsOAuthLoginInputValidUseCase
 import dev.zitech.fireflow.onboarding.domain.validator.ClientIdValidator
@@ -129,13 +129,13 @@ internal class OAuthViewModel @Inject constructor(
                     loading = true
                 )
             }
-        }.onError(::handleError)
+        }.onFailure(::handleError)
     }
 
-    private suspend fun handleNavigatedToFireflyResult(result: Work<Unit>) {
+    private suspend fun handleNavigatedToFireflyResult(result: OperationResult<Unit>) {
         result.onSuccess {
             updateState { copy(loading = false) }
-        }.onError { error ->
+        }.onFailure { error ->
             when (error) {
                 is Error.NoBrowserInstalled,
                 is Error.UserVisible -> {
@@ -193,7 +193,7 @@ internal class OAuthViewModel @Inject constructor(
                         )
                     }
                 }
-            }.onError(::handleError)
+            }.onFailure(::handleError)
     }
 
     private fun handleServerAddressChanged(intent: ServerAddressChanged) {
@@ -220,8 +220,8 @@ internal class OAuthViewModel @Inject constructor(
                             stepCompleted = true
                         )
                     }
-                }.onError(::handleError)
-            }.onError(::handleError)
+                }.onFailure(::handleError)
+            }.onFailure(::handleError)
     }
 
     private suspend fun retrieveToken(
@@ -236,7 +236,7 @@ internal class OAuthViewModel @Inject constructor(
             code = code
         ).onSuccess { accessToken ->
             updateUserAccount(accessToken, userAccount, clientId, clientSecret, code)
-        }.onError(::handleError)
+        }.onFailure(::handleError)
     }
 
     private fun setLoginState() {
@@ -273,7 +273,7 @@ internal class OAuthViewModel @Inject constructor(
         )
         updateUserAccountUseCase(updatedUserAccount).onSuccess {
             retrieveFireflyInfo()
-        }.onError(::handleError)
+        }.onFailure(::handleError)
     }
 
     private companion object {

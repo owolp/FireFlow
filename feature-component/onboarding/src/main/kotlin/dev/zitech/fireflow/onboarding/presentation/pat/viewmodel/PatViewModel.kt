@@ -29,8 +29,8 @@ import dev.zitech.fireflow.common.domain.usecase.user.UpdateUserAccountUseCase
 import dev.zitech.fireflow.common.presentation.architecture.MviViewModel
 import dev.zitech.fireflow.core.dispatcher.AppDispatchers
 import dev.zitech.fireflow.core.error.Error
-import dev.zitech.fireflow.core.work.onError
-import dev.zitech.fireflow.core.work.onSuccess
+import dev.zitech.fireflow.core.result.onFailure
+import dev.zitech.fireflow.core.result.onSuccess
 import dev.zitech.fireflow.onboarding.domain.usecase.IsPatLoginInputValidUseCase
 import javax.inject.Inject
 import kotlinx.coroutines.delay
@@ -74,7 +74,7 @@ internal class PatViewModel @Inject constructor(
                     type = fireflyProfile.type,
                     userAccount = userAccount
                 )
-            }.onError(::handleError)
+            }.onFailure(::handleError)
     }
 
     private suspend fun getUserAccountByState(state: String) {
@@ -93,7 +93,7 @@ internal class PatViewModel @Inject constructor(
                         )
                     }
                 }
-            }.onError(::handleError)
+            }.onFailure(::handleError)
     }
 
     private suspend fun handleError(error: Error) {
@@ -120,7 +120,7 @@ internal class PatViewModel @Inject constructor(
             state = state
         ).onSuccess {
             getUserAccountByState(state)
-        }.onError(::handleError)
+        }.onFailure(::handleError)
     }
 
     private fun handlePersonalAccessTokenChanged(intent: PersonalAccessTokenChanged) {
@@ -180,7 +180,7 @@ internal class PatViewModel @Inject constructor(
                     stepCompleted = true
                 )
             }
-        }.onError(::handleError)
+        }.onFailure(::handleError)
     }
 
     private companion object {

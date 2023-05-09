@@ -18,16 +18,16 @@
 package dev.zitech.fireflow.common.domain.repository.user
 
 import dev.zitech.fireflow.common.domain.model.user.UserAccount
-import dev.zitech.fireflow.core.work.Work
+import dev.zitech.fireflow.core.result.OperationResult
 import kotlinx.coroutines.flow.Flow
 
 interface UserAccountRepository {
 
-    fun getCurrentUserAccount(): Flow<Work<UserAccount>>
-    suspend fun getUserAccountByState(state: String): Work<UserAccount>
-    fun getUserAccounts(): Flow<Work<List<UserAccount>>>
-    suspend fun removeUserAccountsWithStateAndNoToken(): Work<Unit>
-    suspend fun removeUserAccountsWithStateAndTokenAndNoClientIdAndSecret(): Work<Unit>
+    fun getCurrentUserAccount(): Flow<OperationResult<UserAccount>>
+    suspend fun getUserAccountByState(state: String): OperationResult<UserAccount>
+    fun getUserAccounts(): Flow<OperationResult<List<UserAccount>>>
+    suspend fun removeUserAccountsWithStateAndNoToken(): OperationResult<Unit>
+    suspend fun removeUserAccountsWithStateAndTokenAndNoClientIdAndSecret(): OperationResult<Unit>
     suspend fun saveUserAccount(
         accessToken: String?,
         clientId: String?,
@@ -35,7 +35,7 @@ interface UserAccountRepository {
         isCurrentUserAccount: Boolean,
         serverAddress: String,
         state: String
-    ): Work<Long>
+    ): OperationResult<Long>
 
-    suspend fun updateUserAccount(userAccount: UserAccount): Work<Unit>
+    suspend fun updateUserAccount(userAccount: UserAccount): OperationResult<Unit>
 }

@@ -19,7 +19,7 @@ package dev.zitech.fireflow.common.domain.usecase.user
 
 import dev.zitech.fireflow.common.domain.model.user.UserLoggedState
 import dev.zitech.fireflow.common.domain.repository.user.UserAccountRepository
-import dev.zitech.fireflow.core.work.WorkSuccess
+import dev.zitech.fireflow.core.result.OperationResult.Success
 import javax.inject.Inject
 import kotlinx.coroutines.flow.firstOrNull
 
@@ -29,7 +29,7 @@ class GetUserLoggedStateUseCase @Inject constructor(
 
     suspend operator fun invoke(): UserLoggedState =
         when (userAccountRepository.getCurrentUserAccount().firstOrNull()) {
-            is WorkSuccess -> UserLoggedState.LOGGED_IN
+            is Success -> UserLoggedState.LOGGED_IN
             else -> UserLoggedState.LOGGED_OUT
         }
 }

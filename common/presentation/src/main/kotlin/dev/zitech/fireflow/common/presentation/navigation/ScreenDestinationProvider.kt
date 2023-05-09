@@ -21,10 +21,10 @@ import dev.zitech.fireflow.common.domain.usecase.user.GetCurrentUserAccountUseCa
 import dev.zitech.fireflow.common.domain.usecase.user.GetUserAccountsUseCase
 import dev.zitech.fireflow.common.presentation.navigation.deeplink.DeepLinkScreenDestination
 import dev.zitech.fireflow.core.error.Error
-import dev.zitech.fireflow.core.work.WorkError
-import dev.zitech.fireflow.core.work.WorkSuccess
-import dev.zitech.fireflow.core.work.onError
-import dev.zitech.fireflow.core.work.onSuccess
+import dev.zitech.fireflow.core.result.OperationResult.Failure
+import dev.zitech.fireflow.core.result.OperationResult.Success
+import dev.zitech.fireflow.core.result.onFailure
+import dev.zitech.fireflow.core.result.onSuccess
 import javax.inject.Inject
 import kotlinx.coroutines.channels.ProducerScope
 import kotlinx.coroutines.flow.Flow
@@ -42,8 +42,8 @@ class ScreenDestinationProvider @Inject constructor(
         getCurrentUserAccountUseCase()
             .onEach { result ->
                 when (result) {
-                    is WorkSuccess -> send(DeepLinkScreenDestination.Current)
-                    is WorkError -> {
+                    is Success -> send(DeepLinkScreenDestination.Current)
+                    is Failure -> {
                         when (result.error) {
                             is Error.NullCurrentUserAccount -> {
                                 handleNullCurrentUserAccount()
@@ -65,7 +65,7 @@ class ScreenDestinationProvider @Inject constructor(
                     send(DeepLinkScreenDestination.Welcome)
                 }
             }
-            .onError { error ->
+            .onFailure { error ->
                 send(DeepLinkScreenDestination.Error(error))
             }
     }

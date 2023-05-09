@@ -19,8 +19,8 @@ package dev.zitech.fireflow.common.domain.usecase.configurator
 
 import dev.zitech.fireflow.common.domain.model.configurator.StringConfig
 import dev.zitech.fireflow.common.domain.repository.configurator.ConfiguratorRepository
-import dev.zitech.fireflow.core.work.WorkError
-import dev.zitech.fireflow.core.work.WorkSuccess
+import dev.zitech.fireflow.core.result.OperationResult.Failure
+import dev.zitech.fireflow.core.result.OperationResult.Success
 import javax.inject.Inject
 
 class GetStringConfigValueUseCase @Inject constructor(
@@ -29,7 +29,7 @@ class GetStringConfigValueUseCase @Inject constructor(
 
     suspend operator fun invoke(config: StringConfig): String =
         when (val result = configuratorRepository.getStringValue(config)) {
-            is WorkSuccess -> result.data
-            is WorkError -> config.defaultValue
+            is Success -> result.data
+            is Failure -> config.defaultValue
         }
 }

@@ -18,9 +18,9 @@
 package dev.zitech.fireflow.common.data.source.about
 
 import dev.zitech.fireflow.common.domain.model.profile.FireflyProfile
-import dev.zitech.fireflow.core.work.Work
+import dev.zitech.fireflow.core.result.OperationResult
 
 internal interface AboutSource {
 
-    suspend fun getFireflyProfile(): Work<FireflyProfile>
+    suspend fun getFireflyProfile(): OperationResult<FireflyProfile>
 }
