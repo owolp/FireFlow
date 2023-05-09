@@ -22,9 +22,9 @@ import dev.zitech.fireflow.common.data.source.user.UserAccountSource
 import dev.zitech.fireflow.common.domain.model.user.UserAccount
 import dev.zitech.fireflow.common.domain.repository.user.UserAccountRepository
 import dev.zitech.fireflow.core.error.Error
-import dev.zitech.fireflow.core.work.Work
-import dev.zitech.fireflow.core.work.WorkError
-import dev.zitech.fireflow.core.work.WorkSuccess
+import dev.zitech.fireflow.core.work.OperationResult
+import dev.zitech.fireflow.core.work.OperationResult.Failure
+import dev.zitech.fireflow.core.work.OperationResult.Success
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -34,34 +34,34 @@ internal class UserAccountRepositoryImpl @Inject constructor(
     private val userAccountDatabaseSource: UserAccountSource
 ) : UserAccountRepository {
 
-    override fun getCurrentUserAccount(): Flow<Work<UserAccount>> =
+    override fun getCurrentUserAccount(): Flow<OperationResult<UserAccount>> =
         userAccountDatabaseSource.getCurrentUserAccount()
             .map { userAccountResult ->
                 when (userAccountResult) {
-                    is WorkSuccess -> {
+                    is Success -> {
                         networkDetailsInMemoryCache.data = NetworkDetails(
                             userId = userAccountResult.data.userId,
                             serverAddress = userAccountResult.data.serverAddress
                         )
                     }
 
-                    is WorkError -> {
+                    is Failure -> {
                         // NO_OP
                     }
                 }
                 userAccountResult
             }
 
-    override suspend fun getUserAccountByState(state: String): Work<UserAccount> =
+    override suspend fun getUserAccountByState(state: String): OperationResult<UserAccount> =
         userAccountDatabaseSource.getUserAccountByState(state)
 
-    override fun getUserAccounts(): Flow<Work<List<UserAccount>>> =
+    override fun getUserAccounts(): Flow<OperationResult<List<UserAccount>>> =
         userAccountDatabaseSource.getUserAccounts()
 
-    override suspend fun removeUserAccountsWithStateAndNoToken(): Work<Unit> =
+    override suspend fun removeUserAccountsWithStateAndNoToken(): OperationResult<Unit> =
         userAccountDatabaseSource.removeUserAccountsWithStateAndNoToken()
 
-    override suspend fun removeUserAccountsWithStateAndTokenAndNoClientIdAndSecret(): Work<Unit> =
+    override suspend fun removeUserAccountsWithStateAndTokenAndNoClientIdAndSecret(): OperationResult<Unit> =
         userAccountDatabaseSource.removeUserAccountsWithStateAndTokenAndNoClientIdAndSecret()
 
     override suspend fun saveUserAccount(
@@ -71,7 +71,7 @@ internal class UserAccountRepositoryImpl @Inject constructor(
         isCurrentUserAccount: Boolean,
         serverAddress: String,
         state: String
-    ): Work<Long> {
+    ): OperationResult<Long> {
         val saveUserAccountResult = userAccountDatabaseSource.saveUserAccount(
             accessToken = accessToken,
             clientId = clientId,
@@ -81,14 +81,14 @@ internal class UserAccountRepositoryImpl @Inject constructor(
             state = state
         )
         when (saveUserAccountResult) {
-            is WorkSuccess -> {
+            is Success -> {
                 networkDetailsInMemoryCache.data = NetworkDetails(
                     userId = saveUserAccountResult.data,
                     serverAddress = serverAddress
                 )
             }
 
-            is WorkError -> {
+            is Failure -> {
                 // NO_OP
             }
         }
@@ -96,21 +96,21 @@ internal class UserAccountRepositoryImpl @Inject constructor(
         return saveUserAccountResult
     }
 
-    override suspend fun updateUserAccount(userAccount: UserAccount): Work<Unit> =
+    override suspend fun updateUserAccount(userAccount: UserAccount): OperationResult<Unit> =
         when (
             val updateUserAccountResult = userAccountDatabaseSource.updateUserAccount(
                 userAccount
             )
         ) {
-            is WorkSuccess -> {
+            is Success -> {
                 if (updateUserAccountResult.data != NO_WORKER_UPDATED_RESULT) {
-                    WorkSuccess(Unit)
+                    Success(Unit)
                 } else {
-                    WorkError(Error.NullUserAccount)
+                    Failure(Error.NullUserAccount)
                 }
             }
 
-            is WorkError -> WorkError(updateUserAccountResult.error)
+            is Failure -> Failure(updateUserAccountResult.error)
         }
 
     private companion object {

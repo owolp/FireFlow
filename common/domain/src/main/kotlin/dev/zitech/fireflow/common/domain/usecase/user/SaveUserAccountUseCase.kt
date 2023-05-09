@@ -18,7 +18,7 @@
 package dev.zitech.fireflow.common.domain.usecase.user
 
 import dev.zitech.fireflow.common.domain.repository.user.UserAccountRepository
-import dev.zitech.fireflow.core.work.Work
+import dev.zitech.fireflow.core.work.OperationResult
 import javax.inject.Inject
 
 class SaveUserAccountUseCase @Inject constructor(
@@ -32,7 +32,7 @@ class SaveUserAccountUseCase @Inject constructor(
         isCurrentUserAccount: Boolean,
         serverAddress: String,
         state: String
-    ): Work<Long> =
+    ): OperationResult<Long> =
         userAccountRepository.saveUserAccount(
             clientId = clientId,
             clientSecret = clientSecret,

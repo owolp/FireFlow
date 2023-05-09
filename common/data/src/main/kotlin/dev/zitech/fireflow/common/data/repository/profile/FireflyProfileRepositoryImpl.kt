@@ -20,13 +20,13 @@ package dev.zitech.fireflow.common.data.repository.profile
 import dev.zitech.fireflow.common.data.source.about.AboutSource
 import dev.zitech.fireflow.common.domain.model.profile.FireflyProfile
 import dev.zitech.fireflow.common.domain.repository.profile.FireflyProfileRepository
-import dev.zitech.fireflow.core.work.Work
+import dev.zitech.fireflow.core.work.OperationResult
 import javax.inject.Inject
 
 internal class FireflyProfileRepositoryImpl @Inject constructor(
     private val aboutRemoteSource: AboutSource
 ) : FireflyProfileRepository {
 
-    override suspend fun getFireflyProfile(): Work<FireflyProfile> =
+    override suspend fun getFireflyProfile(): OperationResult<FireflyProfile> =
         aboutRemoteSource.getFireflyProfile()
 }

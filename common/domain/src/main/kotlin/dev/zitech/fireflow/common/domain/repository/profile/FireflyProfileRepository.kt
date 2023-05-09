@@ -18,9 +18,9 @@
 package dev.zitech.fireflow.common.domain.repository.profile
 
 import dev.zitech.fireflow.common.domain.model.profile.FireflyProfile
-import dev.zitech.fireflow.core.work.Work
+import dev.zitech.fireflow.core.work.OperationResult
 
 interface FireflyProfileRepository {
 
-    suspend fun getFireflyProfile(): Work<FireflyProfile>
+    suspend fun getFireflyProfile(): OperationResult<FireflyProfile>
 }

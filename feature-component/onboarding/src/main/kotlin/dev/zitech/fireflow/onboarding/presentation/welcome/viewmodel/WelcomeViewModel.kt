@@ -22,8 +22,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.zitech.fireflow.common.domain.usecase.user.SaveUserAccountUseCase
 import dev.zitech.fireflow.common.presentation.architecture.MviViewModel
 import dev.zitech.fireflow.core.error.Error
-import dev.zitech.fireflow.core.work.Work
-import dev.zitech.fireflow.core.work.onError
+import dev.zitech.fireflow.core.work.OperationResult
+import dev.zitech.fireflow.core.work.onFailure
 import dev.zitech.fireflow.core.work.onSuccess
 import javax.inject.Inject
 import kotlinx.coroutines.launch
@@ -54,10 +54,10 @@ internal class WelcomeViewModel @Inject constructor(
         }
     }
 
-    private suspend fun handleNavigatedToFireflyResult(result: Work<Unit>) {
+    private suspend fun handleNavigatedToFireflyResult(result: OperationResult<Unit>) {
         result.onSuccess {
             updateState { copy(fireflyAuthentication = false) }
-        }.onError { error ->
+        }.onFailure { error ->
             when (error) {
                 is Error.NoBrowserInstalled,
                 is Error.UserVisible -> {

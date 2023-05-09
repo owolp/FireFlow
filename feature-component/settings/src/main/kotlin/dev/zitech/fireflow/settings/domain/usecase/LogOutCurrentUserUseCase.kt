@@ -20,25 +20,25 @@ package dev.zitech.fireflow.settings.domain.usecase
 import dev.zitech.fireflow.common.domain.repository.cache.CacheRepository
 import dev.zitech.fireflow.common.domain.usecase.user.UpdateCurrentUserAccountUseCase
 import dev.zitech.fireflow.common.domain.usecase.user.UpdateCurrentUserAccountUseCase.IsCurrentUserAccount
-import dev.zitech.fireflow.core.work.Work
-import dev.zitech.fireflow.core.work.WorkError
-import dev.zitech.fireflow.core.work.WorkSuccess
+import dev.zitech.fireflow.core.work.OperationResult
+import dev.zitech.fireflow.core.work.OperationResult.Failure
+import dev.zitech.fireflow.core.work.OperationResult.Success
 import javax.inject.Inject
 
 internal class LogOutCurrentUserUseCase @Inject constructor(
     private val updateCurrentUserAccountUseCase: UpdateCurrentUserAccountUseCase,
     private val cacheRepository: CacheRepository
 ) {
-    suspend operator fun invoke(): Work<Unit> =
+    suspend operator fun invoke(): OperationResult<Unit> =
         when (
             val result = updateCurrentUserAccountUseCase(
                 IsCurrentUserAccount(false)
             )
         ) {
-            is WorkError -> WorkError(result.error)
-            is WorkSuccess -> {
+            is Failure -> Failure(result.error)
+            is Success -> {
                 cacheRepository.invalidateCaches()
-                WorkSuccess(Unit)
+                Success(Unit)
             }
         }
 }

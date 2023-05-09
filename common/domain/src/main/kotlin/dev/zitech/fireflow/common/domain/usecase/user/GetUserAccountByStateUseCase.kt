@@ -19,13 +19,13 @@ package dev.zitech.fireflow.common.domain.usecase.user
 
 import dev.zitech.fireflow.common.domain.model.user.UserAccount
 import dev.zitech.fireflow.common.domain.repository.user.UserAccountRepository
-import dev.zitech.fireflow.core.work.Work
+import dev.zitech.fireflow.core.work.OperationResult
 import javax.inject.Inject
 
 class GetUserAccountByStateUseCase @Inject constructor(
     private val userAccountRepository: UserAccountRepository
 ) {
 
-    suspend operator fun invoke(state: String): Work<UserAccount> =
+    suspend operator fun invoke(state: String): OperationResult<UserAccount> =
         userAccountRepository.getUserAccountByState(state)
 }

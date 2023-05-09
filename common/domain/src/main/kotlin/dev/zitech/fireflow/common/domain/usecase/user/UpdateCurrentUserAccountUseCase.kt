@@ -20,9 +20,9 @@ package dev.zitech.fireflow.common.domain.usecase.user
 import dev.zitech.fireflow.common.domain.model.user.UserAccount
 import dev.zitech.fireflow.common.domain.model.user.UserAuthenticationType as UserAccountAuthenticationType
 import dev.zitech.fireflow.common.domain.repository.user.UserAccountRepository
-import dev.zitech.fireflow.core.work.Work
-import dev.zitech.fireflow.core.work.WorkError
-import dev.zitech.fireflow.core.work.WorkSuccess
+import dev.zitech.fireflow.core.work.OperationResult
+import dev.zitech.fireflow.core.work.OperationResult.Failure
+import dev.zitech.fireflow.core.work.OperationResult.Success
 import javax.inject.Inject
 import kotlinx.coroutines.flow.first
 
@@ -39,20 +39,20 @@ class UpdateCurrentUserAccountUseCase @Inject constructor(
      * Updates the current user account with new values for specified fields.
      *
      * @param fields The fields to update and their new values.
-     * @return A [Work] object indicating success or failure of the operation.
-     * If successful, returns [WorkSuccess].
-     * If unsuccessful, returns [WorkError] with the corresponding error.
+     * @return A [OperationResult] object indicating success or failure of the operation.
+     * If successful, returns [Success].
+     * If unsuccessful, returns [Failure] with the corresponding error.
      */
-    suspend operator fun invoke(vararg fields: Field): Work<Unit> =
+    suspend operator fun invoke(vararg fields: Field): OperationResult<Unit> =
         when (val result = userAccountRepository.getCurrentUserAccount().first()) {
-            is WorkError -> WorkError(result.error)
-            is WorkSuccess -> handleResultSuccess(result.data, fields)
+            is Failure -> Failure(result.error)
+            is Success -> handleResultSuccess(result.data, fields)
         }
 
     private suspend fun handleResultSuccess(
         currentUserAccount: UserAccount,
         fields: Array<out Field>
-    ): Work<Unit> {
+    ): OperationResult<Unit> {
         val updatedCurrentUserAccount = fields.fold(currentUserAccount) { acc, field ->
             when (field) {
                 is AuthenticationType -> acc.copy(authenticationType = field.value)

@@ -20,9 +20,8 @@ package dev.zitech.fireflow.common.data.remote.rest.result
 import dev.zitech.fireflow.common.data.remote.rest.code.StatusCode
 import dev.zitech.fireflow.core.error.Error
 import dev.zitech.fireflow.core.error.Error.Fatal.Type.NETWORK
-import dev.zitech.fireflow.core.work.Work
-import dev.zitech.fireflow.core.work.WorkError
-import dev.zitech.fireflow.core.work.WorkSuccess
+import dev.zitech.fireflow.core.work.OperationResult
+import dev.zitech.fireflow.core.work.OperationResult.Success
 
 sealed interface NetworkResult<out T : Any>
 
@@ -61,11 +60,11 @@ suspend fun <T : Any> NetworkResult<T>.onException(
 
 fun <T : Any, R : Any> NetworkResult<T>.mapToWork(
     transformSuccess: (T) -> R
-): Work<R> =
+): OperationResult<R> =
     when (this) {
-        is NetworkSuccess -> WorkSuccess(transformSuccess(data))
-        is NetworkError -> WorkError(getError(statusCode, message))
-        is NetworkException -> WorkError(getError(throwable))
+        is NetworkSuccess -> Success(transformSuccess(data))
+        is NetworkError -> OperationResult.Failure(getError(statusCode, message))
+        is NetworkException -> OperationResult.Failure(getError(throwable))
     }
 
 fun getError(statusCode: StatusCode, message: String?): Error =

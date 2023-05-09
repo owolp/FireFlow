@@ -25,9 +25,9 @@ import dev.zitech.fireflow.common.domain.usecase.user.UpdateCurrentUserAccountUs
 import dev.zitech.fireflow.common.domain.usecase.user.UpdateCurrentUserAccountUseCase.AuthenticationType
 import dev.zitech.fireflow.core.error.Error
 import dev.zitech.fireflow.core.logger.Logger
-import dev.zitech.fireflow.core.work.Work
-import dev.zitech.fireflow.core.work.WorkError
-import dev.zitech.fireflow.core.work.WorkSuccess
+import dev.zitech.fireflow.core.work.OperationResult
+import dev.zitech.fireflow.core.work.OperationResult.Failure
+import dev.zitech.fireflow.core.work.OperationResult.Success
 import javax.inject.Inject
 import kotlinx.coroutines.flow.first
 
@@ -49,11 +49,11 @@ class GetRefreshedTokenUseCase @Inject constructor(
     /**
      * Gets a refreshed token for the current user.
      *
-     * @return A [Work] object containing the refreshed token, or an error if the operation failed.
+     * @return A [OperationResult] object containing the refreshed token, or an error if the operation failed.
      */
-    suspend operator fun invoke(): Work<Token> =
+    suspend operator fun invoke(): OperationResult<Token> =
         when (val currentUserAccountResult = getCurrentUserAccountUseCase().first()) {
-            is WorkSuccess -> {
+            is Success -> {
                 val currentUser = currentUserAccountResult.data
                 val authenticationType = currentUser.authenticationType
                 if (authenticationType is UserAuthenticationType.OAuth) {
@@ -64,11 +64,11 @@ class GetRefreshedTokenUseCase @Inject constructor(
                         oauthCode = authenticationType.oauthCode.orEmpty()
                     )
                 } else {
-                    WorkError(Error.AuthenticationProblem)
+                    Failure(Error.AuthenticationProblem)
                 }
             }
 
-            is WorkError -> WorkError(currentUserAccountResult.error)
+            is Failure -> Failure(currentUserAccountResult.error)
         }
 
     private suspend fun getRefreshedToken(
@@ -76,14 +76,14 @@ class GetRefreshedTokenUseCase @Inject constructor(
         clientSecret: String,
         refreshToken: String,
         oauthCode: String
-    ): Work<Token> = when (
+    ): OperationResult<Token> = when (
         val refreshTokenResult = tokenRepository.getRefreshedToken(
             clientId = clientId,
             clientSecret = clientSecret,
             refreshToken = refreshToken
         )
     ) {
-        is WorkSuccess -> {
+        is Success -> {
             val refreshedToken = refreshTokenResult.data
             when (
                 val result = updateCurrentUserAccountUseCase(
@@ -98,7 +98,7 @@ class GetRefreshedTokenUseCase @Inject constructor(
                     )
                 )
             ) {
-                is WorkError -> {
+                is Failure -> {
                     when (val error = result.error) {
                         is Error.Fatal -> {
                             Logger.e(tag, throwable = error.throwable)
@@ -106,15 +106,15 @@ class GetRefreshedTokenUseCase @Inject constructor(
 
                         else -> Logger.e(tag, error.debugText)
                     }
-                    WorkError(result.error)
+                    Failure(result.error)
                 }
 
-                is WorkSuccess -> {
-                    WorkSuccess(refreshedToken)
+                is Success -> {
+                    Success(refreshedToken)
                 }
             }
         }
 
-        is WorkError -> refreshTokenResult
+        is Failure -> refreshTokenResult
     }
 }

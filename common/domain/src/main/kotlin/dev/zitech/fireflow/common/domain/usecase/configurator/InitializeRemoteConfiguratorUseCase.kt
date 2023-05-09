@@ -18,13 +18,13 @@
 package dev.zitech.fireflow.common.domain.usecase.configurator
 
 import dev.zitech.fireflow.common.domain.repository.configurator.ConfiguratorRepository
-import dev.zitech.fireflow.core.work.Work
+import dev.zitech.fireflow.core.work.OperationResult
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 
 class InitializeRemoteConfiguratorUseCase @Inject constructor(
     private val configuratorRepository: ConfiguratorRepository
 ) {
-    operator fun invoke(): Flow<Work<Unit>> =
+    operator fun invoke(): Flow<OperationResult<Unit>> =
         configuratorRepository.init()
 }

@@ -19,7 +19,7 @@ package dev.zitech.fireflow.onboarding.domain.usecase
 
 import dev.zitech.fireflow.common.domain.model.authentication.Token
 import dev.zitech.fireflow.common.domain.repository.authentication.TokenRepository
-import dev.zitech.fireflow.core.work.Work
+import dev.zitech.fireflow.core.work.OperationResult
 import javax.inject.Inject
 
 class GetAccessTokenUseCase @Inject constructor(
@@ -30,5 +30,5 @@ class GetAccessTokenUseCase @Inject constructor(
         clientId: String,
         clientSecret: String,
         code: String
-    ): Work<Token> = tokenRepository.getAccessToken(clientId, clientSecret, code)
+    ): OperationResult<Token> = tokenRepository.getAccessToken(clientId, clientSecret, code)
 }

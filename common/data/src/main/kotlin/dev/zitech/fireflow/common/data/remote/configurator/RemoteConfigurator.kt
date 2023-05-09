@@ -17,14 +17,14 @@
 
 package dev.zitech.fireflow.common.data.remote.configurator
 
-import dev.zitech.fireflow.core.work.Work
+import dev.zitech.fireflow.core.work.OperationResult
 import kotlinx.coroutines.flow.Flow
 
 internal interface RemoteConfigurator {
 
-    fun getBoolean(key: String): Work<Boolean>
-    fun getDouble(key: String): Work<Double>
-    fun getLong(key: String): Work<Long>
-    fun getString(key: String): Work<String>
-    fun init(): Flow<Work<Unit>>
+    fun getBoolean(key: String): OperationResult<Boolean>
+    fun getDouble(key: String): OperationResult<Double>
+    fun getLong(key: String): OperationResult<Long>
+    fun getString(key: String): OperationResult<String>
+    fun init(): Flow<OperationResult<Unit>>
 }

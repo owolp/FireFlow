@@ -18,33 +18,36 @@
 package dev.zitech.fireflow.core.work
 
 import dev.zitech.fireflow.core.error.Error
+import dev.zitech.fireflow.core.work.OperationResult.Failure
+import dev.zitech.fireflow.core.work.OperationResult.Success
 
-sealed interface Work<out T : Any>
+sealed interface OperationResult<out T : Any> {
 
-data class WorkSuccess<out T : Any>(val data: T) : Work<T>
+    data class Success<out T : Any>(val data: T) : OperationResult<T>
 
-data class WorkError<T : Any>(val error: Error) : Work<T>
+    data class Failure<T : Any>(val error: Error) : OperationResult<T>
+}
 
-suspend fun <T : Any> Work<T>.onSuccess(
+suspend fun <T : Any> OperationResult<T>.onSuccess(
     executable: suspend (T) -> Unit
-): Work<T> = apply {
-    if (this is WorkSuccess<T>) {
+): OperationResult<T> = apply {
+    if (this is Success<T>) {
         executable(data)
     }
 }
 
-suspend fun <T : Any> Work<T>.onError(
+suspend fun <T : Any> OperationResult<T>.onFailure(
     executable: suspend (error: Error) -> Unit
-): Work<T> = apply {
-    if (this is WorkError) {
+): OperationResult<T> = apply {
+    if (this is Failure) {
         executable(error)
     }
 }
 
-inline fun <T : Any, R : Any> Work<T>.mapToWork(
+inline fun <T : Any, R : Any> OperationResult<T>.mapToWork(
     transform: (T) -> R
-): Work<R> =
+): OperationResult<R> =
     when (this) {
-        is WorkSuccess -> WorkSuccess(transform(data))
-        is WorkError -> WorkError(error)
+        is Success -> Success(transform(data))
+        is Failure -> Failure(error)
     }

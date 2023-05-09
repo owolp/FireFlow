@@ -18,12 +18,12 @@
 package dev.zitech.fireflow.onboarding.presentation.oauth.viewmodel
 
 import dev.zitech.fireflow.common.presentation.architecture.MviIntent
-import dev.zitech.fireflow.core.work.Work
+import dev.zitech.fireflow.core.work.OperationResult
 import dev.zitech.fireflow.onboarding.presentation.oauth.model.OAuthAuthentication
 
 internal data class ClientIdChanged(val clientId: String) : OAuthIntent
 internal data class ClientSecretChanged(val clientSecret: String) : OAuthIntent
-internal data class NavigatedToFireflyResult(val result: Work<Unit>) : OAuthIntent
+internal data class NavigatedToFireflyResult(val result: OperationResult<Unit>) : OAuthIntent
 internal data class OauthCodeReceived(val authentication: OAuthAuthentication) : OAuthIntent
 internal data class ServerAddressChanged(val serverAddress: String) : OAuthIntent
 internal object AuthenticationCanceled : OAuthIntent

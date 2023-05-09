@@ -24,9 +24,9 @@ import dev.zitech.fireflow.common.data.local.database.mapper.UserAccountEntityMa
 import dev.zitech.fireflow.common.domain.model.user.UserAccount
 import dev.zitech.fireflow.core.error.Error
 import dev.zitech.fireflow.core.error.Error.Fatal.Type.DISK
-import dev.zitech.fireflow.core.work.Work
-import dev.zitech.fireflow.core.work.WorkError
-import dev.zitech.fireflow.core.work.WorkSuccess
+import dev.zitech.fireflow.core.work.OperationResult
+import dev.zitech.fireflow.core.work.OperationResult.Failure
+import dev.zitech.fireflow.core.work.OperationResult.Success
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -37,41 +37,41 @@ internal class UserAccountDatabaseSource @Inject constructor(
     private val userAccountEntityMapper: UserAccountEntityMapper
 ) : UserAccountSource {
 
-    override fun getCurrentUserAccount(): Flow<Work<UserAccount>> =
+    override fun getCurrentUserAccount(): Flow<OperationResult<UserAccount>> =
         userAccountDao.getCurrentUserAccount().map { userAccountEntity ->
             if (userAccountEntity != null) {
-                WorkSuccess(userAccountEntityMapper.toDomain(userAccountEntity))
+                Success(userAccountEntityMapper.toDomain(userAccountEntity))
             } else {
-                WorkError(Error.NullCurrentUserAccount)
+                Failure(Error.NullCurrentUserAccount)
             }
         }.catch { throwable ->
-            WorkError<UserAccount>(Error.Fatal(throwable, DISK))
+            Failure<UserAccount>(Error.Fatal(throwable, DISK))
         }
 
-    override suspend fun getUserAccountByState(state: String): Work<UserAccount> = try {
+    override suspend fun getUserAccountByState(state: String): OperationResult<UserAccount> = try {
         val userAccountEntity = userAccountDao.getUserAccountByState(state)
         if (userAccountEntity != null) {
-            WorkSuccess(userAccountEntityMapper.toDomain(userAccountEntity))
+            Success(userAccountEntityMapper.toDomain(userAccountEntity))
         } else {
-            WorkError(Error.NullUserAccountByState)
+            Failure(Error.NullUserAccountByState)
         }
     } catch (throwable: Throwable) {
-        WorkError(Error.Fatal(throwable, DISK))
+        Failure(Error.Fatal(throwable, DISK))
     }
 
-    override fun getUserAccounts(): Flow<Work<List<UserAccount>>> =
+    override fun getUserAccounts(): Flow<OperationResult<List<UserAccount>>> =
         userAccountDao.getUserAccounts().map { userAccountEntities ->
-            WorkSuccess(userAccountEntities.map(userAccountEntityMapper::toDomain))
+            Success(userAccountEntities.map(userAccountEntityMapper::toDomain))
         }.catch { throwable ->
-            WorkError<List<UserAccount>>(Error.Fatal(throwable, DISK))
+            Failure<List<UserAccount>>(Error.Fatal(throwable, DISK))
         }
 
-    override suspend fun removeUserAccountsWithStateAndNoToken(): Work<Unit> =
+    override suspend fun removeUserAccountsWithStateAndNoToken(): OperationResult<Unit> =
         handleDb {
             userAccountDao.removeUserAccountsWithStateAndNoToken()
         }
 
-    override suspend fun removeUserAccountsWithStateAndTokenAndNoClientIdAndSecret(): Work<Unit> =
+    override suspend fun removeUserAccountsWithStateAndTokenAndNoClientIdAndSecret(): OperationResult<Unit> =
         handleDb {
             userAccountDao.removeUserAccountsWithStateAndTokenAndNoClientIdAndSecret()
         }
@@ -83,7 +83,7 @@ internal class UserAccountDatabaseSource @Inject constructor(
         isCurrentUserAccount: Boolean,
         serverAddress: String,
         state: String
-    ): Work<Long> = handleDb {
+    ): OperationResult<Long> = handleDb {
         userAccountDao.saveUserAccount(
             UserAccountEntity(
                 accessToken = accessToken,
@@ -96,7 +96,7 @@ internal class UserAccountDatabaseSource @Inject constructor(
         )
     }
 
-    override suspend fun updateUserAccount(userAccount: UserAccount): Work<Int> =
+    override suspend fun updateUserAccount(userAccount: UserAccount): OperationResult<Int> =
         handleDb {
             userAccountDao.updateUserAccount(userAccountEntityMapper.toEntity(userAccount))
         }
