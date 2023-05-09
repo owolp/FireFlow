@@ -21,13 +21,34 @@ import dev.zitech.fireflow.core.error.Error
 import dev.zitech.fireflow.core.work.OperationResult.Failure
 import dev.zitech.fireflow.core.work.OperationResult.Success
 
+/**
+ * Represents the result of an operation that can either be successful or a failure.
+ *
+ * @param T The type of data associated with the success result.
+ */
 sealed interface OperationResult<out T : Any> {
 
+    /**
+     * Represents a successful result of the operation.
+     *
+     * @property data The data associated with the success result.
+     */
     data class Success<out T : Any>(val data: T) : OperationResult<T>
 
+    /**
+     * Represents a failure result of the operation.
+     *
+     * @property error The error associated with the failure result.
+     */
     data class Failure<T : Any>(val error: Error) : OperationResult<T>
 }
 
+/**
+ * Executes the specified [executable] block if the operation result is a success.
+ *
+ * @param executable The block of code to execute if the operation result is a success.
+ * @return The original operation result.
+ */
 suspend fun <T : Any> OperationResult<T>.onSuccess(
     executable: suspend (T) -> Unit
 ): OperationResult<T> = apply {
@@ -36,6 +57,12 @@ suspend fun <T : Any> OperationResult<T>.onSuccess(
     }
 }
 
+/**
+ * Executes the specified [executable] block if the operation result is a failure.
+ *
+ * @param executable The block of code to execute if the operation result is a failure.
+ * @return The original operation result.
+ */
 suspend fun <T : Any> OperationResult<T>.onFailure(
     executable: suspend (error: Error) -> Unit
 ): OperationResult<T> = apply {
@@ -44,6 +71,12 @@ suspend fun <T : Any> OperationResult<T>.onFailure(
     }
 }
 
+/**
+ * Transforms the operation result from type [T] to type [R] using the specified [transform] function.
+ *
+ * @param transform The transformation function to apply to the data of the success result.
+ * @return The transformed operation result.
+ */
 inline fun <T : Any, R : Any> OperationResult<T>.mapToWork(
     transform: (T) -> R
 ): OperationResult<R> =

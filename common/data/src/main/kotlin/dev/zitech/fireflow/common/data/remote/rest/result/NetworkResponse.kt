@@ -22,18 +22,45 @@ import dev.zitech.fireflow.core.error.Error
 import dev.zitech.fireflow.core.error.Error.Fatal.Type.NETWORK
 import dev.zitech.fireflow.core.work.OperationResult
 
+/**
+ * Represents the network response of an operation, which can be a success, an error, or an exception.
+ *
+ * @param T The type of data associated with the network response.
+ */
 sealed interface NetworkResponse<out T : Any> {
 
+    /**
+     * Represents a successful network response.
+     *
+     * @property data The data associated with the success response.
+     */
     data class Success<out T : Any>(val data: T) : NetworkResponse<T>
 
+    /**
+     * Represents an error network response.
+     *
+     * @property message The error message associated with the response.
+     * @property statusCode The status code associated with the response.
+     */
     data class Error<T : Any>(
         val message: String? = null,
         val statusCode: StatusCode
     ) : NetworkResponse<T>
 
+    /**
+     * Represents an exceptional network response.
+     *
+     * @property throwable The throwable associated with the exception.
+     */
     data class Exception<out T : Any>(val throwable: Throwable) : NetworkResponse<T>
 }
 
+/**
+ * Executes the specified [executable] block if the network response is a success.
+ *
+ * @param executable The block of code to execute if the network response is a success.
+ * @return The original network response.
+ */
 suspend fun <T : Any> NetworkResponse<T>.onSuccess(
     executable: suspend (T) -> Unit
 ): NetworkResponse<T> = apply {
@@ -42,6 +69,12 @@ suspend fun <T : Any> NetworkResponse<T>.onSuccess(
     }
 }
 
+/**
+ * Executes the specified [executable] block if the network response is an error.
+ *
+ * @param executable The block of code to execute if the network response is an error.
+ * @return The original network response.
+ */
 suspend fun <T : Any> NetworkResponse<T>.onError(
     executable: suspend (statusCode: StatusCode, message: String) -> Unit
 ): NetworkResponse<T> = apply {
@@ -50,6 +83,12 @@ suspend fun <T : Any> NetworkResponse<T>.onError(
     }
 }
 
+/**
+ * Executes the specified [executable] block if the network response is an exception.
+ *
+ * @param executable The block of code to execute if the network response is an exception.
+ * @return The original network response.
+ */
 suspend fun <T : Any> NetworkResponse<T>.onException(
     executable: suspend (throwable: Throwable) -> Unit
 ): NetworkResponse<T> = apply {
@@ -58,6 +97,12 @@ suspend fun <T : Any> NetworkResponse<T>.onException(
     }
 }
 
+/**
+ * Maps the network response from type [T] to type [R] using the specified [transformSuccess] function.
+ *
+ * @param transformSuccess The transformation function to apply to the data of the success response.
+ * @return The mapped operation result.
+ */
 fun <T : Any, R : Any> NetworkResponse<T>.mapToWork(
     transformSuccess: (T) -> R
 ): OperationResult<R> =
@@ -67,11 +112,24 @@ fun <T : Any, R : Any> NetworkResponse<T>.mapToWork(
         is NetworkResponse.Exception -> OperationResult.Failure(getError(throwable))
     }
 
+/**
+ * Gets the corresponding error object based on the provided [statusCode] and [message].
+ *
+ * @param statusCode The status code associated with the error.
+ * @param message The error message.
+ * @return The error object.
+ */
 fun getError(statusCode: StatusCode, message: String?): Error =
     when (statusCode) {
         StatusCode.Unauthorized -> Error.TokenFailed(message)
         else -> Error.UserVisible(message)
     }
 
+/**
+ * Gets the corresponding error object based on the provided [throwable].
+ *
+ * @param throwable The throwable associated with the error.
+ * @return The error object.
+ */
 fun getError(throwable: Throwable): Error =
     Error.Fatal(throwable, NETWORK)
