@@ -69,6 +69,11 @@ platform :android do
     gradle(task: "testDevDebugUnitTest")
   end
 
+  desc "Runs Kover"
+  lane :kover do
+    gradle(task: "koverXmlReportDevDebug")
+  end
+
   desc "Submit new Dev build to Firebase App Distribution"
   lane :distribute_dev do |options|
 
