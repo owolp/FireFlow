@@ -27,6 +27,11 @@ plugins.apply(BuildPlugins.GRADLE_VERSION_PLUGIN)
 plugins.apply(BuildPlugins.GIT_HOOKS)
 plugins.apply(BuildPlugins.KTLINT)
 
+@Suppress("DSL_SCOPE_VIOLATION")
+plugins {
+    alias(libs.plugins.kover)
+}
+
 buildscript {
 
     repositories {

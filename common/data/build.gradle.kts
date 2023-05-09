@@ -19,10 +19,12 @@ apply(from = "$rootDir/config/dependencies/di-dependencies.gradle")
 apply(from = "$rootDir/config/dependencies/kotlin-dependencies.gradle")
 apply(from = "$rootDir/config/dependencies/room-dependencies.gradle")
 
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     id(BuildPlugins.KOTLIN_ANDROID)
     id(BuildPlugins.LIBRARY)
     kotlin(BuildPlugins.KAPT)
+    alias(libs.plugins.kover)
 }
 
 android {

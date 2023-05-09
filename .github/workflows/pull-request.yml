@@ -60,12 +60,36 @@ jobs:
       - name: Run Fastlane Debug Release Unit Tests Lane
         run: fastlane dev_debug_unit_tests
 
+  code_coverage:
+    name: Code Coverage
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7
+
+      - name: Install Dependencies
+        run: gem install bundler && bundle install
+
+      - name: Run Fastlane Kover Lane
+        run: fastlane kover
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          files: "reports/kover/xml/kover.xml"
+
   assemble_dev:
     name: Assemble Dev
     needs:
       - lint
       - detekt
       - unit_test
+      - code_coverage
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
@@ -102,6 +126,7 @@ jobs:
       - lint
       - detekt
       - unit_test
+      - code_coverage
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
@@ -137,6 +162,7 @@ jobs:
       - lint
       - detekt
       - unit_test
+      - code_coverage
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
@@ -172,6 +198,7 @@ jobs:
       - lint
       - detekt
       - unit_test
+      - code_coverage
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
