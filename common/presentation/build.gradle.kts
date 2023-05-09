@@ -22,6 +22,7 @@ plugins {
     id(BuildPlugins.KOTLIN_ANDROID)
     id(BuildPlugins.LIBRARY)
     kotlin(BuildPlugins.KAPT)
+    alias(libs.plugins.kover)
 }
 
 android {

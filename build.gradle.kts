@@ -27,6 +27,10 @@ plugins.apply(BuildPlugins.GRADLE_VERSION_PLUGIN)
 plugins.apply(BuildPlugins.GIT_HOOKS)
 plugins.apply(BuildPlugins.KTLINT)
 
+plugins {
+    alias(libs.plugins.kover)
+}
+
 buildscript {
 
     repositories {

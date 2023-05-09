@@ -33,6 +33,7 @@ plugins {
     id(BuildPlugins.DAGGER)
     id(BuildPlugins.KOTLIN_ANDROID)
     kotlin(BuildPlugins.KAPT)
+    alias(libs.plugins.kover)
 }
 
 android {
@@ -132,5 +133,48 @@ fun ApplicationProductFlavor.disableFirebasePerformance() {
 fun ApplicationProductFlavor.disableAPMS() {
     configure<APMSExtension> {
         instrumentationEnabled = false
+    }
+}
+
+dependencies {
+    kover(projects.common.data)
+    kover(projects.common.domain)
+    kover(projects.common.presentation)
+    kover(projects.core)
+    kover(projects.designSystem)
+    kover(projects.featureComponent.authentication)
+    kover(projects.featureComponent.dashboard)
+    kover(projects.featureComponent.onboarding)
+    kover(projects.featureComponent.settings)
+}
+
+kover {
+    excludeJavaCode()
+
+    useKoverTool()
+}
+
+koverReport {
+
+    androidReports("devDebug") {
+        html {
+            onCheck = false
+            setReportDir(file("${project.rootDir}/reports/kover/"))
+        }
+    }
+
+    filters {
+        excludes {
+            classes(
+                "*.databinding.*",
+                "*.BuildConfig",
+                "*.di.*",
+                "*hilt*",
+                "*Hilt*",
+                "*_Factory*",
+                "*_Impl*",
+                "*JsonAdapter*"
+            )
+        }
     }
 }
