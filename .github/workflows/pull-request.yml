@@ -66,6 +66,8 @@ jobs:
     steps:
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
+        with:
+          files: "reports/kover/xml/kover.xml"
 
   assemble_dev:
     name: Assemble Dev

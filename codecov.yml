@@ -1,0 +1,8 @@
+{
+  "fixes": [
+    "/home/runner/work/FireFlow/CodeCoverage_Example>/::"
+  ],
+  "codecov": {
+    "disable_default_path_fixes": true
+  }
+}

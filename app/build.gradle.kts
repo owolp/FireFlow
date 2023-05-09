@@ -171,9 +171,13 @@ koverReport {
     }
 
     androidReports("devDebug") {
+        xml {
+            onCheck = false
+            setReportFile(file("${project.rootDir}/reports/kover/xml/kover.xml"))
+        }
         html {
             onCheck = false
-            setReportDir(file("${project.rootDir}/reports/kover/"))
+            setReportDir(file("${project.rootDir}/reports/kover/html/"))
         }
     }
 }
