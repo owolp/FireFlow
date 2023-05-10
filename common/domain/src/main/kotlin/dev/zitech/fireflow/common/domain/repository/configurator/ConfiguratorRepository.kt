@@ -24,15 +24,75 @@ import dev.zitech.fireflow.common.domain.model.configurator.StringConfig
 import dev.zitech.fireflow.core.result.OperationResult
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * Repository interface for managing configurators.
+ */
 interface ConfiguratorRepository {
 
+    /**
+     * Retrieves a list of boolean configurations.
+     *
+     * @return List of boolean configurations.
+     */
     fun getBooleanConfigs(): List<BooleanConfig>
+
+    /**
+     * Retrieves the boolean value for the specified configuration.
+     *
+     * @param config The boolean configuration.
+     * @return A flow that emits the operation result containing the boolean value.
+     */
     suspend fun getBooleanValue(config: BooleanConfig): OperationResult<Boolean>
+
+    /**
+     * Retrieves a list of double configurations.
+     *
+     * @return List of double configurations.
+     */
     fun getDoubleConfigs(): List<DoubleConfig>
+
+    /**
+     * Retrieves the double value for the specified configuration.
+     *
+     * @param config The double configuration.
+     * @return A flow that emits the operation result containing the double value.
+     */
     suspend fun getDoubleValue(config: DoubleConfig): OperationResult<Double>
+
+    /**
+     * Retrieves a list of long configurations.
+     *
+     * @return List of long configurations.
+     */
     fun getLongConfigs(): List<LongConfig>
+
+    /**
+     * Retrieves the long value for the specified configuration.
+     *
+     * @param config The long configuration.
+     * @return A flow that emits the operation result containing the long value.
+     */
     suspend fun getLongValue(config: LongConfig): OperationResult<Long>
+
+    /**
+     * Retrieves a list of string configurations.
+     *
+     * @return List of string configurations.
+     */
     fun getStringConfigs(): List<StringConfig>
+
+    /**
+     * Retrieves the string value for the specified configuration.
+     *
+     * @param config The string configuration.
+     * @return A flow that emits the operation result containing the string value.
+     */
     suspend fun getStringValue(config: StringConfig): OperationResult<String>
+
+    /**
+     * Initializes the configurator repository.
+     *
+     * @return A flow that emits the operation result indicating the initialization status.
+     */
     fun init(): Flow<OperationResult<Unit>>
 }

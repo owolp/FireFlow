@@ -19,8 +19,27 @@ package dev.zitech.fireflow.common.domain.repository.cache
 
 import dev.zitech.fireflow.common.domain.model.cache.Cache
 
+/**
+ * Repository interface for managing caches.
+ */
 interface CacheRepository {
+
+    /**
+     * Adds a cache to the repository.
+     *
+     * @param cache The cache to add.
+     */
     fun addCache(cache: Cache)
+
+    /**
+     * Invalidates all the caches in the repository.
+     */
     fun invalidateCaches()
+
+    /**
+     * Removes a cache from the repository.
+     *
+     * @param cache The cache to remove.
+     */
     fun removeCache(cache: Cache)
 }

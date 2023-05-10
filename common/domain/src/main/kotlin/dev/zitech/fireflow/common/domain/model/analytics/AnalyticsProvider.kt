@@ -17,6 +17,13 @@
 
 package dev.zitech.fireflow.common.domain.model.analytics
 
+/**
+ * Enum class representing different analytics providers.
+ *
+ * Possible values:
+ * - [FIREBASE]: Represents the Firebase Analytics provider.
+ * - [HUAWEI]: Represents the Huawei Analytics provider.
+ */
 enum class AnalyticsProvider {
     FIREBASE,
     HUAWEI

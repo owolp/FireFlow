@@ -23,10 +23,21 @@ import dev.zitech.fireflow.core.result.OperationResult.Failure
 import dev.zitech.fireflow.core.result.OperationResult.Success
 import javax.inject.Inject
 
+/**
+ * Use case for getting the value of a long configuration.
+ *
+ * @property configuratorRepository The repository for accessing configurator data.
+ */
 class GetLongConfigValueUseCase @Inject constructor(
     private val configuratorRepository: ConfiguratorRepository
 ) {
 
+    /**
+     * Invokes the use case to retrieve the value of a long configuration.
+     *
+     * @param config The long configuration.
+     * @return The value of the long configuration.
+     */
     suspend operator fun invoke(config: LongConfig): Long =
         when (val result = configuratorRepository.getLongValue(config)) {
             is Success -> result.data

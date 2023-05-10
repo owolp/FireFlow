@@ -17,10 +17,21 @@
 
 package dev.zitech.fireflow.common.domain.model.user
 
-sealed class UserAuthenticationType(
-    open val accessToken: String?
-) {
-
+/**
+ * Sealed class representing the type of user authentication.
+ *
+ * @param accessToken The access token associated with the user authentication.
+ */
+sealed class UserAuthenticationType(open val accessToken: String?) {
+    /**
+     * OAuth authentication type.
+     *
+     * @param accessToken The access token associated with the OAuth authentication.
+     * @param clientId The client ID used for authentication.
+     * @param clientSecret The client secret used for authentication.
+     * @param oauthCode The OAuth code for authentication.
+     * @param refreshToken The refresh token for OAuth authentication.
+     */
     data class OAuth(
         override val accessToken: String? = null,
         val clientId: String,
@@ -29,6 +40,11 @@ sealed class UserAuthenticationType(
         val refreshToken: String? = null
     ) : UserAuthenticationType(accessToken)
 
+    /**
+     * Personal Access Token (PAT) authentication type.
+     *
+     * @param accessToken The access token associated with the PAT authentication.
+     */
     data class Pat(
         override val accessToken: String
     ) : UserAuthenticationType(accessToken)

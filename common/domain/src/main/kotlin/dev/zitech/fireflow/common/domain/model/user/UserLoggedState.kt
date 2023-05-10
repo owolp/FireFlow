@@ -17,6 +17,10 @@
 
 package dev.zitech.fireflow.common.domain.model.user
 
+/**
+ * Enum class representing the logged-in state of a user.
+ */
 enum class UserLoggedState {
-    LOGGED_IN, LOGGED_OUT
+    LOGGED_IN, // The user is logged in.
+    LOGGED_OUT // The user is logged out.
 }

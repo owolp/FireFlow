@@ -21,10 +21,20 @@ import dev.zitech.fireflow.common.domain.model.configurator.BooleanConfig
 import dev.zitech.fireflow.common.domain.repository.configurator.ConfiguratorRepository
 import javax.inject.Inject
 
+/**
+ * Use case for getting the boolean configurations.
+ *
+ * @property configuratorRepository The repository for accessing configurator data.
+ */
 class GetBooleanConfigsUseCase @Inject constructor(
     private val configuratorRepository: ConfiguratorRepository
 ) {
 
+    /**
+     * Invokes the use case to retrieve the boolean configurations.
+     *
+     * @return The list of boolean configurations.
+     */
     operator fun invoke(): List<BooleanConfig> =
         configuratorRepository.getBooleanConfigs()
 }

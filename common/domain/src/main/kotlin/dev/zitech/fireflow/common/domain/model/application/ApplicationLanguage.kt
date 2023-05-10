@@ -20,16 +20,41 @@ package dev.zitech.fireflow.common.domain.model.application
 import dev.zitech.fireflow.common.domain.R
 import java.util.Locale
 
+/**
+ * Enum class representing application languages.
+ *
+ * @property id The ID of the application language.
+ * @property text The string resource ID for displaying the language name.
+ * @property locale The [Locale] associated with the language, or null if not applicable.
+ */
 enum class ApplicationLanguage(
     val id: Int,
     val text: Int,
     val locale: Locale?
 ) {
+    /**
+     * System language. The application language is determined by the system language setting.
+     */
     SYSTEM(0, R.string.application_language_system, null),
+
+    /**
+     * English language.
+     */
     ENGLISH(1, R.string.application_language_english, Locale.ENGLISH),
-    BULGARIAN(2, R.string.application_language_bulgarian, Locale.forLanguageTag("bg-BG"));
+
+    /**
+     * Bulgarian language.
+     */
+    BULGARIAN(2, R.string.application_language_bulgarian, Locale("bg", "BG"));
 
     companion object {
+
+        /**
+         * Retrieves the [ApplicationLanguage] enum based on the specified ID.
+         *
+         * @param id The ID of the application language.
+         * @return The corresponding [ApplicationLanguage] enum value.
+         */
         fun getApplicationLanguage(id: Int): ApplicationLanguage =
             when (id) {
                 ENGLISH.id -> ENGLISH

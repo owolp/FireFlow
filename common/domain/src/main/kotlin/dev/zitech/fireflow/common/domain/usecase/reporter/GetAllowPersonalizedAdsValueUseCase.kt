@@ -21,10 +21,20 @@ import dev.zitech.fireflow.common.domain.repository.reporter.AnalyticsRepository
 import javax.inject.Inject
 import kotlinx.coroutines.flow.first
 
+/**
+ * Use case for retrieving the value of the "Allow Personalized Ads" setting.
+ *
+ * @property analyticsRepository The repository for accessing analytics-related data.
+ */
 class GetAllowPersonalizedAdsValueUseCase @Inject constructor(
     private val analyticsRepository: AnalyticsRepository
 ) {
 
+    /**
+     * Invokes the use case to retrieve the value of the "Allow Personalized Ads" setting.
+     *
+     * @return The value of the "Allow Personalized Ads" setting.
+     */
     suspend operator fun invoke(): Boolean =
         analyticsRepository.getAllowPersonalizedAds().first()
 }

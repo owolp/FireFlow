@@ -24,13 +24,25 @@ import dev.zitech.fireflow.common.domain.usecase.configurator.GetBooleanConfigVa
 import dev.zitech.fireflow.common.domain.usecase.user.GetUserLoggedStateUseCase
 import javax.inject.Inject
 
+/**
+ * Use case for setting the value of the performance collection setting.
+ *
+ * @property getBooleanConfigValueUseCase The use case for retrieving the value of a boolean configuration.
+ * @property getPerformanceCollectionValueUseCase The use case for retrieving the value of the performance collection setting.
+ * @property getUserLoggedStateUseCase The use case for retrieving the logged-in state of the user.
+ * @property performanceRepository The repository for managing performance settings.
+ */
 class SetPerformanceCollectionUseCase @Inject constructor(
     private val getBooleanConfigValueUseCase: GetBooleanConfigValueUseCase,
     private val getPerformanceCollectionValueUseCase: GetPerformanceCollectionValueUseCase,
     private val getUserLoggedStateUseCase: GetUserLoggedStateUseCase,
     private val performanceRepository: PerformanceRepository
 ) {
-
+    /**
+     * Invokes the use case to set the value of the performance collection setting.
+     *
+     * @param enabled The new value of the performance collection setting. If null, the value will be determined based on the user's logged-in state and the configuration value.
+     */
     suspend operator fun invoke(enabled: Boolean? = null) =
         (
             enabled ?: when (getUserLoggedStateUseCase()) {

@@ -23,10 +23,19 @@ import dev.zitech.fireflow.core.result.OperationResult.Success
 import javax.inject.Inject
 import kotlinx.coroutines.flow.first
 
+/**
+ * Use case for retrieving the access token of the current user account.
+ *
+ * @property userAccountRepository The repository for managing user accounts.
+ */
 class GetCurrentUserAccountAccessTokenUseCase @Inject constructor(
     private val userAccountRepository: UserAccountRepository
 ) {
-
+    /**
+     * Invokes the use case to retrieve the access token of the current user account.
+     *
+     * @return The access token of the current user account, or null if an error occurred or the access token is unavailable.
+     */
     suspend operator fun invoke(): String? =
         when (val result = userAccountRepository.getCurrentUserAccount().first()) {
             is Success -> result.data.authenticationType?.accessToken

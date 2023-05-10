@@ -20,8 +20,22 @@ package dev.zitech.fireflow.common.domain.repository.application
 import dev.zitech.fireflow.common.domain.model.application.ApplicationTheme
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * Repository interface for accessing and modifying application-related data.
+ */
 interface ApplicationRepository {
 
+    /**
+     * Retrieves the current application theme as a flow.
+     *
+     * @return A flow that emits the current application theme.
+     */
     fun getApplicationTheme(): Flow<ApplicationTheme>
+
+    /**
+     * Sets the application theme.
+     *
+     * @param applicationTheme The application theme to be set.
+     */
     suspend fun setApplicationTheme(applicationTheme: ApplicationTheme)
 }

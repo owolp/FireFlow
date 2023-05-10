@@ -17,9 +17,29 @@
 
 package dev.zitech.fireflow.common.domain.model.analytics
 
+/**
+ * Interface for an analytics event that can be tracked.
+ */
 interface AnalyticsEvent {
+
+    /**
+     * The description of the analytics event.
+     */
     val description: String
+
+    /**
+     * The name of the analytics event.
+     */
     val name: String
+
+    /**
+     * The parameters associated with the analytics event.
+     * It is represented as a map of parameter names to their corresponding values.
+     */
     val params: Map<String, Any?>
+
+    /**
+     * The list of analytics providers that should receive this event.
+     */
     val providers: List<AnalyticsProvider>
 }

@@ -23,10 +23,19 @@ import dev.zitech.fireflow.core.result.OperationResult.Success
 import javax.inject.Inject
 import kotlinx.coroutines.flow.firstOrNull
 
+/**
+ * Use case for retrieving the logged-in state of the user.
+ *
+ * @property userAccountRepository The repository for managing user accounts.
+ */
 class GetUserLoggedStateUseCase @Inject constructor(
     private val userAccountRepository: UserAccountRepository
 ) {
-
+    /**
+     * Invokes the use case to retrieve the logged-in state of the user.
+     *
+     * @return The logged-in state of the user.
+     */
     suspend operator fun invoke(): UserLoggedState =
         when (userAccountRepository.getCurrentUserAccount().firstOrNull()) {
             is Success -> UserLoggedState.LOGGED_IN

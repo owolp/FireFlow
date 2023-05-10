@@ -19,8 +19,22 @@ package dev.zitech.fireflow.common.domain.repository.reporter
 
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * Repository for managing performance monitoring.
+ */
 interface PerformanceRepository {
 
+    /**
+     * Retrieves the flag indicating whether performance collection is enabled.
+     *
+     * @return A [Flow] that emits the boolean value indicating whether performance collection is enabled.
+     */
     fun getCollectionEnabled(): Flow<Boolean>
+
+    /**
+     * Sets the flag indicating whether performance collection is enabled.
+     *
+     * @param enabled The boolean value indicating whether performance collection is enabled.
+     */
     suspend fun setCollectionEnabled(enabled: Boolean)
 }

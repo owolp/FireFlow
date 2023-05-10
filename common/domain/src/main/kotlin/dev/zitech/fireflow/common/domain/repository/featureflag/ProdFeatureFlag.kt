@@ -19,7 +19,15 @@ package dev.zitech.fireflow.common.domain.repository.featureflag
 
 import dev.zitech.fireflow.common.domain.model.featureflag.ProdFeature
 
+/**
+ * Repository for retrieving production feature flags.
+ */
 interface ProdFeatureFlag {
 
+    /**
+     * Retrieves a list of production features.
+     *
+     * @return A list of [ProdFeature] objects representing the available production features.
+     */
     suspend fun getProdFeatures(): List<ProdFeature>
 }

@@ -23,10 +23,19 @@ import dev.zitech.fireflow.core.result.OperationResult
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * Use case for retrieving all user accounts.
+ *
+ * @property userAccountRepository The repository for managing user accounts.
+ */
 class GetUserAccountsUseCase @Inject constructor(
     private val userAccountRepository: UserAccountRepository
 ) {
-
+    /**
+     * Invokes the use case to retrieve all user accounts.
+     *
+     * @return A [Flow] emitting an [OperationResult] with the list of user accounts.
+     */
     operator fun invoke(): Flow<OperationResult<List<UserAccount>>> =
         userAccountRepository.getUserAccounts()
 }

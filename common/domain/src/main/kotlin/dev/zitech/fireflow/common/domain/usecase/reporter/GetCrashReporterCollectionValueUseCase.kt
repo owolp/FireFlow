@@ -21,10 +21,20 @@ import dev.zitech.fireflow.common.domain.repository.reporter.CrashRepository
 import javax.inject.Inject
 import kotlinx.coroutines.flow.first
 
+/**
+ * Use case for retrieving the value of the crash reporter collection setting.
+ *
+ * @property crashRepository The repository for accessing crash reporting data.
+ */
 class GetCrashReporterCollectionValueUseCase @Inject constructor(
     private val crashRepository: CrashRepository
 ) {
 
+    /**
+     * Invokes the use case to retrieve the value of the crash reporter collection setting.
+     *
+     * @return The value of the crash reporter collection setting.
+     */
     suspend operator fun invoke(): Boolean =
         crashRepository.getCollectionEnabled().first()
 }

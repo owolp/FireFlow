@@ -21,10 +21,20 @@ import dev.zitech.fireflow.common.domain.model.configurator.LongConfig
 import dev.zitech.fireflow.common.domain.repository.configurator.ConfiguratorRepository
 import javax.inject.Inject
 
+/**
+ * Use case for getting the list of long configurations.
+ *
+ * @property configuratorRepository The repository for accessing configurator data.
+ */
 class GetLongConfigsUseCase @Inject constructor(
     private val configuratorRepository: ConfiguratorRepository
 ) {
 
+    /**
+     * Invokes the use case to retrieve the list of long configurations.
+     *
+     * @return The list of long configurations.
+     */
     operator fun invoke(): List<LongConfig> =
         configuratorRepository.getLongConfigs()
 }

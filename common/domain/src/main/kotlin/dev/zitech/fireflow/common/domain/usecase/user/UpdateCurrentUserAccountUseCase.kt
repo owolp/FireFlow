@@ -27,21 +27,19 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.first
 
 /**
- * Use case for updating the current user account with new values for specified fields.
+ * Use case for updating the current user account.
  *
- * @param userAccountRepository The repository that provides access to user account data.
+ * @property userAccountRepository The repository for managing user accounts.
  */
 class UpdateCurrentUserAccountUseCase @Inject constructor(
     private val userAccountRepository: UserAccountRepository
 ) {
-
     /**
-     * Updates the current user account with new values for specified fields.
+     * Invokes the use case to update the current user account with the specified fields.
      *
-     * @param fields The fields to update and their new values.
-     * @return A [OperationResult] object indicating success or failure of the operation.
-     * If successful, returns [Success].
-     * If unsuccessful, returns [Failure] with the corresponding error.
+     * @param fields The fields to be updated in the current user account.
+     *
+     * @return The result of the operation.
      */
     suspend operator fun invoke(vararg fields: Field): OperationResult<Unit> =
         when (val result = userAccountRepository.getCurrentUserAccount().first()) {

@@ -20,8 +20,23 @@ package dev.zitech.fireflow.common.domain.repository.featureflag
 import dev.zitech.fireflow.common.domain.model.featureflag.DevFeature
 import dev.zitech.fireflow.common.domain.model.featureflag.Feature
 
+/**
+ * Repository for accessing and modifying developer features.
+ */
 interface DevFeatureFlag {
 
+    /**
+     * Retrieves the list of all available developer features.
+     *
+     * @return A [List] of [DevFeature] objects.
+     */
     suspend fun getDevFeatures(): List<DevFeature>
+
+    /**
+     * Enables or disables the specified developer feature.
+     *
+     * @param feature The [Feature] to enable or disable.
+     * @param enabled True if the feature should be enabled, false otherwise.
+     */
     suspend fun setDevFeatureEnabled(feature: Feature, enabled: Boolean)
 }

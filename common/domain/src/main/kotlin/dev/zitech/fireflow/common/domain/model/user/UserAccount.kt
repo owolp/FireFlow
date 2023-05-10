@@ -19,6 +19,19 @@ package dev.zitech.fireflow.common.domain.model.user
 
 import dev.zitech.fireflow.core.datafactory.DataFactory
 
+/**
+ * Data class representing a user account.
+ *
+ * @param authenticationType The type of user authentication associated with the account.
+ * @param email The email address associated with the account.
+ * @param fireflyId The Firefly ID associated with the account.
+ * @param isCurrentUserAccount Indicates whether the account is the current user account.
+ * @param role The role associated with the account.
+ * @param serverAddress The server address associated with the account.
+ * @param state The state associated with the account.
+ * @param type The type of the account.
+ * @param userId The user ID associated with the account.
+ */
 data class UserAccount(
     val authenticationType: UserAuthenticationType? = null,
     val email: String? = null,
@@ -30,10 +43,14 @@ data class UserAccount(
     val type: String? = null,
     val userId: Long
 ) {
-
     companion object {
         private const val STATE_LENGTH = 10
 
+        /**
+         * Generates a random state string.
+         *
+         * @return A random state string.
+         */
         fun getRandomState(): String =
             DataFactory.createRandomString(STATE_LENGTH)
     }

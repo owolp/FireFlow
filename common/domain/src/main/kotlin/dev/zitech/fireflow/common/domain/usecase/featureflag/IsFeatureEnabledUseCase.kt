@@ -21,10 +21,20 @@ import dev.zitech.fireflow.common.domain.model.featureflag.Feature
 import dev.zitech.fireflow.common.domain.repository.featureflag.FeatureFlagRepository
 import javax.inject.Inject
 
+/**
+ * Use case for checking if a specific feature is enabled.
+ *
+ * @property featureFlagRepository The repository for accessing feature flag data.
+ */
 class IsFeatureEnabledUseCase @Inject constructor(
     private val featureFlagRepository: FeatureFlagRepository
 ) {
-
+    /**
+     * Invokes the use case to check if the specified feature is enabled.
+     *
+     * @param feature The feature to check.
+     * @return `true` if the feature is enabled, `false` otherwise.
+     */
     suspend operator fun invoke(feature: Feature): Boolean =
         featureFlagRepository.isFeatureEnabled(feature)
 }

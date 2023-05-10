@@ -23,10 +23,21 @@ import dev.zitech.fireflow.core.result.OperationResult.Failure
 import dev.zitech.fireflow.core.result.OperationResult.Success
 import javax.inject.Inject
 
+/**
+ * Use case for getting the value of a double configuration.
+ *
+ * @property configuratorRepository The repository for accessing configurator data.
+ */
 class GetDoubleConfigValueUseCase @Inject constructor(
     private val configuratorRepository: ConfiguratorRepository
 ) {
 
+    /**
+     * Invokes the use case to retrieve the value of the specified double configuration.
+     *
+     * @param config The double configuration.
+     * @return The value of the double configuration.
+     */
     suspend operator fun invoke(config: DoubleConfig): Double =
         when (val result = configuratorRepository.getDoubleValue(config)) {
             is Success -> result.data

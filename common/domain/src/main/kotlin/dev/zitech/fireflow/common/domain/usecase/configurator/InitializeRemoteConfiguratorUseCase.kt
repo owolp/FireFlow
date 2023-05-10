@@ -22,9 +22,19 @@ import dev.zitech.fireflow.core.result.OperationResult
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * Use case for initializing the remote configurator.
+ *
+ * @property configuratorRepository The repository for accessing configurator data.
+ */
 class InitializeRemoteConfiguratorUseCase @Inject constructor(
     private val configuratorRepository: ConfiguratorRepository
 ) {
+    /**
+     * Invokes the use case to initialize the remote configurator.
+     *
+     * @return A flow of [OperationResult] indicating the result of the initialization.
+     */
     operator fun invoke(): Flow<OperationResult<Unit>> =
         configuratorRepository.init()
 }

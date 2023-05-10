@@ -22,10 +22,20 @@ import dev.zitech.fireflow.common.domain.repository.user.UserAccountRepository
 import dev.zitech.fireflow.core.result.OperationResult
 import javax.inject.Inject
 
+/**
+ * Use case for retrieving a user account by its state.
+ *
+ * @property userAccountRepository The repository for managing user accounts.
+ */
 class GetUserAccountByStateUseCase @Inject constructor(
     private val userAccountRepository: UserAccountRepository
 ) {
-
+    /**
+     * Invokes the use case to retrieve a user account by its state.
+     *
+     * @param state The state of the user account.
+     * @return An [OperationResult] with the user account corresponding to the state.
+     */
     suspend operator fun invoke(state: String): OperationResult<UserAccount> =
         userAccountRepository.getUserAccountByState(state)
 }
