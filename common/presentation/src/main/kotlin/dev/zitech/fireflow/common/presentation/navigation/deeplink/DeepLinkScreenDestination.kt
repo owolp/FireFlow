@@ -19,6 +19,9 @@ package dev.zitech.fireflow.common.presentation.navigation.deeplink
 
 import dev.zitech.fireflow.core.error.FireFlowError
 
+/**
+ * Sealed class representing different screen destinations for deep linking.
+ */
 sealed class DeepLinkScreenDestination {
 
     data class Error(

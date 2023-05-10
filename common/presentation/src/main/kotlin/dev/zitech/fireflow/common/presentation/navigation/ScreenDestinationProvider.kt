@@ -33,11 +33,31 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.onEach
 
+/**
+ * Provides screen destinations for deep linking based on the current user account.
+ *
+ * This class retrieves the current user account using the [GetCurrentUserAccountUseCase] and emits
+ * a flow of [DeepLinkScreenDestination] representing the appropriate screen destination based on the
+ * user account state.
+ *
+ * @param getCurrentUserAccountUseCase The use case to retrieve the current user account.
+ * @param getUserAccountsUseCase The use case to retrieve a list of user accounts.
+ */
 class ScreenDestinationProvider @Inject constructor(
     private val getCurrentUserAccountUseCase: GetCurrentUserAccountUseCase,
     private val getUserAccountsUseCase: GetUserAccountsUseCase
 ) {
 
+    /**
+     * Provides a flow of [DeepLinkScreenDestination] representing the screen destination for deep linking.
+     *
+     * This flow emits screen destinations based on the current user account state. It sends [DeepLinkScreenDestination.Current]
+     * if the current user account is available, [DeepLinkScreenDestination.Accounts] if there are other user accounts
+     * available, [DeepLinkScreenDestination.Welcome] if there are no user accounts available, and [DeepLinkScreenDestination.Error]
+     * if there is an error retrieving the user account.
+     *
+     * @return A flow of [DeepLinkScreenDestination] representing the screen destination.
+     */
     operator fun invoke(): Flow<DeepLinkScreenDestination> = channelFlow {
         getCurrentUserAccountUseCase()
             .onEach { result ->

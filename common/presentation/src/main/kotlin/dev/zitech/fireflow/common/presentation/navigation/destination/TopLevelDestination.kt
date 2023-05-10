@@ -19,6 +19,17 @@ package dev.zitech.fireflow.common.presentation.navigation.destination
 
 import dev.zitech.fireflow.ds.atoms.icon.Icon
 
+/**
+ * Represents a top-level navigation destination in the FireFlow navigation system.
+ *
+ * @param route The route associated with the navigation destination.
+ *              It is used for navigating to the destination within the FireFlow app.
+ * @param destination The name or identifier of the navigation destination.
+ *                    It provides a descriptive name for the destination.
+ * @param selectedIcon The icon to be displayed when the destination is selected.
+ * @param unselectedIcon The icon to be displayed when the destination is not selected.
+ * @param iconTextId The resource ID of the text to be displayed alongside the icon.
+ */
 data class TopLevelDestination(
     override val route: String,
     override val destination: String,

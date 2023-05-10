@@ -17,6 +17,24 @@
 
 package dev.zitech.fireflow.common.presentation.validator
 
+/**
+ * Interface for a generic validator that performs validation on a given input of type [T].
+ *
+ * Validators implement the [invoke] operator function, which takes an input of type [T] and returns
+ * a boolean indicating whether the input is valid or not.
+ *
+ * @param T The type of the input to be validated.
+ */
 interface Validator<T> {
+
+    /**
+     * Performs validation on the given input and returns a boolean indicating whether the input is valid or not.
+     *
+     * Implementing classes should provide custom logic to validate the input and return true if it is valid,
+     * or false otherwise.
+     *
+     * @param input The input to be validated.
+     * @return `true` if the input is valid, `false` otherwise.
+     */
     operator fun invoke(input: T): Boolean
 }
