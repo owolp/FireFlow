@@ -24,6 +24,13 @@ import dev.zitech.fireflow.common.data.repository.user.NetworkDetails
 import javax.inject.Inject
 import kotlinx.coroutines.runBlocking
 
+/**
+ * Implementation of the [ServiceModel] interface. It provides access to various services based on the network details
+ * and uses the [RetrofitModel] to create the service instances.
+ *
+ * @param networkDetailsInMemoryCache The in-memory cache for storing network details.
+ * @param retrofitModel The model responsible for providing [Retrofit] instances.
+ */
 internal class ServiceModelImpl @Inject constructor(
     private val networkDetailsInMemoryCache: InMemoryCache<NetworkDetails>,
     private val retrofitModel: RetrofitModel

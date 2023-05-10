@@ -17,6 +17,17 @@
 
 package dev.zitech.fireflow.common.data.remote.rest.factory
 
+/**
+ * Object representing a debugger interceptor type.
+ */
 object Debugger : InterceptorType
+
+/**
+ * Object representing an HTTP inspector interceptor type.
+ */
 object HttpInspector : InterceptorType
+
+/**
+ * Object representing an HTTP logging interceptor type.
+ */
 object HttpLogging : InterceptorType

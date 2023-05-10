@@ -19,27 +19,173 @@ package dev.zitech.fireflow.common.data.source.preferences
 
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * Interface for accessing and modifying key-value pairs stored in preferences.
+ */
 internal interface PreferencesDataSource {
 
+    /**
+     * Checks if the preferences contain a boolean value associated with the specified key.
+     *
+     * @param key The key to check.
+     * @return A flow that emits `true` if the key exists, and `false` otherwise.
+     */
     fun containsBoolean(key: String): Flow<Boolean>
+
+    /**
+     * Checks if the preferences contain a float value associated with the specified key.
+     *
+     * @param key The key to check.
+     * @return A flow that emits `true` if the key exists, and `false` otherwise.
+     */
     fun containsFloat(key: String): Flow<Boolean>
+
+    /**
+     * Checks if the preferences contain an integer value associated with the specified key.
+     *
+     * @param key The key to check.
+     * @return A flow that emits `true` if the key exists, and `false` otherwise.
+     */
     fun containsInt(key: String): Flow<Boolean>
+
+    /**
+     * Checks if the preferences contain a long value associated with the specified key.
+     *
+     * @param key The key to check.
+     * @return A flow that emits `true` if the key exists, and `false` otherwise.
+     */
     fun containsLong(key: String): Flow<Boolean>
+
+    /**
+     * Checks if the preferences contain a string value associated with the specified key.
+     *
+     * @param key The key to check.
+     * @return A flow that emits `true` if the key exists, and `false` otherwise.
+     */
     fun containsString(key: String): Flow<Boolean>
+
+    /**
+     * Retrieves a boolean value associated with the specified key from the preferences.
+     *
+     * @param key The key of the boolean value.
+     * @param defaultValue The default value to return if the key is not found.
+     * @return A flow that emits the boolean value associated with the key, or the default value if the key is not found.
+     */
     fun getBoolean(key: String, defaultValue: Boolean): Flow<Boolean>
+
+    /**
+     * Retrieves a float value associated with the specified key from the preferences.
+     *
+     * @param key The key of the float value.
+     * @param defaultValue The default value to return if the key is not found.
+     * @return A flow that emits the float value associated with the key, or the default value if the key is not found.
+     */
     fun getFloat(key: String, defaultValue: Float): Flow<Float>
+
+    /**
+     * Retrieves an integer value associated with the specified key from the preferences.
+     *
+     * @param key The key of the integer value.
+     * @param defaultValue The default value to return if the key is not found.
+     * @return A flow that emits the integer value associated with the key, or the default value if the key is not found.
+     */
     fun getInt(key: String, defaultValue: Int): Flow<Int>
+
+    /**
+     * Retrieves a long value associated with the specified key from the preferences.
+     *
+     * @param key The key of the long value.
+     * @param defaultValue The default value to return if the key is not found.
+     * @return A flow that emits the long value associated with the key, or the default value if the key is not found.
+     */
     fun getLong(key: String, defaultValue: Long): Flow<Long>
+
+    /**
+     * Retrieves a string value associated with the specified key from the preferences.
+     *
+     * @param key The key of the string value.
+     * @param defaultValue The default value to return if the key is not found.
+     * @return A flow that emits the string value associated with the key, or the default value if the key is not found.
+     */
     fun getString(key: String, defaultValue: String?): Flow<String?>
+
+    /**
+     * Removes all key-value pairs from the preferences.
+     */
     suspend fun removeAll()
+
+    /**
+     * Removes the boolean value associated with the specified key from the preferences.
+     *
+     * @param key The key of the boolean value to remove.
+     */
     suspend fun removeBoolean(key: String)
+
+    /**
+     * Removes the float value associated with the specified key from the preferences.
+     *
+     * @param key The key of the float value to remove.
+     */
     suspend fun removeFloat(key: String)
+
+    /**
+     * Removes the integer value associated with the specified key from the preferences.
+     *
+     * @param key The key of the integer value to remove.
+     */
     suspend fun removeInt(key: String)
+
+    /**
+     * Removes the long value associated with the specified key from the preferences.
+     *
+     * @param key The key of the long value to remove.
+     */
     suspend fun removeLong(key: String)
+
+    /**
+     * Removes the string value associated with the specified key from the preferences.
+     *
+     * @param key The key of the string value to remove.
+     */
     suspend fun removeString(key: String)
+
+    /**
+     * Saves a boolean value associated with the specified key to the preferences.
+     *
+     * @param key The key of the boolean value.
+     * @param value The boolean value to save.
+     */
     suspend fun saveBoolean(key: String, value: Boolean)
+
+    /**
+     * Saves a float value associated with the specified key to the preferences.
+     *
+     * @param key The key of the float value.
+     * @param value The float value to save.
+     */
     suspend fun saveFloat(key: String, value: Float)
+
+    /**
+     * Saves an integer value associated with the specified key to the preferences.
+     *
+     * @param key The key of the integer value.
+     * @param value The integer value to save.
+     */
     suspend fun saveInt(key: String, value: Int)
+
+    /**
+     * Saves a long value associated with the specified key to the preferences.
+     *
+     * @param key The key of the long value.
+     * @param value The long value to save.
+     */
     suspend fun saveLong(key: String, value: Long)
+
+    /**
+     * Saves a string value associated with the specified key to the preferences.
+     *
+     * @param key The key of the string value.
+     * @param value The string value to save.
+     */
     suspend fun saveString(key: String, value: String)
 }

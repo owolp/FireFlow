@@ -25,9 +25,8 @@ import org.acra.config.CoreConfigurationBuilder
 import org.acra.config.HttpSenderConfigurationBuilder
 import org.acra.data.StringFormat
 
-@Suppress("UnusedPrivateMember")
 internal class CrashReporterImpl @Inject constructor(
-    private val application: Application
+    @Suppress("UnusedPrivateMember") private val application: Application
 ) : CrashReporter {
 
     private val errorReporter = ACRA.errorReporter

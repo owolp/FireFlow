@@ -22,10 +22,19 @@ import dev.zitech.fireflow.common.data.remote.rest.response.token.AccessTokenRes
 import dev.zitech.fireflow.common.domain.model.authentication.Token
 import javax.inject.Inject
 
+/**
+ * Mapper class that converts an [AccessTokenResponse] to a [Token] domain model.
+ */
 internal class AccessTokenResponseMapper @Inject constructor() :
     DomainMapper<AccessTokenResponse, Token> {
 
-    override fun toDomain(input: AccessTokenResponse) = Token(
+    /**
+     * Converts an [AccessTokenResponse] to a [Token] domain model.
+     *
+     * @param input The input [AccessTokenResponse] object to be mapped.
+     * @return The mapped [Token] domain model.
+     */
+    override fun toDomain(input: AccessTokenResponse): Token = Token(
         accessToken = input.accessToken,
         refreshToken = input.refreshToken
     )

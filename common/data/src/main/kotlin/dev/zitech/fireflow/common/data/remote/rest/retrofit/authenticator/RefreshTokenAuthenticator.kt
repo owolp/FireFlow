@@ -33,6 +33,12 @@ import okhttp3.Request
 import okhttp3.Response
 import okhttp3.Route
 
+/**
+ * [Authenticator] implementation responsible for handling authentication challenges and refreshing access tokens.
+ *
+ * @property getCurrentUserAccountUseCase Lazy injection of [GetCurrentUserAccountUseCase] for retrieving the current user account.
+ * @property getRefreshedTokenUseCase Lazy injection of [GetRefreshedTokenUseCase] for obtaining a refreshed access token.
+ */
 internal class RefreshTokenAuthenticator @Inject constructor(
     private val getCurrentUserAccountUseCase: dagger.Lazy<GetCurrentUserAccountUseCase>,
     private val getRefreshedTokenUseCase: dagger.Lazy<GetRefreshedTokenUseCase>
@@ -40,6 +46,14 @@ internal class RefreshTokenAuthenticator @Inject constructor(
 
     private val tag = Logger.tag(this::class.java)
 
+    /**
+     * Authenticates the request by handling authentication challenges.
+     * If the user account is authenticated with OAuth and the response is unauthenticated, a refreshed token is obtained.
+     *
+     * @param route The route being accessed.
+     * @param response The response received.
+     * @return A new request with updated authentication headers, or null if no action is needed.
+     */
     override fun authenticate(route: Route?, response: Response): Request? = runBlocking {
         return@runBlocking when (
             val currentUserAccountResult = getCurrentUserAccountUseCase
@@ -54,6 +68,14 @@ internal class RefreshTokenAuthenticator @Inject constructor(
         }
     }
 
+    /**
+     * Checks the authentication type and handles the response accordingly.
+     * If the authentication type is OAuth and the response is unauthenticated, a refreshed token is obtained.
+     *
+     * @param authenticationType The authentication type of the current user account.
+     * @param response The response received.
+     * @return A new request with updated authentication headers, or null if no action is needed.
+     */
     private suspend fun checkAuthenticationType(
         authenticationType: UserAuthenticationType?,
         response: Response
@@ -68,6 +90,12 @@ internal class RefreshTokenAuthenticator @Inject constructor(
         null
     }
 
+    /**
+     * Obtains a refreshed token and builds a new request with updated authentication headers.
+     *
+     * @param response The response received.
+     * @return A new request with updated authentication headers, or null if an error occurs.
+     */
     private suspend fun getRefreshedToken(response: Response): Request? {
         Logger.i(tag, "Token has expired, refreshing...")
         return when (

@@ -24,6 +24,12 @@ import dev.zitech.fireflow.core.logger.Logger
 import dev.zitech.fireflow.core.time.TimeHelper
 import java.math.BigInteger
 
+/**
+ * In-memory cache implementation that stores data of type [T].
+ *
+ * @param cacheRepository The cache repository responsible for managing the cache.
+ * @param lifetimeMillis The lifetime of the cache in milliseconds.
+ */
 open class InMemoryCache<T : Any>(
     private val cacheRepository: CacheRepository,
     private val lifetimeMillis: Int = Int.MAX_VALUE
@@ -34,6 +40,9 @@ open class InMemoryCache<T : Any>(
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     var cacheExpirationTimeMillis: BigInteger? = null
 
+    /**
+     * Invalidates the cache by removing its data and clearing the expiration time.
+     */
     override fun invalidate() {
         Logger.i(tag, "invalidate cache")
         clearExpirationTime()
@@ -41,6 +50,9 @@ open class InMemoryCache<T : Any>(
         cacheRepository.removeCache(this)
     }
 
+    /**
+     * The cached data of type [T].
+     */
     var data: T? = null
         set(value) {
             field = value

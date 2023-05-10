@@ -23,6 +23,13 @@ import dev.zitech.fireflow.core.result.OperationResult
 import dev.zitech.fireflow.core.result.OperationResult.Failure
 import dev.zitech.fireflow.core.result.OperationResult.Success
 
+/**
+ * Handles database operations and returns the result as an [OperationResult].
+ *
+ * @param execute The suspend lambda function representing the database operation.
+ * @return An [OperationResult] representing the success or failure of the database operation.
+ */
+
 @Suppress("TooGenericExceptionCaught")
 suspend fun <T : Any> handleDb(
     execute: suspend () -> T

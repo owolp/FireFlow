@@ -20,9 +20,8 @@ package dev.zitech.fireflow.common.data.reporter.analytics
 import android.content.Context
 import javax.inject.Inject
 
-@Suppress("UnusedPrivateMember")
 internal class AnalyticsReporterImpl @Inject constructor(
-    context: Context
+    @Suppress("UnusedPrivateMember") context: Context
 ) : AnalyticsReporter {
 
     override fun allowPersonalizedAds(enabled: Boolean) {

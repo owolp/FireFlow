@@ -17,9 +17,30 @@
 
 package dev.zitech.fireflow.common.data.reporter.analytics
 
+/**
+ * Interface for reporting analytics events and managing analytics settings.
+ */
 interface AnalyticsReporter {
 
+    /**
+     * Sets whether personalized ads are allowed or not.
+     *
+     * @param enabled `true` to allow personalized ads, `false` otherwise.
+     */
     fun allowPersonalizedAds(enabled: Boolean)
+
+    /**
+     * Logs an analytics event with the specified event name and parameters.
+     *
+     * @param eventName The name of the event.
+     * @param eventParams The parameters associated with the event.
+     */
     fun logEvent(eventName: String, eventParams: Map<String, Any?>)
+
+    /**
+     * Sets whether data collection is enabled or disabled.
+     *
+     * @param enabled `true` to enable data collection, `false` to disable it.
+     */
     fun setCollectionEnabled(enabled: Boolean)
 }

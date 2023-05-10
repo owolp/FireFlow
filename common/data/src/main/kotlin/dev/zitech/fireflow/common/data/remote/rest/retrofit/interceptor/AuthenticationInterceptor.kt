@@ -27,10 +27,21 @@ import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Response
 
+/**
+ * [Interceptor] implementation responsible for adding the authentication header to outgoing requests.
+ *
+ * @property getCurrentUserAccountAccessTokenUseCase The use case for retrieving the access token of the current user account.
+ */
 internal class AuthenticationInterceptor @Inject constructor(
     private val getCurrentUserAccountAccessTokenUseCase: GetCurrentUserAccountAccessTokenUseCase
 ) : Interceptor {
 
+    /**
+     * Intercepts the request and adds the authentication header with the access token of the current user account.
+     *
+     * @param chain The interceptor chain.
+     * @return The response received from the server.
+     */
     override fun intercept(chain: Interceptor.Chain): Response = runBlocking {
         chain.proceed(
             chain.request().newBuilder()

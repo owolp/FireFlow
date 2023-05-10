@@ -19,7 +19,15 @@ package dev.zitech.fireflow.common.data.remote.rest.debugger
 
 import com.facebook.flipper.plugins.network.NetworkFlipperPlugin
 
+/**
+ * Object responsible for network debugging and monitoring.
+ */
 object NetworkDebugger {
 
+    /**
+     * Lazily initializes the NetworkFlipperPlugin instance.
+     *
+     * @return The NetworkFlipperPlugin instance.
+     */
     val networkFlipperPlugin by lazy { NetworkFlipperPlugin() }
 }

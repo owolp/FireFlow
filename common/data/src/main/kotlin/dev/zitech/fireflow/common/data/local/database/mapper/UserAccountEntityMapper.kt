@@ -23,10 +23,19 @@ import dev.zitech.fireflow.common.domain.model.user.UserAccount
 import dev.zitech.fireflow.common.domain.model.user.UserAuthenticationType
 import javax.inject.Inject
 
+/**
+ * Mapper class for converting between [UserAccountEntity] and [UserAccount].
+ */
 internal class UserAccountEntityMapper @Inject constructor() :
     DomainMapper<UserAccountEntity, UserAccount>,
     EntityMapper<UserAccount, UserAccountEntity> {
 
+    /**
+     * Converts a [UserAccountEntity] to a [UserAccount] domain object.
+     *
+     * @param input The input [UserAccountEntity] to be converted.
+     * @return The corresponding [UserAccount] domain object.
+     */
     override fun toDomain(input: UserAccountEntity) = UserAccount(
         authenticationType = getAuthenticationType(input),
         email = input.email,
@@ -39,6 +48,12 @@ internal class UserAccountEntityMapper @Inject constructor() :
         userId = input.id!!
     )
 
+    /**
+     * Converts a [UserAccount] domain object to a [UserAccountEntity].
+     *
+     * @param input The input [UserAccount] domain object to be converted.
+     * @return The corresponding [UserAccountEntity].
+     */
     override fun toEntity(input: UserAccount) = UserAccountEntity(
         accessToken = when (val type = input.authenticationType) {
             is UserAuthenticationType.OAuth -> type.accessToken

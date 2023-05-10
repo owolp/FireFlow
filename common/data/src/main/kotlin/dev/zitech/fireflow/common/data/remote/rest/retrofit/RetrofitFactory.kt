@@ -22,10 +22,28 @@ import javax.inject.Inject
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
+/**
+ * Factory class for creating instances of Retrofit.
+ *
+ * This factory is responsible for creating instances of Retrofit with the desired configurations,
+ * including the base URL, OkHttpClient, converter factory, and call adapter factory.
+ *
+ * @property okHttpClientFactory The factory for creating OkHttpClient instances.
+ */
 internal class RetrofitFactory @Inject constructor(
     private val okHttpClientFactory: OkHttpClientFactory
 ) {
 
+    /**
+     * Creates a Retrofit instance with the specified base URL.
+     *
+     * This method creates a new Retrofit instance using the provided base URL,
+     * OkHttpClient from the [okHttpClientFactory], Moshi converter factory,
+     * and the custom [NetworkResultCallAdapterFactory] for handling network responses.
+     *
+     * @param baseUrl The base URL for the Retrofit instance.
+     * @return The created Retrofit instance.
+     */
     operator fun invoke(baseUrl: String): Retrofit =
         Retrofit.Builder()
             .baseUrl(baseUrl)

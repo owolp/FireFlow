@@ -19,7 +19,18 @@ package dev.zitech.fireflow.common.data.remote.rest.retrofit.model
 
 import retrofit2.Retrofit
 
+/**
+ * Interface representing a model that provides a [Retrofit] instance based on the given user ID and server address.
+ */
 internal interface RetrofitModel {
+
+    /**
+     * Retrieves a [Retrofit] instance based on the provided user ID and server address.
+     *
+     * @param userId The ID of the user.
+     * @param serverAddress The address of the server.
+     * @return The [Retrofit] instance.
+     */
     suspend operator fun invoke(
         userId: Long,
         serverAddress: String

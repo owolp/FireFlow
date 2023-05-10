@@ -21,9 +21,8 @@ import android.app.Application
 import com.huawei.agconnect.crash.AGConnectCrash
 import javax.inject.Inject
 
-@Suppress("UnusedPrivateMember")
 internal class CrashReporterImpl @Inject constructor(
-    private val application: Application
+    @Suppress("UnusedPrivateMember") private val application: Application
 ) : CrashReporter {
 
     private val agConnectCrash = AGConnectCrash.getInstance()

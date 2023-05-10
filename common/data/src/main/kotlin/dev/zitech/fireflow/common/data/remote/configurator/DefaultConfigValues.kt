@@ -22,8 +22,16 @@ import dev.zitech.fireflow.common.domain.model.configurator.DoubleConfig
 import dev.zitech.fireflow.common.domain.model.configurator.LongConfig
 import dev.zitech.fireflow.common.domain.model.configurator.StringConfig
 
+/**
+ * Provides default configuration values for various configurations.
+ */
 internal object DefaultConfigValues {
 
+    /**
+     * Retrieves a map of default configuration values.
+     *
+     * @return A map containing the default configuration values.
+     */
     fun getDefaultConfigValues(): Map<String, Any> {
         val properties = mutableMapOf<String, Any>()
 

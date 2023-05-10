@@ -24,9 +24,8 @@ import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
 import javax.inject.Inject
 
-@Suppress("UnusedPrivateMember")
 internal class AnalyticsReporterImpl @Inject constructor(
-    context: Context
+    @Suppress("UnusedPrivateMember") context: Context
 ) : AnalyticsReporter {
 
     private val firebaseAnalytics = Firebase.analytics

@@ -25,6 +25,13 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+/**
+ * Implementation of the [Call] interface that wraps another [Call] instance and transforms its response
+ * into a [NetworkResponse].
+ *
+ * @param proxy The underlying [Call] instance.
+ * @param T The type of the response body.
+ */
 internal class NetworkResultCall<T : Any>(
     private val proxy: Call<T>
 ) : Call<NetworkResponse<T>> {
@@ -35,6 +42,15 @@ internal class NetworkResultCall<T : Any>(
 
     override fun clone(): Call<NetworkResponse<T>> = NetworkResultCall(proxy.clone())
 
+    /**
+     * Enqueues the request and notifies the provided [Callback] with a [Response] of [NetworkResponse] type.
+     *
+     * This method enqueues the original [Call] instance and defines a new [Callback] that handles the response.
+     * The [Callback] provided to this method will be called with a [Response] of [NetworkResponse] type,
+     * wrapping the original response.
+     *
+     * @param callback The [Callback] to be notified with the response.
+     */
     override fun enqueue(callback: Callback<NetworkResponse<T>>) {
         proxy.enqueue(object : Callback<T> {
             override fun onResponse(call: Call<T>, response: Response<T>) {

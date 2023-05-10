@@ -17,6 +17,19 @@
 
 package dev.zitech.fireflow.common.data.local.database.mapper
 
+/**
+ * An interface for mapping data objects (D) to entity objects (E).
+ *
+ * @param D The type of the data object.
+ * @param E The type of the entity object.
+ */
 interface EntityMapper<in D, out E> {
+
+    /**
+     * Maps a data object to an entity object.
+     *
+     * @param input The input data object to be mapped.
+     * @return The corresponding entity object.
+     */
     fun toEntity(input: D): E
 }

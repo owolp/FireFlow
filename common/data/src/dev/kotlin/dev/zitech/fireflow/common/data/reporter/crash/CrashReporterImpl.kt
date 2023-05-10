@@ -20,9 +20,8 @@ package dev.zitech.fireflow.common.data.reporter.crash
 import android.app.Application
 import javax.inject.Inject
 
-@Suppress("UnusedPrivateMember")
 internal class CrashReporterImpl @Inject constructor(
-    private val application: Application
+    @Suppress("UnusedPrivateMember") private val application: Application
 ) : CrashReporter {
 
     override fun init() {

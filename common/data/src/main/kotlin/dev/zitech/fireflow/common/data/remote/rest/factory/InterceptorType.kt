@@ -17,6 +17,12 @@
 
 package dev.zitech.fireflow.common.data.remote.rest.factory
 
+/**
+ * Sealed interface representing types of interceptors.
+ */
 internal sealed interface InterceptorType
 
+/**
+ * Object representing the authentication interceptor type.
+ */
 internal object Authentication : InterceptorType

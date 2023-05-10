@@ -20,14 +20,35 @@ package dev.zitech.fireflow.common.data.source.token
 import dev.zitech.fireflow.common.domain.model.authentication.Token
 import dev.zitech.fireflow.core.result.OperationResult
 
+/**
+ * Interface for retrieving OAuth tokens.
+ */
 internal interface OAuthSource {
 
+    /**
+     * Retrieves an access token using the provided OAuth credentials and authorization code.
+     *
+     * @param clientId The OAuth client ID.
+     * @param clientSecret The OAuth client secret.
+     * @param code The authorization code.
+     * @return An [OperationResult] that represents the result of the operation,
+     *         containing the retrieved access token if successful, or an error if unsuccessful.
+     */
     suspend fun getAccessToken(
         clientId: String,
         clientSecret: String,
         code: String
     ): OperationResult<Token>
 
+    /**
+     * Retrieves a refreshed access token using the provided OAuth credentials and refresh token.
+     *
+     * @param clientId The OAuth client ID.
+     * @param clientSecret The OAuth client secret.
+     * @param refreshToken The refresh token.
+     * @return An [OperationResult] that represents the result of the operation,
+     *         containing the refreshed access token if successful, or an error if unsuccessful.
+     */
     suspend fun getRefreshedToken(
         clientId: String,
         clientSecret: String,

@@ -21,8 +21,19 @@ import dev.zitech.fireflow.common.data.remote.rest.response.user.UserResponse
 import dev.zitech.fireflow.common.data.remote.rest.result.NetworkResponse
 import retrofit2.http.GET
 
+/**
+ * Interface for accessing "about" services provided by the API.
+ */
 internal interface AboutService {
 
+    /**
+     * Retrieves user information from the API.
+     *
+     * This method performs a GET request to the "api/v1/about/user" endpoint
+     * to fetch user information.
+     *
+     * @return A [NetworkResponse] containing the user information.
+     */
     @GET("api/v1/about/user")
     suspend fun getUser(): NetworkResponse<UserResponse>
 }

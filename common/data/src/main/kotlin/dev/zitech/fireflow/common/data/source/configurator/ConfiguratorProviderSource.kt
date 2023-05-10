@@ -24,11 +24,52 @@ import dev.zitech.fireflow.common.domain.model.configurator.StringConfig
 import dev.zitech.fireflow.core.result.OperationResult
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * Interface for providing configuration values from a data source.
+ */
 internal interface ConfiguratorProviderSource {
 
+    /**
+     * Retrieves a boolean configuration value.
+     *
+     * @param config The boolean configuration to retrieve.
+     * @return An [OperationResult] representing the result of the operation,
+     *         containing the boolean configuration value on success or an error on failure.
+     */
     fun getBoolean(config: BooleanConfig): OperationResult<Boolean>
+
+    /**
+     * Retrieves a double configuration value.
+     *
+     * @param config The double configuration to retrieve.
+     * @return An [OperationResult] representing the result of the operation,
+     *         containing the double configuration value on success or an error on failure.
+     */
     fun getDouble(config: DoubleConfig): OperationResult<Double>
+
+    /**
+     * Retrieves a long configuration value.
+     *
+     * @param config The long configuration to retrieve.
+     * @return An [OperationResult] representing the result of the operation,
+     *         containing the long configuration value on success or an error on failure.
+     */
     fun getLong(config: LongConfig): OperationResult<Long>
+
+    /**
+     * Retrieves a string configuration value.
+     *
+     * @param config The string configuration to retrieve.
+     * @return An [OperationResult] representing the result of the operation,
+     *         containing the string configuration value on success or an error on failure.
+     */
     fun getString(config: StringConfig): OperationResult<String>
+
+    /**
+     * Initializes the configuration provider source.
+     *
+     * @return A [Flow] emitting [OperationResult] representing the initialization result,
+     *         containing [Unit] on success or an error on failure.
+     */
     fun init(): Flow<OperationResult<Unit>>
 }

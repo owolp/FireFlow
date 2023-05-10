@@ -22,9 +22,8 @@ import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.ktx.Firebase
 import javax.inject.Inject
 
-@Suppress("UnusedPrivateMember")
 internal class CrashReporterImpl @Inject constructor(
-    private val application: Application
+    @Suppress("UnusedPrivateMember") private val application: Application
 ) : CrashReporter {
 
     private val firebaseCrashlytics = Firebase.crashlytics
