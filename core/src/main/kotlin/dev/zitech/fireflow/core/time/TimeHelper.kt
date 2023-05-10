@@ -17,6 +17,15 @@
 
 package dev.zitech.fireflow.core.time
 
+/**
+ * Utility object for time-related operations.
+ */
 object TimeHelper {
+
+    /**
+     * Returns the current time in milliseconds.
+     *
+     * @return The current time in milliseconds.
+     */
     fun getCurrentTime(): Long = System.currentTimeMillis()
 }

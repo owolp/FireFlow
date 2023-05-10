@@ -23,11 +23,25 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 
+/**
+ * Interface for managing application-level coroutine scopes.
+ */
 interface AppScopes {
     val singleton: CoroutineScope
+
+    /**
+     * Launches a coroutine in the [singleton] scope.
+     *
+     * @param func The suspending function to be executed in the [singleton] scope.
+     */
     fun singletonLaunch(func: suspend CoroutineScope.() -> Unit)
 }
 
+/**
+ * Implementation of [AppScopes] interface.
+ *
+ * @param appDispatchers The [AppDispatchers] instance for specifying the dispatcher for the [singleton] scope.
+ */
 internal class AppScopesImpl @Inject constructor(
     appDispatchers: AppDispatchers
 ) : AppScopes {

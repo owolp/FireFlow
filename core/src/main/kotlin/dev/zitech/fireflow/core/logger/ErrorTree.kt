@@ -19,7 +19,15 @@ package dev.zitech.fireflow.core.logger
 
 import timber.log.Timber
 
+/**
+ * Represents an error logging tree for Timber.
+ */
 interface ErrorTree {
 
+    /**
+     * Creates and returns a Timber tree for error logging.
+     *
+     * @return The Timber tree for error logging.
+     */
     operator fun invoke(): Timber.Tree
 }

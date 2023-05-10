@@ -21,13 +21,36 @@ import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 
+/**
+ * Provides dispatchers for coroutines in the application.
+ */
 interface AppDispatchers {
+
+    /**
+     * The default dispatcher for CPU-intensive operations.
+     */
     val default: CoroutineDispatcher
+
+    /**
+     * The main dispatcher for UI-related operations.
+     */
     val main: CoroutineDispatcher
+
+    /**
+     * The dispatcher for IO operations.
+     */
     val io: CoroutineDispatcher
 }
 
+/**
+ * Implementation of the [AppDispatchers] interface.
+ *
+ * @property default The default dispatcher.
+ * @property main The main dispatcher.
+ * @property io The IO dispatcher.
+ */
 internal class AppDispatchersImpl @Inject constructor() : AppDispatchers {
+
     override val default: CoroutineDispatcher = Dispatchers.Default
     override val main: CoroutineDispatcher = Dispatchers.Main
     override val io: CoroutineDispatcher = Dispatchers.IO
