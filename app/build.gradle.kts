@@ -34,7 +34,6 @@ plugins {
     id(BuildPlugins.DAGGER)
     id(BuildPlugins.KOTLIN_ANDROID)
     kotlin(BuildPlugins.KAPT)
-    alias(libs.plugins.kover)
 }
 
 android {

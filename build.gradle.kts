@@ -70,6 +70,7 @@ allprojects {
 subprojects {
     project.plugins.applyConfig(project)
     apply(plugin = "org.jetbrains.dokka")
+    apply(plugin = "org.jetbrains.kotlinx.kover")
 }
 
 val clean by tasks.creating(Delete::class) {

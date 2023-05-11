@@ -21,7 +21,6 @@ apply(from = "$rootDir/config/dependencies/compose-dependencies.gradle")
 plugins {
     id(BuildPlugins.KOTLIN_ANDROID)
     id(BuildPlugins.LIBRARY)
-    alias(libs.plugins.kover)
 }
 
 android {
