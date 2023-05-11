@@ -22,10 +22,19 @@ import dev.zitech.fireflow.common.domain.repository.profile.FireflyProfileReposi
 import dev.zitech.fireflow.core.result.OperationResult
 import javax.inject.Inject
 
+/**
+ * Use case for retrieving the Firefly profile.
+ *
+ * @property fireflyProfileRepository The repository for accessing Firefly profile data.
+ */
 class GetFireflyProfileUseCase @Inject constructor(
     private val fireflyProfileRepository: FireflyProfileRepository
 ) {
-
+    /**
+     * Invokes the use case to retrieve the Firefly profile.
+     *
+     * @return An [OperationResult] with the Firefly profile data.
+     */
     suspend operator fun invoke(): OperationResult<FireflyProfile> =
         fireflyProfileRepository.getFireflyProfile()
 }

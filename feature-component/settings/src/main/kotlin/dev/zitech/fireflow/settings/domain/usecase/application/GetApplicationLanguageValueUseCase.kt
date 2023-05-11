@@ -21,9 +21,19 @@ import dev.zitech.fireflow.common.domain.model.application.ApplicationLanguage
 import dev.zitech.fireflow.settings.frawework.locale.ApplicationLocale
 import javax.inject.Inject
 
+/**
+ * Use case responsible for retrieving the current application language value.
+ *
+ * @param applicationLocale The implementation of [ApplicationLocale] used to retrieve the application language.
+ */
 internal class GetApplicationLanguageValueUseCase @Inject constructor(
     private val applicationLocale: ApplicationLocale
 ) {
 
+    /**
+     * Retrieves the current application language value.
+     *
+     * @return The [ApplicationLanguage] representing the current application language.
+     */
     operator fun invoke(): ApplicationLanguage = applicationLocale.get()
 }

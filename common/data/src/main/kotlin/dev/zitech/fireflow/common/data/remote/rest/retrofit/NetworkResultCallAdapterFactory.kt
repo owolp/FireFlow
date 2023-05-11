@@ -24,8 +24,26 @@ import retrofit2.Call
 import retrofit2.CallAdapter
 import retrofit2.Retrofit
 
+/**
+ * A Retrofit [CallAdapter.Factory] that creates [CallAdapter] instances for network calls returning [NetworkResponse].
+ *
+ * This factory is responsible for creating [CallAdapter] instances that adapt network calls returning [NetworkResponse]
+ * to the appropriate [Call] type.
+ */
 internal class NetworkResultCallAdapterFactory : CallAdapter.Factory() {
 
+    /**
+     * Creates a [CallAdapter] for the specified return type.
+     *
+     * This method is called by Retrofit to create a [CallAdapter] for a specific return type.
+     * It checks if the return type is a [Call] and if the generic type is [NetworkResponse].
+     * If the conditions are met, it creates a [NetworkResultCallAdapter] and returns it.
+     *
+     * @param returnType The return type of the network call.
+     * @param annotations The annotations applied to the network call.
+     * @param retrofit The Retrofit instance.
+     * @return A [CallAdapter] for the specified return type, or null if it cannot be created.
+     */
     @Suppress("ReturnCount")
     override fun get(
         returnType: Type,
@@ -42,6 +60,11 @@ internal class NetworkResultCallAdapterFactory : CallAdapter.Factory() {
     }
 
     companion object {
+        /**
+         * Creates a new instance of [NetworkResultCallAdapterFactory].
+         *
+         * @return The created [NetworkResultCallAdapterFactory] instance.
+         */
         fun create(): NetworkResultCallAdapterFactory = NetworkResultCallAdapterFactory()
     }
 }

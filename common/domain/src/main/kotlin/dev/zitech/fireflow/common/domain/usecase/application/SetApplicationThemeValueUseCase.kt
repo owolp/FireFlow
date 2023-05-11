@@ -21,10 +21,20 @@ import dev.zitech.fireflow.common.domain.model.application.ApplicationTheme
 import dev.zitech.fireflow.common.domain.repository.application.ApplicationRepository
 import javax.inject.Inject
 
+/**
+ * Use case for setting the application theme value.
+ *
+ * @property applicationRepository The repository for accessing application data.
+ */
 class SetApplicationThemeValueUseCase @Inject constructor(
     private val applicationRepository: ApplicationRepository
 ) {
 
+    /**
+     * Invokes the use case to set the application theme value.
+     *
+     * @param applicationTheme The new application theme to be set.
+     */
     suspend operator fun invoke(applicationTheme: ApplicationTheme) =
         applicationRepository.setApplicationTheme(applicationTheme)
 }

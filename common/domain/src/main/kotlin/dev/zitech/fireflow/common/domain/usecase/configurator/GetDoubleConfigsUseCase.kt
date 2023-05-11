@@ -21,10 +21,20 @@ import dev.zitech.fireflow.common.domain.model.configurator.DoubleConfig
 import dev.zitech.fireflow.common.domain.repository.configurator.ConfiguratorRepository
 import javax.inject.Inject
 
+/**
+ * Use case for getting the list of double configurations.
+ *
+ * @property configuratorRepository The repository for accessing configurator data.
+ */
 class GetDoubleConfigsUseCase @Inject constructor(
     private val configuratorRepository: ConfiguratorRepository
 ) {
 
+    /**
+     * Invokes the use case to retrieve the list of double configurations.
+     *
+     * @return The list of double configurations.
+     */
     operator fun invoke(): List<DoubleConfig> =
         configuratorRepository.getDoubleConfigs()
 }

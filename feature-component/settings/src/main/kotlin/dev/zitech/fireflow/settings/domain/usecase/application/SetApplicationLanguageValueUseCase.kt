@@ -21,10 +21,20 @@ import dev.zitech.fireflow.common.domain.model.application.ApplicationLanguage
 import dev.zitech.fireflow.settings.frawework.locale.ApplicationLocale
 import javax.inject.Inject
 
+/**
+ * Use case responsible for setting the application language value.
+ *
+ * @param applicationLocale The implementation of [ApplicationLocale] used to set the application language.
+ */
 internal class SetApplicationLanguageValueUseCase @Inject constructor(
     private val applicationLocale: ApplicationLocale
 ) {
 
+    /**
+     * Sets the application language value.
+     *
+     * @param applicationLanguage The [ApplicationLanguage] to be set as the application language.
+     */
     operator fun invoke(applicationLanguage: ApplicationLanguage) {
         applicationLocale.set(applicationLanguage)
     }

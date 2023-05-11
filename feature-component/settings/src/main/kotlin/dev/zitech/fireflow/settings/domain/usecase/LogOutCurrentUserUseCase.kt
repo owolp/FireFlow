@@ -25,10 +25,22 @@ import dev.zitech.fireflow.core.result.OperationResult.Failure
 import dev.zitech.fireflow.core.result.OperationResult.Success
 import javax.inject.Inject
 
+/**
+ * Use case responsible for logging out the current user.
+ *
+ * @param updateCurrentUserAccountUseCase The use case for updating the current user account.
+ * @param cacheRepository The repository for managing cache data.
+ */
 internal class LogOutCurrentUserUseCase @Inject constructor(
     private val updateCurrentUserAccountUseCase: UpdateCurrentUserAccountUseCase,
     private val cacheRepository: CacheRepository
 ) {
+
+    /**
+     * Logs out the current user.
+     *
+     * @return An [OperationResult] indicating the result of the logout operation.
+     */
     suspend operator fun invoke(): OperationResult<Unit> =
         when (
             val result = updateCurrentUserAccountUseCase(

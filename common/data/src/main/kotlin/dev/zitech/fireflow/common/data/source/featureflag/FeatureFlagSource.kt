@@ -20,8 +20,9 @@ package dev.zitech.fireflow.common.data.source.featureflag
 import dev.zitech.fireflow.common.domain.model.featureflag.Feature
 
 /**
- * Every source has an explicit priority so they can override each other
+ * Interface for retrieving feature flag information from a data source
  *
+ * Every source has an explicit priority so they can override each other.
  * Not every provider has to provide a flag value for every feature. This is to avoid implicitly
  * relying on build-in defaults (e.g. "Remote Config tool" returns false when no value for a
  * feature) and to avoid that every provider has to provide a value for every feature. (e.g. no
@@ -29,8 +30,25 @@ import dev.zitech.fireflow.common.domain.model.featureflag.Feature
  */
 internal interface FeatureFlagSource {
 
+    /**
+     * The priority of the feature flag source.
+     * Feature flag sources with higher priority are queried first.
+     */
     val priority: Int
 
+    /**
+     * Checks if a feature is available.
+     *
+     * @param feature The feature to check.
+     * @return `true` if the feature is available, `false` otherwise.
+     */
     suspend fun hasFeature(feature: Feature): Boolean
+
+    /**
+     * Checks if a feature is enabled.
+     *
+     * @param feature The feature to check.
+     * @return `true` if the feature is enabled, `false` otherwise.
+     */
     suspend fun isFeatureEnabled(feature: Feature): Boolean
 }

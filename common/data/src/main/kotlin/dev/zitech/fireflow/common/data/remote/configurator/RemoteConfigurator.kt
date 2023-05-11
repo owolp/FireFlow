@@ -20,11 +20,48 @@ package dev.zitech.fireflow.common.data.remote.configurator
 import dev.zitech.fireflow.core.result.OperationResult
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * Interface for remote configuration retrieval and initialization.
+ */
 internal interface RemoteConfigurator {
 
+    /**
+     * Retrieves a boolean configuration value associated with the given key.
+     *
+     * @param key The key of the configuration value.
+     * @return An [OperationResult] containing the boolean configuration value if successful, or an error otherwise.
+     */
     fun getBoolean(key: String): OperationResult<Boolean>
+
+    /**
+     * Retrieves a double configuration value associated with the given key.
+     *
+     * @param key The key of the configuration value.
+     * @return An [OperationResult] containing the double configuration value if successful, or an error otherwise.
+     */
     fun getDouble(key: String): OperationResult<Double>
+
+    /**
+     * Retrieves a long configuration value associated with the given key.
+     *
+     * @param key The key of the configuration value.
+     * @return An [OperationResult] containing the long configuration value if successful, or an error otherwise.
+     */
     fun getLong(key: String): OperationResult<Long>
+
+    /**
+     * Retrieves a string configuration value associated with the given key.
+     *
+     * @param key The key of the configuration value.
+     * @return An [OperationResult] containing the string configuration value if successful, or an error otherwise.
+     */
     fun getString(key: String): OperationResult<String>
+
+    /**
+     * Initializes the remote configurator and provides a [Flow] of [OperationResult] representing the initialization
+     * status.
+     *
+     * @return A [Flow] of [OperationResult] indicating the initialization status.
+     */
     fun init(): Flow<OperationResult<Unit>>
 }

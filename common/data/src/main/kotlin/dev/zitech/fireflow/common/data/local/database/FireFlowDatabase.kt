@@ -22,6 +22,9 @@ import androidx.room.RoomDatabase
 import dev.zitech.fireflow.common.data.local.database.dao.UserAccountDao
 import dev.zitech.fireflow.common.data.local.database.entity.UserAccountEntity
 
+/**
+ * The Room database for the FireFlow application.
+ */
 @Database(
     entities = [
         UserAccountEntity::class
@@ -30,5 +33,10 @@ import dev.zitech.fireflow.common.data.local.database.entity.UserAccountEntity
 )
 internal abstract class FireFlowDatabase : RoomDatabase() {
 
+    /**
+     * Returns the DAO (Data Access Object) for interacting with the UserAccountEntity table.
+     *
+     * @return The UserAccountDao.
+     */
     abstract fun userAccountDao(): UserAccountDao
 }

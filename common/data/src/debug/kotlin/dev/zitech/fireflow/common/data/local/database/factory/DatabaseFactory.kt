@@ -24,10 +24,16 @@ import dev.zitech.fireflow.common.data.source.preferences.PreferencesDataSource
 import dev.zitech.fireflow.core.concurrency.SingleRunner
 import javax.inject.Inject
 
-@Suppress("UnusedPrivateMember")
+/**
+ * Factory class for creating Room databases.
+ *
+ * @param context The application context.
+ * @param securedPreferencesDataSource The data source for accessing secured preferences.
+ * @param singleRunner The single runner for executing database operations sequentially.
+ */
 internal class DatabaseFactory @Inject constructor(
     private val context: Context,
-    private val securedPreferencesDataSource: PreferencesDataSource,
+    @Suppress("UnusedPrivateMember") private val securedPreferencesDataSource: PreferencesDataSource,
     private val singleRunner: SingleRunner
 ) {
 

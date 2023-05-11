@@ -20,6 +20,9 @@ package dev.zitech.fireflow.common.data.remote.rest.retrofit.model
 import dev.zitech.fireflow.common.data.remote.rest.service.AboutService
 import dev.zitech.fireflow.common.data.remote.rest.service.OAuthService
 
+/**
+ * Interface representing a model that provides access to various services.
+ */
 internal interface ServiceModel {
     val aboutService: AboutService
     val oAuthService: OAuthService

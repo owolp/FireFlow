@@ -17,6 +17,13 @@
 
 package dev.zitech.fireflow.common.domain.model.cache
 
+/**
+ * Interface for cache management.
+ */
 interface Cache {
+
+    /**
+     * Invalidates the cache, removing all stored data.
+     */
     fun invalidate()
 }

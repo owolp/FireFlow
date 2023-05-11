@@ -22,11 +22,24 @@ import dev.zitech.fireflow.onboarding.di.annotation.ValidatorPat
 import dev.zitech.fireflow.onboarding.di.annotation.ValidatorServerAddress
 import javax.inject.Inject
 
+/**
+ * Use case for validating Personal Access Token (PAT) login input.
+ *
+ * @property patValidator The validator for the Personal Access Token (PAT).
+ * @property serverAddressValidator The validator for the server address.
+ */
 internal class IsPatLoginInputValidUseCase @Inject constructor(
     @ValidatorPat private val patValidator: Validator<String>,
     @ValidatorServerAddress private val serverAddressValidator: Validator<String>
 ) {
 
+    /**
+     * Validates the provided Personal Access Token (PAT) login input.
+     *
+     * @param personalAccessToken The Personal Access Token (PAT) to validate.
+     * @param serverAddress The server address to validate.
+     * @return `true` if the input is valid, `false` otherwise.
+     */
     operator fun invoke(
         personalAccessToken: String,
         serverAddress: String

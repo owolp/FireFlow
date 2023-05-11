@@ -22,10 +22,19 @@ import dev.zitech.fireflow.common.data.remote.rest.response.user.UserResponse
 import dev.zitech.fireflow.common.domain.model.profile.FireflyProfile
 import javax.inject.Inject
 
+/**
+ * Mapper class that converts a [UserResponse] to a [FireflyProfile] domain model.
+ */
 internal class UserResponseMapper @Inject constructor() :
     DomainMapper<UserResponse, FireflyProfile> {
 
-    override fun toDomain(input: UserResponse) = FireflyProfile(
+    /**
+     * Converts a [UserResponse] to a [FireflyProfile] domain model.
+     *
+     * @param input The input [UserResponse] object to be mapped.
+     * @return The mapped [FireflyProfile] domain model.
+     */
+    override fun toDomain(input: UserResponse): FireflyProfile = FireflyProfile(
         email = input.data.attributes.email,
         id = input.data.id,
         role = input.data.attributes.role,

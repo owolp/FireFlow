@@ -19,6 +19,9 @@
 
 package dev.zitech.fireflow.common.data.remote.rest.code
 
+/**
+ * Enum class representing HTTP status codes along with their corresponding numerical values.
+ */
 enum class StatusCode(val code: Int) {
     Unknown(0),
 

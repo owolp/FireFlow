@@ -20,7 +20,16 @@ package dev.zitech.fireflow.common.data.source.about
 import dev.zitech.fireflow.common.domain.model.profile.FireflyProfile
 import dev.zitech.fireflow.core.result.OperationResult
 
+/**
+ * Interface for retrieving information about the Firefly profile.
+ */
 internal interface AboutSource {
 
+    /**
+     * Retrieves the Firefly profile information.
+     *
+     * @return An [OperationResult] representing the result of the operation,
+     *         containing the Firefly profile on success or an error on failure.
+     */
     suspend fun getFireflyProfile(): OperationResult<FireflyProfile>
 }

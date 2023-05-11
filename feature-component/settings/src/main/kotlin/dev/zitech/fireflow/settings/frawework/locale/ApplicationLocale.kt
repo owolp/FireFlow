@@ -19,8 +19,22 @@ package dev.zitech.fireflow.settings.frawework.locale
 
 import dev.zitech.fireflow.common.domain.model.application.ApplicationLanguage
 
+/**
+ * Interface for managing the application locale.
+ */
 internal interface ApplicationLocale {
 
+    /**
+     * Sets the application language.
+     *
+     * @param applicationLanguage The application language to be set.
+     */
     fun set(applicationLanguage: ApplicationLanguage)
+
+    /**
+     * Retrieves the current application language.
+     *
+     * @return The current application language.
+     */
     fun get(): ApplicationLanguage
 }

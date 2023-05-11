@@ -30,10 +30,22 @@ import javax.net.ssl.SSLHandshakeException
 import kotlin.coroutines.cancellation.CancellationException
 import timber.log.Timber
 
+/**
+ * Implementation of the [ErrorTree] interface that logs errors and exceptions using Timber.
+ *
+ * @property crashRepository The repository used for logging and recording crashes.
+ */
 class ErrorTreeImpl @Inject constructor(
     private val crashRepository: CrashRepository
 ) : ErrorTree {
 
+    /**
+     * Creates and returns a [Timber.Tree] implementation for logging errors and exceptions.
+     *
+     * The log function is overridden to process the log messages, tags, and throwables before logging.
+     *
+     * @return A [Timber.Tree] implementation for error logging.
+     */
     @Suppress("ThrowingExceptionsWithoutMessageOrCause")
     override operator fun invoke(): Timber.Tree =
         object : Timber.Tree() {
@@ -88,6 +100,14 @@ class ErrorTreeImpl @Inject constructor(
             }
         }
 
+    /**
+     * Checks if the specified throwable should be logged or not.
+     *
+     * Certain types of exceptions are filtered and not logged to prevent unnecessary log entries.
+     *
+     * @param throwable The throwable to check.
+     * @return `true` if the throwable should be logged, `false` otherwise.
+     */
     private fun shouldLog(throwable: Throwable): Boolean =
         when (throwable) {
             is UnknownHostException,

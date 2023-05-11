@@ -22,10 +22,21 @@ import dev.zitech.fireflow.common.domain.repository.user.UserAccountRepository
 import dev.zitech.fireflow.core.result.OperationResult
 import javax.inject.Inject
 
+/**
+ * Use case for updating a user account.
+ *
+ * @property userAccountRepository The repository for managing user accounts.
+ */
 class UpdateUserAccountUseCase @Inject constructor(
     private val userAccountRepository: UserAccountRepository
 ) {
-
+    /**
+     * Invokes the use case to update the specified user account.
+     *
+     * @param userAccount The user account to be updated.
+     *
+     * @return The result of the operation.
+     */
     suspend operator fun invoke(userAccount: UserAccount): OperationResult<Unit> =
         userAccountRepository.updateUserAccount(userAccount)
 }

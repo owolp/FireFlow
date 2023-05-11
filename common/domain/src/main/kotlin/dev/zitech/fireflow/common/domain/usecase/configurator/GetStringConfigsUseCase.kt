@@ -21,10 +21,20 @@ import dev.zitech.fireflow.common.domain.model.configurator.StringConfig
 import dev.zitech.fireflow.common.domain.repository.configurator.ConfiguratorRepository
 import javax.inject.Inject
 
+/**
+ * Use case for getting the list of string configurations.
+ *
+ * @property configuratorRepository The repository for accessing configurator data.
+ */
 class GetStringConfigsUseCase @Inject constructor(
     private val configuratorRepository: ConfiguratorRepository
 ) {
 
+    /**
+     * Invokes the use case to retrieve the list of string configurations.
+     *
+     * @return The list of string configurations.
+     */
     operator fun invoke(): List<StringConfig> =
         configuratorRepository.getStringConfigs()
 }

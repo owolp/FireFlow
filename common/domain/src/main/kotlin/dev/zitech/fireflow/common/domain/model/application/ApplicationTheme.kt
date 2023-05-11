@@ -19,16 +19,39 @@ package dev.zitech.fireflow.common.domain.model.application
 
 import dev.zitech.fireflow.common.domain.R
 
+/**
+ * Enum class representing application themes.
+ *
+ * @property id The ID of the application theme.
+ * @property text The string resource ID for displaying the theme name.
+ */
 enum class ApplicationTheme(
     val id: Int,
     val text: Int
 ) {
-
+    /**
+     * System theme. The application theme is determined by the system theme setting.
+     */
     SYSTEM(0, R.string.application_theme_system),
+
+    /**
+     * Dark theme.
+     */
     DARK(1, R.string.application_theme_dark),
+
+    /**
+     * Light theme.
+     */
     LIGHT(2, R.string.application_theme_light);
 
     companion object {
+
+        /**
+         * Retrieves the [ApplicationTheme] enum based on the specified ID.
+         *
+         * @param id The ID of the application theme.
+         * @return The corresponding [ApplicationTheme] enum value.
+         */
         fun getApplicationTheme(id: Int): ApplicationTheme =
             when (id) {
                 DARK.id -> DARK

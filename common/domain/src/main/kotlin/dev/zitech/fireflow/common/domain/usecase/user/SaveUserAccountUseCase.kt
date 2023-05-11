@@ -21,10 +21,26 @@ import dev.zitech.fireflow.common.domain.repository.user.UserAccountRepository
 import dev.zitech.fireflow.core.result.OperationResult
 import javax.inject.Inject
 
+/**
+ * Use case for saving a user account.
+ *
+ * @property userAccountRepository The repository for managing user accounts.
+ */
 class SaveUserAccountUseCase @Inject constructor(
     private val userAccountRepository: UserAccountRepository
 ) {
-
+    /**
+     * Invokes the use case to save a user account.
+     *
+     * @param accessToken The access token of the user account.
+     * @param clientId The client ID of the user account.
+     * @param clientSecret The client secret of the user account.
+     * @param isCurrentUserAccount Flag indicating if the user account is the current user account.
+     * @param serverAddress The server address of the user account.
+     * @param state The state of the user account.
+     *
+     * @return The result of the operation containing the ID of the saved user account.
+     */
     suspend operator fun invoke(
         accessToken: String? = null,
         clientId: String? = null,

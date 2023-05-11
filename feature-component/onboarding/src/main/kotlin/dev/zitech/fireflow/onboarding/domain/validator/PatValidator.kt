@@ -20,8 +20,17 @@ package dev.zitech.fireflow.onboarding.domain.validator
 import dev.zitech.fireflow.common.presentation.validator.Validator
 import javax.inject.Inject
 
+/**
+ * Validator for validating the Personal Access Token (PAT).
+ */
 internal class PatValidator @Inject constructor() : Validator<String> {
 
+    /**
+     * Validates the Personal Access Token (PAT).
+     *
+     * @param input The Personal Access Token to validate.
+     * @return `true` if the PAT is valid, `false` otherwise.
+     */
     override fun invoke(input: String): Boolean =
         input.isNotBlank() && input.isNotEmpty()
 }

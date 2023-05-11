@@ -17,6 +17,16 @@
 
 package dev.zitech.fireflow.common.data.mapper
 
+/**
+ * Interface for mapping an entity [E] to a domain model [D].
+ */
 interface DomainMapper<in E, out D> {
+
+    /**
+     * Converts an entity [E] to a domain model [D].
+     *
+     * @param input The input entity to be converted.
+     * @return The corresponding domain model.
+     */
     fun toDomain(input: E): D
 }

@@ -17,9 +17,30 @@
 
 package dev.zitech.fireflow.common.domain.model.preferences
 
+/**
+ * Interface representing a preference.
+ *
+ * @param T The type of the preference value.
+ */
 internal interface Preference<T> {
+
+    /**
+     * The key associated with the preference.
+     */
     val key: String
+
+    /**
+     * The title or name of the preference.
+     */
     val title: String
+
+    /**
+     * A description or explanation of the preference.
+     */
     val explanation: String
+
+    /**
+     * The default value of the preference.
+     */
     val defaultValue: T
 }

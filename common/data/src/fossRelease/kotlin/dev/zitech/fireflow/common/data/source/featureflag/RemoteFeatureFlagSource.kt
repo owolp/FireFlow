@@ -21,9 +21,8 @@ import dev.zitech.fireflow.common.data.remote.configurator.RemoteConfigurator
 import dev.zitech.fireflow.common.domain.model.featureflag.Feature
 import javax.inject.Inject
 
-@Suppress("UnusedPrivateMember")
 internal class RemoteFeatureFlagSource @Inject constructor(
-    private val remoteConfigurator: RemoteConfigurator
+    @Suppress("UnusedPrivateMember") private val remoteConfigurator: RemoteConfigurator
 ) : FeatureFlagSource {
 
     override val priority: Int = PRIORITY_MAXIMUM

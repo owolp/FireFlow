@@ -23,10 +23,21 @@ import dev.zitech.fireflow.core.result.OperationResult.Failure
 import dev.zitech.fireflow.core.result.OperationResult.Success
 import javax.inject.Inject
 
+/**
+ * Use case for getting the value of a string configuration.
+ *
+ * @property configuratorRepository The repository for accessing configurator data.
+ */
 class GetStringConfigValueUseCase @Inject constructor(
     private val configuratorRepository: ConfiguratorRepository
 ) {
 
+    /**
+     * Invokes the use case to retrieve the value of a string configuration.
+     *
+     * @param config The string configuration.
+     * @return The value of the string configuration.
+     */
     suspend operator fun invoke(config: StringConfig): String =
         when (val result = configuratorRepository.getStringValue(config)) {
             is Success -> result.data

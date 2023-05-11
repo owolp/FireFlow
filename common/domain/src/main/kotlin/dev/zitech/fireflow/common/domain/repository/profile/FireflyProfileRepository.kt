@@ -20,7 +20,15 @@ package dev.zitech.fireflow.common.domain.repository.profile
 import dev.zitech.fireflow.common.domain.model.profile.FireflyProfile
 import dev.zitech.fireflow.core.result.OperationResult
 
+/**
+ * Repository for retrieving the Firefly profile.
+ */
 interface FireflyProfileRepository {
 
+    /**
+     * Retrieves the Firefly profile.
+     *
+     * @return An [OperationResult] with the Firefly profile if successful, or an error if failed.
+     */
     suspend fun getFireflyProfile(): OperationResult<FireflyProfile>
 }

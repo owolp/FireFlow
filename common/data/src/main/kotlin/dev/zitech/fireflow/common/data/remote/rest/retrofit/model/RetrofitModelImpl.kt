@@ -24,6 +24,13 @@ import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
 import retrofit2.Retrofit
 
+/**
+ * Implementation of the [RetrofitModel] interface. It provides a [Retrofit] instance based on the given user ID and
+ * server address. It ensures that only one [Retrofit] instance is created per user ID.
+ *
+ * @param controlledRunner The controlled runner used to manage concurrent [Retrofit] instance creation.
+ * @param retrofitFactory The factory used to create [Retrofit] instances.
+ */
 internal class RetrofitModelImpl @Inject constructor(
     private val controlledRunner: ControlledRunner<Retrofit>,
     private val retrofitFactory: RetrofitFactory
@@ -32,6 +39,14 @@ internal class RetrofitModelImpl @Inject constructor(
     private val retrofitMap = ConcurrentHashMap<Long, Retrofit>()
     private val tag = Logger.tag(this::class.java)
 
+    /**
+     * Retrieves a [Retrofit] instance based on the provided user ID and server address. It either returns an existing
+     * [Retrofit] instance from the cache or creates a new one if not found.
+     *
+     * @param userId The ID of the user.
+     * @param serverAddress The address of the server.
+     * @return The [Retrofit] instance.
+     */
     override suspend fun invoke(
         userId: Long,
         serverAddress: String

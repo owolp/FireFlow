@@ -17,7 +17,15 @@
 
 package dev.zitech.fireflow.common.data.reporter.performance
 
+/**
+ * Interface for managing performance reporting settings.
+ */
 interface PerformanceReporter {
 
+    /**
+     * Sets whether performance reporting is enabled or disabled.
+     *
+     * @param enabled `true` to enable performance reporting, `false` to disable it.
+     */
     fun setCollectionEnabled(enabled: Boolean)
 }

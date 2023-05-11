@@ -22,6 +22,12 @@ import javax.inject.Inject
 import okhttp3.Authenticator
 import okhttp3.OkHttpClient
 
+/**
+ * Factory class for creating an instance of OkHttpClient.
+ *
+ * @param interceptorFactory The factory for creating interceptors.
+ * @param refreshTokenAuthenticator The authenticator for refreshing the authentication token.
+ */
 internal class OkHttpClientFactory @Inject constructor(
     private val interceptorFactory: InterceptorFactory,
     private val refreshTokenAuthenticator: Authenticator
@@ -31,6 +37,11 @@ internal class OkHttpClientFactory @Inject constructor(
         const val SERVICE_TIMEOUT_SECONDS = 10L
     }
 
+    /**
+     * Creates and configures an instance of OkHttpClient.
+     *
+     * @return The created OkHttpClient instance.
+     */
     fun createOkHttpClient(): OkHttpClient {
         val okHttpClient = OkHttpClient.Builder()
             .connectTimeout(SERVICE_TIMEOUT_SECONDS, TimeUnit.SECONDS)

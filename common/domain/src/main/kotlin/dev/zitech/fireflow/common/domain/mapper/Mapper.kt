@@ -17,6 +17,16 @@
 
 package dev.zitech.fireflow.common.domain.mapper
 
+/**
+ * Generic interface for mapping objects from type [I] to type [O].
+ */
 interface Mapper<in I, out O> {
+
+    /**
+     * Transforms the input object of type [I] into an object of type [O].
+     *
+     * @param input The input object to be mapped.
+     * @return The mapped object of type [O].
+     */
     operator fun invoke(input: I): O
 }

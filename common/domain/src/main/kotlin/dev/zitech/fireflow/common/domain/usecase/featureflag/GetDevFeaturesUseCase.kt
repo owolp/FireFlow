@@ -21,10 +21,20 @@ import dev.zitech.fireflow.common.domain.model.featureflag.DevFeature
 import dev.zitech.fireflow.common.domain.repository.featureflag.FeatureFlagRepository
 import javax.inject.Inject
 
+/**
+ * Use case for retrieving the list of development features and their enabled status.
+ *
+ * @property featureFlagRepository The repository for accessing feature flag data.
+ */
 class GetDevFeaturesUseCase @Inject constructor(
     private val featureFlagRepository: FeatureFlagRepository
 ) {
-
+    /**
+     * Invokes the use case to retrieve the list of development features and their enabled status.
+     *
+     * @return A list of pairs, where each pair contains a development feature and its enabled status.
+     * The list is sorted by the feature titles in ascending order.
+     */
     suspend operator fun invoke(): List<Pair<DevFeature, Boolean>> {
         val features = mutableListOf<Pair<DevFeature, Boolean>>()
 

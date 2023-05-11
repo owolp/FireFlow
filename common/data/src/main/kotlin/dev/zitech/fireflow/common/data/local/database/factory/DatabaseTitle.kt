@@ -19,6 +19,13 @@ package dev.zitech.fireflow.common.data.local.database.factory
 
 private const val FIRE_FLOW = "fire_flow"
 
+/**
+ * Represents the title of a database.
+ */
 internal sealed class DatabaseTitle(val name: String) {
+
+    /**
+     * Database title for the FireFlow database.
+     */
     object FireFlow : DatabaseTitle(FIRE_FLOW)
 }

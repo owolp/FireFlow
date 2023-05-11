@@ -24,8 +24,16 @@ import androidx.core.os.LocaleListCompat.getEmptyLocaleList
 import dev.zitech.fireflow.common.domain.model.application.ApplicationLanguage
 import javax.inject.Inject
 
+/**
+ * Implementation of the [ApplicationLocale] interface for managing the application locale.
+ */
 internal class ApplicationLocaleImpl @Inject constructor() : ApplicationLocale {
 
+    /**
+     * Sets the application language based on the provided [applicationLanguage].
+     *
+     * @param applicationLanguage The application language to be set.
+     */
     override fun set(applicationLanguage: ApplicationLanguage) {
         val appLocale = applicationLanguage.locale?.run {
             forLanguageTags(this.toLanguageTag())
@@ -34,6 +42,11 @@ internal class ApplicationLocaleImpl @Inject constructor() : ApplicationLocale {
         setApplicationLocales(appLocale)
     }
 
+    /**
+     * Retrieves the current application language based on the configured locales.
+     *
+     * @return The current application language.
+     */
     override fun get(): ApplicationLanguage =
         ApplicationLanguage.values().firstOrNull {
             it.locale?.toLanguageTag() == getApplicationLocales().toLanguageTags()

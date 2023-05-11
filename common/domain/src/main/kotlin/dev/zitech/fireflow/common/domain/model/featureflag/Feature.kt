@@ -17,9 +17,28 @@
 
 package dev.zitech.fireflow.common.domain.model.featureflag
 
+/**
+ * Interface representing a feature flag.
+ */
 interface Feature {
+
+    /**
+     * The key associated with the feature flag.
+     */
     val key: String
+
+    /**
+     * The title or name of the feature flag.
+     */
     val title: String
+
+    /**
+     * A description or explanation of the feature flag.
+     */
     val explanation: String
+
+    /**
+     * The default value of the feature flag.
+     */
     val defaultValue: Boolean
 }

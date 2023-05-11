@@ -21,10 +21,20 @@ import dev.zitech.fireflow.common.domain.repository.reporter.PerformanceReposito
 import javax.inject.Inject
 import kotlinx.coroutines.flow.first
 
+/**
+ * Use case for retrieving the value of the performance collection setting.
+ *
+ * @property performanceRepository The repository for accessing performance data.
+ */
 class GetPerformanceCollectionValueUseCase @Inject constructor(
     private val performanceRepository: PerformanceRepository
 ) {
 
+    /**
+     * Invokes the use case to retrieve the value of the performance collection setting.
+     *
+     * @return The value of the performance collection setting.
+     */
     suspend operator fun invoke(): Boolean =
         performanceRepository.getCollectionEnabled().first()
 }

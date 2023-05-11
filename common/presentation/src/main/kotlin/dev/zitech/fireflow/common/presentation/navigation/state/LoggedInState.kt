@@ -28,6 +28,15 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
+/**
+ * Creates a [ReadOnlyProperty] delegate for accessing a [StateFlow] of [LogInState] values.
+ *
+ * @param getScreenDestinationUseCase The use case for obtaining the screen destination.
+ * @param loginCheckCompletedHandler The handler to be called when the login check is completed.
+ * @param coroutineScope The [CoroutineScope] to use for launching the collection of screen destinations.
+ *
+ * @return A [ReadOnlyProperty] delegate providing read-only access to the [StateFlow] of [LogInState] values.
+ */
 fun logInState(
     getScreenDestinationUseCase: ScreenDestinationProvider,
     loginCheckCompletedHandler: LoginCheckCompletedHandler,

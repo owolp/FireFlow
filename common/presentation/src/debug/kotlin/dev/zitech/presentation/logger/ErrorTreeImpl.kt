@@ -21,6 +21,9 @@ import dev.zitech.fireflow.core.logger.ErrorTree
 import javax.inject.Inject
 import timber.log.Timber
 
+/**
+ * Implementation of the [ErrorTree] interface that provides a Timber debug tree with customized log output.
+ */
 class ErrorTreeImpl @Inject constructor() : ErrorTree {
 
     override operator fun invoke(): Timber.Tree =

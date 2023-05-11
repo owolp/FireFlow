@@ -28,6 +28,13 @@ import kotlinx.coroutines.flow.first
 import net.sqlcipher.database.SQLiteDatabase
 import net.sqlcipher.database.SupportFactory
 
+/**
+ * Factory class for creating Room databases.
+ *
+ * @param context The application context.
+ * @param securedPreferencesDataSource The data source for accessing secured preferences.
+ * @param singleRunner The single runner for executing database operations sequentially.
+ */
 internal class DatabaseFactory @Inject constructor(
     private val context: Context,
     private val securedPreferencesDataSource: PreferencesDataSource,

@@ -19,8 +19,21 @@ package dev.zitech.fireflow.common.domain.repository.featureflag
 
 import dev.zitech.fireflow.common.domain.model.featureflag.Feature
 
+/**
+ * Repository for managing feature flags, combining both developer and production feature flags.
+ */
 interface FeatureFlagRepository : DevFeatureFlag, ProdFeatureFlag {
 
+    /**
+     * Initializes the feature flag repository.
+     */
     fun init()
+
+    /**
+     * Checks if the specified feature is enabled.
+     *
+     * @param feature The [Feature] to check.
+     * @return True if the feature is enabled, false otherwise.
+     */
     suspend fun isFeatureEnabled(feature: Feature): Boolean
 }

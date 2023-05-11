@@ -22,11 +22,34 @@ import java.lang.reflect.Type
 import retrofit2.Call
 import retrofit2.CallAdapter
 
-internal class NetworkResultCallAdapter(
+/**
+ * A Retrofit [CallAdapter] that adapts a [Call] to a [Call] of [NetworkResponse] type.
+ *
+ * This class is responsible for adapting a Retrofit [Call] to a [Call] of [NetworkResponse] type.
+ *
+ * @param resultType The type of the result expected from the network call.
+ */
+class NetworkResultCallAdapter(
     private val resultType: Type
 ) : CallAdapter<Type, Call<NetworkResponse<Type>>> {
 
+    /**
+     * Adapts the original [Call] to a [Call] of [NetworkResponse] type.
+     *
+     * This method wraps the original [Call] instance with a [NetworkResultCall] to provide a [Call]
+     * that returns a [NetworkResponse] of the expected result type.
+     *
+     * @param call The original [Call] instance.
+     * @return A [Call] of [NetworkResponse] type.
+     */
     override fun adapt(call: Call<Type>): Call<NetworkResponse<Type>> = NetworkResultCall(call)
 
+    /**
+     * Returns the type of the result expected from the network call.
+     *
+     * This method returns the result type specified during the creation of the adapter.
+     *
+     * @return The type of the result.
+     */
     override fun responseType(): Type = resultType
 }

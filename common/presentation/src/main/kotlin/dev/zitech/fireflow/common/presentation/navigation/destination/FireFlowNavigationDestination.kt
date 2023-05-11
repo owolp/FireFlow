@@ -17,7 +17,20 @@
 
 package dev.zitech.fireflow.common.presentation.navigation.destination
 
+/**
+ * Interface representing a navigation destination in the FireFlow navigation system.
+ */
 interface FireFlowNavigationDestination {
+
+    /**
+     * The route associated with the navigation destination.
+     * It is used for navigating to the destination within the app.
+     */
     val route: String
+
+    /**
+     * The name or identifier of the navigation destination.
+     * It provides a descriptive name for the destination.
+     */
     val destination: String
 }

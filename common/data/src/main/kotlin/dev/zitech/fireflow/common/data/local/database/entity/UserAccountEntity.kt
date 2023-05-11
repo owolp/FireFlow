@@ -20,9 +20,24 @@ package dev.zitech.fireflow.common.data.local.database.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(
-    tableName = "user_accounts"
-)
+/**
+ * Represents a user account entity in the database.
+ *
+ * @param id The unique identifier of the user account. Auto-generated if not provided.
+ * @param accessToken The access token associated with the user account.
+ * @param clientId The client ID associated with the user account.
+ * @param clientSecret The client secret associated with the user account.
+ * @param email The email address of the user account.
+ * @param fireflyId The Firefly ID associated with the user account.
+ * @param isCurrentUserAccount Indicates whether the user account is the current active account.
+ * @param oauthCode The OAuth code associated with the user account.
+ * @param refreshToken The refresh token associated with the user account.
+ * @param role The role assigned to the user account.
+ * @param serverAddress The server address associated with the user account.
+ * @param state The state value of the user account.
+ * @param type The type of the user account.
+ */
+@Entity(tableName = "user_accounts")
 internal data class UserAccountEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long? = null,

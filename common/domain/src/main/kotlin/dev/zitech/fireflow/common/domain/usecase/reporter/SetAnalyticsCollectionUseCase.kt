@@ -22,12 +22,25 @@ import dev.zitech.fireflow.common.domain.repository.reporter.AnalyticsRepository
 import dev.zitech.fireflow.common.domain.usecase.user.GetUserLoggedStateUseCase
 import javax.inject.Inject
 
+/**
+ * Use case for setting the value of the analytics collection setting.
+ *
+ * @property analyticsRepository The repository for managing analytics settings.
+ * @property getAnalyticsCollectionValueUseCase The use case for retrieving the value of the analytics collection
+ * setting.
+ * @property getUserLoggedStateUseCase The use case for retrieving the logged-in state of the user.
+ */
 class SetAnalyticsCollectionUseCase @Inject constructor(
     private val analyticsRepository: AnalyticsRepository,
     private val getAnalyticsCollectionValueUseCase: GetAnalyticsCollectionValueUseCase,
     private val getUserLoggedStateUseCase: GetUserLoggedStateUseCase
 ) {
-
+    /**
+     * Invokes the use case to set the value of the analytics collection setting.
+     *
+     * @param enabled The new value of the analytics collection setting. If null, the value will be determined based on
+     * the user's logged-in state.
+     */
     suspend operator fun invoke(enabled: Boolean? = null) =
         (
             enabled ?: when (getUserLoggedStateUseCase()) {

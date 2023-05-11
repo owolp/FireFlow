@@ -30,8 +30,18 @@ import dev.zitech.fireflow.core.result.OperationResult.Success
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
 
+/**
+ * A utility object for opening URLs in a web browser.
+ */
 object Browser {
 
+    /**
+     * Opens the specified URL in a web browser.
+     *
+     * @param context The context.
+     * @param url The URL to open.
+     * @param activityResultLauncher The activity result launcher for handling custom tabs.
+     */
     @Suppress("TooGenericExceptionCaught", "SwallowedException")
     fun openUrl(
         context: Context,

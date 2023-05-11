@@ -23,10 +23,21 @@ import dev.zitech.fireflow.core.result.OperationResult.Failure
 import dev.zitech.fireflow.core.result.OperationResult.Success
 import javax.inject.Inject
 
+/**
+ * Use case for getting the value of a boolean configuration.
+ *
+ * @property configuratorRepository The repository for accessing configurator data.
+ */
 class GetBooleanConfigValueUseCase @Inject constructor(
     private val configuratorRepository: ConfiguratorRepository
 ) {
 
+    /**
+     * Invokes the use case to retrieve the value of a boolean configuration.
+     *
+     * @param config The boolean configuration to retrieve the value for.
+     * @return The value of the boolean configuration.
+     */
     suspend operator fun invoke(config: BooleanConfig): Boolean =
         when (val result = configuratorRepository.getBooleanValue(config)) {
             is Success -> result.data

@@ -17,8 +17,23 @@
 
 package dev.zitech.fireflow.core.applicationconfig
 
+/**
+ * Provides application configuration information such as build mode, build flavor, and version.
+ */
 interface AppConfigProvider {
+
+    /**
+     * The build mode of the application.
+     */
     val buildMode: BuildMode
+
+    /**
+     * The build flavor of the application.
+     */
     val buildFlavor: BuildFlavor
+
+    /**
+     * The version of the application.
+     */
     val version: String
 }

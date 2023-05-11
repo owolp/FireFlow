@@ -26,10 +26,20 @@ import javax.inject.Inject
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
+/**
+ * Use case for removing stale user accounts.
+ *
+ * @property userAccountRepository The repository for managing user accounts.
+ */
 class RemoveStaleUserAccountsUseCase @Inject constructor(
     private val userAccountRepository: UserAccountRepository
 ) {
 
+    /**
+     * Invokes the use case to remove stale user accounts.
+     *
+     * @return The result of the operation.
+     */
     @Suppress("RedundantAsync", "TooGenericExceptionCaught")
     suspend operator fun invoke(): OperationResult<Unit> = coroutineScope {
         try {

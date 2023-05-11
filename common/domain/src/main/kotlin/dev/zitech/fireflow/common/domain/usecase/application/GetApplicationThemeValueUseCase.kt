@@ -22,10 +22,20 @@ import dev.zitech.fireflow.common.domain.repository.application.ApplicationRepos
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * Use case for retrieving the application theme value.
+ *
+ * @property applicationRepository The repository for accessing application data.
+ */
 class GetApplicationThemeValueUseCase @Inject constructor(
     private val applicationRepository: ApplicationRepository
 ) {
 
+    /**
+     * Invokes the use case to retrieve the application theme value.
+     *
+     * @return A [Flow] that emits the current application theme.
+     */
     operator fun invoke(): Flow<ApplicationTheme> =
         applicationRepository.getApplicationTheme()
 }

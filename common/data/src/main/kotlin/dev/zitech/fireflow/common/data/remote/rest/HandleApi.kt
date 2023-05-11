@@ -21,6 +21,20 @@ import dev.zitech.fireflow.common.data.remote.rest.code.StatusCode
 import dev.zitech.fireflow.common.data.remote.rest.result.NetworkResponse
 import retrofit2.Response
 
+/**
+ * Handles API responses and returns a [NetworkResponse] based on the response status and body.
+ *
+ * This function executes the provided [execute] block, which should perform an API call and return a [Response].
+ * It checks if the response is successful and contains a non-null body. If so, it returns a [NetworkResponse.Success]
+ * wrapping the body. Otherwise, it returns a [NetworkResponse.Error] containing the status code and error message
+ * retrieved from the response.
+ *
+ * If an exception occurs during the execution, it catches the exception and returns a [NetworkResponse.Exception]
+ * wrapping the thrown [Throwable].
+ *
+ * @param execute The block of code that performs the API call and returns a [Response].
+ * @return A [NetworkResponse] representing the result of the API call.
+ */
 @Suppress("TooGenericExceptionCaught")
 internal fun <T : Any> handleApi(
     execute: () -> Response<T>
@@ -40,6 +54,16 @@ internal fun <T : Any> handleApi(
         throwable = throwable
     )
 }
+
+/**
+ * Retrieves the [StatusCode] corresponding to the HTTP response code from the provided [response].
+ *
+ * This function maps the HTTP response code to the appropriate [StatusCode] enum value.
+ * If no matching enum value is found, it returns [StatusCode.Unknown].
+ *
+ * @param response The HTTP response containing the response code.
+ * @return The [StatusCode] enum value corresponding to the response code.
+ */
 
 internal fun <T> getStatusCodeFromResponse(response: Response<T>): StatusCode =
     StatusCode.values().find { it.code == response.code() } ?: StatusCode.Unknown

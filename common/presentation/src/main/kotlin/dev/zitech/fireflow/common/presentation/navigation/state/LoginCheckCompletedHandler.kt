@@ -22,11 +22,29 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
+/**
+ * Handler for login check completion state.
+ *
+ * This class provides functionality for managing the login check completion state. It emits a [Boolean]
+ * value indicating whether the login check has been completed or not.
+ */
 class LoginCheckCompletedHandler @Inject constructor() {
 
     private val mutableLoginCheckState = MutableStateFlow(false)
+
+    /**
+     * The [StateFlow] representing the login check state.
+     *
+     * This state flow emits a [Boolean] value indicating whether the login check has been completed (`true`)
+     * or not (`false`).
+     */
     val loginCheckState: StateFlow<Boolean> = mutableLoginCheckState.asStateFlow()
 
+    /**
+     * Updates the login check state.
+     *
+     * @param show Indicates whether the login check has been completed (`true`) or not (`false`).
+     */
     suspend operator fun invoke(show: Boolean) {
         mutableLoginCheckState.emit(show)
     }

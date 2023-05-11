@@ -24,8 +24,25 @@ import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
 
+/**
+ * Interface for accessing OAuth services provided by the API.
+ */
 internal interface OAuthService {
 
+    /**
+     * Requests an access token from the API using the provided authorization code.
+     *
+     * This method performs a POST request to the "oauth/token" endpoint with the necessary parameters
+     * to exchange the authorization code for an access token.
+     *
+     * @param clientId The client ID associated with the OAuth client.
+     * @param clientSecret The client secret associated with the OAuth client.
+     * @param code The authorization code received during the OAuth authorization process.
+     * @param redirectUri The redirect URI used during the OAuth authorization process.
+     *                    Defaults to "fireflow://authentication" if not specified.
+     * @param grantType The grant type for the token request. Defaults to "authorization_code".
+     * @return A [NetworkResponse] containing the access token response.
+     */
     @FormUrlEncoded
     @POST("oauth/token")
     suspend fun postAccessToken(
@@ -36,6 +53,18 @@ internal interface OAuthService {
         @Field("grant_type") grantType: String = "authorization_code"
     ): NetworkResponse<AccessTokenResponse>
 
+    /**
+     * Requests a refreshed access token from the API using a refresh token.
+     *
+     * This method performs a POST request to the "oauth/token" endpoint with the necessary parameters
+     * to refresh the access token using a valid refresh token.
+     *
+     * @param clientId The client ID associated with the OAuth client.
+     * @param clientSecret The client secret associated with the OAuth client.
+     * @param grantType The grant type for the token request. Defaults to "refresh_token".
+     * @param refreshToken The refresh token used to obtain a new access token.
+     * @return A [NetworkResponse] containing the refreshed access token response.
+     */
     @FormUrlEncoded
     @POST("oauth/token")
     suspend fun postRefreshToken(

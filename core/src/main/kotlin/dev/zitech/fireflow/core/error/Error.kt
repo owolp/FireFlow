@@ -21,6 +21,12 @@ import dev.zitech.fireflow.core.R
 
 typealias FireFlowError = Error
 
+/**
+ * Sealed class for representing errors in the application.
+ *
+ * @property debugText The debug text providing additional information about the error.
+ * @property uiResId The resource ID of the error message to be displayed in the user interface.
+ */
 sealed class Error(
     val debugText: String,
     val uiResId: Int

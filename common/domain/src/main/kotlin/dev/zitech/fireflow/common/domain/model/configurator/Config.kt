@@ -17,9 +17,29 @@
 
 package dev.zitech.fireflow.common.domain.model.configurator
 
+/**
+ * Interface for configuration settings.
+ *
+ * @param T The type of the configuration value.
+ */
 internal interface Config<T> {
+    /**
+     * The default value of the configuration.
+     */
     val defaultValue: T
+
+    /**
+     * A description or explanation of the configuration.
+     */
     val explanation: String
+
+    /**
+     * The key associated with the configuration.
+     */
     val key: String
+
+    /**
+     * The title or name of the configuration.
+     */
     val title: String
 }

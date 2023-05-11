@@ -23,10 +23,19 @@ import dev.zitech.fireflow.core.result.OperationResult
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * Use case for retrieving the current user account.
+ *
+ * @property userAccountRepository The repository for managing user accounts.
+ */
 class GetCurrentUserAccountUseCase @Inject constructor(
     private val userAccountRepository: UserAccountRepository
 ) {
-
+    /**
+     * Invokes the use case to retrieve the current user account.
+     *
+     * @return A flow of [OperationResult] with the current user account.
+     */
     operator fun invoke(): Flow<OperationResult<UserAccount>> =
         userAccountRepository.getCurrentUserAccount()
 }

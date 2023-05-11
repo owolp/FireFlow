@@ -21,11 +21,23 @@ import android.content.Context
 import javax.inject.Inject
 import okhttp3.Interceptor
 
+/**
+ * Factory class for creating interceptors based on the provided [InterceptorType].
+ *
+ * @param context The application context.
+ * @param authenticationInterceptor The interceptor for authentication purposes.
+ */
 internal class InterceptorFactory @Inject constructor(
     @Suppress("UnusedPrivateMember") context: Context,
     private val authenticationInterceptor: Interceptor
 ) {
 
+    /**
+     * Creates and returns the appropriate interceptor based on the provided [type].
+     *
+     * @param type The type of interceptor to create.
+     * @return The created interceptor.
+     */
     operator fun invoke(type: InterceptorType): Interceptor =
         when (type) {
             Authentication -> authenticationInterceptor

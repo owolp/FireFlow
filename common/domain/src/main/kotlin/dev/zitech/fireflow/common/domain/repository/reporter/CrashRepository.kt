@@ -19,11 +19,49 @@ package dev.zitech.fireflow.common.domain.repository.reporter
 
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * Repository for managing crash reporting.
+ */
 interface CrashRepository {
+
+    /**
+     * Retrieves the flag indicating whether crash collection is enabled.
+     *
+     * @return A [Flow] that emits the boolean value indicating whether crash collection is enabled.
+     */
     fun getCollectionEnabled(): Flow<Boolean>
+
+    /**
+     * Initializes the crash reporting system.
+     */
     fun init()
+
+    /**
+     * Logs a message for crash reporting.
+     *
+     * @param message The message to log.
+     */
     fun log(message: String)
+
+    /**
+     * Records an exception for crash reporting.
+     *
+     * @param throwable The throwable to record.
+     */
     fun recordException(throwable: Throwable)
+
+    /**
+     * Sets the flag indicating whether crash collection is enabled.
+     *
+     * @param enabled The boolean value indicating whether crash collection is enabled.
+     */
     suspend fun setCollectionEnabled(enabled: Boolean)
+
+    /**
+     * Sets a custom key-value pair for crash reporting.
+     *
+     * @param key The key of the custom data.
+     * @param value The value of the custom data.
+     */
     fun setCustomKey(key: String, value: Any)
 }
