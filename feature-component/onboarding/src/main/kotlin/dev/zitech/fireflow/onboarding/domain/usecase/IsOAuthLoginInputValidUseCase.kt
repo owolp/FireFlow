@@ -23,12 +23,27 @@ import dev.zitech.fireflow.onboarding.di.annotation.ValidatorClientSecret
 import dev.zitech.fireflow.onboarding.di.annotation.ValidatorServerAddress
 import javax.inject.Inject
 
+/**
+ * Use case for validating OAuth login input.
+ *
+ * @property clientIdValidator The validator for the client ID.
+ * @property clientSecretValidator The validator for the client secret.
+ * @property serverAddressValidator The validator for the server address.
+ */
 internal class IsOAuthLoginInputValidUseCase @Inject constructor(
     @ValidatorClientId private val clientIdValidator: Validator<String>,
     @ValidatorClientSecret private val clientSecretValidator: Validator<String>,
     @ValidatorServerAddress private val serverAddressValidator: Validator<String>
 ) {
 
+    /**
+     * Validates the provided OAuth login input.
+     *
+     * @param clientId The client ID to validate.
+     * @param clientSecret The client secret to validate.
+     * @param serverAddress The server address to validate.
+     * @return `true` if the input is valid, `false` otherwise.
+     */
     operator fun invoke(
         clientId: String,
         clientSecret: String,

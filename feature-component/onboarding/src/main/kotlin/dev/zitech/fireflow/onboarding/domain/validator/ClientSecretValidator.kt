@@ -20,8 +20,17 @@ package dev.zitech.fireflow.onboarding.domain.validator
 import dev.zitech.fireflow.common.presentation.validator.Validator
 import javax.inject.Inject
 
+/**
+ * Validator for validating the client secret.
+ */
 internal class ClientSecretValidator @Inject constructor() : Validator<String> {
 
+    /**
+     * Validates the client secret.
+     *
+     * @param input The client secret to validate.
+     * @return `true` if the client secret is valid, `false` otherwise.
+     */
     override fun invoke(input: String): Boolean =
         input.isNotBlank() && input.isNotEmpty()
 }

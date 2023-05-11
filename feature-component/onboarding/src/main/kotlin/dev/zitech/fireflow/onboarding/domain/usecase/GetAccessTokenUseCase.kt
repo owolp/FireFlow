@@ -22,10 +22,23 @@ import dev.zitech.fireflow.common.domain.repository.authentication.TokenReposito
 import dev.zitech.fireflow.core.result.OperationResult
 import javax.inject.Inject
 
-class GetAccessTokenUseCase @Inject constructor(
+/**
+ * Use case for retrieving an access token.
+ *
+ * @property tokenRepository The repository for accessing token-related data.
+ */
+internal class GetAccessTokenUseCase @Inject constructor(
     private val tokenRepository: TokenRepository
 ) {
 
+    /**
+     * Retrieves an access token based on the provided parameters.
+     *
+     * @param clientId The client ID for authentication.
+     * @param clientSecret The client secret for authentication.
+     * @param code The authentication code.
+     * @return An [OperationResult] containing the result of the operation.
+     */
     suspend operator fun invoke(
         clientId: String,
         clientSecret: String,
