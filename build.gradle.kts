@@ -29,6 +29,7 @@ plugins.apply(BuildPlugins.KTLINT)
 
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
+    alias(libs.plugins.dokka)
     alias(libs.plugins.kover)
 }
 
@@ -68,6 +69,7 @@ allprojects {
 
 subprojects {
     project.plugins.applyConfig(project)
+    apply(plugin = "org.jetbrains.dokka")
 }
 
 val clean by tasks.creating(Delete::class) {
