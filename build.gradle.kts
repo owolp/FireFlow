@@ -73,6 +73,10 @@ subprojects {
     apply(plugin = "org.jetbrains.kotlinx.kover")
 }
 
+tasks.dokkaHtmlMultiModule {
+    outputDirectory.set(file("${project.rootDir}/reports/dokka"))
+}
+
 val clean by tasks.creating(Delete::class) {
     delete(rootProject.buildDir)
 }
