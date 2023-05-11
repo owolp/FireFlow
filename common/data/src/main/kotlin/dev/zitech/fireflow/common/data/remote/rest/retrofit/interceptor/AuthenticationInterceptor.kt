@@ -30,7 +30,8 @@ import okhttp3.Response
 /**
  * [Interceptor] implementation responsible for adding the authentication header to outgoing requests.
  *
- * @property getCurrentUserAccountAccessTokenUseCase The use case for retrieving the access token of the current user account.
+ * @property getCurrentUserAccountAccessTokenUseCase The use case for retrieving the access token of the current user
+ * account.
  */
 internal class AuthenticationInterceptor @Inject constructor(
     private val getCurrentUserAccountAccessTokenUseCase: GetCurrentUserAccountAccessTokenUseCase

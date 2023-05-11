@@ -69,7 +69,8 @@ internal interface PreferencesDataSource {
      *
      * @param key The key of the boolean value.
      * @param defaultValue The default value to return if the key is not found.
-     * @return A flow that emits the boolean value associated with the key, or the default value if the key is not found.
+     * @return A flow that emits the boolean value associated with the key, or the default value if the key is not found
+     * .
      */
     fun getBoolean(key: String, defaultValue: Boolean): Flow<Boolean>
 
@@ -87,7 +88,8 @@ internal interface PreferencesDataSource {
      *
      * @param key The key of the integer value.
      * @param defaultValue The default value to return if the key is not found.
-     * @return A flow that emits the integer value associated with the key, or the default value if the key is not found.
+     * @return A flow that emits the integer value associated with the key, or the default value if the key is not found
+     * .
      */
     fun getInt(key: String, defaultValue: Int): Flow<Int>
 

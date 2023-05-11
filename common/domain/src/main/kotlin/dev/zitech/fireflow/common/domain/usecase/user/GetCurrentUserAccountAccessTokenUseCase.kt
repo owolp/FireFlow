@@ -34,7 +34,8 @@ class GetCurrentUserAccountAccessTokenUseCase @Inject constructor(
     /**
      * Invokes the use case to retrieve the access token of the current user account.
      *
-     * @return The access token of the current user account, or null if an error occurred or the access token is unavailable.
+     * @return The access token of the current user account, or null if an error occurred or the access token is
+     * unavailable.
      */
     suspend operator fun invoke(): String? =
         when (val result = userAccountRepository.getCurrentUserAccount().first()) {

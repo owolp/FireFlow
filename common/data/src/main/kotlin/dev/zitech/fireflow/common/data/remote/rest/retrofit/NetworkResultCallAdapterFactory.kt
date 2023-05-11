@@ -44,6 +44,7 @@ internal class NetworkResultCallAdapterFactory : CallAdapter.Factory() {
      * @param retrofit The Retrofit instance.
      * @return A [CallAdapter] for the specified return type, or null if it cannot be created.
      */
+    @Suppress("ReturnCount")
     override fun get(
         returnType: Type,
         annotations: Array<out Annotation>,

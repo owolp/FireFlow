@@ -33,7 +33,7 @@ import javax.inject.Inject
  */
 internal class DatabaseFactory @Inject constructor(
     private val context: Context,
-    private val securedPreferencesDataSource: PreferencesDataSource,
+    @Suppress("UnusedPrivateMember") private val securedPreferencesDataSource: PreferencesDataSource,
     private val singleRunner: SingleRunner
 ) {
 

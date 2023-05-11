@@ -26,7 +26,8 @@ import javax.inject.Inject
  * Use case for setting the value of the crash reporter collection setting.
  *
  * @property crashRepository The repository for managing crash reporting settings.
- * @property getCrashReporterCollectionValueUseCase The use case for retrieving the value of the crash reporter collection setting.
+ * @property getCrashReporterCollectionValueUseCase The use case for retrieving the value of the crash reporter
+ * collection setting.
  * @property getUserLoggedStateUseCase The use case for retrieving the logged-in state of the user.
  */
 class SetCrashReporterCollectionUseCase @Inject constructor(
@@ -37,7 +38,8 @@ class SetCrashReporterCollectionUseCase @Inject constructor(
     /**
      * Invokes the use case to set the value of the crash reporter collection setting.
      *
-     * @param enabled The new value of the crash reporter collection setting. If null, the value will be determined based on the user's logged-in state.
+     * @param enabled The new value of the crash reporter collection setting. If null, the value will be determined
+     * based on the user's logged-in state.
      */
     suspend operator fun invoke(enabled: Boolean? = null) =
         (

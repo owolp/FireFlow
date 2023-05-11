@@ -51,10 +51,11 @@ class ScreenDestinationProvider @Inject constructor(
     /**
      * Provides a flow of [DeepLinkScreenDestination] representing the screen destination for deep linking.
      *
-     * This flow emits screen destinations based on the current user account state. It sends [DeepLinkScreenDestination.Current]
-     * if the current user account is available, [DeepLinkScreenDestination.Accounts] if there are other user accounts
-     * available, [DeepLinkScreenDestination.Welcome] if there are no user accounts available, and [DeepLinkScreenDestination.Error]
-     * if there is an error retrieving the user account.
+     * This flow emits screen destinations based on the current user account state. It sends
+     * [DeepLinkScreenDestination.Current] if the current user account is available,
+     * [DeepLinkScreenDestination.Accounts] if there are other user accounts available,
+     * [DeepLinkScreenDestination.Welcome] if there are no user accounts available, and
+     * [DeepLinkScreenDestination.Error] if there is an error retrieving the user account.
      *
      * @return A flow of [DeepLinkScreenDestination] representing the screen destination.
      */

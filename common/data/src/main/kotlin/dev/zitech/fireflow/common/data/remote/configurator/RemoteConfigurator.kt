@@ -58,7 +58,8 @@ internal interface RemoteConfigurator {
     fun getString(key: String): OperationResult<String>
 
     /**
-     * Initializes the remote configurator and provides a [Flow] of [OperationResult] representing the initialization status.
+     * Initializes the remote configurator and provides a [Flow] of [OperationResult] representing the initialization
+     * status.
      *
      * @return A [Flow] of [OperationResult] indicating the initialization status.
      */

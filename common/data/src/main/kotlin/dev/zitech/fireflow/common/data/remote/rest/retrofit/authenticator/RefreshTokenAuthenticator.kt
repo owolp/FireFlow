@@ -36,8 +36,10 @@ import okhttp3.Route
 /**
  * [Authenticator] implementation responsible for handling authentication challenges and refreshing access tokens.
  *
- * @property getCurrentUserAccountUseCase Lazy injection of [GetCurrentUserAccountUseCase] for retrieving the current user account.
- * @property getRefreshedTokenUseCase Lazy injection of [GetRefreshedTokenUseCase] for obtaining a refreshed access token.
+ * @property getCurrentUserAccountUseCase Lazy injection of [GetCurrentUserAccountUseCase] for retrieving the current
+ * user account.
+ * @property getRefreshedTokenUseCase Lazy injection of [GetRefreshedTokenUseCase] for obtaining a refreshed access
+ * token.
  */
 internal class RefreshTokenAuthenticator @Inject constructor(
     private val getCurrentUserAccountUseCase: dagger.Lazy<GetCurrentUserAccountUseCase>,
@@ -48,7 +50,8 @@ internal class RefreshTokenAuthenticator @Inject constructor(
 
     /**
      * Authenticates the request by handling authentication challenges.
-     * If the user account is authenticated with OAuth and the response is unauthenticated, a refreshed token is obtained.
+     * If the user account is authenticated with OAuth and the response is unauthenticated, a refreshed token is
+     * obtained.
      *
      * @param route The route being accessed.
      * @param response The response received.

@@ -28,7 +28,7 @@ import okhttp3.Interceptor
  * @param authenticationInterceptor The interceptor for authentication purposes.
  */
 internal class InterceptorFactory @Inject constructor(
-    context: Context,
+    @Suppress("UnusedPrivateMember") context: Context,
     private val authenticationInterceptor: Interceptor
 ) {
 
