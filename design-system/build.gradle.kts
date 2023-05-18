@@ -27,6 +27,7 @@ plugins {
 android {
     namespace = "dev.zitech.fireflow.ds"
 
+    @Suppress("UnstableApiUsage")
     testFixtures {
         enable = true
     }

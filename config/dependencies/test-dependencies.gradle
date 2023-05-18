@@ -20,6 +20,5 @@ dependencies {
     testImplementation libs.google.truth
     testImplementation libs.mockk.mockk
     testImplementation libs.jetbrains.kotlin.coroutines.test
-    testImplementation libs.junit.jupiter.api
-    testRuntimeOnly libs.junit.jupiter.engine
+    testImplementation libs.junit.junit
 }

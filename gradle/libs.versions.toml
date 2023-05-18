@@ -8,7 +8,6 @@ composeCompiler = "1.4.7"
 coroutines = "1.7.1"
 dagger = "2.46.1"
 flipper = "0.190.0"
-junit = "5.9.3"
 jvmTarget = "11"
 lifecycle = "2.6.1"
 kotlin = "1.8.21"
@@ -74,16 +73,12 @@ huawei-agconnect-core = { module = "com.huawei.agconnect:agconnect-core", versio
 huawei-agconnect-crash = { module = "com.huawei.agconnect:agconnect-crash", version.ref = "agconnect" }
 huawei-agconnect-remoteconfig = { module = "com.huawei.agconnect:agconnect-remoteconfig", version.ref = "agconnect" }
 huawei-hms-hianalytics = "com.huawei.hms:hianalytics:6.10.0.300"
-mannodermaus-gradle-plugins-android-junit5 = "de.mannodermaus.gradle.plugins:android-junit5:1.9.3.0"
-mannodermaus-junit5-android-test-core = { module = "de.mannodermaus.junit5:android-test-core", version.ref = "androidJunit" }
-mannodermaus-junit5-android-test-runner = { module = "de.mannodermaus.junit5:android-test-runner", version.ref = "androidJunit" }
 jakewharton-timber = "com.jakewharton.timber:timber:5.0.1"
 jakewharton-process-phoenix = "com.jakewharton:process-phoenix:2.1.2"
 jetbrains-kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 jetbrains-kotlin-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 jetbrains-kotlin-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
-junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
-junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
+junit-junit = "junit:junit:4.13.2"
 mockk-mockk = "io.mockk:mockk:1.13.5"
 squareup-moshi-moshi = { module = "com.squareup.moshi:moshi", version.ref = "moshi" }
 squareup-moshi-kotlin-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", version.ref = "moshi" }
