@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.fireflow.common.domain.source.preferences
+package dev.zitech.fireflow.common.data.source.preferences
 
 import kotlinx.coroutines.flow.Flow
 

@@ -17,8 +17,8 @@
 
 package dev.zitech.fireflow.common.data.source.featureflag
 
+import dev.zitech.fireflow.common.data.source.preferences.PreferencesDataSource
 import dev.zitech.fireflow.common.domain.model.featureflag.Feature
-import dev.zitech.fireflow.common.domain.source.preferences.PreferencesDataSource
 import javax.inject.Inject
 import kotlinx.coroutines.flow.first
 

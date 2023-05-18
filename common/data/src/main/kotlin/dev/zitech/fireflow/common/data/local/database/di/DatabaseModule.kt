@@ -27,7 +27,7 @@ import dev.zitech.fireflow.common.data.local.database.FireFlowDatabase
 import dev.zitech.fireflow.common.data.local.database.dao.UserAccountDao
 import dev.zitech.fireflow.common.data.local.database.factory.DatabaseFactory
 import dev.zitech.fireflow.common.data.local.database.factory.DatabaseTitle
-import dev.zitech.fireflow.common.domain.source.preferences.PreferencesDataSource
+import dev.zitech.fireflow.common.data.source.preferences.PreferencesDataSource
 import dev.zitech.fireflow.core.concurrency.SingleRunner
 import javax.inject.Singleton
 import kotlinx.coroutines.runBlocking

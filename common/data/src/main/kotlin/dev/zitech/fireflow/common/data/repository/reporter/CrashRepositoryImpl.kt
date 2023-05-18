@@ -18,9 +18,9 @@
 package dev.zitech.fireflow.common.data.repository.reporter
 
 import dev.zitech.fireflow.common.data.reporter.crash.CrashReporter
+import dev.zitech.fireflow.common.data.source.preferences.PreferencesDataSource
 import dev.zitech.fireflow.common.domain.model.preferences.BooleanPreference
 import dev.zitech.fireflow.common.domain.repository.reporter.CrashRepository
-import dev.zitech.fireflow.common.domain.source.preferences.PreferencesDataSource
 import dev.zitech.fireflow.core.applicationconfig.AppConfigProvider
 import dev.zitech.fireflow.core.applicationconfig.BuildFlavor
 import dev.zitech.fireflow.core.applicationconfig.BuildMode
