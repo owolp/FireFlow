@@ -15,24 +15,20 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-apply(from = "$rootDir/config/dependencies/di-dependencies.gradle")
-apply(from = "$rootDir/config/dependencies/kotlin-dependencies.gradle")
-apply(from = "$rootDir/config/dependencies/test-dependencies.gradle")
+package dev.zitech.fireflow.common.domain.model.preferences
 
-@Suppress("DSL_SCOPE_VIOLATION")
-plugins {
-    id(BuildPlugins.KOTLIN_ANDROID)
-    id(BuildPlugins.LIBRARY)
-    kotlin(BuildPlugins.KAPT)
-    alias(libs.plugins.kover)
-}
+import com.google.common.truth.Truth.assertThat
+import org.junit.Test
 
-android {
-    namespace = "dev.zitech.fireflow.common.domain"
-}
+internal class IntPreferenceTest {
 
-dependencies {
-    implementation(projects.core)
+    @Test
+    fun `IntPreference properties should have correct values`() {
+        val applicationTheme: Preference<Int> = IntPreference.APPLICATION_THEME
 
-    implementation(libs.androidx.compose.runtime)
+        assertThat(applicationTheme.key).isEqualTo("application_theme")
+        assertThat(applicationTheme.title).isEqualTo("Application Theme")
+        assertThat(applicationTheme.explanation).isEqualTo("Set application theme.")
+        assertThat(applicationTheme.defaultValue).isEqualTo(0)
+    }
 }
