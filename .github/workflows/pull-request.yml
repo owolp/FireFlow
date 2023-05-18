@@ -6,6 +6,14 @@ on:
       - '*'
 
 jobs:
+  dokka:
+    name: dokka
+    steps:
+      - name: Upload Dokka
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./reports/dokka
   lint:
     name: Lint
     runs-on: ubuntu-latest
