@@ -20,7 +20,7 @@ package dev.zitech.fireflow.common.data.local.database.factory
 import android.content.Context
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import dev.zitech.fireflow.common.data.source.preferences.PreferencesDataSource
+import dev.zitech.fireflow.common.domain.source.preferences.PreferencesDataSource
 import dev.zitech.fireflow.core.concurrency.SingleRunner
 import javax.inject.Inject
 

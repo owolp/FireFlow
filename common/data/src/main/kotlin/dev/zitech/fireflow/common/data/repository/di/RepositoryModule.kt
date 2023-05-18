@@ -43,7 +43,6 @@ import dev.zitech.fireflow.common.data.source.di.annotation.ProdFeatureFlagSourc
 import dev.zitech.fireflow.common.data.source.di.annotation.RemoteFeatureFlagSource as RemoteFeatureFlagSourceAnnotation
 import dev.zitech.fireflow.common.data.source.di.annotation.StandardPreferencesDataSource
 import dev.zitech.fireflow.common.data.source.featureflag.FeatureFlagSource
-import dev.zitech.fireflow.common.data.source.preferences.PreferencesDataSource
 import dev.zitech.fireflow.common.data.source.user.UserAccountSource
 import dev.zitech.fireflow.common.domain.mapper.application.ApplicationThemeToIntMapper
 import dev.zitech.fireflow.common.domain.mapper.application.IntToApplicationThemeMapper
@@ -57,6 +56,7 @@ import dev.zitech.fireflow.common.domain.repository.reporter.AnalyticsRepository
 import dev.zitech.fireflow.common.domain.repository.reporter.CrashRepository
 import dev.zitech.fireflow.common.domain.repository.reporter.PerformanceRepository
 import dev.zitech.fireflow.common.domain.repository.user.UserAccountRepository
+import dev.zitech.fireflow.common.domain.source.preferences.PreferencesDataSource
 import dev.zitech.fireflow.core.applicationconfig.AppConfigProvider
 import javax.inject.Singleton
 

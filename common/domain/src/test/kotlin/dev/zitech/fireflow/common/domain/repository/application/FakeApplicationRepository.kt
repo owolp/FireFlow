@@ -15,29 +15,29 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.fireflow.common.data.repository.application
+package dev.zitech.fireflow.common.domain.repository.application
 
 import dev.zitech.fireflow.common.domain.mapper.application.ApplicationThemeToIntMapper
 import dev.zitech.fireflow.common.domain.mapper.application.IntToApplicationThemeMapper
 import dev.zitech.fireflow.common.domain.model.application.ApplicationTheme
 import dev.zitech.fireflow.common.domain.model.preferences.IntPreference
-import dev.zitech.fireflow.common.domain.repository.application.ApplicationRepository
+import dev.zitech.fireflow.common.domain.source.preferences.FakePreferencesDataSource
 import dev.zitech.fireflow.common.domain.source.preferences.PreferencesDataSource
-import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-internal class ApplicationRepositoryImpl @Inject constructor(
-    private val preferencesDataSource: PreferencesDataSource,
-    private val intToApplicationThemeMapper: IntToApplicationThemeMapper,
-    private val applicationThemeToIntMapper: ApplicationThemeToIntMapper
+internal class FakeApplicationRepository(
+    private val preferencesDataSource: PreferencesDataSource = FakePreferencesDataSource(),
+    private val intToApplicationThemeMapper: IntToApplicationThemeMapper = IntToApplicationThemeMapper(),
+    private val applicationThemeToIntMapper: ApplicationThemeToIntMapper = ApplicationThemeToIntMapper()
 ) : ApplicationRepository {
 
-    override fun getApplicationTheme(): Flow<ApplicationTheme> =
-        preferencesDataSource.getInt(
+    override fun getApplicationTheme(): Flow<ApplicationTheme> {
+        return preferencesDataSource.getInt(
             IntPreference.APPLICATION_THEME.key,
             IntPreference.APPLICATION_THEME.defaultValue
         ).map(intToApplicationThemeMapper::invoke)
+    }
 
     override suspend fun setApplicationTheme(applicationTheme: ApplicationTheme) {
         preferencesDataSource.saveInt(

@@ -38,13 +38,13 @@ import dev.zitech.fireflow.common.data.source.featureflag.DevFeatureFlagSource
 import dev.zitech.fireflow.common.data.source.featureflag.FeatureFlagSource
 import dev.zitech.fireflow.common.data.source.featureflag.ProdFeatureFlagSource
 import dev.zitech.fireflow.common.data.source.featureflag.RemoteFeatureFlagSource
-import dev.zitech.fireflow.common.data.source.preferences.PreferencesDataSource
 import dev.zitech.fireflow.common.data.source.preferences.PreferencesFactory
 import dev.zitech.fireflow.common.data.source.token.OAuthRemoteSource
 import dev.zitech.fireflow.common.data.source.token.OAuthSource
 import dev.zitech.fireflow.common.data.source.user.UserAccountDatabaseSource
 import dev.zitech.fireflow.common.data.source.user.UserAccountSource
 import dev.zitech.fireflow.common.domain.model.preferences.PreferenceType
+import dev.zitech.fireflow.common.domain.source.preferences.PreferencesDataSource
 import dev.zitech.fireflow.core.dispatcher.AppDispatchers
 import javax.inject.Singleton
 

@@ -15,14 +15,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.fireflow.common.data.source.preferences
+package dev.zitech.fireflow.common.domain.source.preferences
 
 import kotlinx.coroutines.flow.Flow
 
 /**
  * Interface for accessing and modifying key-value pairs stored in preferences.
  */
-internal interface PreferencesDataSource {
+interface PreferencesDataSource {
 
     /**
      * Checks if the preferences contain a boolean value associated with the specified key.
