@@ -24,16 +24,12 @@ import dev.zitech.fireflow.common.domain.mapper.application.IntToApplicationThem
 import dev.zitech.fireflow.common.domain.model.application.ApplicationTheme
 import dev.zitech.fireflow.common.domain.model.preferences.IntPreference
 import dev.zitech.fireflow.common.domain.repository.application.ApplicationRepository
-import dev.zitech.fireflow.core.dispatcher.AppDispatchers
 import dev.zitech.fireflow.core.result.OperationResult
 import javax.inject.Inject
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.withContext
 
 internal class ApplicationRepositoryImpl @Inject constructor(
-    private val appDispatchers: AppDispatchers,
     private val applicationThemeToIntMapper: ApplicationThemeToIntMapper,
     private val developmentPreferencesDataSource: PreferencesDataSource,
     private val fireFlowDatabase: FireFlowDatabase,
@@ -42,21 +38,13 @@ internal class ApplicationRepositoryImpl @Inject constructor(
     private val standardPreferencesDataSource: PreferencesDataSource
 ) : ApplicationRepository {
 
-    private companion object {
-        const val CLEAR_DELAY_TIME = 5000L
-    }
-
-    override suspend fun clearApplicationStorage(): OperationResult<Unit> = withContext(appDispatchers.io) {
+    override suspend fun clearApplicationStorage(): OperationResult<Unit> {
         standardPreferencesDataSource.removeAll()
         securedPreferencesDataSource.removeAll()
         developmentPreferencesDataSource.removeAll()
         fireFlowDatabase.clearAllTables()
 
-        // https://stackoverflow.com/questions/44244508/room-persistance-library-delete-all#comment89515848_49545016
-        // Adding a delay since clearAllTables() is asynchronous and there is no way to tell when it completes
-        delay(CLEAR_DELAY_TIME)
-
-        return@withContext OperationResult.Success(Unit)
+        return OperationResult.Success(Unit)
     }
 
     override fun getApplicationTheme(): Flow<ApplicationTheme> =

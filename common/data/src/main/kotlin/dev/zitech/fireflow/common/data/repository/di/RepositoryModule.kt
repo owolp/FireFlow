@@ -61,7 +61,6 @@ import dev.zitech.fireflow.common.domain.repository.reporter.CrashRepository
 import dev.zitech.fireflow.common.domain.repository.reporter.PerformanceRepository
 import dev.zitech.fireflow.common.domain.repository.user.UserAccountRepository
 import dev.zitech.fireflow.core.applicationconfig.AppConfigProvider
-import dev.zitech.fireflow.core.dispatcher.AppDispatchers
 import javax.inject.Singleton
 
 internal interface RepositoryModule {
@@ -108,7 +107,6 @@ internal interface RepositoryModule {
         @Singleton
         @Provides
         fun applicationRepository(
-            appDispatchers: AppDispatchers,
             applicationThemeToIntMapper: ApplicationThemeToIntMapper,
             @DevelopmentPreferencesDataSource developmentPreferencesDataSource: PreferencesDataSource,
             fireFlowDatabase: FireFlowDatabase,
@@ -116,7 +114,6 @@ internal interface RepositoryModule {
             @StandardPreferencesDataSource standardPreferencesDataSource: PreferencesDataSource,
             @SecuredPreferencesDataSource securedPreferencesDataSource: PreferencesDataSource
         ): ApplicationRepository = ApplicationRepositoryImpl(
-            appDispatchers,
             applicationThemeToIntMapper,
             developmentPreferencesDataSource,
             fireFlowDatabase,
