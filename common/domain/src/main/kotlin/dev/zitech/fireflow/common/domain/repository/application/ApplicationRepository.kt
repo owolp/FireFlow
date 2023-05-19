@@ -18,12 +18,21 @@
 package dev.zitech.fireflow.common.domain.repository.application
 
 import dev.zitech.fireflow.common.domain.model.application.ApplicationTheme
+import dev.zitech.fireflow.core.result.OperationResult
 import kotlinx.coroutines.flow.Flow
 
 /**
  * Repository interface for accessing and modifying application-related data.
  */
 interface ApplicationRepository {
+
+    /**
+     * Clears the application storage by removing all stored data and resetting databases.
+     *
+     * @return An [OperationResult] representing the result of the operation,
+     *         containing [Unit] on success or an error on failure.
+     */
+    suspend fun clearApplicationStorage(): OperationResult<Unit>
 
     /**
      * Retrieves the current application theme as a flow.

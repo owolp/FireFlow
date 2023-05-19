@@ -17,30 +17,56 @@
 
 package dev.zitech.fireflow.common.data.repository.application
 
+import dev.zitech.fireflow.common.data.local.database.FireFlowDatabase
 import dev.zitech.fireflow.common.data.source.preferences.PreferencesDataSource
 import dev.zitech.fireflow.common.domain.mapper.application.ApplicationThemeToIntMapper
 import dev.zitech.fireflow.common.domain.mapper.application.IntToApplicationThemeMapper
 import dev.zitech.fireflow.common.domain.model.application.ApplicationTheme
 import dev.zitech.fireflow.common.domain.model.preferences.IntPreference
 import dev.zitech.fireflow.common.domain.repository.application.ApplicationRepository
+import dev.zitech.fireflow.core.dispatcher.AppDispatchers
+import dev.zitech.fireflow.core.result.OperationResult
 import javax.inject.Inject
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 
 internal class ApplicationRepositoryImpl @Inject constructor(
-    private val preferencesDataSource: PreferencesDataSource,
+    private val appDispatchers: AppDispatchers,
+    private val applicationThemeToIntMapper: ApplicationThemeToIntMapper,
+    private val developmentPreferencesDataSource: PreferencesDataSource,
+    private val fireFlowDatabase: FireFlowDatabase,
     private val intToApplicationThemeMapper: IntToApplicationThemeMapper,
-    private val applicationThemeToIntMapper: ApplicationThemeToIntMapper
+    private val securedPreferencesDataSource: PreferencesDataSource,
+    private val standardPreferencesDataSource: PreferencesDataSource
 ) : ApplicationRepository {
 
+    private companion object {
+        const val CLEAR_DELAY_TIME = 5000L
+    }
+
+    override suspend fun clearApplicationStorage(): OperationResult<Unit> = withContext(appDispatchers.io) {
+        standardPreferencesDataSource.removeAll()
+        securedPreferencesDataSource.removeAll()
+        developmentPreferencesDataSource.removeAll()
+        fireFlowDatabase.clearAllTables()
+
+        // https://stackoverflow.com/questions/44244508/room-persistance-library-delete-all#comment89515848_49545016
+        // Adding a delay since clearAllTables() is asynchronous and there is no way to tell when it completes
+        delay(CLEAR_DELAY_TIME)
+
+        return@withContext OperationResult.Success(Unit)
+    }
+
     override fun getApplicationTheme(): Flow<ApplicationTheme> =
-        preferencesDataSource.getInt(
+        standardPreferencesDataSource.getInt(
             IntPreference.APPLICATION_THEME.key,
             IntPreference.APPLICATION_THEME.defaultValue
         ).map(intToApplicationThemeMapper::invoke)
 
     override suspend fun setApplicationTheme(applicationTheme: ApplicationTheme) {
-        preferencesDataSource.saveInt(
+        standardPreferencesDataSource.saveInt(
             IntPreference.APPLICATION_THEME.key,
             applicationThemeToIntMapper(applicationTheme)
         )
