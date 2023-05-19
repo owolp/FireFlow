@@ -22,6 +22,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import dev.zitech.fireflow.common.data.local.database.FireFlowDatabase
 import dev.zitech.fireflow.common.data.memory.cache.InMemoryCache
 import dev.zitech.fireflow.common.data.reporter.analytics.AnalyticsReporter
 import dev.zitech.fireflow.common.data.reporter.crash.CrashReporter
@@ -39,8 +40,10 @@ import dev.zitech.fireflow.common.data.repository.user.NetworkDetails
 import dev.zitech.fireflow.common.data.repository.user.NetworkDetailsInMemoryCache
 import dev.zitech.fireflow.common.data.repository.user.UserAccountRepositoryImpl
 import dev.zitech.fireflow.common.data.source.di.annotation.DevFeatureFlagSource as DevFeatureFlagSourceAnnotation
+import dev.zitech.fireflow.common.data.source.di.annotation.DevelopmentPreferencesDataSource
 import dev.zitech.fireflow.common.data.source.di.annotation.ProdFeatureFlagSource as ProdFeatureFlagSourceAnnotation
 import dev.zitech.fireflow.common.data.source.di.annotation.RemoteFeatureFlagSource as RemoteFeatureFlagSourceAnnotation
+import dev.zitech.fireflow.common.data.source.di.annotation.SecuredPreferencesDataSource
 import dev.zitech.fireflow.common.data.source.di.annotation.StandardPreferencesDataSource
 import dev.zitech.fireflow.common.data.source.featureflag.FeatureFlagSource
 import dev.zitech.fireflow.common.data.source.preferences.PreferencesDataSource
@@ -104,13 +107,19 @@ internal interface RepositoryModule {
         @Singleton
         @Provides
         fun applicationRepository(
-            @StandardPreferencesDataSource preferencesDataSource: PreferencesDataSource,
+            applicationThemeToIntMapper: ApplicationThemeToIntMapper,
+            @DevelopmentPreferencesDataSource developmentPreferencesDataSource: PreferencesDataSource,
+            fireFlowDatabase: FireFlowDatabase,
             intToApplicationThemeMapper: IntToApplicationThemeMapper,
-            applicationThemeToIntMapper: ApplicationThemeToIntMapper
+            @StandardPreferencesDataSource standardPreferencesDataSource: PreferencesDataSource,
+            @SecuredPreferencesDataSource securedPreferencesDataSource: PreferencesDataSource
         ): ApplicationRepository = ApplicationRepositoryImpl(
-            preferencesDataSource,
+            applicationThemeToIntMapper,
+            developmentPreferencesDataSource,
+            fireFlowDatabase,
             intToApplicationThemeMapper,
-            applicationThemeToIntMapper
+            standardPreferencesDataSource,
+            securedPreferencesDataSource
         )
 
         @Singleton

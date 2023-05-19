@@ -36,6 +36,7 @@ import dev.zitech.fireflow.core.result.OperationResult.Failure
 import dev.zitech.fireflow.core.result.OperationResult.Success
 import dev.zitech.fireflow.core.result.onFailure
 import dev.zitech.fireflow.settings.domain.usecase.LogOutCurrentUserUseCase
+import dev.zitech.fireflow.settings.domain.usecase.application.CleanApplicationUseCase
 import dev.zitech.fireflow.settings.presentation.settings.viewmodel.collection.AppearanceCollectionStates
 import dev.zitech.fireflow.settings.presentation.settings.viewmodel.collection.DataChoicesCollectionStates
 import javax.inject.Inject
@@ -49,6 +50,7 @@ internal class SettingsViewModel @Inject constructor(
     screenDestinationProvider: ScreenDestinationProvider,
     private val appConfigProvider: AppConfigProvider,
     private val appearanceCollectionStates: AppearanceCollectionStates,
+    private val cleanApplicationUseCase: CleanApplicationUseCase,
     private val dataChoicesCollectionStates: DataChoicesCollectionStates,
     private val getCurrentUserAccountUseCase: GetCurrentUserAccountUseCase,
     private val logOutCurrentUserUseCase: LogOutCurrentUserUseCase
@@ -85,6 +87,8 @@ internal class SettingsViewModel @Inject constructor(
                 AnalyticsErrorHandled -> updateState { copy(analyticsError = false) }
                 ConfirmLogOutClicked -> handleConfirmLogOutClicked()
                 ConfirmLogOutDismissed -> updateState { copy(confirmLogOut = false) }
+                ConfirmDeleteAllDataClicked -> handleDeleteAllDataClicked()
+                ConfirmDeleteAllDataDismissed -> updateState { copy(confirmDeleteAll = false) }
                 is CrashReporterChecked -> handleCrashReporterChecked(intent.checked)
                 CrashReporterErrorHandled -> updateState {
                     copy(crashReporterError = false)
@@ -101,6 +105,7 @@ internal class SettingsViewModel @Inject constructor(
 
                 is LanguageSelected -> handleLanguageSelected(intent.id)
                 LogOutClicked -> updateState { copy(confirmLogOut = true) }
+                DeleteAllDataClicked -> updateState { copy(confirmDeleteAll = true) }
                 is RestartApplicationClicked -> intent.restart()
                 is ThemeSelected -> handleThemeSelected(intent.id)
                 is PerformanceChecked -> handlePerformanceChecked(intent.checked)
@@ -163,7 +168,6 @@ internal class SettingsViewModel @Inject constructor(
                     Logger.e(tag, throwable = error.throwable)
                     updateState { copy(fatalError = error) }
                 }
-
                 else -> {
                     Logger.e(tag, error.debugText)
                     updateState { copy(fatalError = error) }
@@ -179,6 +183,22 @@ internal class SettingsViewModel @Inject constructor(
             updateState { copy(crashReporter = checked) }
         } else {
             updateState { copy(crashReporterError = true) }
+        }
+    }
+
+    private suspend fun handleDeleteAllDataClicked() {
+        updateState { copy(confirmDeleteAll = false) }
+        cleanApplicationUseCase().onFailure { error ->
+            when (error) {
+                is Error.Fatal -> {
+                    Logger.e(tag, throwable = error.throwable)
+                    updateState { copy(fatalError = error) }
+                }
+                else -> {
+                    Logger.e(tag, error.debugText)
+                    updateState { copy(fatalError = error) }
+                }
+            }
         }
     }
 

@@ -29,11 +29,14 @@ internal data class ThemeSelected(val id: Int) : SettingsIntent
 internal object AnalyticsErrorHandled : SettingsIntent
 internal object ConfirmLogOutClicked : SettingsIntent
 internal object ConfirmLogOutDismissed : SettingsIntent
+internal object ConfirmDeleteAllDataClicked : SettingsIntent
+internal object ConfirmDeleteAllDataDismissed : SettingsIntent
 internal object CrashReporterErrorHandled : SettingsIntent
 internal object FatalErrorHandled : SettingsIntent
 internal object LanguageDismissed : SettingsIntent
 internal object LanguagePreferenceClicked : SettingsIntent
 internal object LogOutClicked : SettingsIntent
+internal object DeleteAllDataClicked : SettingsIntent
 internal object PerformanceErrorHandled : SettingsIntent
 internal object PersonalizedAdsErrorHandled : SettingsIntent
 internal object ThemeDismissed : SettingsIntent
