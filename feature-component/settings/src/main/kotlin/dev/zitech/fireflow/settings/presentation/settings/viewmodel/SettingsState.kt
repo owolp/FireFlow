@@ -28,6 +28,7 @@ internal data class SettingsState(
     val applicationLanguage: ApplicationLanguage = ApplicationLanguage.SYSTEM,
     val applicationTheme: ApplicationTheme = ApplicationTheme.SYSTEM,
     val confirmLogOut: Boolean = false,
+    val confirmDeleteAll: Boolean = false,
     val crashReporter: Boolean = false,
     val crashReporterError: Boolean = false,
     val fatalError: FireFlowError? = null,

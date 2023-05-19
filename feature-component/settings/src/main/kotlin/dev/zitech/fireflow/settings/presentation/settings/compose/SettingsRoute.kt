@@ -38,10 +38,13 @@ import dev.zitech.fireflow.ds.molecules.snackbar.rememberSnackbarState
 import dev.zitech.fireflow.settings.R
 import dev.zitech.fireflow.settings.presentation.settings.viewmodel.AnalyticsChecked
 import dev.zitech.fireflow.settings.presentation.settings.viewmodel.AnalyticsErrorHandled
+import dev.zitech.fireflow.settings.presentation.settings.viewmodel.ConfirmDeleteAllDataClicked
+import dev.zitech.fireflow.settings.presentation.settings.viewmodel.ConfirmDeleteAllDataDismissed
 import dev.zitech.fireflow.settings.presentation.settings.viewmodel.ConfirmLogOutClicked
 import dev.zitech.fireflow.settings.presentation.settings.viewmodel.ConfirmLogOutDismissed
 import dev.zitech.fireflow.settings.presentation.settings.viewmodel.CrashReporterChecked
 import dev.zitech.fireflow.settings.presentation.settings.viewmodel.CrashReporterErrorHandled
+import dev.zitech.fireflow.settings.presentation.settings.viewmodel.DeleteAllDataClicked
 import dev.zitech.fireflow.settings.presentation.settings.viewmodel.FatalErrorHandled
 import dev.zitech.fireflow.settings.presentation.settings.viewmodel.LanguageDismissed
 import dev.zitech.fireflow.settings.presentation.settings.viewmodel.LanguagePreferenceClicked
@@ -117,6 +120,18 @@ internal fun SettingsRoute(
             }
         )
     }
+    if (screenState.confirmDeleteAll) {
+        FireFlowDialogs.Alert(
+            title = stringResource(R.string.more_dialog_delete_data_title),
+            text = stringResource(R.string.more_dialog_delete_data_text),
+            onConfirmButtonClick = {
+                viewModel.receiveIntent(ConfirmDeleteAllDataClicked)
+            },
+            onDismissRequest = {
+                viewModel.receiveIntent(ConfirmDeleteAllDataDismissed)
+            }
+        )
+    }
     if (screenState.crashReporterError) {
         snackbarState.showMessage(
             getBottomNotifierMessage(
@@ -187,6 +202,9 @@ internal fun SettingsRoute(
                 },
                 logOutClicked = {
                     viewModel.receiveIntent(LogOutClicked)
+                },
+                deleteAllDataClicked = {
+                    viewModel.receiveIntent(DeleteAllDataClicked)
                 }
             )
         }

@@ -55,6 +55,11 @@
     <string name="cd_more_log_out_click">Излезте от профила на %s</string>
     <string name="more_dialog_log_out_title">Потвърдете излизане</string>
     <string name="more_dialog_log_out_text">Сигурни ли сте, че искате да излезете?</string>
+    <string name="more_delete_data_title">Изтрий всички данни</string>
+    <string name="more_delete_data_desciption">Изчисти съхранението на приложението</string>
+    <string name="cd_more_delete_data_click">Изчисти съхранението на приложението</string>
+    <string name="more_dialog_delete_data_title">Потвърждение за изтриване на всички данни</string>
+    <string name="more_dialog_delete_data_text">Това действие ще премахне всички съхранени информации, настройки и кеширани файлове, свързани с приложението.\n\nТова действие не може да бъде отменено.</string>
 
     <string name="action_restart">Рестартирай</string>
 </resources>

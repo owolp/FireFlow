@@ -51,6 +51,7 @@ internal fun SettingsScreen(
     modifier: Modifier = Modifier,
     analyticsChecked: (checked: Boolean) -> Unit = {},
     crashReporterChecked: (checked: Boolean) -> Unit = {},
+    deleteAllDataClicked: () -> Unit = {},
     languagePreferenceClicked: () -> Unit = {},
     logOutClicked: () -> Unit = {},
     performanceChecked: (checked: Boolean) -> Unit = {},
@@ -78,6 +79,7 @@ internal fun SettingsScreen(
             innerPadding = innerPadding,
             state = state,
             analyticsChecked = analyticsChecked,
+            deleteAllDataClicked = deleteAllDataClicked,
             personalizedAdsChecked = personalizedAdsChecked,
             performanceChecked = performanceChecked,
             crashReporterChecked = crashReporterChecked,
@@ -96,6 +98,7 @@ private fun SettingsScreenContent(
     innerPadding: PaddingValues,
     languagePreferenceClicked: () -> Unit,
     logOutClicked: () -> Unit,
+    deleteAllDataClicked: () -> Unit,
     performanceChecked: (checked: Boolean) -> Unit,
     personalizedAdsChecked: (checked: Boolean) -> Unit,
     state: SettingsState,
@@ -136,7 +139,8 @@ private fun SettingsScreenContent(
                 categoryName = stringResource(R.string.more_category),
                 preferences = getMorePreferences(
                     state = state,
-                    logOutClicked = logOutClicked
+                    logOutClicked = logOutClicked,
+                    deleteAllDataClicked = deleteAllDataClicked
                 )
             )
         }
@@ -261,7 +265,8 @@ private fun getDataChoicesPreferences(
 @Composable
 private fun getMorePreferences(
     state: SettingsState,
-    logOutClicked: () -> Unit
+    logOutClicked: () -> Unit,
+    deleteAllDataClicked: () -> Unit
 ): List<CategoryPreference> {
     val categoryPreferences = mutableListOf<CategoryPreference>()
 
@@ -280,6 +285,17 @@ private fun getMorePreferences(
             onClick = Pair(
                 stringResource(R.string.cd_more_log_out_click, state.email),
                 logOutClicked
+            )
+        )
+    )
+    categoryPreferences.add(
+        CategoryPreference.Icon(
+            title = stringResource(R.string.more_delete_data_title),
+            icon = FireFlowIcons.DeleteForever,
+            description = stringResource(R.string.more_delete_data_desciption),
+            onClick = Pair(
+                stringResource(R.string.cd_more_delete_data_click),
+                deleteAllDataClicked
             )
         )
     )
