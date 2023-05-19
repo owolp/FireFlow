@@ -70,7 +70,6 @@ allprojects {
 subprojects {
     project.plugins.applyConfig(project)
     apply(plugin = "org.jetbrains.dokka")
-    apply(plugin = "org.jetbrains.kotlinx.kover")
 }
 
 tasks.dokkaHtmlMultiModule {

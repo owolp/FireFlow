@@ -27,6 +27,7 @@ plugins {
     id(BuildPlugins.LIBRARY)
     id(BuildPlugins.JUNIT5)
     kotlin(BuildPlugins.KAPT)
+    alias(libs.plugins.kover)
 }
 
 android {

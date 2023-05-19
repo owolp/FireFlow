@@ -6,30 +6,6 @@ on:
       - '*'
 
 jobs:
-  dokka:
-    name: dokka
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v3
-
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 2.7
-
-      - name: Install Dependencies
-        run: gem install bundler && bundle install
-
-      - name: Run Fastlane Dokka
-        run: fastlane dokka
-
-      - name: Upload Dokka to Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./reports/dokka
-
   lint:
     name: Lint
     runs-on: ubuntu-latest
