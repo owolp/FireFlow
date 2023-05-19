@@ -94,4 +94,5 @@ squareup-retrofit2-converter-moshi = { module = "com.squareup.retrofit2:converte
 zetetic-sqlcipher = "net.zetetic:android-database-sqlcipher:4.5.4"
 
 [plugins]
+dokka = { id = "org.jetbrains.dokka", version = "1.8.10" }
 kover = { id = "org.jetbrains.kotlinx.kover", version = "0.7.0" }

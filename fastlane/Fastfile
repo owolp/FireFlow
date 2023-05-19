@@ -74,6 +74,11 @@ platform :android do
     gradle(task: "koverXmlReportDevDebug")
   end
 
+  desc "Runs Dokka"
+  lane :dokka do
+    gradle(task: "dokkaHtmlMultiModule")
+  end
+
   desc "Submit new Dev build to Firebase App Distribution"
   lane :distribute_dev do |options|
 
