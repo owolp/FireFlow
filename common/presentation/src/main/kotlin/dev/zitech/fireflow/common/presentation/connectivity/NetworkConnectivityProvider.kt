@@ -19,6 +19,12 @@ package dev.zitech.fireflow.common.presentation.connectivity
 
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * Interface for managing network connectivity state.
+ */
 interface NetworkConnectivityProvider {
+    /**
+     * Flow representing the network connectivity state.
+     */
     val networkState: Flow<NetworkState>
 }

@@ -17,19 +17,16 @@
 
 package dev.zitech.fireflow.common.presentation.di
 
-import android.content.Context
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import dev.zitech.fireflow.common.domain.usecase.user.GetCurrentUserUseCase
 import dev.zitech.fireflow.common.presentation.connectivity.NetworkConnectivityProvider
 import dev.zitech.fireflow.common.presentation.connectivity.NetworkConnectivityProviderImpl
 import dev.zitech.fireflow.core.dispatcher.AppDispatchers
 import dev.zitech.fireflow.core.logger.ErrorTree
-import dev.zitech.fireflow.core.scope.AppScopes
 import dev.zitech.presentation.logger.ErrorTreeImpl
 import javax.inject.Singleton
 
@@ -51,14 +48,10 @@ internal interface PresentationModule {
         @Singleton
         @Provides
         fun networkConnectivityProvider(
-            @ApplicationContext context: Context,
             appDispatchers: AppDispatchers,
-            appScopes: AppScopes,
             getCurrentUserUseCase: GetCurrentUserUseCase
         ): NetworkConnectivityProvider = NetworkConnectivityProviderImpl(
-            context,
             appDispatchers,
-            appScopes,
             getCurrentUserUseCase
         )
     }

@@ -33,9 +33,6 @@ import dev.zitech.fireflow.common.domain.usecase.user.UpdateCurrentUserUseCase.R
 import dev.zitech.fireflow.common.domain.usecase.user.UpdateCurrentUserUseCase.Type
 import dev.zitech.fireflow.common.domain.usecase.user.UpdateUserUseCase
 import dev.zitech.fireflow.common.presentation.architecture.MviViewModel
-import dev.zitech.fireflow.common.presentation.architecture.NetworkConnectivityViewModel
-import dev.zitech.fireflow.common.presentation.connectivity.NetworkConnectivityProvider
-import dev.zitech.fireflow.common.presentation.connectivity.NetworkState
 import dev.zitech.fireflow.core.dispatcher.AppDispatchers
 import dev.zitech.fireflow.core.error.Error
 import dev.zitech.fireflow.core.result.OperationResult
@@ -47,15 +44,11 @@ import dev.zitech.fireflow.onboarding.domain.validator.ClientIdValidator
 import dev.zitech.fireflow.onboarding.presentation.oauth.model.OAuthAuthentication
 import javax.inject.Inject
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @HiltViewModel
 internal class OAuthViewModel @Inject constructor(
-    networkConnectivityProvider: NetworkConnectivityProvider,
     private val appDispatchers: AppDispatchers,
     private val clientIdValidator: ClientIdValidator,
     private val getAccessTokenUseCase: dagger.Lazy<GetAccessTokenUseCase>,
@@ -66,19 +59,7 @@ internal class OAuthViewModel @Inject constructor(
     private val saveUserUseCase: SaveUserUseCase,
     private val updateCurrentUserUseCase: UpdateCurrentUserUseCase,
     private val updateUserUseCase: UpdateUserUseCase
-) : MviViewModel<OAuthIntent, OAuthState>(OAuthState()), NetworkConnectivityViewModel {
-
-//    override val networkState: StateFlow<NetworkState> by networkState(
-//        networkConnectivity,
-//        viewModelScope
-//    )
-
-    override val networkState: StateFlow<NetworkState> =
-        networkConnectivityProvider.networkState.stateIn(
-            initialValue = NetworkState.Unknown,
-            scope = viewModelScope,
-            started = WhileSubscribed(5000)
-        )
+) : MviViewModel<OAuthIntent, OAuthState>(OAuthState()) {
 
     override fun receiveIntent(intent: OAuthIntent) {
         viewModelScope.launch {
