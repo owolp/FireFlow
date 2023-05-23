@@ -36,6 +36,7 @@ import java.net.InetSocketAddress
 import java.net.Socket
 import java.util.Collections
 import javax.inject.Inject
+import kotlinx.coroutines.channels.ProducerScope
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -45,9 +46,9 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOn
 
 internal class NetworkConnectivityProviderImpl @Inject constructor(
-    appScopes: AppScopes,
     context: Context,
     private val appDispatchers: AppDispatchers,
+    private val appScopes: AppScopes,
     private val getCurrentUserUseCase: GetCurrentUserUseCase
 ) : NetworkConnectivityProvider {
 
@@ -58,11 +59,11 @@ internal class NetworkConnectivityProviderImpl @Inject constructor(
 
     @Suppress("BlockingMethodInNonBlockingContext")
     override val networkState: Flow<NetworkState> = callbackFlow {
-
         val activeNetworks = Collections.synchronizedSet(HashSet<Network>())
 
-        val connectivityCallback = object : NetworkCallback() {
+        checkNetworkConnectionOnCollectionStart()
 
+        val connectivityCallback = object : NetworkCallback() {
             override fun onAvailable(network: Network) {
                 appScopes.singletonLaunch(appDispatchers.io) {
                     Logger.i(tag, "onAvailable $network")
@@ -134,6 +135,22 @@ internal class NetworkConnectivityProviderImpl @Inject constructor(
         .distinctUntilChanged()
         .flowOn(appDispatchers.io)
         .catch { exception -> Logger.e(tag, exception) }
+
+    private fun ProducerScope<NetworkState>.checkNetworkConnectionOnCollectionStart() {
+        appScopes.singletonLaunch(appDispatchers.io) {
+            val urlPortFormat = getUrlPortFormat()
+            if (urlPortFormat is UrlPortFormat.Valid) {
+                val socket = Socket()
+                val isNetworkConnectionAvailable =
+                    isNetworkConnectionAvailable(socket, urlPortFormat)
+                if (isNetworkConnectionAvailable) {
+                    trySend(NetworkState.Connected)
+                } else {
+                    trySend(NetworkState.Disconnected)
+                }
+            }
+        }
+    }
 
     private fun connectToInetSocketAddress(socket: Socket, hostname: String, port: Int) {
         with(socket) {

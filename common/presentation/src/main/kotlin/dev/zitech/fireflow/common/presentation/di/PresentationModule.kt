@@ -51,14 +51,14 @@ internal interface PresentationModule {
         @Singleton
         @Provides
         fun networkConnectivityProvider(
+            @ApplicationContext context: Context,
             appDispatchers: AppDispatchers,
             appScopes: AppScopes,
-            @ApplicationContext context: Context,
             getCurrentUserUseCase: GetCurrentUserUseCase
         ): NetworkConnectivityProvider = NetworkConnectivityProviderImpl(
-            appScopes,
             context,
             appDispatchers,
+            appScopes,
             getCurrentUserUseCase
         )
     }
