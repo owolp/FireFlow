@@ -15,28 +15,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.fireflow.common.data.local.database
+package dev.zitech.fireflow.common.presentation.architecture
 
-import androidx.room.Database
-import androidx.room.RoomDatabase
-import dev.zitech.fireflow.common.data.local.database.dao.UserDao
-import dev.zitech.fireflow.common.data.local.database.entity.UserEntity
+import dev.zitech.fireflow.common.presentation.connectivity.NetworkState
+import kotlinx.coroutines.flow.Flow
 
-/**
- * The Room database for the FireFlow application.
- */
-@Database(
-    entities = [
-        UserEntity::class
-    ],
-    version = 1
-)
-internal abstract class FireFlowDatabase : RoomDatabase() {
-
-    /**
-     * Returns the DAO (Data Access Object) for interacting with the UserEntity table.
-     *
-     * @return The UserDao.
-     */
-    abstract fun userDao(): UserDao
+interface NetworkConnectivityViewModel {
+    val networkState: Flow<NetworkState>
 }

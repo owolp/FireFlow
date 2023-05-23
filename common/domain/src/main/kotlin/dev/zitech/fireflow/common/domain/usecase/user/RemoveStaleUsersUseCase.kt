@@ -17,7 +17,7 @@
 
 package dev.zitech.fireflow.common.domain.usecase.user
 
-import dev.zitech.fireflow.common.domain.repository.user.UserAccountRepository
+import dev.zitech.fireflow.common.domain.repository.user.UserRepository
 import dev.zitech.fireflow.core.error.Error
 import dev.zitech.fireflow.core.result.OperationResult
 import dev.zitech.fireflow.core.result.OperationResult.Failure
@@ -27,16 +27,16 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
 /**
- * Use case for removing stale user accounts.
+ * Use case for removing stale users.
  *
- * @property userAccountRepository The repository for managing user accounts.
+ * @property userRepository The repository for managing users.
  */
-class RemoveStaleUserAccountsUseCase @Inject constructor(
-    private val userAccountRepository: UserAccountRepository
+class RemoveStaleUsersUseCase @Inject constructor(
+    private val userRepository: UserRepository
 ) {
 
     /**
-     * Invokes the use case to remove stale user accounts.
+     * Invokes the use case to remove stale users.
      *
      * @return The result of the operation.
      */
@@ -44,10 +44,10 @@ class RemoveStaleUserAccountsUseCase @Inject constructor(
     suspend operator fun invoke(): OperationResult<Unit> = coroutineScope {
         try {
             val jobOAuth = async {
-                userAccountRepository.removeUserAccountsWithStateAndNoToken()
+                userRepository.removeUsersWithStateAndNoToken()
             }.await()
             val jobPat = async {
-                userAccountRepository.removeUserAccountsWithStateAndTokenAndNoClientIdAndSecret()
+                userRepository.removeUsersWithStateAndTokenAndNoClientIdAndSecret()
             }.await()
 
             if (jobOAuth is Success && jobPat is Success) {

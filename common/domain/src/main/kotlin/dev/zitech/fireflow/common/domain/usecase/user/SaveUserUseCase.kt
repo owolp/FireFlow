@@ -17,42 +17,42 @@
 
 package dev.zitech.fireflow.common.domain.usecase.user
 
-import dev.zitech.fireflow.common.domain.repository.user.UserAccountRepository
+import dev.zitech.fireflow.common.domain.repository.user.UserRepository
 import dev.zitech.fireflow.core.result.OperationResult
 import javax.inject.Inject
 
 /**
- * Use case for saving a user account.
+ * Use case for saving a user.
  *
- * @property userAccountRepository The repository for managing user accounts.
+ * @property userRepository The repository for managing users.
  */
-class SaveUserAccountUseCase @Inject constructor(
-    private val userAccountRepository: UserAccountRepository
+class SaveUserUseCase @Inject constructor(
+    private val userRepository: UserRepository
 ) {
     /**
-     * Invokes the use case to save a user account.
+     * Invokes the use case to save a user.
      *
-     * @param accessToken The access token of the user account.
-     * @param clientId The client ID of the user account.
-     * @param clientSecret The client secret of the user account.
-     * @param isCurrentUserAccount Flag indicating if the user account is the current user account.
-     * @param serverAddress The server address of the user account.
-     * @param state The state of the user account.
+     * @param accessToken The access token of the user.
+     * @param clientId The client ID of the user.
+     * @param clientSecret The client secret of the user.
+     * @param isCurrentUser Flag indicating if the user is the current user.
+     * @param serverAddress The server address of the user.
+     * @param state The state of the user.
      *
-     * @return The result of the operation containing the ID of the saved user account.
+     * @return The result of the operation containing the ID of the saved user.
      */
     suspend operator fun invoke(
         accessToken: String? = null,
         clientId: String? = null,
         clientSecret: String? = null,
-        isCurrentUserAccount: Boolean,
+        isCurrentUser: Boolean,
         serverAddress: String,
         state: String
     ): OperationResult<Long> =
-        userAccountRepository.saveUserAccount(
+        userRepository.saveUser(
             clientId = clientId,
             clientSecret = clientSecret,
-            isCurrentUserAccount = isCurrentUserAccount,
+            isCurrentUser = isCurrentUser,
             accessToken = accessToken,
             serverAddress = serverAddress,
             state = state

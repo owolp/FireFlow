@@ -17,25 +17,25 @@
 
 package dev.zitech.fireflow.common.domain.usecase.user
 
-import dev.zitech.fireflow.common.domain.model.user.UserAccount
-import dev.zitech.fireflow.common.domain.repository.user.UserAccountRepository
+import dev.zitech.fireflow.common.domain.model.user.User
+import dev.zitech.fireflow.common.domain.repository.user.UserRepository
 import dev.zitech.fireflow.core.result.OperationResult
 import javax.inject.Inject
 
 /**
- * Use case for retrieving a user account by its state.
+ * Use case for retrieving a user by its state.
  *
- * @property userAccountRepository The repository for managing user accounts.
+ * @property userRepository The repository for managing users.
  */
-class GetUserAccountByStateUseCase @Inject constructor(
-    private val userAccountRepository: UserAccountRepository
+class GetUserByStateUseCase @Inject constructor(
+    private val userRepository: UserRepository
 ) {
     /**
-     * Invokes the use case to retrieve a user account by its state.
+     * Invokes the use case to retrieve a user by its state.
      *
-     * @param state The state of the user account.
-     * @return An [OperationResult] with the user account corresponding to the state.
+     * @param state The state of the user.
+     * @return An [OperationResult] with the user corresponding to the state.
      */
-    suspend operator fun invoke(state: String): OperationResult<UserAccount> =
-        userAccountRepository.getUserAccountByState(state)
+    suspend operator fun invoke(state: String): OperationResult<User> =
+        userRepository.getUserByState(state)
 }

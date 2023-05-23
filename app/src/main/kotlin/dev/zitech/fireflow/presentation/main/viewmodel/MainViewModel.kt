@@ -21,7 +21,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.zitech.fireflow.common.domain.usecase.application.GetApplicationThemeValueUseCase
 import dev.zitech.fireflow.common.domain.usecase.configurator.InitializeRemoteConfiguratorUseCase
-import dev.zitech.fireflow.common.domain.usecase.user.RemoveStaleUserAccountsUseCase
+import dev.zitech.fireflow.common.domain.usecase.user.RemoveStaleUsersUseCase
 import dev.zitech.fireflow.common.presentation.architecture.MviViewModel
 import dev.zitech.fireflow.common.presentation.navigation.state.LoginCheckCompletedHandler
 import dev.zitech.fireflow.core.logger.Logger
@@ -41,7 +41,7 @@ internal class MainViewModel @Inject constructor(
     private val getApplicationThemeValueUseCase: GetApplicationThemeValueUseCase,
     private val initializeRemoteConfiguratorUseCase: InitializeRemoteConfiguratorUseCase,
     private val loginCheckHandler: LoginCheckCompletedHandler,
-    private val removeStaleUserAccountsUseCase: RemoveStaleUserAccountsUseCase
+    private val removeStaleUsersUseCase: RemoveStaleUsersUseCase
 ) : MviViewModel<MainIntent, MainState>(MainState()) {
 
     private val tag = Logger.tag(this::class.java)
@@ -66,7 +66,7 @@ internal class MainViewModel @Inject constructor(
         viewModelScope.launch {
             with(intent) {
                 if (!resumingFromOauthDeepLink()) {
-                    removeStaleUserAccountsUseCase()
+                    removeStaleUsersUseCase()
                 }
             }
             updateState { copy(databaseCleanCompleted = true) }

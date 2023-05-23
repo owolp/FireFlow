@@ -22,9 +22,9 @@
     <string name="failed_to_fetched">Неуспешно извличане на отдалечена конфигурация.</string>
     <string name="network_exception">Възникна проблем при свързването с мрежата. Моля, проверете интернет връзката си и опитайте отново.</string>
     <string name="no_browser_installed">No supported browser found. Please install a browser and try again.</string>
-    <string name="null_current_user_account">Невалиден потребителски акаунт. Това може да е предизвикано от неочаквано поведение.</string>
-    <string name="null_user_account">Невалиден потребителски акаунт. Това може да е предизвикано от неочаквано поведение.</string>
-    <string name="null_user_account_by_state">Нещо се обърка. URL за потвърждението е неправилен. Моля, проверете URL адреса и опитайте отново.</string>
+    <string name="null_current_user">Невалиден потребителски акаунт. Това може да е предизвикано от неочаквано поведение.</string>
+    <string name="null_user">Невалиден потребителски акаунт. Това може да е предизвикано от неочаквано поведение.</string>
+    <string name="null_user_by_state">Нещо се обърка. URL за потвърждението е неправилен. Моля, проверете URL адреса и опитайте отново.</string>
     <string name="os_exception">Неочаквана грешка. Моля, опитайте да рестартирате устройството си.</string>
     <string name="token_failed">Неуспешно използване на токен. Моля, проверете вашата мрежова връзка или Firefly III OAuth Authorized приложения и опитайте отново.</string>
 </resources>

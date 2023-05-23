@@ -31,7 +31,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.coroutineScope
 import dev.zitech.fireflow.common.presentation.browser.Browser
+import dev.zitech.fireflow.common.presentation.connectivity.NetworkState
 import dev.zitech.fireflow.core.error.Error
+import dev.zitech.fireflow.core.logger.Logger
 import dev.zitech.fireflow.ds.molecules.snackbar.BottomNotifierMessage
 import dev.zitech.fireflow.ds.molecules.snackbar.rememberSnackbarState
 import dev.zitech.fireflow.onboarding.R
@@ -62,6 +64,7 @@ internal fun OAuthRoute(
     viewModel: OAuthViewModel = hiltViewModel()
 ) {
     val screenState by viewModel.state.collectAsStateWithLifecycle()
+    val networkState by viewModel.networkState.collectAsStateWithLifecycle()
     val snackbarState = rememberSnackbarState()
     val context = LocalContext.current
     val coroutineScope = LocalLifecycleOwner.current.lifecycle.coroutineScope
@@ -112,6 +115,19 @@ internal fun OAuthRoute(
     if (screenState.stepCompleted) {
         navigateToNext()
         viewModel.receiveIntent(StepCompletedHandled)
+    }
+
+    if (networkState == NetworkState.Disconnected) {
+        Logger.d("NetworkConnectivityProv", "About to show snackbar")
+        LaunchedEffect(Unit) {
+            snackbarState.showMessage(
+                BottomNotifierMessage(
+                    text = "No internet message",
+                    state = BottomNotifierMessage.State.ERROR,
+                    duration = BottomNotifierMessage.Duration.LONG
+                )
+            )
+        }
     }
 
     OAuthScreen(

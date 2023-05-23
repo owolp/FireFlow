@@ -17,25 +17,25 @@
 
 package dev.zitech.fireflow.common.domain.usecase.user
 
-import dev.zitech.fireflow.common.domain.model.user.UserAccount
-import dev.zitech.fireflow.common.domain.repository.user.UserAccountRepository
+import dev.zitech.fireflow.common.domain.model.user.User
+import dev.zitech.fireflow.common.domain.repository.user.UserRepository
 import dev.zitech.fireflow.core.result.OperationResult
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 
 /**
- * Use case for retrieving the current user account.
+ * Use case for retrieving all users.
  *
- * @property userAccountRepository The repository for managing user accounts.
+ * @property userRepository The repository for managing users.
  */
-class GetCurrentUserAccountUseCase @Inject constructor(
-    private val userAccountRepository: UserAccountRepository
+class GetUsersUseCase @Inject constructor(
+    private val userRepository: UserRepository
 ) {
     /**
-     * Invokes the use case to retrieve the current user account.
+     * Invokes the use case to retrieve all users.
      *
-     * @return A flow of [OperationResult] with the current user account.
+     * @return A [Flow] emitting an [OperationResult] with the list of users.
      */
-    operator fun invoke(): Flow<OperationResult<UserAccount>> =
-        userAccountRepository.getCurrentUserAccount()
+    operator fun invoke(): Flow<OperationResult<List<User>>> =
+        userRepository.getUsers()
 }

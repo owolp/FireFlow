@@ -24,7 +24,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import dev.zitech.fireflow.common.data.local.database.FireFlowDatabase
-import dev.zitech.fireflow.common.data.local.database.dao.UserAccountDao
+import dev.zitech.fireflow.common.data.local.database.dao.UserDao
 import dev.zitech.fireflow.common.data.local.database.factory.DatabaseFactory
 import dev.zitech.fireflow.common.data.local.database.factory.DatabaseTitle
 import dev.zitech.fireflow.common.data.source.preferences.PreferencesDataSource
@@ -60,7 +60,7 @@ internal interface DatabaseModule {
 
         @Singleton
         @Provides
-        fun userAccountDao(fireFlowDatabase: FireFlowDatabase): UserAccountDao =
-            fireFlowDatabase.userAccountDao()
+        fun userDao(fireFlowDatabase: FireFlowDatabase): UserDao =
+            fireFlowDatabase.userDao()
     }
 }

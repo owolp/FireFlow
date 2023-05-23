@@ -15,28 +15,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.fireflow.common.data.local.database
+package dev.zitech.fireflow.common.presentation.connectivity
 
-import androidx.room.Database
-import androidx.room.RoomDatabase
-import dev.zitech.fireflow.common.data.local.database.dao.UserDao
-import dev.zitech.fireflow.common.data.local.database.entity.UserEntity
+import kotlin.properties.ReadOnlyProperty
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
 
-/**
- * The Room database for the FireFlow application.
- */
-@Database(
-    entities = [
-        UserEntity::class
-    ],
-    version = 1
-)
-internal abstract class FireFlowDatabase : RoomDatabase() {
-
-    /**
-     * Returns the DAO (Data Access Object) for interacting with the UserEntity table.
-     *
-     * @return The UserDao.
-     */
-    abstract fun userDao(): UserDao
-}
+fun networkState(
+    networkConnectivityProvider: NetworkConnectivityProvider,
+    coroutineScope: CoroutineScope
+): ReadOnlyProperty<Any, StateFlow<NetworkState>> =
+    ReadOnlyProperty { _, _ ->
+        networkConnectivityProvider.networkState.stateIn(
+            initialValue = NetworkState.Unknown,
+            scope = coroutineScope,
+            started = SharingStarted.WhileSubscribed(5000)
+        )
+    }

@@ -18,11 +18,12 @@
 package dev.zitech.fireflow.common.domain.usecase.token
 
 import dev.zitech.fireflow.common.domain.model.authentication.Token
+import dev.zitech.fireflow.common.domain.model.user.User
 import dev.zitech.fireflow.common.domain.model.user.UserAuthenticationType
 import dev.zitech.fireflow.common.domain.repository.authentication.TokenRepository
-import dev.zitech.fireflow.common.domain.usecase.user.GetCurrentUserAccountUseCase
-import dev.zitech.fireflow.common.domain.usecase.user.UpdateCurrentUserAccountUseCase
-import dev.zitech.fireflow.common.domain.usecase.user.UpdateCurrentUserAccountUseCase.AuthenticationType
+import dev.zitech.fireflow.common.domain.usecase.user.GetCurrentUserUseCase
+import dev.zitech.fireflow.common.domain.usecase.user.UpdateCurrentUserUseCase
+import dev.zitech.fireflow.common.domain.usecase.user.UpdateCurrentUserUseCase.AuthenticationType
 import dev.zitech.fireflow.core.error.Error
 import dev.zitech.fireflow.core.logger.Logger
 import dev.zitech.fireflow.core.result.OperationResult
@@ -34,14 +35,14 @@ import kotlinx.coroutines.flow.first
 /**
  * Use case for getting a refreshed OAuth token for the current user.
  *
- * @property getCurrentUserAccountUseCase Use case for getting the current user account.
+ * @property getCurrentUserUseCase Use case for getting the current user.
  * @property tokenRepository Repository for refreshing tokens.
- * @property updateCurrentUserAccountUseCase Use case for updating the current user account with a new token.
+ * @property updateCurrentUserUseCase Use case for updating the current user with a new token.
  */
 class GetRefreshedTokenUseCase @Inject constructor(
-    private val getCurrentUserAccountUseCase: GetCurrentUserAccountUseCase,
+    private val getCurrentUserUseCase: GetCurrentUserUseCase,
     private val tokenRepository: TokenRepository,
-    private val updateCurrentUserAccountUseCase: UpdateCurrentUserAccountUseCase
+    private val updateCurrentUserUseCase: UpdateCurrentUserUseCase
 ) {
 
     private val tag = Logger.tag(this::class.java)
@@ -52,23 +53,27 @@ class GetRefreshedTokenUseCase @Inject constructor(
      * @return A [OperationResult] object containing the refreshed token, or an error if the operation failed.
      */
     suspend operator fun invoke(): OperationResult<Token> =
-        when (val currentUserAccountResult = getCurrentUserAccountUseCase().first()) {
+        when (val currentUserResult = getCurrentUserUseCase().first()) {
             is Success -> {
-                val currentUser = currentUserAccountResult.data
-                val authenticationType = currentUser.authenticationType
-                if (authenticationType is UserAuthenticationType.OAuth) {
-                    getRefreshedToken(
-                        clientId = authenticationType.clientId,
-                        clientSecret = authenticationType.clientSecret,
-                        refreshToken = authenticationType.refreshToken.orEmpty(),
-                        oauthCode = authenticationType.oauthCode.orEmpty()
-                    )
-                } else {
-                    Failure(Error.AuthenticationProblem)
+                when (val currentUser = currentUserResult.data) {
+                    is User.Local -> Failure(Error.LocalUserTypeNotSupported)
+                    is User.Remote -> {
+                        val authenticationType = currentUser.authenticationType
+                        if (authenticationType is UserAuthenticationType.OAuth) {
+                            getRefreshedToken(
+                                clientId = authenticationType.clientId,
+                                clientSecret = authenticationType.clientSecret,
+                                refreshToken = authenticationType.refreshToken.orEmpty(),
+                                oauthCode = authenticationType.oauthCode.orEmpty()
+                            )
+                        } else {
+                            Failure(Error.AuthenticationProblem)
+                        }
+                    }
                 }
             }
 
-            is Failure -> Failure(currentUserAccountResult.error)
+            is Failure -> Failure(currentUserResult.error)
         }
 
     private suspend fun getRefreshedToken(
@@ -86,7 +91,7 @@ class GetRefreshedTokenUseCase @Inject constructor(
         is Success -> {
             val refreshedToken = refreshTokenResult.data
             when (
-                val result = updateCurrentUserAccountUseCase(
+                val result = updateCurrentUserUseCase(
                     AuthenticationType(
                         UserAuthenticationType.OAuth(
                             accessToken = refreshedToken.accessToken,
