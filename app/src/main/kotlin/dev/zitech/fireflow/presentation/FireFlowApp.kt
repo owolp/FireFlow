@@ -18,12 +18,14 @@
 package dev.zitech.fireflow.presentation
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
@@ -31,6 +33,7 @@ import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -39,6 +42,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
+import dev.zitech.fireflow.R
 import dev.zitech.fireflow.common.domain.model.application.ApplicationTheme
 import dev.zitech.fireflow.common.presentation.navigation.destination.TopLevelDestination
 import dev.zitech.fireflow.ds.atoms.background.FireFlowBackground
@@ -48,6 +52,7 @@ import dev.zitech.fireflow.ds.atoms.navigation.FireFlowNavigationBarItem.Primary
 import dev.zitech.fireflow.ds.atoms.navigation.FireFlowNavigationRail
 import dev.zitech.fireflow.ds.atoms.navigation.FireFlowNavigationRailItem.Primary
 import dev.zitech.fireflow.ds.atoms.text.FireFlowTexts
+import dev.zitech.fireflow.ds.molecules.error.FireFlowErrors
 import dev.zitech.fireflow.ds.templates.scaffold.FireFlowScaffolds
 import dev.zitech.fireflow.ds.theme.FireFlowTheme
 import dev.zitech.fireflow.presentation.navigation.FireFlowNavHost
@@ -62,6 +67,7 @@ internal fun FireFlowApp(
     windowSizeClass: WindowSizeClass,
     navController: NavHostController,
     splash: Boolean,
+    connectivity: Boolean,
     appState: FireFlowAppState = rememberFireFlowAppState(windowSizeClass, navController, splash)
 ) {
     FireFlowTheme(
@@ -70,12 +76,22 @@ internal fun FireFlowApp(
         FireFlowBackground.Primary {
             FireFlowScaffolds.Primary(
                 bottomBar = {
-                    if (appState.shouldShowBottomBar) {
-                        FireFlowBottomBar(
-                            destinations = appState.topLevelDestinations,
-                            onNavigateToDestination = appState::navigate,
-                            currentDestination = appState.currentDestination
-                        )
+                    Column(
+                        modifier = Modifier.windowInsetsPadding(NavigationBarDefaults.windowInsets)
+                    ) {
+                        if (appState.shouldShowBottomBar) {
+                            FireFlowBottomBar(
+                                destinations = appState.topLevelDestinations,
+                                onNavigateToDestination = appState::navigate,
+                                currentDestination = appState.currentDestination
+                            )
+                        }
+                        if (!connectivity) {
+                            FireFlowErrors.Primary(
+                                modifier = Modifier.fillMaxWidth(),
+                                text = stringResource(R.string.network_connection_lost)
+                            )
+                        }
                     }
                 }
             ) { padding ->

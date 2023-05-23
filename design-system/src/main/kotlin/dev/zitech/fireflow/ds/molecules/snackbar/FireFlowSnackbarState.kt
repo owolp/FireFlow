@@ -17,7 +17,6 @@
 
 package dev.zitech.fireflow.ds.molecules.snackbar
 
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
@@ -36,7 +35,6 @@ fun rememberSnackbarState(
     FireFlowSnackbarState(snackbarHostState, coroutineScope)
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Stable
 class FireFlowSnackbarState(
     val snackbarHostState: SnackbarHostState,

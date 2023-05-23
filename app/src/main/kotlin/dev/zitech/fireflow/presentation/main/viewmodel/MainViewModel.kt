@@ -23,6 +23,8 @@ import dev.zitech.fireflow.common.domain.usecase.application.GetApplicationTheme
 import dev.zitech.fireflow.common.domain.usecase.configurator.InitializeRemoteConfiguratorUseCase
 import dev.zitech.fireflow.common.domain.usecase.user.RemoveStaleUsersUseCase
 import dev.zitech.fireflow.common.presentation.architecture.MviViewModel
+import dev.zitech.fireflow.common.presentation.connectivity.NetworkConnectivityProvider
+import dev.zitech.fireflow.common.presentation.connectivity.NetworkState
 import dev.zitech.fireflow.common.presentation.navigation.state.LoginCheckCompletedHandler
 import dev.zitech.fireflow.core.logger.Logger
 import dev.zitech.fireflow.domain.usecase.ApplicationLaunchAnalyticsEvent
@@ -38,6 +40,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 internal class MainViewModel @Inject constructor(
     applicationLaunchAnalyticsEvent: ApplicationLaunchAnalyticsEvent,
+    private val connectivityProvider: NetworkConnectivityProvider,
     private val getApplicationThemeValueUseCase: GetApplicationThemeValueUseCase,
     private val initializeRemoteConfiguratorUseCase: InitializeRemoteConfiguratorUseCase,
     private val loginCheckHandler: LoginCheckCompletedHandler,
@@ -49,6 +52,19 @@ internal class MainViewModel @Inject constructor(
     init {
         applicationLaunchAnalyticsEvent()
         startMandatoryChecks()
+        observeNetworkConnectivity()
+    }
+
+    private fun observeNetworkConnectivity() {
+        connectivityProvider.networkState
+            .onEach { networkState ->
+                when (networkState) {
+                    NetworkState.Connected,
+                    NetworkState.Unknown -> updateState { copy(connectivity = true) }
+                    NetworkState.Disconnected -> updateState { copy(connectivity = false) }
+                }
+            }
+            .launchIn(viewModelScope)
     }
 
     override fun receiveIntent(intent: MainIntent) {

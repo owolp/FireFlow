@@ -21,6 +21,7 @@ import dev.zitech.fireflow.common.domain.model.application.ApplicationTheme
 import dev.zitech.fireflow.common.presentation.architecture.MviState
 
 data class MainState(
+    val connectivity: Boolean = true,
     val databaseCleanCompleted: Boolean = false,
     val mandatoryStepsCompleted: Boolean = false,
     val theme: ApplicationTheme? = null
