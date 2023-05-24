@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.dashboard.fireflow.presentation.navigation
+package dev.zitech.fireflow.dashboard.presentation.navigation
 
 import dev.zitech.fireflow.common.presentation.navigation.destination.FireFlowNavigationDestination
 

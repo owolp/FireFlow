@@ -15,12 +15,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.dashboard.fireflow.presentation.navigation
+package dev.zitech.fireflow.dashboard.presentation.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import dev.zitech.dashboard.fireflow.presentation.dashboard.compose.DashboardRoute
 import dev.zitech.fireflow.core.error.Error
+import dev.zitech.fireflow.dashboard.presentation.dashboard.compose.DashboardRoute
 
 fun NavGraphBuilder.dashboardGraph(
     navigateToAccounts: () -> Unit,
