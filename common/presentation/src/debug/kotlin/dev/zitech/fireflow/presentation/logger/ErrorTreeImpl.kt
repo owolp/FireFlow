@@ -15,23 +15,20 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.dashboard.fireflow.presentation.navigation
+package dev.zitech.fireflow.presentation.logger
 
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
-import dev.zitech.dashboard.fireflow.presentation.dashboard.compose.DashboardRoute
-import dev.zitech.fireflow.core.error.Error
+import dev.zitech.fireflow.core.logger.ErrorTree
+import javax.inject.Inject
+import timber.log.Timber
 
-fun NavGraphBuilder.dashboardGraph(
-    navigateToAccounts: () -> Unit,
-    navigateToError: (error: Error) -> Unit,
-    navigateToWelcome: () -> Unit
-) {
-    composable(route = DashboardDestination.route) {
-        DashboardRoute(
-            navigateToAccounts = navigateToAccounts,
-            navigateToError = navigateToError,
-            navigateToWelcome = navigateToWelcome
-        )
-    }
+/**
+ * Implementation of the [ErrorTree] interface that provides a Timber debug tree with customized log output.
+ */
+class ErrorTreeImpl @Inject constructor() : ErrorTree {
+
+    override operator fun invoke(): Timber.Tree =
+        object : Timber.DebugTree() {
+            override fun createStackElementTag(element: StackTraceElement) =
+                "(${element.fileName}:${element.lineNumber})#${element.methodName}"
+        }
 }

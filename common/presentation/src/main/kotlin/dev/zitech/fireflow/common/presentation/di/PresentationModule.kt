@@ -27,7 +27,7 @@ import dev.zitech.fireflow.common.presentation.connectivity.NetworkConnectivityP
 import dev.zitech.fireflow.common.presentation.connectivity.NetworkConnectivityProviderImpl
 import dev.zitech.fireflow.core.dispatcher.AppDispatchers
 import dev.zitech.fireflow.core.logger.ErrorTree
-import dev.zitech.presentation.logger.ErrorTreeImpl
+import dev.zitech.fireflow.presentation.logger.ErrorTreeImpl
 import javax.inject.Singleton
 
 internal interface PresentationModule {

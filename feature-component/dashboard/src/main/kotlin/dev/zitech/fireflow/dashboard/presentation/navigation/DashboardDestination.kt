@@ -15,20 +15,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.presentation.logger
+package dev.zitech.fireflow.dashboard.presentation.navigation
 
-import dev.zitech.fireflow.core.logger.ErrorTree
-import javax.inject.Inject
-import timber.log.Timber
+import dev.zitech.fireflow.common.presentation.navigation.destination.FireFlowNavigationDestination
 
-/**
- * Implementation of the [ErrorTree] interface that provides a Timber debug tree with customized log output.
- */
-class ErrorTreeImpl @Inject constructor() : ErrorTree {
+private const val DESTINATION = "dashboard"
 
-    override operator fun invoke(): Timber.Tree =
-        object : Timber.DebugTree() {
-            override fun createStackElementTag(element: StackTraceElement) =
-                "(${element.fileName}:${element.lineNumber})#${element.methodName}"
-        }
+object DashboardDestination : FireFlowNavigationDestination {
+    override val route: String = "dashboard_route"
+    override val destination: String = DESTINATION
 }
