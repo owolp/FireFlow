@@ -112,6 +112,7 @@ internal class NetworkConnectivityProviderImpl @Inject constructor(
      *
      * @return `true` if a network connection is available, `false` otherwise.
      */
+    @Suppress("SwallowedException")
     private fun isNetworkConnectionAvailable(
         socket: Socket,
         urlPortFormat: UrlPortFormat.Valid

@@ -34,7 +34,8 @@ interface AppScopes {
     /**
      * Launches a coroutine in the [singleton] scope.
      *
-     * @param coroutineDispatcher The dispatcher for the coroutine. If null, the default dispatcher of [singleton] scope is used.
+     * @param coroutineDispatcher The dispatcher for the coroutine. If null, the default dispatcher
+     * of [singleton] scope is used.
      * @param func The suspending function to be executed in the [singleton] scope.
      *
      * @return A [Job] object representing the launched coroutine.
@@ -58,7 +59,8 @@ internal class AppScopesImpl @Inject constructor(
     /**
      * Launches a coroutine in the [singleton] scope.
      *
-     * @param coroutineDispatcher The dispatcher for the coroutine. If null, the default dispatcher of [singleton] scope is used.
+     * @param coroutineDispatcher The dispatcher for the coroutine. If null, the default dispatcher of [singleton]
+     * scope is used.
      * @param func The suspending function to be executed in the [singleton] scope.
      *
      * @return A [Job] object representing the launched coroutine.

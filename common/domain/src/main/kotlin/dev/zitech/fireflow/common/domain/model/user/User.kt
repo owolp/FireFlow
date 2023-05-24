@@ -72,9 +72,10 @@ sealed class User(
             val regex = """^(?:https?://)?(?:www\.)?([-\w.]+)(?::(\d+))?$""".toRegex()
             val matchResult = regex.find(serverAddress)
 
+            @Suppress("TooGenericExceptionCaught", "SwallowedException")
             return matchResult?.destructured?.let { (hostname, port) ->
                 try {
-                    val parsedPort = port.toIntOrNull() ?: 80
+                    val parsedPort = port.toIntOrNull() ?: DEFAULT_URL_PORT
                     UrlPortFormat.Valid(hostname, parsedPort)
                 } catch (e: Exception) {
                     UrlPortFormat.Invalid
@@ -110,6 +111,7 @@ sealed class User(
 
     companion object {
         private const val STATE_LENGTH = 10
+        private const val DEFAULT_URL_PORT = 80
 
         /**
          * Generates a random state string.
