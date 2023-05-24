@@ -42,8 +42,8 @@ import dev.zitech.fireflow.common.data.source.preferences.PreferencesDataSource
 import dev.zitech.fireflow.common.data.source.preferences.PreferencesFactory
 import dev.zitech.fireflow.common.data.source.token.OAuthRemoteSource
 import dev.zitech.fireflow.common.data.source.token.OAuthSource
-import dev.zitech.fireflow.common.data.source.user.UserAccountDatabaseSource
-import dev.zitech.fireflow.common.data.source.user.UserAccountSource
+import dev.zitech.fireflow.common.data.source.user.UserDatabaseSource
+import dev.zitech.fireflow.common.data.source.user.UserSource
 import dev.zitech.fireflow.common.domain.model.preferences.PreferenceType
 import dev.zitech.fireflow.core.dispatcher.AppDispatchers
 import javax.inject.Singleton
@@ -88,9 +88,9 @@ internal interface SourceModule {
 
         @Singleton
         @Binds
-        fun userAccountDatabaseSource(
-            userAccountDatabaseSource: UserAccountDatabaseSource
-        ): UserAccountSource
+        fun userDatabaseSource(
+            userDatabaseSource: UserDatabaseSource
+        ): UserSource
     }
 
     @InstallIn(SingletonComponent::class)

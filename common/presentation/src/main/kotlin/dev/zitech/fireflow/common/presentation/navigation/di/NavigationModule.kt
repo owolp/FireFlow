@@ -21,8 +21,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import dev.zitech.fireflow.common.domain.usecase.user.GetCurrentUserAccountUseCase
-import dev.zitech.fireflow.common.domain.usecase.user.GetUserAccountsUseCase
+import dev.zitech.fireflow.common.domain.usecase.user.GetCurrentUserUseCase
+import dev.zitech.fireflow.common.domain.usecase.user.GetUsersUseCase
 import dev.zitech.fireflow.common.presentation.navigation.ScreenDestinationProvider
 import javax.inject.Singleton
 
@@ -35,12 +35,12 @@ internal interface NavigationModule {
         @Singleton
         @Provides
         fun screenDestinationProvider(
-            getCurrentUserAccountUseCase: GetCurrentUserAccountUseCase,
-            getUserAccountsUseCase: GetUserAccountsUseCase
+            getCurrentUserUseCase: GetCurrentUserUseCase,
+            getUsersUseCase: GetUsersUseCase
         ): ScreenDestinationProvider =
             ScreenDestinationProvider(
-                getCurrentUserAccountUseCase,
-                getUserAccountsUseCase
+                getCurrentUserUseCase,
+                getUsersUseCase
             )
     }
 }

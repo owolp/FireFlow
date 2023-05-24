@@ -17,25 +17,26 @@
 
 package dev.zitech.fireflow.common.domain.usecase.user
 
-import dev.zitech.fireflow.common.domain.model.user.UserAccount
-import dev.zitech.fireflow.common.domain.repository.user.UserAccountRepository
+import dev.zitech.fireflow.common.domain.model.user.User
+import dev.zitech.fireflow.common.domain.repository.user.UserRepository
 import dev.zitech.fireflow.core.result.OperationResult
 import javax.inject.Inject
-import kotlinx.coroutines.flow.Flow
 
 /**
- * Use case for retrieving all user accounts.
+ * Use case for updating a user.
  *
- * @property userAccountRepository The repository for managing user accounts.
+ * @property userRepository The repository for managing users.
  */
-class GetUserAccountsUseCase @Inject constructor(
-    private val userAccountRepository: UserAccountRepository
+class UpdateUserUseCase @Inject constructor(
+    private val userRepository: UserRepository
 ) {
     /**
-     * Invokes the use case to retrieve all user accounts.
+     * Invokes the use case to update the specified user.
      *
-     * @return A [Flow] emitting an [OperationResult] with the list of user accounts.
+     * @param user The user to be updated.
+     *
+     * @return The result of the operation.
      */
-    operator fun invoke(): Flow<OperationResult<List<UserAccount>>> =
-        userAccountRepository.getUserAccounts()
+    suspend operator fun invoke(user: User): OperationResult<Unit> =
+        userRepository.updateUser(user)
 }

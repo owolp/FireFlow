@@ -21,24 +21,24 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 /**
- * Represents a user account entity in the database.
+ * Represents a user entity in the database.
  *
- * @param id The unique identifier of the user account. Auto-generated if not provided.
- * @param accessToken The access token associated with the user account.
- * @param clientId The client ID associated with the user account.
- * @param clientSecret The client secret associated with the user account.
- * @param email The email address of the user account.
- * @param fireflyId The Firefly ID associated with the user account.
- * @param isCurrentUserAccount Indicates whether the user account is the current active account.
- * @param oauthCode The OAuth code associated with the user account.
- * @param refreshToken The refresh token associated with the user account.
- * @param role The role assigned to the user account.
- * @param serverAddress The server address associated with the user account.
- * @param state The state value of the user account.
- * @param type The type of the user account.
+ * @param id The unique identifier of the user. Auto-generated if not provided.
+ * @param accessToken The access token associated with the user.
+ * @param clientId The client ID associated with the user.
+ * @param clientSecret The client secret associated with the user.
+ * @param email The email address of the user.
+ * @param fireflyId The Firefly ID associated with the user.
+ * @param isCurrentUser Indicates whether the user is the current active user.
+ * @param oauthCode The OAuth code associated with the user.
+ * @param refreshToken The refresh token associated with the user.
+ * @param role The role assigned to the user.
+ * @param serverAddress The server address associated with the user.
+ * @param state The state value of the user.
+ * @param type The type of the user.
  */
-@Entity(tableName = "user_accounts")
-internal data class UserAccountEntity(
+@Entity(tableName = "users")
+internal data class UserEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long? = null,
     val accessToken: String? = null,
@@ -46,11 +46,11 @@ internal data class UserAccountEntity(
     val clientSecret: String? = null,
     val email: String? = null,
     val fireflyId: String? = null,
-    val isCurrentUserAccount: Boolean,
+    val isCurrentUser: Boolean,
     val oauthCode: String? = null,
     val refreshToken: String? = null,
     val role: String? = null,
-    val serverAddress: String,
+    val serverAddress: String? = null,
     val state: String? = null,
     val type: String? = null
 )

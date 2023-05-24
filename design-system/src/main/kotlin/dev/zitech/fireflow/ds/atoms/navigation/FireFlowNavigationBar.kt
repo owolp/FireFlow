@@ -18,9 +18,12 @@
 package dev.zitech.fireflow.ds.atoms.navigation
 
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.material3.NavigationBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 
 object FireFlowNavigationBar {
@@ -34,7 +37,18 @@ object FireFlowNavigationBar {
             modifier = modifier,
             contentColor = FireFlowNavigationColors.navigationContentColor(),
             tonalElevation = 0.dp,
-            content = content
+            content = content,
+            // Return 0 for each space, since it is already provided by the FireFlowApp Scaffold, because
+            // of the connectivity FireFlowErrors
+            windowInsets = object : WindowInsets {
+                override fun getBottom(density: Density): Int = 0
+
+                override fun getLeft(density: Density, layoutDirection: LayoutDirection): Int = 0
+
+                override fun getRight(density: Density, layoutDirection: LayoutDirection): Int = 0
+
+                override fun getTop(density: Density): Int = 0
+            }
         )
     }
 }

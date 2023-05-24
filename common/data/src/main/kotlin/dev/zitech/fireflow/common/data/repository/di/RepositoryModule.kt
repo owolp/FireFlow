@@ -38,7 +38,7 @@ import dev.zitech.fireflow.common.data.repository.reporter.PerformanceRepository
 import dev.zitech.fireflow.common.data.repository.token.TokenRepositoryImpl
 import dev.zitech.fireflow.common.data.repository.user.NetworkDetails
 import dev.zitech.fireflow.common.data.repository.user.NetworkDetailsInMemoryCache
-import dev.zitech.fireflow.common.data.repository.user.UserAccountRepositoryImpl
+import dev.zitech.fireflow.common.data.repository.user.UserRepositoryImpl
 import dev.zitech.fireflow.common.data.source.di.annotation.DevFeatureFlagSource as DevFeatureFlagSourceAnnotation
 import dev.zitech.fireflow.common.data.source.di.annotation.DevelopmentPreferencesDataSource
 import dev.zitech.fireflow.common.data.source.di.annotation.ProdFeatureFlagSource as ProdFeatureFlagSourceAnnotation
@@ -47,7 +47,7 @@ import dev.zitech.fireflow.common.data.source.di.annotation.SecuredPreferencesDa
 import dev.zitech.fireflow.common.data.source.di.annotation.StandardPreferencesDataSource
 import dev.zitech.fireflow.common.data.source.featureflag.FeatureFlagSource
 import dev.zitech.fireflow.common.data.source.preferences.PreferencesDataSource
-import dev.zitech.fireflow.common.data.source.user.UserAccountSource
+import dev.zitech.fireflow.common.data.source.user.UserSource
 import dev.zitech.fireflow.common.domain.mapper.application.ApplicationThemeToIntMapper
 import dev.zitech.fireflow.common.domain.mapper.application.IntToApplicationThemeMapper
 import dev.zitech.fireflow.common.domain.repository.application.ApplicationRepository
@@ -59,7 +59,7 @@ import dev.zitech.fireflow.common.domain.repository.profile.FireflyProfileReposi
 import dev.zitech.fireflow.common.domain.repository.reporter.AnalyticsRepository
 import dev.zitech.fireflow.common.domain.repository.reporter.CrashRepository
 import dev.zitech.fireflow.common.domain.repository.reporter.PerformanceRepository
-import dev.zitech.fireflow.common.domain.repository.user.UserAccountRepository
+import dev.zitech.fireflow.common.domain.repository.user.UserRepository
 import dev.zitech.fireflow.core.applicationconfig.AppConfigProvider
 import javax.inject.Singleton
 
@@ -174,12 +174,12 @@ internal interface RepositoryModule {
 
         @Singleton
         @Provides
-        fun userAccountRepository(
+        fun userRepository(
             networkDetailsInMemoryCache: InMemoryCache<NetworkDetails>,
-            userAccountDatabaseSource: UserAccountSource
-        ): UserAccountRepository = UserAccountRepositoryImpl(
+            userDatabaseSource: UserSource
+        ): UserRepository = UserRepositoryImpl(
             networkDetailsInMemoryCache,
-            userAccountDatabaseSource
+            userDatabaseSource
         )
     }
 }

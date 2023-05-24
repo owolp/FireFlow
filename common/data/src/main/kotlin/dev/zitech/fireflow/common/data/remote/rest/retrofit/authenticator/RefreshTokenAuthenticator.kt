@@ -19,9 +19,10 @@ package dev.zitech.fireflow.common.data.remote.rest.retrofit.authenticator
 
 import dev.zitech.fireflow.common.data.remote.rest.HEADER_AUTHORIZATION_KEY
 import dev.zitech.fireflow.common.data.remote.rest.HEADER_AUTHORIZATION_VALUE
+import dev.zitech.fireflow.common.domain.model.user.User
 import dev.zitech.fireflow.common.domain.model.user.UserAuthenticationType
 import dev.zitech.fireflow.common.domain.usecase.token.GetRefreshedTokenUseCase
-import dev.zitech.fireflow.common.domain.usecase.user.GetCurrentUserAccountUseCase
+import dev.zitech.fireflow.common.domain.usecase.user.GetCurrentUserUseCase
 import dev.zitech.fireflow.core.logger.Logger
 import dev.zitech.fireflow.core.result.OperationResult.Failure
 import dev.zitech.fireflow.core.result.OperationResult.Success
@@ -36,13 +37,12 @@ import okhttp3.Route
 /**
  * [Authenticator] implementation responsible for handling authentication challenges and refreshing access tokens.
  *
- * @property getCurrentUserAccountUseCase Lazy injection of [GetCurrentUserAccountUseCase] for retrieving the current
- * user account.
- * @property getRefreshedTokenUseCase Lazy injection of [GetRefreshedTokenUseCase] for obtaining a refreshed access
- * token.
+ * @property getCurrentUserUseCase Lazy injection of [GetCurrentUserUseCase] for retrieving the current user.
+ * @property getRefreshedTokenUseCase Lazy injection of [GetRefreshedTokenUseCase] for obtaining a refreshed
+ * access token.
  */
 internal class RefreshTokenAuthenticator @Inject constructor(
-    private val getCurrentUserAccountUseCase: dagger.Lazy<GetCurrentUserAccountUseCase>,
+    private val getCurrentUserUseCase: dagger.Lazy<GetCurrentUserUseCase>,
     private val getRefreshedTokenUseCase: dagger.Lazy<GetRefreshedTokenUseCase>
 ) : Authenticator {
 
@@ -50,8 +50,7 @@ internal class RefreshTokenAuthenticator @Inject constructor(
 
     /**
      * Authenticates the request by handling authentication challenges.
-     * If the user account is authenticated with OAuth and the response is unauthenticated, a refreshed token is
-     * obtained.
+     * If the user is authenticated with OAuth and the response is unauthenticated, a refreshed token is obtained.
      *
      * @param route The route being accessed.
      * @param response The response received.
@@ -59,14 +58,16 @@ internal class RefreshTokenAuthenticator @Inject constructor(
      */
     override fun authenticate(route: Route?, response: Response): Request? = runBlocking {
         return@runBlocking when (
-            val currentUserAccountResult = getCurrentUserAccountUseCase
-                .get().invoke().first()
+            val currentUserResult = getCurrentUserUseCase.get().invoke().first()
         ) {
-            is Success -> checkAuthenticationType(
-                currentUserAccountResult.data.authenticationType,
-                response
-            )
-
+            is Success -> {
+                when (val user = currentUserResult.data) {
+                    is User.Local -> null
+                    is User.Remote -> {
+                        checkAuthenticationType(user.authenticationType, response)
+                    }
+                }
+            }
             is Failure -> null
         }
     }
@@ -75,7 +76,7 @@ internal class RefreshTokenAuthenticator @Inject constructor(
      * Checks the authentication type and handles the response accordingly.
      * If the authentication type is OAuth and the response is unauthenticated, a refreshed token is obtained.
      *
-     * @param authenticationType The authentication type of the current user account.
+     * @param authenticationType The authentication type of the current user.
      * @param response The response received.
      * @return A new request with updated authentication headers, or null if no action is needed.
      */
@@ -86,7 +87,7 @@ internal class RefreshTokenAuthenticator @Inject constructor(
         if (response.code == UNAUTHENTICATED_CODE) {
             getRefreshedToken(response)
         } else {
-            Logger.e(tag, message = "Response code not handled=${response.code}")
+            Logger.e(tag, message = "Response code not handled: ${response.code}")
             null
         }
     } else {
@@ -120,7 +121,6 @@ internal class RefreshTokenAuthenticator @Inject constructor(
                     null
                 }
             }
-
             is Failure -> {
                 Logger.e(tag, message = refreshedTokenResult.error.debugText)
                 null

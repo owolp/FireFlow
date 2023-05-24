@@ -15,28 +15,25 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.fireflow.common.data.local.database
-
-import androidx.room.Database
-import androidx.room.RoomDatabase
-import dev.zitech.fireflow.common.data.local.database.dao.UserDao
-import dev.zitech.fireflow.common.data.local.database.entity.UserEntity
+package dev.zitech.fireflow.common.presentation.connectivity
 
 /**
- * The Room database for the FireFlow application.
+ * Sealed interface representing the state of the network connection.
  */
-@Database(
-    entities = [
-        UserEntity::class
-    ],
-    version = 1
-)
-internal abstract class FireFlowDatabase : RoomDatabase() {
+sealed interface NetworkState {
 
     /**
-     * Returns the DAO (Data Access Object) for interacting with the UserEntity table.
-     *
-     * @return The UserDao.
+     * Represents a connected network state.
      */
-    abstract fun userDao(): UserDao
+    object Connected : NetworkState
+
+    /**
+     * Represents a disconnected network state.
+     */
+    object Disconnected : NetworkState
+
+    /**
+     * Represents an unknown network state.
+     */
+    object Unknown : NetworkState
 }

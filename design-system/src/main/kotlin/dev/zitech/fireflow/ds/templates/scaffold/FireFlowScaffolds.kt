@@ -19,7 +19,6 @@ package dev.zitech.fireflow.ds.templates.scaffold
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -33,7 +32,6 @@ import dev.zitech.fireflow.ds.molecules.snackbar.FireFlowSnackbars
 import dev.zitech.fireflow.ds.molecules.snackbar.rememberSnackbarState
 import dev.zitech.fireflow.ds.theme.FireFlowTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
 object FireFlowScaffolds {
 
     @Composable

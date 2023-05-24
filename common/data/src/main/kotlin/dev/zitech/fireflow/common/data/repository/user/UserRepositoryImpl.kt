@@ -18,9 +18,9 @@
 package dev.zitech.fireflow.common.data.repository.user
 
 import dev.zitech.fireflow.common.data.memory.cache.InMemoryCache
-import dev.zitech.fireflow.common.data.source.user.UserAccountSource
-import dev.zitech.fireflow.common.domain.model.user.UserAccount
-import dev.zitech.fireflow.common.domain.repository.user.UserAccountRepository
+import dev.zitech.fireflow.common.data.source.user.UserSource
+import dev.zitech.fireflow.common.domain.model.user.User
+import dev.zitech.fireflow.common.domain.repository.user.UserRepository
 import dev.zitech.fireflow.core.error.Error
 import dev.zitech.fireflow.core.result.OperationResult
 import dev.zitech.fireflow.core.result.OperationResult.Failure
@@ -29,61 +29,67 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-internal class UserAccountRepositoryImpl @Inject constructor(
+internal class UserRepositoryImpl @Inject constructor(
     private val networkDetailsInMemoryCache: InMemoryCache<NetworkDetails>,
-    private val userAccountDatabaseSource: UserAccountSource
-) : UserAccountRepository {
+    private val userDatabaseSource: UserSource
+) : UserRepository {
 
-    override fun getCurrentUserAccount(): Flow<OperationResult<UserAccount>> =
-        userAccountDatabaseSource.getCurrentUserAccount()
-            .map { userAccountResult ->
-                when (userAccountResult) {
+    override fun getCurrentUser(): Flow<OperationResult<User>> =
+        userDatabaseSource.getCurrentUser()
+            .map { userResult ->
+                when (userResult) {
                     is Success -> {
-                        networkDetailsInMemoryCache.data = NetworkDetails(
-                            userId = userAccountResult.data.userId,
-                            serverAddress = userAccountResult.data.serverAddress
-                        )
+                        when (val user = userResult.data) {
+                            is User.Local -> {
+                                // NO_OP
+                            }
+                            is User.Remote -> {
+                                networkDetailsInMemoryCache.data = NetworkDetails(
+                                    userId = user.userId,
+                                    serverAddress = user.serverAddress
+                                )
+                            }
+                        }
                     }
-
                     is Failure -> {
                         // NO_OP
                     }
                 }
-                userAccountResult
+                userResult
             }
 
-    override suspend fun getUserAccountByState(state: String): OperationResult<UserAccount> =
-        userAccountDatabaseSource.getUserAccountByState(state)
+    override suspend fun getUserByState(state: String): OperationResult<User> =
+        userDatabaseSource.getUserByState(state)
 
-    override fun getUserAccounts(): Flow<OperationResult<List<UserAccount>>> =
-        userAccountDatabaseSource.getUserAccounts()
+    override fun getUsers(): Flow<OperationResult<List<User>>> =
+        userDatabaseSource.getUsers()
 
-    override suspend fun removeUserAccountsWithStateAndNoToken(): OperationResult<Unit> =
-        userAccountDatabaseSource.removeUserAccountsWithStateAndNoToken()
+    override suspend fun removeUsersWithStateAndNoToken(): OperationResult<Unit> =
+        userDatabaseSource.removeUsersWithStateAndNoToken()
 
-    override suspend fun removeUserAccountsWithStateAndTokenAndNoClientIdAndSecret(): OperationResult<Unit> =
-        userAccountDatabaseSource.removeUserAccountsWithStateAndTokenAndNoClientIdAndSecret()
+    override suspend fun removeUsersWithStateAndTokenAndNoClientIdAndSecret(): OperationResult<Unit> =
+        userDatabaseSource.removeUsersWithStateAndTokenAndNoClientIdAndSecret()
 
-    override suspend fun saveUserAccount(
+    override suspend fun saveUser(
         accessToken: String?,
         clientId: String?,
         clientSecret: String?,
-        isCurrentUserAccount: Boolean,
+        isCurrentUser: Boolean,
         serverAddress: String,
         state: String
     ): OperationResult<Long> {
-        val saveUserAccountResult = userAccountDatabaseSource.saveUserAccount(
+        val saveUserResult = userDatabaseSource.saveUser(
             accessToken = accessToken,
             clientId = clientId,
             clientSecret = clientSecret,
-            isCurrentUserAccount = isCurrentUserAccount,
+            isCurrentUser = isCurrentUser,
             serverAddress = serverAddress,
             state = state
         )
-        when (saveUserAccountResult) {
+        when (saveUserResult) {
             is Success -> {
                 networkDetailsInMemoryCache.data = NetworkDetails(
-                    userId = saveUserAccountResult.data,
+                    userId = saveUserResult.data,
                     serverAddress = serverAddress
                 )
             }
@@ -93,24 +99,24 @@ internal class UserAccountRepositoryImpl @Inject constructor(
             }
         }
 
-        return saveUserAccountResult
+        return saveUserResult
     }
 
-    override suspend fun updateUserAccount(userAccount: UserAccount): OperationResult<Unit> =
+    override suspend fun updateUser(user: User): OperationResult<Unit> =
         when (
-            val updateUserAccountResult = userAccountDatabaseSource.updateUserAccount(
-                userAccount
+            val updateUserResult = userDatabaseSource.updateUser(
+                user
             )
         ) {
             is Success -> {
-                if (updateUserAccountResult.data != NO_WORKER_UPDATED_RESULT) {
+                if (updateUserResult.data != NO_WORKER_UPDATED_RESULT) {
                     Success(Unit)
                 } else {
-                    Failure(Error.NullUserAccount)
+                    Failure(Error.NullUser)
                 }
             }
 
-            is Failure -> Failure(updateUserAccountResult.error)
+            is Failure -> Failure(updateUserResult.error)
         }
 
     private companion object {

@@ -99,18 +99,23 @@ sealed class Error(
         R.string.no_browser_installed
     )
 
-    object NullCurrentUserAccount : Error(
-        "Null current user account",
-        R.string.null_current_user_account
+    object NullCurrentUser : Error(
+        "Null current user",
+        R.string.null_current_user
     )
 
-    object NullUserAccount : Error(
-        "Null user account",
-        R.string.null_user_account
+    object NullUser : Error(
+        "Null user",
+        R.string.null_user
     )
 
-    object NullUserAccountByState : Error(
-        "Null user account by state",
-        R.string.null_user_account_by_state
+    object NullUserByState : Error(
+        "Null user by state",
+        R.string.null_user_by_state
+    )
+
+    object LocalUserTypeNotSupported : Error(
+        "Local user type not supported",
+        R.string.empty
     )
 }

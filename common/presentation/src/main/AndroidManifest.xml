@@ -15,8 +15,8 @@
   ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<resources>
-    <string name="app_name">FireFlow</string>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <string name="network_connection_lost">"Network Connection Lost: Service Unavailable</string>
-</resources>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+</manifest>

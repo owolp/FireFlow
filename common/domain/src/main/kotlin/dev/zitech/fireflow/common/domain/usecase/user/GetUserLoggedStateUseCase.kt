@@ -18,7 +18,7 @@
 package dev.zitech.fireflow.common.domain.usecase.user
 
 import dev.zitech.fireflow.common.domain.model.user.UserLoggedState
-import dev.zitech.fireflow.common.domain.repository.user.UserAccountRepository
+import dev.zitech.fireflow.common.domain.repository.user.UserRepository
 import dev.zitech.fireflow.core.result.OperationResult.Success
 import javax.inject.Inject
 import kotlinx.coroutines.flow.firstOrNull
@@ -26,10 +26,10 @@ import kotlinx.coroutines.flow.firstOrNull
 /**
  * Use case for retrieving the logged-in state of the user.
  *
- * @property userAccountRepository The repository for managing user accounts.
+ * @property userRepository The repository for managing users.
  */
 class GetUserLoggedStateUseCase @Inject constructor(
-    private val userAccountRepository: UserAccountRepository
+    private val userRepository: UserRepository
 ) {
     /**
      * Invokes the use case to retrieve the logged-in state of the user.
@@ -37,7 +37,7 @@ class GetUserLoggedStateUseCase @Inject constructor(
      * @return The logged-in state of the user.
      */
     suspend operator fun invoke(): UserLoggedState =
-        when (userAccountRepository.getCurrentUserAccount().firstOrNull()) {
+        when (userRepository.getCurrentUser().firstOrNull()) {
             is Success -> UserLoggedState.LOGGED_IN
             else -> UserLoggedState.LOGGED_OUT
         }
