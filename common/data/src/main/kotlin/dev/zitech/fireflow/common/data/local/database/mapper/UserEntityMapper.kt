@@ -107,6 +107,12 @@ internal class UserEntityMapper @Inject constructor() :
             }
         }
 
+    /**
+     * Determines the appropriate [UserAuthenticationType] based on the input [UserEntity].
+     *
+     * @param input The input [UserEntity] for extracting the authentication type.
+     * @return The corresponding [UserAuthenticationType], or null if no valid type is found.
+     */
     private fun getAuthenticationType(input: UserEntity): UserAuthenticationType? =
         when {
             input.clientId != null && input.clientSecret != null -> {
@@ -117,13 +123,11 @@ internal class UserEntityMapper @Inject constructor() :
                     oauthCode = input.oauthCode
                 )
             }
-
             input.accessToken != null -> {
                 UserAuthenticationType.Pat(
                     accessToken = input.accessToken
                 )
             }
-
             else -> null
         }
 }

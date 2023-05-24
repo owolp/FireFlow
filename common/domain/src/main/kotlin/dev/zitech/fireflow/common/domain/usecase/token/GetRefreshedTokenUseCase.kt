@@ -119,7 +119,6 @@ class GetRefreshedTokenUseCase @Inject constructor(
                 }
             }
         }
-
         is Failure -> refreshTokenResult
     }
 }

@@ -17,8 +17,23 @@
 
 package dev.zitech.fireflow.common.presentation.connectivity
 
+/**
+ * Sealed interface representing the state of the network connection.
+ */
 sealed interface NetworkState {
+
+    /**
+     * Represents a connected network state.
+     */
     object Connected : NetworkState
+
+    /**
+     * Represents a disconnected network state.
+     */
     object Disconnected : NetworkState
+
+    /**
+     * Represents an unknown network state.
+     */
     object Unknown : NetworkState
 }

@@ -20,14 +20,37 @@ package dev.zitech.fireflow.common.domain.model.user
 import dev.zitech.fireflow.core.datafactory.DataFactory
 import dev.zitech.fireflow.core.error.FireFlowError
 
+/**
+ * Represents a user entity.
+ *
+ * @property isCurrentUser Indicates whether the user is the current user.
+ */
 sealed class User(
     open val isCurrentUser: Boolean
 ) {
 
+    /**
+     * Represents a local user.
+     *
+     * @param isCurrentUser Indicates whether the user is the current user.
+     */
     data class Local(
         override val isCurrentUser: Boolean
     ) : User(isCurrentUser)
 
+    /**
+     * Represents a remote user.
+     *
+     * @param authenticationType The authentication type of the user.
+     * @param email The email address of the user.
+     * @param fireflyId The Firefly ID of the user.
+     * @param role The role of the user.
+     * @param isCurrentUser Indicates whether the user is the current user.
+     * @param serverAddress The server address associated with the user.
+     * @param state The state of the user.
+     * @param type The type of the user.
+     * @param userId The user ID.
+     */
     data class Remote(
         val authenticationType: UserAuthenticationType? = null,
         val email: String? = null,
@@ -40,6 +63,11 @@ sealed class User(
         val userId: Long
     ) : User(isCurrentUser) {
 
+        /**
+         * Extracts the URL and port from the server address.
+         *
+         * @return The URL and port in the format [UrlPortFormat].
+         */
         fun extractUrlAndPort(): UrlPortFormat {
             val regex = """^(?:https?://)?(?:www\.)?([-\w.]+)(?::(\d+))?$""".toRegex()
             val matchResult = regex.find(serverAddress)
@@ -54,9 +82,28 @@ sealed class User(
             } ?: UrlPortFormat.Invalid
         }
 
+        /**
+         * Represents the format of URL and port.
+         */
         sealed interface UrlPortFormat {
+            /**
+             * Represents a valid URL and port combination.
+             *
+             * @param hostname The hostname of the URL.
+             * @param port The port number.
+             */
             data class Valid(val hostname: String, val port: Int) : UrlPortFormat
+
+            /**
+             * Represents an invalid URL and port combination.
+             */
             object Invalid : UrlPortFormat
+
+            /**
+             * Represents an error in the URL and port format.
+             *
+             * @param fireFlowError The error encountered.
+             */
             data class Error(val fireFlowError: FireFlowError) : UrlPortFormat
         }
     }

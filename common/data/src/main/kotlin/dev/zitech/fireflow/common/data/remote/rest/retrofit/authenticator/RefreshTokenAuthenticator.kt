@@ -37,10 +37,8 @@ import okhttp3.Route
 /**
  * [Authenticator] implementation responsible for handling authentication challenges and refreshing access tokens.
  *
- * @property getCurrentUserUseCase Lazy injection of [GetCurrentUserUseCase] for retrieving the current
- * user.
- * @property getRefreshedTokenUseCase Lazy injection of [GetRefreshedTokenUseCase] for obtaining a refreshed access
- * token.
+ * @property getCurrentUserUseCase Lazy injection of [GetCurrentUserUseCase] for retrieving the current user.
+ * @property getRefreshedTokenUseCase Lazy injection of [GetRefreshedTokenUseCase] for obtaining a refreshed access token.
  */
 internal class RefreshTokenAuthenticator @Inject constructor(
     private val getCurrentUserUseCase: dagger.Lazy<GetCurrentUserUseCase>,
@@ -51,8 +49,7 @@ internal class RefreshTokenAuthenticator @Inject constructor(
 
     /**
      * Authenticates the request by handling authentication challenges.
-     * If the user is authenticated with OAuth and the response is unauthenticated, a refreshed token is
-     * obtained.
+     * If the user is authenticated with OAuth and the response is unauthenticated, a refreshed token is obtained.
      *
      * @param route The route being accessed.
      * @param response The response received.
@@ -60,17 +57,13 @@ internal class RefreshTokenAuthenticator @Inject constructor(
      */
     override fun authenticate(route: Route?, response: Response): Request? = runBlocking {
         return@runBlocking when (
-            val currentUserResult = getCurrentUserUseCase
-                .get().invoke().first()
+            val currentUserResult = getCurrentUserUseCase.get().invoke().first()
         ) {
             is Success -> {
                 when (val user = currentUserResult.data) {
                     is User.Local -> null
                     is User.Remote -> {
-                        checkAuthenticationType(
-                            user.authenticationType,
-                            response
-                        )
+                        checkAuthenticationType(user.authenticationType, response)
                     }
                 }
             }
@@ -93,7 +86,7 @@ internal class RefreshTokenAuthenticator @Inject constructor(
         if (response.code == UNAUTHENTICATED_CODE) {
             getRefreshedToken(response)
         } else {
-            Logger.e(tag, message = "Response code not handled=${response.code}")
+            Logger.e(tag, message = "Response code not handled: ${response.code}")
             null
         }
     } else {
@@ -127,7 +120,6 @@ internal class RefreshTokenAuthenticator @Inject constructor(
                     null
                 }
             }
-
             is Failure -> {
                 Logger.e(tag, message = refreshedTokenResult.error.debugText)
                 null
