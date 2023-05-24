@@ -17,6 +17,9 @@
 
 package dev.zitech.fireflow.presentation
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -67,7 +70,7 @@ internal fun FireFlowApp(
     windowSizeClass: WindowSizeClass,
     navController: NavHostController,
     splash: Boolean,
-    connectivity: Boolean,
+    isConnected: Boolean,
     appState: FireFlowAppState = rememberFireFlowAppState(windowSizeClass, navController, splash)
 ) {
     FireFlowTheme(
@@ -86,7 +89,11 @@ internal fun FireFlowApp(
                                 currentDestination = appState.currentDestination
                             )
                         }
-                        if (!connectivity) {
+                        AnimatedVisibility(
+                            visible = !isConnected,
+                            enter = slideInHorizontally(),
+                            exit = slideOutHorizontally()
+                        ) {
                             FireFlowErrors.Primary(
                                 modifier = Modifier.fillMaxWidth(),
                                 text = stringResource(R.string.network_connection_lost)

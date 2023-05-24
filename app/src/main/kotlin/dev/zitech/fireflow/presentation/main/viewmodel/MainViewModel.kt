@@ -60,8 +60,8 @@ internal class MainViewModel @Inject constructor(
             .onEach { networkState ->
                 when (networkState) {
                     NetworkState.Connected,
-                    NetworkState.Unknown -> updateState { copy(connectivity = true) }
-                    NetworkState.Disconnected -> updateState { copy(connectivity = false) }
+                    NetworkState.Unknown -> updateState { copy(isConnected = true) }
+                    NetworkState.Disconnected -> updateState { copy(isConnected = false) }
                 }
             }
             .launchIn(viewModelScope)
