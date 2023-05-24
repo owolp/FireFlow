@@ -20,18 +20,18 @@ package dev.zitech.fireflow.onboarding.presentation.oauth.viewmodel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.zitech.fireflow.common.domain.model.authentication.Token
-import dev.zitech.fireflow.common.domain.model.user.UserAccount
+import dev.zitech.fireflow.common.domain.model.user.User
 import dev.zitech.fireflow.common.domain.model.user.UserAuthenticationType
 import dev.zitech.fireflow.common.domain.usecase.profile.GetFireflyProfileUseCase
-import dev.zitech.fireflow.common.domain.usecase.user.GetUserAccountByStateUseCase
-import dev.zitech.fireflow.common.domain.usecase.user.RemoveStaleUserAccountsUseCase
-import dev.zitech.fireflow.common.domain.usecase.user.SaveUserAccountUseCase
-import dev.zitech.fireflow.common.domain.usecase.user.UpdateCurrentUserAccountUseCase
-import dev.zitech.fireflow.common.domain.usecase.user.UpdateCurrentUserAccountUseCase.Email
-import dev.zitech.fireflow.common.domain.usecase.user.UpdateCurrentUserAccountUseCase.FireflyId
-import dev.zitech.fireflow.common.domain.usecase.user.UpdateCurrentUserAccountUseCase.Role
-import dev.zitech.fireflow.common.domain.usecase.user.UpdateCurrentUserAccountUseCase.Type
-import dev.zitech.fireflow.common.domain.usecase.user.UpdateUserAccountUseCase
+import dev.zitech.fireflow.common.domain.usecase.user.GetUserByStateUseCase
+import dev.zitech.fireflow.common.domain.usecase.user.RemoveStaleUsersUseCase
+import dev.zitech.fireflow.common.domain.usecase.user.SaveUserUseCase
+import dev.zitech.fireflow.common.domain.usecase.user.UpdateCurrentUserUseCase
+import dev.zitech.fireflow.common.domain.usecase.user.UpdateCurrentUserUseCase.Email
+import dev.zitech.fireflow.common.domain.usecase.user.UpdateCurrentUserUseCase.FireflyId
+import dev.zitech.fireflow.common.domain.usecase.user.UpdateCurrentUserUseCase.Role
+import dev.zitech.fireflow.common.domain.usecase.user.UpdateCurrentUserUseCase.Type
+import dev.zitech.fireflow.common.domain.usecase.user.UpdateUserUseCase
 import dev.zitech.fireflow.common.presentation.architecture.MviViewModel
 import dev.zitech.fireflow.core.dispatcher.AppDispatchers
 import dev.zitech.fireflow.core.error.Error
@@ -53,12 +53,12 @@ internal class OAuthViewModel @Inject constructor(
     private val clientIdValidator: ClientIdValidator,
     private val getAccessTokenUseCase: dagger.Lazy<GetAccessTokenUseCase>,
     private val getFireflyProfileUseCase: dagger.Lazy<GetFireflyProfileUseCase>,
-    private val getUserAccountByStateUseCase: GetUserAccountByStateUseCase,
+    private val getUserByStateUseCase: GetUserByStateUseCase,
     private val isOauthLoginInputValidUseCase: IsOAuthLoginInputValidUseCase,
-    private val removeStaleUserAccountsUseCase: RemoveStaleUserAccountsUseCase,
-    private val saveUserAccountUseCase: SaveUserAccountUseCase,
-    private val updateCurrentUserAccountUseCase: UpdateCurrentUserAccountUseCase,
-    private val updateUserAccountUseCase: UpdateUserAccountUseCase
+    private val removeStaleUsersUseCase: RemoveStaleUsersUseCase,
+    private val saveUserUseCase: SaveUserUseCase,
+    private val updateCurrentUserUseCase: UpdateCurrentUserUseCase,
+    private val updateUserUseCase: UpdateUserUseCase
 ) : MviViewModel<OAuthIntent, OAuthState>(OAuthState()) {
 
     override fun receiveIntent(intent: OAuthIntent) {
@@ -99,7 +99,7 @@ internal class OAuthViewModel @Inject constructor(
     }
 
     private suspend fun handleError(error: Error) {
-        removeStaleUserAccountsUseCase()
+        removeStaleUsersUseCase()
         when (error) {
             is Error.UserVisible -> updateState { copy(loading = false, nonFatalError = error) }
             else -> updateState { copy(loading = false, fatalError = error) }
@@ -110,16 +110,16 @@ internal class OAuthViewModel @Inject constructor(
         val clientId = state.value.clientId
         val clientSecret = state.value.clientSecret
         val serverAddress = state.value.serverAddress
-        val state = UserAccount.getRandomState()
+        val state = User.getRandomState()
 
         withContext(appDispatchers.io) {
             delay(LOADING_DELAY_IN_MILLISECONDS)
             updateState { copy(loading = true) }
         }
-        saveUserAccountUseCase(
+        saveUserUseCase(
             clientId = clientId,
             clientSecret = clientSecret,
-            isCurrentUserAccount = false,
+            isCurrentUser = false,
             serverAddress = serverAddress,
             state = state
         ).onSuccess {
@@ -171,26 +171,33 @@ internal class OAuthViewModel @Inject constructor(
 
     private suspend fun handleScreenOpenedFromDeepLink(state: String, code: String) {
         updateState { copy(loading = true) }
-        getUserAccountByStateUseCase(state)
-            .onSuccess { userAccount ->
-                val authenticationType = userAccount.authenticationType
-                if (authenticationType is UserAuthenticationType.OAuth) {
-                    val clientId = authenticationType.clientId
-                    val clientSecret = authenticationType.clientSecret
-                    updateState {
-                        copy(
-                            clientId = clientId,
-                            clientSecret = clientSecret,
-                            serverAddress = userAccount.serverAddress
-                        )
+        getUserByStateUseCase(state)
+            .onSuccess { user ->
+                when (user) {
+                    is User.Local -> {
+                        // NO_OP
                     }
-                    retrieveToken(userAccount, clientId, clientSecret, code)
-                } else {
-                    updateState {
-                        copy(
-                            loading = false,
-                            fatalError = Error.AuthenticationProblem
-                        )
+                    is User.Remote -> {
+                        val authenticationType = user.authenticationType
+                        if (authenticationType is UserAuthenticationType.OAuth) {
+                            val clientId = authenticationType.clientId
+                            val clientSecret = authenticationType.clientSecret
+                            updateState {
+                                copy(
+                                    clientId = clientId,
+                                    clientSecret = clientSecret,
+                                    serverAddress = user.serverAddress
+                                )
+                            }
+                            retrieveToken(user, clientId, clientSecret, code)
+                        } else {
+                            updateState {
+                                copy(
+                                    loading = false,
+                                    fatalError = Error.AuthenticationProblem
+                                )
+                            }
+                        }
                     }
                 }
             }.onFailure(::handleError)
@@ -208,7 +215,7 @@ internal class OAuthViewModel @Inject constructor(
     private suspend fun retrieveFireflyInfo() {
         getFireflyProfileUseCase.get().invoke()
             .onSuccess { fireflyProfile ->
-                updateCurrentUserAccountUseCase(
+                updateCurrentUserUseCase(
                     Email(fireflyProfile.email),
                     FireflyId(fireflyProfile.id),
                     Role(fireflyProfile.role),
@@ -225,7 +232,7 @@ internal class OAuthViewModel @Inject constructor(
     }
 
     private suspend fun retrieveToken(
-        userAccount: UserAccount,
+        user: User,
         clientId: String,
         clientSecret: String,
         code: String
@@ -235,7 +242,7 @@ internal class OAuthViewModel @Inject constructor(
             clientSecret = clientSecret,
             code = code
         ).onSuccess { accessToken ->
-            updateUserAccount(accessToken, userAccount, clientId, clientSecret, code)
+            updateUser(accessToken, user, clientId, clientSecret, code)
         }.onFailure(::handleError)
     }
 
@@ -253,27 +260,34 @@ internal class OAuthViewModel @Inject constructor(
         }
     }
 
-    private suspend fun updateUserAccount(
+    private suspend fun updateUser(
         accessToken: Token,
-        userAccount: UserAccount,
+        user: User,
         clientId: String,
         clientSecret: String,
         oauthCode: String
     ) {
-        val updatedUserAccount = userAccount.copy(
-            authenticationType = UserAuthenticationType.OAuth(
-                accessToken = accessToken.accessToken,
-                clientId = clientId,
-                clientSecret = clientSecret,
-                oauthCode = oauthCode,
-                refreshToken = accessToken.refreshToken
-            ),
-            isCurrentUserAccount = true,
-            state = null
-        )
-        updateUserAccountUseCase(updatedUserAccount).onSuccess {
-            retrieveFireflyInfo()
-        }.onFailure(::handleError)
+        when (user) {
+            is User.Local -> {
+                // NO_OP
+            }
+            is User.Remote -> {
+                val updatedUser = user.copy(
+                    authenticationType = UserAuthenticationType.OAuth(
+                        accessToken = accessToken.accessToken,
+                        clientId = clientId,
+                        clientSecret = clientSecret,
+                        oauthCode = oauthCode,
+                        refreshToken = accessToken.refreshToken
+                    ),
+                    isCurrentUser = true,
+                    state = null
+                )
+                updateUserUseCase(updatedUser).onSuccess {
+                    retrieveFireflyInfo()
+                }.onFailure(::handleError)
+            }
+        }
     }
 
     private companion object {

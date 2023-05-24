@@ -21,7 +21,7 @@ import dev.zitech.fireflow.common.data.remote.rest.HEADER_ACCEPT_KEY
 import dev.zitech.fireflow.common.data.remote.rest.HEADER_ACCEPT_VALUE
 import dev.zitech.fireflow.common.data.remote.rest.HEADER_AUTHORIZATION_KEY
 import dev.zitech.fireflow.common.data.remote.rest.HEADER_AUTHORIZATION_VALUE
-import dev.zitech.fireflow.common.domain.usecase.user.GetCurrentUserAccountAccessTokenUseCase
+import dev.zitech.fireflow.common.domain.usecase.user.GetCurrentUserAccessTokenUseCase
 import javax.inject.Inject
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
@@ -30,15 +30,14 @@ import okhttp3.Response
 /**
  * [Interceptor] implementation responsible for adding the authentication header to outgoing requests.
  *
- * @property getCurrentUserAccountAccessTokenUseCase The use case for retrieving the access token of the current user
- * account.
+ * @property getCurrentUserAccessTokenUseCase The use case for retrieving the access token of the current user.
  */
 internal class AuthenticationInterceptor @Inject constructor(
-    private val getCurrentUserAccountAccessTokenUseCase: GetCurrentUserAccountAccessTokenUseCase
+    private val getCurrentUserAccessTokenUseCase: GetCurrentUserAccessTokenUseCase
 ) : Interceptor {
 
     /**
-     * Intercepts the request and adds the authentication header with the access token of the current user account.
+     * Intercepts the request and adds the authentication header with the access token of the current user.
      *
      * @param chain The interceptor chain.
      * @return The response received from the server.
@@ -48,7 +47,7 @@ internal class AuthenticationInterceptor @Inject constructor(
             chain.request().newBuilder()
                 .header(
                     HEADER_AUTHORIZATION_KEY,
-                    "$HEADER_AUTHORIZATION_VALUE ${getCurrentUserAccountAccessTokenUseCase()}"
+                    "$HEADER_AUTHORIZATION_VALUE ${getCurrentUserAccessTokenUseCase()}"
                 )
                 .header(HEADER_ACCEPT_KEY, HEADER_ACCEPT_VALUE)
                 .build()

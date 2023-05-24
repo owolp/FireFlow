@@ -21,8 +21,10 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.zitech.fireflow.common.domain.usecase.application.GetApplicationThemeValueUseCase
 import dev.zitech.fireflow.common.domain.usecase.configurator.InitializeRemoteConfiguratorUseCase
-import dev.zitech.fireflow.common.domain.usecase.user.RemoveStaleUserAccountsUseCase
+import dev.zitech.fireflow.common.domain.usecase.user.RemoveStaleUsersUseCase
 import dev.zitech.fireflow.common.presentation.architecture.MviViewModel
+import dev.zitech.fireflow.common.presentation.connectivity.NetworkConnectivityProvider
+import dev.zitech.fireflow.common.presentation.connectivity.NetworkState
 import dev.zitech.fireflow.common.presentation.navigation.state.LoginCheckCompletedHandler
 import dev.zitech.fireflow.core.logger.Logger
 import dev.zitech.fireflow.domain.usecase.ApplicationLaunchAnalyticsEvent
@@ -38,10 +40,11 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 internal class MainViewModel @Inject constructor(
     applicationLaunchAnalyticsEvent: ApplicationLaunchAnalyticsEvent,
+    private val connectivityProvider: NetworkConnectivityProvider,
     private val getApplicationThemeValueUseCase: GetApplicationThemeValueUseCase,
     private val initializeRemoteConfiguratorUseCase: InitializeRemoteConfiguratorUseCase,
     private val loginCheckHandler: LoginCheckCompletedHandler,
-    private val removeStaleUserAccountsUseCase: RemoveStaleUserAccountsUseCase
+    private val removeStaleUsersUseCase: RemoveStaleUsersUseCase
 ) : MviViewModel<MainIntent, MainState>(MainState()) {
 
     private val tag = Logger.tag(this::class.java)
@@ -49,6 +52,19 @@ internal class MainViewModel @Inject constructor(
     init {
         applicationLaunchAnalyticsEvent()
         startMandatoryChecks()
+        observeNetworkConnectivity()
+    }
+
+    private fun observeNetworkConnectivity() {
+        connectivityProvider.networkState
+            .onEach { networkState ->
+                when (networkState) {
+                    NetworkState.Connected,
+                    NetworkState.Unknown -> updateState { copy(isConnected = true) }
+                    NetworkState.Disconnected -> updateState { copy(isConnected = false) }
+                }
+            }
+            .launchIn(viewModelScope)
     }
 
     override fun receiveIntent(intent: MainIntent) {
@@ -66,7 +82,7 @@ internal class MainViewModel @Inject constructor(
         viewModelScope.launch {
             with(intent) {
                 if (!resumingFromOauthDeepLink()) {
-                    removeStaleUserAccountsUseCase()
+                    removeStaleUsersUseCase()
                 }
             }
             updateState { copy(databaseCleanCompleted = true) }

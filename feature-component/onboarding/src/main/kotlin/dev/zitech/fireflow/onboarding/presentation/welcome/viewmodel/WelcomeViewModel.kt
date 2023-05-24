@@ -19,7 +19,7 @@ package dev.zitech.fireflow.onboarding.presentation.welcome.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.zitech.fireflow.common.domain.usecase.user.SaveUserAccountUseCase
+import dev.zitech.fireflow.common.domain.usecase.user.SaveUserUseCase
 import dev.zitech.fireflow.common.presentation.architecture.MviViewModel
 import dev.zitech.fireflow.core.error.Error
 import dev.zitech.fireflow.core.result.OperationResult
@@ -30,7 +30,7 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 internal class WelcomeViewModel @Inject constructor(
-    private val saveUserAccountUseCase: SaveUserAccountUseCase
+    private val saveUserUseCase: SaveUserUseCase
 ) : MviViewModel<WelcomeIntent, WelcomeState>(WelcomeState()) {
 
     override fun receiveIntent(intent: WelcomeIntent) {
@@ -73,7 +73,7 @@ internal class WelcomeViewModel @Inject constructor(
     @Suppress("ForbiddenComment")
     private suspend fun handleOnShowDemoPositive() {
         // TODO: Dev usage
-        saveUserAccountUseCase(null, "", "", true, "", "")
+        saveUserUseCase(null, "", "", true, "", "")
         updateState {
             copy(
                 demoWarning = false,

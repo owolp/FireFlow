@@ -19,13 +19,13 @@ package dev.zitech.fireflow.onboarding.presentation.pat.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.zitech.fireflow.common.domain.model.user.UserAccount
+import dev.zitech.fireflow.common.domain.model.user.User
 import dev.zitech.fireflow.common.domain.model.user.UserAuthenticationType
 import dev.zitech.fireflow.common.domain.usecase.profile.GetFireflyProfileUseCase
-import dev.zitech.fireflow.common.domain.usecase.user.GetUserAccountByStateUseCase
-import dev.zitech.fireflow.common.domain.usecase.user.RemoveStaleUserAccountsUseCase
-import dev.zitech.fireflow.common.domain.usecase.user.SaveUserAccountUseCase
-import dev.zitech.fireflow.common.domain.usecase.user.UpdateUserAccountUseCase
+import dev.zitech.fireflow.common.domain.usecase.user.GetUserByStateUseCase
+import dev.zitech.fireflow.common.domain.usecase.user.RemoveStaleUsersUseCase
+import dev.zitech.fireflow.common.domain.usecase.user.SaveUserUseCase
+import dev.zitech.fireflow.common.domain.usecase.user.UpdateUserUseCase
 import dev.zitech.fireflow.common.presentation.architecture.MviViewModel
 import dev.zitech.fireflow.core.dispatcher.AppDispatchers
 import dev.zitech.fireflow.core.error.Error
@@ -41,11 +41,11 @@ import kotlinx.coroutines.withContext
 internal class PatViewModel @Inject constructor(
     private val appDispatchers: AppDispatchers,
     private val getFireflyProfileUseCase: dagger.Lazy<GetFireflyProfileUseCase>,
-    private val getUserAccountByStateUseCase: GetUserAccountByStateUseCase,
+    private val getUserByStateUseCase: GetUserByStateUseCase,
     private val isPatLoginInputValidUseCase: IsPatLoginInputValidUseCase,
-    private val removeStaleUserAccountsUseCase: RemoveStaleUserAccountsUseCase,
-    private val saveUserAccountUseCase: SaveUserAccountUseCase,
-    private val updateUserAccountUseCase: UpdateUserAccountUseCase
+    private val removeStaleUsersUseCase: RemoveStaleUsersUseCase,
+    private val saveUserUseCase: SaveUserUseCase,
+    private val updateUserUseCase: UpdateUserUseCase
 ) : MviViewModel<PatIntent, PatState>(PatState()) {
 
     override fun receiveIntent(intent: PatIntent) {
@@ -63,41 +63,48 @@ internal class PatViewModel @Inject constructor(
         }
     }
 
-    private suspend fun checkToken(userAccount: UserAccount, accessToken: String) {
+    private suspend fun checkToken(user: User, accessToken: String) {
         getFireflyProfileUseCase.get().invoke()
             .onSuccess { fireflyProfile ->
-                updateUserAccount(
+                updateUser(
                     accessToken = accessToken,
                     email = fireflyProfile.email,
                     fireflyId = fireflyProfile.id,
                     role = fireflyProfile.role,
                     type = fireflyProfile.type,
-                    userAccount = userAccount
+                    user = user
                 )
             }.onFailure(::handleError)
     }
 
-    private suspend fun getUserAccountByState(state: String) {
+    private suspend fun getUserByState(state: String) {
         updateState { copy(loading = true) }
-        getUserAccountByStateUseCase(state)
-            .onSuccess { userAccount ->
-                val authenticationType = userAccount.authenticationType
-                if (authenticationType is UserAuthenticationType.Pat) {
-                    val accessToken = authenticationType.accessToken
-                    checkToken(userAccount, accessToken)
-                } else {
-                    updateState {
-                        copy(
-                            loading = false,
-                            fatalError = Error.AuthenticationProblem
-                        )
+        getUserByStateUseCase(state)
+            .onSuccess { user ->
+                when (user) {
+                    is User.Local -> {
+                        // NO_OP
+                    }
+                    is User.Remote -> {
+                        val authenticationType = user.authenticationType
+                        if (authenticationType is UserAuthenticationType.Pat) {
+                            val accessToken = authenticationType.accessToken
+                            checkToken(user, accessToken)
+                        } else {
+                            updateState {
+                                copy(
+                                    loading = false,
+                                    fatalError = Error.AuthenticationProblem
+                                )
+                            }
+                        }
                     }
                 }
             }.onFailure(::handleError)
     }
 
     private suspend fun handleError(error: Error) {
-        removeStaleUserAccountsUseCase()
+        removeStaleUsersUseCase()
         when (error) {
             is Error.UserVisible -> updateState { copy(loading = false, nonFatalError = error) }
             else -> updateState { copy(loading = false, fatalError = error) }
@@ -107,19 +114,19 @@ internal class PatViewModel @Inject constructor(
     private suspend fun handleLoginClicked() {
         val accessToken = state.value.pat
         val serverAddress = state.value.serverAddress
-        val state = UserAccount.getRandomState()
+        val state = User.getRandomState()
 
         withContext(appDispatchers.io) {
             delay(LOADING_DELAY_IN_MILLISECONDS)
             updateState { copy(loading = true) }
         }
-        saveUserAccountUseCase(
+        saveUserUseCase(
             accessToken = accessToken,
-            isCurrentUserAccount = true,
+            isCurrentUser = true,
             serverAddress = serverAddress,
             state = state
         ).onSuccess {
-            getUserAccountByState(state)
+            getUserByState(state)
         }.onFailure(::handleError)
     }
 
@@ -154,33 +161,40 @@ internal class PatViewModel @Inject constructor(
         }
     }
 
-    private suspend fun updateUserAccount(
+    private suspend fun updateUser(
         accessToken: String,
         email: String,
         fireflyId: String,
         role: String,
         type: String,
-        userAccount: UserAccount
+        user: User
     ) {
-        val updatedUserAccount = userAccount.copy(
-            authenticationType = UserAuthenticationType.Pat(
-                accessToken = accessToken
-            ),
-            email = email,
-            fireflyId = fireflyId,
-            isCurrentUserAccount = true,
-            role = role,
-            state = null,
-            type = type
-        )
-        updateUserAccountUseCase(updatedUserAccount).onSuccess {
-            updateState {
-                copy(
-                    loading = false,
-                    stepCompleted = true
-                )
+        when (user) {
+            is User.Local -> {
+                // NO_OP
             }
-        }.onFailure(::handleError)
+            is User.Remote -> {
+                val updatedUser = user.copy(
+                    authenticationType = UserAuthenticationType.Pat(
+                        accessToken = accessToken
+                    ),
+                    email = email,
+                    fireflyId = fireflyId,
+                    isCurrentUser = true,
+                    role = role,
+                    state = null,
+                    type = type
+                )
+                updateUserUseCase(updatedUser).onSuccess {
+                    updateState {
+                        copy(
+                            loading = false,
+                            stepCompleted = true
+                        )
+                    }
+                }.onFailure(::handleError)
+            }
+        }
     }
 
     private companion object {

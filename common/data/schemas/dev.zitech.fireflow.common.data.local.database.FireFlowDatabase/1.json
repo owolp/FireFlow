@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "56ea93a2a3af58d2efc19dd7c701105a",
+    "identityHash": "d11c341660e68532bdb132359a74fec1",
     "entities": [
       {
-        "tableName": "user_accounts",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `accessToken` TEXT, `clientId` TEXT, `clientSecret` TEXT, `email` TEXT, `fireflyId` TEXT, `isCurrentUserAccount` INTEGER NOT NULL, `oauthCode` TEXT, `refreshToken` TEXT, `role` TEXT, `serverAddress` TEXT NOT NULL, `state` TEXT, `type` TEXT)",
+        "tableName": "users",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `accessToken` TEXT, `clientId` TEXT, `clientSecret` TEXT, `email` TEXT, `fireflyId` TEXT, `isCurrentUser` INTEGER NOT NULL, `oauthCode` TEXT, `refreshToken` TEXT, `role` TEXT, `serverAddress` TEXT, `state` TEXT, `type` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -45,8 +45,8 @@
             "notNull": false
           },
           {
-            "fieldPath": "isCurrentUserAccount",
-            "columnName": "isCurrentUserAccount",
+            "fieldPath": "isCurrentUser",
+            "columnName": "isCurrentUser",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -72,7 +72,7 @@
             "fieldPath": "serverAddress",
             "columnName": "serverAddress",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "state",
@@ -100,7 +100,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '56ea93a2a3af58d2efc19dd7c701105a')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd11c341660e68532bdb132359a74fec1')"
     ]
   }
 }

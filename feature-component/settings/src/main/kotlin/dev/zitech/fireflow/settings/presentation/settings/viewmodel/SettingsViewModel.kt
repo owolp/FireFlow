@@ -21,7 +21,8 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.zitech.fireflow.common.domain.model.application.ApplicationLanguage
 import dev.zitech.fireflow.common.domain.model.application.ApplicationTheme
-import dev.zitech.fireflow.common.domain.usecase.user.GetCurrentUserAccountUseCase
+import dev.zitech.fireflow.common.domain.model.user.User
+import dev.zitech.fireflow.common.domain.usecase.user.GetCurrentUserUseCase
 import dev.zitech.fireflow.common.presentation.architecture.DeepLinkViewModel
 import dev.zitech.fireflow.common.presentation.architecture.MviViewModel
 import dev.zitech.fireflow.common.presentation.navigation.ScreenDestinationProvider
@@ -52,7 +53,7 @@ internal class SettingsViewModel @Inject constructor(
     private val appearanceCollectionStates: AppearanceCollectionStates,
     private val cleanApplicationUseCase: CleanApplicationUseCase,
     private val dataChoicesCollectionStates: DataChoicesCollectionStates,
-    private val getCurrentUserAccountUseCase: GetCurrentUserAccountUseCase,
+    private val getCurrentUserUseCase: GetCurrentUserUseCase,
     private val logOutCurrentUserUseCase: LogOutCurrentUserUseCase
 ) : MviViewModel<SettingsIntent, SettingsState>(SettingsState()), DeepLinkViewModel {
 
@@ -133,8 +134,15 @@ internal class SettingsViewModel @Inject constructor(
     }
 
     private suspend fun getCurrentUserEmailAddress() =
-        when (val result = getCurrentUserAccountUseCase().first()) {
-            is Success -> result.data.email.orEmpty()
+        when (val result = getCurrentUserUseCase().first()) {
+            is Success -> {
+                when (val user = result.data) {
+                    is User.Local -> ""
+                    is User.Remote -> {
+                        user.email.orEmpty()
+                    }
+                }
+            }
             is Failure -> ""
         }
 

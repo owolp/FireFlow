@@ -18,8 +18,8 @@
 package dev.zitech.fireflow.settings.domain.usecase
 
 import dev.zitech.fireflow.common.domain.repository.cache.CacheRepository
-import dev.zitech.fireflow.common.domain.usecase.user.UpdateCurrentUserAccountUseCase
-import dev.zitech.fireflow.common.domain.usecase.user.UpdateCurrentUserAccountUseCase.IsCurrentUserAccount
+import dev.zitech.fireflow.common.domain.usecase.user.UpdateCurrentUserUseCase
+import dev.zitech.fireflow.common.domain.usecase.user.UpdateCurrentUserUseCase.IsCurrentUser
 import dev.zitech.fireflow.core.result.OperationResult
 import dev.zitech.fireflow.core.result.OperationResult.Failure
 import dev.zitech.fireflow.core.result.OperationResult.Success
@@ -28,11 +28,11 @@ import javax.inject.Inject
 /**
  * Use case responsible for logging out the current user.
  *
- * @param updateCurrentUserAccountUseCase The use case for updating the current user account.
+ * @param updateCurrentUserUseCase The use case for updating the current user.
  * @param cacheRepository The repository for managing cache data.
  */
 internal class LogOutCurrentUserUseCase @Inject constructor(
-    private val updateCurrentUserAccountUseCase: UpdateCurrentUserAccountUseCase,
+    private val updateCurrentUserUseCase: UpdateCurrentUserUseCase,
     private val cacheRepository: CacheRepository
 ) {
 
@@ -43,8 +43,8 @@ internal class LogOutCurrentUserUseCase @Inject constructor(
      */
     suspend operator fun invoke(): OperationResult<Unit> =
         when (
-            val result = updateCurrentUserAccountUseCase(
-                IsCurrentUserAccount(false)
+            val result = updateCurrentUserUseCase(
+                IsCurrentUser(false)
             )
         ) {
             is Failure -> Failure(result.error)

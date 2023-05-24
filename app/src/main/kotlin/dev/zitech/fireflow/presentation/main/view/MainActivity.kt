@@ -70,6 +70,7 @@ internal class MainActivity : AppCompatActivity() {
                 theme = mainState.theme,
                 windowSizeClass = calculateWindowSizeClass(this),
                 navController = navController,
+                isConnected = mainState.isConnected,
                 splash = mainState.splash
             )
         }

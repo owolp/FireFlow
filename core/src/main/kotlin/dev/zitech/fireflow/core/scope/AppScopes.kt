@@ -19,7 +19,9 @@ package dev.zitech.fireflow.core.scope
 
 import dev.zitech.fireflow.core.dispatcher.AppDispatchers
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 
@@ -32,9 +34,16 @@ interface AppScopes {
     /**
      * Launches a coroutine in the [singleton] scope.
      *
+     * @param coroutineDispatcher The dispatcher for the coroutine. If null, the default dispatcher
+     * of [singleton] scope is used.
      * @param func The suspending function to be executed in the [singleton] scope.
+     *
+     * @return A [Job] object representing the launched coroutine.
      */
-    fun singletonLaunch(func: suspend CoroutineScope.() -> Unit)
+    fun singletonLaunch(
+        coroutineDispatcher: CoroutineDispatcher? = null,
+        func: suspend CoroutineScope.() -> Unit
+    ): Job
 }
 
 /**
@@ -47,7 +56,21 @@ internal class AppScopesImpl @Inject constructor(
 ) : AppScopes {
     override val singleton = CoroutineScope(SupervisorJob() + appDispatchers.default)
 
-    override fun singletonLaunch(func: suspend CoroutineScope.() -> Unit) {
+    /**
+     * Launches a coroutine in the [singleton] scope.
+     *
+     * @param coroutineDispatcher The dispatcher for the coroutine. If null, the default dispatcher of [singleton]
+     * scope is used.
+     * @param func The suspending function to be executed in the [singleton] scope.
+     *
+     * @return A [Job] object representing the launched coroutine.
+     */
+    override fun singletonLaunch(
+        coroutineDispatcher: CoroutineDispatcher?,
+        func: suspend CoroutineScope.() -> Unit
+    ): Job = if (coroutineDispatcher != null) {
+        singleton.launch(coroutineDispatcher) { func() }
+    } else {
         singleton.launch { func() }
     }
 }

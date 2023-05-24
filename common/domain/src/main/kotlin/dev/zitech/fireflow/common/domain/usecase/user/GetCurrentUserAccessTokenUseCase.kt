@@ -17,29 +17,35 @@
 
 package dev.zitech.fireflow.common.domain.usecase.user
 
-import dev.zitech.fireflow.common.domain.repository.user.UserAccountRepository
+import dev.zitech.fireflow.common.domain.model.user.User
+import dev.zitech.fireflow.common.domain.repository.user.UserRepository
 import dev.zitech.fireflow.core.result.OperationResult.Failure
 import dev.zitech.fireflow.core.result.OperationResult.Success
 import javax.inject.Inject
 import kotlinx.coroutines.flow.first
 
 /**
- * Use case for retrieving the access token of the current user account.
+ * Use case for retrieving the access token of the current user.
  *
- * @property userAccountRepository The repository for managing user accounts.
+ * @property userRepository The repository for managing users.
  */
-class GetCurrentUserAccountAccessTokenUseCase @Inject constructor(
-    private val userAccountRepository: UserAccountRepository
+class GetCurrentUserAccessTokenUseCase @Inject constructor(
+    private val userRepository: UserRepository
 ) {
     /**
-     * Invokes the use case to retrieve the access token of the current user account.
+     * Invokes the use case to retrieve the access token of the current user.
      *
-     * @return The access token of the current user account, or null if an error occurred or the access token is
+     * @return The access token of the current user, or null if an error occurred or the access token is
      * unavailable.
      */
     suspend operator fun invoke(): String? =
-        when (val result = userAccountRepository.getCurrentUserAccount().first()) {
-            is Success -> result.data.authenticationType?.accessToken
+        when (val result = userRepository.getCurrentUser().first()) {
+            is Success -> {
+                when (val user = result.data) {
+                    is User.Local -> null
+                    is User.Remote -> user.authenticationType?.accessToken
+                }
+            }
             is Failure -> null
         }
 }

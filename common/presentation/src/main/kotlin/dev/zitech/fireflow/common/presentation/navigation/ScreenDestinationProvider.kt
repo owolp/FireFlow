@@ -17,8 +17,8 @@
 
 package dev.zitech.fireflow.common.presentation.navigation
 
-import dev.zitech.fireflow.common.domain.usecase.user.GetCurrentUserAccountUseCase
-import dev.zitech.fireflow.common.domain.usecase.user.GetUserAccountsUseCase
+import dev.zitech.fireflow.common.domain.usecase.user.GetCurrentUserUseCase
+import dev.zitech.fireflow.common.domain.usecase.user.GetUsersUseCase
 import dev.zitech.fireflow.common.presentation.navigation.deeplink.DeepLinkScreenDestination
 import dev.zitech.fireflow.core.error.Error
 import dev.zitech.fireflow.core.result.OperationResult.Failure
@@ -34,40 +34,40 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.onEach
 
 /**
- * Provides screen destinations for deep linking based on the current user account.
+ * Provides screen destinations for deep linking based on the current user.
  *
- * This class retrieves the current user account using the [GetCurrentUserAccountUseCase] and emits
+ * This class retrieves the current user using the [GetCurrentUserUseCase] and emits
  * a flow of [DeepLinkScreenDestination] representing the appropriate screen destination based on the
- * user account state.
+ * user state.
  *
- * @param getCurrentUserAccountUseCase The use case to retrieve the current user account.
- * @param getUserAccountsUseCase The use case to retrieve a list of user accounts.
+ * @param getCurrentUserUseCase The use case to retrieve the current user.
+ * @param getUsersUseCase The use case to retrieve a list of users.
  */
 class ScreenDestinationProvider @Inject constructor(
-    private val getCurrentUserAccountUseCase: GetCurrentUserAccountUseCase,
-    private val getUserAccountsUseCase: GetUserAccountsUseCase
+    private val getCurrentUserUseCase: GetCurrentUserUseCase,
+    private val getUsersUseCase: GetUsersUseCase
 ) {
 
     /**
      * Provides a flow of [DeepLinkScreenDestination] representing the screen destination for deep linking.
      *
-     * This flow emits screen destinations based on the current user account state. It sends
-     * [DeepLinkScreenDestination.Current] if the current user account is available,
-     * [DeepLinkScreenDestination.Accounts] if there are other user accounts available,
-     * [DeepLinkScreenDestination.Welcome] if there are no user accounts available, and
-     * [DeepLinkScreenDestination.Error] if there is an error retrieving the user account.
+     * This flow emits screen destinations based on the current user state. It sends
+     * [DeepLinkScreenDestination.Current] if the current user is available,
+     * [DeepLinkScreenDestination.Accounts] if there are other users available,
+     * [DeepLinkScreenDestination.Welcome] if there are no users available, and
+     * [DeepLinkScreenDestination.Error] if there is an error retrieving the user.
      *
      * @return A flow of [DeepLinkScreenDestination] representing the screen destination.
      */
     operator fun invoke(): Flow<DeepLinkScreenDestination> = channelFlow {
-        getCurrentUserAccountUseCase()
+        getCurrentUserUseCase()
             .onEach { result ->
                 when (result) {
                     is Success -> send(DeepLinkScreenDestination.Current)
                     is Failure -> {
                         when (result.error) {
-                            is Error.NullCurrentUserAccount -> {
-                                handleNullCurrentUserAccount()
+                            is Error.NullCurrentUser -> {
+                                handleNullCurrentUser()
                             }
 
                             else -> send(DeepLinkScreenDestination.Error(result.error))
@@ -77,10 +77,10 @@ class ScreenDestinationProvider @Inject constructor(
             }.collect()
     }
 
-    private suspend fun ProducerScope<DeepLinkScreenDestination>.handleNullCurrentUserAccount() {
-        getUserAccountsUseCase().first()
-            .onSuccess { userAccounts ->
-                if (userAccounts.isNotEmpty()) {
+    private suspend fun ProducerScope<DeepLinkScreenDestination>.handleNullCurrentUser() {
+        getUsersUseCase().first()
+            .onSuccess { users ->
+                if (users.isNotEmpty()) {
                     send(DeepLinkScreenDestination.Accounts)
                 } else {
                     send(DeepLinkScreenDestination.Welcome)
