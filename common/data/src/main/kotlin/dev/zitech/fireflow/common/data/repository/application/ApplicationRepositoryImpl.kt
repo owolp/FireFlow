@@ -24,12 +24,15 @@ import dev.zitech.fireflow.common.domain.mapper.application.IntToApplicationThem
 import dev.zitech.fireflow.common.domain.model.application.ApplicationTheme
 import dev.zitech.fireflow.common.domain.model.preferences.IntPreference
 import dev.zitech.fireflow.common.domain.repository.application.ApplicationRepository
+import dev.zitech.fireflow.core.dispatcher.AppDispatchers
 import dev.zitech.fireflow.core.result.OperationResult
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 
 internal class ApplicationRepositoryImpl @Inject constructor(
+    private val appDispatchers: AppDispatchers,
     private val applicationThemeToIntMapper: ApplicationThemeToIntMapper,
     private val developmentPreferencesDataSource: PreferencesDataSource,
     private val fireFlowDatabase: FireFlowDatabase,
@@ -38,14 +41,15 @@ internal class ApplicationRepositoryImpl @Inject constructor(
     private val standardPreferencesDataSource: PreferencesDataSource
 ) : ApplicationRepository {
 
-    override suspend fun clearApplicationStorage(): OperationResult<Unit> {
-        standardPreferencesDataSource.removeAll()
-        securedPreferencesDataSource.removeAll()
-        developmentPreferencesDataSource.removeAll()
-        fireFlowDatabase.clearAllTables()
+    override suspend fun clearApplicationStorage(): OperationResult<Unit> =
+        withContext(appDispatchers.io) {
+            standardPreferencesDataSource.removeAll()
+            securedPreferencesDataSource.removeAll()
+            developmentPreferencesDataSource.removeAll()
+            fireFlowDatabase.clearAllTables()
 
-        return OperationResult.Success(Unit)
-    }
+            return@withContext OperationResult.Success(Unit)
+        }
 
     override fun getApplicationTheme(): Flow<ApplicationTheme> =
         standardPreferencesDataSource.getInt(

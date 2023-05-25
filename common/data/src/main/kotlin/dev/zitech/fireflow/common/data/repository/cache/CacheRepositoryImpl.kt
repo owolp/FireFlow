@@ -20,12 +20,13 @@ package dev.zitech.fireflow.common.data.repository.cache
 import androidx.annotation.VisibleForTesting
 import dev.zitech.fireflow.common.domain.model.cache.Cache
 import dev.zitech.fireflow.common.domain.repository.cache.CacheRepository
+import java.util.Collections
 import javax.inject.Inject
 
 internal class CacheRepositoryImpl @Inject constructor() : CacheRepository {
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    val caches = mutableListOf<Cache>()
+    val caches = Collections.synchronizedList(mutableListOf<Cache>())
 
     override fun addCache(cache: Cache) {
         if (!caches.contains(cache)) {

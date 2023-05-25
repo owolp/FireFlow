@@ -94,16 +94,13 @@ internal class SettingsViewModel @Inject constructor(
                 CrashReporterErrorHandled -> updateState {
                     copy(crashReporterError = false)
                 }
-
                 FatalErrorHandled -> updateState { copy(fatalError = null) }
                 LanguageDismissed -> updateState {
                     copy(selectApplicationLanguage = null)
                 }
-
                 LanguagePreferenceClicked -> updateState {
                     copy(selectApplicationLanguage = this.applicationLanguage)
                 }
-
                 is LanguageSelected -> handleLanguageSelected(intent.id)
                 LogOutClicked -> updateState { copy(confirmLogOut = true) }
                 DeleteAllDataClicked -> updateState { copy(confirmDeleteAll = true) }
@@ -113,19 +110,15 @@ internal class SettingsViewModel @Inject constructor(
                 PerformanceErrorHandled -> updateState {
                     copy(performanceError = false)
                 }
-
                 is PersonalizedAdsChecked -> handlePersonalizedAdsChecked(
                     intent.checked
                 )
-
                 PersonalizedAdsErrorHandled -> updateState {
                     copy(personalizedAdsError = false)
                 }
-
                 ThemeDismissed -> updateState {
                     copy(selectApplicationTheme = null)
                 }
-
                 ThemePreferenceClicked -> updateState {
                     copy(selectApplicationTheme = this.applicationTheme)
                 }

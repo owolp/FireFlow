@@ -61,6 +61,7 @@ import dev.zitech.fireflow.common.domain.repository.reporter.CrashRepository
 import dev.zitech.fireflow.common.domain.repository.reporter.PerformanceRepository
 import dev.zitech.fireflow.common.domain.repository.user.UserRepository
 import dev.zitech.fireflow.core.applicationconfig.AppConfigProvider
+import dev.zitech.fireflow.core.dispatcher.AppDispatchers
 import javax.inject.Singleton
 
 internal interface RepositoryModule {
@@ -107,6 +108,7 @@ internal interface RepositoryModule {
         @Singleton
         @Provides
         fun applicationRepository(
+            appDispatchers: AppDispatchers,
             applicationThemeToIntMapper: ApplicationThemeToIntMapper,
             @DevelopmentPreferencesDataSource developmentPreferencesDataSource: PreferencesDataSource,
             fireFlowDatabase: FireFlowDatabase,
@@ -114,12 +116,13 @@ internal interface RepositoryModule {
             @StandardPreferencesDataSource standardPreferencesDataSource: PreferencesDataSource,
             @SecuredPreferencesDataSource securedPreferencesDataSource: PreferencesDataSource
         ): ApplicationRepository = ApplicationRepositoryImpl(
-            applicationThemeToIntMapper,
-            developmentPreferencesDataSource,
-            fireFlowDatabase,
-            intToApplicationThemeMapper,
-            standardPreferencesDataSource,
-            securedPreferencesDataSource
+            appDispatchers = appDispatchers,
+            applicationThemeToIntMapper = applicationThemeToIntMapper,
+            developmentPreferencesDataSource = developmentPreferencesDataSource,
+            fireFlowDatabase = fireFlowDatabase,
+            intToApplicationThemeMapper = intToApplicationThemeMapper,
+            securedPreferencesDataSource = securedPreferencesDataSource,
+            standardPreferencesDataSource = standardPreferencesDataSource
         )
 
         @Singleton
@@ -130,10 +133,10 @@ internal interface RepositoryModule {
             @ProdFeatureFlagSourceAnnotation prodFeatureFlagSource: FeatureFlagSource,
             @RemoteFeatureFlagSourceAnnotation remoteFeatureFlagSource: FeatureFlagSource
         ): FeatureFlagRepository = FeatureFlagRepositoryImpl(
-            appConfigProvider,
-            devFeatureFlagSource,
-            prodFeatureFlagSource,
-            remoteFeatureFlagSource
+            appConfigProvider = appConfigProvider,
+            devFeatureFlagSource = devFeatureFlagSource,
+            prodFeatureFlagSource = prodFeatureFlagSource,
+            remoteFeatureFlagSource = remoteFeatureFlagSource
         )
 
         @Singleton
