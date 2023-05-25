@@ -106,7 +106,6 @@ internal class MainViewModel @Inject constructor(
                         )
                     }
                 }
-
                 is Error -> {
                     Logger.e(tag, exception = status.cause)
                 }
