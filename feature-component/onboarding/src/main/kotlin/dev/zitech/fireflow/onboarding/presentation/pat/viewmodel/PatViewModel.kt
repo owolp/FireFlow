@@ -122,6 +122,7 @@ internal class PatViewModel @Inject constructor(
         }
         saveUserUseCase(
             accessToken = accessToken,
+            connectivityNotification = true,
             isCurrentUser = true,
             serverAddress = serverAddress,
             state = state

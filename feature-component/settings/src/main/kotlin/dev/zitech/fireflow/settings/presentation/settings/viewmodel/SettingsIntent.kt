@@ -20,6 +20,7 @@ package dev.zitech.fireflow.settings.presentation.settings.viewmodel
 import dev.zitech.fireflow.common.presentation.architecture.MviIntent
 
 internal data class AnalyticsChecked(val checked: Boolean) : SettingsIntent
+internal data class ConnectivityChecked(val checked: Boolean) : SettingsIntent
 internal data class CrashReporterChecked(val checked: Boolean) : SettingsIntent
 internal data class LanguageSelected(val id: Int) : SettingsIntent
 internal data class PerformanceChecked(val checked: Boolean) : SettingsIntent

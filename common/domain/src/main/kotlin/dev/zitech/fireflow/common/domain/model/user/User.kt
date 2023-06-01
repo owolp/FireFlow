@@ -42,6 +42,7 @@ sealed class User(
      * Represents a remote user.
      *
      * @param authenticationType The authentication type of the user.
+     * @param connectivityNotification Indicates whether the user has enabled connectivity notification.
      * @param email The email address of the user.
      * @param fireflyId The Firefly ID of the user.
      * @param role The role of the user.
@@ -53,6 +54,7 @@ sealed class User(
      */
     data class Remote(
         val authenticationType: UserAuthenticationType? = null,
+        val connectivityNotification: Boolean,
         val email: String? = null,
         val fireflyId: String? = null,
         val role: String? = null,

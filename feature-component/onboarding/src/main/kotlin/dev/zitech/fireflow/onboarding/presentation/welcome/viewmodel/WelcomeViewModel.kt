@@ -73,7 +73,15 @@ internal class WelcomeViewModel @Inject constructor(
     @Suppress("ForbiddenComment")
     private suspend fun handleOnShowDemoPositive() {
         // TODO: Dev usage
-        saveUserUseCase(null, "", "", true, "", "")
+        saveUserUseCase(
+            accessToken = null,
+            clientId = "",
+            clientSecret = "",
+            connectivityNotification = false,
+            isCurrentUser = true,
+            serverAddress = "",
+            state = ""
+        )
         updateState {
             copy(
                 demoWarning = false,

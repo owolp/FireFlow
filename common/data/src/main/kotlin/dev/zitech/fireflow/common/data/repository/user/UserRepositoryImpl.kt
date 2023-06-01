@@ -74,6 +74,7 @@ internal class UserRepositoryImpl @Inject constructor(
         accessToken: String?,
         clientId: String?,
         clientSecret: String?,
+        connectivityNotification: Boolean,
         isCurrentUser: Boolean,
         serverAddress: String,
         state: String
@@ -82,6 +83,7 @@ internal class UserRepositoryImpl @Inject constructor(
             accessToken = accessToken,
             clientId = clientId,
             clientSecret = clientSecret,
+            connectivityNotification = connectivityNotification,
             isCurrentUser = isCurrentUser,
             serverAddress = serverAddress,
             state = state

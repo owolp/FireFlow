@@ -69,6 +69,7 @@ internal interface UserSource {
      * @param accessToken The access token associated with the user.
      * @param clientId The OAuth client ID associated with the user.
      * @param clientSecret The OAuth client secret associated with the user.
+     * @param connectivityNotification Indicates whether the user has enabled connectivity checks.
      * @param isCurrentUser Indicates whether the user is the current user.
      * @param serverAddress The server address associated with the user.
      * @param state The state associated with the user.
@@ -79,6 +80,7 @@ internal interface UserSource {
         accessToken: String?,
         clientId: String?,
         clientSecret: String?,
+        connectivityNotification: Boolean,
         isCurrentUser: Boolean,
         serverAddress: String,
         state: String

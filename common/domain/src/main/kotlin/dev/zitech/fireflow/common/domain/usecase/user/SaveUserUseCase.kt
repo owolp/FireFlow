@@ -35,6 +35,7 @@ class SaveUserUseCase @Inject constructor(
      * @param accessToken The access token of the user.
      * @param clientId The client ID of the user.
      * @param clientSecret The client secret of the user.
+     * @param connectivityNotification Indicates whether the user has enabled connectivity notification.
      * @param isCurrentUser Flag indicating if the user is the current user.
      * @param serverAddress The server address of the user.
      * @param state The state of the user.
@@ -45,6 +46,7 @@ class SaveUserUseCase @Inject constructor(
         accessToken: String? = null,
         clientId: String? = null,
         clientSecret: String? = null,
+        connectivityNotification: Boolean,
         isCurrentUser: Boolean,
         serverAddress: String,
         state: String
@@ -52,6 +54,7 @@ class SaveUserUseCase @Inject constructor(
         userRepository.saveUser(
             clientId = clientId,
             clientSecret = clientSecret,
+            connectivityNotification = connectivityNotification,
             isCurrentUser = isCurrentUser,
             accessToken = accessToken,
             serverAddress = serverAddress,
