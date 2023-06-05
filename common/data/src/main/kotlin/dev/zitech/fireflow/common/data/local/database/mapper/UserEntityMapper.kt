@@ -33,9 +33,10 @@ internal class UserEntityMapper @Inject constructor() :
     /**
      * Converts a [UserEntity] to a [User] domain object.
      *
-     * This method takes a [UserEntity] object from the database and converts it into the corresponding [User] domain object.
-     * The conversion includes mapping the various properties of the [UserEntity] to the corresponding properties of [User].
-     * The resulting [User] represents the deserialized form of the [UserEntity].
+     * This method takes a [UserEntity] object from the database and converts it into the
+     * corresponding [User] domain object. The conversion includes mapping the various properties of
+     * the [UserEntity] to the corresponding properties of [User]. The resulting [User] represents
+     * the deserialized form of the [UserEntity].
      *
      * @param input The input [UserEntity] to be converted.
      * @return The corresponding [User] domain object.
@@ -64,8 +65,9 @@ internal class UserEntityMapper @Inject constructor() :
      * Converts a [User] domain object to a [UserEntity].
      *
      * This method takes a [User] domain object and converts it into a corresponding [UserEntity] object.
-     * The conversion includes mapping the various properties of the [User] to the corresponding properties of [UserEntity].
-     * The resulting [UserEntity] represents the serialized form of the [User] for storage in the database.
+     * The conversion includes mapping the various properties of the [User] to the corresponding
+     * properties of [UserEntity]. The resulting [UserEntity] represents the serialized form of the
+     * [User] for storage in the database.
      *
      * @param input The input [User] domain object to be converted.
      * @return The corresponding [UserEntity].
