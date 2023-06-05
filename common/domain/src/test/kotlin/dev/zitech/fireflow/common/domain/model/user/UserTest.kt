@@ -144,5 +144,10 @@ class UserTest {
     }
 
     private fun getRemoteUser(serverAddress: String): User.Remote =
-        User.Remote(isCurrentUser = true, serverAddress = serverAddress, userId = 123)
+        User.Remote(
+            isCurrentUser = true,
+            serverAddress = serverAddress,
+            userId = 123,
+            connectivityNotification = true
+        )
 }

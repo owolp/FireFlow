@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "d11c341660e68532bdb132359a74fec1",
+    "identityHash": "0f77952d0f9aa1272baa51d909035a5b",
     "entities": [
       {
         "tableName": "users",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `accessToken` TEXT, `clientId` TEXT, `clientSecret` TEXT, `email` TEXT, `fireflyId` TEXT, `isCurrentUser` INTEGER NOT NULL, `oauthCode` TEXT, `refreshToken` TEXT, `role` TEXT, `serverAddress` TEXT, `state` TEXT, `type` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `accessToken` TEXT, `clientId` TEXT, `clientSecret` TEXT, `connectivityNotification` INTEGER NOT NULL, `email` TEXT, `fireflyId` TEXT, `isCurrentUser` INTEGER NOT NULL, `oauthCode` TEXT, `refreshToken` TEXT, `role` TEXT, `serverAddress` TEXT, `state` TEXT, `type` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -31,6 +31,12 @@
             "columnName": "clientSecret",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "connectivityNotification",
+            "columnName": "connectivityNotification",
+            "affinity": "INTEGER",
+            "notNull": true
           },
           {
             "fieldPath": "email",
@@ -100,7 +106,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd11c341660e68532bdb132359a74fec1')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0f77952d0f9aa1272baa51d909035a5b')"
     ]
   }
 }

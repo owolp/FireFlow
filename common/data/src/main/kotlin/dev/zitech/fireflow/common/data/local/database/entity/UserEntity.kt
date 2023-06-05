@@ -27,6 +27,7 @@ import androidx.room.PrimaryKey
  * @param accessToken The access token associated with the user.
  * @param clientId The client ID associated with the user.
  * @param clientSecret The client secret associated with the user.
+ * @param connectivityNotification Indicates whether the user has enabled connectivity notification.
  * @param email The email address of the user.
  * @param fireflyId The Firefly ID associated with the user.
  * @param isCurrentUser Indicates whether the user is the current active user.
@@ -44,6 +45,7 @@ internal data class UserEntity(
     val accessToken: String? = null,
     val clientId: String? = null,
     val clientSecret: String? = null,
+    val connectivityNotification: Boolean = false,
     val email: String? = null,
     val fireflyId: String? = null,
     val isCurrentUser: Boolean,

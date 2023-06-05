@@ -68,8 +68,9 @@ interface UserRepository {
      * @param accessToken The access token of the user.
      * @param clientId The client ID of the user.
      * @param clientSecret The client secret of the user.
+     * @param connectivityNotification Indicates whether the user has enabled connectivity checks.
      * @param isCurrentUser Indicates whether the user is the current user.
-     * @param serverAddress The server address of the user.
+     * @param serverAddress The server address of the user. If the value is null, it indicates that the user is local.
      * @param state The state of the user.
      * @return The [OperationResult] containing the ID of the saved user.
      */
@@ -77,8 +78,9 @@ interface UserRepository {
         accessToken: String?,
         clientId: String?,
         clientSecret: String?,
+        connectivityNotification: Boolean,
         isCurrentUser: Boolean,
-        serverAddress: String,
+        serverAddress: String?,
         state: String
     ): OperationResult<Long>
 

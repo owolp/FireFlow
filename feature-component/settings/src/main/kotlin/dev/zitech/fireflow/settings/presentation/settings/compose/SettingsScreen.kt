@@ -58,7 +58,8 @@ internal fun SettingsScreen(
     personalizedAdsChecked: (checked: Boolean) -> Unit = {},
     snackbarState: FireFlowSnackbarState = rememberSnackbarState(),
     state: SettingsState = SettingsState(),
-    themePreferenceClicked: () -> Unit = {}
+    themePreferenceClicked: () -> Unit = {},
+    connectivityChecked: (checked: Boolean) -> Unit = {}
 ) {
     val topAppBarScrollBehavior = FireFlowTopAppBars.topAppBarScrollBehavior(
         ScrollBehavior.ExitUntilCollapsed
@@ -85,7 +86,8 @@ internal fun SettingsScreen(
             crashReporterChecked = crashReporterChecked,
             themePreferenceClicked = themePreferenceClicked,
             languagePreferenceClicked = languagePreferenceClicked,
-            logOutClicked = logOutClicked
+            logOutClicked = logOutClicked,
+            connectivityChecked = connectivityChecked
         )
     }
 }
@@ -102,7 +104,8 @@ private fun SettingsScreenContent(
     performanceChecked: (checked: Boolean) -> Unit,
     personalizedAdsChecked: (checked: Boolean) -> Unit,
     state: SettingsState,
-    themePreferenceClicked: () -> Unit
+    themePreferenceClicked: () -> Unit,
+    connectivityChecked: (checked: Boolean) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier
@@ -130,7 +133,8 @@ private fun SettingsScreenContent(
                 preferences = getAppearancePreferences(
                     state = state,
                     themePreferenceClicked = themePreferenceClicked,
-                    languagePreferenceClicked = languagePreferenceClicked
+                    languagePreferenceClicked = languagePreferenceClicked,
+                    connectivityChecked = connectivityChecked
                 )
             )
         }
@@ -154,7 +158,8 @@ private fun SettingsScreenContent(
 private fun getAppearancePreferences(
     state: SettingsState,
     themePreferenceClicked: () -> Unit,
-    languagePreferenceClicked: () -> Unit
+    languagePreferenceClicked: () -> Unit,
+    connectivityChecked: (checked: Boolean) -> Unit
 ): List<CategoryPreference> {
     val categoryPreferences = mutableListOf<CategoryPreference>()
 
@@ -181,6 +186,20 @@ private fun getAppearancePreferences(
             )
         )
     )
+
+    if (state.connectivity != null) {
+        categoryPreferences.add(
+            CategoryPreference.Switch(
+                title = stringResource(R.string.appearance_network_connectivity_title),
+                icon = FireFlowIcons.NetworkCheck,
+                checked = state.connectivity,
+                onCheckedChanged = connectivityChecked,
+                cdDescriptionEnabled = stringResource(R.string.cd_data_choices_analytics_enabled),
+                cdDescriptionDisabled = stringResource(R.string.cd_data_choices_analytics_disabled),
+                description = stringResource(R.string.appearance_network_connectivity_description)
+            )
+        )
+    }
 
     return categoryPreferences
 }

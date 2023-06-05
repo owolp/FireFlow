@@ -29,6 +29,7 @@ internal data class SettingsState(
     val applicationTheme: ApplicationTheme = ApplicationTheme.SYSTEM,
     val confirmLogOut: Boolean = false,
     val confirmDeleteAll: Boolean = false,
+    val connectivity: Boolean? = null,
     val crashReporter: Boolean = false,
     val crashReporterError: Boolean = false,
     val fatalError: FireFlowError? = null,

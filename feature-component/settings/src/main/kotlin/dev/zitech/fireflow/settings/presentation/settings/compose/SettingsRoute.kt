@@ -42,6 +42,7 @@ import dev.zitech.fireflow.settings.presentation.settings.viewmodel.ConfirmDelet
 import dev.zitech.fireflow.settings.presentation.settings.viewmodel.ConfirmDeleteAllDataDismissed
 import dev.zitech.fireflow.settings.presentation.settings.viewmodel.ConfirmLogOutClicked
 import dev.zitech.fireflow.settings.presentation.settings.viewmodel.ConfirmLogOutDismissed
+import dev.zitech.fireflow.settings.presentation.settings.viewmodel.ConnectivityChecked
 import dev.zitech.fireflow.settings.presentation.settings.viewmodel.CrashReporterChecked
 import dev.zitech.fireflow.settings.presentation.settings.viewmodel.CrashReporterErrorHandled
 import dev.zitech.fireflow.settings.presentation.settings.viewmodel.DeleteAllDataClicked
@@ -205,6 +206,9 @@ internal fun SettingsRoute(
                 },
                 deleteAllDataClicked = {
                     viewModel.receiveIntent(DeleteAllDataClicked)
+                },
+                connectivityChecked = { checked ->
+                    viewModel.receiveIntent(ConnectivityChecked(checked))
                 }
             )
         }

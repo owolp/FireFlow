@@ -18,5 +18,5 @@
 <resources>
     <string name="app_name">ФайърФлоу</string>
 
-    <string name="network_connection_lost">Връзката с мрежата е изгубена: Недостъпна услуга</string>
+    <string name="network_connection_lost">Връзката със сървъра е изгубена</string>
 </resources>

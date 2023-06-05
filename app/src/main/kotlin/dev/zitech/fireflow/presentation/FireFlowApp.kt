@@ -18,8 +18,8 @@
 package dev.zitech.fireflow.presentation
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -34,7 +34,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
@@ -60,10 +59,7 @@ import dev.zitech.fireflow.ds.templates.scaffold.FireFlowScaffolds
 import dev.zitech.fireflow.ds.theme.FireFlowTheme
 import dev.zitech.fireflow.presentation.navigation.FireFlowNavHost
 
-@OptIn(
-    ExperimentalMaterial3Api::class,
-    ExperimentalLayoutApi::class
-)
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 internal fun FireFlowApp(
     theme: ApplicationTheme?,
@@ -91,8 +87,8 @@ internal fun FireFlowApp(
                         }
                         AnimatedVisibility(
                             visible = !isConnected,
-                            enter = slideInHorizontally(),
-                            exit = slideOutHorizontally()
+                            enter = expandVertically(),
+                            exit = shrinkVertically()
                         ) {
                             FireFlowErrors.Primary(
                                 modifier = Modifier.fillMaxWidth(),

@@ -197,11 +197,11 @@ object FireFlowButtons {
             )
             FireFlowTexts.TitleMedium(
                 modifier = Modifier.padding(
-                    start = FireFlowTheme.space.s
+                    start = FireFlowTheme.space.m
                 ),
                 text = text,
                 fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Start
             )
         }
     }

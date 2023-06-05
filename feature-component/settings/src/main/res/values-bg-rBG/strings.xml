@@ -40,6 +40,8 @@
     <string name="data_choices_crash_reporter_error">Настройките за споделяне на неизправности не бяха запазени правилно. Моля, опитайте да рестартирате приложението.</string>
     <string name="cd_data_choices_crash_reporter_enabled">Споделяне на неизправности е активирано</string>
     <string name="cd_data_choices_crash_reporter_disabled">Споделяне на неизправности е деактивирано</string>
+    <string name="cd_network_connectivity_enabled">Уведомленията за мрежова свързаност са активирани</string>
+    <string name="cd_network_connectivity_disabled">Уведомленията за мрежова свързаност са деактивирани</string>
 
     <string name="appearance_category">Външен вид</string>
     <string name="appearance_theme">Тема</string>
@@ -48,6 +50,8 @@
     <string name="appearance_language">Език</string>
     <string name="cd_appearance_language_click">Променете езика на приложението</string>
     <string name="appearance_dialog_language_title">Език</string>
+    <string name="appearance_network_connectivity_title">Мрежова свързаност</string>
+    <string name="appearance_network_connectivity_description">Уведоми при изгубена връзка със сървъра</string>
 
     <string name="more_category">Повече</string>
     <string name="more_version">Версия</string>

@@ -23,6 +23,7 @@ import dev.zitech.fireflow.common.domain.model.application.ApplicationLanguage
 import dev.zitech.fireflow.common.domain.model.application.ApplicationTheme
 import dev.zitech.fireflow.common.domain.model.user.User
 import dev.zitech.fireflow.common.domain.usecase.user.GetCurrentUserUseCase
+import dev.zitech.fireflow.common.domain.usecase.user.UpdateUserUseCase
 import dev.zitech.fireflow.common.presentation.architecture.DeepLinkViewModel
 import dev.zitech.fireflow.common.presentation.architecture.MviViewModel
 import dev.zitech.fireflow.common.presentation.navigation.ScreenDestinationProvider
@@ -36,6 +37,7 @@ import dev.zitech.fireflow.core.logger.Logger
 import dev.zitech.fireflow.core.result.OperationResult.Failure
 import dev.zitech.fireflow.core.result.OperationResult.Success
 import dev.zitech.fireflow.core.result.onFailure
+import dev.zitech.fireflow.core.result.onSuccess
 import dev.zitech.fireflow.settings.domain.usecase.LogOutCurrentUserUseCase
 import dev.zitech.fireflow.settings.domain.usecase.application.CleanApplicationUseCase
 import dev.zitech.fireflow.settings.presentation.settings.viewmodel.collection.AppearanceCollectionStates
@@ -54,7 +56,8 @@ internal class SettingsViewModel @Inject constructor(
     private val cleanApplicationUseCase: CleanApplicationUseCase,
     private val dataChoicesCollectionStates: DataChoicesCollectionStates,
     private val getCurrentUserUseCase: GetCurrentUserUseCase,
-    private val logOutCurrentUserUseCase: LogOutCurrentUserUseCase
+    private val logOutCurrentUserUseCase: LogOutCurrentUserUseCase,
+    private val updateUserUseCase: UpdateUserUseCase
 ) : MviViewModel<SettingsIntent, SettingsState>(SettingsState()), DeepLinkViewModel {
 
     private val tag = Logger.tag(this::class.java)
@@ -73,6 +76,8 @@ internal class SettingsViewModel @Inject constructor(
                 setPreferencesStateLimited()
             }
 
+            setNetworkConnectivityPreference()
+
             updateState {
                 copy(
                     viewState = SettingsState.ViewState.Success
@@ -90,6 +95,7 @@ internal class SettingsViewModel @Inject constructor(
                 ConfirmLogOutDismissed -> updateState { copy(confirmLogOut = false) }
                 ConfirmDeleteAllDataClicked -> handleDeleteAllDataClicked()
                 ConfirmDeleteAllDataDismissed -> updateState { copy(confirmDeleteAll = false) }
+                is ConnectivityChecked -> handleConnectivityChecked(intent.checked)
                 is CrashReporterChecked -> handleCrashReporterChecked(intent.checked)
                 CrashReporterErrorHandled -> updateState {
                     copy(crashReporterError = false)
@@ -177,6 +183,20 @@ internal class SettingsViewModel @Inject constructor(
         }
     }
 
+    private suspend fun handleConnectivityChecked(checked: Boolean) {
+        getCurrentUserUseCase().first().onSuccess { user ->
+            when (user) {
+                is User.Local -> {
+                    updateState { copy(fatalError = Error.LocalUserTypeNotSupported) }
+                }
+                is User.Remote -> {
+                    updateUserUseCase(user.copy(connectivityNotification = checked))
+                    updateState { copy(connectivity = checked) }
+                }
+            }
+        }
+    }
+
     private suspend fun handleCrashReporterChecked(checked: Boolean) {
         dataChoicesCollectionStates.setCrashReporterCollection(checked)
         val isEnabled = dataChoicesCollectionStates.getCrashReporterCollectionValue()
@@ -244,6 +264,18 @@ internal class SettingsViewModel @Inject constructor(
         ApplicationTheme.getApplicationTheme(id).run {
             appearanceCollectionStates.setApplicationThemeValue(this)
             updateState { copy(applicationTheme = this@run) }
+        }
+    }
+
+    private suspend fun setNetworkConnectivityPreference() {
+        getCurrentUserUseCase().first().onSuccess { user ->
+            if (user is User.Remote) {
+                updateState {
+                    copy(
+                        connectivity = user.connectivityNotification
+                    )
+                }
+            }
         }
     }
 

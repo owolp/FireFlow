@@ -22,13 +22,14 @@ import dev.zitech.fireflow.common.domain.model.user.User
 import dev.zitech.fireflow.common.domain.model.user.User.Remote.UrlPortFormat
 import dev.zitech.fireflow.common.domain.usecase.user.GetCurrentUserUseCase
 import dev.zitech.fireflow.core.dispatcher.AppDispatchers
-import dev.zitech.fireflow.core.error.Error
 import dev.zitech.fireflow.core.logger.Logger
 import dev.zitech.fireflow.core.result.OperationResult
 import java.io.IOException
 import java.net.InetSocketAddress
 import java.net.Socket
 import javax.inject.Inject
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.channels.ProducerScope
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -38,9 +39,14 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 /**
  * Implementation of [NetworkConnectivityProvider] interface for managing network connectivity state.
+ *
+ * This class provides functionality to monitor the network connectivity state based on the current user's information.
+ * It periodically checks the network connection availability and emits the corresponding network state through the
+ * [networkState] flow. The flow is updated whenever a new user result is received from the [GetCurrentUserUseCase].
  *
  * @param appDispatchers The [AppDispatchers] instance for specifying the dispatchers for coroutines.
  * @param getCurrentUserUseCase The use case for retrieving the current user.
@@ -50,32 +56,37 @@ internal class NetworkConnectivityProviderImpl @Inject constructor(
     private val getCurrentUserUseCase: GetCurrentUserUseCase
 ) : NetworkConnectivityProvider {
 
+    private var connectivityJob: Job? = null
     private val tag = Logger.tag(this::class.java)
 
     /**
      * Flow representing the network connectivity state.
+     *
+     * This flow monitors the network connectivity state based on the current user's information.
+     * Whenever a new user result is received, the previous connectivity job is canceled and a new job is started.
+     * The job periodically checks the network connection availability and emits the corresponding network state.
      */
     override val networkState: Flow<NetworkState> = callbackFlow {
         getCurrentUserUseCase().onEach { userResult ->
+            connectivityJob?.cancel()
+
             when (userResult) {
                 is OperationResult.Failure -> {
-                    // NO_OP
+                    trySend(NetworkState.Unknown)
                 }
                 is OperationResult.Success -> {
                     when (val user = userResult.data) {
-                        is User.Local -> UrlPortFormat.Error(Error.LocalUserTypeNotSupported)
+                        is User.Local -> {
+                            trySend(NetworkState.Unknown)
+                        }
                         is User.Remote -> {
-                            val urlPortFormat = user.extractUrlAndPort()
-                            if (urlPortFormat is UrlPortFormat.Valid) {
-                                while (true) {
-                                    delay(PERIODIC_CHECK_DELAY)
-                                    val socket = Socket()
-                                    if (isNetworkConnectionAvailable(socket, urlPortFormat)) {
-                                        trySend(NetworkState.Connected)
-                                    } else {
-                                        trySend(NetworkState.Disconnected)
-                                    }
+                            if (user.connectivityNotification) {
+                                val urlPortFormat = user.extractUrlAndPort()
+                                if (urlPortFormat is UrlPortFormat.Valid) {
+                                    connectivityJob = startConnectivityJob(urlPortFormat)
                                 }
+                            } else {
+                                trySend(NetworkState.Unknown)
                             }
                         }
                     }
@@ -89,6 +100,29 @@ internal class NetworkConnectivityProviderImpl @Inject constructor(
         .catch { exception ->
             Logger.e(tag, exception)
         }
+
+    /**
+     * Starts the connectivity job for periodic network connection checks.
+     *
+     * This function launches a coroutine job that periodically checks the network connection availability
+     * based on the provided URL and port format. The job continues running in an infinite loop, sending
+     * the corresponding network state to the consumer scope using [trySend].
+     *
+     * @param urlPortFormat The URL and port format information for the network connection.
+     */
+    private fun ProducerScope<NetworkState>.startConnectivityJob(
+        urlPortFormat: UrlPortFormat.Valid
+    ) = launch {
+        do {
+            val socket = Socket()
+            if (isNetworkConnectionAvailable(socket, urlPortFormat)) {
+                trySend(NetworkState.Connected)
+            } else {
+                trySend(NetworkState.Disconnected)
+            }
+            delay(PERIODIC_CHECK_DELAY)
+        } while (true)
+    }
 
     /**
      * Connects the socket to the specified IP address and port.

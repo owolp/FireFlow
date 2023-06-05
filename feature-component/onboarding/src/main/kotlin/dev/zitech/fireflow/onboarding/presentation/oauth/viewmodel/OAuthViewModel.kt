@@ -119,6 +119,7 @@ internal class OAuthViewModel @Inject constructor(
         saveUserUseCase(
             clientId = clientId,
             clientSecret = clientSecret,
+            connectivityNotification = true,
             isCurrentUser = false,
             serverAddress = serverAddress,
             state = state
