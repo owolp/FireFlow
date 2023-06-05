@@ -75,11 +75,11 @@ internal class WelcomeViewModel @Inject constructor(
         // TODO: Dev usage
         saveUserUseCase(
             accessToken = null,
-            clientId = "",
-            clientSecret = "",
+            clientId = null,
+            clientSecret = null,
             connectivityNotification = false,
             isCurrentUser = true,
-            serverAddress = "",
+            serverAddress = null,
             state = ""
         )
         updateState {

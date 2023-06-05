@@ -76,6 +76,8 @@ internal class SettingsViewModel @Inject constructor(
                 setPreferencesStateLimited()
             }
 
+            setNetworkConnectivityPreference()
+
             updateState {
                 copy(
                     viewState = SettingsState.ViewState.Success
@@ -165,20 +167,6 @@ internal class SettingsViewModel @Inject constructor(
         }
     }
 
-    private suspend fun handleConnectivityChecked(checked: Boolean) {
-        getCurrentUserUseCase().first().onSuccess { user ->
-            when (user) {
-                is User.Local -> {
-                    updateState { copy(fatalError = Error.LocalUserTypeNotSupported) }
-                }
-                is User.Remote -> {
-                    updateUserUseCase(user.copy(connectivityNotification = checked))
-                    updateState { copy(connectivity = checked) }
-                }
-            }
-        }
-    }
-
     private suspend fun handleConfirmLogOutClicked() {
         updateState { copy(confirmLogOut = false) }
         logOutCurrentUserUseCase().onFailure { error ->
@@ -190,6 +178,20 @@ internal class SettingsViewModel @Inject constructor(
                 else -> {
                     Logger.e(tag, error.debugText)
                     updateState { copy(fatalError = error) }
+                }
+            }
+        }
+    }
+
+    private suspend fun handleConnectivityChecked(checked: Boolean) {
+        getCurrentUserUseCase().first().onSuccess { user ->
+            when (user) {
+                is User.Local -> {
+                    updateState { copy(fatalError = Error.LocalUserTypeNotSupported) }
+                }
+                is User.Remote -> {
+                    updateUserUseCase(user.copy(connectivityNotification = checked))
+                    updateState { copy(connectivity = checked) }
                 }
             }
         }
@@ -262,6 +264,18 @@ internal class SettingsViewModel @Inject constructor(
         ApplicationTheme.getApplicationTheme(id).run {
             appearanceCollectionStates.setApplicationThemeValue(this)
             updateState { copy(applicationTheme = this@run) }
+        }
+    }
+
+    private suspend fun setNetworkConnectivityPreference() {
+        getCurrentUserUseCase().first().onSuccess { user ->
+            if (user is User.Remote) {
+                updateState {
+                    copy(
+                        connectivity = user.connectivityNotification
+                    )
+                }
+            }
         }
     }
 

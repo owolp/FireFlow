@@ -23,13 +23,13 @@
     <string name="data_choices_analytics_title">Analytics</string>
     <string name="data_choices_analytics_description">Share usage, hardware and customization data about the application to make it better.</string>
     <string name="data_choices_analytics_error">The analytics settings were not saved correctly. Please try restarting the app.</string>
-    <string name="cd_data_choices_analytics_enabled">Analytics Enabled</string>
-    <string name="cd_data_choices_analytics_disabled">Analytics Disabled</string>
+    <string name="cd_data_choices_analytics_enabled">Analytics enabled</string>
+    <string name="cd_data_choices_analytics_disabled">Analytics disabled</string>
     <string name="data_choices_performance_title">Performance</string>
     <string name="data_choices_performance_description">Share performance data to make the application faster.</string>
     <string name="data_choices_performance_error">The performance settings were not saved correctly. Please try restarting the app.</string>
-    <string name="cd_data_choices_performance_enabled">Performance Enabled</string>
-    <string name="cd_data_choices_performance_disabled">Performance Disabled</string>
+    <string name="cd_data_choices_performance_enabled">Performance enabled</string>
+    <string name="cd_data_choices_performance_disabled">Performance disabled</string>
     <string name="data_choices_personalized_ads_title">Personalized Ads</string>
     <string name="data_choices_personalized_ads_description">To deliver personalized ads, the application uses information about you to serve ads that are more relevant to you.</string>
     <string name="data_choices_personalized_ads_error">The Personalized Ads settings were not saved correctly. Please try restarting the app.</string>
@@ -38,8 +38,8 @@
     <string name="data_choices_crash_reporter_title">Crash Reporter</string>
     <string name="data_choices_crash_reporter_description">Submit automatic crash reports to help make the application more stable and secure.</string>
     <string name="data_choices_crash_reporter_error">The Crash Reporter settings were not saved correctly. Please try restarting the app.</string>
-    <string name="cd_data_choices_crash_reporter_enabled">Crash Reporter Enabled</string>
-    <string name="cd_data_choices_crash_reporter_disabled">Crash Reporter Disabled</string>
+    <string name="cd_data_choices_crash_reporter_enabled">Crash Reporter enabled</string>
+    <string name="cd_data_choices_crash_reporter_disabled">Crash Reporter disabled</string>
 
     <string name="appearance_category">Appearance</string>
     <string name="appearance_theme">Theme</string>
@@ -48,10 +48,14 @@
     <string name="appearance_language">Language</string>
     <string name="cd_appearance_language_click">Change application language</string>
     <string name="appearance_dialog_language_title">Language</string>
+    <string name="appearance_network_connectivity_title">Network Connectivity</string>
+    <string name="appearance_network_connectivity_description">Notify on lost server connection</string>
+    <string name="cd_network_connectivity_enabled">Network connectivity notifications enabled</string>
+    <string name="cd_network_connectivity_disabled">Network connectivity notifications disabled</string>
 
     <string name="more_category">More</string>
     <string name="more_version">Version</string>
-    <string name="more_log_out">Log out</string>
+    <string name="more_log_out">Log Out</string>
     <string name="cd_more_log_out_click">Log out from the profile of %s</string>
     <string name="more_dialog_log_out_title">Confirm Log Out</string>
     <string name="more_dialog_log_out_text">Are you sure you want to log out?</string>

@@ -71,7 +71,7 @@ internal interface UserSource {
      * @param clientSecret The OAuth client secret associated with the user.
      * @param connectivityNotification Indicates whether the user has enabled connectivity checks.
      * @param isCurrentUser Indicates whether the user is the current user.
-     * @param serverAddress The server address associated with the user.
+     * @param serverAddress The server address of the user. If the value is null, it indicates that the user is local.
      * @param state The state associated with the user.
      * @return An [OperationResult] representing the result of the save/update operation,
      *         containing the ID of the saved/updated user if successful, or an error if unsuccessful.
@@ -82,7 +82,7 @@ internal interface UserSource {
         clientSecret: String?,
         connectivityNotification: Boolean,
         isCurrentUser: Boolean,
-        serverAddress: String,
+        serverAddress: String?,
         state: String
     ): OperationResult<Long>
 

@@ -82,7 +82,7 @@ internal class UserDatabaseSource @Inject constructor(
         clientSecret: String?,
         connectivityNotification: Boolean,
         isCurrentUser: Boolean,
-        serverAddress: String,
+        serverAddress: String?,
         state: String
     ): OperationResult<Long> = handleDb {
         userDao.saveUser(

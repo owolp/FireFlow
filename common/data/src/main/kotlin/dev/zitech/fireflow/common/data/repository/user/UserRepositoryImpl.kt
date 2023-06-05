@@ -76,7 +76,7 @@ internal class UserRepositoryImpl @Inject constructor(
         clientSecret: String?,
         connectivityNotification: Boolean,
         isCurrentUser: Boolean,
-        serverAddress: String,
+        serverAddress: String?,
         state: String
     ): OperationResult<Long> {
         val saveUserResult = userDatabaseSource.saveUser(
@@ -90,10 +90,12 @@ internal class UserRepositoryImpl @Inject constructor(
         )
         when (saveUserResult) {
             is Success -> {
-                networkDetailsInMemoryCache.data = NetworkDetails(
-                    userId = saveUserResult.data,
-                    serverAddress = serverAddress
-                )
+                if (serverAddress != null) {
+                    networkDetailsInMemoryCache.data = NetworkDetails(
+                        userId = saveUserResult.data,
+                        serverAddress = serverAddress
+                    )
+                }
             }
 
             is Failure -> {
