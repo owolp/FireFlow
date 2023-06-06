@@ -18,7 +18,7 @@
 package dev.zitech.fireflow.common.data.source.about
 
 import dev.zitech.fireflow.common.data.remote.rest.mapper.user.UserResponseMapper
-import dev.zitech.fireflow.common.data.remote.rest.result.mapToWork
+import dev.zitech.fireflow.common.data.remote.rest.result.mapToOperationResult
 import dev.zitech.fireflow.common.data.remote.rest.service.AboutService
 import dev.zitech.fireflow.common.domain.model.profile.FireflyProfile
 import dev.zitech.fireflow.core.result.OperationResult
@@ -30,5 +30,5 @@ internal class AboutRemoteSource @Inject constructor(
 ) : AboutSource {
 
     override suspend fun getFireflyProfile(): OperationResult<FireflyProfile> =
-        aboutService.getUser().mapToWork(userResponseMapper::toDomain)
+        aboutService.getUser().mapToOperationResult(userResponseMapper::toDomain)
 }

@@ -169,7 +169,10 @@ private fun PatScreenContent(
             text = stringResource(R.string.pat_login),
             enabled = state.loginEnabled && !state.loading,
             loading = state.loading,
-            onClick = loginClicked
+            onClick = {
+                focusManager.clearFocus()
+                loginClicked()
+            }
         )
         FireFlowSpacers.Vertical()
     }

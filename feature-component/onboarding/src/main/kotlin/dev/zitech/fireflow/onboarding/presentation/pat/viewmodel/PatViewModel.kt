@@ -107,6 +107,18 @@ internal class PatViewModel @Inject constructor(
         removeStaleUsersUseCase()
         when (error) {
             is Error.UserVisible -> updateState { copy(loading = false, nonFatalError = error) }
+            is Error.Fatal -> {
+                if (error.type == Error.Fatal.Type.NETWORK) {
+                    updateState {
+                        copy(
+                            loading = false,
+                            nonFatalError = error.toUserVisible()
+                        )
+                    }
+                } else {
+                    updateState { copy(loading = false, fatalError = error) }
+                }
+            }
             else -> updateState { copy(loading = false, fatalError = error) }
         }
     }

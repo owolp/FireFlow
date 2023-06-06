@@ -48,9 +48,15 @@ sealed class Error(
         }
     }
 
+    /**
+     * Represents a fatal error, which is a specific type of [Error].
+     *
+     * @property throwable The [Throwable] associated with the error.
+     * @property type The type of the fatal error.
+     */
     data class Fatal(
         val throwable: Throwable,
-        private val type: Type
+        val type: Type
     ) : Error(
         when (type) {
             Type.DISK -> "Disk exception:${throwable.message}"
@@ -63,11 +69,32 @@ sealed class Error(
             Type.OS -> R.string.os_exception
         }
     ) {
+        /**
+         * Represents the type of a fatal error in the [Fatal] data class.
+         */
         enum class Type {
+            /**
+             * Indicates a disk-related fatal error.
+             */
             DISK,
+
+            /**
+             * Indicates a network-related fatal error.
+             */
             NETWORK,
+
+            /**
+             * Indicates an operating system-related fatal error.
+             */
             OS
         }
+
+        /**
+         * Converts the fatal error to a [UserVisible] error.
+         *
+         * @return The corresponding [UserVisible] error.
+         */
+        fun toUserVisible() = UserVisible(this.throwable.message)
     }
 
     data class TokenFailed(
