@@ -186,7 +186,10 @@ private fun OAuthScreenContent(
             text = stringResource(R.string.oauth_login),
             enabled = state.loginEnabled && !state.loading,
             loading = state.loading,
-            onClick = loginClicked
+            onClick = {
+                focusManager.clearFocus()
+                loginClicked()
+            }
         )
         FireFlowSpacers.Vertical()
     }

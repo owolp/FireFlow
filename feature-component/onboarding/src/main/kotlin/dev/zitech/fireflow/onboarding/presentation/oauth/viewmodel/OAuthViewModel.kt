@@ -64,7 +64,12 @@ internal class OAuthViewModel @Inject constructor(
     override fun receiveIntent(intent: OAuthIntent) {
         viewModelScope.launch {
             when (intent) {
-                AuthenticationCanceled -> updateState { copy(loading = false) }
+                AuthenticationCanceled -> updateState {
+                    copy(
+                        loading = false,
+                        fireflyAuthentication = null
+                    )
+                }
                 BackClicked -> updateState { copy(stepClosed = true) }
                 is ClientIdChanged -> handleClientIdChanged(intent)
                 is ClientSecretChanged -> handleClientSecretChanged(intent)

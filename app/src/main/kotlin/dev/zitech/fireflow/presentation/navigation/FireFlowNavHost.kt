@@ -23,6 +23,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import dev.zitech.fireflow.authentication.presentation.navigation.AccountsDestination
 import dev.zitech.fireflow.authentication.presentation.navigation.authenticationGraph
+import dev.zitech.fireflow.core.logger.Logger
 import dev.zitech.fireflow.dashboard.presentation.navigation.DashboardDestination
 import dev.zitech.fireflow.dashboard.presentation.navigation.dashboardGraph
 import dev.zitech.fireflow.onboarding.presentation.navigation.OAuthDestination
@@ -81,7 +82,9 @@ internal fun FireFlowNavHost(
                 )
             },
             navigateOutOfApp = onCloseApplication,
-            navigateToError = { TODO() },
+            navigateToError = {
+                Logger.e("FireFlowNavHost", it.debugText)
+            },
             navigateBack = { onBackClick(null) }
         )
         dashboardGraph(
@@ -93,7 +96,9 @@ internal fun FireFlowNavHost(
                     )
                 )
             },
-            navigateToError = { TODO() },
+            navigateToError = {
+                Logger.e("FireFlowNavHost", it.debugText)
+            },
             navigateToWelcome = {
                 onNavigateToDestination(
                     NavDirection(
@@ -112,7 +117,9 @@ internal fun FireFlowNavHost(
                     )
                 )
             },
-            navigateToError = { TODO() },
+            navigateToError = {
+                Logger.e("FireFlowNavHost", it.debugText)
+            },
             navigateToWelcome = {
                 onNavigateToDestination(
                     NavDirection(
