@@ -49,7 +49,7 @@ dependencies {
 
     devImplementation(libs.chuckerteam.chucker)
     devImplementation(libs.facebook.flipper.flipper)
-    devApi(libs.facebook.flipper.network.plugin)
+    devImplementation(libs.facebook.flipper.network.plugin)
     devImplementation("com.squareup.okhttp3:logging-interceptor")
 
     fossImplementation(libs.acra.http)

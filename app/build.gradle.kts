@@ -97,6 +97,7 @@ dependencies {
 
     devImplementation(libs.facebook.flipper.flipper)
     devImplementation(libs.facebook.soloader)
+    devImplementation(libs.facebook.flipper.network.plugin)
 
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.appcompat)
