@@ -103,7 +103,7 @@ suspend fun <T : Any> NetworkResponse<T>.onException(
  * @param transformSuccess The transformation function to apply to the data of the success response.
  * @return The mapped operation result.
  */
-fun <T : Any, R : Any> NetworkResponse<T>.mapToWork(
+fun <T : Any, R : Any> NetworkResponse<T>.mapToOperationResult(
     transformSuccess: (T) -> R
 ): OperationResult<R> =
     when (this) {

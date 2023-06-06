@@ -52,9 +52,13 @@ internal fun PatRoute(
         viewModel.receiveIntent(FatalErrorHandled)
     }
     screenState.nonFatalError?.let { fireFlowError ->
+        val text = when (fireFlowError) {
+            is Error.UserVisible -> fireFlowError.message.orEmpty()
+            else -> stringResource(fireFlowError.uiResId)
+        }
         snackbarState.showMessage(
             BottomNotifierMessage(
-                text = stringResource(fireFlowError.uiResId),
+                text = text,
                 state = BottomNotifierMessage.State.ERROR,
                 duration = BottomNotifierMessage.Duration.SHORT
             )

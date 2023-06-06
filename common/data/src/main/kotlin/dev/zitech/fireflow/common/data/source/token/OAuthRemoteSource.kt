@@ -19,7 +19,7 @@ package dev.zitech.fireflow.common.data.source.token
 
 import dev.zitech.fireflow.common.data.remote.rest.mapper.token.AccessTokenResponseMapper
 import dev.zitech.fireflow.common.data.remote.rest.mapper.token.RefreshTokenResponseMapper
-import dev.zitech.fireflow.common.data.remote.rest.result.mapToWork
+import dev.zitech.fireflow.common.data.remote.rest.result.mapToOperationResult
 import dev.zitech.fireflow.common.data.remote.rest.service.OAuthService
 import dev.zitech.fireflow.common.domain.model.authentication.Token
 import dev.zitech.fireflow.core.result.OperationResult
@@ -39,7 +39,7 @@ internal class OAuthRemoteSource @Inject constructor(
         clientId = clientId,
         clientSecret = clientSecret,
         code = code
-    ).mapToWork(accessTokenResponseMapper::toDomain)
+    ).mapToOperationResult(accessTokenResponseMapper::toDomain)
 
     override suspend fun getRefreshedToken(
         clientId: String,
@@ -49,5 +49,5 @@ internal class OAuthRemoteSource @Inject constructor(
         clientId = clientId,
         clientSecret = clientSecret,
         refreshToken = refreshToken
-    ).mapToWork(refreshTokenResponseMapper::toDomain)
+    ).mapToOperationResult(refreshTokenResponseMapper::toDomain)
 }
