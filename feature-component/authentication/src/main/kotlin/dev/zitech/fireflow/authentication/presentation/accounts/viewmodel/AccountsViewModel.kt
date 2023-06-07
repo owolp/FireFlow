@@ -34,7 +34,18 @@ internal class AccountsViewModel @Inject constructor() :
             when (intent) {
                 LoginClicked -> updateState { copy(home = true) }
                 HomeHandled -> updateState { copy(home = false) }
+                is BackClicked -> handleBackClicked(intent.isBackNavigationSupported)
+                CloseHandled -> updateState { copy(close = false) }
+                QuitHandled -> updateState { copy(quit = false) }
             }
+        }
+    }
+
+    private fun handleBackClicked(isBackNavigationSupported: Boolean) {
+        if (isBackNavigationSupported) {
+            updateState { copy(close = true) }
+        } else {
+            updateState { copy(quit = true) }
         }
     }
 }

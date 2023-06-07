@@ -118,8 +118,9 @@ internal class FireFlowAppState(
         popUpToDestination: FireFlowNavigationDestination? = null,
         restoreState: Boolean = DEFAULT_STATE_RESTORE_STATE
     ) {
+        val navRoute = route ?: destination.route
         if (destination is TopLevelDestination) {
-            navController.navigate(route ?: destination.route) {
+            navController.navigate(navRoute) {
                 // Pop up to the start destination of the graph to
                 // avoid building up a large stack of destinations
                 // on the back stack as users select items
@@ -134,7 +135,6 @@ internal class FireFlowAppState(
                 this.restoreState = restoreState
             }
         } else {
-            val navRoute = route ?: destination.route
             navController.navigate(navRoute) {
                 popUpTo(popUpToDestination?.route ?: navRoute) {
                     this.inclusive = inclusive

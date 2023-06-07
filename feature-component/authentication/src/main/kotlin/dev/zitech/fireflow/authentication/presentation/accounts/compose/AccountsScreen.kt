@@ -17,6 +17,7 @@
 
 package dev.zitech.fireflow.authentication.presentation.accounts.compose
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -36,7 +37,9 @@ import dev.zitech.fireflow.ds.templates.scaffold.FireFlowScaffolds
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun AccountsScreen(
+    isBackNavigationSupported: Boolean,
     accountsState: AccountsState,
+    backClicked: (backNavigationSupported: Boolean) -> Unit,
     loginClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -44,13 +47,25 @@ internal fun AccountsScreen(
         ScrollBehavior.Pinned
     )
 
+    BackHandler(enabled = true) {
+        backClicked(isBackNavigationSupported)
+    }
+
     FireFlowScaffolds.Primary(
         modifier = modifier,
         topBar = {
-            FireFlowTopAppBars.Primary(
-                title = stringResource(R.string.accounts),
-                scrollBehavior = topAppBarScrollBehavior
-            )
+            if (isBackNavigationSupported) {
+                FireFlowTopAppBars.BackNavigation(
+                    title = stringResource(R.string.accounts),
+                    scrollBehavior = topAppBarScrollBehavior,
+                    onNavigationClick = { backClicked(true) }
+                )
+            } else {
+                FireFlowTopAppBars.Primary(
+                    title = stringResource(R.string.accounts),
+                    scrollBehavior = topAppBarScrollBehavior
+                )
+            }
         }
     ) { innerPadding ->
         AccountsContent(

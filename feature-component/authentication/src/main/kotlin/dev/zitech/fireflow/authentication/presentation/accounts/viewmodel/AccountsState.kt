@@ -20,5 +20,7 @@ package dev.zitech.fireflow.authentication.presentation.accounts.viewmodel
 import dev.zitech.fireflow.common.presentation.architecture.MviState
 
 internal data class AccountsState(
-    val home: Boolean = false
+    val close: Boolean = false,
+    val home: Boolean = false,
+    val quit: Boolean = false
 ) : MviState

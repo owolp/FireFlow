@@ -24,4 +24,5 @@ private const val DESTINATION = "authentication"
 object AccountsDestination : FireFlowNavigationDestination {
     override val route: String = "accounts_route"
     override val destination: String = DESTINATION
+    const val isBackNavigationSupported: String = "isBackNavigationSupported"
 }

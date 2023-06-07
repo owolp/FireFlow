@@ -20,5 +20,8 @@ package dev.zitech.fireflow.authentication.presentation.accounts.viewmodel
 import dev.zitech.fireflow.common.presentation.architecture.MviIntent
 
 internal sealed interface AccountsIntent : MviIntent
+internal data class BackClicked(val isBackNavigationSupported: Boolean) : AccountsIntent
 internal object LoginClicked : AccountsIntent
+internal object QuitHandled : AccountsIntent
+internal object CloseHandled : AccountsIntent
 internal object HomeHandled : AccountsIntent

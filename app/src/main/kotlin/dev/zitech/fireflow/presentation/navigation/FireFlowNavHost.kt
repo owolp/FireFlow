@@ -56,7 +56,9 @@ internal fun FireFlowNavHost(
                         inclusive = true
                     )
                 )
-            }
+            },
+            navigateOutOfApp = onCloseApplication,
+            navigateBack = { onBackClick(null) }
         )
         onboardingGraph(
             navigateToOAuth = {
@@ -92,6 +94,7 @@ internal fun FireFlowNavHost(
                 onNavigateToDestination(
                     NavDirection(
                         destination = AccountsDestination,
+                        route = "${AccountsDestination.route}?${AccountsDestination.isBackNavigationSupported}=false",
                         inclusive = true
                     )
                 )
@@ -113,6 +116,7 @@ internal fun FireFlowNavHost(
                 onNavigateToDestination(
                     NavDirection(
                         destination = AccountsDestination,
+                        route = "${AccountsDestination.route}?${AccountsDestination.isBackNavigationSupported}=false",
                         inclusive = true
                     )
                 )

@@ -23,12 +23,18 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.zitech.fireflow.authentication.presentation.accounts.viewmodel.AccountsViewModel
+import dev.zitech.fireflow.authentication.presentation.accounts.viewmodel.BackClicked
+import dev.zitech.fireflow.authentication.presentation.accounts.viewmodel.CloseHandled
 import dev.zitech.fireflow.authentication.presentation.accounts.viewmodel.HomeHandled
 import dev.zitech.fireflow.authentication.presentation.accounts.viewmodel.LoginClicked
+import dev.zitech.fireflow.authentication.presentation.accounts.viewmodel.QuitHandled
 
 @Composable
 internal fun AccountsRoute(
+    isBackNavigationSupported: Boolean,
     navigateToHome: () -> Unit,
+    navigateOutOfApp: () -> Unit,
+    navigateBack: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: AccountsViewModel = hiltViewModel()
 ) {
@@ -39,8 +45,20 @@ internal fun AccountsRoute(
         viewModel.receiveIntent(HomeHandled)
     }
 
+    if (screenState.quit) {
+        navigateOutOfApp()
+        viewModel.receiveIntent(QuitHandled)
+    }
+
+    if (screenState.close) {
+        navigateBack()
+        viewModel.receiveIntent(CloseHandled)
+    }
+
     AccountsScreen(
+        isBackNavigationSupported = isBackNavigationSupported,
         accountsState = screenState,
+        backClicked = { viewModel.receiveIntent(BackClicked(it)) },
         loginClicked = { viewModel.receiveIntent(LoginClicked) },
         modifier = modifier
     )

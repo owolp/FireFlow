@@ -18,15 +18,35 @@
 package dev.zitech.fireflow.authentication.presentation.navigation
 
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import dev.zitech.fireflow.authentication.presentation.accounts.compose.AccountsRoute
 
 fun NavGraphBuilder.authenticationGraph(
-    navigateToDashboard: () -> Unit
+    navigateToDashboard: () -> Unit,
+    navigateOutOfApp: () -> Unit,
+    navigateBack: () -> Unit
 ) {
-    composable(route = AccountsDestination.route) {
+    composable(
+        route = "${AccountsDestination.route}?" +
+            "${AccountsDestination.isBackNavigationSupported}={${AccountsDestination.isBackNavigationSupported}}",
+        arguments = listOf(
+            navArgument(AccountsDestination.isBackNavigationSupported) {
+                type = NavType.BoolType
+            }
+        )
+    ) { navBackStackEntry ->
+        val isBackNavigationSupported =
+            navBackStackEntry.arguments
+                ?.getBoolean(AccountsDestination.isBackNavigationSupported)
+                ?: false
+
         AccountsRoute(
-            navigateToHome = navigateToDashboard
+            isBackNavigationSupported = isBackNavigationSupported,
+            navigateToHome = navigateToDashboard,
+            navigateOutOfApp = navigateOutOfApp,
+            navigateBack = navigateBack
         )
     }
 }
