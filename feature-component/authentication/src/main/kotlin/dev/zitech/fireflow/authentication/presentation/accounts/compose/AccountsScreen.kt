@@ -29,9 +29,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import dev.zitech.fireflow.authentication.R
 import dev.zitech.fireflow.authentication.presentation.accounts.viewmodel.AccountsState
-import dev.zitech.fireflow.ds.atoms.button.FireFlowButtons
 import dev.zitech.fireflow.ds.molecules.topappbar.FireFlowTopAppBars
 import dev.zitech.fireflow.ds.molecules.topappbar.ScrollBehavior
+import dev.zitech.fireflow.ds.organisms.account.FireFlowAccounts
 import dev.zitech.fireflow.ds.templates.scaffold.FireFlowScaffolds
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -87,6 +87,13 @@ private fun AccountsContent(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        FireFlowButtons.Text.OnSurface(text = "Login", onClick = loginClicked)
+        FireFlowAccounts.Primary(
+            imageText = "Z",
+            topInfo = "someone@mail.dev",
+            bottomInfo = "192.168.1.1",
+            isLogged = true,
+            onSwitchClick = {},
+            onRemoveClick = {}
+        )
     }
 }
