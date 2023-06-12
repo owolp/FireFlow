@@ -68,7 +68,7 @@ internal fun AccountsScreen(
         snackbarState = snackbarState,
         topBar = {
             if (isBackNavigationSupported) {
-                FireFlowTopAppBars.BackNavigation(
+                FireFlowTopAppBars.Collapsing.BackNavigation(
                     title = stringResource(R.string.accounts),
                     scrollBehavior = topAppBarScrollBehavior,
                     onNavigationClick = { backClicked(true) }
