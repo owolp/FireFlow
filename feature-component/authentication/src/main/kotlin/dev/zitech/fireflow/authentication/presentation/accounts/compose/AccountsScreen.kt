@@ -67,7 +67,7 @@ internal fun AccountsScreen(
             .nestedScroll(topAppBarScrollBehavior.nestedScrollConnection),
         snackbarState = snackbarState,
         topBar = {
-            if (!isBackNavigationSupported) {
+            if (isBackNavigationSupported) {
                 FireFlowTopAppBars.BackNavigation(
                     title = stringResource(R.string.accounts),
                     scrollBehavior = topAppBarScrollBehavior,
