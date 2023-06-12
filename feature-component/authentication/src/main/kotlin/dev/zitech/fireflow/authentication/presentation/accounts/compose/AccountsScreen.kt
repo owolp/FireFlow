@@ -30,6 +30,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import dev.zitech.fireflow.authentication.R
 import dev.zitech.fireflow.authentication.presentation.accounts.viewmodel.AccountsState
@@ -54,7 +55,7 @@ internal fun AccountsScreen(
     snackbarState: FireFlowSnackbarState = rememberSnackbarState()
 ) {
     val topAppBarScrollBehavior = FireFlowTopAppBars.topAppBarScrollBehavior(
-        ScrollBehavior.Pinned
+        ScrollBehavior.ExitUntilCollapsed
     )
 
     BackHandler(enabled = true) {
@@ -62,17 +63,18 @@ internal fun AccountsScreen(
     }
 
     FireFlowScaffolds.Primary(
-        modifier = modifier,
+        modifier = modifier
+            .nestedScroll(topAppBarScrollBehavior.nestedScrollConnection),
         snackbarState = snackbarState,
         topBar = {
-            if (isBackNavigationSupported) {
+            if (!isBackNavigationSupported) {
                 FireFlowTopAppBars.BackNavigation(
                     title = stringResource(R.string.accounts),
                     scrollBehavior = topAppBarScrollBehavior,
                     onNavigationClick = { backClicked(true) }
                 )
             } else {
-                FireFlowTopAppBars.Primary(
+                FireFlowTopAppBars.Collapsing.Primary(
                     title = stringResource(R.string.accounts),
                     scrollBehavior = topAppBarScrollBehavior
                 )

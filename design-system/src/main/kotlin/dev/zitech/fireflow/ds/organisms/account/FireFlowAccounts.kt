@@ -26,7 +26,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
@@ -66,11 +65,7 @@ object FireFlowAccounts {
     ) {
         Row(
             modifier = modifier
-                .height(64.dp)
-                .padding(
-                    horizontal = FireFlowTheme.space.s,
-                    vertical = FireFlowTheme.space.xs
-                ),
+                .height(64.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
