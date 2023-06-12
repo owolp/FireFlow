@@ -45,7 +45,7 @@ internal class UserRepositoryImpl @Inject constructor(
                             }
                             is User.Remote -> {
                                 networkDetailsInMemoryCache.data = NetworkDetails(
-                                    userId = user.userId,
+                                    userId = user.id,
                                     serverAddress = user.serverAddress
                                 )
                             }

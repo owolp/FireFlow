@@ -29,20 +29,20 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import dev.zitech.fireflow.ds.R
 import dev.zitech.fireflow.ds.atoms.button.FireFlowButtons
+import dev.zitech.fireflow.ds.atoms.dropdown.FireFlowMenu
 import dev.zitech.fireflow.ds.atoms.icon.FireFlowIcons
 import dev.zitech.fireflow.ds.atoms.spacer.FireFlowSpacers
 import dev.zitech.fireflow.ds.atoms.text.FireFlowTexts
@@ -53,16 +53,17 @@ object FireFlowAccounts {
 
     @Composable
     fun Primary(
-        imageText: String,
+        initial: Char,
         topInfo: String,
         bottomInfo: String?,
         isLogged: Boolean,
-        onRemoveClick: () -> Unit,
-        onSwitchClick: () -> Unit,
+        menuItems: List<String>,
+        more: Boolean,
+        onMoreItemClick: (index: Int) -> Unit,
+        onMoreClick: () -> Unit,
+        onMoreDismiss: () -> Unit,
         modifier: Modifier = Modifier
     ) {
-        var popUpExpanded by remember { mutableStateOf(false) }
-
         Row(
             modifier = modifier
                 .height(64.dp)
@@ -84,7 +85,7 @@ object FireFlowAccounts {
                             shape = CircleShape
                         )
                         .wrapContentHeight(),
-                    text = imageText,
+                    text = initial.toString(),
                     maxLines = 1,
                     textAlign = TextAlign.Center,
                     color = FireFlowTheme.colors.surfaceTint
@@ -111,21 +112,34 @@ object FireFlowAccounts {
             ) {
                 FireFlowTexts.TitleMedium(
                     text = topInfo,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 1
                 )
                 FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.xss)
                 if (bottomInfo != null) {
-                    FireFlowTexts.TitleSmall(text = bottomInfo)
+                    FireFlowTexts.TitleSmall(
+                        text = bottomInfo,
+                        maxLines = 1
+                    )
                 }
             }
-            FireFlowButtons.Icon(
-                modifier = Modifier.fillMaxHeight(),
-                image = FireFlowIcons.MoreVert,
-                contentDescription = "",
-                onClick = {
-                    // TODO: DropDownMenu
-                }
-            )
+            Box(
+                modifier = Modifier
+                    .wrapContentSize(Alignment.TopEnd)
+            ) {
+                FireFlowButtons.Icon(
+                    modifier = Modifier.fillMaxHeight(),
+                    image = FireFlowIcons.MoreVert,
+                    contentDescription = stringResource(R.string.cd_account_more),
+                    onClick = onMoreClick
+                )
+                FireFlowMenu.DropDown(
+                    expanded = more,
+                    items = menuItems,
+                    onDismiss = onMoreDismiss,
+                    onItemClick = onMoreItemClick
+                )
+            }
         }
     }
 }
@@ -143,13 +157,18 @@ object FireFlowAccounts {
 private fun Accounts_Primary_Preview() {
     PreviewFireFlowTheme {
         FireFlowAccounts.Primary(
-            imageText = "Z",
+            initial = 'Z',
             topInfo = "someone@mail.dev",
-            bottomInfo = "192.168.1.1",
+            bottomInfo = "http://192.168.1.1",
             isLogged = true,
-            onRemoveClick = {},
-            onSwitchClick = {}
-//            serverAddress = null
+            more = true,
+            menuItems = listOf(
+                "First Text Appears Here",
+                "Second Text"
+            ),
+            onMoreItemClick = { _ -> },
+            onMoreClick = { },
+            onMoreDismiss = { }
         )
     }
 }

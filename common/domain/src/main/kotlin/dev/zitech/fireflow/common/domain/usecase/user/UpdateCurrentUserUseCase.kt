@@ -78,7 +78,7 @@ class UpdateCurrentUserUseCase @Inject constructor(
                         is ServerAddress -> user.copy(serverAddress = field.value)
                         is State -> user.copy(state = field.value)
                         is Type -> user.copy(type = field.value)
-                        is UserId -> user.copy(userId = field.value)
+                        is UserId -> user.copy(id = field.value)
                     }
                 }
             }

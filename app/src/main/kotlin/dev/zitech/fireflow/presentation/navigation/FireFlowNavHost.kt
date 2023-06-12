@@ -58,7 +58,10 @@ internal fun FireFlowNavHost(
                 )
             },
             navigateOutOfApp = onCloseApplication,
-            navigateBack = { onBackClick(null) }
+            navigateBack = { onBackClick(null) },
+            navigateToError = {
+                Logger.e("FireFlowNavHost", it.debugText)
+            }
         )
         onboardingGraph(
             navigateToOAuth = {

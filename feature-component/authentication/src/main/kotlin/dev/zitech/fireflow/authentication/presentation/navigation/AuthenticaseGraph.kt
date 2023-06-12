@@ -22,11 +22,13 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import dev.zitech.fireflow.authentication.presentation.accounts.compose.AccountsRoute
+import dev.zitech.fireflow.core.error.Error
 
 fun NavGraphBuilder.authenticationGraph(
     navigateToDashboard: () -> Unit,
     navigateOutOfApp: () -> Unit,
-    navigateBack: () -> Unit
+    navigateBack: () -> Unit,
+    navigateToError: (error: Error) -> Unit
 ) {
     composable(
         route = "${AccountsDestination.route}?" +
@@ -46,7 +48,8 @@ fun NavGraphBuilder.authenticationGraph(
             isBackNavigationSupported = isBackNavigationSupported,
             navigateToHome = navigateToDashboard,
             navigateOutOfApp = navigateOutOfApp,
-            navigateBack = navigateBack
+            navigateBack = navigateBack,
+            navigateToError = navigateToError
         )
     }
 }

@@ -20,14 +20,22 @@ package dev.zitech.fireflow.authentication.presentation.accounts.compose
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.zitech.fireflow.authentication.presentation.accounts.viewmodel.AccountsViewModel
 import dev.zitech.fireflow.authentication.presentation.accounts.viewmodel.BackClicked
 import dev.zitech.fireflow.authentication.presentation.accounts.viewmodel.CloseHandled
+import dev.zitech.fireflow.authentication.presentation.accounts.viewmodel.FatalErrorHandled
 import dev.zitech.fireflow.authentication.presentation.accounts.viewmodel.HomeHandled
-import dev.zitech.fireflow.authentication.presentation.accounts.viewmodel.LoginClicked
+import dev.zitech.fireflow.authentication.presentation.accounts.viewmodel.MoreClicked
+import dev.zitech.fireflow.authentication.presentation.accounts.viewmodel.MoreDismissed
+import dev.zitech.fireflow.authentication.presentation.accounts.viewmodel.MoreItemClicked
+import dev.zitech.fireflow.authentication.presentation.accounts.viewmodel.NonFatalErrorHandled
 import dev.zitech.fireflow.authentication.presentation.accounts.viewmodel.QuitHandled
+import dev.zitech.fireflow.core.error.Error
+import dev.zitech.fireflow.ds.molecules.snackbar.BottomNotifierMessage
+import dev.zitech.fireflow.ds.molecules.snackbar.rememberSnackbarState
 
 @Composable
 internal fun AccountsRoute(
@@ -35,10 +43,12 @@ internal fun AccountsRoute(
     navigateToHome: () -> Unit,
     navigateOutOfApp: () -> Unit,
     navigateBack: () -> Unit,
+    navigateToError: (error: Error) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: AccountsViewModel = hiltViewModel()
 ) {
     val screenState by viewModel.state.collectAsStateWithLifecycle()
+    val snackbarState = rememberSnackbarState()
 
     if (screenState.home) {
         navigateToHome()
@@ -55,11 +65,37 @@ internal fun AccountsRoute(
         viewModel.receiveIntent(CloseHandled)
     }
 
+    screenState.fatalError?.let { fireFlowError ->
+        navigateToError(fireFlowError)
+        viewModel.receiveIntent(FatalErrorHandled)
+    }
+
+    screenState.nonFatalError?.let { fireFlowError ->
+        snackbarState.showMessage(
+            BottomNotifierMessage(
+                text = stringResource(fireFlowError.uiResId),
+                state = BottomNotifierMessage.State.ERROR,
+                duration = BottomNotifierMessage.Duration.SHORT
+            )
+        )
+        viewModel.receiveIntent(NonFatalErrorHandled)
+    }
+
     AccountsScreen(
         isBackNavigationSupported = isBackNavigationSupported,
         accountsState = screenState,
         backClicked = { viewModel.receiveIntent(BackClicked(it)) },
-        loginClicked = { viewModel.receiveIntent(LoginClicked) },
-        modifier = modifier
+        modifier = modifier,
+        snackbarState = snackbarState,
+        onMoreItemClicked = { userId, itemIndex ->
+            viewModel.receiveIntent(
+                MoreItemClicked(
+                    moreIndex = itemIndex,
+                    userId = userId
+                )
+            )
+        },
+        onMoreDismissed = { index -> viewModel.receiveIntent(MoreDismissed(index)) },
+        onMoreClicked = { index -> viewModel.receiveIntent(MoreClicked(index)) }
     )
 }

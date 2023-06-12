@@ -23,24 +23,61 @@ import dev.zitech.fireflow.core.error.FireFlowError
 /**
  * Represents a user entity.
  *
+ * @property id The unique ID of the user.
  * @property isCurrentUser Indicates whether the user is the current user.
  */
 sealed class User(
+    open val id: Long,
     open val isCurrentUser: Boolean
 ) {
+
+    /**
+     * Returns the identification string of the user.
+     *
+     * @return The identification string.
+     */
+    fun identification(): String = when (this) {
+        is Local -> this.userName
+        is Remote -> this.email.orEmpty()
+    }
+
+    /**
+     * Returns the initial character of the user.
+     *
+     * @return The initial character.
+     */
+    fun initial(): Char = when (this) {
+        is Local -> this.userName.uppercase().first()
+        is Remote -> this.email.orEmpty().uppercase().first()
+    }
+
+    /**
+     * Returns the server address associated with the user.
+     *
+     * @return The server address.
+     */
+    fun serverAddress(): String = when (this) {
+        is Local -> ""
+        is Remote -> this.serverAddress
+    }
 
     /**
      * Represents a local user.
      *
      * @param isCurrentUser Indicates whether the user is the current user.
+     * @param id The user ID.
+     * @param userName The user name.
      */
     data class Local(
-        override val isCurrentUser: Boolean
-    ) : User(isCurrentUser)
+        override val id: Long,
+        override val isCurrentUser: Boolean,
+        val userName: String
+    ) : User(id, isCurrentUser)
 
     /**
      * Represents a remote user.
-     *
+     * @param isCurrentUser Indicates whether the user is the current user.
+     * @param id The user ID.
      * @param authenticationType The authentication type of the user.
      * @param connectivityNotification Indicates whether the user has enabled connectivity notification.
      * @param email The email address of the user.
@@ -50,20 +87,19 @@ sealed class User(
      * @param serverAddress The server address associated with the user.
      * @param state The state of the user.
      * @param type The type of the user.
-     * @param userId The user ID.
      */
     data class Remote(
+        override val id: Long,
+        override val isCurrentUser: Boolean,
         val authenticationType: UserAuthenticationType? = null,
         val connectivityNotification: Boolean,
         val email: String? = null,
         val fireflyId: String? = null,
         val role: String? = null,
-        override val isCurrentUser: Boolean,
         val serverAddress: String,
         val state: String? = null,
-        val type: String? = null,
-        val userId: Long
-    ) : User(isCurrentUser) {
+        val type: String? = null
+    ) : User(id, isCurrentUser) {
 
         /**
          * Extracts the URL and port from the server address.

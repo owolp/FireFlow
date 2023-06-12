@@ -53,11 +53,13 @@ internal class UserEntityMapper @Inject constructor() :
                 serverAddress = input.serverAddress,
                 state = input.state,
                 type = input.type,
-                userId = input.id!!
+                id = input.id!!
             )
         } else {
             User.Local(
-                isCurrentUser = input.isCurrentUser
+                isCurrentUser = input.isCurrentUser,
+                userName = input.email.orEmpty(),
+                id = input.id!!
             )
         }
 
@@ -99,7 +101,7 @@ internal class UserEntityMapper @Inject constructor() :
                     connectivityNotification = input.connectivityNotification,
                     email = input.email,
                     fireflyId = input.fireflyId,
-                    id = input.userId,
+                    id = input.id,
                     isCurrentUser = input.isCurrentUser,
                     oauthCode = when (val type = input.authenticationType) {
                         is UserAuthenticationType.OAuth -> type.oauthCode

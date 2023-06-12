@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright (C) 2022 Zitech Ltd.
+  ~ Copyright (C) 2023 Zitech Ltd.
   ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
@@ -20,4 +20,6 @@
     <string name="dialog_button_ok">OK</string>
     <string name="dialog_button_cancel">Cancel</string>
     <string name="cd_arrow_button_back">Button back</string>
+
+    <string name="cd_account_more">Account options</string>
 </resources>

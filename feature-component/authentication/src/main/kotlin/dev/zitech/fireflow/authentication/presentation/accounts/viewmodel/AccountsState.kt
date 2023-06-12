@@ -17,10 +17,16 @@
 
 package dev.zitech.fireflow.authentication.presentation.accounts.viewmodel
 
+import dev.zitech.fireflow.authentication.presentation.accounts.model.AccountItem
 import dev.zitech.fireflow.common.presentation.architecture.MviState
+import dev.zitech.fireflow.core.error.FireFlowError
 
 internal data class AccountsState(
     val close: Boolean = false,
+    val fatalError: FireFlowError? = null,
     val home: Boolean = false,
-    val quit: Boolean = false
+    val loading: Boolean = false,
+    val nonFatalError: FireFlowError? = null,
+    val quit: Boolean = false,
+    val accounts: List<AccountItem> = emptyList()
 ) : MviState
