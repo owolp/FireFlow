@@ -64,10 +64,10 @@ internal class UserRepositoryImpl @Inject constructor(
     override fun getUsers(): Flow<OperationResult<List<User>>> =
         userDatabaseSource.getUsers()
 
-    override suspend fun removeUsersWithStateAndNoToken(): OperationResult<Unit> =
+    override suspend fun removeUsersWithStateAndNoToken(): OperationResult<Int> =
         userDatabaseSource.removeUsersWithStateAndNoToken()
 
-    override suspend fun removeUsersWithStateAndTokenAndNoClientIdAndSecret(): OperationResult<Unit> =
+    override suspend fun removeUsersWithStateAndTokenAndNoClientIdAndSecret(): OperationResult<Int> =
         userDatabaseSource.removeUsersWithStateAndTokenAndNoClientIdAndSecret()
 
     override suspend fun saveUser(
@@ -97,7 +97,6 @@ internal class UserRepositoryImpl @Inject constructor(
                     )
                 }
             }
-
             is Failure -> {
                 // NO_OP
             }
@@ -122,6 +121,9 @@ internal class UserRepositoryImpl @Inject constructor(
 
             is Failure -> Failure(updateUserResult.error)
         }
+
+    override suspend fun updateUserCurrentStatus(userId: Long): OperationResult<Int> =
+        userDatabaseSource.updateUserCurrentStatus(userId)
 
     private companion object {
         const val NO_WORKER_UPDATED_RESULT = 0

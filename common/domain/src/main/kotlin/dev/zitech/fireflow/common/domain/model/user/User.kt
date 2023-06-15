@@ -36,7 +36,7 @@ sealed class User(
      *
      * @return The identification string.
      */
-    fun identification(): String = when (this) {
+    fun retrieveIdentification(): String = when (this) {
         is Local -> this.userName
         is Remote -> this.email.orEmpty()
     }
@@ -46,7 +46,7 @@ sealed class User(
      *
      * @return The initial character.
      */
-    fun initial(): Char = when (this) {
+    fun retrieveInitial(): Char = when (this) {
         is Local -> this.userName.uppercase().first()
         is Remote -> this.email.orEmpty().uppercase().first()
     }
@@ -56,7 +56,7 @@ sealed class User(
      *
      * @return The server address.
      */
-    fun serverAddress(): String = when (this) {
+    fun retrieveServerAddress(): String = when (this) {
         is Local -> ""
         is Remote -> this.serverAddress
     }

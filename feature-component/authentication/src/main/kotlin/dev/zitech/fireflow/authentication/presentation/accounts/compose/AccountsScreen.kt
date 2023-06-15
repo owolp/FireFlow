@@ -114,9 +114,9 @@ private fun AccountsContent(
             items(state.accounts) { item ->
                 val user = item.user
                 FireFlowAccounts.Primary(
-                    initial = user.initial(),
-                    topInfo = user.identification(),
-                    bottomInfo = user.serverAddress(),
+                    initial = user.retrieveInitial(),
+                    topInfo = user.retrieveIdentification(),
+                    bottomInfo = user.retrieveServerAddress(),
                     isLogged = user.isCurrentUser,
                     more = item.more,
                     menuItems = item.menuItems.map { menuItem ->

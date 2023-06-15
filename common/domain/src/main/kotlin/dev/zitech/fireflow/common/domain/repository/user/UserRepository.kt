@@ -51,16 +51,18 @@ interface UserRepository {
     /**
      * Removes users with the specified state and no token.
      *
-     * @return The [OperationResult] indicating the success or failure of the operation.
+     * @return An [OperationResult] representing the result of the update operation,
+     *         containing the number of affected rows if successful, or an error if unsuccessful.
      */
-    suspend fun removeUsersWithStateAndNoToken(): OperationResult<Unit>
+    suspend fun removeUsersWithStateAndNoToken(): OperationResult<Int>
 
     /**
      * Removes users with the specified state and token, but no client ID and secret.
      *
-     * @return The [OperationResult] indicating the success or failure of the operation.
+     * @return An [OperationResult] representing the result of the update operation,
+     *         containing the number of affected rows if successful, or an error if unsuccessful.
      */
-    suspend fun removeUsersWithStateAndTokenAndNoClientIdAndSecret(): OperationResult<Unit>
+    suspend fun removeUsersWithStateAndTokenAndNoClientIdAndSecret(): OperationResult<Int>
 
     /**
      * Saves a new user with the provided details.
@@ -72,7 +74,8 @@ interface UserRepository {
      * @param isCurrentUser Indicates whether the user is the current user.
      * @param serverAddress The server address of the user. If the value is null, it indicates that the user is local.
      * @param state The state of the user.
-     * @return The [OperationResult] containing the ID of the saved user.
+     * @return An [OperationResult] representing the result of the save/update operation,
+     *         containing the ID of the saved/updated user if successful, or an error if unsuccessful.
      */
     suspend fun saveUser(
         accessToken: String?,
@@ -91,4 +94,13 @@ interface UserRepository {
      * @return The [OperationResult] indicating the success or failure of the operation.
      */
     suspend fun updateUser(user: User): OperationResult<Unit>
+
+    /**
+     * Updates the current user status for the specified user ID.
+     *
+     * @param userId The ID of the user to update.
+     * @return An [OperationResult] representing the result of the update operation,
+     *         containing the number of affected rows if successful, or an error if unsuccessful.
+     */
+    suspend fun updateUserCurrentStatus(userId: Long): OperationResult<Int>
 }

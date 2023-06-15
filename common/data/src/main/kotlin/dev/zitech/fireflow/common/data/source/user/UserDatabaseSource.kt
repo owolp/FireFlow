@@ -66,12 +66,12 @@ internal class UserDatabaseSource @Inject constructor(
             Failure<List<User>>(Error.Fatal(throwable, DISK))
         }
 
-    override suspend fun removeUsersWithStateAndNoToken(): OperationResult<Unit> =
+    override suspend fun removeUsersWithStateAndNoToken(): OperationResult<Int> =
         handleDb {
             userDao.removeUsersWithStateAndNoToken()
         }
 
-    override suspend fun removeUsersWithStateAndTokenAndNoClientIdAndSecret(): OperationResult<Unit> =
+    override suspend fun removeUsersWithStateAndTokenAndNoClientIdAndSecret(): OperationResult<Int> =
         handleDb {
             userDao.removeUsersWithStateAndTokenAndNoClientIdAndSecret()
         }
@@ -101,5 +101,10 @@ internal class UserDatabaseSource @Inject constructor(
     override suspend fun updateUser(user: User): OperationResult<Int> =
         handleDb {
             userDao.updateUser(userEntityMapper.toEntity(user))
+        }
+
+    override suspend fun updateUserCurrentStatus(userId: Long): OperationResult<Int> =
+        handleDb {
+            userDao.updateUserCurrentStatus(userId)
         }
 }

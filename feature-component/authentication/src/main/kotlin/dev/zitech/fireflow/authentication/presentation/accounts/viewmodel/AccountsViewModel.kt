@@ -19,6 +19,7 @@ package dev.zitech.fireflow.authentication.presentation.accounts.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.zitech.fireflow.authentication.domain.usecase.SetNewCurrentUserUseCase
 import dev.zitech.fireflow.authentication.presentation.accounts.model.AccountItem
 import dev.zitech.fireflow.authentication.presentation.accounts.model.AccountItem.MenuItem
 import dev.zitech.fireflow.common.domain.model.user.User
@@ -28,14 +29,14 @@ import dev.zitech.fireflow.core.error.Error
 import dev.zitech.fireflow.core.result.onFailure
 import dev.zitech.fireflow.core.result.onSuccess
 import javax.inject.Inject
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 @HiltViewModel
 internal class AccountsViewModel @Inject constructor(
-    private val getUsersUseCase: GetUsersUseCase
+    getUsersUseCase: GetUsersUseCase,
+    private val setNewCurrentUserUseCase: SetNewCurrentUserUseCase
 ) : MviViewModel<AccountsIntent, AccountsState>(AccountsState()) {
 
     init {
@@ -77,6 +78,13 @@ internal class AccountsViewModel @Inject constructor(
             updateState { copy(close = true) }
         } else {
             updateState { copy(quit = true) }
+        }
+    }
+
+    private fun handleError(error: Error) {
+        when (error) {
+            is Error.UserVisible -> updateState { copy(loading = false, nonFatalError = error) }
+            else -> updateState { copy(loading = false, fatalError = error) }
         }
     }
 
@@ -122,13 +130,6 @@ internal class AccountsViewModel @Inject constructor(
         }
     }
 
-    private fun setCurrentUser(userId: Long) {
-        // TODO: Set Current User
-        viewModelScope.launch {
-            getUsersUseCase().first().onSuccess { }
-        }
-    }
-
     private fun observeUsers(getUsersUseCase: GetUsersUseCase) {
         updateState { copy(loading = true) }
         getUsersUseCase().onEach { usersResult ->
@@ -139,17 +140,15 @@ internal class AccountsViewModel @Inject constructor(
                         accounts = getAccountItems(users)
                     )
                 }
-            }.onFailure { error ->
-                when (error) {
-                    is Error.UserVisible -> updateState {
-                        copy(
-                            loading = false,
-                            nonFatalError = error
-                        )
-                    }
-                    else -> updateState { copy(loading = false, fatalError = error) }
-                }
-            }
+            }.onFailure(::handleError)
         }.launchIn(viewModelScope)
+    }
+
+    private fun setCurrentUser(userId: Long) {
+        viewModelScope.launch {
+            setNewCurrentUserUseCase(userId).onSuccess {
+                // TODO: Navigate to Home
+            }.onFailure(::handleError)
+        }
     }
 }
