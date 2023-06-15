@@ -34,12 +34,13 @@ data class AccountItem(
     val user: User
 ) {
     /**
-     * Enumerates the menu items available in the account item dropdown menu.
+     * Sealed class representing a menu item within the account item dropdown menu.
      *
-     * @property resId The string resource ID for the menu item.
+     * @property id The ID of the menu item.
+     * @property resId The resource ID associated with the menu item.
      */
-    enum class MenuItem(@StringRes val resId: Int) {
-        SWITCH_TO_ACCOUNT(R.string.accounts_menu_item_switch_to_account),
-        REMOVE_ACCOUNT(R.string.accounts_menu_item_remove_account)
+    sealed class MenuItem(val id: Int, @StringRes val resId: Int) {
+        object SwitchToAccount : MenuItem(1, R.string.accounts_menu_item_switch_to_account)
+        object RemoveAccount : MenuItem(2, R.string.accounts_menu_item_remove_account)
     }
 }

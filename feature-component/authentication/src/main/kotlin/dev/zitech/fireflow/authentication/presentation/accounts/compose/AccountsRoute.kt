@@ -87,10 +87,10 @@ internal fun AccountsRoute(
         backClicked = { viewModel.receiveIntent(BackClicked(it)) },
         modifier = modifier,
         snackbarState = snackbarState,
-        onMoreItemClicked = { userId, itemIndex ->
+        onMoreItemClicked = { menuItemId, userId ->
             viewModel.receiveIntent(
                 MoreItemClicked(
-                    moreIndex = itemIndex,
+                    menuItemId = menuItemId,
                     userId = userId
                 )
             )

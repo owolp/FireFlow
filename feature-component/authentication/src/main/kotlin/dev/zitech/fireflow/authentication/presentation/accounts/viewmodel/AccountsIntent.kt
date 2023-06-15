@@ -21,7 +21,7 @@ import dev.zitech.fireflow.common.presentation.architecture.MviIntent
 
 internal sealed interface AccountsIntent : MviIntent
 internal data class BackClicked(val isBackNavigationSupported: Boolean) : AccountsIntent
-internal data class MoreItemClicked(val moreIndex: Int, val userId: Long) : AccountsIntent
+internal data class MoreItemClicked(val menuItemId: Int, val userId: Long) : AccountsIntent
 internal data class MoreDismissed(val userId: Long) : AccountsIntent
 internal data class MoreClicked(val userId: Long) : AccountsIntent
 internal object SwitchToAccountClicked : AccountsIntent

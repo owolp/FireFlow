@@ -34,6 +34,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import dev.zitech.fireflow.authentication.R
 import dev.zitech.fireflow.authentication.presentation.accounts.viewmodel.AccountsState
+import dev.zitech.fireflow.ds.atoms.dropdown.DropDownMenuItem
 import dev.zitech.fireflow.ds.molecules.snackbar.FireFlowSnackbarState
 import dev.zitech.fireflow.ds.molecules.snackbar.rememberSnackbarState
 import dev.zitech.fireflow.ds.molecules.topappbar.FireFlowTopAppBars
@@ -48,7 +49,7 @@ internal fun AccountsScreen(
     isBackNavigationSupported: Boolean,
     accountsState: AccountsState,
     backClicked: (backNavigationSupported: Boolean) -> Unit,
-    onMoreItemClicked: (userId: Long, itemIndex: Int) -> Unit,
+    onMoreItemClicked: (menuItemId: Int, userId: Long) -> Unit,
     onMoreClicked: (userId: Long) -> Unit,
     onMoreDismissed: (userId: Long) -> Unit,
     modifier: Modifier = Modifier,
@@ -95,7 +96,7 @@ internal fun AccountsScreen(
 @Composable
 private fun AccountsContent(
     innerPadding: PaddingValues,
-    onMoreItemClicked: (userId: Long, itemIndex: Int) -> Unit,
+    onMoreItemClicked: (menuItemId: Int, userId: Long) -> Unit,
     onMoreClicked: (userId: Long) -> Unit,
     onMoreDismissed: (userId: Long) -> Unit,
     state: AccountsState
@@ -118,9 +119,14 @@ private fun AccountsContent(
                     bottomInfo = user.serverAddress(),
                     isLogged = user.isCurrentUser,
                     more = item.more,
-                    menuItems = item.menuItems.map { stringResource(it.resId) },
-                    onMoreItemClick = { moreItemIndex ->
-                        onMoreItemClicked(user.id, moreItemIndex)
+                    menuItems = item.menuItems.map { menuItem ->
+                        DropDownMenuItem(
+                            id = menuItem.id,
+                            text = stringResource(menuItem.resId)
+                        )
+                    },
+                    onMoreItemClick = { menuItemId ->
+                        onMoreItemClicked(menuItemId, user.id)
                     },
                     onMoreClick = { onMoreClicked(user.id) },
                     onMoreDismiss = { onMoreDismissed(user.id) }

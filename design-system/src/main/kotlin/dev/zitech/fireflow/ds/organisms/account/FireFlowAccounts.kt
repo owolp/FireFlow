@@ -41,6 +41,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.zitech.fireflow.ds.R
 import dev.zitech.fireflow.ds.atoms.button.FireFlowButtons
+import dev.zitech.fireflow.ds.atoms.dropdown.DropDownMenuItem
 import dev.zitech.fireflow.ds.atoms.dropdown.FireFlowMenu
 import dev.zitech.fireflow.ds.atoms.icon.FireFlowIcons
 import dev.zitech.fireflow.ds.atoms.spacer.FireFlowSpacers
@@ -56,9 +57,9 @@ object FireFlowAccounts {
         topInfo: String,
         bottomInfo: String?,
         isLogged: Boolean,
-        menuItems: List<String>,
+        menuItems: List<DropDownMenuItem>,
         more: Boolean,
-        onMoreItemClick: (index: Int) -> Unit,
+        onMoreItemClick: (id: Int) -> Unit,
         onMoreClick: () -> Unit,
         onMoreDismiss: () -> Unit,
         modifier: Modifier = Modifier
@@ -158,8 +159,14 @@ private fun Accounts_Primary_Preview() {
             isLogged = true,
             more = true,
             menuItems = listOf(
-                "First Text Appears Here",
-                "Second Text"
+                DropDownMenuItem(
+                    id = 1,
+                    text = "First Drop Down Item"
+                ),
+                DropDownMenuItem(
+                    id = 2,
+                    text = "Second Drop Down Item"
+                )
             ),
             onMoreItemClick = { _ -> },
             onMoreClick = { },

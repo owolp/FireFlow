@@ -97,6 +97,11 @@ sealed class Error(
         fun toUserVisible() = UserVisible(this.throwable.message)
     }
 
+    data class OperationNotSupported(val info: String? = null) : Error(
+        "Operation not supported. ${info.orEmpty()}",
+        R.string.empty
+    )
+
     data class TokenFailed(
         private val message: String?
     ) : Error(
@@ -121,6 +126,11 @@ sealed class Error(
         R.string.empty
     )
 
+    object LocalUserTypeNotSupported : Error(
+        "Local user type not supported",
+        R.string.empty
+    )
+
     object NoBrowserInstalled : Error(
         "No supported browser installed",
         R.string.no_browser_installed
@@ -139,10 +149,5 @@ sealed class Error(
     object NullUserByState : Error(
         "Null user by state",
         R.string.null_user_by_state
-    )
-
-    object LocalUserTypeNotSupported : Error(
-        "Local user type not supported",
-        R.string.empty
     )
 }

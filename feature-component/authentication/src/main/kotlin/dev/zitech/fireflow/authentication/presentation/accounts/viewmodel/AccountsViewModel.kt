@@ -28,13 +28,14 @@ import dev.zitech.fireflow.core.error.Error
 import dev.zitech.fireflow.core.result.onFailure
 import dev.zitech.fireflow.core.result.onSuccess
 import javax.inject.Inject
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 @HiltViewModel
 internal class AccountsViewModel @Inject constructor(
-    getUsersUseCase: GetUsersUseCase
+    private val getUsersUseCase: GetUsersUseCase
 ) : MviViewModel<AccountsIntent, AccountsState>(AccountsState()) {
 
     init {
@@ -53,9 +54,7 @@ internal class AccountsViewModel @Inject constructor(
                 NonFatalErrorHandled -> updateState { copy(nonFatalError = null) }
                 is MoreClicked -> handleMoreClicked(intent)
                 is MoreDismissed -> handleMoreDismissed(intent)
-                is MoreItemClicked -> {
-//                    viewModel.receiveIntent(SwitchToAccountClicked)
-                }
+                is MoreItemClicked -> handleMoreItemClicked(intent)
             }
         }
     }
@@ -64,9 +63,9 @@ internal class AccountsViewModel @Inject constructor(
         users.map { user ->
             AccountItem(
                 menuItems = if (user.isCurrentUser) {
-                    listOf(MenuItem.REMOVE_ACCOUNT)
+                    listOf(MenuItem.RemoveAccount)
                 } else {
-                    listOf(MenuItem.SWITCH_TO_ACCOUNT, MenuItem.REMOVE_ACCOUNT)
+                    listOf(MenuItem.SwitchToAccount, MenuItem.RemoveAccount)
                 },
                 more = false,
                 user = user
@@ -106,6 +105,27 @@ internal class AccountsViewModel @Inject constructor(
                     }
                 }
             )
+        }
+    }
+
+    private fun handleMoreItemClicked(intent: MoreItemClicked) {
+        when (intent.menuItemId) {
+            MenuItem.SwitchToAccount.id -> setCurrentUser(intent.userId)
+            MenuItem.RemoveAccount.id -> updateState { copy(confirmRemoveAccount = true) } // TODO: Listen for it
+            else -> updateState {
+                copy(
+                    fatalError = Error.OperationNotSupported(
+                        "Menu Item id:${intent.menuItemId} not handled"
+                    )
+                )
+            }
+        }
+    }
+
+    private fun setCurrentUser(userId: Long) {
+        // TODO: Set Current User
+        viewModelScope.launch {
+            getUsersUseCase().first().onSuccess { }
         }
     }
 

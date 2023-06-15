@@ -33,9 +33,9 @@ object FireFlowMenu {
     @Composable
     fun DropDown(
         expanded: Boolean,
-        items: List<String>,
+        items: List<DropDownMenuItem>,
         onDismiss: () -> Unit,
-        onItemClick: (index: Int) -> Unit,
+        onItemClick: (id: Int) -> Unit,
         modifier: Modifier = Modifier
     ) {
         DropdownMenu(
@@ -48,10 +48,10 @@ object FireFlowMenu {
                     text = {
                         FireFlowTexts.TitleSmall(
                             modifier = Modifier.padding(FireFlowTheme.space.s),
-                            text = dropDownItem
+                            text = dropDownItem.text
                         )
                     },
-                    onClick = { onItemClick(index) }
+                    onClick = { onItemClick(dropDownItem.id) }
                 )
             }
         }
@@ -72,7 +72,16 @@ private fun FireFlowMenu_DropDown() {
     PreviewFireFlowTheme {
         FireFlowMenu.DropDown(
             expanded = true,
-            items = listOf("First Drop Down Item", "Second Drop Down Item"),
+            items = listOf(
+                DropDownMenuItem(
+                    id = 1,
+                    text = "First Drop Down Item"
+                ),
+                DropDownMenuItem(
+                    id = 2,
+                    text = "Second Drop Down Item"
+                )
+            ),
             onDismiss = {},
             onItemClick = {}
         )
