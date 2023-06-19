@@ -22,12 +22,18 @@ import dev.zitech.fireflow.common.presentation.architecture.MviState
 import dev.zitech.fireflow.core.error.FireFlowError
 
 internal data class AccountsState(
+    val accounts: List<AccountItem> = emptyList(),
     val close: Boolean = false,
-    val confirmRemoveAccount: Boolean = false,
+    val confirmRemoveAccount: ConfirmRemoveAccount? = null,
     val fatalError: FireFlowError? = null,
     val home: Boolean = false,
     val loading: Boolean = false,
     val nonFatalError: FireFlowError? = null,
-    val quit: Boolean = false,
-    val accounts: List<AccountItem> = emptyList()
-) : MviState
+    val quit: Boolean = false
+) : MviState {
+
+    data class ConfirmRemoveAccount(
+        val identification: String,
+        val userId: Long
+    )
+}

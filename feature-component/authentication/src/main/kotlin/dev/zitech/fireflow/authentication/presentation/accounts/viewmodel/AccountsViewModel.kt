@@ -19,6 +19,7 @@ package dev.zitech.fireflow.authentication.presentation.accounts.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.zitech.fireflow.authentication.domain.usecase.DeleteUserUseCase
 import dev.zitech.fireflow.authentication.domain.usecase.SetNewCurrentUserUseCase
 import dev.zitech.fireflow.authentication.presentation.accounts.model.AccountItem
 import dev.zitech.fireflow.authentication.presentation.accounts.model.AccountItem.MenuItem
@@ -26,9 +27,11 @@ import dev.zitech.fireflow.common.domain.model.user.User
 import dev.zitech.fireflow.common.domain.usecase.user.GetUsersUseCase
 import dev.zitech.fireflow.common.presentation.architecture.MviViewModel
 import dev.zitech.fireflow.core.error.Error
+import dev.zitech.fireflow.core.logger.Logger
 import dev.zitech.fireflow.core.result.onFailure
 import dev.zitech.fireflow.core.result.onSuccess
 import javax.inject.Inject
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -36,8 +39,11 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 internal class AccountsViewModel @Inject constructor(
     getUsersUseCase: GetUsersUseCase,
+    private val deleteUserUseCase: DeleteUserUseCase,
     private val setNewCurrentUserUseCase: SetNewCurrentUserUseCase
 ) : MviViewModel<AccountsIntent, AccountsState>(AccountsState()) {
+
+    private val tag = Logger.tag(this::class.java)
 
     init {
         observeUsers(getUsersUseCase)
@@ -56,7 +62,23 @@ internal class AccountsViewModel @Inject constructor(
                 is MoreClicked -> handleMoreClicked(intent)
                 is MoreDismissed -> handleMoreDismissed(intent)
                 is MoreItemClicked -> handleMoreItemClicked(intent)
+                is ConfirmRemoveAccountClicked -> handleRemoveAccountClicked(intent)
+                ConfirmRemoveAccountDismissed -> updateState { copy(confirmRemoveAccount = null) }
             }
+        }
+    }
+
+    private fun dismissMoreForUserId(userId: Long) {
+        updateState {
+            copy(
+                accounts = accounts.map { accountItem ->
+                    if (accountItem.user.id == userId) {
+                        accountItem.copy(more = false)
+                    } else {
+                        accountItem
+                    }
+                }
+            )
         }
     }
 
@@ -103,23 +125,21 @@ internal class AccountsViewModel @Inject constructor(
     }
 
     private fun handleMoreDismissed(intent: MoreDismissed) {
-        updateState {
-            copy(
-                accounts = accounts.map { accountItem ->
-                    if (accountItem.user.id == intent.userId) {
-                        accountItem.copy(more = false)
-                    } else {
-                        accountItem
-                    }
-                }
-            )
-        }
+        dismissMoreForUserId(intent.userId)
     }
 
     private fun handleMoreItemClicked(intent: MoreItemClicked) {
+        dismissMoreForUserId(intent.userId)
         when (intent.menuItemId) {
             MenuItem.SwitchToAccount.id -> setCurrentUser(intent.userId)
-            MenuItem.RemoveAccount.id -> updateState { copy(confirmRemoveAccount = true) } // TODO: Listen for it
+            MenuItem.RemoveAccount.id -> updateState {
+                copy(
+                    confirmRemoveAccount = AccountsState.ConfirmRemoveAccount(
+                        identification = intent.identification,
+                        userId = intent.userId
+                    )
+                )
+            }
             else -> updateState {
                 copy(
                     fatalError = Error.OperationNotSupported(
@@ -130,9 +150,27 @@ internal class AccountsViewModel @Inject constructor(
         }
     }
 
+    private suspend fun handleRemoveAccountClicked(intent: ConfirmRemoveAccountClicked) {
+        updateState { copy(confirmRemoveAccount = null) }
+        deleteUserUseCase(intent.userId).onFailure { error ->
+            when (error) {
+                is Error.Fatal -> {
+                    Logger.e(tag, throwable = error.throwable)
+                    updateState { copy(fatalError = error) }
+                }
+                else -> {
+                    Logger.e(tag, error.debugText)
+                    updateState { copy(fatalError = error) }
+                }
+            }
+        }
+    }
+
     private fun observeUsers(getUsersUseCase: GetUsersUseCase) {
         updateState { copy(loading = true) }
         getUsersUseCase().onEach { usersResult ->
+            // Delay to block refreshing the dropdown menu, which is not yet closed
+            delay(DROPDOWN_MENU_DELAY_MS)
             usersResult.onSuccess { users ->
                 updateState {
                     copy(
@@ -150,5 +188,9 @@ internal class AccountsViewModel @Inject constructor(
                 // TODO: Navigate to Home
             }.onFailure(::handleError)
         }
+    }
+
+    private companion object {
+        const val DROPDOWN_MENU_DELAY_MS = 100L
     }
 }

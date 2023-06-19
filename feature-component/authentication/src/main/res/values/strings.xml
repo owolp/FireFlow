@@ -21,4 +21,7 @@
 
     <string name="accounts_menu_item_switch_to_account">Switch to account</string>
     <string name="accounts_menu_item_remove_account">Remove account</string>
+
+    <string name="accounts_dialog_remove_account_title">Remove Account</string>
+    <string name="accounts_dialog_remove_account_text">Remove account %s and delete all local information?\n\nDeletion cannot be undone.</string>
 </resources>

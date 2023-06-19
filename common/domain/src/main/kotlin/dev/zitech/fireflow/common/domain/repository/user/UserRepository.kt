@@ -27,6 +27,15 @@ import kotlinx.coroutines.flow.Flow
 interface UserRepository {
 
     /**
+     * Deletes a user based on the specified user ID.
+     *
+     * @param userId The ID of the user to be deleted.
+     * @return An [OperationResult] representing the result of the update operation,
+     *         containing the number of affected rows if successful, or an error if unsuccessful.
+     */
+    suspend fun deleteUserById(userId: Long): OperationResult<Int>
+
+    /**
      * Retrieves the current user as a [Flow] of [OperationResult].
      *
      * @return A [Flow] that emits the [OperationResult] of the current user.

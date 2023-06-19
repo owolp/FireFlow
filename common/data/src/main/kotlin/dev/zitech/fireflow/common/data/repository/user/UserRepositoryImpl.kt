@@ -34,6 +34,9 @@ internal class UserRepositoryImpl @Inject constructor(
     private val userDatabaseSource: UserSource
 ) : UserRepository {
 
+    override suspend fun deleteUserById(userId: Long): OperationResult<Int> =
+        userDatabaseSource.deleteUserById(userId)
+
     override fun getCurrentUser(): Flow<OperationResult<User>> =
         userDatabaseSource.getCurrentUser()
             .map { userResult ->

@@ -49,7 +49,7 @@ internal fun AccountsScreen(
     isBackNavigationSupported: Boolean,
     accountsState: AccountsState,
     backClicked: (backNavigationSupported: Boolean) -> Unit,
-    onMoreItemClicked: (menuItemId: Int, userId: Long) -> Unit,
+    onMoreItemClicked: (identification: String, menuItemId: Int, userId: Long) -> Unit,
     onMoreClicked: (userId: Long) -> Unit,
     onMoreDismissed: (userId: Long) -> Unit,
     modifier: Modifier = Modifier,
@@ -96,7 +96,7 @@ internal fun AccountsScreen(
 @Composable
 private fun AccountsContent(
     innerPadding: PaddingValues,
-    onMoreItemClicked: (menuItemId: Int, userId: Long) -> Unit,
+    onMoreItemClicked: (identification: String, menuItemId: Int, userId: Long) -> Unit,
     onMoreClicked: (userId: Long) -> Unit,
     onMoreDismissed: (userId: Long) -> Unit,
     state: AccountsState
@@ -126,7 +126,7 @@ private fun AccountsContent(
                         )
                     },
                     onMoreItemClick = { menuItemId ->
-                        onMoreItemClicked(menuItemId, user.id)
+                        onMoreItemClicked(user.retrieveIdentification(), menuItemId, user.id)
                     },
                     onMoreClick = { onMoreClicked(user.id) },
                     onMoreDismiss = { onMoreDismissed(user.id) }

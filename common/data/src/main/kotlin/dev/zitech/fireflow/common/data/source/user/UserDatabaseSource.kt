@@ -37,6 +37,10 @@ internal class UserDatabaseSource @Inject constructor(
     private val userEntityMapper: UserEntityMapper
 ) : UserSource {
 
+    override suspend fun deleteUserById(userId: Long): OperationResult<Int> = handleDb {
+        userDao.deleteUserById(userId)
+    }
+
     override fun getCurrentUser(): Flow<OperationResult<User>> =
         userDao.getCurrentUser().map { userEntity ->
             if (userEntity != null) {

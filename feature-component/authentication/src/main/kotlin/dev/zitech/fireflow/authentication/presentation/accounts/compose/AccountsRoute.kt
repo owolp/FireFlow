@@ -23,9 +23,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import dev.zitech.fireflow.authentication.R
 import dev.zitech.fireflow.authentication.presentation.accounts.viewmodel.AccountsViewModel
 import dev.zitech.fireflow.authentication.presentation.accounts.viewmodel.BackClicked
 import dev.zitech.fireflow.authentication.presentation.accounts.viewmodel.CloseHandled
+import dev.zitech.fireflow.authentication.presentation.accounts.viewmodel.ConfirmRemoveAccountClicked
+import dev.zitech.fireflow.authentication.presentation.accounts.viewmodel.ConfirmRemoveAccountDismissed
 import dev.zitech.fireflow.authentication.presentation.accounts.viewmodel.FatalErrorHandled
 import dev.zitech.fireflow.authentication.presentation.accounts.viewmodel.HomeHandled
 import dev.zitech.fireflow.authentication.presentation.accounts.viewmodel.MoreClicked
@@ -34,6 +37,7 @@ import dev.zitech.fireflow.authentication.presentation.accounts.viewmodel.MoreIt
 import dev.zitech.fireflow.authentication.presentation.accounts.viewmodel.NonFatalErrorHandled
 import dev.zitech.fireflow.authentication.presentation.accounts.viewmodel.QuitHandled
 import dev.zitech.fireflow.core.error.Error
+import dev.zitech.fireflow.ds.molecules.dialog.FireFlowDialogs
 import dev.zitech.fireflow.ds.molecules.snackbar.BottomNotifierMessage
 import dev.zitech.fireflow.ds.molecules.snackbar.rememberSnackbarState
 
@@ -65,6 +69,19 @@ internal fun AccountsRoute(
         viewModel.receiveIntent(CloseHandled)
     }
 
+    screenState.confirmRemoveAccount?.let {
+        FireFlowDialogs.Alert(
+            title = stringResource(R.string.accounts_dialog_remove_account_title),
+            text = stringResource(R.string.accounts_dialog_remove_account_text, it.identification),
+            onConfirmButtonClick = {
+                viewModel.receiveIntent(ConfirmRemoveAccountClicked(userId = it.userId))
+            },
+            onDismissRequest = {
+                viewModel.receiveIntent(ConfirmRemoveAccountDismissed)
+            }
+        )
+    }
+
     screenState.fatalError?.let { fireFlowError ->
         navigateToError(fireFlowError)
         viewModel.receiveIntent(FatalErrorHandled)
@@ -87,9 +104,10 @@ internal fun AccountsRoute(
         backClicked = { viewModel.receiveIntent(BackClicked(it)) },
         modifier = modifier,
         snackbarState = snackbarState,
-        onMoreItemClicked = { menuItemId, userId ->
+        onMoreItemClicked = { identification, menuItemId, userId ->
             viewModel.receiveIntent(
                 MoreItemClicked(
+                    identification = identification,
                     menuItemId = menuItemId,
                     userId = userId
                 )

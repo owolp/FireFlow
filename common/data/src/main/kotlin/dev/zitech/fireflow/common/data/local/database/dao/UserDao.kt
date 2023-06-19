@@ -32,6 +32,19 @@ import kotlinx.coroutines.flow.Flow
 internal interface UserDao {
 
     /**
+     * Deletes a user entity from the "users" table based on the specified user ID.
+     *
+     * This function deletes the user entity with the given [userId] from the "users" table.
+     *
+     * @param userId The ID of the user to be deleted.
+     * @return An [Int] representing the number of rows affected by the update operation. If the
+     *         update was successful, the return value will be the number of rows modified (usually 1).
+     *         If no rows were modified, the return value will be 0.
+     */
+    @Query("DELETE FROM users WHERE id=:userId")
+    suspend fun deleteUserById(userId: Long): Int
+
+    /**
      * Retrieves the current user as a flow of [UserEntity].
      *
      * This function queries the "users" table and returns a flow of the current user entity.
