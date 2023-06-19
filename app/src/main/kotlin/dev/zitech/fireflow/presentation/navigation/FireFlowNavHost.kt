@@ -58,7 +58,13 @@ internal fun FireFlowNavHost(
                 )
             },
             navigateOutOfApp = onCloseApplication,
-            navigateBack = { onBackClick(null) },
+            navigateBack = {
+                onBackClick(
+                    NavDirection(
+                        destination = DashboardDestination
+                    )
+                )
+            },
             navigateToError = {
                 Logger.e("FireFlowNavHost", it.debugText)
             }

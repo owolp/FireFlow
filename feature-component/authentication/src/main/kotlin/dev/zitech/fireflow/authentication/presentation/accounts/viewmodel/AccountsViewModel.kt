@@ -185,7 +185,7 @@ internal class AccountsViewModel @Inject constructor(
     private fun setCurrentUser(userId: Long) {
         viewModelScope.launch {
             setNewCurrentUserUseCase(userId).onSuccess {
-                // TODO: Navigate to Home
+                updateState { copy(close = true) }
             }.onFailure(::handleError)
         }
     }
