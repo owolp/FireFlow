@@ -13,7 +13,7 @@ jvmTarget = "11"
 lifecycle = "2.6.1"
 kotlin = "1.8.21"
 moshi = "1.15.0"
-navigation = "2.5.3"
+navigation = "2.6.0"
 retrofit = "2.9.0"
 room = "2.6.0-alpha01"
 
