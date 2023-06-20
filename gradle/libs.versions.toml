@@ -67,7 +67,7 @@ google-firebase-crashlytics-gradle = "com.google.firebase:firebase-crashlytics-g
 google-firebase-performance-gradle = "com.google.firebase:perf-plugin:1.4.2"
 google-material = "com.google.android.material:material:1.9.0"
 google-gms-services = "com.google.gms:google-services:4.3.15"
-google-truth = "com.google.truth:truth:1.1.4"
+google-truth = "com.google.truth:truth:1.1.5"
 huawei-agconnect-agcp = { module = "com.huawei.agconnect:agcp", version.ref = "agconnect" }
 huawei-agconnect-apms = "com.huawei.agconnect:agconnect-apms:1.6.2.300"
 huawei-agconnect-core = { module = "com.huawei.agconnect:agconnect-core", version.ref = "agconnect" }
