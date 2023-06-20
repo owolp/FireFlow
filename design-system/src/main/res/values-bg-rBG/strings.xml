@@ -22,4 +22,5 @@
     <string name="cd_arrow_button_back">Бутон назад</string>
 
     <string name="cd_account_more">Опции за акаунта</string>
+    <string name="cd_account_profile_identification">Идентификация на профила</string>
 </resources>

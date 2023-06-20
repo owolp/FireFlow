@@ -22,4 +22,5 @@
     <string name="cd_arrow_button_back">Button back</string>
 
     <string name="cd_account_more">Account options</string>
+    <string name="cd_account_profile_identification">Profile identification</string>
 </resources>

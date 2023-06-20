@@ -94,7 +94,7 @@ object FireFlowAccounts {
                             .align(Alignment.BottomEnd)
                             .size(16.dp),
                         image = FireFlowIcons.Check,
-                        contentDescription = "",
+                        contentDescription = stringResource(R.string.cd_account_profile_identification),
                         onClick = {}
                     )
                 }
