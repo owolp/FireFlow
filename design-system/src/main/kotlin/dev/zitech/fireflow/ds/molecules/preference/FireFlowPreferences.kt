@@ -98,7 +98,7 @@ object FireFlowPreferences {
                     horizontalSpace = FireFlowTheme.space.s + imageSize + FireFlowTheme.space.m
                 )
                 Column(
-                    modifier = Modifier.weight(1.0f),
+                    modifier = Modifier.weight(1.0F),
                     verticalArrangement = Arrangement.spacedBy(FireFlowTheme.space.xss)
                 ) {
                     FireFlowTexts.TitleLarge(text = title)
@@ -151,7 +151,7 @@ object FireFlowPreferences {
                     horizontalSpace = FireFlowTheme.space.m
                 )
                 Column(
-                    modifier = Modifier.weight(1.0f),
+                    modifier = Modifier.weight(1.0F),
                     verticalArrangement = Arrangement.spacedBy(FireFlowTheme.space.xss)
                 ) {
                     FireFlowTexts.TitleLarge(text = title)
@@ -214,7 +214,7 @@ object FireFlowPreferences {
                     horizontalSpace = FireFlowTheme.space.m
                 )
                 Column(
-                    modifier = Modifier.weight(1.0f),
+                    modifier = Modifier.weight(1.0F),
                     verticalArrangement = Arrangement.spacedBy(FireFlowTheme.space.xss)
                 ) {
                     FireFlowTexts.TitleLarge(text = title)
@@ -281,7 +281,7 @@ object FireFlowPreferences {
                     horizontalSpace = FireFlowTheme.space.m
                 )
                 Column(
-                    modifier = Modifier.weight(1.0f),
+                    modifier = Modifier.weight(1.0F),
                     verticalArrangement = Arrangement.spacedBy(FireFlowTheme.space.xss)
                 ) {
                     FireFlowTexts.TitleLarge(text = title)

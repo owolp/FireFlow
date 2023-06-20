@@ -24,9 +24,23 @@ class UserTest {
 
     @Test
     fun `local user should have correct isCurrentUser value`() {
-        val localUser = User.Local(isCurrentUser = true)
+        val localUser = User.Local(isCurrentUser = true, id = 123L, userName = "userName")
 
         assertThat(localUser.isCurrentUser).isEqualTo(true)
+    }
+
+    @Test
+    fun `local user should have correct id value`() {
+        val localUser = User.Local(isCurrentUser = true, id = 123L, userName = "userName")
+
+        assertThat(localUser.id).isEqualTo(123L)
+    }
+
+    @Test
+    fun `local user should have correct userName value`() {
+        val localUser = User.Local(isCurrentUser = true, id = 123L, userName = "userName")
+
+        assertThat(localUser.userName).isEqualTo("userName")
     }
 
     @Test
@@ -39,7 +53,7 @@ class UserTest {
     }
 
     @Test
-    fun `extractUrlAndPort should return valid UrlPortFormat for secured protocol, domain and port`() {
+    fun `extractUrlAndPort should return valid UrlPortFormat for secured protocol, domain, and port`() {
         val serverAddress = "https://example.com:8080"
         val remoteUser = getRemoteUser(serverAddress)
 
@@ -52,7 +66,7 @@ class UserTest {
     }
 
     @Test
-    fun `extractUrlAndPort should return valid UrlPortFormat for secured protocol, www, domain and port`() {
+    fun `extractUrlAndPort should return valid UrlPortFormat for secured protocol, www, domain, and port`() {
         val serverAddress = "https://www.example.com:8080"
         val remoteUser = getRemoteUser(serverAddress)
 
@@ -147,7 +161,7 @@ class UserTest {
         User.Remote(
             isCurrentUser = true,
             serverAddress = serverAddress,
-            userId = 123,
+            id = 123,
             connectivityNotification = true
         )
 }

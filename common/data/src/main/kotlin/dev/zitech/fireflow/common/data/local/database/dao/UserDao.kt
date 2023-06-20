@@ -32,7 +32,24 @@ import kotlinx.coroutines.flow.Flow
 internal interface UserDao {
 
     /**
-     * Retrieves the current users as a flow of [UserEntity].
+     * Deletes a user entity from the "users" table based on the specified user ID.
+     *
+     * This function deletes the user entity with the given [userId] from the "users" table.
+     *
+     * @param userId The ID of the user to be deleted.
+     * @return An [Int] representing the number of rows affected by the update operation. If the
+     *         update was successful, the return value will be the number of rows modified (usually 1).
+     *         If no rows were modified, the return value will be 0.
+     */
+    @Query("DELETE FROM users WHERE id=:userId")
+    suspend fun deleteUserById(userId: Long): Int
+
+    /**
+     * Retrieves the current user as a flow of [UserEntity].
+     *
+     * This function queries the "users" table and returns a flow of the current user entity.
+     * The current user is determined by the `isCurrentUser` flag being set to 1.
+     * The query orders the results by ID in descending order and limits the result to one entity.
      *
      * @return A flow of the current user entity, or null if not found.
      */
@@ -41,6 +58,9 @@ internal interface UserDao {
 
     /**
      * Retrieves a user by its state value.
+     *
+     * This function queries the "users" table and returns the user entity that matches the specified state.
+     * If no user is found with the given state, it returns null.
      *
      * @param state The state value of the user.
      * @return The user entity matching the specified state, or null if not found.
@@ -51,6 +71,8 @@ internal interface UserDao {
     /**
      * Retrieves all users as a flow of a list of [UserEntity].
      *
+     * This function queries the "users" table and returns a [Flow] emitting a list of all user entities.
+     *
      * @return A flow of a list of all user entities.
      */
     @Query("SELECT * FROM users")
@@ -59,31 +81,56 @@ internal interface UserDao {
     /**
      * Removes the current user by setting the `isCurrentUser` flag to false.
      *
-     * @return The number of users updated.
+     * This function updates the "isCurrentUser" field of the user entities in the "users" table,
+     * setting it to 0 (false) for all users.
+     *
+     * @return An [Int] representing the number of users updated.
      */
     @Query("UPDATE users SET isCurrentUser=0")
     suspend fun removeCurrentUser(): Int
 
     /**
+     * Removes users that have a state but no access token.
+     *
+     * This function removes user entities from the "users" table that meet the following conditions:
+     * - The "state" column is not null.
+     * - The "accessToken" column is null.
+     *
+     * @return An [Int] representing the number of users removed.
+     */
+    @Query("DELETE FROM users WHERE state IS NOT NULL AND accessToken IS NULL")
+    suspend fun removeUsersWithStateAndNoToken(): Int
+
+    /**
      * Removes users that have a state and access token, but no client ID and client secret.
+     *
+     * This function removes user entities from the "users" table that meet the following conditions:
+     * - The "state" column is not null.
+     * - The "accessToken" column is not null.
+     * - The "clientId" column is null.
+     * - The "clientSecret" column is null.
+     *
+     * @return An [Int] representing the number of users removed.
      */
     @Query(
         "DELETE FROM users WHERE state IS NOT NULL AND accessToken IS NOT" +
             " NULL AND clientId IS NULL AND clientSecret IS NULL"
     )
-    suspend fun removeUsersWithStateAndTokenAndNoClientIdAndSecret()
-
-    /**
-     * Removes users that have a state but no access token.
-     */
-    @Query("DELETE FROM users WHERE state IS NOT NULL AND accessToken IS NULL")
-    suspend fun removeUsersWithStateAndNoToken()
+    suspend fun removeUsersWithStateAndTokenAndNoClientIdAndSecret(): Int
 
     /**
      * Inserts or replaces a user entity.
      *
+     * This function saves the specified [userEntity] in the "users" table. It uses the
+     * @Insert annotation with the onConflict strategy set to REPLACE, which means that if a
+     * conflicting user already exists (based on primary key), it will be replaced with the new
+     * user entity.
+     *
      * @param userEntity The user entity to be saved.
-     * @return The ID of the saved user entity.
+     * @return A [Long] representing the ID of the saved user entity. If the insertion was
+     *         successful, the return value will be the ID of the saved user. If the user entity
+     *         was replaced, the return value will also be the ID of the saved user. If the
+     *         operation failed, the return value will be -1.
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveUser(userEntity: UserEntity): Long
@@ -91,9 +138,28 @@ internal interface UserDao {
     /**
      * Updates a user entity.
      *
+     * This function updates the specified [userEntity] in the "users" table. It uses the
+     * @Update annotation to perform the update operation.
+     *
      * @param userEntity The user entity to be updated.
-     * @return The number of users updated.
+     * @return An [Int] representing the number of users updated. If the update was successful,
+     *         the return value will be 1, indicating that one user was updated. If no user was
+     *         updated, the return value will be 0.
      */
     @Update
     suspend fun updateUser(userEntity: UserEntity): Int
+
+    /**
+     * Updates the current user status for the specified user ID.
+     *
+     * This query updates the "isCurrentUser" field in the "users" table, setting it to 1 (true)
+     * for the user with the specified ID, and to 0 (false) for all other users.
+     *
+     * @param userId The ID of the user to update.
+     * @return An [Int] representing the number of rows affected by the update operation. If the
+     *         update was successful, the return value will be the number of rows modified (usually 1).
+     *         If no rows were modified, the return value will be 0.
+     */
+    @Query("UPDATE users SET isCurrentUser = CASE WHEN id=:userId THEN 1 ELSE 0 END")
+    suspend fun updateUserCurrentStatus(userId: Long): Int
 }

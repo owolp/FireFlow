@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright (C) 2022 Zitech Ltd.
+  ~ Copyright (C) 2023 Zitech Ltd.
   ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
@@ -19,4 +19,9 @@
 
     <string name="accounts">Акаунти</string>
 
+    <string name="accounts_menu_item_switch_to_account">Превключване към акаунт</string>
+    <string name="accounts_menu_item_remove_account">Премахване на акаунт</string>
+
+    <string name="accounts_dialog_remove_account_title">Премахни профил</string>
+    <string name="accounts_dialog_remove_account_text">Премахване на профил %s и изтриване на цялата локална информация?\n\nТова действие не може да бъде отменено.</string>
 </resources>

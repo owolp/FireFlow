@@ -56,6 +56,17 @@ internal fun FireFlowNavHost(
                         inclusive = true
                     )
                 )
+            },
+            navigateOutOfApp = onCloseApplication,
+            navigateBack = {
+                onBackClick(
+                    NavDirection(
+                        destination = DashboardDestination
+                    )
+                )
+            },
+            navigateToError = {
+                Logger.e("FireFlowNavHost", it.debugText)
             }
         )
         onboardingGraph(
@@ -92,6 +103,7 @@ internal fun FireFlowNavHost(
                 onNavigateToDestination(
                     NavDirection(
                         destination = AccountsDestination,
+                        route = "${AccountsDestination.route}?${AccountsDestination.isBackNavigationSupported}=false",
                         inclusive = true
                     )
                 )
@@ -113,6 +125,7 @@ internal fun FireFlowNavHost(
                 onNavigateToDestination(
                     NavDirection(
                         destination = AccountsDestination,
+                        route = "${AccountsDestination.route}?${AccountsDestination.isBackNavigationSupported}=false",
                         inclusive = true
                     )
                 )

@@ -15,14 +15,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.fireflow.authentication.presentation.navigation
+package dev.zitech.fireflow.ds.atoms.dropdown
 
-import dev.zitech.fireflow.common.presentation.navigation.destination.FireFlowNavigationDestination
-
-private const val DESTINATION = "authentication"
-
-object AccountsDestination : FireFlowNavigationDestination {
-    override val route: String = "accounts_route"
-    override val destination: String = DESTINATION
-    const val isBackNavigationSupported: String = "isBackNavigationSupported"
-}
+data class DropDownMenuItem(
+    val id: Int,
+    val text: String
+)

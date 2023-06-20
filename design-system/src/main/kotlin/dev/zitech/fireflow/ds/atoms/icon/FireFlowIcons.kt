@@ -30,6 +30,7 @@ import androidx.compose.material.icons.outlined.ExpandMore
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.Logout
+import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.NetworkCheck
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.Speed
@@ -47,6 +48,7 @@ object FireFlowIcons {
     val Info = Icons.Outlined.Info
     val Language = Icons.Outlined.Language
     val Logout = Icons.Outlined.Logout
+    val MoreVert = Icons.Outlined.MoreVert
     val NetworkCheck = Icons.Outlined.NetworkCheck
     val Settings = Icons.Outlined.Settings
     val Speed = Icons.Outlined.Speed

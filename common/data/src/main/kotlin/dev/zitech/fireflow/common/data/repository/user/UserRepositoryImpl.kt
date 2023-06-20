@@ -34,6 +34,9 @@ internal class UserRepositoryImpl @Inject constructor(
     private val userDatabaseSource: UserSource
 ) : UserRepository {
 
+    override suspend fun deleteUserById(userId: Long): OperationResult<Int> =
+        userDatabaseSource.deleteUserById(userId)
+
     override fun getCurrentUser(): Flow<OperationResult<User>> =
         userDatabaseSource.getCurrentUser()
             .map { userResult ->
@@ -45,7 +48,7 @@ internal class UserRepositoryImpl @Inject constructor(
                             }
                             is User.Remote -> {
                                 networkDetailsInMemoryCache.data = NetworkDetails(
-                                    userId = user.userId,
+                                    userId = user.id,
                                     serverAddress = user.serverAddress
                                 )
                             }
@@ -64,10 +67,10 @@ internal class UserRepositoryImpl @Inject constructor(
     override fun getUsers(): Flow<OperationResult<List<User>>> =
         userDatabaseSource.getUsers()
 
-    override suspend fun removeUsersWithStateAndNoToken(): OperationResult<Unit> =
+    override suspend fun removeUsersWithStateAndNoToken(): OperationResult<Int> =
         userDatabaseSource.removeUsersWithStateAndNoToken()
 
-    override suspend fun removeUsersWithStateAndTokenAndNoClientIdAndSecret(): OperationResult<Unit> =
+    override suspend fun removeUsersWithStateAndTokenAndNoClientIdAndSecret(): OperationResult<Int> =
         userDatabaseSource.removeUsersWithStateAndTokenAndNoClientIdAndSecret()
 
     override suspend fun saveUser(
@@ -97,7 +100,6 @@ internal class UserRepositoryImpl @Inject constructor(
                     )
                 }
             }
-
             is Failure -> {
                 // NO_OP
             }
@@ -122,6 +124,9 @@ internal class UserRepositoryImpl @Inject constructor(
 
             is Failure -> Failure(updateUserResult.error)
         }
+
+    override suspend fun updateUserCurrentStatus(userId: Long): OperationResult<Int> =
+        userDatabaseSource.updateUserCurrentStatus(userId)
 
     private companion object {
         const val NO_WORKER_UPDATED_RESULT = 0

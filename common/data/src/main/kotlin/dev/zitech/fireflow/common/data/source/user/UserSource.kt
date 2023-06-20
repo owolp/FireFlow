@@ -27,6 +27,15 @@ import kotlinx.coroutines.flow.Flow
 internal interface UserSource {
 
     /**
+     * Deletes a user based on the specified user ID.
+     *
+     * @param userId The ID of the user to be deleted.
+     * @return An [OperationResult] representing the result of the update operation,
+     *         containing the number of affected rows if successful, or an error if unsuccessful.
+     */
+    suspend fun deleteUserById(userId: Long): OperationResult<Int>
+
+    /**
      * Retrieves the current user as a flow.
      *
      * @return A flow that emits the [OperationResult] representing the current user.
@@ -52,16 +61,18 @@ internal interface UserSource {
     /**
      * Removes users that have the specified state and no access token.
      *
-     * @return An [OperationResult] representing the result of the removal operation.
+     * @return An [OperationResult] representing the result of the update operation,
+     *         containing the number of affected rows if successful, or an error if unsuccessful.
      */
-    suspend fun removeUsersWithStateAndNoToken(): OperationResult<Unit>
+    suspend fun removeUsersWithStateAndNoToken(): OperationResult<Int>
 
     /**
      * Removes users that have the specified state, access token, and no client ID and secret.
      *
-     * @return An [OperationResult] representing the result of the removal operation.
+     * @return An [OperationResult] representing the result of the update operation,
+     *         containing the number of affected rows if successful, or an error if unsuccessful.
      */
-    suspend fun removeUsersWithStateAndTokenAndNoClientIdAndSecret(): OperationResult<Unit>
+    suspend fun removeUsersWithStateAndTokenAndNoClientIdAndSecret(): OperationResult<Int>
 
     /**
      * Saves a new user or updates an existing user.
@@ -94,4 +105,13 @@ internal interface UserSource {
      *         containing the number of affected rows if successful, or an error if unsuccessful.
      */
     suspend fun updateUser(user: User): OperationResult<Int>
+
+    /**
+     * Updates the current user status for the specified user ID.
+     *
+     * @param userId The ID of the user to update.
+     * @return An [OperationResult] representing the result of the update operation,
+     *         containing the number of affected rows if successful, or an error if unsuccessful.
+     */
+    suspend fun updateUserCurrentStatus(userId: Long): OperationResult<Int>
 }
