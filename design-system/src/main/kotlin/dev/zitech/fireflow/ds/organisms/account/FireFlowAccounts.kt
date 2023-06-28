@@ -52,7 +52,7 @@ import dev.zitech.fireflow.ds.theme.PreviewFireFlowTheme
 object FireFlowAccounts {
 
     @Composable
-    fun Primary(
+    fun User(
         initial: Char,
         topInfo: String,
         bottomInfo: String?,
@@ -141,18 +141,18 @@ object FireFlowAccounts {
 }
 
 @Preview(
-    name = "Accounts Light Theme",
+    name = "User Light Theme",
     showBackground = true
 )
 @Preview(
-    name = "Accounts Dark Theme",
+    name = "User Dark Theme",
     uiMode = Configuration.UI_MODE_NIGHT_YES,
     showBackground = true
 )
 @Composable
-private fun Accounts_Primary_Preview() {
+private fun User_Primary_Preview() {
     PreviewFireFlowTheme {
-        FireFlowAccounts.Primary(
+        FireFlowAccounts.User(
             initial = 'Z',
             topInfo = "someone@mail.dev",
             bottomInfo = "http://192.168.1.1",

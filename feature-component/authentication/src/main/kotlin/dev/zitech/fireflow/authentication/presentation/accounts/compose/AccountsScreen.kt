@@ -113,7 +113,7 @@ private fun AccountsContent(
         ) {
             items(state.accounts) { item ->
                 val user = item.user
-                FireFlowAccounts.Primary(
+                FireFlowAccounts.User(
                     initial = user.retrieveInitial(),
                     topInfo = user.retrieveIdentification(),
                     bottomInfo = user.retrieveServerAddress(),
