@@ -95,4 +95,4 @@ zetetic-sqlcipher = "net.zetetic:android-database-sqlcipher:4.5.4"
 
 [plugins]
 dokka = { id = "org.jetbrains.dokka", version = "1.8.20" }
-kover = { id = "org.jetbrains.kotlinx.kover", version = "0.7.1" }
+kover = { id = "org.jetbrains.kotlinx.kover", version = "0.7.2" }
