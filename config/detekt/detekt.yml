@@ -116,6 +116,7 @@ complexity:
     active: true
     threshold: 60
     ignoreAnnotated: [ 'Composable', 'Immutable' ]
+    excludes: [ '**/presentation/navigation/**' ]
   LongParameterList:
     active: true
     excludes: [ '**/data/source/**', '**/repository/database/**' ]
@@ -318,7 +319,7 @@ naming:
     functionPattern: '([a-z][a-zA-Z0-9]*)|(`.*`)'
     excludeClassPattern: '$^'
     ignoreOverridden: true
-    ignoreAnnotated: ['Composable']
+    ignoreAnnotated: [ 'Composable' ]
   FunctionParameterNaming:
     active: true
     excludes: [ '**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**' ]
