@@ -172,11 +172,20 @@ internal class AccountsViewModel @Inject constructor(
             // Delay to block refreshing the dropdown menu, which is not yet closed
             delay(DROPDOWN_MENU_DELAY_MS)
             usersResult.onSuccess { users ->
-                updateState {
-                    copy(
-                        loading = false,
-                        accounts = getAccountItems(users)
-                    )
+                if (users.isNotEmpty()) {
+                    updateState {
+                        copy(
+                            loading = false,
+                            accounts = getAccountItems(users)
+                        )
+                    }
+                } else {
+                    updateState {
+                        copy(
+                            loading = false,
+                            close = true
+                        )
+                    }
                 }
             }.onFailure(::handleError)
         }.launchIn(viewModelScope)
