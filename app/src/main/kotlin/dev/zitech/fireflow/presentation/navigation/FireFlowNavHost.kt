@@ -67,6 +67,14 @@ internal fun FireFlowNavHost(
             },
             navigateToError = {
                 Logger.e("FireFlowNavHost", it.debugText)
+            },
+            navigateToOnboarding = {
+                onNavigateToDestination(
+                    NavDirection(
+                        destination = WelcomeDestination,
+                        route = "${WelcomeDestination.route}?${WelcomeDestination.isBackNavigationSupported}=true"
+                    )
+                )
             }
         )
         onboardingGraph(

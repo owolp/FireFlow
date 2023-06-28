@@ -68,8 +68,9 @@ import kotlinx.coroutines.launch
 
 @Composable
 internal fun WelcomeScreen(
+    isBackNavigationSupported: Boolean,
     modifier: Modifier = Modifier,
-    backClicked: () -> Unit = {},
+    backClicked: (backNavigationSupported: Boolean) -> Unit = {},
     continueWithOauthClicked: () -> Unit = {},
     continueWithPatClicked: () -> Unit = {},
     fireflyClicked: () -> Unit = {},
@@ -77,7 +78,7 @@ internal fun WelcomeScreen(
     snackbarState: FireFlowSnackbarState = rememberSnackbarState()
 ) {
     BackHandler(enabled = true) {
-        backClicked()
+        backClicked(isBackNavigationSupported)
     }
 
     FireFlowScaffolds.Primary(
@@ -228,6 +229,8 @@ private fun getFireflyInfoAnnotatedString() = buildAnnotatedString {
 @Composable
 private fun WelcomeScreen_Preview() {
     PreviewFireFlowTheme {
-        WelcomeScreen()
+        WelcomeScreen(
+            isBackNavigationSupported = true
+        )
     }
 }

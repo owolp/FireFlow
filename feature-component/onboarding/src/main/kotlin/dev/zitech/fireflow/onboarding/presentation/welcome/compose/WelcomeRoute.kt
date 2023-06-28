@@ -34,6 +34,7 @@ import dev.zitech.fireflow.ds.molecules.snackbar.BottomNotifierMessage
 import dev.zitech.fireflow.ds.molecules.snackbar.rememberSnackbarState
 import dev.zitech.fireflow.onboarding.R
 import dev.zitech.fireflow.onboarding.presentation.welcome.viewmodel.BackClicked
+import dev.zitech.fireflow.onboarding.presentation.welcome.viewmodel.CloseHandled
 import dev.zitech.fireflow.onboarding.presentation.welcome.viewmodel.ContinueWithOauthClicked
 import dev.zitech.fireflow.onboarding.presentation.welcome.viewmodel.ContinueWithPatClicked
 import dev.zitech.fireflow.onboarding.presentation.welcome.viewmodel.DemoHandled
@@ -53,11 +54,13 @@ import kotlinx.coroutines.flow.stateIn
 
 @Composable
 internal fun WelcomeRoute(
+    isBackNavigationSupported: Boolean,
     navigateToOAuth: () -> Unit,
     navigateToPat: () -> Unit,
     navigateToDemo: () -> Unit,
     navigateOutOfApp: () -> Unit,
     navigateToError: (error: Error) -> Unit,
+    navigateBack: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: WelcomeViewModel = hiltViewModel()
 ) {
@@ -70,6 +73,7 @@ internal fun WelcomeRoute(
         navigateToDemo()
         viewModel.receiveIntent(DemoHandled)
     }
+
     if (screenState.demoWarning) {
         FireFlowDialogs.Alert(
             text = stringResource(R.string.welcome_demo_dialog_text),
@@ -78,10 +82,12 @@ internal fun WelcomeRoute(
             onDismissRequest = { viewModel.receiveIntent(DemoWarningDismissed) }
         )
     }
+
     screenState.fatalError?.let { fireFlowError ->
         navigateToError(fireFlowError)
         viewModel.receiveIntent(FatalErrorHandled)
     }
+
     if (screenState.fireflyAuthentication) {
         val fireFlyHomePageUrl = stringResource(R.string.firefly_iii_home_page_url)
         LaunchedEffect(Unit) {
@@ -93,6 +99,7 @@ internal fun WelcomeRoute(
             }.stateIn(coroutineScope)
         }
     }
+
     screenState.nonFatalError?.let { fireFlowError ->
         snackbarState.showMessage(
             BottomNotifierMessage(
@@ -103,26 +110,35 @@ internal fun WelcomeRoute(
         )
         viewModel.receiveIntent(NonFatalErrorHandled)
     }
+
     if (screenState.oauth) {
         navigateToOAuth()
         viewModel.receiveIntent(OAuthHandled)
     }
+
     if (screenState.pat) {
         navigateToPat()
         viewModel.receiveIntent(PatHandled)
     }
+
     if (screenState.quitApp) {
         navigateOutOfApp()
         viewModel.receiveIntent(QuitAppHandled)
     }
 
+    if (screenState.close) {
+        navigateBack()
+        viewModel.receiveIntent(CloseHandled)
+    }
+
     WelcomeScreen(
+        isBackNavigationSupported = isBackNavigationSupported,
         modifier = modifier,
         snackbarState = snackbarState,
         continueWithOauthClicked = { viewModel.receiveIntent(ContinueWithOauthClicked) },
         continueWithPatClicked = { viewModel.receiveIntent(ContinueWithPatClicked) },
         getStartedClicked = { viewModel.receiveIntent(GetStartedClicked) },
-        backClicked = { viewModel.receiveIntent(BackClicked) },
+        backClicked = { viewModel.receiveIntent(BackClicked(it)) },
         fireflyClicked = { viewModel.receiveIntent(FireflyClicked) }
     )
 }

@@ -21,7 +21,7 @@ import dev.zitech.fireflow.common.presentation.architecture.MviIntent
 import dev.zitech.fireflow.core.result.OperationResult
 
 internal data class NavigatedToFireflyResult(val result: OperationResult<Unit>) : WelcomeIntent
-internal object BackClicked : WelcomeIntent
+internal data class BackClicked(val isBackNavigationSupported: Boolean) : WelcomeIntent
 internal object ContinueWithOauthClicked : WelcomeIntent
 internal object ContinueWithPatClicked : WelcomeIntent
 internal object DemoHandled : WelcomeIntent
@@ -34,4 +34,5 @@ internal object NonFatalErrorHandled : WelcomeIntent
 internal object OAuthHandled : WelcomeIntent
 internal object PatHandled : WelcomeIntent
 internal object QuitAppHandled : WelcomeIntent
+internal object CloseHandled : WelcomeIntent
 internal sealed interface WelcomeIntent : MviIntent

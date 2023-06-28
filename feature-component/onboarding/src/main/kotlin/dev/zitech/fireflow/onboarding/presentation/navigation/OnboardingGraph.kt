@@ -83,13 +83,28 @@ fun NavGraphBuilder.onboardingGraph(
             navigateToError = navigateToError
         )
     }
-    composable(route = WelcomeDestination.route) {
+    composable(
+        route = "${WelcomeDestination.route}?" +
+            "${WelcomeDestination.isBackNavigationSupported}={${WelcomeDestination.isBackNavigationSupported}}",
+        arguments = listOf(
+            navArgument(WelcomeDestination.isBackNavigationSupported) {
+                type = NavType.BoolType
+            }
+        )
+    ) { navBackStackEntry ->
+        val isBackNavigationSupported =
+            navBackStackEntry.arguments
+                ?.getBoolean(WelcomeDestination.isBackNavigationSupported)
+                ?: false
+
         WelcomeRoute(
+            isBackNavigationSupported = isBackNavigationSupported,
             navigateToOAuth = navigateToOAuth,
             navigateToPat = navigateToPat,
             navigateToDemo = navigateToDemo,
             navigateOutOfApp = navigateOutOfApp,
-            navigateToError = navigateToError
+            navigateToError = navigateToError,
+            navigateBack = navigateBack
         )
     }
 }
