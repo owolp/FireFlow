@@ -36,3 +36,5 @@ internal object NonFatalErrorHandled : AccountsIntent
 internal object FatalErrorHandled : AccountsIntent
 internal data class ConfirmRemoveAccountClicked(val userId: Long) : AccountsIntent
 internal object ConfirmRemoveAccountDismissed : AccountsIntent
+internal object OnNewAccountClicked : AccountsIntent
+internal object NewAccountHandled : AccountsIntent

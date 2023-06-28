@@ -28,6 +28,7 @@ internal data class AccountsState(
     val fatalError: FireFlowError? = null,
     val home: Boolean = false,
     val loading: Boolean = false,
+    val newAccount: Boolean? = null,
     val nonFatalError: FireFlowError? = null,
     val quit: Boolean = false
 ) : MviState {

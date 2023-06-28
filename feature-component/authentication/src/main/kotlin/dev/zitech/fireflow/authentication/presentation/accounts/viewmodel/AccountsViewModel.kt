@@ -64,6 +64,8 @@ internal class AccountsViewModel @Inject constructor(
                 is MoreItemClicked -> handleMoreItemClicked(intent)
                 is ConfirmRemoveAccountClicked -> handleRemoveAccountClicked(intent)
                 ConfirmRemoveAccountDismissed -> updateState { copy(confirmRemoveAccount = null) }
+                OnNewAccountClicked -> updateState { copy(newAccount = true) }
+                NewAccountHandled -> updateState { copy(newAccount = null) }
             }
         }
     }

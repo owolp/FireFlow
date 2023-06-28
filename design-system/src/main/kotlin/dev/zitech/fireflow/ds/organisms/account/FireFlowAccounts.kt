@@ -150,7 +150,7 @@ object FireFlowAccounts {
     showBackground = true
 )
 @Composable
-private fun User_Primary_Preview() {
+private fun User_Preview() {
     PreviewFireFlowTheme {
         FireFlowAccounts.User(
             initial = 'Z',

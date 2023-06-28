@@ -28,6 +28,7 @@ fun NavGraphBuilder.authenticationGraph(
     navigateToDashboard: () -> Unit,
     navigateOutOfApp: () -> Unit,
     navigateBack: () -> Unit,
+    navigateToOnboarding: () -> Unit,
     navigateToError: (error: Error) -> Unit
 ) {
     composable(
@@ -49,6 +50,7 @@ fun NavGraphBuilder.authenticationGraph(
             navigateToHome = navigateToDashboard,
             navigateOutOfApp = navigateOutOfApp,
             navigateBack = navigateBack,
+            navigateToOnboarding = navigateToOnboarding,
             navigateToError = navigateToError
         )
     }
