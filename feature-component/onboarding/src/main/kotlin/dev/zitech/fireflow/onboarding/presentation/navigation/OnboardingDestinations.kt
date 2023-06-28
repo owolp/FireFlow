@@ -36,4 +36,5 @@ object PatDestination : FireFlowNavigationDestination {
 object WelcomeDestination : FireFlowNavigationDestination {
     override val route: String = "welcome_route"
     override val destination: String = DESTINATION
+    const val isBackNavigationSupported: String = "isBackNavigationSupported"
 }

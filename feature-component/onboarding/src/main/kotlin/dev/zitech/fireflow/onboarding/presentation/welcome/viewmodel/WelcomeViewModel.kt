@@ -36,7 +36,7 @@ internal class WelcomeViewModel @Inject constructor(
     override fun receiveIntent(intent: WelcomeIntent) {
         viewModelScope.launch {
             when (intent) {
-                BackClicked -> updateState { copy(quitApp = true) }
+                is BackClicked -> handleBackClicked(intent.isBackNavigationSupported)
                 ContinueWithOauthClicked -> updateState { copy(oauth = true) }
                 ContinueWithPatClicked -> updateState { copy(pat = true) }
                 DemoHandled -> updateState { copy(demo = false) }
@@ -50,7 +50,16 @@ internal class WelcomeViewModel @Inject constructor(
                 OAuthHandled -> updateState { copy(oauth = false) }
                 PatHandled -> updateState { copy(pat = false) }
                 QuitAppHandled -> updateState { copy(quitApp = false) }
+                CloseHandled -> updateState { copy(close = false) }
             }
+        }
+    }
+
+    private fun handleBackClicked(isBackNavigationSupported: Boolean) {
+        if (isBackNavigationSupported) {
+            updateState { copy(close = true) }
+        } else {
+            updateState { copy(quitApp = true) }
         }
     }
 

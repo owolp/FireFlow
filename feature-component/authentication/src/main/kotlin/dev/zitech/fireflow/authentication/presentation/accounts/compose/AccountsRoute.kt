@@ -34,7 +34,9 @@ import dev.zitech.fireflow.authentication.presentation.accounts.viewmodel.HomeHa
 import dev.zitech.fireflow.authentication.presentation.accounts.viewmodel.MoreClicked
 import dev.zitech.fireflow.authentication.presentation.accounts.viewmodel.MoreDismissed
 import dev.zitech.fireflow.authentication.presentation.accounts.viewmodel.MoreItemClicked
+import dev.zitech.fireflow.authentication.presentation.accounts.viewmodel.NewAccountHandled
 import dev.zitech.fireflow.authentication.presentation.accounts.viewmodel.NonFatalErrorHandled
+import dev.zitech.fireflow.authentication.presentation.accounts.viewmodel.OnNewAccountClicked
 import dev.zitech.fireflow.authentication.presentation.accounts.viewmodel.QuitHandled
 import dev.zitech.fireflow.core.error.Error
 import dev.zitech.fireflow.ds.molecules.dialog.FireFlowDialogs
@@ -48,6 +50,7 @@ internal fun AccountsRoute(
     navigateOutOfApp: () -> Unit,
     navigateBack: () -> Unit,
     navigateToError: (error: Error) -> Unit,
+    navigateToOnboarding: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: AccountsViewModel = hiltViewModel()
 ) {
@@ -98,6 +101,13 @@ internal fun AccountsRoute(
         viewModel.receiveIntent(NonFatalErrorHandled)
     }
 
+    screenState.newAccount?.let { newAccount ->
+        if (newAccount) {
+            navigateToOnboarding()
+        }
+        viewModel.receiveIntent(NewAccountHandled)
+    }
+
     AccountsScreen(
         isBackNavigationSupported = isBackNavigationSupported,
         accountsState = screenState,
@@ -114,6 +124,7 @@ internal fun AccountsRoute(
             )
         },
         onMoreDismissed = { index -> viewModel.receiveIntent(MoreDismissed(index)) },
-        onMoreClicked = { index -> viewModel.receiveIntent(MoreClicked(index)) }
+        onMoreClicked = { index -> viewModel.receiveIntent(MoreClicked(index)) },
+        onNewAccountClicked = { viewModel.receiveIntent(OnNewAccountClicked) }
     )
 }

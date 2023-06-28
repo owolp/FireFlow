@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.dp
 import dev.zitech.fireflow.ds.atoms.icon.FireFlowIcons
 import dev.zitech.fireflow.ds.atoms.loading.FireFlowProgressIndicators
 import dev.zitech.fireflow.ds.atoms.radio.FireFlowRadioButtons
+import dev.zitech.fireflow.ds.atoms.spacer.FireFlowSpacers
 import dev.zitech.fireflow.ds.atoms.text.FireFlowTexts
 import dev.zitech.fireflow.ds.theme.FireFlowTheme
 import dev.zitech.fireflow.ds.theme.PreviewFireFlowTheme
@@ -52,6 +53,7 @@ object FireFlowButtons {
     private val MIN_BUTTON_HEIGHT = 48.dp
 
     object Filled {
+
         @Composable
         fun OnSurfaceTint(
             text: String,
@@ -104,6 +106,39 @@ object FireFlowButtons {
                 imageVector = image,
                 contentDescription = contentDescription
             )
+        }
+    }
+
+    object IconText {
+
+        @Composable
+        fun OnSurface(
+            text: String,
+            image: ImageVector,
+            contentDescription: String,
+            modifier: Modifier = Modifier,
+            enabled: Boolean = true,
+            onClick: () -> Unit
+        ) {
+            TextButton(
+                modifier = modifier.heightIn(min = MIN_BUTTON_HEIGHT),
+                enabled = enabled,
+                shape = FireFlowTheme.shapes.extraLarge,
+                onClick = { onClick() }
+            ) {
+                Icon(
+                    imageVector = image,
+                    contentDescription = contentDescription,
+                    tint = FireFlowTheme.colors.onSurface
+                )
+                FireFlowSpacers.Horizontal(horizontalSpace = FireFlowTheme.space.m)
+                FireFlowTexts.TitleMedium(
+                    text = text,
+                    color = FireFlowTheme.colors.onSurface,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center
+                )
+            }
         }
     }
 
@@ -353,6 +388,28 @@ private fun Icon_Disabled_Preview() {
             image = FireFlowIcons.ArrowBack,
             contentDescription = "",
             enabled = false,
+            onClick = {}
+        )
+    }
+}
+
+@Preview(
+    name = "IconText OnSurface Button Light Theme Enabled",
+    showBackground = true
+)
+@Preview(
+    name = "IconText OnSurface Button Dark Theme Enabled",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showBackground = true
+)
+@Composable
+private fun IconText_OnSurface_Enabled_Preview() {
+    PreviewFireFlowTheme {
+        FireFlowButtons.IconText.OnSurface(
+            image = FireFlowIcons.PersonAdd,
+            contentDescription = "",
+            text = "IconText OnSurface Enabled Button",
+            enabled = true,
             onClick = {}
         )
     }

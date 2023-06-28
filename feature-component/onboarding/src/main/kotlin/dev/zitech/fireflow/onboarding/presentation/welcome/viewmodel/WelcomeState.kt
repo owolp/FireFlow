@@ -21,6 +21,7 @@ import dev.zitech.fireflow.common.presentation.architecture.MviState
 import dev.zitech.fireflow.core.error.FireFlowError
 
 internal data class WelcomeState(
+    val close: Boolean = false,
     val demo: Boolean = false,
     val demoWarning: Boolean = false,
     val fatalError: FireFlowError? = null,

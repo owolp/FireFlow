@@ -22,6 +22,9 @@
     <string name="accounts_menu_item_switch_to_account">Превключване към акаунт</string>
     <string name="accounts_menu_item_remove_account">Премахване на акаунт</string>
 
+    <string name="accounts_button_add_account">Добави потребител</string>
+    <string name="cd_accounts_button_add_account">Добави потребител</string>
+
     <string name="accounts_dialog_remove_account_title">Премахни профил</string>
     <string name="accounts_dialog_remove_account_text">Премахване на профил %s и изтриване на цялата локална информация?\n\nТова действие не може да бъде отменено.</string>
 </resources>

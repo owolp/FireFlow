@@ -34,7 +34,9 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import dev.zitech.fireflow.authentication.R
 import dev.zitech.fireflow.authentication.presentation.accounts.viewmodel.AccountsState
+import dev.zitech.fireflow.ds.atoms.button.FireFlowButtons
 import dev.zitech.fireflow.ds.atoms.dropdown.DropDownMenuItem
+import dev.zitech.fireflow.ds.atoms.icon.FireFlowIcons
 import dev.zitech.fireflow.ds.molecules.snackbar.FireFlowSnackbarState
 import dev.zitech.fireflow.ds.molecules.snackbar.rememberSnackbarState
 import dev.zitech.fireflow.ds.molecules.topappbar.FireFlowTopAppBars
@@ -52,6 +54,7 @@ internal fun AccountsScreen(
     onMoreItemClicked: (identification: String, menuItemId: Int, userId: Long) -> Unit,
     onMoreClicked: (userId: Long) -> Unit,
     onMoreDismissed: (userId: Long) -> Unit,
+    onNewAccountClicked: () -> Unit,
     modifier: Modifier = Modifier,
     snackbarState: FireFlowSnackbarState = rememberSnackbarState()
 ) {
@@ -87,7 +90,8 @@ internal fun AccountsScreen(
             state = accountsState,
             onMoreClicked = onMoreClicked,
             onMoreDismissed = onMoreDismissed,
-            onMoreItemClicked = onMoreItemClicked
+            onMoreItemClicked = onMoreItemClicked,
+            onNewAccountClicked = onNewAccountClicked
         )
     }
 }
@@ -99,6 +103,7 @@ private fun AccountsContent(
     onMoreItemClicked: (identification: String, menuItemId: Int, userId: Long) -> Unit,
     onMoreClicked: (userId: Long) -> Unit,
     onMoreDismissed: (userId: Long) -> Unit,
+    onNewAccountClicked: () -> Unit,
     state: AccountsState
 ) {
     Column(
@@ -106,14 +111,15 @@ private fun AccountsContent(
             .fillMaxSize()
             .padding(horizontal = FireFlowTheme.space.gutter)
             .padding(innerPadding)
-            .consumeWindowInsets(innerPadding)
+            .consumeWindowInsets(innerPadding),
+        verticalArrangement = Arrangement.spacedBy(FireFlowTheme.space.m)
     ) {
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(FireFlowTheme.space.s)
         ) {
             items(state.accounts) { item ->
                 val user = item.user
-                FireFlowAccounts.Primary(
+                FireFlowAccounts.User(
                     initial = user.retrieveInitial(),
                     topInfo = user.retrieveIdentification(),
                     bottomInfo = user.retrieveServerAddress(),
@@ -133,5 +139,11 @@ private fun AccountsContent(
                 )
             }
         }
+        FireFlowButtons.IconText.OnSurface(
+            text = stringResource(R.string.accounts_button_add_account),
+            image = FireFlowIcons.PersonAdd,
+            contentDescription = stringResource(R.string.cd_accounts_button_add_account),
+            onClick = onNewAccountClicked
+        )
     }
 }
