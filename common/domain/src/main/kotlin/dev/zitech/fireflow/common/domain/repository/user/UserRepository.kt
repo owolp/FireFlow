@@ -63,7 +63,7 @@ interface UserRepository {
      * @return An [OperationResult] representing the result of the update operation,
      *         containing the number of affected rows if successful, or an error if unsuccessful.
      */
-    suspend fun removeUsersWithStateAndNoToken(): OperationResult<Int>
+    suspend fun removeUsersWithStateAndNoTokenAndEmail(): OperationResult<Int>
 
     /**
      * Removes users with the specified state and token, but no client ID and secret.
@@ -71,7 +71,7 @@ interface UserRepository {
      * @return An [OperationResult] representing the result of the update operation,
      *         containing the number of affected rows if successful, or an error if unsuccessful.
      */
-    suspend fun removeUsersWithStateAndTokenAndNoClientIdAndSecret(): OperationResult<Int>
+    suspend fun removeUsersWithStateAndTokenAndNoClientIdAndSecretAndEmail(): OperationResult<Int>
 
     /**
      * Saves a new user with the provided details.

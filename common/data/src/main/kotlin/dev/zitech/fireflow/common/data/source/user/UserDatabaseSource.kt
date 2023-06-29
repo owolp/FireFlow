@@ -70,14 +70,14 @@ internal class UserDatabaseSource @Inject constructor(
             Failure<List<User>>(Error.Fatal(throwable, DISK))
         }
 
-    override suspend fun removeUsersWithStateAndNoToken(): OperationResult<Int> =
+    override suspend fun removeUsersWithStateAndNoTokenAndEmail(): OperationResult<Int> =
         handleDb {
-            userDao.removeUsersWithStateAndNoToken()
+            userDao.removeUsersWithStateAndNoTokenAndEmail()
         }
 
-    override suspend fun removeUsersWithStateAndTokenAndNoClientIdAndSecret(): OperationResult<Int> =
+    override suspend fun removeUsersWithStateAndTokenAndNoClientIdAndSecretAndEmail(): OperationResult<Int> =
         handleDb {
-            userDao.removeUsersWithStateAndTokenAndNoClientIdAndSecret()
+            userDao.removeUsersWithStateAndTokenAndNoClientIdAndSecretAndEmail()
         }
 
     override suspend fun saveUser(

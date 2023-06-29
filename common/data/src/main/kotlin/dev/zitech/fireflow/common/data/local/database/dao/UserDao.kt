@@ -98,8 +98,8 @@ internal interface UserDao {
      *
      * @return An [Int] representing the number of users removed.
      */
-    @Query("DELETE FROM users WHERE state IS NOT NULL AND accessToken IS NULL")
-    suspend fun removeUsersWithStateAndNoToken(): Int
+    @Query("DELETE FROM users WHERE state IS NOT NULL AND accessToken IS NULL AND email IS NULL")
+    suspend fun removeUsersWithStateAndNoTokenAndEmail(): Int
 
     /**
      * Removes users that have a state and access token, but no client ID and client secret.
@@ -114,9 +114,9 @@ internal interface UserDao {
      */
     @Query(
         "DELETE FROM users WHERE state IS NOT NULL AND accessToken IS NOT" +
-            " NULL AND clientId IS NULL AND clientSecret IS NULL"
+            " NULL AND clientId IS NULL AND clientSecret IS NULL AND email IS NULL"
     )
-    suspend fun removeUsersWithStateAndTokenAndNoClientIdAndSecret(): Int
+    suspend fun removeUsersWithStateAndTokenAndNoClientIdAndSecretAndEmail(): Int
 
     /**
      * Inserts or replaces a user entity.

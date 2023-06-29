@@ -64,7 +64,7 @@ internal interface UserSource {
      * @return An [OperationResult] representing the result of the update operation,
      *         containing the number of affected rows if successful, or an error if unsuccessful.
      */
-    suspend fun removeUsersWithStateAndNoToken(): OperationResult<Int>
+    suspend fun removeUsersWithStateAndNoTokenAndEmail(): OperationResult<Int>
 
     /**
      * Removes users that have the specified state, access token, and no client ID and secret.
@@ -72,7 +72,7 @@ internal interface UserSource {
      * @return An [OperationResult] representing the result of the update operation,
      *         containing the number of affected rows if successful, or an error if unsuccessful.
      */
-    suspend fun removeUsersWithStateAndTokenAndNoClientIdAndSecret(): OperationResult<Int>
+    suspend fun removeUsersWithStateAndTokenAndNoClientIdAndSecretAndEmail(): OperationResult<Int>
 
     /**
      * Saves a new user or updates an existing user.
