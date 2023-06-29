@@ -78,6 +78,8 @@ internal class UserEntityMapper @Inject constructor() :
         when (input) {
             is User.Local -> {
                 UserEntity(
+                    email = input.userName,
+                    id = input.id,
                     isCurrentUser = input.isCurrentUser
                 )
             }
