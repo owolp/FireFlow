@@ -85,6 +85,7 @@ internal class UserDatabaseSource @Inject constructor(
         clientId: String?,
         clientSecret: String?,
         connectivityNotification: Boolean,
+        email: String?,
         isCurrentUser: Boolean,
         serverAddress: String?,
         state: String
@@ -95,6 +96,7 @@ internal class UserDatabaseSource @Inject constructor(
                 clientId = clientId,
                 clientSecret = clientSecret,
                 connectivityNotification = connectivityNotification,
+                email = email,
                 isCurrentUser = isCurrentUser,
                 serverAddress = serverAddress,
                 state = state

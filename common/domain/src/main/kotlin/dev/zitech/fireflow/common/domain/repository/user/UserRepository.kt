@@ -91,6 +91,7 @@ interface UserRepository {
         clientId: String?,
         clientSecret: String?,
         connectivityNotification: Boolean,
+        email: String?,
         isCurrentUser: Boolean,
         serverAddress: String?,
         state: String

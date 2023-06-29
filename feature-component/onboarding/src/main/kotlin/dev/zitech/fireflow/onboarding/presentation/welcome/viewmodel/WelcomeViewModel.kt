@@ -19,18 +19,18 @@ package dev.zitech.fireflow.onboarding.presentation.welcome.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.zitech.fireflow.common.domain.usecase.user.SaveUserUseCase
 import dev.zitech.fireflow.common.presentation.architecture.MviViewModel
 import dev.zitech.fireflow.core.error.Error
 import dev.zitech.fireflow.core.result.OperationResult
 import dev.zitech.fireflow.core.result.onFailure
 import dev.zitech.fireflow.core.result.onSuccess
+import dev.zitech.fireflow.onboarding.domain.usecase.SaveLocalUserUseCase
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 
 @HiltViewModel
 internal class WelcomeViewModel @Inject constructor(
-    private val saveUserUseCase: SaveUserUseCase
+    private val saveLocalUserUseCase: SaveLocalUserUseCase
 ) : MviViewModel<WelcomeIntent, WelcomeState>(WelcomeState()) {
 
     override fun receiveIntent(intent: WelcomeIntent) {
@@ -81,21 +81,23 @@ internal class WelcomeViewModel @Inject constructor(
 
     @Suppress("ForbiddenComment")
     private suspend fun handleOnShowDemoPositive() {
-        // TODO: Dev usage
-        saveUserUseCase(
-            accessToken = null,
-            clientId = null,
-            clientSecret = null,
-            connectivityNotification = false,
-            isCurrentUser = true,
-            serverAddress = null,
-            state = ""
-        )
-        updateState {
-            copy(
-                demoWarning = false,
-                demo = true
-            )
+        // TODO: Add loading
+        saveLocalUserUseCase().onSuccess {
+            updateState {
+                copy(
+                    demoWarning = false,
+                    demo = true
+                )
+            }
+        }.onFailure(::handleError)
+    }
+
+    @Suppress("ForbiddenComment")
+    private fun handleError(error: Error) {
+        // TODO: Hide loading
+        when (error) {
+            is Error.UserVisible -> updateState { copy(demoWarning = false, nonFatalError = error) }
+            else -> updateState { copy(demoWarning = false, fatalError = error) }
         }
     }
 }

@@ -47,6 +47,7 @@ class SaveUserUseCase @Inject constructor(
         clientId: String? = null,
         clientSecret: String? = null,
         connectivityNotification: Boolean,
+        email: String? = null,
         isCurrentUser: Boolean,
         serverAddress: String? = null,
         state: String
@@ -55,6 +56,7 @@ class SaveUserUseCase @Inject constructor(
             clientId = clientId,
             clientSecret = clientSecret,
             connectivityNotification = connectivityNotification,
+            email = email,
             isCurrentUser = isCurrentUser,
             accessToken = accessToken,
             serverAddress = serverAddress,
