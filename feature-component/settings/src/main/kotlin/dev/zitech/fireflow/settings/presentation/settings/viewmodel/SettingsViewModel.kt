@@ -132,16 +132,11 @@ internal class SettingsViewModel @Inject constructor(
         }
     }
 
+    private suspend fun getCurrentUser() = getCurrentUserUseCase().first()
+
     private suspend fun getCurrentUserEmailAddress() =
-        when (val result = getCurrentUserUseCase().first()) {
-            is Success -> {
-                when (val user = result.data) {
-                    is User.Local -> ""
-                    is User.Remote -> {
-                        user.email.orEmpty()
-                    }
-                }
-            }
+        when (val result = getCurrentUser()) {
+            is Success -> result.data.retrieveIdentification()
             is Failure -> ""
         }
 
@@ -184,7 +179,7 @@ internal class SettingsViewModel @Inject constructor(
     }
 
     private suspend fun handleConnectivityChecked(checked: Boolean) {
-        getCurrentUserUseCase().first().onSuccess { user ->
+        getCurrentUser().onSuccess { user ->
             when (user) {
                 is User.Local -> {
                     updateState { copy(fatalError = Error.LocalUserTypeNotSupported) }
@@ -268,7 +263,7 @@ internal class SettingsViewModel @Inject constructor(
     }
 
     private suspend fun setNetworkConnectivityPreference() {
-        getCurrentUserUseCase().first().onSuccess { user ->
+        getCurrentUser().onSuccess { user ->
             if (user is User.Remote) {
                 updateState {
                     copy(
