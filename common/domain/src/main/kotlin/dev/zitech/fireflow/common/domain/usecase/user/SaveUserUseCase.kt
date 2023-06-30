@@ -102,27 +102,19 @@ class SaveUserUseCase @Inject constructor(
         state: String
     ) = when (val result = userRepository.removeCurrentUsers()) {
         is OperationResult.Success -> {
-            if (result.data != NO_WORKER_UPDATED_RESULT) {
-                userRepository.saveUser(
-                    clientId = clientId,
-                    clientSecret = clientSecret,
-                    connectivityNotification = connectivityNotification,
-                    email = email,
-                    isCurrentUser = isCurrentUser,
-                    accessToken = accessToken,
-                    serverAddress = serverAddress,
-                    state = state
-                )
-            } else {
-                OperationResult.Failure(Error.NullUser)
-            }
+            userRepository.saveUser(
+                clientId = clientId,
+                clientSecret = clientSecret,
+                connectivityNotification = connectivityNotification,
+                email = email,
+                isCurrentUser = isCurrentUser,
+                accessToken = accessToken,
+                serverAddress = serverAddress,
+                state = state
+            )
         }
         is OperationResult.Failure -> OperationResult.Failure(
             result.error
         )
-    }
-
-    private companion object {
-        const val NO_WORKER_UPDATED_RESULT = 0
     }
 }

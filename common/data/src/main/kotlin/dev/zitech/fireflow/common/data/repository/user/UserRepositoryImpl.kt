@@ -40,7 +40,8 @@ internal class UserRepositoryImpl @Inject constructor(
     override suspend fun checkUserExistsByEmailAndServerAddress(
         email: String,
         serverAddress: String
-    ): OperationResult<Boolean> = checkUserExistsByEmailAndServerAddress(email, serverAddress)
+    ): OperationResult<Boolean> =
+        userDatabaseSource.checkUserExistsByEmailAndServerAddress(email, serverAddress)
 
     override suspend fun deleteUserById(userId: Long): OperationResult<Int> =
         userDatabaseSource.deleteUserById(userId)
