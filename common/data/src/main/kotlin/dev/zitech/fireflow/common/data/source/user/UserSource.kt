@@ -59,6 +59,14 @@ internal interface UserSource {
     fun getUsers(): Flow<OperationResult<List<User>>>
 
     /**
+     * Removes the current user or users.
+     *
+     * @return An [OperationResult] representing the result of the update operation,
+     *         containing the number of affected rows if successful, or an error if unsuccessful.
+     */
+    suspend fun removeCurrentUserOrUsers(): OperationResult<Int>
+
+    /**
      * Removes users that have the specified state and no access token.
      *
      * @return An [OperationResult] representing the result of the update operation,

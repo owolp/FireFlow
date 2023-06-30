@@ -87,7 +87,7 @@ internal interface UserDao {
      * @return An [Int] representing the number of users updated.
      */
     @Query("UPDATE users SET isCurrentUser=0")
-    suspend fun removeCurrentUser(): Int
+    suspend fun removeCurrentUserOrUsers(): Int
 
     /**
      * Removes users that have a state but no access token.

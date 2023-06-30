@@ -18,6 +18,7 @@
 package dev.zitech.fireflow.common.domain.usecase.user
 
 import dev.zitech.fireflow.common.domain.repository.user.UserRepository
+import dev.zitech.fireflow.core.error.Error
 import dev.zitech.fireflow.core.result.OperationResult
 import javax.inject.Inject
 
@@ -52,14 +53,27 @@ class SaveUserUseCase @Inject constructor(
         serverAddress: String? = null,
         state: String
     ): OperationResult<Long> =
-        userRepository.saveUser(
-            clientId = clientId,
-            clientSecret = clientSecret,
-            connectivityNotification = connectivityNotification,
-            email = email,
-            isCurrentUser = isCurrentUser,
-            accessToken = accessToken,
-            serverAddress = serverAddress,
-            state = state
-        )
+        when (val removeCurrentUserResult = userRepository.removeCurrentUsers()) {
+            is OperationResult.Success -> {
+                if (removeCurrentUserResult.data != NO_WORKER_UPDATED_RESULT) {
+                    userRepository.saveUser(
+                        clientId = clientId,
+                        clientSecret = clientSecret,
+                        connectivityNotification = connectivityNotification,
+                        email = email,
+                        isCurrentUser = isCurrentUser,
+                        accessToken = accessToken,
+                        serverAddress = serverAddress,
+                        state = state
+                    )
+                } else {
+                    OperationResult.Failure(Error.NullUser)
+                }
+            }
+            is OperationResult.Failure -> OperationResult.Failure(removeCurrentUserResult.error)
+        }
+
+    private companion object {
+        const val NO_WORKER_UPDATED_RESULT = 0
+    }
 }

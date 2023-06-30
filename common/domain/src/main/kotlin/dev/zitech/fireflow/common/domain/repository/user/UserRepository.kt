@@ -58,6 +58,14 @@ interface UserRepository {
     fun getUsers(): Flow<OperationResult<List<User>>>
 
     /**
+     * Removes the current users.
+     *
+     * @return An [OperationResult] representing the result of the update operation,
+     *         containing the number of affected rows if successful, or an error if unsuccessful.
+     */
+    suspend fun removeCurrentUsers(): OperationResult<Int>
+
+    /**
      * Removes users with the specified state and no token.
      *
      * @return An [OperationResult] representing the result of the update operation,

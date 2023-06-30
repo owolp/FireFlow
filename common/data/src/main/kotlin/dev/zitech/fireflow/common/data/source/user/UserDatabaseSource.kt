@@ -70,6 +70,11 @@ internal class UserDatabaseSource @Inject constructor(
             Failure<List<User>>(Error.Fatal(throwable, DISK))
         }
 
+    override suspend fun removeCurrentUserOrUsers(): OperationResult<Int> =
+        handleDb {
+            userDao.removeCurrentUserOrUsers()
+        }
+
     override suspend fun removeUsersWithStateAndNoTokenAndEmail(): OperationResult<Int> =
         handleDb {
             userDao.removeUsersWithStateAndNoTokenAndEmail()

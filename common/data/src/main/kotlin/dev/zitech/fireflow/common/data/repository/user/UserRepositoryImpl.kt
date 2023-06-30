@@ -67,6 +67,9 @@ internal class UserRepositoryImpl @Inject constructor(
     override fun getUsers(): Flow<OperationResult<List<User>>> =
         userDatabaseSource.getUsers()
 
+    override suspend fun removeCurrentUsers(): OperationResult<Int> =
+        userDatabaseSource.removeCurrentUserOrUsers()
+
     override suspend fun removeUsersWithStateAndNoTokenAndEmail(): OperationResult<Int> =
         userDatabaseSource.removeUsersWithStateAndNoTokenAndEmail()
 
