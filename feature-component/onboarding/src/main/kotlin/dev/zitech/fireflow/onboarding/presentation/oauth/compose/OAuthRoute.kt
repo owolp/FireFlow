@@ -96,9 +96,18 @@ internal fun OAuthRoute(
         }
     }
     screenState.nonFatalError?.let { fireFlowError ->
+        val text = when (fireFlowError) {
+            is Error.UserVisible -> fireFlowError.message.orEmpty()
+            is Error.UserWithServerAddressAlreadyExists -> stringResource(
+                fireFlowError.uiResId,
+                fireFlowError.email,
+                fireFlowError.serverAddress
+            )
+            else -> stringResource(fireFlowError.uiResId)
+        }
         snackbarState.showMessage(
             BottomNotifierMessage(
-                text = stringResource(fireFlowError.uiResId),
+                text = text,
                 state = BottomNotifierMessage.State.ERROR,
                 duration = BottomNotifierMessage.Duration.SHORT
             )

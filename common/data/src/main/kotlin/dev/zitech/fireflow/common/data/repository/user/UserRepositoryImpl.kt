@@ -85,6 +85,9 @@ internal class UserRepositoryImpl @Inject constructor(
     override suspend fun removeUsersWithStateAndTokenAndNoClientIdAndSecretAndEmail(): OperationResult<Int> =
         userDatabaseSource.removeUsersWithStateAndTokenAndNoClientIdAndSecretAndEmail()
 
+    override suspend fun removeUsersWithTokenAndNoEmail(): OperationResult<Int> =
+        userDatabaseSource.removeUsersWithTokenAndNoEmail()
+
     override suspend fun saveUser(
         accessToken: String?,
         clientId: String?,

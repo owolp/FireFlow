@@ -110,6 +110,9 @@ internal interface UserDao {
     @Query("DELETE FROM users WHERE state IS NOT NULL AND accessToken IS NULL AND email IS NULL")
     suspend fun removeUsersWithStateAndNoTokenAndEmail(): Int
 
+    @Query("DELETE FROM users WHERE accessToken IS NOT NULL AND email IS NULL")
+    suspend fun removeUsersWithTokenAndNoEmail(): Int
+
     /**
      * Removes users that have a state and access token, but no client ID and client secret.
      *

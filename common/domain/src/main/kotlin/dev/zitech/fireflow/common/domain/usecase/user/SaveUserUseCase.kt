@@ -73,7 +73,7 @@ class SaveUserUseCase @Inject constructor(
                         state
                     )
                 } else {
-                    OperationResult.Failure(Error.UserWithServerAlreadyExists(email, serverAddress))
+                    OperationResult.Failure(Error.UserWithServerAddressAlreadyExists(email, serverAddress))
                 }
             }
             is OperationResult.Failure -> OperationResult.Failure(result.error)

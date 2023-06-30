@@ -88,6 +88,8 @@ interface UserRepository {
      */
     suspend fun removeUsersWithStateAndTokenAndNoClientIdAndSecretAndEmail(): OperationResult<Int>
 
+    suspend fun removeUsersWithTokenAndNoEmail(): OperationResult<Int>
+
     /**
      * Saves a new user with the provided details.
      *

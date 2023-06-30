@@ -116,7 +116,7 @@ sealed class Error(
         R.string.empty
     )
 
-    data class UserWithServerAlreadyExists(
+    data class UserWithServerAddressAlreadyExists(
         val email: String,
         val serverAddress: String
     ) : Error(

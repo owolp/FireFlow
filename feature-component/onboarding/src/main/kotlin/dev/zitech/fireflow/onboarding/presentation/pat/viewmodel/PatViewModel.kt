@@ -92,16 +92,12 @@ internal class PatViewModel @Inject constructor(
                     user = user
                 )
             } else {
-                removeStaleUsersUseCase()
-                updateState {
-                    copy(
-                        loading = false,
-                        nonFatalError = Error.UserWithServerAlreadyExists(
-                            fireflyProfile.email,
-                            serverAddress
-                        )
+                handleError(
+                    Error.UserWithServerAddressAlreadyExists(
+                        fireflyProfile.email,
+                        user.retrieveServerAddress()
                     )
-                }
+                )
             }
         }.onFailure(::handleError)
     }
@@ -136,7 +132,7 @@ internal class PatViewModel @Inject constructor(
         removeStaleUsersUseCase()
         when (error) {
             is Error.UserVisible,
-            is Error.UserWithServerAlreadyExists -> updateState {
+            is Error.UserWithServerAddressAlreadyExists -> updateState {
                 copy(
                     loading = false,
                     nonFatalError = error

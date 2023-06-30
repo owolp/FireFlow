@@ -20,6 +20,7 @@ package dev.zitech.fireflow.onboarding.presentation.oauth.viewmodel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.zitech.fireflow.common.domain.model.authentication.Token
+import dev.zitech.fireflow.common.domain.model.profile.FireflyProfile
 import dev.zitech.fireflow.common.domain.model.user.User
 import dev.zitech.fireflow.common.domain.model.user.UserAuthenticationType
 import dev.zitech.fireflow.common.domain.usecase.profile.GetFireflyProfileUseCase
@@ -38,6 +39,7 @@ import dev.zitech.fireflow.core.error.Error
 import dev.zitech.fireflow.core.result.OperationResult
 import dev.zitech.fireflow.core.result.onFailure
 import dev.zitech.fireflow.core.result.onSuccess
+import dev.zitech.fireflow.onboarding.domain.usecase.CheckUserAlreadyExistsUseCase
 import dev.zitech.fireflow.onboarding.domain.usecase.GetAccessTokenUseCase
 import dev.zitech.fireflow.onboarding.domain.usecase.IsOAuthLoginInputValidUseCase
 import dev.zitech.fireflow.onboarding.domain.validator.ClientIdValidator
@@ -50,6 +52,7 @@ import kotlinx.coroutines.withContext
 @HiltViewModel
 internal class OAuthViewModel @Inject constructor(
     private val appDispatchers: AppDispatchers,
+    private val checkUserAlreadyExistsUseCase: CheckUserAlreadyExistsUseCase,
     private val clientIdValidator: ClientIdValidator,
     private val getAccessTokenUseCase: dagger.Lazy<GetAccessTokenUseCase>,
     private val getFireflyProfileUseCase: dagger.Lazy<GetFireflyProfileUseCase>,
@@ -85,6 +88,39 @@ internal class OAuthViewModel @Inject constructor(
         }
     }
 
+    private suspend fun checkUserAlreadyExists(
+        fireflyProfile: FireflyProfile,
+        serverAddress: String
+    ) {
+        checkUserAlreadyExistsUseCase(
+            fireflyProfile.email,
+            serverAddress
+        ).onSuccess { userExists ->
+            if (!userExists) {
+                updateCurrentUserUseCase(
+                    Email(fireflyProfile.email),
+                    FireflyId(fireflyProfile.id),
+                    Role(fireflyProfile.role),
+                    Type(fireflyProfile.type)
+                ).onSuccess {
+                    updateState {
+                        copy(
+                            loading = false,
+                            stepCompleted = true
+                        )
+                    }
+                }.onFailure(::handleError)
+            } else {
+                handleError(
+                    Error.UserWithServerAddressAlreadyExists(
+                        fireflyProfile.email,
+                        serverAddress
+                    )
+                )
+            }
+        }.onFailure(::handleError)
+    }
+
     private fun handleClientIdChanged(intent: ClientIdChanged) {
         with(intent.clientId.trim()) {
             if (clientIdValidator(this) || this.isEmpty()) {
@@ -107,7 +143,7 @@ internal class OAuthViewModel @Inject constructor(
         removeStaleUsersUseCase()
         when (error) {
             is Error.UserVisible,
-            is Error.UserWithServerAlreadyExists -> updateState {
+            is Error.UserWithServerAddressAlreadyExists -> updateState {
                 copy(
                     loading = false,
                     nonFatalError = error
@@ -224,22 +260,10 @@ internal class OAuthViewModel @Inject constructor(
         setLoginState()
     }
 
-    private suspend fun retrieveFireflyInfo() {
+    private suspend fun retrieveFireflyInfo(serverAddress: String) {
         getFireflyProfileUseCase.get().invoke()
             .onSuccess { fireflyProfile ->
-                updateCurrentUserUseCase(
-                    Email(fireflyProfile.email),
-                    FireflyId(fireflyProfile.id),
-                    Role(fireflyProfile.role),
-                    Type(fireflyProfile.type)
-                ).onSuccess {
-                    updateState {
-                        copy(
-                            loading = false,
-                            stepCompleted = true
-                        )
-                    }
-                }.onFailure(::handleError)
+                checkUserAlreadyExists(fireflyProfile, serverAddress)
             }.onFailure(::handleError)
     }
 
@@ -296,7 +320,7 @@ internal class OAuthViewModel @Inject constructor(
                     state = null
                 )
                 updateUserUseCase(updatedUser).onSuccess {
-                    retrieveFireflyInfo()
+                    retrieveFireflyInfo(user.serverAddress)
                 }.onFailure(::handleError)
             }
         }

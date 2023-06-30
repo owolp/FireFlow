@@ -89,6 +89,8 @@ internal interface UserSource {
      */
     suspend fun removeUsersWithStateAndTokenAndNoClientIdAndSecretAndEmail(): OperationResult<Int>
 
+    suspend fun removeUsersWithTokenAndNoEmail(): OperationResult<Int>
+
     /**
      * Saves a new user or updates an existing user.
      *

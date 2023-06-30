@@ -97,6 +97,10 @@ internal class UserDatabaseSource @Inject constructor(
             userDao.removeUsersWithStateAndTokenAndNoClientIdAndSecretAndEmail()
         }
 
+    override suspend fun removeUsersWithTokenAndNoEmail(): OperationResult<Int> = handleDb {
+        userDao.removeUsersWithTokenAndNoEmail()
+    }
+
     override suspend fun saveUser(
         accessToken: String?,
         clientId: String?,
