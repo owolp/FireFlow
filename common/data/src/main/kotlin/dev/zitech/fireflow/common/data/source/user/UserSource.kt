@@ -26,6 +26,13 @@ import kotlinx.coroutines.flow.Flow
  */
 internal interface UserSource {
 
+    suspend fun checkUserExistsByEmail(email: String): OperationResult<Boolean>
+
+    suspend fun checkUserExistsByEmailAndServerAddress(
+        email: String,
+        serverAddress: String
+    ): OperationResult<Boolean>
+
     /**
      * Deletes a user based on the specified user ID.
      *

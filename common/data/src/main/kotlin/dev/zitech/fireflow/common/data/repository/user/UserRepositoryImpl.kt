@@ -34,6 +34,14 @@ internal class UserRepositoryImpl @Inject constructor(
     private val userDatabaseSource: UserSource
 ) : UserRepository {
 
+    override suspend fun checkUserExistsByEmail(email: String): OperationResult<Boolean> =
+        userDatabaseSource.checkUserExistsByEmail(email)
+
+    override suspend fun checkUserExistsByEmailAndServerAddress(
+        email: String,
+        serverAddress: String
+    ): OperationResult<Boolean> = checkUserExistsByEmailAndServerAddress(email, serverAddress)
+
     override suspend fun deleteUserById(userId: Long): OperationResult<Int> =
         userDatabaseSource.deleteUserById(userId)
 

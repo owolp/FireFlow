@@ -31,6 +31,15 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 internal interface UserDao {
 
+    @Query("SELECT EXISTS (SELECT 1 FROM users WHERE email=:email) AS result")
+    suspend fun checkUserExistsByEmail(email: String): Boolean
+
+    @Query("SELECT EXISTS (SELECT 1 FROM users WHERE email=:email AND serverAddress=:serverAddress) AS result")
+    suspend fun checkUserExistsByEmailAndServerAddress(
+        email: String,
+        serverAddress: String
+    ): Boolean
+
     /**
      * Deletes a user entity from the "users" table based on the specified user ID.
      *

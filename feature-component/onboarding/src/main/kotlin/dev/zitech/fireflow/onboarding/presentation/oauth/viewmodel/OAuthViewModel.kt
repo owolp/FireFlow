@@ -106,7 +106,13 @@ internal class OAuthViewModel @Inject constructor(
     private suspend fun handleError(error: Error) {
         removeStaleUsersUseCase()
         when (error) {
-            is Error.UserVisible -> updateState { copy(loading = false, nonFatalError = error) }
+            is Error.UserVisible,
+            is Error.UserWithServerAlreadyExists -> updateState {
+                copy(
+                    loading = false,
+                    nonFatalError = error
+                )
+            }
             else -> updateState { copy(loading = false, fatalError = error) }
         }
     }

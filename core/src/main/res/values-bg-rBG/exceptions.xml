@@ -27,4 +27,5 @@
     <string name="null_user_by_state">Нещо се обърка. URL за потвърждението е неправилен. Моля, проверете URL адреса и опитайте отново.</string>
     <string name="os_exception">Неочаквана грешка. Моля, опитайте да рестартирате устройството си.</string>
     <string name="token_failed">Неуспешно използване на токен. Моля, проверете вашата мрежова връзка или Firefly III OAuth Authorized приложения и опитайте отново.</string>
+    <string name="user_with_email_and_server_address_exists">Акаунт с имейл %1s и сървърен адрес %2s вече съществува. Моля, превключете към него.</string>
 </resources>

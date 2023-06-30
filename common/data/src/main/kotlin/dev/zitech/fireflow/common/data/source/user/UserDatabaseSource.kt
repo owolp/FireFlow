@@ -37,6 +37,18 @@ internal class UserDatabaseSource @Inject constructor(
     private val userEntityMapper: UserEntityMapper
 ) : UserSource {
 
+    override suspend fun checkUserExistsByEmail(email: String): OperationResult<Boolean> =
+        handleDb {
+            userDao.checkUserExistsByEmail(email)
+        }
+
+    override suspend fun checkUserExistsByEmailAndServerAddress(
+        email: String,
+        serverAddress: String
+    ): OperationResult<Boolean> = handleDb {
+        userDao.checkUserExistsByEmailAndServerAddress(email, serverAddress)
+    }
+
     override suspend fun deleteUserById(userId: Long): OperationResult<Int> = handleDb {
         userDao.deleteUserById(userId)
     }

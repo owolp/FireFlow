@@ -30,6 +30,7 @@ import javax.inject.Inject
 class SaveUserUseCase @Inject constructor(
     private val userRepository: UserRepository
 ) {
+
     /**
      * Invokes the use case to save a user.
      *
@@ -52,26 +53,74 @@ class SaveUserUseCase @Inject constructor(
         isCurrentUser: Boolean,
         serverAddress: String? = null,
         state: String
-    ): OperationResult<Long> =
-        when (val removeCurrentUserResult = userRepository.removeCurrentUsers()) {
+    ): OperationResult<Long> = if (email != null && serverAddress != null) {
+        when (
+            val result = userRepository.checkUserExistsByEmailAndServerAddress(
+                email,
+                serverAddress
+            )
+        ) {
             is OperationResult.Success -> {
-                if (removeCurrentUserResult.data != NO_WORKER_UPDATED_RESULT) {
-                    userRepository.saveUser(
-                        clientId = clientId,
-                        clientSecret = clientSecret,
-                        connectivityNotification = connectivityNotification,
-                        email = email,
-                        isCurrentUser = isCurrentUser,
-                        accessToken = accessToken,
-                        serverAddress = serverAddress,
-                        state = state
+                if (result.data) {
+                    removeCurrentUsers(
+                        clientId,
+                        clientSecret,
+                        connectivityNotification,
+                        email,
+                        isCurrentUser,
+                        accessToken,
+                        serverAddress,
+                        state
                     )
                 } else {
-                    OperationResult.Failure(Error.NullUser)
+                    OperationResult.Failure(Error.UserWithServerAlreadyExists(email, serverAddress))
                 }
             }
-            is OperationResult.Failure -> OperationResult.Failure(removeCurrentUserResult.error)
+            is OperationResult.Failure -> OperationResult.Failure(result.error)
         }
+    } else {
+        removeCurrentUsers(
+            clientId,
+            clientSecret,
+            connectivityNotification,
+            email,
+            isCurrentUser,
+            accessToken,
+            serverAddress,
+            state
+        )
+    }
+
+    private suspend fun removeCurrentUsers(
+        clientId: String?,
+        clientSecret: String?,
+        connectivityNotification: Boolean,
+        email: String?,
+        isCurrentUser: Boolean,
+        accessToken: String?,
+        serverAddress: String?,
+        state: String
+    ) = when (val result = userRepository.removeCurrentUsers()) {
+        is OperationResult.Success -> {
+            if (result.data != NO_WORKER_UPDATED_RESULT) {
+                userRepository.saveUser(
+                    clientId = clientId,
+                    clientSecret = clientSecret,
+                    connectivityNotification = connectivityNotification,
+                    email = email,
+                    isCurrentUser = isCurrentUser,
+                    accessToken = accessToken,
+                    serverAddress = serverAddress,
+                    state = state
+                )
+            } else {
+                OperationResult.Failure(Error.NullUser)
+            }
+        }
+        is OperationResult.Failure -> OperationResult.Failure(
+            result.error
+        )
+    }
 
     private companion object {
         const val NO_WORKER_UPDATED_RESULT = 0

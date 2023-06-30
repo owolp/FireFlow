@@ -27,4 +27,5 @@
     <string name="null_user_by_state">Something went wrong. The verification URL is incorrect. Please check the URL and try again.</string>
     <string name="os_exception">Your device has encountered an unexpected error. Please try restarting your device.</string>
     <string name="token_failed">Token usage failed. Please check your network connection or Firefly III OAuth Authorized applications and try again.</string>
+    <string name="user_with_email_and_server_address_exists">A user with email %1s and server address %2s already exists. Please switch to that user instead.</string>
 </resources>

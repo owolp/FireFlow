@@ -106,7 +106,13 @@ internal class PatViewModel @Inject constructor(
     private suspend fun handleError(error: Error) {
         removeStaleUsersUseCase()
         when (error) {
-            is Error.UserVisible -> updateState { copy(loading = false, nonFatalError = error) }
+            is Error.UserVisible,
+            is Error.UserWithServerAlreadyExists -> updateState {
+                copy(
+                    loading = false,
+                    nonFatalError = error
+                )
+            }
             is Error.Fatal -> {
                 if (error.type == Error.Fatal.Type.NETWORK) {
                     updateState {

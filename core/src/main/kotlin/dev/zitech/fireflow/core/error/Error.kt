@@ -150,4 +150,12 @@ sealed class Error(
         "Null user by state",
         R.string.null_user_by_state
     )
+
+    data class UserWithServerAlreadyExists(
+        private val email: String,
+        private val serverAddress: String
+    ) : Error(
+        "User with specific email and server address already exists",
+        R.string.user_with_email_and_server_address_exists
+    )
 }
