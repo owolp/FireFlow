@@ -84,7 +84,7 @@ internal interface UserDao {
      *
      * @return A flow of a list of all user entities.
      */
-    @Query("SELECT * FROM users")
+    @Query("SELECT * FROM users ORDER BY identifier")
     fun getUsers(): Flow<List<UserEntity>>
 
     /**
