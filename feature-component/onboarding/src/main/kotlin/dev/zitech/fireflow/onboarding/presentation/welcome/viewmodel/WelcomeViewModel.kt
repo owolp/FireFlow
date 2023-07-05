@@ -25,8 +25,8 @@ import dev.zitech.fireflow.core.result.OperationResult
 import dev.zitech.fireflow.core.result.onFailure
 import dev.zitech.fireflow.core.result.onSuccess
 import dev.zitech.fireflow.onboarding.domain.usecase.SaveLocalUserUseCase
-import javax.inject.Inject
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 internal class WelcomeViewModel @Inject constructor(
@@ -39,7 +39,7 @@ internal class WelcomeViewModel @Inject constructor(
                 is BackClicked -> handleBackClicked(intent.isBackNavigationSupported)
                 ContinueWithOauthClicked -> updateState { copy(oauth = true) }
                 ContinueWithPatClicked -> updateState { copy(pat = true) }
-                HomeHandled -> updateState { copy(home = false) }
+                NextHandled -> updateState { copy(next = false) }
                 FatalErrorHandled -> updateState { copy(fatalError = null) }
                 FireflyClicked -> updateState { copy(fireflyAuthentication = true) }
                 GetStartedClicked -> handleGetStarterClicked()
@@ -82,7 +82,7 @@ internal class WelcomeViewModel @Inject constructor(
         // TODO: Add loading
         saveLocalUserUseCase().onSuccess {
             updateState {
-                copy(home = true)
+                copy(next = true)
             }
         }.onFailure(::handleError)
     }

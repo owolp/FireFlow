@@ -92,7 +92,6 @@ internal fun FireFlowNavHost(
                     )
                 )
             },
-            navigateToDemo = { onBackClick(null) },
             navigateToDashboard = {
                 onBackClick(
                     NavDirection(

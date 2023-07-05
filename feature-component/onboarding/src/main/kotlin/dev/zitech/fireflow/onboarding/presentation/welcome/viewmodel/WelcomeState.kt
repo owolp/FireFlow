@@ -24,9 +24,9 @@ internal data class WelcomeState(
     val close: Boolean = false,
     val fatalError: FireFlowError? = null,
     val fireflyAuthentication: Boolean = false,
-    val home: Boolean = false,
+    val next: Boolean = false,
     val nonFatalError: FireFlowError? = null,
     val oauth: Boolean = false,
     val pat: Boolean = false,
-    val quitApp: Boolean = false
+    val quitApp: Boolean = false,
 ) : MviState

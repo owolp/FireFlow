@@ -24,7 +24,7 @@ internal data class NavigatedToFireflyResult(val result: OperationResult<Unit>) 
 internal data class BackClicked(val isBackNavigationSupported: Boolean) : WelcomeIntent
 internal object ContinueWithOauthClicked : WelcomeIntent
 internal object ContinueWithPatClicked : WelcomeIntent
-internal object HomeHandled : WelcomeIntent
+internal object NextHandled : WelcomeIntent
 internal object FatalErrorHandled : WelcomeIntent
 internal object FireflyClicked : WelcomeIntent
 internal object GetStartedClicked : WelcomeIntent

@@ -32,7 +32,6 @@ import dev.zitech.fireflow.onboarding.presentation.welcome.compose.WelcomeRoute
 fun NavGraphBuilder.onboardingGraph(
     navigateToOAuth: () -> Unit,
     navigateToPat: () -> Unit,
-    navigateToDemo: () -> Unit,
     navigateToDashboard: () -> Unit,
     navigateOutOfApp: () -> Unit,
     navigateToError: (error: Error) -> Unit,
@@ -101,7 +100,7 @@ fun NavGraphBuilder.onboardingGraph(
             isBackNavigationSupported = isBackNavigationSupported,
             navigateToOAuth = navigateToOAuth,
             navigateToPat = navigateToPat,
-            navigateToDemo = navigateToDemo,
+            navigateToNext = navigateToDashboard,
             navigateOutOfApp = navigateOutOfApp,
             navigateToError = navigateToError,
             navigateBack = navigateBack
