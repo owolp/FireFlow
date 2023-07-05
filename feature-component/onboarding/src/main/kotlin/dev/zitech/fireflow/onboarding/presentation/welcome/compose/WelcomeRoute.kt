@@ -39,8 +39,8 @@ import dev.zitech.fireflow.onboarding.presentation.welcome.viewmodel.ContinueWit
 import dev.zitech.fireflow.onboarding.presentation.welcome.viewmodel.FatalErrorHandled
 import dev.zitech.fireflow.onboarding.presentation.welcome.viewmodel.FireflyClicked
 import dev.zitech.fireflow.onboarding.presentation.welcome.viewmodel.GetStartedClicked
-import dev.zitech.fireflow.onboarding.presentation.welcome.viewmodel.NextHandled
 import dev.zitech.fireflow.onboarding.presentation.welcome.viewmodel.NavigatedToFireflyResult
+import dev.zitech.fireflow.onboarding.presentation.welcome.viewmodel.NextHandled
 import dev.zitech.fireflow.onboarding.presentation.welcome.viewmodel.NonFatalErrorHandled
 import dev.zitech.fireflow.onboarding.presentation.welcome.viewmodel.OAuthHandled
 import dev.zitech.fireflow.onboarding.presentation.welcome.viewmodel.PatHandled

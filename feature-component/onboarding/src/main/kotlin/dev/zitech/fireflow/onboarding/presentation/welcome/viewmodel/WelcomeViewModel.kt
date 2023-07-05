@@ -25,12 +25,12 @@ import dev.zitech.fireflow.core.result.OperationResult
 import dev.zitech.fireflow.core.result.onFailure
 import dev.zitech.fireflow.core.result.onSuccess
 import dev.zitech.fireflow.onboarding.domain.usecase.SaveLocalUserUseCase
-import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 @HiltViewModel
 internal class WelcomeViewModel @Inject constructor(
-    private val saveLocalUserUseCase: SaveLocalUserUseCase,
+    private val saveLocalUserUseCase: SaveLocalUserUseCase
 ) : MviViewModel<WelcomeIntent, WelcomeState>(WelcomeState()) {
 
     override fun receiveIntent(intent: WelcomeIntent) {
@@ -95,5 +95,4 @@ internal class WelcomeViewModel @Inject constructor(
             }
         }
     }
-
 }
