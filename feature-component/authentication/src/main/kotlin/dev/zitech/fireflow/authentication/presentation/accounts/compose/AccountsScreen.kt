@@ -138,12 +138,14 @@ private fun AccountsContent(
                     onMoreDismiss = { onMoreDismissed(user.id) }
                 )
             }
+            item {
+                FireFlowButtons.IconText.OnSurface(
+                    text = stringResource(R.string.accounts_button_add_account),
+                    image = FireFlowIcons.PersonAdd,
+                    contentDescription = stringResource(R.string.cd_accounts_button_add_account),
+                    onClick = onNewAccountClicked
+                )
+            }
         }
-        FireFlowButtons.IconText.OnSurface(
-            text = stringResource(R.string.accounts_button_add_account),
-            image = FireFlowIcons.PersonAdd,
-            contentDescription = stringResource(R.string.cd_accounts_button_add_account),
-            onClick = onNewAccountClicked
-        )
     }
 }
