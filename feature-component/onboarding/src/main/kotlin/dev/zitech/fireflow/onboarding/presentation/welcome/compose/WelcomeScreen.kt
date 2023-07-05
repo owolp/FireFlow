@@ -64,10 +64,12 @@ import dev.zitech.fireflow.ds.templates.scaffold.FireFlowScaffolds
 import dev.zitech.fireflow.ds.theme.FireFlowTheme
 import dev.zitech.fireflow.ds.theme.PreviewFireFlowTheme
 import dev.zitech.fireflow.onboarding.R
+import dev.zitech.fireflow.onboarding.presentation.welcome.viewmodel.WelcomeState
 import kotlinx.coroutines.launch
 
 @Composable
 internal fun WelcomeScreen(
+    welcomeState: WelcomeState,
     isBackNavigationSupported: Boolean,
     modifier: Modifier = Modifier,
     backClicked: (backNavigationSupported: Boolean) -> Unit = {},
@@ -78,7 +80,7 @@ internal fun WelcomeScreen(
     snackbarState: FireFlowSnackbarState = rememberSnackbarState()
 ) {
     BackHandler(enabled = true) {
-        backClicked(isBackNavigationSupported)
+        if (!welcomeState.loading) backClicked(isBackNavigationSupported)
     }
 
     FireFlowScaffolds.Primary(
@@ -87,6 +89,7 @@ internal fun WelcomeScreen(
         snackbarState = snackbarState
     ) { innerPadding ->
         WelcomeScreenContent(
+            state = welcomeState,
             innerPadding = innerPadding,
             continueWithOauthClicked = continueWithOauthClicked,
             continueWithPatClicked = continueWithPatClicked,
@@ -99,6 +102,7 @@ internal fun WelcomeScreen(
 @Composable
 @OptIn(ExperimentalLayoutApi::class, ExperimentalFoundationApi::class)
 private fun WelcomeScreenContent(
+    state: WelcomeState,
     innerPadding: PaddingValues,
     continueWithOauthClicked: () -> Unit,
     continueWithPatClicked: () -> Unit,
@@ -135,6 +139,8 @@ private fun WelcomeScreenContent(
             FireFlowButtons.Filled.OnSurfaceTint(
                 modifier = Modifier.fillMaxWidth(),
                 text = stringResource(R.string.welcome_button_get_started),
+                loading = state.loading,
+                enabled = !state.loading,
                 onClick = getStartedClicked
             )
             FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.s)
@@ -156,15 +162,15 @@ private fun WelcomeScreenContent(
                             .fillMaxWidth()
                             .padding(horizontal = FireFlowTheme.space.s),
                         text = stringResource(R.string.welcome_button_continue_with_oauth),
+                        enabled = !state.loading,
                         onClick = continueWithOauthClicked
                     )
                     FireFlowButtons.Filled.OnSurfaceTint(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = FireFlowTheme.space.s),
-                        text = stringResource(
-                            R.string.welcome_button_continue_with_personal_access_token
-                        ),
+                        text = stringResource(R.string.welcome_button_continue_with_personal_access_token),
+                        enabled = !state.loading,
                         onClick = continueWithPatClicked
                     )
                     FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.s)
@@ -184,7 +190,7 @@ private fun WelcomeScreenContent(
                         FireFlowClickableTexts.LabelSmall(
                             text = getFireflyInfoAnnotatedString(),
                             color = FireFlowTheme.colors.onSurface
-                        ) { fireflyClicked() }
+                        ) { if (!state.loading) fireflyClicked() }
                     }
                 },
                 onClick = { isExpanded ->
@@ -230,6 +236,7 @@ private fun getFireflyInfoAnnotatedString() = buildAnnotatedString {
 private fun WelcomeScreen_Preview() {
     PreviewFireFlowTheme {
         WelcomeScreen(
+            welcomeState = WelcomeState(),
             isBackNavigationSupported = true
         )
     }

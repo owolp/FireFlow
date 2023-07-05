@@ -24,6 +24,7 @@ internal data class WelcomeState(
     val close: Boolean = false,
     val fatalError: FireFlowError? = null,
     val fireflyAuthentication: Boolean = false,
+    val loading: Boolean = false,
     val next: Boolean = false,
     val nonFatalError: FireFlowError? = null,
     val oauth: Boolean = false,

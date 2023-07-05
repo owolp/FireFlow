@@ -120,6 +120,7 @@ internal fun WelcomeRoute(
     }
 
     WelcomeScreen(
+        welcomeState = screenState,
         isBackNavigationSupported = isBackNavigationSupported,
         modifier = modifier,
         snackbarState = snackbarState,

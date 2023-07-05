@@ -30,7 +30,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class WelcomeViewModel @Inject constructor(
-    private val saveLocalUserUseCase: SaveLocalUserUseCase
+    private val saveLocalUserUseCase: SaveLocalUserUseCase,
 ) : MviViewModel<WelcomeIntent, WelcomeState>(WelcomeState()) {
 
     override fun receiveIntent(intent: WelcomeIntent) {
@@ -61,6 +61,25 @@ internal class WelcomeViewModel @Inject constructor(
         }
     }
 
+    private fun handleError(error: Error) {
+        when (error) {
+            is Error.UserVisible -> updateState { copy(loading = false, nonFatalError = error) }
+            else -> updateState { copy(loading = false, fatalError = error) }
+        }
+    }
+
+    private suspend fun handleGetStarterClicked() {
+        updateState { copy(loading = true) }
+        saveLocalUserUseCase().onSuccess {
+            updateState {
+                copy(
+                    loading = false,
+                    next = true
+                )
+            }
+        }.onFailure(::handleError)
+    }
+
     private suspend fun handleNavigatedToFireflyResult(result: OperationResult<Unit>) {
         result.onSuccess {
             updateState { copy(fireflyAuthentication = false) }
@@ -77,22 +96,4 @@ internal class WelcomeViewModel @Inject constructor(
         }
     }
 
-    @Suppress("ForbiddenComment")
-    private suspend fun handleGetStarterClicked() {
-        // TODO: Add loading
-        saveLocalUserUseCase().onSuccess {
-            updateState {
-                copy(next = true)
-            }
-        }.onFailure(::handleError)
-    }
-
-    @Suppress("ForbiddenComment")
-    private fun handleError(error: Error) {
-        // TODO: Hide loading
-        when (error) {
-            is Error.UserVisible -> updateState { copy(nonFatalError = error) }
-            else -> updateState { copy(fatalError = error) }
-        }
-    }
 }
