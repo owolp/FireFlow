@@ -29,7 +29,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.coroutineScope
 import dev.zitech.fireflow.common.presentation.browser.Browser
 import dev.zitech.fireflow.core.error.Error
-import dev.zitech.fireflow.ds.molecules.dialog.FireFlowDialogs
 import dev.zitech.fireflow.ds.molecules.snackbar.BottomNotifierMessage
 import dev.zitech.fireflow.ds.molecules.snackbar.rememberSnackbarState
 import dev.zitech.fireflow.onboarding.R
@@ -37,12 +36,10 @@ import dev.zitech.fireflow.onboarding.presentation.welcome.viewmodel.BackClicked
 import dev.zitech.fireflow.onboarding.presentation.welcome.viewmodel.CloseHandled
 import dev.zitech.fireflow.onboarding.presentation.welcome.viewmodel.ContinueWithOauthClicked
 import dev.zitech.fireflow.onboarding.presentation.welcome.viewmodel.ContinueWithPatClicked
-import dev.zitech.fireflow.onboarding.presentation.welcome.viewmodel.DemoHandled
-import dev.zitech.fireflow.onboarding.presentation.welcome.viewmodel.DemoPositiveClicked
-import dev.zitech.fireflow.onboarding.presentation.welcome.viewmodel.DemoWarningDismissed
 import dev.zitech.fireflow.onboarding.presentation.welcome.viewmodel.FatalErrorHandled
 import dev.zitech.fireflow.onboarding.presentation.welcome.viewmodel.FireflyClicked
 import dev.zitech.fireflow.onboarding.presentation.welcome.viewmodel.GetStartedClicked
+import dev.zitech.fireflow.onboarding.presentation.welcome.viewmodel.HomeHandled
 import dev.zitech.fireflow.onboarding.presentation.welcome.viewmodel.NavigatedToFireflyResult
 import dev.zitech.fireflow.onboarding.presentation.welcome.viewmodel.NonFatalErrorHandled
 import dev.zitech.fireflow.onboarding.presentation.welcome.viewmodel.OAuthHandled
@@ -69,18 +66,9 @@ internal fun WelcomeRoute(
     val context = LocalContext.current
     val coroutineScope = LocalLifecycleOwner.current.lifecycle.coroutineScope
 
-    if (screenState.demo) {
+    if (screenState.home) {
         navigateToDemo()
-        viewModel.receiveIntent(DemoHandled)
-    }
-
-    if (screenState.demoWarning) {
-        FireFlowDialogs.Alert(
-            text = stringResource(R.string.welcome_demo_dialog_text),
-            confirmButton = stringResource(R.string.welcome_demo_dialog_confirm),
-            onConfirmButtonClick = { viewModel.receiveIntent(DemoPositiveClicked) },
-            onDismissRequest = { viewModel.receiveIntent(DemoWarningDismissed) }
-        )
+        viewModel.receiveIntent(HomeHandled)
     }
 
     screenState.fatalError?.let { fireFlowError ->

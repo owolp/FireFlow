@@ -22,10 +22,9 @@ import dev.zitech.fireflow.core.error.FireFlowError
 
 internal data class WelcomeState(
     val close: Boolean = false,
-    val demo: Boolean = false,
-    val demoWarning: Boolean = false,
     val fatalError: FireFlowError? = null,
     val fireflyAuthentication: Boolean = false,
+    val home: Boolean = false,
     val nonFatalError: FireFlowError? = null,
     val oauth: Boolean = false,
     val pat: Boolean = false,

@@ -39,12 +39,10 @@ internal class WelcomeViewModel @Inject constructor(
                 is BackClicked -> handleBackClicked(intent.isBackNavigationSupported)
                 ContinueWithOauthClicked -> updateState { copy(oauth = true) }
                 ContinueWithPatClicked -> updateState { copy(pat = true) }
-                DemoHandled -> updateState { copy(demo = false) }
-                DemoPositiveClicked -> handleOnShowDemoPositive()
-                DemoWarningDismissed -> updateState { copy(demoWarning = false) }
+                HomeHandled -> updateState { copy(home = false) }
                 FatalErrorHandled -> updateState { copy(fatalError = null) }
                 FireflyClicked -> updateState { copy(fireflyAuthentication = true) }
-                GetStartedClicked -> updateState { copy(demoWarning = true) }
+                GetStartedClicked -> handleGetStarterClicked()
                 is NavigatedToFireflyResult -> handleNavigatedToFireflyResult(intent.result)
                 NonFatalErrorHandled -> updateState { copy(nonFatalError = null) }
                 OAuthHandled -> updateState { copy(oauth = false) }
@@ -80,14 +78,11 @@ internal class WelcomeViewModel @Inject constructor(
     }
 
     @Suppress("ForbiddenComment")
-    private suspend fun handleOnShowDemoPositive() {
+    private suspend fun handleGetStarterClicked() {
         // TODO: Add loading
         saveLocalUserUseCase().onSuccess {
             updateState {
-                copy(
-                    demoWarning = false,
-                    demo = true
-                )
+                copy(home = true)
             }
         }.onFailure(::handleError)
     }
@@ -96,8 +91,8 @@ internal class WelcomeViewModel @Inject constructor(
     private fun handleError(error: Error) {
         // TODO: Hide loading
         when (error) {
-            is Error.UserVisible -> updateState { copy(demoWarning = false, nonFatalError = error) }
-            else -> updateState { copy(demoWarning = false, fatalError = error) }
+            is Error.UserVisible -> updateState { copy(nonFatalError = error) }
+            else -> updateState { copy(fatalError = error) }
         }
     }
 }
