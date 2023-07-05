@@ -36,8 +36,8 @@ sealed class User(
      *
      * @return The identification string.
      */
-    fun retrieveIdentification(): String = when (this) {
-        is Local -> this.userName
+    fun retrieveIdentifier(): String = when (this) {
+        is Local -> this.username
         is Remote -> this.email.orEmpty()
     }
 
@@ -47,7 +47,7 @@ sealed class User(
      * @return The initial character.
      */
     fun retrieveInitial(): Char = when (this) {
-        is Local -> this.userName.uppercase().first()
+        is Local -> this.username.uppercase().first()
         is Remote -> this.email.orEmpty().uppercase().first()
     }
 
@@ -66,12 +66,12 @@ sealed class User(
      *
      * @param isCurrentUser Indicates whether the user is the current user.
      * @param id The user ID.
-     * @param userName The user name.
+     * @param username The user name.
      */
     data class Local(
         override val id: Long,
         override val isCurrentUser: Boolean,
-        val userName: String
+        val username: String
     ) : User(id, isCurrentUser)
 
     /**

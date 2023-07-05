@@ -24,23 +24,23 @@ class UserTest {
 
     @Test
     fun `local user should have correct isCurrentUser value`() {
-        val localUser = User.Local(isCurrentUser = true, id = 123L, userName = "userName")
+        val localUser = User.Local(isCurrentUser = true, id = 123L, username = "username")
 
         assertThat(localUser.isCurrentUser).isEqualTo(true)
     }
 
     @Test
     fun `local user should have correct id value`() {
-        val localUser = User.Local(isCurrentUser = true, id = 123L, userName = "userName")
+        val localUser = User.Local(isCurrentUser = true, id = 123L, username = "username")
 
         assertThat(localUser.id).isEqualTo(123L)
     }
 
     @Test
-    fun `local user should have correct userName value`() {
-        val localUser = User.Local(isCurrentUser = true, id = 123L, userName = "userName")
+    fun `local user should have correct username value`() {
+        val localUser = User.Local(isCurrentUser = true, id = 123L, username = "username")
 
-        assertThat(localUser.userName).isEqualTo("userName")
+        assertThat(localUser.username).isEqualTo("username")
     }
 
     @Test

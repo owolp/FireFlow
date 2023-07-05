@@ -31,12 +31,12 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 internal interface UserDao {
 
-    @Query("SELECT EXISTS (SELECT 1 FROM users WHERE email=:email) AS result")
-    suspend fun checkUserExistsByEmail(email: String): Boolean
+    @Query("SELECT EXISTS (SELECT 1 FROM users WHERE identifier=:identifier) AS result")
+    suspend fun checkUserExistsByIdentifier(identifier: String): Boolean
 
-    @Query("SELECT EXISTS (SELECT 1 FROM users WHERE email=:email AND serverAddress=:serverAddress) AS result")
-    suspend fun checkUserExistsByEmailAndServerAddress(
-        email: String,
+    @Query("SELECT EXISTS (SELECT 1 FROM users WHERE identifier=:identifier AND serverAddress=:serverAddress) AS result")
+    suspend fun checkUserExistsByIdentifierAndServerAddress(
+        identifier: String,
         serverAddress: String
     ): Boolean
 
@@ -107,11 +107,11 @@ internal interface UserDao {
      *
      * @return An [Int] representing the number of users removed.
      */
-    @Query("DELETE FROM users WHERE state IS NOT NULL AND accessToken IS NULL AND email IS NULL")
-    suspend fun removeUsersWithStateAndNoTokenAndEmail(): Int
+    @Query("DELETE FROM users WHERE state IS NOT NULL AND accessToken IS NULL AND identifier IS NULL")
+    suspend fun removeUsersWithStateAndNoTokenAndIdentifier(): Int
 
-    @Query("DELETE FROM users WHERE accessToken IS NOT NULL AND email IS NULL")
-    suspend fun removeUsersWithTokenAndNoEmail(): Int
+    @Query("DELETE FROM users WHERE accessToken IS NOT NULL AND identifier IS NULL")
+    suspend fun removeUsersWithTokenAndNoIdentifier(): Int
 
     /**
      * Removes users that have a state and access token, but no client ID and client secret.
@@ -126,9 +126,9 @@ internal interface UserDao {
      */
     @Query(
         "DELETE FROM users WHERE state IS NOT NULL AND accessToken IS NOT" +
-            " NULL AND clientId IS NULL AND clientSecret IS NULL AND email IS NULL"
+            " NULL AND clientId IS NULL AND clientSecret IS NULL AND identifier IS NULL"
     )
-    suspend fun removeUsersWithStateAndTokenAndNoClientIdAndSecretAndEmail(): Int
+    suspend fun removeUsersWithStateAndTokenAndNoClientIdAndSecretAndIdentifier(): Int
 
     /**
      * Inserts or replaces a user entity.

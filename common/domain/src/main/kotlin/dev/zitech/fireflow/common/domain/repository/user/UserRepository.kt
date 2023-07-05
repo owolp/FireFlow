@@ -26,10 +26,10 @@ import kotlinx.coroutines.flow.Flow
  */
 interface UserRepository {
 
-    suspend fun checkUserExistsByEmail(email: String): OperationResult<Boolean>
+    suspend fun checkUserExistsByIdentifier(identifier: String): OperationResult<Boolean>
 
-    suspend fun checkUserExistsByEmailAndServerAddress(
-        email: String,
+    suspend fun checkUserExistsByIdentifierAndServerAddress(
+        identifier: String,
         serverAddress: String
     ): OperationResult<Boolean>
 
@@ -78,7 +78,7 @@ interface UserRepository {
      * @return An [OperationResult] representing the result of the update operation,
      *         containing the number of affected rows if successful, or an error if unsuccessful.
      */
-    suspend fun removeUsersWithStateAndNoTokenAndEmail(): OperationResult<Int>
+    suspend fun removeUsersWithStateAndNoTokenAndIdentifier(): OperationResult<Int>
 
     /**
      * Removes users with the specified state and token, but no client ID and secret.
@@ -86,9 +86,9 @@ interface UserRepository {
      * @return An [OperationResult] representing the result of the update operation,
      *         containing the number of affected rows if successful, or an error if unsuccessful.
      */
-    suspend fun removeUsersWithStateAndTokenAndNoClientIdAndSecretAndEmail(): OperationResult<Int>
+    suspend fun removeUsersWithStateAndTokenAndNoClientIdAndSecretAndIdentifier(): OperationResult<Int>
 
-    suspend fun removeUsersWithTokenAndNoEmail(): OperationResult<Int>
+    suspend fun removeUsersWithTokenAndNoIdentifier(): OperationResult<Int>
 
     /**
      * Saves a new user with the provided details.
@@ -108,7 +108,7 @@ interface UserRepository {
         clientId: String?,
         clientSecret: String?,
         connectivityNotification: Boolean,
-        email: String?,
+        identifier: String?,
         isCurrentUser: Boolean,
         serverAddress: String?,
         state: String

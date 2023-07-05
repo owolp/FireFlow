@@ -72,7 +72,7 @@ internal class SaveLocalUserUseCase @Inject constructor(
             val saveUserResult = saveUserUseCase(
                 connectivityNotification = false,
                 isCurrentUser = true,
-                email = username,
+                identifier = username,
                 state = ""
             )
         ) {
@@ -88,7 +88,7 @@ internal class SaveLocalUserUseCase @Inject constructor(
      *         or creates a new random username if it exists, or an error in case of failure.
      */
     private suspend fun handleRandomUsernameSuccess(username: String): OperationResult<String> =
-        when (val result = userRepository.checkUserExistsByEmail(username)) {
+        when (val result = userRepository.checkUserExistsByIdentifier(username)) {
             is OperationResult.Success -> {
                 if (result.data) {
                     createRandomUsername()

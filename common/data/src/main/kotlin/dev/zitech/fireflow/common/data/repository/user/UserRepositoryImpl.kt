@@ -34,14 +34,14 @@ internal class UserRepositoryImpl @Inject constructor(
     private val userDatabaseSource: UserSource
 ) : UserRepository {
 
-    override suspend fun checkUserExistsByEmail(email: String): OperationResult<Boolean> =
-        userDatabaseSource.checkUserExistsByEmail(email)
+    override suspend fun checkUserExistsByIdentifier(identifier: String): OperationResult<Boolean> =
+        userDatabaseSource.checkUserExistsByIdentifier(identifier)
 
-    override suspend fun checkUserExistsByEmailAndServerAddress(
-        email: String,
+    override suspend fun checkUserExistsByIdentifierAndServerAddress(
+        identifier: String,
         serverAddress: String
     ): OperationResult<Boolean> =
-        userDatabaseSource.checkUserExistsByEmailAndServerAddress(email, serverAddress)
+        userDatabaseSource.checkUserExistsByIdentifierAndServerAddress(identifier, serverAddress)
 
     override suspend fun deleteUserById(userId: Long): OperationResult<Int> =
         userDatabaseSource.deleteUserById(userId)
@@ -79,21 +79,21 @@ internal class UserRepositoryImpl @Inject constructor(
     override suspend fun removeCurrentUsers(): OperationResult<Int> =
         userDatabaseSource.removeCurrentUserOrUsers()
 
-    override suspend fun removeUsersWithStateAndNoTokenAndEmail(): OperationResult<Int> =
-        userDatabaseSource.removeUsersWithStateAndNoTokenAndEmail()
+    override suspend fun removeUsersWithStateAndNoTokenAndIdentifier(): OperationResult<Int> =
+        userDatabaseSource.removeUsersWithStateAndNoTokenAndIdentifier()
 
-    override suspend fun removeUsersWithStateAndTokenAndNoClientIdAndSecretAndEmail(): OperationResult<Int> =
-        userDatabaseSource.removeUsersWithStateAndTokenAndNoClientIdAndSecretAndEmail()
+    override suspend fun removeUsersWithStateAndTokenAndNoClientIdAndSecretAndIdentifier(): OperationResult<Int> =
+        userDatabaseSource.removeUsersWithStateAndTokenAndNoClientIdAndSecretAndIdentifier()
 
-    override suspend fun removeUsersWithTokenAndNoEmail(): OperationResult<Int> =
-        userDatabaseSource.removeUsersWithTokenAndNoEmail()
+    override suspend fun removeUsersWithTokenAndNoIdentifier(): OperationResult<Int> =
+        userDatabaseSource.removeUsersWithTokenAndNoIdentifier()
 
     override suspend fun saveUser(
         accessToken: String?,
         clientId: String?,
         clientSecret: String?,
         connectivityNotification: Boolean,
-        email: String?,
+        identifier: String?,
         isCurrentUser: Boolean,
         serverAddress: String?,
         state: String
@@ -103,7 +103,7 @@ internal class UserRepositoryImpl @Inject constructor(
             clientId = clientId,
             clientSecret = clientSecret,
             connectivityNotification = connectivityNotification,
-            email = email,
+            identifier = identifier,
             isCurrentUser = isCurrentUser,
             serverAddress = serverAddress,
             state = state

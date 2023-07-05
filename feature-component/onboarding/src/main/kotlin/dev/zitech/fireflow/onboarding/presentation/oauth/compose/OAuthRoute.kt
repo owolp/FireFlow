@@ -100,7 +100,7 @@ internal fun OAuthRoute(
             is Error.UserVisible -> fireFlowError.message.orEmpty()
             is Error.UserWithServerAddressAlreadyExists -> stringResource(
                 fireFlowError.uiResId,
-                fireFlowError.email,
+                fireFlowError.identifier,
                 fireFlowError.serverAddress
             )
             else -> stringResource(fireFlowError.uiResId)

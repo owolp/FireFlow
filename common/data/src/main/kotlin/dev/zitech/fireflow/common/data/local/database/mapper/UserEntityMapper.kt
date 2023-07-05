@@ -46,7 +46,7 @@ internal class UserEntityMapper @Inject constructor() :
             User.Remote(
                 authenticationType = getAuthenticationType(input),
                 connectivityNotification = input.connectivityNotification,
-                email = input.email,
+                email = input.identifier,
                 fireflyId = input.fireflyId,
                 isCurrentUser = input.isCurrentUser,
                 role = input.role,
@@ -58,7 +58,7 @@ internal class UserEntityMapper @Inject constructor() :
         } else {
             User.Local(
                 isCurrentUser = input.isCurrentUser,
-                userName = input.email.orEmpty(),
+                username = input.identifier.orEmpty(),
                 id = input.id!!
             )
         }
@@ -78,7 +78,7 @@ internal class UserEntityMapper @Inject constructor() :
         when (input) {
             is User.Local -> {
                 UserEntity(
-                    email = input.userName,
+                    identifier = input.username,
                     id = input.id,
                     isCurrentUser = input.isCurrentUser
                 )
@@ -101,7 +101,7 @@ internal class UserEntityMapper @Inject constructor() :
                         null -> null
                     },
                     connectivityNotification = input.connectivityNotification,
-                    email = input.email,
+                    identifier = input.email,
                     fireflyId = input.fireflyId,
                     id = input.id,
                     isCurrentUser = input.isCurrentUser,

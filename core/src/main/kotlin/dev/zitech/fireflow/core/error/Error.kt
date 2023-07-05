@@ -117,11 +117,11 @@ sealed class Error(
     )
 
     data class UserWithServerAddressAlreadyExists(
-        val email: String,
+        val identifier: String,
         val serverAddress: String
     ) : Error(
-        "User with specific email and server address already exists",
-        R.string.user_with_email_and_server_address_exists
+        "User with specific identifier and server address already exists",
+        R.string.user_with_identifier_and_server_address_exists
     )
 
     object AuthenticationProblem : Error(

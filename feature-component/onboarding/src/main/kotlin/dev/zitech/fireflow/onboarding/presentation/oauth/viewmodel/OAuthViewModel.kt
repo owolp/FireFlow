@@ -28,8 +28,8 @@ import dev.zitech.fireflow.common.domain.usecase.user.GetUserByStateUseCase
 import dev.zitech.fireflow.common.domain.usecase.user.RemoveStaleUsersUseCase
 import dev.zitech.fireflow.common.domain.usecase.user.SaveUserUseCase
 import dev.zitech.fireflow.common.domain.usecase.user.UpdateCurrentUserUseCase
-import dev.zitech.fireflow.common.domain.usecase.user.UpdateCurrentUserUseCase.Email
 import dev.zitech.fireflow.common.domain.usecase.user.UpdateCurrentUserUseCase.FireflyId
+import dev.zitech.fireflow.common.domain.usecase.user.UpdateCurrentUserUseCase.Identifier
 import dev.zitech.fireflow.common.domain.usecase.user.UpdateCurrentUserUseCase.Role
 import dev.zitech.fireflow.common.domain.usecase.user.UpdateCurrentUserUseCase.Type
 import dev.zitech.fireflow.common.domain.usecase.user.UpdateUserUseCase
@@ -98,7 +98,7 @@ internal class OAuthViewModel @Inject constructor(
         ).onSuccess { userExists ->
             if (!userExists) {
                 updateCurrentUserUseCase(
-                    Email(fireflyProfile.email),
+                    Identifier(fireflyProfile.email),
                     FireflyId(fireflyProfile.id),
                     Role(fireflyProfile.role),
                     Type(fireflyProfile.type)

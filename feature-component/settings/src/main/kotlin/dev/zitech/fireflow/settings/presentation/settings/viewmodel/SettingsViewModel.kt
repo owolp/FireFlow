@@ -134,9 +134,9 @@ internal class SettingsViewModel @Inject constructor(
 
     private suspend fun getCurrentUser() = getCurrentUserUseCase().first()
 
-    private suspend fun getCurrentUserEmailAddress() =
+    private suspend fun getCurrentUserIdentifier() =
         when (val result = getCurrentUser()) {
-            is Success -> result.data.retrieveIdentification()
+            is Success -> result.data.retrieveIdentifier()
             is Failure -> ""
         }
 
@@ -285,7 +285,7 @@ internal class SettingsViewModel @Inject constructor(
                     .getApplicationThemeValue(),
                 crashReporter = dataChoicesCollectionStates
                     .getCrashReporterCollectionValue(),
-                email = getCurrentUserEmailAddress(),
+                identifier = getCurrentUserIdentifier(),
                 performance = dataChoicesCollectionStates
                     .getPerformanceCollectionValue(),
                 personalizedAds = dataChoicesCollectionStates
@@ -299,7 +299,7 @@ internal class SettingsViewModel @Inject constructor(
     private suspend fun setPreferencesStateLimited() {
         updateState {
             copy(
-                email = getCurrentUserEmailAddress()
+                identifier = getCurrentUserIdentifier()
             )
         }
     }

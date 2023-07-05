@@ -37,16 +37,16 @@ internal class UserDatabaseSource @Inject constructor(
     private val userEntityMapper: UserEntityMapper
 ) : UserSource {
 
-    override suspend fun checkUserExistsByEmail(email: String): OperationResult<Boolean> =
+    override suspend fun checkUserExistsByIdentifier(identifier: String): OperationResult<Boolean> =
         handleDb {
-            userDao.checkUserExistsByEmail(email)
+            userDao.checkUserExistsByIdentifier(identifier)
         }
 
-    override suspend fun checkUserExistsByEmailAndServerAddress(
-        email: String,
+    override suspend fun checkUserExistsByIdentifierAndServerAddress(
+        identifier: String,
         serverAddress: String
     ): OperationResult<Boolean> = handleDb {
-        userDao.checkUserExistsByEmailAndServerAddress(email, serverAddress)
+        userDao.checkUserExistsByIdentifierAndServerAddress(identifier, serverAddress)
     }
 
     override suspend fun deleteUserById(userId: Long): OperationResult<Int> = handleDb {
@@ -87,18 +87,18 @@ internal class UserDatabaseSource @Inject constructor(
             userDao.removeCurrentUserOrUsers()
         }
 
-    override suspend fun removeUsersWithStateAndNoTokenAndEmail(): OperationResult<Int> =
+    override suspend fun removeUsersWithStateAndNoTokenAndIdentifier(): OperationResult<Int> =
         handleDb {
-            userDao.removeUsersWithStateAndNoTokenAndEmail()
+            userDao.removeUsersWithStateAndNoTokenAndIdentifier()
         }
 
-    override suspend fun removeUsersWithStateAndTokenAndNoClientIdAndSecretAndEmail(): OperationResult<Int> =
+    override suspend fun removeUsersWithStateAndTokenAndNoClientIdAndSecretAndIdentifier(): OperationResult<Int> =
         handleDb {
-            userDao.removeUsersWithStateAndTokenAndNoClientIdAndSecretAndEmail()
+            userDao.removeUsersWithStateAndTokenAndNoClientIdAndSecretAndIdentifier()
         }
 
-    override suspend fun removeUsersWithTokenAndNoEmail(): OperationResult<Int> = handleDb {
-        userDao.removeUsersWithTokenAndNoEmail()
+    override suspend fun removeUsersWithTokenAndNoIdentifier(): OperationResult<Int> = handleDb {
+        userDao.removeUsersWithTokenAndNoIdentifier()
     }
 
     override suspend fun saveUser(
@@ -106,7 +106,7 @@ internal class UserDatabaseSource @Inject constructor(
         clientId: String?,
         clientSecret: String?,
         connectivityNotification: Boolean,
-        email: String?,
+        identifier: String?,
         isCurrentUser: Boolean,
         serverAddress: String?,
         state: String
@@ -117,7 +117,7 @@ internal class UserDatabaseSource @Inject constructor(
                 clientId = clientId,
                 clientSecret = clientSecret,
                 connectivityNotification = connectivityNotification,
-                email = email,
+                identifier = identifier,
                 isCurrentUser = isCurrentUser,
                 serverAddress = serverAddress,
                 state = state

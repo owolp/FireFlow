@@ -49,14 +49,14 @@ class SaveUserUseCase @Inject constructor(
         clientId: String? = null,
         clientSecret: String? = null,
         connectivityNotification: Boolean,
-        email: String? = null,
+        identifier: String? = null,
         isCurrentUser: Boolean,
         serverAddress: String? = null,
         state: String
-    ): OperationResult<Long> = if (email != null && serverAddress != null) {
+    ): OperationResult<Long> = if (identifier != null && serverAddress != null) {
         when (
-            val result = userRepository.checkUserExistsByEmailAndServerAddress(
-                email,
+            val result = userRepository.checkUserExistsByIdentifierAndServerAddress(
+                identifier,
                 serverAddress
             )
         ) {
@@ -66,14 +66,14 @@ class SaveUserUseCase @Inject constructor(
                         clientId,
                         clientSecret,
                         connectivityNotification,
-                        email,
+                        identifier,
                         isCurrentUser,
                         accessToken,
                         serverAddress,
                         state
                     )
                 } else {
-                    OperationResult.Failure(Error.UserWithServerAddressAlreadyExists(email, serverAddress))
+                    OperationResult.Failure(Error.UserWithServerAddressAlreadyExists(identifier, serverAddress))
                 }
             }
             is OperationResult.Failure -> OperationResult.Failure(result.error)
@@ -83,7 +83,7 @@ class SaveUserUseCase @Inject constructor(
             clientId,
             clientSecret,
             connectivityNotification,
-            email,
+            identifier,
             isCurrentUser,
             accessToken,
             serverAddress,
@@ -95,7 +95,7 @@ class SaveUserUseCase @Inject constructor(
         clientId: String?,
         clientSecret: String?,
         connectivityNotification: Boolean,
-        email: String?,
+        identifier: String?,
         isCurrentUser: Boolean,
         accessToken: String?,
         serverAddress: String?,
@@ -106,7 +106,7 @@ class SaveUserUseCase @Inject constructor(
                 clientId = clientId,
                 clientSecret = clientSecret,
                 connectivityNotification = connectivityNotification,
-                email = email,
+                identifier = identifier,
                 isCurrentUser = isCurrentUser,
                 accessToken = accessToken,
                 serverAddress = serverAddress,

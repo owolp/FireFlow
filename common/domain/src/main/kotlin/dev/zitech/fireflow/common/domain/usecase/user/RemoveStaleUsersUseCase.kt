@@ -49,13 +49,13 @@ class RemoveStaleUsersUseCase @Inject constructor(
     suspend operator fun invoke(): OperationResult<Unit> = coroutineScope {
         try {
             val oauthJob = async {
-                userRepository.removeUsersWithStateAndNoTokenAndEmail()
+                userRepository.removeUsersWithStateAndNoTokenAndIdentifier()
             }.await()
             val patJob = async {
-                userRepository.removeUsersWithStateAndTokenAndNoClientIdAndSecretAndEmail()
+                userRepository.removeUsersWithStateAndTokenAndNoClientIdAndSecretAndIdentifier()
             }.await()
             val multipleRegistrationsJob = async {
-                userRepository.removeUsersWithTokenAndNoEmail()
+                userRepository.removeUsersWithTokenAndNoIdentifier()
             }.await()
 
             when {

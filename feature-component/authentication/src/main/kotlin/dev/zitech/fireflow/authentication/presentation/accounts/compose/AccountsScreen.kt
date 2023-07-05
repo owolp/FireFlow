@@ -121,7 +121,7 @@ private fun AccountsContent(
                 val user = item.user
                 FireFlowAccounts.User(
                     initial = user.retrieveInitial(),
-                    topInfo = user.retrieveIdentification(),
+                    topInfo = user.retrieveIdentifier(),
                     bottomInfo = user.retrieveServerAddress(),
                     isLogged = user.isCurrentUser,
                     more = item.more,
@@ -132,7 +132,7 @@ private fun AccountsContent(
                         )
                     },
                     onMoreItemClick = { menuItemId ->
-                        onMoreItemClicked(user.retrieveIdentification(), menuItemId, user.id)
+                        onMoreItemClicked(user.retrieveIdentifier(), menuItemId, user.id)
                     },
                     onMoreClick = { onMoreClicked(user.id) },
                     onMoreDismiss = { onMoreDismissed(user.id) }

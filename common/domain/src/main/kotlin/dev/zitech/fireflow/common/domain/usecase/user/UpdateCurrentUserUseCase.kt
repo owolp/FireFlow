@@ -57,7 +57,7 @@ class UpdateCurrentUserUseCase @Inject constructor(
                     when (field) {
                         is IsCurrentUser -> user.copy(isCurrentUser = field.value)
                         is AuthenticationType,
-                        is Email,
+                        is Identifier,
                         is FireflyId,
                         is Role,
                         is ServerAddress,
@@ -71,7 +71,7 @@ class UpdateCurrentUserUseCase @Inject constructor(
                 fields.fold(currentUser) { user, field ->
                     when (field) {
                         is AuthenticationType -> user.copy(authenticationType = field.value)
-                        is Email -> user.copy(email = field.value)
+                        is Identifier -> user.copy(email = field.value)
                         is FireflyId -> user.copy(fireflyId = field.value)
                         is IsCurrentUser -> user.copy(isCurrentUser = field.value)
                         is Role -> user.copy(role = field.value)
@@ -93,7 +93,7 @@ class UpdateCurrentUserUseCase @Inject constructor(
     sealed interface Field
 
     data class AuthenticationType(val value: UserAuthenticationType?) : Field
-    data class Email(val value: String?) : Field
+    data class Identifier(val value: String?) : Field
     data class FireflyId(val value: String?) : Field
     data class IsCurrentUser(val value: Boolean) : Field
     data class Role(val value: String?) : Field

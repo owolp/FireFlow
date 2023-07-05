@@ -25,6 +25,6 @@ internal class CheckUserAlreadyExistsUseCase @Inject constructor(
     private val userRepository: UserRepository
 ) {
 
-    suspend operator fun invoke(email: String, serverAddress: String): OperationResult<Boolean> =
-        userRepository.checkUserExistsByEmailAndServerAddress(email, serverAddress)
+    suspend operator fun invoke(identifier: String, serverAddress: String): OperationResult<Boolean> =
+        userRepository.checkUserExistsByIdentifierAndServerAddress(identifier, serverAddress)
 }
