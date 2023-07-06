@@ -19,18 +19,18 @@ package dev.zitech.fireflow.onboarding.presentation.welcome.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.zitech.fireflow.common.domain.usecase.user.SaveUserUseCase
 import dev.zitech.fireflow.common.presentation.architecture.MviViewModel
 import dev.zitech.fireflow.core.error.Error
 import dev.zitech.fireflow.core.result.OperationResult
 import dev.zitech.fireflow.core.result.onFailure
 import dev.zitech.fireflow.core.result.onSuccess
+import dev.zitech.fireflow.onboarding.domain.usecase.SaveLocalUserUseCase
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 
 @HiltViewModel
 internal class WelcomeViewModel @Inject constructor(
-    private val saveUserUseCase: SaveUserUseCase
+    private val saveLocalUserUseCase: SaveLocalUserUseCase
 ) : MviViewModel<WelcomeIntent, WelcomeState>(WelcomeState()) {
 
     override fun receiveIntent(intent: WelcomeIntent) {
@@ -39,12 +39,10 @@ internal class WelcomeViewModel @Inject constructor(
                 is BackClicked -> handleBackClicked(intent.isBackNavigationSupported)
                 ContinueWithOauthClicked -> updateState { copy(oauth = true) }
                 ContinueWithPatClicked -> updateState { copy(pat = true) }
-                DemoHandled -> updateState { copy(demo = false) }
-                DemoPositiveClicked -> handleOnShowDemoPositive()
-                DemoWarningDismissed -> updateState { copy(demoWarning = false) }
+                NextHandled -> updateState { copy(next = false) }
                 FatalErrorHandled -> updateState { copy(fatalError = null) }
                 FireflyClicked -> updateState { copy(fireflyAuthentication = true) }
-                GetStartedClicked -> updateState { copy(demoWarning = true) }
+                GetStartedClicked -> handleGetStarterClicked()
                 is NavigatedToFireflyResult -> handleNavigatedToFireflyResult(intent.result)
                 NonFatalErrorHandled -> updateState { copy(nonFatalError = null) }
                 OAuthHandled -> updateState { copy(oauth = false) }
@@ -63,6 +61,25 @@ internal class WelcomeViewModel @Inject constructor(
         }
     }
 
+    private fun handleError(error: Error) {
+        when (error) {
+            is Error.UserVisible -> updateState { copy(loading = false, nonFatalError = error) }
+            else -> updateState { copy(loading = false, fatalError = error) }
+        }
+    }
+
+    private suspend fun handleGetStarterClicked() {
+        updateState { copy(loading = true) }
+        saveLocalUserUseCase().onSuccess {
+            updateState {
+                copy(
+                    loading = false,
+                    next = true
+                )
+            }
+        }.onFailure(::handleError)
+    }
+
     private suspend fun handleNavigatedToFireflyResult(result: OperationResult<Unit>) {
         result.onSuccess {
             updateState { copy(fireflyAuthentication = false) }
@@ -76,26 +93,6 @@ internal class WelcomeViewModel @Inject constructor(
                     updateState { copy(fireflyAuthentication = false, fatalError = error) }
                 }
             }
-        }
-    }
-
-    @Suppress("ForbiddenComment")
-    private suspend fun handleOnShowDemoPositive() {
-        // TODO: Dev usage
-        saveUserUseCase(
-            accessToken = null,
-            clientId = null,
-            clientSecret = null,
-            connectivityNotification = false,
-            isCurrentUser = true,
-            serverAddress = null,
-            state = ""
-        )
-        updateState {
-            copy(
-                demoWarning = false,
-                demo = true
-            )
         }
     }
 }

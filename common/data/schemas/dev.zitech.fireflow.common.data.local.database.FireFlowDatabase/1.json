@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "0f77952d0f9aa1272baa51d909035a5b",
+    "identityHash": "604cba2ddad7985005ceece941a1e0fc",
     "entities": [
       {
         "tableName": "users",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `accessToken` TEXT, `clientId` TEXT, `clientSecret` TEXT, `connectivityNotification` INTEGER NOT NULL, `email` TEXT, `fireflyId` TEXT, `isCurrentUser` INTEGER NOT NULL, `oauthCode` TEXT, `refreshToken` TEXT, `role` TEXT, `serverAddress` TEXT, `state` TEXT, `type` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `accessToken` TEXT, `clientId` TEXT, `clientSecret` TEXT, `connectivityNotification` INTEGER NOT NULL, `fireflyId` TEXT, `identifier` TEXT, `isCurrentUser` INTEGER NOT NULL, `oauthCode` TEXT, `refreshToken` TEXT, `role` TEXT, `serverAddress` TEXT, `state` TEXT, `type` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -39,14 +39,14 @@
             "notNull": true
           },
           {
-            "fieldPath": "email",
-            "columnName": "email",
+            "fieldPath": "fireflyId",
+            "columnName": "fireflyId",
             "affinity": "TEXT",
             "notNull": false
           },
           {
-            "fieldPath": "fireflyId",
-            "columnName": "fireflyId",
+            "fieldPath": "identifier",
+            "columnName": "identifier",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -106,7 +106,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0f77952d0f9aa1272baa51d909035a5b')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '604cba2ddad7985005ceece941a1e0fc')"
     ]
   }
 }

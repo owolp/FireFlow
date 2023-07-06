@@ -54,6 +54,11 @@ internal fun PatRoute(
     screenState.nonFatalError?.let { fireFlowError ->
         val text = when (fireFlowError) {
             is Error.UserVisible -> fireFlowError.message.orEmpty()
+            is Error.UserWithServerAddressAlreadyExists -> stringResource(
+                fireFlowError.uiResId,
+                fireFlowError.identifier,
+                fireFlowError.serverAddress
+            )
             else -> stringResource(fireFlowError.uiResId)
         }
         snackbarState.showMessage(

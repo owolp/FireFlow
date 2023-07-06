@@ -37,6 +37,18 @@ internal class UserDatabaseSource @Inject constructor(
     private val userEntityMapper: UserEntityMapper
 ) : UserSource {
 
+    override suspend fun checkUserExistsByIdentifier(identifier: String): OperationResult<Boolean> =
+        handleDb {
+            userDao.checkUserExistsByIdentifier(identifier)
+        }
+
+    override suspend fun checkUserExistsByIdentifierAndServerAddress(
+        identifier: String,
+        serverAddress: String
+    ): OperationResult<Boolean> = handleDb {
+        userDao.checkUserExistsByIdentifierAndServerAddress(identifier, serverAddress)
+    }
+
     override suspend fun deleteUserById(userId: Long): OperationResult<Int> = handleDb {
         userDao.deleteUserById(userId)
     }
@@ -70,21 +82,31 @@ internal class UserDatabaseSource @Inject constructor(
             Failure<List<User>>(Error.Fatal(throwable, DISK))
         }
 
-    override suspend fun removeUsersWithStateAndNoToken(): OperationResult<Int> =
+    override suspend fun removeCurrentUserOrUsers(): OperationResult<Int> =
         handleDb {
-            userDao.removeUsersWithStateAndNoToken()
+            userDao.removeCurrentUserOrUsers()
         }
 
-    override suspend fun removeUsersWithStateAndTokenAndNoClientIdAndSecret(): OperationResult<Int> =
+    override suspend fun removeUsersWithStateAndNoTokenAndIdentifier(): OperationResult<Int> =
         handleDb {
-            userDao.removeUsersWithStateAndTokenAndNoClientIdAndSecret()
+            userDao.removeUsersWithStateAndNoTokenAndIdentifier()
         }
+
+    override suspend fun removeUsersWithStateAndTokenAndNoClientIdAndSecretAndIdentifier(): OperationResult<Int> =
+        handleDb {
+            userDao.removeUsersWithStateAndTokenAndNoClientIdAndSecretAndIdentifier()
+        }
+
+    override suspend fun removeUsersWithTokenAndNoIdentifier(): OperationResult<Int> = handleDb {
+        userDao.removeUsersWithTokenAndNoIdentifier()
+    }
 
     override suspend fun saveUser(
         accessToken: String?,
         clientId: String?,
         clientSecret: String?,
         connectivityNotification: Boolean,
+        identifier: String?,
         isCurrentUser: Boolean,
         serverAddress: String?,
         state: String
@@ -95,6 +117,7 @@ internal class UserDatabaseSource @Inject constructor(
                 clientId = clientId,
                 clientSecret = clientSecret,
                 connectivityNotification = connectivityNotification,
+                identifier = identifier,
                 isCurrentUser = isCurrentUser,
                 serverAddress = serverAddress,
                 state = state

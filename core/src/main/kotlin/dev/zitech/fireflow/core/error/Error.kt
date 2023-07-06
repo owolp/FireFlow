@@ -116,6 +116,14 @@ sealed class Error(
         R.string.empty
     )
 
+    data class UserWithServerAddressAlreadyExists(
+        val identifier: String,
+        val serverAddress: String
+    ) : Error(
+        "User with specific identifier and server address already exists",
+        R.string.user_with_identifier_and_server_address_exists
+    )
+
     object AuthenticationProblem : Error(
         "The authentication type provided is not valid",
         R.string.authentication_problem

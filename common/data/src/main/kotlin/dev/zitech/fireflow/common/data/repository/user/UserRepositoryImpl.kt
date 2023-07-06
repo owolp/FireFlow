@@ -34,6 +34,15 @@ internal class UserRepositoryImpl @Inject constructor(
     private val userDatabaseSource: UserSource
 ) : UserRepository {
 
+    override suspend fun checkUserExistsByIdentifier(identifier: String): OperationResult<Boolean> =
+        userDatabaseSource.checkUserExistsByIdentifier(identifier)
+
+    override suspend fun checkUserExistsByIdentifierAndServerAddress(
+        identifier: String,
+        serverAddress: String
+    ): OperationResult<Boolean> =
+        userDatabaseSource.checkUserExistsByIdentifierAndServerAddress(identifier, serverAddress)
+
     override suspend fun deleteUserById(userId: Long): OperationResult<Int> =
         userDatabaseSource.deleteUserById(userId)
 
@@ -67,17 +76,24 @@ internal class UserRepositoryImpl @Inject constructor(
     override fun getUsers(): Flow<OperationResult<List<User>>> =
         userDatabaseSource.getUsers()
 
-    override suspend fun removeUsersWithStateAndNoToken(): OperationResult<Int> =
-        userDatabaseSource.removeUsersWithStateAndNoToken()
+    override suspend fun removeCurrentUsers(): OperationResult<Int> =
+        userDatabaseSource.removeCurrentUserOrUsers()
 
-    override suspend fun removeUsersWithStateAndTokenAndNoClientIdAndSecret(): OperationResult<Int> =
-        userDatabaseSource.removeUsersWithStateAndTokenAndNoClientIdAndSecret()
+    override suspend fun removeUsersWithStateAndNoTokenAndIdentifier(): OperationResult<Int> =
+        userDatabaseSource.removeUsersWithStateAndNoTokenAndIdentifier()
+
+    override suspend fun removeUsersWithStateAndTokenAndNoClientIdAndSecretAndIdentifier(): OperationResult<Int> =
+        userDatabaseSource.removeUsersWithStateAndTokenAndNoClientIdAndSecretAndIdentifier()
+
+    override suspend fun removeUsersWithTokenAndNoIdentifier(): OperationResult<Int> =
+        userDatabaseSource.removeUsersWithTokenAndNoIdentifier()
 
     override suspend fun saveUser(
         accessToken: String?,
         clientId: String?,
         clientSecret: String?,
         connectivityNotification: Boolean,
+        identifier: String?,
         isCurrentUser: Boolean,
         serverAddress: String?,
         state: String
@@ -87,6 +103,7 @@ internal class UserRepositoryImpl @Inject constructor(
             clientId = clientId,
             clientSecret = clientSecret,
             connectivityNotification = connectivityNotification,
+            identifier = identifier,
             isCurrentUser = isCurrentUser,
             serverAddress = serverAddress,
             state = state

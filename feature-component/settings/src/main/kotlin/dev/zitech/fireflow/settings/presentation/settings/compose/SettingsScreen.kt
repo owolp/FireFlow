@@ -300,9 +300,9 @@ private fun getMorePreferences(
         CategoryPreference.Icon(
             title = stringResource(R.string.more_log_out),
             icon = FireFlowIcons.Logout,
-            description = state.email,
+            description = state.identifier,
             onClick = Pair(
-                stringResource(R.string.cd_more_log_out_click, state.email),
+                stringResource(R.string.cd_more_log_out_click, state.identifier),
                 logOutClicked
             )
         )

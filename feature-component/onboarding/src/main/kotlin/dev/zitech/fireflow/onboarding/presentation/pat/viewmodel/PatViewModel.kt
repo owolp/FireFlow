@@ -19,6 +19,7 @@ package dev.zitech.fireflow.onboarding.presentation.pat.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.zitech.fireflow.common.domain.model.profile.FireflyProfile
 import dev.zitech.fireflow.common.domain.model.user.User
 import dev.zitech.fireflow.common.domain.model.user.UserAuthenticationType
 import dev.zitech.fireflow.common.domain.usecase.profile.GetFireflyProfileUseCase
@@ -31,6 +32,7 @@ import dev.zitech.fireflow.core.dispatcher.AppDispatchers
 import dev.zitech.fireflow.core.error.Error
 import dev.zitech.fireflow.core.result.onFailure
 import dev.zitech.fireflow.core.result.onSuccess
+import dev.zitech.fireflow.onboarding.domain.usecase.CheckUserAlreadyExistsUseCase
 import dev.zitech.fireflow.onboarding.domain.usecase.IsPatLoginInputValidUseCase
 import javax.inject.Inject
 import kotlinx.coroutines.delay
@@ -40,6 +42,7 @@ import kotlinx.coroutines.withContext
 @HiltViewModel
 internal class PatViewModel @Inject constructor(
     private val appDispatchers: AppDispatchers,
+    private val checkUserAlreadyExistsUseCase: CheckUserAlreadyExistsUseCase,
     private val getFireflyProfileUseCase: dagger.Lazy<GetFireflyProfileUseCase>,
     private val getUserByStateUseCase: GetUserByStateUseCase,
     private val isPatLoginInputValidUseCase: IsPatLoginInputValidUseCase,
@@ -66,6 +69,20 @@ internal class PatViewModel @Inject constructor(
     private suspend fun checkToken(user: User, accessToken: String) {
         getFireflyProfileUseCase.get().invoke()
             .onSuccess { fireflyProfile ->
+                checkUserAlreadyExists(fireflyProfile, user, accessToken)
+            }.onFailure(::handleError)
+    }
+
+    private suspend fun checkUserAlreadyExists(
+        fireflyProfile: FireflyProfile,
+        user: User,
+        accessToken: String
+    ) {
+        checkUserAlreadyExistsUseCase(
+            fireflyProfile.email,
+            user.retrieveServerAddress()
+        ).onSuccess { userExists ->
+            if (!userExists) {
                 updateUser(
                     accessToken = accessToken,
                     email = fireflyProfile.email,
@@ -74,7 +91,15 @@ internal class PatViewModel @Inject constructor(
                     type = fireflyProfile.type,
                     user = user
                 )
-            }.onFailure(::handleError)
+            } else {
+                handleError(
+                    Error.UserWithServerAddressAlreadyExists(
+                        fireflyProfile.email,
+                        user.retrieveServerAddress()
+                    )
+                )
+            }
+        }.onFailure(::handleError)
     }
 
     private suspend fun getUserByState(state: String) {
@@ -106,7 +131,13 @@ internal class PatViewModel @Inject constructor(
     private suspend fun handleError(error: Error) {
         removeStaleUsersUseCase()
         when (error) {
-            is Error.UserVisible -> updateState { copy(loading = false, nonFatalError = error) }
+            is Error.UserVisible,
+            is Error.UserWithServerAddressAlreadyExists -> updateState {
+                copy(
+                    loading = false,
+                    nonFatalError = error
+                )
+            }
             is Error.Fatal -> {
                 if (error.type == Error.Fatal.Type.NETWORK) {
                     updateState {

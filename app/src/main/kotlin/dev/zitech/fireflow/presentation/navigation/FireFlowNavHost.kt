@@ -92,7 +92,6 @@ internal fun FireFlowNavHost(
                     )
                 )
             },
-            navigateToDemo = { onBackClick(null) },
             navigateToDashboard = {
                 onBackClick(
                     NavDirection(
@@ -123,7 +122,8 @@ internal fun FireFlowNavHost(
                 onNavigateToDestination(
                     NavDirection(
                         destination = WelcomeDestination,
-                        inclusive = true
+                        inclusive = true,
+                        route = "${WelcomeDestination.route}?${WelcomeDestination.isBackNavigationSupported}=false"
                     )
                 )
             }
@@ -145,7 +145,8 @@ internal fun FireFlowNavHost(
                 onNavigateToDestination(
                     NavDirection(
                         destination = WelcomeDestination,
-                        inclusive = true
+                        inclusive = true,
+                        route = "${WelcomeDestination.route}?${WelcomeDestination.isBackNavigationSupported}=false"
                     )
                 )
             },

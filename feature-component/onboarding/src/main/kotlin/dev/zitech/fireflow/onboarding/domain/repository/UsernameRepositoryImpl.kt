@@ -15,19 +15,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.zitech.fireflow.onboarding.presentation.welcome.viewmodel
+package dev.zitech.fireflow.onboarding.domain.repository
 
-import dev.zitech.fireflow.common.presentation.architecture.MviState
-import dev.zitech.fireflow.core.error.FireFlowError
+import dev.zitech.fireflow.core.result.OperationResult
+import dev.zitech.fireflow.onboarding.data.source.ResourceSource
+import javax.inject.Inject
 
-internal data class WelcomeState(
-    val close: Boolean = false,
-    val fatalError: FireFlowError? = null,
-    val fireflyAuthentication: Boolean = false,
-    val loading: Boolean = false,
-    val next: Boolean = false,
-    val nonFatalError: FireFlowError? = null,
-    val oauth: Boolean = false,
-    val pat: Boolean = false,
-    val quitApp: Boolean = false
-) : MviState
+internal class UsernameRepositoryImpl @Inject constructor(
+    private val resourceSource: ResourceSource
+) : UsernameRepository {
+
+    override suspend fun getAdjectives(): OperationResult<List<String>> =
+        resourceSource.getAdjectives()
+
+    override suspend fun getNouns(): OperationResult<List<String>> = resourceSource.getNouns()
+}

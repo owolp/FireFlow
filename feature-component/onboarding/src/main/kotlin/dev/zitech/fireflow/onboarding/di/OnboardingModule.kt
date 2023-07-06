@@ -17,22 +17,41 @@
 
 package dev.zitech.fireflow.onboarding.di
 
+import android.content.Context
 import dagger.Binds
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ViewModelScoped
+import dagger.hilt.components.SingletonComponent
 import dev.zitech.fireflow.common.presentation.validator.Validator
+import dev.zitech.fireflow.core.dispatcher.AppDispatchers
+import dev.zitech.fireflow.onboarding.data.source.RawResourceSource
+import dev.zitech.fireflow.onboarding.data.source.ResourceSource
 import dev.zitech.fireflow.onboarding.di.annotation.ValidatorClientId
 import dev.zitech.fireflow.onboarding.di.annotation.ValidatorClientSecret
 import dev.zitech.fireflow.onboarding.di.annotation.ValidatorPat
 import dev.zitech.fireflow.onboarding.di.annotation.ValidatorServerAddress
+import dev.zitech.fireflow.onboarding.domain.repository.UsernameRepository
+import dev.zitech.fireflow.onboarding.domain.repository.UsernameRepositoryImpl
 import dev.zitech.fireflow.onboarding.domain.validator.ClientIdValidator
 import dev.zitech.fireflow.onboarding.domain.validator.ClientSecretValidator
 import dev.zitech.fireflow.onboarding.domain.validator.PatValidator
 import dev.zitech.fireflow.onboarding.domain.validator.ServerAddressValidator
+import javax.inject.Singleton
 
 internal interface OnboardingModule {
+
+    @InstallIn(SingletonComponent::class)
+    @Module
+    interface SingletonBinds {
+
+        @Singleton
+        @Binds
+        fun usernameRepository(usernameRepositoryImpl: UsernameRepositoryImpl): UsernameRepository
+    }
 
     @InstallIn(ViewModelComponent::class)
     @Module
@@ -59,5 +78,17 @@ internal interface OnboardingModule {
         fun serverAddressValidator(
             serverAddressValidator: ServerAddressValidator
         ): Validator<String>
+    }
+
+    @InstallIn(SingletonComponent::class)
+    @Module
+    object SingletonProvides {
+
+        @Singleton
+        @Provides
+        fun rawResourceSource(
+            appDispatchers: AppDispatchers,
+            @ApplicationContext applicationContext: Context
+        ): ResourceSource = RawResourceSource(appDispatchers, applicationContext.resources)
     }
 }

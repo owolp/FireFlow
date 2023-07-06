@@ -32,6 +32,38 @@ import kotlinx.coroutines.flow.Flow
 internal interface UserDao {
 
     /**
+     * Checks if a user with the specified identifier exists in the "users" table.
+     *
+     * This function performs a query to check if a user with the given [identifier] exists in the "users" table.
+     *
+     * @param identifier The identifier of the user to check for existence.
+     * @return `true` if a user with the specified identifier exists in the "users" table, `false` otherwise.
+     */
+    @Query("SELECT EXISTS (SELECT 1 FROM users WHERE identifier=:identifier) AS result")
+    suspend fun checkUserExistsByIdentifier(identifier: String): Boolean
+
+    /**
+     * Checks if a user with the specified identifier and server address exists in the "users" table.
+     *
+     * This function performs a query to check if a user with the given [identifier] and [serverAddress]
+     * exists in the "users" table.
+     *
+     * @param identifier The identifier of the user to check for existence.
+     * @param serverAddress The server address associated with the user.
+     * @return `true` if a user with the specified identifier and server address exists in the "users" table,
+     *         `false` otherwise.
+     */
+    @Query(
+        "SELECT EXISTS " +
+            "(SELECT 1 FROM users WHERE identifier=:identifier AND serverAddress=:serverAddress) " +
+            "AS result"
+    )
+    suspend fun checkUserExistsByIdentifierAndServerAddress(
+        identifier: String,
+        serverAddress: String
+    ): Boolean
+
+    /**
      * Deletes a user entity from the "users" table based on the specified user ID.
      *
      * This function deletes the user entity with the given [userId] from the "users" table.
@@ -69,25 +101,28 @@ internal interface UserDao {
     suspend fun getUserByState(state: String): UserEntity?
 
     /**
-     * Retrieves all users as a flow of a list of [UserEntity].
+     * Retrieves all users from the "users" table, sorted by identifier.
      *
-     * This function queries the "users" table and returns a [Flow] emitting a list of all user entities.
+     * This function returns a flow of lists of [UserEntity] objects representing all the users
+     * in the "users" table, ordered by their identifier.
      *
-     * @return A flow of a list of all user entities.
+     * @return A [Flow] emitting a list of [UserEntity] objects representing all the users
+     *         in the "users" table, sorted by their identifier.
      */
-    @Query("SELECT * FROM users")
+    @Query("SELECT * FROM users ORDER BY identifier")
     fun getUsers(): Flow<List<UserEntity>>
 
     /**
-     * Removes the current user by setting the `isCurrentUser` flag to false.
+     * Updates the "isCurrentUser" field of all users in the "users" table to 0.
      *
-     * This function updates the "isCurrentUser" field of the user entities in the "users" table,
-     * setting it to 0 (false) for all users.
+     * This function performs an update query to set the "isCurrentUser" field of all users
+     * in the "users" table to 0, indicating that they are not the current user.
      *
-     * @return An [Int] representing the number of users updated.
+     * @return An [Int] representing the number of rows affected by the update operation. If the
+     *         update was successful, the return value will be the number of rows modified.
      */
     @Query("UPDATE users SET isCurrentUser=0")
-    suspend fun removeCurrentUser(): Int
+    suspend fun removeCurrentUserOrUsers(): Int
 
     /**
      * Removes users that have a state but no access token.
@@ -98,8 +133,20 @@ internal interface UserDao {
      *
      * @return An [Int] representing the number of users removed.
      */
-    @Query("DELETE FROM users WHERE state IS NOT NULL AND accessToken IS NULL")
-    suspend fun removeUsersWithStateAndNoToken(): Int
+    @Query("DELETE FROM users WHERE state IS NOT NULL AND accessToken IS NULL AND identifier IS NULL")
+    suspend fun removeUsersWithStateAndNoTokenAndIdentifier(): Int
+
+    /**
+     * Removes users that have an access token but no identifier.
+     *
+     * This function removes user entities from the "users" table that meet the following conditions:
+     * - The "accessToken" column is not null.
+     * - The "identifier" column is null.
+     *
+     * @return An [Int] representing the number of users removed.
+     */
+    @Query("DELETE FROM users WHERE accessToken IS NOT NULL AND identifier IS NULL")
+    suspend fun removeUsersWithTokenAndNoIdentifier(): Int
 
     /**
      * Removes users that have a state and access token, but no client ID and client secret.
@@ -114,9 +161,9 @@ internal interface UserDao {
      */
     @Query(
         "DELETE FROM users WHERE state IS NOT NULL AND accessToken IS NOT" +
-            " NULL AND clientId IS NULL AND clientSecret IS NULL"
+            " NULL AND clientId IS NULL AND clientSecret IS NULL AND identifier IS NULL"
     )
-    suspend fun removeUsersWithStateAndTokenAndNoClientIdAndSecret(): Int
+    suspend fun removeUsersWithStateAndTokenAndNoClientIdAndSecretAndIdentifier(): Int
 
     /**
      * Inserts or replaces a user entity.

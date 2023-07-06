@@ -29,6 +29,11 @@ import kotlinx.coroutines.coroutineScope
 /**
  * Use case for removing stale users.
  *
+ * This use case removes stale users based on different scenarios:
+ * - `oauthJob` removes users with incomplete OAuth authentication.
+ * - `patJob` removes users with incomplete PAT (Personal Access Token) authentication.
+ * - `multipleRegistrationsJob` removes accounts that were attempted to be registered but are found duplicate.
+ *
  * @property userRepository The repository for managing users.
  */
 class RemoveStaleUsersUseCase @Inject constructor(
@@ -43,19 +48,22 @@ class RemoveStaleUsersUseCase @Inject constructor(
     @Suppress("RedundantAsync", "TooGenericExceptionCaught")
     suspend operator fun invoke(): OperationResult<Unit> = coroutineScope {
         try {
-            val jobOAuth = async {
-                userRepository.removeUsersWithStateAndNoToken()
+            val oauthJob = async {
+                userRepository.removeUsersWithStateAndNoTokenAndIdentifier()
             }.await()
-            val jobPat = async {
-                userRepository.removeUsersWithStateAndTokenAndNoClientIdAndSecret()
+            val patJob = async {
+                userRepository.removeUsersWithStateAndTokenAndNoClientIdAndSecretAndIdentifier()
+            }.await()
+            val multipleRegistrationsJob = async {
+                userRepository.removeUsersWithTokenAndNoIdentifier()
             }.await()
 
-            if (jobOAuth is Success && jobPat is Success) {
-                Success(Unit)
-            } else if (jobOAuth is Failure) {
-                Failure(jobOAuth.error)
-            } else {
-                Failure((jobPat as Failure).error)
+            when {
+                oauthJob is Success && patJob is Success && multipleRegistrationsJob is Success ->
+                    Success(Unit)
+                oauthJob is Failure -> Failure(oauthJob.error)
+                patJob is Failure -> Failure(patJob.error)
+                else -> Failure((multipleRegistrationsJob as Failure).error)
             }
         } catch (e: Exception) {
             Failure(

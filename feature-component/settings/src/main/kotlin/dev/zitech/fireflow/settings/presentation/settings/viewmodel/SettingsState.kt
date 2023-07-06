@@ -33,7 +33,7 @@ internal data class SettingsState(
     val crashReporter: Boolean = false,
     val crashReporterError: Boolean = false,
     val fatalError: FireFlowError? = null,
-    val email: String = "",
+    val identifier: String = "",
     val performance: Boolean? = null,
     val performanceError: Boolean = false,
     val personalizedAds: Boolean? = null,

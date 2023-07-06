@@ -27,6 +27,35 @@ import kotlinx.coroutines.flow.Flow
 internal interface UserSource {
 
     /**
+     * Checks if a user with the specified identifier exists.
+     *
+     * This suspend function performs a check to determine if a user with the given [identifier] exists.
+     * It returns an [OperationResult] indicating the result of the operation.
+     *
+     * @param identifier The identifier of the user to check for existence.
+     * @return An [OperationResult] representing the result of the operation,
+     *         containing a boolean value indicating if the user exists, or an error if the operation failed.
+     */
+    suspend fun checkUserExistsByIdentifier(identifier: String): OperationResult<Boolean>
+
+    /**
+     * Checks if a user with the specified identifier and server address exists.
+     *
+     * This suspend function performs a check to determine if a user with the given [identifier] and
+     * [serverAddress] exists.
+     * It returns an [OperationResult] indicating the result of the operation.
+     *
+     * @param identifier The identifier of the user to check for existence.
+     * @param serverAddress The server address associated with the user.
+     * @return An [OperationResult] representing the result of the operation,
+     *         containing a boolean value indicating if the user exists, or an error if the operation failed.
+     */
+    suspend fun checkUserExistsByIdentifierAndServerAddress(
+        identifier: String,
+        serverAddress: String
+    ): OperationResult<Boolean>
+
+    /**
      * Deletes a user based on the specified user ID.
      *
      * @param userId The ID of the user to be deleted.
@@ -59,12 +88,20 @@ internal interface UserSource {
     fun getUsers(): Flow<OperationResult<List<User>>>
 
     /**
+     * Removes the current user or users.
+     *
+     * @return An [OperationResult] representing the result of the update operation,
+     *         containing the number of affected rows if successful, or an error if unsuccessful.
+     */
+    suspend fun removeCurrentUserOrUsers(): OperationResult<Int>
+
+    /**
      * Removes users that have the specified state and no access token.
      *
      * @return An [OperationResult] representing the result of the update operation,
      *         containing the number of affected rows if successful, or an error if unsuccessful.
      */
-    suspend fun removeUsersWithStateAndNoToken(): OperationResult<Int>
+    suspend fun removeUsersWithStateAndNoTokenAndIdentifier(): OperationResult<Int>
 
     /**
      * Removes users that have the specified state, access token, and no client ID and secret.
@@ -72,7 +109,18 @@ internal interface UserSource {
      * @return An [OperationResult] representing the result of the update operation,
      *         containing the number of affected rows if successful, or an error if unsuccessful.
      */
-    suspend fun removeUsersWithStateAndTokenAndNoClientIdAndSecret(): OperationResult<Int>
+    suspend fun removeUsersWithStateAndTokenAndNoClientIdAndSecretAndIdentifier(): OperationResult<Int>
+
+    /**
+     * Removes users that have an access token but no identifier.
+     *
+     * This suspend function removes user entities from the system that have an access token assigned but no identifier.
+     * It returns an [OperationResult] indicating the result of the operation.
+     *
+     * @return An [OperationResult] representing the result of the operation,
+     *         containing the number of affected rows if successful, or an error if unsuccessful.
+     */
+    suspend fun removeUsersWithTokenAndNoIdentifier(): OperationResult<Int>
 
     /**
      * Saves a new user or updates an existing user.
@@ -81,6 +129,7 @@ internal interface UserSource {
      * @param clientId The OAuth client ID associated with the user.
      * @param clientSecret The OAuth client secret associated with the user.
      * @param connectivityNotification Indicates whether the user has enabled connectivity checks.
+     * @param identifier The identifier of the user.
      * @param isCurrentUser Indicates whether the user is the current user.
      * @param serverAddress The server address of the user. If the value is null, it indicates that the user is local.
      * @param state The state associated with the user.
@@ -92,6 +141,7 @@ internal interface UserSource {
         clientId: String?,
         clientSecret: String?,
         connectivityNotification: Boolean,
+        identifier: String?,
         isCurrentUser: Boolean,
         serverAddress: String?,
         state: String
