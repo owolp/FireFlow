@@ -34,7 +34,11 @@ internal interface UserDao {
     @Query("SELECT EXISTS (SELECT 1 FROM users WHERE identifier=:identifier) AS result")
     suspend fun checkUserExistsByIdentifier(identifier: String): Boolean
 
-    @Query("SELECT EXISTS (SELECT 1 FROM users WHERE identifier=:identifier AND serverAddress=:serverAddress) AS result")
+    @Query(
+        "SELECT EXISTS " +
+            "(SELECT 1 FROM users WHERE identifier=:identifier AND serverAddress=:serverAddress) " +
+            "AS result"
+    )
     suspend fun checkUserExistsByIdentifierAndServerAddress(
         identifier: String,
         serverAddress: String
