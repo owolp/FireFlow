@@ -19,8 +19,27 @@ package dev.zitech.fireflow.onboarding.domain.repository
 
 import dev.zitech.fireflow.core.result.OperationResult
 
+/**
+ * Interface for managing usernames.
+ *
+ * This interface defines methods for retrieving different parts of usernames,
+ * such as adjectives and nouns.
+ */
 internal interface UsernameRepository {
 
+    /**
+     * Retrieves a list of adjectives for usernames.
+     *
+     * @return An [OperationResult] representing the result of the retrieval operation,
+     *         containing a list of adjectives if successful, or an error if unsuccessful.
+     */
     suspend fun getAdjectives(): OperationResult<List<String>>
+
+    /**
+     * Retrieves a list of nouns for usernames.
+     *
+     * @return An [OperationResult] representing the result of the retrieval operation,
+     *         containing a list of nouns if successful, or an error if unsuccessful.
+     */
     suspend fun getNouns(): OperationResult<List<String>>
 }

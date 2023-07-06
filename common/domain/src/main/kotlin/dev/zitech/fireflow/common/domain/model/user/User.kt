@@ -34,7 +34,12 @@ sealed class User(
     /**
      * Returns the identification string of the user.
      *
-     * @return The identification string.
+     * This function retrieves the identification string of the user based on the type.
+     * If the user is of type [Local], the username will be returned.
+     * If the user is of type [Remote], the email will be returned. If the email is null, an empty
+     * string will be returned.
+     *
+     * @return The identification string of the user.
      */
     fun retrieveIdentifier(): String = when (this) {
         is Local -> this.username
@@ -44,7 +49,12 @@ sealed class User(
     /**
      * Returns the initial character of the user.
      *
-     * @return The initial character.
+     * This function retrieves the initial character of the user based on the type.
+     * If the user is of type [Local], the first character of the uppercase username will be returned.
+     * If the user is of type [Remote], the first character of the uppercase email will be returned.
+     * If the email is null, an empty string is considered, and the first character will be returned as well.
+     *
+     * @return The initial character of the user.
      */
     fun retrieveInitial(): Char = when (this) {
         is Local -> this.username.uppercase().first()
@@ -54,7 +64,11 @@ sealed class User(
     /**
      * Returns the server address associated with the user.
      *
-     * @return The server address.
+     * This function retrieves the server address associated with the user based on the type.
+     * If the user is of type [Local], an empty string will be returned.
+     * If the user is of type [Remote], the server address will be returned.
+     *
+     * @return The server address associated with the user.
      */
     fun retrieveServerAddress(): String = when (this) {
         is Local -> ""

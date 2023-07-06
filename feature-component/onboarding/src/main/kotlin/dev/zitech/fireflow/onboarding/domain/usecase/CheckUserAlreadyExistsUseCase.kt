@@ -21,10 +21,32 @@ import dev.zitech.fireflow.common.domain.repository.user.UserRepository
 import dev.zitech.fireflow.core.result.OperationResult
 import javax.inject.Inject
 
+/**
+ * Use case for checking if a user already exists.
+ *
+ * This use case is responsible for checking if a user with the given identifier
+ * and server address already exists. It interacts with the [UserRepository] to
+ * perform the necessary checks.
+ *
+ * @property userRepository The repository for managing users.
+ */
 internal class CheckUserAlreadyExistsUseCase @Inject constructor(
     private val userRepository: UserRepository
 ) {
 
+    /**
+     * Invokes the use case to check if a user already exists.
+     *
+     * This suspend function is invoked to check if a user with the specified
+     * [identifier] and [serverAddress] already exists. It delegates the check
+     * operation to the [UserRepository] and returns an [OperationResult] that
+     * indicates whether the user exists or not.
+     *
+     * @param identifier The identifier of the user.
+     * @param serverAddress The server address of the user.
+     * @return An [OperationResult] representing the result of the operation,
+     *         containing a boolean value indicating if the user already exists.
+     */
     suspend operator fun invoke(identifier: String, serverAddress: String): OperationResult<Boolean> =
         userRepository.checkUserExistsByIdentifierAndServerAddress(identifier, serverAddress)
 }

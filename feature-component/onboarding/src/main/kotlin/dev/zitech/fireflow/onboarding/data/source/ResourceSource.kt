@@ -19,8 +19,27 @@ package dev.zitech.fireflow.onboarding.data.source
 
 import dev.zitech.fireflow.core.result.OperationResult
 
+/**
+ * Interface for retrieving resources.
+ *
+ * This interface defines methods for retrieving different types of resources,
+ * such as adjectives and nouns.
+ */
 internal interface ResourceSource {
 
+    /**
+     * Retrieves a list of adjectives.
+     *
+     * @return An [OperationResult] representing the result of the retrieval operation,
+     *         containing a list of adjectives if successful, or an error if unsuccessful.
+     */
     suspend fun getAdjectives(): OperationResult<List<String>>
+
+    /**
+     * Retrieves a list of nouns.
+     *
+     * @return An [OperationResult] representing the result of the retrieval operation,
+     *         containing a list of nouns if successful, or an error if unsuccessful.
+     */
     suspend fun getNouns(): OperationResult<List<String>>
 }

@@ -22,6 +22,16 @@ import androidx.annotation.RawRes
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 
+/**
+ * Reads and parses a raw JSON resource file into an object of type [T].
+ *
+ * This inline function reads a raw JSON resource file from the provided [resources]
+ * and parses it into an object of type [T] using the Moshi JSON library.
+ *
+ * @param resources The Android resources object used to access the raw resource file.
+ * @param rawResId The resource ID of the raw JSON file to be read.
+ * @return An object of type [T] representing the parsed JSON data from the resource file.
+ */
 inline fun <reified T> readRawJson(resources: Resources, @RawRes rawResId: Int): T {
     resources.openRawResource(rawResId).bufferedReader().use {
         val moshi = Moshi.Builder().build()

@@ -28,7 +28,7 @@ import androidx.room.PrimaryKey
  * @param clientId The client ID associated with the user.
  * @param clientSecret The client secret associated with the user.
  * @param connectivityNotification Indicates whether the user has enabled connectivity notification.
- * @param identifier The email address of the user.
+ * @param identifier The email address or username of the user.
  * @param fireflyId The Firefly ID associated with the user.
  * @param isCurrentUser Indicates whether the user is the current active user.
  * @param oauthCode The OAuth code associated with the user.

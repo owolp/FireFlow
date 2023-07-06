@@ -26,8 +26,29 @@ import kotlinx.coroutines.flow.Flow
  */
 interface UserRepository {
 
+    /**
+     * Checks if a user with the specified identifier exists.
+     *
+     * This function checks if a user with the given [identifier] exists in the system.
+     *
+     * @param identifier The identifier of the user to check for existence.
+     * @return An [OperationResult] representing the result of the operation,
+     *         containing `true` if the user exists, or `false` if the user does not exist,
+     *         along with any error information if the operation was unsuccessful.
+     */
     suspend fun checkUserExistsByIdentifier(identifier: String): OperationResult<Boolean>
 
+    /**
+     * Checks if a user with the specified identifier and server address exists.
+     *
+     * This function checks if a user with the given [identifier] and [serverAddress] exists in the system.
+     *
+     * @param identifier The identifier of the user to check for existence.
+     * @param serverAddress The server address associated with the user.
+     * @return An [OperationResult] representing the result of the operation,
+     *         containing `true` if the user exists, or `false` if the user does not exist,
+     *         along with any error information if the operation was unsuccessful.
+     */
     suspend fun checkUserExistsByIdentifierAndServerAddress(
         identifier: String,
         serverAddress: String
@@ -88,6 +109,15 @@ interface UserRepository {
      */
     suspend fun removeUsersWithStateAndTokenAndNoClientIdAndSecretAndIdentifier(): OperationResult<Int>
 
+    /**
+     * Removes users that have an access token but no identifier.
+     *
+     * This function removes user entities from the system that have an access token assigned but no identifier.
+     *
+     * @return An [OperationResult] representing the result of the operation,
+     *         containing the number of users removed if successful,
+     *         or an error if the operation was unsuccessful.
+     */
     suspend fun removeUsersWithTokenAndNoIdentifier(): OperationResult<Int>
 
     /**
@@ -97,6 +127,7 @@ interface UserRepository {
      * @param clientId The client ID of the user.
      * @param clientSecret The client secret of the user.
      * @param connectivityNotification Indicates whether the user has enabled connectivity checks.
+     * @param identifier The identifier of the user.
      * @param isCurrentUser Indicates whether the user is the current user.
      * @param serverAddress The server address of the user. If the value is null, it indicates that the user is local.
      * @param state The state of the user.

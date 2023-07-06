@@ -25,6 +25,9 @@ import javax.inject.Inject
 /**
  * Use case for saving a user.
  *
+ * This use case is responsible for saving a user. It interacts with the [UserRepository] to perform
+ * the necessary operations.
+ *
  * @property userRepository The repository for managing users.
  */
 class SaveUserUseCase @Inject constructor(
@@ -34,15 +37,22 @@ class SaveUserUseCase @Inject constructor(
     /**
      * Invokes the use case to save a user.
      *
+     * This suspend function is invoked to save a user with the provided details. It checks if a user
+     * with the specified identifier and server address already exists. If an existing user is found,
+     * the current users are removed and a new user is saved. If no existing user is found, an error
+     * is returned indicating that a user with the given server address already exists.
+     *
      * @param accessToken The access token of the user.
      * @param clientId The client ID of the user.
      * @param clientSecret The client secret of the user.
      * @param connectivityNotification Indicates whether the user has enabled connectivity notification.
+     * @param identifier The identifier of the user.
      * @param isCurrentUser Flag indicating if the user is the current user.
      * @param serverAddress The server address of the user. If the value is null, it indicates that the user is local.
      * @param state The state of the user.
      *
-     * @return The result of the operation containing the ID of the saved user.
+     * @return An [OperationResult] representing the result of the save operation,
+     *         containing the ID of the saved user if successful, or an error if unsuccessful.
      */
     suspend operator fun invoke(
         accessToken: String? = null,
