@@ -43,7 +43,7 @@ val ktlintCheck by tasks.creating(JavaExec::class) {
         "--reporter=plain",
         "--reporter=html?group_by_file," +
             "output=${project.rootDir}/reports/ktlint/ktlint-check-report.html",
-        "--android",
+        "--code-style=android_studio",
         kotlinFiles,
         kotlinScriptFiles,
         "!$buildFiles"
@@ -58,7 +58,7 @@ val ktlintFormat by tasks.creating(JavaExec::class) {
     classpath = ktlint
     mainClass.set("com.pinterest.ktlint.Main")
     args = listOf(
-        "--android",
+        "--code-style=android_studio",
         "-F",
         kotlinFiles,
         kotlinScriptFiles,
