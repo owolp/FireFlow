@@ -58,3 +58,8 @@
 # https://youtrack.jetbrains.com/issue/KTOR-5528
 # https://stackoverflow.com/q/76042330
 -dontwarn org.slf4j.impl.StaticLoggerBinder
+#-dontwarn java.lang.invoke.StringConcatFactory
+#-dontwarn package.R$string
+
+#-keep class dev.zitech.fireflow.common.data.remote.rest.response.** { *; }
+#-keep class dev.zitech.fireflow.common.domain.model.** {  *; }
