@@ -107,6 +107,7 @@ fun BaseExtension.baseConfig() {
     compileSdkVersion(AppVersioning.COMPILE_SDK)
 
     buildFeatures.compose = true
+    buildFeatures.buildConfig = true
 
     defaultConfig.apply {
         minSdk = AppVersioning.MIN_SDK
