@@ -45,6 +45,8 @@ import dev.zitech.fireflow.settings.presentation.settings.viewmodel.collection.D
 import javax.inject.Inject
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -69,6 +71,18 @@ internal class SettingsViewModel @Inject constructor(
     )
 
     init {
+        logInState.onEach { logInState ->
+            updateState {
+                copy(
+                    viewState = when (logInState) {
+                        LogInState.InitScreen -> SettingsState.ViewState.Loading
+                        LogInState.Logged -> SettingsState.ViewState.Success
+                        is LogInState.NotLogged -> SettingsState.ViewState.Failure(logInState.destination)
+                    }
+                )
+            }
+        }.launchIn(viewModelScope)
+
         viewModelScope.launch {
             if (appConfigProvider.buildFlavor != BuildFlavor.FOSS) {
                 setPreferencesStateDefault()
@@ -77,12 +91,6 @@ internal class SettingsViewModel @Inject constructor(
             }
 
             setNetworkConnectivityPreference()
-
-            updateState {
-                copy(
-                    viewState = SettingsState.ViewState.Success
-                )
-            }
         }
     }
 
@@ -290,8 +298,7 @@ internal class SettingsViewModel @Inject constructor(
                     .getPerformanceCollectionValue(),
                 personalizedAds = dataChoicesCollectionStates
                     .getAllowPersonalizedAdsValue(),
-                version = appConfigProvider.version,
-                viewState = SettingsState.ViewState.Success
+                version = appConfigProvider.version
             )
         }
     }

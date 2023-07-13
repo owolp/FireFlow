@@ -17,7 +17,6 @@
 
 package dev.zitech.fireflow.settings.presentation.settings.compose
 
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -28,9 +27,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.zitech.fireflow.common.domain.model.application.ApplicationLanguage
 import dev.zitech.fireflow.common.domain.model.application.ApplicationTheme
 import dev.zitech.fireflow.common.presentation.navigation.deeplink.DeepLinkScreenDestination
-import dev.zitech.fireflow.common.presentation.navigation.state.LogInState
 import dev.zitech.fireflow.core.error.Error
-import dev.zitech.fireflow.ds.atoms.loading.FireFlowProgressIndicators
 import dev.zitech.fireflow.ds.molecules.dialog.DialogRadioItem
 import dev.zitech.fireflow.ds.molecules.dialog.FireFlowDialogs
 import dev.zitech.fireflow.ds.molecules.snackbar.BottomNotifierMessage
@@ -56,6 +53,9 @@ import dev.zitech.fireflow.settings.presentation.settings.viewmodel.PerformanceE
 import dev.zitech.fireflow.settings.presentation.settings.viewmodel.PersonalizedAdsChecked
 import dev.zitech.fireflow.settings.presentation.settings.viewmodel.PersonalizedAdsErrorHandled
 import dev.zitech.fireflow.settings.presentation.settings.viewmodel.RestartApplicationClicked
+import dev.zitech.fireflow.settings.presentation.settings.viewmodel.SettingsState.ViewState.Failure
+import dev.zitech.fireflow.settings.presentation.settings.viewmodel.SettingsState.ViewState.Loading
+import dev.zitech.fireflow.settings.presentation.settings.viewmodel.SettingsState.ViewState.Success
 import dev.zitech.fireflow.settings.presentation.settings.viewmodel.SettingsViewModel
 import dev.zitech.fireflow.settings.presentation.settings.viewmodel.ThemeDismissed
 import dev.zitech.fireflow.settings.presentation.settings.viewmodel.ThemePreferenceClicked
@@ -71,7 +71,6 @@ internal fun SettingsRoute(
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
     val screenState by viewModel.state.collectAsStateWithLifecycle()
-    val logInState by viewModel.logInState.collectAsStateWithLifecycle()
     val snackbarState = rememberSnackbarState()
 
     if (screenState.analyticsError) {
@@ -171,14 +170,9 @@ internal fun SettingsRoute(
         viewModel.receiveIntent(PerformanceErrorHandled)
     }
 
-    when (val state = logInState) {
-        LogInState.InitScreen -> {
-            FireFlowProgressIndicators.Magnifier(
-                modifier = Modifier.fillMaxSize()
-            )
-        }
-
-        LogInState.Logged -> {
+    when (val viewState = screenState.viewState) {
+        Loading,
+        Success -> {
             SettingsScreen(
                 modifier = modifier,
                 state = screenState,
@@ -212,10 +206,9 @@ internal fun SettingsRoute(
                 }
             )
         }
-
-        is LogInState.NotLogged -> {
+        is Failure -> {
             LaunchedEffect(Unit) {
-                when (val destination = state.destination) {
+                when (val destination = viewState.destination) {
                     DeepLinkScreenDestination.Accounts -> navigateToAccounts()
                     is DeepLinkScreenDestination.Error ->
                         navigateToError(destination.error)
