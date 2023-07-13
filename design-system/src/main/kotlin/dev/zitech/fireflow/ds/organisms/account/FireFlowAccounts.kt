@@ -39,6 +39,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.placeholder.PlaceholderHighlight
+import com.google.accompanist.placeholder.material.placeholder
+import com.google.accompanist.placeholder.material.shimmer
 import dev.zitech.fireflow.ds.R
 import dev.zitech.fireflow.ds.atoms.button.FireFlowButtons
 import dev.zitech.fireflow.ds.atoms.dropdown.DropDownMenuItem
@@ -59,6 +62,7 @@ object FireFlowAccounts {
         isLogged: Boolean,
         menuItems: List<DropDownMenuItem>,
         more: Boolean,
+        loading: Boolean,
         onMoreItemClick: (id: Int) -> Unit,
         onMoreClick: () -> Unit,
         onMoreDismiss: () -> Unit,
@@ -73,30 +77,33 @@ object FireFlowAccounts {
             Box(
                 modifier = Modifier.size(48.dp)
             ) {
-                FireFlowTexts.TitleLarge(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(
-                            color = FireFlowTheme.colors.surfaceVariant,
-                            shape = CircleShape
-                        )
-                        .wrapContentHeight(),
-                    text = initial.toString(),
-                    maxLines = 1,
-                    textAlign = TextAlign.Center,
-                    color = FireFlowTheme.colors.surfaceTint
-                )
-                if (isLogged) {
-                    FireFlowButtons.Icon(
+                if (!loading) {
+                    FireFlowTexts.TitleLarge(
                         modifier = Modifier
-                            .clip(CircleShape)
-                            .background(FireFlowTheme.colors.primaryContainer)
-                            .align(Alignment.BottomEnd)
-                            .size(16.dp),
-                        image = FireFlowIcons.Check,
-                        contentDescription = stringResource(R.string.cd_account_profile_identification),
-                        onClick = {}
+                            .fillMaxSize()
+                            .background(
+                                color = FireFlowTheme.colors.surfaceVariant,
+                                shape = CircleShape
+                            )
+                            .wrapContentHeight(),
+                        text = initial.toString(),
+                        maxLines = 1,
+                        textAlign = TextAlign.Center,
+                        color = FireFlowTheme.colors.surfaceTint
                     )
+
+                    if (isLogged) {
+                        FireFlowButtons.Icon(
+                            modifier = Modifier
+                                .clip(CircleShape)
+                                .background(FireFlowTheme.colors.primaryContainer)
+                                .align(Alignment.BottomEnd)
+                                .size(16.dp),
+                            image = FireFlowIcons.Check,
+                            contentDescription = stringResource(R.string.cd_account_profile_identification),
+                            onClick = {}
+                        )
+                    }
                 }
             }
             FireFlowSpacers.Horizontal(horizontalSpace = FireFlowTheme.space.m)
@@ -107,6 +114,10 @@ object FireFlowAccounts {
                 verticalArrangement = Arrangement.Center
             ) {
                 FireFlowTexts.TitleMedium(
+                    modifier = Modifier.placeholder(
+                        visible = loading,
+                        highlight = PlaceholderHighlight.shimmer()
+                    ),
                     text = topInfo,
                     fontWeight = FontWeight.Bold,
                     maxLines = 1
@@ -114,27 +125,33 @@ object FireFlowAccounts {
                 FireFlowSpacers.Vertical(verticalSpace = FireFlowTheme.space.xss)
                 if (bottomInfo != null) {
                     FireFlowTexts.TitleSmall(
+                        modifier = Modifier.placeholder(
+                            visible = loading,
+                            highlight = PlaceholderHighlight.shimmer()
+                        ),
                         text = bottomInfo,
                         maxLines = 1
                     )
                 }
             }
-            Box(
-                modifier = Modifier
-                    .wrapContentSize(Alignment.TopEnd)
-            ) {
-                FireFlowButtons.Icon(
-                    modifier = Modifier.fillMaxHeight(),
-                    image = FireFlowIcons.MoreVert,
-                    contentDescription = stringResource(R.string.cd_account_more),
-                    onClick = onMoreClick
-                )
-                FireFlowMenu.DropDown(
-                    expanded = more,
-                    items = menuItems,
-                    onDismiss = onMoreDismiss,
-                    onItemClick = onMoreItemClick
-                )
+            if (!loading) {
+                Box(
+                    modifier = Modifier
+                        .wrapContentSize(Alignment.TopEnd)
+                ) {
+                    FireFlowButtons.Icon(
+                        modifier = Modifier.fillMaxHeight(),
+                        image = FireFlowIcons.MoreVert,
+                        contentDescription = stringResource(R.string.cd_account_more),
+                        onClick = onMoreClick
+                    )
+                    FireFlowMenu.DropDown(
+                        expanded = more,
+                        items = menuItems,
+                        onDismiss = onMoreDismiss,
+                        onItemClick = onMoreItemClick
+                    )
+                }
             }
         }
     }
@@ -158,6 +175,7 @@ private fun User_Preview() {
             bottomInfo = "http://192.168.1.1",
             isLogged = true,
             more = true,
+            loading = true,
             menuItems = listOf(
                 DropDownMenuItem(
                     id = 1,
