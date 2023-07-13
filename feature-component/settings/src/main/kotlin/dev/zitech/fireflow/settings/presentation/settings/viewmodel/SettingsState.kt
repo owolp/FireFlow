@@ -20,6 +20,7 @@ package dev.zitech.fireflow.settings.presentation.settings.viewmodel
 import dev.zitech.fireflow.common.domain.model.application.ApplicationLanguage
 import dev.zitech.fireflow.common.domain.model.application.ApplicationTheme
 import dev.zitech.fireflow.common.presentation.architecture.MviState
+import dev.zitech.fireflow.common.presentation.navigation.deeplink.DeepLinkScreenDestination
 import dev.zitech.fireflow.core.error.FireFlowError
 
 internal data class SettingsState(
@@ -27,11 +28,12 @@ internal data class SettingsState(
     val analyticsError: Boolean = false,
     val applicationLanguage: ApplicationLanguage = ApplicationLanguage.SYSTEM,
     val applicationTheme: ApplicationTheme = ApplicationTheme.SYSTEM,
-    val confirmLogOut: Boolean = false,
     val confirmDeleteAll: Boolean = false,
+    val confirmLogOut: Boolean = false,
     val connectivity: Boolean? = null,
     val crashReporter: Boolean = false,
     val crashReporterError: Boolean = false,
+    val deepLinkScreenDestination: DeepLinkScreenDestination? = null,
     val fatalError: FireFlowError? = null,
     val identifier: String = "",
     val performance: Boolean? = null,
@@ -40,12 +42,5 @@ internal data class SettingsState(
     val personalizedAdsError: Boolean = false,
     val selectApplicationLanguage: ApplicationLanguage? = null,
     val selectApplicationTheme: ApplicationTheme? = null,
-    val version: String = "",
-    val viewState: ViewState = ViewState.InitScreen
-) : MviState {
-
-    sealed class ViewState {
-        object InitScreen : ViewState()
-        object Success : ViewState()
-    }
-}
+    val version: String = ""
+) : MviState

@@ -20,6 +20,7 @@ package dev.zitech.fireflow.authentication.presentation.accounts.viewmodel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.zitech.fireflow.authentication.domain.usecase.DeleteUserUseCase
+import dev.zitech.fireflow.authentication.domain.usecase.GetLoadingAccountItemsUseCase
 import dev.zitech.fireflow.authentication.domain.usecase.SetNewCurrentUserUseCase
 import dev.zitech.fireflow.authentication.presentation.accounts.model.AccountItem
 import dev.zitech.fireflow.authentication.presentation.accounts.model.AccountItem.MenuItem
@@ -40,6 +41,7 @@ import kotlinx.coroutines.launch
 internal class AccountsViewModel @Inject constructor(
     getUsersUseCase: GetUsersUseCase,
     private val deleteUserUseCase: DeleteUserUseCase,
+    private val getLoadingAccountItemsUseCase: GetLoadingAccountItemsUseCase,
     private val setNewCurrentUserUseCase: SetNewCurrentUserUseCase
 ) : MviViewModel<AccountsIntent, AccountsState>(AccountsState()) {
 
@@ -169,7 +171,7 @@ internal class AccountsViewModel @Inject constructor(
     }
 
     private fun observeUsers(getUsersUseCase: GetUsersUseCase) {
-        updateState { copy(loading = true) }
+        updateState { copy(loading = true, accounts = getLoadingAccountItemsUseCase()) }
         getUsersUseCase().onEach { usersResult ->
             // Delay to block refreshing the dropdown menu, which is not yet closed
             delay(DROPDOWN_MENU_DELAY_MS)

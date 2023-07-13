@@ -125,6 +125,7 @@ private fun AccountsContent(
                     bottomInfo = user.retrieveServerAddress(),
                     isLogged = user.isCurrentUser,
                     more = item.more,
+                    loading = state.loading,
                     menuItems = item.menuItems.map { menuItem ->
                         DropDownMenuItem(
                             id = menuItem.id,
