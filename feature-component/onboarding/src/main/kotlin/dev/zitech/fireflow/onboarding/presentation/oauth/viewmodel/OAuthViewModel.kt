@@ -160,7 +160,7 @@ internal class OAuthViewModel @Inject constructor(
         val state = User.getRandomState()
 
         withContext(appDispatchers.io) {
-            delay(LOADING_DELAY_IN_MILLISECONDS)
+            delay(LOADING_DELAY_IN_MS)
             updateState { copy(loading = true) }
         }
         saveUserUseCase(
@@ -327,6 +327,6 @@ internal class OAuthViewModel @Inject constructor(
     }
 
     private companion object {
-        const val LOADING_DELAY_IN_MILLISECONDS = 500L
+        const val LOADING_DELAY_IN_MS = 500L
     }
 }

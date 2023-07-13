@@ -41,37 +41,33 @@ internal class SaveLocalUserUseCase @Inject constructor(
     /**
      * Invokes the save local user use case.
      *
+     * This function generates a random username using the [getRandomUsernameUseCase] and
+     * checks if the username already exists. If the username exists, it generates a new random
+     * username. Once a unique username is generated, it saves the user using the [saveUserUseCase].
+     *
+     * @param isCurrentUser Flag indicating if the user is the current user.
      * @return An [OperationResult] indicating the success or failure of the operation.
      */
-    suspend operator fun invoke(): OperationResult<Unit> =
+    suspend operator fun invoke(isCurrentUser: Boolean = true): OperationResult<Unit> =
         when (val result = createRandomUsername()) {
-            is OperationResult.Success -> handleCreateUsernameSuccess(result.data)
+            is OperationResult.Success -> handleCreateUsernameSuccess(result.data, isCurrentUser)
             is OperationResult.Failure -> OperationResult.Failure(result.error)
         }
 
-    /**
-     * Creates a random username.
-     *
-     * @return An [OperationResult] containing the randomly generated username
-     *         or an error in case of failure.
-     */
     private suspend fun createRandomUsername(): OperationResult<String> =
         when (val usernameResult = getRandomUsernameUseCase()) {
             is OperationResult.Success -> handleRandomUsernameSuccess(usernameResult.data)
             is OperationResult.Failure -> OperationResult.Failure(usernameResult.error)
         }
 
-    /**
-     * Handles the success case of creating a username.
-     *
-     * @param username The generated username.
-     * @return An [OperationResult] indicating the success or failure of the operation.
-     */
-    private suspend fun handleCreateUsernameSuccess(username: String): OperationResult<Unit> =
+    private suspend fun handleCreateUsernameSuccess(
+        username: String,
+        isCurrentUser: Boolean
+    ): OperationResult<Unit> =
         when (
             val saveUserResult = saveUserUseCase(
                 connectivityNotification = false,
-                isCurrentUser = true,
+                isCurrentUser = isCurrentUser,
                 identifier = username,
                 state = ""
             )
