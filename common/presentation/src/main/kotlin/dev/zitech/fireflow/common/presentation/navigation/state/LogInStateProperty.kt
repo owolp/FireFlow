@@ -68,10 +68,8 @@ fun logInState(
                         is DeepLinkScreenDestination.Error,
                         DeepLinkScreenDestination.Welcome ->
                             LogInState.NotLogged(destination)
-
                         DeepLinkScreenDestination.Current ->
                             LogInState.Logged
-
                         DeepLinkScreenDestination.Init ->
                             LogInState.InitScreen
                     }.also {

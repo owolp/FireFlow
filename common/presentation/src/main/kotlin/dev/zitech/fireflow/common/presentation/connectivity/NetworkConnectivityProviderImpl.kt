@@ -120,7 +120,7 @@ internal class NetworkConnectivityProviderImpl @Inject constructor(
             } else {
                 trySend(NetworkState.Disconnected)
             }
-            delay(PERIODIC_CHECK_DELAY)
+            delay(PERIODIC_CHECK_DELAY_IN_MS)
         } while (true)
     }
 
@@ -170,6 +170,6 @@ internal class NetworkConnectivityProviderImpl @Inject constructor(
     private companion object {
         const val NETWORK_CONNECTION_AVAILABLE_THREAD_ID = 10000
         const val SOCKET_TIMEOUT = 1500
-        const val PERIODIC_CHECK_DELAY = 10000L
+        const val PERIODIC_CHECK_DELAY_IN_MS = 10000L
     }
 }

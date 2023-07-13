@@ -69,7 +69,6 @@ class ScreenDestinationProvider @Inject constructor(
                             is Error.NullCurrentUser -> {
                                 handleNullCurrentUser()
                             }
-
                             else -> send(DeepLinkScreenDestination.Error(result.error))
                         }
                     }

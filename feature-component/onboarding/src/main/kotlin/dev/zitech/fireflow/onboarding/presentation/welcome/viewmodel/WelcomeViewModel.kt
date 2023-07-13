@@ -26,6 +26,7 @@ import dev.zitech.fireflow.core.result.onFailure
 import dev.zitech.fireflow.core.result.onSuccess
 import dev.zitech.fireflow.onboarding.domain.usecase.SaveLocalUserUseCase
 import javax.inject.Inject
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -68,9 +69,20 @@ internal class WelcomeViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Handles the click event when the "Get Started" button is clicked.
+     *
+     * This function updates the state to show a loading state, saves the local user, and then
+     * navigates to the Dashboard Screen after a slight delay. The delay is necessary to ensure
+     * that the current user is properly saved in the database before navigating to the Dashboard.
+     * Without the delay, there is a possibility that the navigation could happen before the
+     * current user is set, resulting in the user being redirected to the Accounts screen instead of
+     * the Dashboard screen.
+     */
     private suspend fun handleGetStarterClicked() {
         updateState { copy(loading = true) }
         saveLocalUserUseCase().onSuccess {
+            delay(SUCCESS_DELAY_IN_MS)
             updateState {
                 copy(
                     loading = false,
@@ -94,5 +106,9 @@ internal class WelcomeViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    private companion object {
+        const val SUCCESS_DELAY_IN_MS = 1000L
     }
 }
