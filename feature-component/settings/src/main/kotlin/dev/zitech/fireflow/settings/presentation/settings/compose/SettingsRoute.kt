@@ -53,9 +53,6 @@ import dev.zitech.fireflow.settings.presentation.settings.viewmodel.PerformanceE
 import dev.zitech.fireflow.settings.presentation.settings.viewmodel.PersonalizedAdsChecked
 import dev.zitech.fireflow.settings.presentation.settings.viewmodel.PersonalizedAdsErrorHandled
 import dev.zitech.fireflow.settings.presentation.settings.viewmodel.RestartApplicationClicked
-import dev.zitech.fireflow.settings.presentation.settings.viewmodel.SettingsState.ViewState.Failure
-import dev.zitech.fireflow.settings.presentation.settings.viewmodel.SettingsState.ViewState.Loading
-import dev.zitech.fireflow.settings.presentation.settings.viewmodel.SettingsState.ViewState.Success
 import dev.zitech.fireflow.settings.presentation.settings.viewmodel.SettingsViewModel
 import dev.zitech.fireflow.settings.presentation.settings.viewmodel.ThemeDismissed
 import dev.zitech.fireflow.settings.presentation.settings.viewmodel.ThemePreferenceClicked
@@ -170,54 +167,51 @@ internal fun SettingsRoute(
         viewModel.receiveIntent(PerformanceErrorHandled)
     }
 
-    when (val viewState = screenState.viewState) {
-        Loading,
-        Success -> {
-            SettingsScreen(
-                modifier = modifier,
-                state = screenState,
-                snackbarState = snackbarState,
-                analyticsChecked = { checked ->
-                    viewModel.receiveIntent(AnalyticsChecked(checked))
-                },
-                personalizedAdsChecked = { checked ->
-                    viewModel.receiveIntent(PersonalizedAdsChecked(checked))
-                },
-                performanceChecked = { checked ->
-                    viewModel.receiveIntent(PerformanceChecked(checked))
-                },
-                crashReporterChecked = { checked ->
-                    viewModel.receiveIntent(CrashReporterChecked(checked))
-                },
-                themePreferenceClicked = {
-                    viewModel.receiveIntent(ThemePreferenceClicked)
-                },
-                languagePreferenceClicked = {
-                    viewModel.receiveIntent(LanguagePreferenceClicked)
-                },
-                logOutClicked = {
-                    viewModel.receiveIntent(LogOutClicked)
-                },
-                deleteAllDataClicked = {
-                    viewModel.receiveIntent(DeleteAllDataClicked)
-                },
-                connectivityChecked = { checked ->
-                    viewModel.receiveIntent(ConnectivityChecked(checked))
-                }
-            )
-        }
-        is Failure -> {
-            LaunchedEffect(Unit) {
-                when (val destination = viewState.destination) {
-                    DeepLinkScreenDestination.Accounts -> navigateToAccounts()
-                    is DeepLinkScreenDestination.Error ->
-                        navigateToError(destination.error)
+    val deepLinkScreenDestination = screenState.deepLinkScreenDestination
+    if (deepLinkScreenDestination == null) {
+        SettingsScreen(
+            modifier = modifier,
+            state = screenState,
+            snackbarState = snackbarState,
+            analyticsChecked = { checked ->
+                viewModel.receiveIntent(AnalyticsChecked(checked))
+            },
+            personalizedAdsChecked = { checked ->
+                viewModel.receiveIntent(PersonalizedAdsChecked(checked))
+            },
+            performanceChecked = { checked ->
+                viewModel.receiveIntent(PerformanceChecked(checked))
+            },
+            crashReporterChecked = { checked ->
+                viewModel.receiveIntent(CrashReporterChecked(checked))
+            },
+            themePreferenceClicked = {
+                viewModel.receiveIntent(ThemePreferenceClicked)
+            },
+            languagePreferenceClicked = {
+                viewModel.receiveIntent(LanguagePreferenceClicked)
+            },
+            logOutClicked = {
+                viewModel.receiveIntent(LogOutClicked)
+            },
+            deleteAllDataClicked = {
+                viewModel.receiveIntent(DeleteAllDataClicked)
+            },
+            connectivityChecked = { checked ->
+                viewModel.receiveIntent(ConnectivityChecked(checked))
+            }
+        )
+    } else {
+        LaunchedEffect(Unit) {
+            when (deepLinkScreenDestination) {
+                DeepLinkScreenDestination.Accounts -> navigateToAccounts()
+                is DeepLinkScreenDestination.Error ->
+                    navigateToError(deepLinkScreenDestination.error)
 
-                    DeepLinkScreenDestination.Welcome -> navigateToWelcome()
-                    DeepLinkScreenDestination.Current,
-                    DeepLinkScreenDestination.Init -> {
-                        // NO_OP
-                    }
+                DeepLinkScreenDestination.Welcome -> navigateToWelcome()
+                DeepLinkScreenDestination.Current,
+                DeepLinkScreenDestination.Init -> {
+                    // NO_OP
                 }
             }
         }

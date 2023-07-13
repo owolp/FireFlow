@@ -74,10 +74,10 @@ internal class SettingsViewModel @Inject constructor(
         logInState.onEach { logInState ->
             updateState {
                 copy(
-                    viewState = when (logInState) {
-                        LogInState.InitScreen -> SettingsState.ViewState.Loading
-                        LogInState.Logged -> SettingsState.ViewState.Success
-                        is LogInState.NotLogged -> SettingsState.ViewState.Failure(logInState.destination)
+                    deepLinkScreenDestination = when (logInState) {
+                        LogInState.InitScreen,
+                        LogInState.Logged -> null
+                        is LogInState.NotLogged -> logInState.destination
                     }
                 )
             }

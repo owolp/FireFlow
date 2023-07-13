@@ -33,6 +33,7 @@ internal data class SettingsState(
     val connectivity: Boolean? = null,
     val crashReporter: Boolean = false,
     val crashReporterError: Boolean = false,
+    val deepLinkScreenDestination: DeepLinkScreenDestination? = null,
     val fatalError: FireFlowError? = null,
     val identifier: String = "",
     val performance: Boolean? = null,
@@ -41,13 +42,5 @@ internal data class SettingsState(
     val personalizedAdsError: Boolean = false,
     val selectApplicationLanguage: ApplicationLanguage? = null,
     val selectApplicationTheme: ApplicationTheme? = null,
-    val version: String = "",
-    val viewState: ViewState = ViewState.Loading
-) : MviState {
-
-    sealed class ViewState {
-        object Loading : ViewState()
-        object Success : ViewState()
-        data class Failure(val destination: DeepLinkScreenDestination) : ViewState()
-    }
-}
+    val version: String = ""
+) : MviState
