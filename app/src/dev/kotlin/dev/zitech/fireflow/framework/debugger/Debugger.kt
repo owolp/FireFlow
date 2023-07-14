@@ -27,6 +27,7 @@ import com.facebook.flipper.plugins.sharedpreferences.SharedPreferencesFlipperPl
 import com.facebook.soloader.SoLoader
 import dev.zitech.fireflow.common.data.remote.rest.debugger.NetworkDebugger.networkFlipperPlugin
 import dev.zitech.fireflow.common.data.source.preferences.DEVELOPMENT_PREFERENCES_NAME
+import dev.zitech.fireflow.common.data.source.preferences.FALLBACK_PREFERENCES_NAME
 import dev.zitech.fireflow.common.data.source.preferences.SECURED_PREFERENCES_NAME
 import dev.zitech.fireflow.common.data.source.preferences.STANDARD_PREFERENCES_NAME
 
@@ -54,6 +55,7 @@ object Debugger {
 
     private fun getSharedPreferencesDescriptors() = listOf(
         SharedPreferencesDescriptor(DEVELOPMENT_PREFERENCES_NAME, Context.MODE_PRIVATE),
+        SharedPreferencesDescriptor(FALLBACK_PREFERENCES_NAME, Context.MODE_PRIVATE),
         SharedPreferencesDescriptor(SECURED_PREFERENCES_NAME, Context.MODE_PRIVATE),
         SharedPreferencesDescriptor(STANDARD_PREFERENCES_NAME, Context.MODE_PRIVATE)
     )

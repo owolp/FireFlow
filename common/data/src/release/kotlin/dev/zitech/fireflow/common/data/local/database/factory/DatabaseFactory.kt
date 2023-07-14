@@ -70,7 +70,7 @@ internal class DatabaseFactory @Inject constructor(
     }
 
     suspend fun isSecuredStorageKeySaved() =
-        !securedPreferencesDataSource.containsString(KEY_SECURED_STORAGE_SECURED_DATABASE).first()
+        securedPreferencesDataSource.containsString(KEY_SECURED_STORAGE_SECURED_DATABASE).first()
 
     suspend fun saveSecuredStorageKey() {
         securedPreferencesDataSource.saveString(
