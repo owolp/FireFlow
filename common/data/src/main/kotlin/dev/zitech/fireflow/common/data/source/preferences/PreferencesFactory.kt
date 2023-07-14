@@ -22,6 +22,7 @@ import dev.zitech.fireflow.common.domain.model.preferences.PreferenceType
 import dev.zitech.fireflow.core.dispatcher.AppDispatchers
 
 const val DEVELOPMENT_PREFERENCES_NAME = "development_preferences"
+const val FALLBACK_PREFERENCES_NAME = "fallback_preferences"
 const val SECURED_PREFERENCES_NAME = "secured_preferences"
 const val STANDARD_PREFERENCES_NAME = "standard_preferences"
 
@@ -40,15 +41,18 @@ internal object PreferencesFactory {
                     context = context
                 )
             }
-
             PreferenceType.SECURED -> {
                 SecuredPreferencesDataSource(
                     appDispatchers = appDispatchers,
                     fileName = SECURED_PREFERENCES_NAME,
-                    context = context
+                    context = context,
+                    fallbackPreferencesDataSource = StandardPreferencesDataSource(
+                        appDispatchers = appDispatchers,
+                        fileName = FALLBACK_PREFERENCES_NAME,
+                        context = context
+                    )
                 )
             }
-
             PreferenceType.STANDARD -> {
                 StandardPreferencesDataSource(
                     appDispatchers = appDispatchers,
