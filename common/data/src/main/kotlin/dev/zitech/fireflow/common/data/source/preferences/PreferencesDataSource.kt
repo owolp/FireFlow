@@ -17,6 +17,7 @@
 
 package dev.zitech.fireflow.common.data.source.preferences
 
+import dev.zitech.fireflow.core.result.OperationResult
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -30,7 +31,7 @@ internal interface PreferencesDataSource {
      * @param key The key to check.
      * @return A flow that emits `true` if the key exists, and `false` otherwise.
      */
-    fun containsBoolean(key: String): Flow<Boolean>
+    fun containsBoolean(key: String): Flow<OperationResult<Boolean>>
 
     /**
      * Checks if the preferences contain a float value associated with the specified key.

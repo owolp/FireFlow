@@ -30,6 +30,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import dev.zitech.fireflow.core.dispatcher.AppDispatchers
 import dev.zitech.fireflow.core.logger.Logger
+import dev.zitech.fireflow.core.result.OperationResult
 import java.io.IOException
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
@@ -50,9 +51,9 @@ internal class StandardPreferencesDataSource @Inject constructor(
 
     private val preferenceDataStore: DataStore<DataStorePreferences> = context.dataStore
 
-    override fun containsBoolean(key: String): Flow<Boolean> =
+    override fun containsBoolean(key: String): Flow<OperationResult<Boolean>> =
         getDataStorePreferences().map { preferences ->
-            preferences.contains(booleanPreferencesKey(key))
+            OperationResult.Success(preferences.contains(booleanPreferencesKey(key)))
         }
 
     override fun containsFloat(key: String): Flow<Boolean> =

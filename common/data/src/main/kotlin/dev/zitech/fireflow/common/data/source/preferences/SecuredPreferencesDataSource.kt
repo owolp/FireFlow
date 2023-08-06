@@ -24,6 +24,7 @@ import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
 import dev.zitech.fireflow.core.dispatcher.AppDispatchers
 import dev.zitech.fireflow.core.logger.Logger
+import dev.zitech.fireflow.core.result.OperationResult
 import java.io.IOException
 import java.security.GeneralSecurityException
 import java.security.KeyStoreException
@@ -47,9 +48,9 @@ internal class SecuredPreferencesDataSource @Inject constructor(
         getEncryptedPreferences()
     }
 
-    override fun containsBoolean(key: String): Flow<Boolean> =
+    override fun containsBoolean(key: String): Flow<OperationResult<Boolean>> =
         try {
-            encryptedSecuredPreferences?.let { flowOf(it.contains(key)) }
+            encryptedSecuredPreferences?.let { flowOf(OperationResult.Success(it.contains(key))) }
                 ?: fallbackPreferencesDataSource.containsBoolean(key)
         } catch (e: KeyStoreException) {
             Logger.e(tag, e)
