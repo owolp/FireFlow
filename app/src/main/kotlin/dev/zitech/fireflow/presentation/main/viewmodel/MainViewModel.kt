@@ -27,6 +27,7 @@ import dev.zitech.fireflow.common.presentation.connectivity.NetworkConnectivityP
 import dev.zitech.fireflow.common.presentation.connectivity.NetworkState
 import dev.zitech.fireflow.common.presentation.navigation.state.LoginCheckCompletedHandler
 import dev.zitech.fireflow.core.logger.Logger
+import dev.zitech.fireflow.core.result.OperationResult
 import dev.zitech.fireflow.domain.usecase.ApplicationLaunchAnalyticsEvent
 import dev.zitech.fireflow.presentation.model.LaunchState
 import dev.zitech.fireflow.presentation.model.LaunchState.Status.Error
@@ -95,7 +96,10 @@ internal class MainViewModel @Inject constructor(
             getApplicationThemeValueUseCase(),
             initializeRemoteConfiguratorUseCase()
         ) { _, themeResult, _ ->
-            LaunchState(Success(themeResult))
+            when (themeResult) {
+                is OperationResult.Success -> LaunchState(Success(themeResult.data))
+                is OperationResult.Failure -> LaunchState(Error(themeResult.error))
+            }
         }.onEach { launchState ->
             when (val status = launchState.status) {
                 is Success -> {
@@ -107,7 +111,7 @@ internal class MainViewModel @Inject constructor(
                     }
                 }
                 is Error -> {
-                    Logger.e(tag, exception = status.cause)
+                    Logger.e(tag, message = status.fireFlowError.debugText)
                 }
             }
         }.launchIn(viewModelScope)

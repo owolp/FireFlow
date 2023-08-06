@@ -25,6 +25,7 @@ import dev.zitech.fireflow.common.domain.model.application.ApplicationTheme
 import dev.zitech.fireflow.common.domain.model.preferences.IntPreference
 import dev.zitech.fireflow.common.domain.repository.application.ApplicationRepository
 import dev.zitech.fireflow.core.dispatcher.AppDispatchers
+import dev.zitech.fireflow.core.error.Error
 import dev.zitech.fireflow.core.result.OperationResult
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
@@ -51,11 +52,28 @@ internal class ApplicationRepositoryImpl @Inject constructor(
             return@withContext OperationResult.Success(Unit)
         }
 
-    override fun getApplicationTheme(): Flow<ApplicationTheme> =
+    override fun getApplicationTheme(): Flow<OperationResult<ApplicationTheme>> =
         standardPreferencesDataSource.getInt(
-            IntPreference.APPLICATION_THEME.key,
-            IntPreference.APPLICATION_THEME.defaultValue
-        ).map(intToApplicationThemeMapper::invoke)
+            IntPreference.APPLICATION_THEME.key
+        ).map { operationResult ->
+            when (operationResult) {
+                is OperationResult.Success -> OperationResult.Success(
+                    intToApplicationThemeMapper.invoke(
+                        operationResult.data
+                    )
+                )
+                is OperationResult.Failure -> {
+                    when (operationResult.error) {
+                        Error.PreferenceNotFound -> OperationResult.Success(
+                            intToApplicationThemeMapper.invoke(
+                                IntPreference.APPLICATION_THEME.defaultValue
+                            )
+                        )
+                        else -> OperationResult.Failure(operationResult.error)
+                    }
+                }
+            }
+        }
 
     override suspend fun setApplicationTheme(applicationTheme: ApplicationTheme) {
         standardPreferencesDataSource.saveInt(

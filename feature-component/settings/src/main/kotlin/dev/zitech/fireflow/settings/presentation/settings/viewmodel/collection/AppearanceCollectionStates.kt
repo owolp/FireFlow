@@ -21,6 +21,7 @@ import dev.zitech.fireflow.common.domain.model.application.ApplicationLanguage
 import dev.zitech.fireflow.common.domain.model.application.ApplicationTheme
 import dev.zitech.fireflow.common.domain.usecase.application.GetApplicationThemeValueUseCase
 import dev.zitech.fireflow.common.domain.usecase.application.SetApplicationThemeValueUseCase
+import dev.zitech.fireflow.core.result.OperationResult
 import dev.zitech.fireflow.settings.domain.usecase.application.GetApplicationLanguageValueUseCase
 import dev.zitech.fireflow.settings.domain.usecase.application.SetApplicationLanguageValueUseCase
 import javax.inject.Inject
@@ -36,7 +37,7 @@ internal class AppearanceCollectionStates @Inject constructor(
     fun getApplicationLanguageValue(): ApplicationLanguage =
         getApplicationLanguageValueUseCase()
 
-    suspend fun getApplicationThemeValue(): ApplicationTheme =
+    suspend fun getApplicationThemeValue(): OperationResult<ApplicationTheme> =
         getApplicationThemeValueUseCase().first()
 
     fun setApplicationLanguageValue(applicationLanguage: ApplicationLanguage) {

@@ -296,7 +296,8 @@ internal class SettingsViewModel @Inject constructor(
                 applicationLanguage = appearanceCollectionStates
                     .getApplicationLanguageValue(),
                 applicationTheme = appearanceCollectionStates
-                    .getApplicationThemeValue(),
+                    .getApplicationThemeValue()
+                    .getResultOrDefault(state.value.applicationTheme),
                 crashReporter = dataChoicesCollectionStates
                     .getCrashReporterCollectionValue()
                     .getResultOrDefault(state.value.crashReporter),

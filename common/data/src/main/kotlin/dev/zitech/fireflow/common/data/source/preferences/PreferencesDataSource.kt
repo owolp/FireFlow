@@ -98,7 +98,10 @@ internal interface PreferencesDataSource {
      * @return A flow that emits the integer value associated with the key, or the default value if the key is not found
      * .
      */
-    fun getInt(key: String, defaultValue: Int): Flow<Int>
+    fun getInt(
+        key: String,
+        defaultValue: Int = DEFAULT_VALUE_GET_INT
+    ): Flow<OperationResult<Int>>
 
     /**
      * Retrieves a long value associated with the specified key from the preferences.
@@ -201,5 +204,6 @@ internal interface PreferencesDataSource {
     companion object {
         const val DEFAULT_VALUE_GET_BOOLEAN = false
         const val DEFAULT_VALUE_GET_FLOAT = Float.MIN_VALUE
+        const val DEFAULT_VALUE_GET_INT = Int.MIN_VALUE
     }
 }

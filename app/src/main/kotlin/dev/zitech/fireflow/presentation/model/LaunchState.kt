@@ -18,12 +18,13 @@
 package dev.zitech.fireflow.presentation.model
 
 import dev.zitech.fireflow.common.domain.model.application.ApplicationTheme
+import dev.zitech.fireflow.core.error.FireFlowError
 
 internal data class LaunchState(
     val status: Status
 ) {
     sealed class Status {
         data class Success(val theme: ApplicationTheme) : Status()
-        data class Error(val cause: Exception?) : Status()
+        data class Error(val fireFlowError: FireFlowError) : Status()
     }
 }
