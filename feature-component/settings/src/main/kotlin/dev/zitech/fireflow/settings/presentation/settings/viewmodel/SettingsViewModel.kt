@@ -36,6 +36,8 @@ import dev.zitech.fireflow.core.error.Error
 import dev.zitech.fireflow.core.logger.Logger
 import dev.zitech.fireflow.core.result.OperationResult.Failure
 import dev.zitech.fireflow.core.result.OperationResult.Success
+import dev.zitech.fireflow.core.result.getResultOrDefault
+import dev.zitech.fireflow.core.result.getResultOrNull
 import dev.zitech.fireflow.core.result.onFailure
 import dev.zitech.fireflow.core.result.onSuccess
 import dev.zitech.fireflow.settings.domain.usecase.LogOutCurrentUserUseCase
@@ -151,7 +153,8 @@ internal class SettingsViewModel @Inject constructor(
     private suspend fun handleAnalyticsChecked(checked: Boolean) {
         if (appConfigProvider.buildFlavor != BuildFlavor.FOSS) {
             dataChoicesCollectionStates.setAnalyticsCollection(checked)
-            val isEnabled = dataChoicesCollectionStates.getAnalyticsCollectionValue()
+            val isEnabled =
+                dataChoicesCollectionStates.getAnalyticsCollectionValue().getResultOrNull()
             if (checked == isEnabled) {
                 dataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked)
                 updateState {
@@ -202,7 +205,8 @@ internal class SettingsViewModel @Inject constructor(
 
     private suspend fun handleCrashReporterChecked(checked: Boolean) {
         dataChoicesCollectionStates.setCrashReporterCollection(checked)
-        val isEnabled = dataChoicesCollectionStates.getCrashReporterCollectionValue()
+        val isEnabled =
+            dataChoicesCollectionStates.getCrashReporterCollectionValue().getResultOrNull()
         if (checked == isEnabled) {
             updateState { copy(crashReporter = checked) }
         } else {
@@ -237,7 +241,8 @@ internal class SettingsViewModel @Inject constructor(
     private suspend fun handlePerformanceChecked(checked: Boolean) {
         if (appConfigProvider.buildFlavor != BuildFlavor.FOSS) {
             dataChoicesCollectionStates.setPerformanceCollection(checked)
-            val isEnabled = dataChoicesCollectionStates.getPerformanceCollectionValue()
+            val isEnabled =
+                dataChoicesCollectionStates.getPerformanceCollectionValue().getResultOrNull()
             if (checked == isEnabled) {
                 updateState { copy(performance = checked) }
             } else {
@@ -251,7 +256,8 @@ internal class SettingsViewModel @Inject constructor(
     private suspend fun handlePersonalizedAdsChecked(checked: Boolean) {
         if (appConfigProvider.buildFlavor != BuildFlavor.FOSS) {
             dataChoicesCollectionStates.setAllowPersonalizedAdsValue(checked)
-            val isEnabled = dataChoicesCollectionStates.getAllowPersonalizedAdsValue()
+            val isEnabled =
+                dataChoicesCollectionStates.getAllowPersonalizedAdsValue().getResultOrNull()
             if (checked == isEnabled) {
                 updateState { copy(personalizedAds = checked) }
             } else {
@@ -286,18 +292,20 @@ internal class SettingsViewModel @Inject constructor(
         updateState {
             copy(
                 analytics = dataChoicesCollectionStates
-                    .getAnalyticsCollectionValue(),
+                    .getAnalyticsCollectionValue().getResultOrNull(),
                 applicationLanguage = appearanceCollectionStates
                     .getApplicationLanguageValue(),
                 applicationTheme = appearanceCollectionStates
                     .getApplicationThemeValue(),
                 crashReporter = dataChoicesCollectionStates
-                    .getCrashReporterCollectionValue(),
+                    .getCrashReporterCollectionValue()
+                    .getResultOrDefault(state.value.crashReporter),
                 identifier = getCurrentUserIdentifier(),
                 performance = dataChoicesCollectionStates
-                    .getPerformanceCollectionValue(),
+                    .getPerformanceCollectionValue()
+                    .getResultOrNull(),
                 personalizedAds = dataChoicesCollectionStates
-                    .getAllowPersonalizedAdsValue(),
+                    .getAllowPersonalizedAdsValue().getResultOrNull(),
                 version = appConfigProvider.version
             )
         }

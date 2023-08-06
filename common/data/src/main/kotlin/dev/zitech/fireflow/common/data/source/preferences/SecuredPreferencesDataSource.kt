@@ -23,6 +23,7 @@ import androidx.core.content.edit
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
 import dev.zitech.fireflow.core.dispatcher.AppDispatchers
+import dev.zitech.fireflow.core.error.Error
 import dev.zitech.fireflow.core.logger.Logger
 import dev.zitech.fireflow.core.result.OperationResult
 import java.io.IOException
@@ -108,16 +109,21 @@ internal class SecuredPreferencesDataSource @Inject constructor(
             fallbackPreferencesDataSource.containsString(key)
         }.flowOn(appDispatchers.io)
 
-    override fun getBoolean(key: String, defaultValue: Boolean): Flow<Boolean> =
+    override fun getBoolean(key: String, defaultValue: Boolean): Flow<OperationResult<Boolean>> =
         try {
-            encryptedSecuredPreferences?.let { flowOf(it.getBoolean(key, defaultValue)) }
-                ?: fallbackPreferencesDataSource.getBoolean(key, defaultValue)
+            encryptedSecuredPreferences?.let {
+                if (it.contains(key)) {
+                    flowOf(OperationResult.Success(it.getBoolean(key, defaultValue)))
+                } else {
+                    flowOf(OperationResult.Failure(Error.PreferenceNotFound))
+                }
+            } ?: fallbackPreferencesDataSource.getBoolean(key)
         } catch (e: KeyStoreException) {
             Logger.e(tag, e)
-            fallbackPreferencesDataSource.getBoolean(key, defaultValue)
+            fallbackPreferencesDataSource.getBoolean(key)
         } catch (e: SecurityException) {
             Logger.e(tag, e)
-            fallbackPreferencesDataSource.getBoolean(key, defaultValue)
+            fallbackPreferencesDataSource.getBoolean(key)
         }.flowOn(appDispatchers.io)
 
     override fun getFloat(key: String, defaultValue: Float): Flow<Float> =

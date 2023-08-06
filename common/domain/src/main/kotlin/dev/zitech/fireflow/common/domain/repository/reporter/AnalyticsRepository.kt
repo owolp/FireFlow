@@ -18,6 +18,7 @@
 package dev.zitech.fireflow.common.domain.repository.reporter
 
 import dev.zitech.fireflow.common.domain.model.analytics.AnalyticsEvent
+import dev.zitech.fireflow.core.result.OperationResult
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -30,14 +31,14 @@ interface AnalyticsRepository {
      *
      * @return A [Flow] that emits the boolean value indicating whether personalized ads are allowed.
      */
-    fun getAllowPersonalizedAds(): Flow<Boolean>
+    fun getAllowPersonalizedAds(): Flow<OperationResult<Boolean>>
 
     /**
      * Retrieves the flag indicating whether data collection is enabled.
      *
      * @return A [Flow] that emits the boolean value indicating whether data collection is enabled.
      */
-    fun getCollectionEnabled(): Flow<Boolean>
+    fun getCollectionEnabled(): Flow<OperationResult<Boolean>>
 
     /**
      * Logs an analytics event.

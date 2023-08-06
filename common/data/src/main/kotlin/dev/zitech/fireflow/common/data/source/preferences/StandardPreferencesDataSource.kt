@@ -29,6 +29,7 @@ import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import dev.zitech.fireflow.core.dispatcher.AppDispatchers
+import dev.zitech.fireflow.core.error.Error
 import dev.zitech.fireflow.core.logger.Logger
 import dev.zitech.fireflow.core.result.OperationResult
 import java.io.IOException
@@ -86,9 +87,10 @@ internal class StandardPreferencesDataSource @Inject constructor(
             )
         }
 
-    override fun getBoolean(key: String, defaultValue: Boolean): Flow<Boolean> =
+    override fun getBoolean(key: String, defaultValue: Boolean): Flow<OperationResult<Boolean>> =
         getDataStorePreferences().map { preferences ->
-            preferences[booleanPreferencesKey(key)] ?: defaultValue
+            preferences[booleanPreferencesKey(key)]?.let { OperationResult.Success(it) }
+                ?: OperationResult.Failure(Error.PreferenceNotFound)
         }
 
     override fun getFloat(key: String, defaultValue: Float): Flow<Float> =

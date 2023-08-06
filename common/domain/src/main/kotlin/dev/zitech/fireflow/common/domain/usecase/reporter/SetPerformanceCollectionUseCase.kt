@@ -22,6 +22,7 @@ import dev.zitech.fireflow.common.domain.model.user.UserLoggedState
 import dev.zitech.fireflow.common.domain.repository.reporter.PerformanceRepository
 import dev.zitech.fireflow.common.domain.usecase.configurator.GetBooleanConfigValueUseCase
 import dev.zitech.fireflow.common.domain.usecase.user.GetUserLoggedStateUseCase
+import dev.zitech.fireflow.core.result.getResultOrDefault
 import javax.inject.Inject
 
 /**
@@ -49,7 +50,7 @@ class SetPerformanceCollectionUseCase @Inject constructor(
         (
             enabled ?: when (getUserLoggedStateUseCase()) {
                 UserLoggedState.LOGGED_IN -> {
-                    getPerformanceCollectionValueUseCase() &&
+                    getPerformanceCollectionValueUseCase().getResultOrDefault(false) &&
                         getBooleanConfigValueUseCase(BooleanConfig.PERFORMANCE_COLLECTION_ENABLED)
                 }
                 UserLoggedState.LOGGED_OUT -> false

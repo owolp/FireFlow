@@ -73,7 +73,10 @@ internal interface PreferencesDataSource {
      * @return A flow that emits the boolean value associated with the key, or the default value if the key is not found
      * .
      */
-    fun getBoolean(key: String, defaultValue: Boolean): Flow<Boolean>
+    fun getBoolean(
+        key: String,
+        defaultValue: Boolean = DEFAULT_VALUE_GET_BOOLEAN
+    ): Flow<OperationResult<Boolean>>
 
     /**
      * Retrieves a float value associated with the specified key from the preferences.
@@ -191,4 +194,8 @@ internal interface PreferencesDataSource {
      * @param value The string value to save.
      */
     suspend fun saveString(key: String, value: String)
+
+    companion object {
+        const val DEFAULT_VALUE_GET_BOOLEAN = false
+    }
 }

@@ -26,26 +26,55 @@ import dev.zitech.fireflow.common.domain.repository.reporter.AnalyticsRepository
 import dev.zitech.fireflow.core.applicationconfig.AppConfigProvider
 import dev.zitech.fireflow.core.applicationconfig.BuildFlavor
 import dev.zitech.fireflow.core.applicationconfig.BuildMode
+import dev.zitech.fireflow.core.error.Error
+import dev.zitech.fireflow.core.result.OperationResult
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 internal class AnalyticsRepositoryImpl @Inject constructor(
-    private val appConfigProvider: AppConfigProvider,
     private val analyticsReporter: AnalyticsReporter,
+    private val appConfigProvider: AppConfigProvider,
     private val preferencesDataSource: PreferencesDataSource
 ) : AnalyticsRepository {
 
-    override fun getAllowPersonalizedAds(): Flow<Boolean> =
-        preferencesDataSource.getBoolean(
-            BooleanPreference.PERSONALIZED_ADS.key,
-            BooleanPreference.PERSONALIZED_ADS.defaultValue
-        )
+    override fun getAllowPersonalizedAds(): Flow<OperationResult<Boolean>> =
+        preferencesDataSource.getBoolean(BooleanPreference.PERSONALIZED_ADS.key)
+            .map { operationResult ->
+                when (operationResult) {
+                    is OperationResult.Success -> operationResult
+                    is OperationResult.Failure -> {
+                        when (operationResult.error) {
+                            Error.PreferenceNotFound -> OperationResult.Success(
+                                BooleanPreference.PERSONALIZED_ADS.defaultValue
+                            )
+                            else -> operationResult
+                        }
+                    }
+                }
+            }
 
-    override fun getCollectionEnabled(): Flow<Boolean> =
-        preferencesDataSource.getBoolean(
-            BooleanPreference.ANALYTICS_COLLECTION.key,
-            BooleanPreference.ANALYTICS_COLLECTION.defaultValue
-        )
+    override fun getCollectionEnabled(): Flow<OperationResult<Boolean>> =
+        preferencesDataSource.getBoolean(BooleanPreference.ANALYTICS_COLLECTION.key)
+            .map { operationResult ->
+                when (operationResult) {
+                    is OperationResult.Success -> operationResult
+                    is OperationResult.Failure -> {
+                        when (operationResult.error) {
+                            Error.PreferenceNotFound -> OperationResult.Success(
+                                BooleanPreference.ANALYTICS_COLLECTION.defaultValue
+                            )
+                            else -> operationResult
+                        }
+                    }
+                }
+            }
+
+    override fun logEvent(analyticsEvent: AnalyticsEvent) {
+        if (isValidAnalyticsProvider(analyticsEvent)) {
+            analyticsReporter.logEvent(analyticsEvent.name, analyticsEvent.params)
+        }
+    }
 
     override suspend fun setAllowPersonalizedAds(enabled: Boolean) {
         analyticsReporter.allowPersonalizedAds(enabled)
@@ -67,12 +96,6 @@ internal class AnalyticsRepositoryImpl @Inject constructor(
             else -> {
                 // When debug on any other flavor, we don't want to have collection enabled
             }
-        }
-    }
-
-    override fun logEvent(analyticsEvent: AnalyticsEvent) {
-        if (isValidAnalyticsProvider(analyticsEvent)) {
-            analyticsReporter.logEvent(analyticsEvent.name, analyticsEvent.params)
         }
     }
 

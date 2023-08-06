@@ -20,6 +20,7 @@ package dev.zitech.fireflow.common.data.source.featureflag
 import dev.zitech.fireflow.common.domain.model.featureflag.DevFeature
 import dev.zitech.fireflow.common.domain.model.featureflag.Feature
 import dev.zitech.fireflow.common.domain.model.featureflag.ProdFeature
+import dev.zitech.fireflow.core.result.OperationResult
 import javax.inject.Inject
 
 internal class ProdFeatureFlagSource @Inject constructor() : FeatureFlagSource {
@@ -28,14 +29,14 @@ internal class ProdFeatureFlagSource @Inject constructor() : FeatureFlagSource {
 
     override suspend fun hasFeature(feature: Feature): Boolean = true
 
-    override suspend fun isFeatureEnabled(feature: Feature): Boolean =
+    override suspend fun isFeatureEnabled(feature: Feature): OperationResult<Boolean> =
         when (feature) {
             is DevFeature -> {
-                false // DevFeature should never be shipped to users
+                OperationResult.Success(false) // DevFeature should never be shipped to users
             }
             is ProdFeature -> {
                 TODO() // No prod features yet
             }
-            else -> throw NotImplementedError("Feature not handled")
+            else -> error("Feature not handled")
         }
 }

@@ -25,6 +25,7 @@ import dev.zitech.fireflow.common.domain.usecase.reporter.SetAllowPersonalizedAd
 import dev.zitech.fireflow.common.domain.usecase.reporter.SetAnalyticsCollectionUseCase
 import dev.zitech.fireflow.common.domain.usecase.reporter.SetCrashReporterCollectionUseCase
 import dev.zitech.fireflow.common.domain.usecase.reporter.SetPerformanceCollectionUseCase
+import dev.zitech.fireflow.core.result.OperationResult
 import javax.inject.Inject
 
 internal class DataChoicesCollectionStates @Inject constructor(
@@ -38,16 +39,16 @@ internal class DataChoicesCollectionStates @Inject constructor(
     private val setPerformanceCollectionUseCase: SetPerformanceCollectionUseCase
 ) {
 
-    suspend fun getAllowPersonalizedAdsValue(): Boolean =
+    suspend fun getAllowPersonalizedAdsValue(): OperationResult<Boolean> =
         getAllowPersonalizedAdsValueUseCase()
 
-    suspend fun getAnalyticsCollectionValue(): Boolean =
+    suspend fun getAnalyticsCollectionValue(): OperationResult<Boolean> =
         getAnalyticsCollectionValueUseCase()
 
-    suspend fun getCrashReporterCollectionValue(): Boolean =
+    suspend fun getCrashReporterCollectionValue(): OperationResult<Boolean> =
         getCrashReporterCollectionValueUseCase()
 
-    suspend fun getPerformanceCollectionValue(): Boolean =
+    suspend fun getPerformanceCollectionValue(): OperationResult<Boolean> =
         getPerformanceCollectionValueUseCase()
 
     suspend fun setAllowPersonalizedAdsValue(checked: Boolean) {

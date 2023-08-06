@@ -18,6 +18,7 @@
 package dev.zitech.fireflow.common.data.source.featureflag
 
 import dev.zitech.fireflow.common.domain.model.featureflag.Feature
+import dev.zitech.fireflow.core.result.OperationResult
 
 /**
  * Interface for retrieving feature flag information from a data source
@@ -50,5 +51,5 @@ internal interface FeatureFlagSource {
      * @param feature The feature to check.
      * @return `true` if the feature is enabled, `false` otherwise.
      */
-    suspend fun isFeatureEnabled(feature: Feature): Boolean
+    suspend fun isFeatureEnabled(feature: Feature): OperationResult<Boolean>
 }

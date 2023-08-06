@@ -24,8 +24,11 @@ import dev.zitech.fireflow.common.domain.repository.reporter.CrashRepository
 import dev.zitech.fireflow.core.applicationconfig.AppConfigProvider
 import dev.zitech.fireflow.core.applicationconfig.BuildFlavor
 import dev.zitech.fireflow.core.applicationconfig.BuildMode
+import dev.zitech.fireflow.core.error.Error
+import dev.zitech.fireflow.core.result.OperationResult
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 internal class CrashRepositoryImpl @Inject constructor(
     private val appConfigProvider: AppConfigProvider,
@@ -33,11 +36,21 @@ internal class CrashRepositoryImpl @Inject constructor(
     private val preferencesDataSource: PreferencesDataSource
 ) : CrashRepository {
 
-    override fun getCollectionEnabled(): Flow<Boolean> =
-        preferencesDataSource.getBoolean(
-            BooleanPreference.CRASH_REPORTER_COLLECTION.key,
-            BooleanPreference.CRASH_REPORTER_COLLECTION.defaultValue
-        )
+    override fun getCollectionEnabled(): Flow<OperationResult<Boolean>> =
+        preferencesDataSource.getBoolean(BooleanPreference.CRASH_REPORTER_COLLECTION.key)
+            .map { operationResult ->
+                when (operationResult) {
+                    is OperationResult.Success -> operationResult
+                    is OperationResult.Failure -> {
+                        when (operationResult.error) {
+                            Error.PreferenceNotFound -> OperationResult.Success(
+                                BooleanPreference.CRASH_REPORTER_COLLECTION.defaultValue
+                            )
+                            else -> operationResult
+                        }
+                    }
+                }
+            }
 
     override fun init() {
         crashReporter.init()
