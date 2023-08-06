@@ -63,7 +63,7 @@ internal interface PreferencesDataSource {
      * @param key The key to check.
      * @return A flow that emits `true` if the key exists, and `false` otherwise.
      */
-    fun containsString(key: String): Flow<Boolean>
+    fun containsString(key: String): Flow<OperationResult<Boolean>>
 
     /**
      * Retrieves a boolean value associated with the specified key from the preferences.
