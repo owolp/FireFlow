@@ -60,9 +60,9 @@ internal class SecuredPreferencesDataSource @Inject constructor(
             fallbackPreferencesDataSource.containsBoolean(key)
         }.flowOn(appDispatchers.io)
 
-    override fun containsFloat(key: String): Flow<Boolean> =
+    override fun containsFloat(key: String): Flow<OperationResult<Boolean>> =
         try {
-            encryptedSecuredPreferences?.let { flowOf(it.contains(key)) }
+            encryptedSecuredPreferences?.let { flowOf(OperationResult.Success(it.contains(key))) }
                 ?: fallbackPreferencesDataSource.containsFloat(key)
         } catch (e: KeyStoreException) {
             Logger.e(tag, e)
