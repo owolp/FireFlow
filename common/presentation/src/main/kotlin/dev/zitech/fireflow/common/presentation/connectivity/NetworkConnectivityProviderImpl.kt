@@ -35,11 +35,10 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * Implementation of [NetworkConnectivityProvider] interface for managing network connectivity state.
@@ -52,7 +51,7 @@ import kotlinx.coroutines.launch
  * @param getCurrentUserUseCase The use case for retrieving the current user.
  */
 internal class NetworkConnectivityProviderImpl @Inject constructor(
-    appDispatchers: AppDispatchers,
+    private val appDispatchers: AppDispatchers,
     private val getCurrentUserUseCase: GetCurrentUserUseCase
 ) : NetworkConnectivityProvider {
 
@@ -67,7 +66,7 @@ internal class NetworkConnectivityProviderImpl @Inject constructor(
      * The job periodically checks the network connection availability and emits the corresponding network state.
      */
     override val networkState: Flow<NetworkState> = callbackFlow {
-        getCurrentUserUseCase().onEach { userResult ->
+        getCurrentUserUseCase().collect { userResult ->
             connectivityJob?.cancel()
 
             when (userResult) {
@@ -92,7 +91,7 @@ internal class NetworkConnectivityProviderImpl @Inject constructor(
                     }
                 }
             }
-        }.flowOn(appDispatchers.io).collect()
+        }
 
         awaitClose()
     }.distinctUntilChanged()
@@ -110,18 +109,20 @@ internal class NetworkConnectivityProviderImpl @Inject constructor(
      *
      * @param urlPortFormat The URL and port format information for the network connection.
      */
-    private fun ProducerScope<NetworkState>.startConnectivityJob(
-        urlPortFormat: UrlPortFormat.Valid
-    ) = launch {
-        do {
+    @Suppress("SwallowedException")
+    private fun ProducerScope<NetworkState>.startConnectivityJob(urlPortFormat: UrlPortFormat.Valid) = launch {
+        while (true) {
             val socket = Socket()
-            if (isNetworkConnectionAvailable(socket, urlPortFormat)) {
-                trySend(NetworkState.Connected)
-            } else {
+            try {
+                withContext(appDispatchers.io) {
+                    val isConnected = isNetworkConnectionAvailable(socket, urlPortFormat)
+                    trySend(if (isConnected) NetworkState.Connected else NetworkState.Disconnected)
+                }
+            } catch (e: IOException) {
                 trySend(NetworkState.Disconnected)
             }
             delay(PERIODIC_CHECK_DELAY_IN_MS)
-        } while (true)
+        }
     }
 
     /**
@@ -132,9 +133,8 @@ internal class NetworkConnectivityProviderImpl @Inject constructor(
      * @param port The port number.
      */
     private fun connectToInetSocketAddress(socket: Socket, hostname: String, port: Int) {
-        with(socket) {
-            connect(InetSocketAddress(hostname, port), SOCKET_TIMEOUT)
-            close()
+        socket.use {
+            it.connect(InetSocketAddress(hostname, port), SOCKET_TIMEOUT)
         }
     }
 
