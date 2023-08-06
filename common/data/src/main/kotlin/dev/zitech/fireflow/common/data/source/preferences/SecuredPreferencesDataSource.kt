@@ -126,10 +126,15 @@ internal class SecuredPreferencesDataSource @Inject constructor(
             fallbackPreferencesDataSource.getBoolean(key)
         }.flowOn(appDispatchers.io)
 
-    override fun getFloat(key: String, defaultValue: Float): Flow<Float> =
+    override fun getFloat(key: String, defaultValue: Float): Flow<OperationResult<Float>> =
         try {
-            encryptedSecuredPreferences?.let { flowOf(it.getFloat(key, defaultValue)) }
-                ?: fallbackPreferencesDataSource.getFloat(key, defaultValue)
+            encryptedSecuredPreferences?.let {
+                if (it.contains(key)) {
+                    flowOf(OperationResult.Success(it.getFloat(key, defaultValue)))
+                } else {
+                    flowOf(OperationResult.Failure(Error.PreferenceNotFound))
+                }
+            } ?: fallbackPreferencesDataSource.getFloat(key)
         } catch (e: KeyStoreException) {
             Logger.e(tag, e)
             fallbackPreferencesDataSource.getFloat(key, defaultValue)

@@ -85,7 +85,10 @@ internal interface PreferencesDataSource {
      * @param defaultValue The default value to return if the key is not found.
      * @return A flow that emits the float value associated with the key, or the default value if the key is not found.
      */
-    fun getFloat(key: String, defaultValue: Float): Flow<Float>
+    fun getFloat(
+        key: String,
+        defaultValue: Float = DEFAULT_VALUE_GET_FLOAT
+    ): Flow<OperationResult<Float>>
 
     /**
      * Retrieves an integer value associated with the specified key from the preferences.
@@ -197,5 +200,6 @@ internal interface PreferencesDataSource {
 
     companion object {
         const val DEFAULT_VALUE_GET_BOOLEAN = false
+        const val DEFAULT_VALUE_GET_FLOAT = Float.MIN_VALUE
     }
 }

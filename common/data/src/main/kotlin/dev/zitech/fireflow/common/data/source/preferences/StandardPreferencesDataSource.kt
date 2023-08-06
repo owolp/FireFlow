@@ -93,9 +93,10 @@ internal class StandardPreferencesDataSource @Inject constructor(
                 ?: OperationResult.Failure(Error.PreferenceNotFound)
         }
 
-    override fun getFloat(key: String, defaultValue: Float): Flow<Float> =
+    override fun getFloat(key: String, defaultValue: Float): Flow<OperationResult<Float>> =
         getDataStorePreferences().map { preferences ->
-            preferences[floatPreferencesKey(key)] ?: defaultValue
+            preferences[floatPreferencesKey(key)]?.let { OperationResult.Success(it) }
+                ?: OperationResult.Failure(Error.PreferenceNotFound)
         }
 
     override fun getInt(key: String, defaultValue: Int): Flow<Int> =
