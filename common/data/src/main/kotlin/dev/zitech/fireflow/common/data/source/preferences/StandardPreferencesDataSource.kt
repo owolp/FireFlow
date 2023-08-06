@@ -65,9 +65,11 @@ internal class StandardPreferencesDataSource @Inject constructor(
             )
         }
 
-    override fun containsInt(key: String): Flow<Boolean> =
+    override fun containsInt(key: String): Flow<OperationResult<Boolean>> =
         getDataStorePreferences().map { preferences ->
-            preferences.contains(intPreferencesKey(key))
+            OperationResult.Success(
+                preferences.contains(intPreferencesKey(key))
+            )
         }
 
     override fun containsLong(key: String): Flow<Boolean> =

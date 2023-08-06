@@ -47,7 +47,7 @@ internal interface PreferencesDataSource {
      * @param key The key to check.
      * @return A flow that emits `true` if the key exists, and `false` otherwise.
      */
-    fun containsInt(key: String): Flow<Boolean>
+    fun containsInt(key: String): Flow<OperationResult<Boolean>>
 
     /**
      * Checks if the preferences contain a long value associated with the specified key.
