@@ -110,7 +110,10 @@ internal interface PreferencesDataSource {
      * @param defaultValue The default value to return if the key is not found.
      * @return A flow that emits the long value associated with the key, or the default value if the key is not found.
      */
-    fun getLong(key: String, defaultValue: Long): Flow<Long>
+    fun getLong(
+        key: String,
+        defaultValue: Long = DEFAULT_VALUE_GET_LONG
+    ): Flow<OperationResult<Long>>
 
     /**
      * Retrieves a string value associated with the specified key from the preferences.
@@ -205,5 +208,6 @@ internal interface PreferencesDataSource {
         const val DEFAULT_VALUE_GET_BOOLEAN = false
         const val DEFAULT_VALUE_GET_FLOAT = Float.MIN_VALUE
         const val DEFAULT_VALUE_GET_INT = Int.MIN_VALUE
+        const val DEFAULT_VALUE_GET_LONG = Long.MIN_VALUE
     }
 }

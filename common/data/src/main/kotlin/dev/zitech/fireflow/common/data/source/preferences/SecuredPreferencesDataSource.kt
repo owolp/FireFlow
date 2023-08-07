@@ -160,10 +160,15 @@ internal class SecuredPreferencesDataSource @Inject constructor(
             fallbackPreferencesDataSource.getInt(key, defaultValue)
         }.flowOn(appDispatchers.io)
 
-    override fun getLong(key: String, defaultValue: Long): Flow<Long> =
+    override fun getLong(key: String, defaultValue: Long): Flow<OperationResult<Long>> =
         try {
-            encryptedSecuredPreferences?.let { flowOf(it.getLong(key, defaultValue)) }
-                ?: fallbackPreferencesDataSource.getLong(key, defaultValue)
+            encryptedSecuredPreferences?.let {
+                if (it.contains(key)) {
+                    flowOf(OperationResult.Success(it.getLong(key, defaultValue)))
+                } else {
+                    flowOf(OperationResult.Failure(Error.PreferenceNotFound))
+                }
+            } ?: fallbackPreferencesDataSource.getLong(key)
         } catch (e: KeyStoreException) {
             Logger.e(tag, e)
             fallbackPreferencesDataSource.getLong(key, defaultValue)
