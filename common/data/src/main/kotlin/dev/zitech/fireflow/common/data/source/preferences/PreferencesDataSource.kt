@@ -130,7 +130,7 @@ internal interface PreferencesDataSource {
     /**
      * Removes all key-value pairs from the preferences.
      */
-    suspend fun removeAll()
+    suspend fun removeAll(): Flow<OperationResult<Unit>>
 
     /**
      * Removes the boolean value associated with the specified key from the preferences.

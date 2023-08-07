@@ -216,18 +216,20 @@ internal class SettingsViewModel @Inject constructor(
 
     private suspend fun handleDeleteAllDataClicked() {
         updateState { copy(confirmDeleteAll = false) }
-        cleanApplicationUseCase().onFailure { error ->
-            when (error) {
-                is Error.Fatal -> {
-                    Logger.e(tag, throwable = error.throwable)
-                    updateState { copy(fatalError = error) }
-                }
-                else -> {
-                    Logger.e(tag, error.debugText)
-                    updateState { copy(fatalError = error) }
+        cleanApplicationUseCase().onEach { operationResult ->
+            operationResult.onFailure { error ->
+                when (error) {
+                    is Error.Fatal -> {
+                        Logger.e(tag, throwable = error.throwable)
+                        updateState { copy(fatalError = error) }
+                    }
+                    else -> {
+                        Logger.e(tag, error.debugText)
+                        updateState { copy(fatalError = error) }
+                    }
                 }
             }
-        }
+        }.launchIn(viewModelScope)
     }
 
     private fun handleLanguageSelected(id: Int) {

@@ -34,7 +34,9 @@ import dev.zitech.fireflow.core.logger.Logger
 import dev.zitech.fireflow.core.result.OperationResult
 import java.io.IOException
 import javax.inject.Inject
+import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
@@ -117,16 +119,28 @@ internal class StandardPreferencesDataSource @Inject constructor(
                 ?: OperationResult.Failure(Error.PreferenceNotFound)
         }
 
-    override suspend fun removeAll() {
+    override suspend fun removeAll(): Flow<OperationResult<Unit>> = callbackFlow {
         withContext(appDispatchers.io) {
             try {
                 preferenceDataStore.edit { preferences ->
                     preferences.clear()
+                    trySend(OperationResult.Success(Unit))
+                    close()
                 }
             } catch (exception: IOException) {
                 Logger.e(fileName, exception)
+                trySend(
+                    OperationResult.Failure(
+                        Error.Fatal(
+                            throwable = exception,
+                            type = Error.Fatal.Type.DISK
+                        )
+                    )
+                )
+                close()
             }
         }
+        awaitClose()
     }
 
     override suspend fun removeBoolean(key: String) {

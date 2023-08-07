@@ -32,7 +32,7 @@ interface ApplicationRepository {
      * @return An [OperationResult] representing the result of the operation,
      *         containing [Unit] on success or an error on failure.
      */
-    suspend fun clearApplicationStorage(): OperationResult<Unit>
+    suspend fun clearApplicationStorage(): Flow<OperationResult<Unit>>
 
     /**
      * Retrieves the current application theme as a flow.

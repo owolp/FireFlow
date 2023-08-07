@@ -30,7 +30,9 @@ import java.io.IOException
 import java.security.GeneralSecurityException
 import java.security.KeyStoreException
 import javax.inject.Inject
+import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
@@ -42,12 +44,8 @@ internal class SecuredPreferencesDataSource @Inject constructor(
     private val fallbackPreferencesDataSource: PreferencesDataSource
 ) : PreferencesDataSource {
 
-    private var encryptedSecuredPreferences: SharedPreferences? = null
+    private var encryptedSecuredPreferences: SharedPreferences? = getEncryptedPreferences()
     private val tag = Logger.tag(this::class.java)
-
-    init {
-        getEncryptedPreferences()
-    }
 
     override fun containsBoolean(key: String): Flow<OperationResult<Boolean>> =
         try {
@@ -194,12 +192,18 @@ internal class SecuredPreferencesDataSource @Inject constructor(
             fallbackPreferencesDataSource.getString(key, defaultValue)
         }.flowOn(appDispatchers.io)
 
-    override suspend fun removeAll() {
+    override suspend fun removeAll(): Flow<OperationResult<Unit>> = callbackFlow {
         withContext(appDispatchers.io) {
             encryptedSecuredPreferences?.edit(commit = true) {
                 clear()
-            } ?: fallbackPreferencesDataSource.removeAll()
+                trySend(OperationResult.Success(Unit))
+                close()
+            } ?: fallbackPreferencesDataSource.removeAll().also {
+                trySend(OperationResult.Success(Unit))
+                close()
+            }
         }
+        awaitClose()
     }
 
     override suspend fun removeBoolean(key: String) {

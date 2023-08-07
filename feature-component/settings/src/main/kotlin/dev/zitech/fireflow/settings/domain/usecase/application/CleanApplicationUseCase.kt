@@ -23,6 +23,8 @@ import dev.zitech.fireflow.core.result.OperationResult
 import dev.zitech.fireflow.core.result.OperationResult.Failure
 import dev.zitech.fireflow.core.result.OperationResult.Success
 import javax.inject.Inject
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 /**
  * Use case for cleaning the application by clearing application storage and invalidating caches.
@@ -45,12 +47,14 @@ internal class CleanApplicationUseCase @Inject constructor(
      * @return An [OperationResult] representing the result of the operation,
      *         containing [Unit] on success or an error on failure.
      */
-    suspend operator fun invoke(): OperationResult<Unit> =
-        when (val result = applicationRepository.clearApplicationStorage()) {
-            is Failure -> result
-            is Success -> {
-                cacheRepository.invalidateCaches()
-                Success(Unit)
+    suspend operator fun invoke(): Flow<OperationResult<Unit>> =
+        applicationRepository.clearApplicationStorage().map { operationResult ->
+            when (operationResult) {
+                is Failure -> operationResult
+                is Success -> {
+                    cacheRepository.invalidateCaches()
+                    Success(Unit)
+                }
             }
         }
 }

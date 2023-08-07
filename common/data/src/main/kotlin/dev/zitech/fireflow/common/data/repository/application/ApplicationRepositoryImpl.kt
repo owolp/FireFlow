@@ -29,6 +29,7 @@ import dev.zitech.fireflow.core.error.Error
 import dev.zitech.fireflow.core.result.OperationResult
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
@@ -42,14 +43,21 @@ internal class ApplicationRepositoryImpl @Inject constructor(
     private val standardPreferencesDataSource: PreferencesDataSource
 ) : ApplicationRepository {
 
-    override suspend fun clearApplicationStorage(): OperationResult<Unit> =
+    override suspend fun clearApplicationStorage(): Flow<OperationResult<Unit>> =
         withContext(appDispatchers.io) {
-            standardPreferencesDataSource.removeAll()
-            securedPreferencesDataSource.removeAll()
-            developmentPreferencesDataSource.removeAll()
             fireFlowDatabase.clearAllTables()
+            val standardResult = standardPreferencesDataSource.removeAll()
+            val securedResult = securedPreferencesDataSource.removeAll()
+            val developmentResult = developmentPreferencesDataSource.removeAll()
 
-            return@withContext OperationResult.Success(Unit)
+            combine(
+                standardResult,
+                securedResult,
+                developmentResult
+            ) { result1, result2, result3 ->
+                listOf(result1, result2, result3).firstOrNull { it is OperationResult.Failure }
+                    ?: OperationResult.Success(Unit)
+            }
         }
 
     override fun getApplicationTheme(): Flow<OperationResult<ApplicationTheme>> =
