@@ -111,9 +111,10 @@ internal class StandardPreferencesDataSource @Inject constructor(
                 ?: OperationResult.Failure(Error.PreferenceNotFound)
         }
 
-    override fun getString(key: String, defaultValue: String?): Flow<String?> =
+    override fun getString(key: String, defaultValue: String?): Flow<OperationResult<String>> =
         getDataStorePreferences().map { preferences ->
-            preferences[stringPreferencesKey(key)] ?: defaultValue
+            preferences[stringPreferencesKey(key)]?.let { OperationResult.Success(it) }
+                ?: OperationResult.Failure(Error.PreferenceNotFound)
         }
 
     override suspend fun removeAll() {

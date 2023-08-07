@@ -122,7 +122,10 @@ internal interface PreferencesDataSource {
      * @param defaultValue The default value to return if the key is not found.
      * @return A flow that emits the string value associated with the key, or the default value if the key is not found.
      */
-    fun getString(key: String, defaultValue: String?): Flow<String?>
+    fun getString(
+        key: String,
+        defaultValue: String? = null
+    ): Flow<OperationResult<String>>
 
     /**
      * Removes all key-value pairs from the preferences.
