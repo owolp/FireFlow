@@ -29,7 +29,9 @@ import dev.zitech.fireflow.core.error.Error
 import dev.zitech.fireflow.core.result.OperationResult
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
@@ -43,22 +45,39 @@ internal class ApplicationRepositoryImpl @Inject constructor(
     private val standardPreferencesDataSource: PreferencesDataSource
 ) : ApplicationRepository {
 
-    override suspend fun clearApplicationStorage(): Flow<OperationResult<Unit>> =
-        withContext(appDispatchers.io) {
-            fireFlowDatabase.clearAllTables()
-            val standardResult = standardPreferencesDataSource.removeAll()
-            val securedResult = securedPreferencesDataSource.removeAll()
-            val developmentResult = developmentPreferencesDataSource.removeAll()
-
-            combine(
-                standardResult,
-                securedResult,
-                developmentResult
-            ) { result1, result2, result3 ->
-                listOf(result1, result2, result3).firstOrNull { it is OperationResult.Failure }
-                    ?: OperationResult.Success(Unit)
-            }
+    override fun clearApplicationStorage(): Flow<OperationResult<Unit>> = flow {
+        val standardResult = standardPreferencesDataSource.removeAll()
+        val securedResult = securedPreferencesDataSource.removeAll()
+        val developmentResult = developmentPreferencesDataSource.removeAll()
+        val databaseResult: Flow<OperationResult<Unit>> = flow {
+            emit(
+                runCatching {
+                    withContext(appDispatchers.io) {
+                        fireFlowDatabase.clearAllTables()
+                    }
+                    OperationResult.Success(Unit)
+                }.getOrElse { e ->
+                    OperationResult.Failure(
+                        Error.Fatal(
+                            throwable = e,
+                            type = Error.Fatal.Type.DISK
+                        )
+                    )
+                }
+            )
         }
+
+        combine(
+            standardResult,
+            securedResult,
+            developmentResult,
+            databaseResult
+        ) { result1, result2, result3, result4 ->
+            listOf(result1, result2, result3, result4).firstOrNull {
+                it is OperationResult.Failure
+            }?.let { emit(it) } ?: emit(OperationResult.Success(Unit))
+        }.collect()
+    }
 
     override fun getApplicationTheme(): Flow<OperationResult<ApplicationTheme>> =
         standardPreferencesDataSource.getInt(

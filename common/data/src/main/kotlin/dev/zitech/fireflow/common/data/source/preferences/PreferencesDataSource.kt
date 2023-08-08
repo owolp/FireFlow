@@ -130,42 +130,42 @@ internal interface PreferencesDataSource {
     /**
      * Removes all key-value pairs from the preferences.
      */
-    suspend fun removeAll(): Flow<OperationResult<Unit>>
+    fun removeAll(): Flow<OperationResult<Unit>>
 
     /**
      * Removes the boolean value associated with the specified key from the preferences.
      *
      * @param key The key of the boolean value to remove.
      */
-    suspend fun removeBoolean(key: String): Flow<OperationResult<Unit>>
+    fun removeBoolean(key: String): Flow<OperationResult<Unit>>
 
     /**
      * Removes the float value associated with the specified key from the preferences.
      *
      * @param key The key of the float value to remove.
      */
-    suspend fun removeFloat(key: String): Flow<OperationResult<Unit>>
+    fun removeFloat(key: String): Flow<OperationResult<Unit>>
 
     /**
      * Removes the integer value associated with the specified key from the preferences.
      *
      * @param key The key of the integer value to remove.
      */
-    suspend fun removeInt(key: String): Flow<OperationResult<Unit>>
+    fun removeInt(key: String): Flow<OperationResult<Unit>>
 
     /**
      * Removes the long value associated with the specified key from the preferences.
      *
      * @param key The key of the long value to remove.
      */
-    suspend fun removeLong(key: String): Flow<OperationResult<Unit>>
+    fun removeLong(key: String): Flow<OperationResult<Unit>>
 
     /**
      * Removes the string value associated with the specified key from the preferences.
      *
      * @param key The key of the string value to remove.
      */
-    suspend fun removeString(key: String): Flow<OperationResult<Unit>>
+    fun removeString(key: String): Flow<OperationResult<Unit>>
 
     /**
      * Saves a boolean value associated with the specified key to the preferences.

@@ -47,7 +47,7 @@ internal class CleanApplicationUseCase @Inject constructor(
      * @return An [OperationResult] representing the result of the operation,
      *         containing [Unit] on success or an error on failure.
      */
-    suspend operator fun invoke(): Flow<OperationResult<Unit>> =
+    operator fun invoke(): Flow<OperationResult<Unit>> =
         applicationRepository.clearApplicationStorage().map { operationResult ->
             when (operationResult) {
                 is Failure -> operationResult

@@ -119,7 +119,7 @@ internal class StandardPreferencesDataSource @Inject constructor(
                 ?: OperationResult.Failure(Error.PreferenceNotFound)
         }
 
-    override suspend fun removeAll(): Flow<OperationResult<Unit>> = callbackFlow {
+    override fun removeAll(): Flow<OperationResult<Unit>> = callbackFlow {
         withContext(appDispatchers.io) {
             try {
                 preferenceDataStore.edit { preferences ->
@@ -143,7 +143,7 @@ internal class StandardPreferencesDataSource @Inject constructor(
         awaitClose()
     }
 
-    override suspend fun removeBoolean(key: String): Flow<OperationResult<Unit>> = callbackFlow {
+    override fun removeBoolean(key: String): Flow<OperationResult<Unit>> = callbackFlow {
         withContext(appDispatchers.io) {
             try {
                 preferenceDataStore.edit { preferences ->
@@ -167,7 +167,7 @@ internal class StandardPreferencesDataSource @Inject constructor(
         awaitClose()
     }
 
-    override suspend fun removeFloat(key: String): Flow<OperationResult<Unit>> = callbackFlow {
+    override fun removeFloat(key: String): Flow<OperationResult<Unit>> = callbackFlow {
         withContext(appDispatchers.io) {
             try {
                 preferenceDataStore.edit { preferences ->
@@ -191,7 +191,7 @@ internal class StandardPreferencesDataSource @Inject constructor(
         awaitClose()
     }
 
-    override suspend fun removeInt(key: String): Flow<OperationResult<Unit>> = callbackFlow {
+    override fun removeInt(key: String): Flow<OperationResult<Unit>> = callbackFlow {
         withContext(appDispatchers.io) {
             try {
                 preferenceDataStore.edit { preferences ->
@@ -215,7 +215,7 @@ internal class StandardPreferencesDataSource @Inject constructor(
         awaitClose()
     }
 
-    override suspend fun removeLong(key: String): Flow<OperationResult<Unit>> = callbackFlow {
+    override fun removeLong(key: String): Flow<OperationResult<Unit>> = callbackFlow {
         withContext(appDispatchers.io) {
             try {
                 preferenceDataStore.edit { preferences ->
@@ -239,7 +239,7 @@ internal class StandardPreferencesDataSource @Inject constructor(
         awaitClose()
     }
 
-    override suspend fun removeString(key: String): Flow<OperationResult<Unit>> = callbackFlow {
+    override fun removeString(key: String): Flow<OperationResult<Unit>> = callbackFlow {
         withContext(appDispatchers.io) {
             try {
                 preferenceDataStore.edit { preferences ->
