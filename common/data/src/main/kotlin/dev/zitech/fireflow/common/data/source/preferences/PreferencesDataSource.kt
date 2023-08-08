@@ -144,7 +144,7 @@ internal interface PreferencesDataSource {
      *
      * @param key The key of the float value to remove.
      */
-    suspend fun removeFloat(key: String)
+    suspend fun removeFloat(key: String): Flow<OperationResult<Unit>>
 
     /**
      * Removes the integer value associated with the specified key from the preferences.

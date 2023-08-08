@@ -232,20 +232,30 @@ internal class SecuredPreferencesDataSource @Inject constructor(
         awaitClose()
     }
 
-    override suspend fun removeFloat(key: String) {
+    override suspend fun removeFloat(key: String): Flow<OperationResult<Unit>> = callbackFlow {
         withContext(appDispatchers.io) {
             try {
                 encryptedSecuredPreferences?.edit(commit = true) {
                     remove(key)
-                } ?: fallbackPreferencesDataSource.removeFloat(key)
+                    trySend(OperationResult.Success(Unit))
+                    close()
+                } ?: fallbackPreferencesDataSource.removeFloat(key).also {
+                    trySend(OperationResult.Success(Unit))
+                    close()
+                }
             } catch (e: KeyStoreException) {
                 Logger.e(tag, e)
                 fallbackPreferencesDataSource.removeFloat(key)
+                trySend(OperationResult.Success(Unit))
+                close()
             } catch (e: SecurityException) {
                 Logger.e(tag, e)
                 fallbackPreferencesDataSource.removeFloat(key)
+                trySend(OperationResult.Success(Unit))
+                close()
             }
         }
+        awaitClose()
     }
 
     override suspend fun removeInt(key: String) {
