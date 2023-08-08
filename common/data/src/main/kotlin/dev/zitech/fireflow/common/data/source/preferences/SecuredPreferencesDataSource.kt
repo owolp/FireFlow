@@ -258,52 +258,82 @@ internal class SecuredPreferencesDataSource @Inject constructor(
         awaitClose()
     }
 
-    override suspend fun removeInt(key: String) {
+    override suspend fun removeInt(key: String): Flow<OperationResult<Unit>> = callbackFlow {
         withContext(appDispatchers.io) {
             try {
                 encryptedSecuredPreferences?.edit(commit = true) {
                     remove(key)
-                } ?: fallbackPreferencesDataSource.removeInt(key)
+                    trySend(OperationResult.Success(Unit))
+                    close()
+                } ?: fallbackPreferencesDataSource.removeInt(key).also {
+                    trySend(OperationResult.Success(Unit))
+                    close()
+                }
             } catch (e: KeyStoreException) {
                 Logger.e(tag, e)
                 fallbackPreferencesDataSource.removeInt(key)
+                trySend(OperationResult.Success(Unit))
+                close()
             } catch (e: SecurityException) {
                 Logger.e(tag, e)
                 fallbackPreferencesDataSource.removeInt(key)
+                trySend(OperationResult.Success(Unit))
+                close()
             }
         }
+        awaitClose()
     }
 
-    override suspend fun removeLong(key: String) {
+    override suspend fun removeLong(key: String): Flow<OperationResult<Unit>> = callbackFlow {
         withContext(appDispatchers.io) {
             try {
                 encryptedSecuredPreferences?.edit(commit = true) {
                     remove(key)
-                } ?: fallbackPreferencesDataSource.removeLong(key)
+                    trySend(OperationResult.Success(Unit))
+                    close()
+                } ?: fallbackPreferencesDataSource.removeLong(key).also {
+                    trySend(OperationResult.Success(Unit))
+                    close()
+                }
             } catch (e: KeyStoreException) {
                 Logger.e(tag, e)
                 fallbackPreferencesDataSource.removeLong(key)
+                trySend(OperationResult.Success(Unit))
+                close()
             } catch (e: SecurityException) {
                 Logger.e(tag, e)
                 fallbackPreferencesDataSource.removeLong(key)
+                trySend(OperationResult.Success(Unit))
+                close()
             }
         }
+        awaitClose()
     }
 
-    override suspend fun removeString(key: String) {
+    override suspend fun removeString(key: String): Flow<OperationResult<Unit>> = callbackFlow {
         withContext(appDispatchers.io) {
             try {
                 encryptedSecuredPreferences?.edit(commit = true) {
                     remove(key)
-                } ?: fallbackPreferencesDataSource.removeString(key)
+                    trySend(OperationResult.Success(Unit))
+                    close()
+                } ?: fallbackPreferencesDataSource.removeString(key).also {
+                    trySend(OperationResult.Success(Unit))
+                    close()
+                }
             } catch (e: KeyStoreException) {
                 Logger.e(tag, e)
                 fallbackPreferencesDataSource.removeString(key)
+                trySend(OperationResult.Success(Unit))
+                close()
             } catch (e: SecurityException) {
                 Logger.e(tag, e)
                 fallbackPreferencesDataSource.removeString(key)
+                trySend(OperationResult.Success(Unit))
+                close()
             }
         }
+        awaitClose()
     }
 
     override suspend fun saveBoolean(key: String, value: Boolean) {

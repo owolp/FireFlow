@@ -151,21 +151,21 @@ internal interface PreferencesDataSource {
      *
      * @param key The key of the integer value to remove.
      */
-    suspend fun removeInt(key: String)
+    suspend fun removeInt(key: String): Flow<OperationResult<Unit>>
 
     /**
      * Removes the long value associated with the specified key from the preferences.
      *
      * @param key The key of the long value to remove.
      */
-    suspend fun removeLong(key: String)
+    suspend fun removeLong(key: String): Flow<OperationResult<Unit>>
 
     /**
      * Removes the string value associated with the specified key from the preferences.
      *
      * @param key The key of the string value to remove.
      */
-    suspend fun removeString(key: String)
+    suspend fun removeString(key: String): Flow<OperationResult<Unit>>
 
     /**
      * Saves a boolean value associated with the specified key to the preferences.

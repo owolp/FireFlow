@@ -191,40 +191,76 @@ internal class StandardPreferencesDataSource @Inject constructor(
         awaitClose()
     }
 
-    override suspend fun removeInt(key: String) {
+    override suspend fun removeInt(key: String): Flow<OperationResult<Unit>> = callbackFlow {
         withContext(appDispatchers.io) {
             try {
                 preferenceDataStore.edit { preferences ->
                     preferences.remove(intPreferencesKey(key))
+                    trySend(OperationResult.Success(Unit))
+                    close()
                 }
             } catch (exception: IOException) {
                 Logger.e(fileName, exception)
+                trySend(
+                    OperationResult.Failure(
+                        Error.Fatal(
+                            throwable = exception,
+                            type = Error.Fatal.Type.DISK
+                        )
+                    )
+                )
+                close()
             }
         }
+        awaitClose()
     }
 
-    override suspend fun removeLong(key: String) {
+    override suspend fun removeLong(key: String): Flow<OperationResult<Unit>> = callbackFlow {
         withContext(appDispatchers.io) {
             try {
                 preferenceDataStore.edit { preferences ->
                     preferences.remove(longPreferencesKey(key))
+                    trySend(OperationResult.Success(Unit))
+                    close()
                 }
             } catch (exception: IOException) {
                 Logger.e(fileName, exception)
+                trySend(
+                    OperationResult.Failure(
+                        Error.Fatal(
+                            throwable = exception,
+                            type = Error.Fatal.Type.DISK
+                        )
+                    )
+                )
+                close()
             }
         }
+        awaitClose()
     }
 
-    override suspend fun removeString(key: String) {
+    override suspend fun removeString(key: String): Flow<OperationResult<Unit>> = callbackFlow {
         withContext(appDispatchers.io) {
             try {
                 preferenceDataStore.edit { preferences ->
                     preferences.remove(stringPreferencesKey(key))
+                    trySend(OperationResult.Success(Unit))
+                    close()
                 }
             } catch (exception: IOException) {
                 Logger.e(fileName, exception)
+                trySend(
+                    OperationResult.Failure(
+                        Error.Fatal(
+                            throwable = exception,
+                            type = Error.Fatal.Type.DISK
+                        )
+                    )
+                )
+                close()
             }
         }
+        awaitClose()
     }
 
     override suspend fun saveBoolean(key: String, value: Boolean) {
