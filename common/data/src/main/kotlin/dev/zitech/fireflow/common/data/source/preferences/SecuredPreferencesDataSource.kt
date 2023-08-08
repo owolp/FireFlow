@@ -206,20 +206,30 @@ internal class SecuredPreferencesDataSource @Inject constructor(
         awaitClose()
     }
 
-    override suspend fun removeBoolean(key: String) {
+    override suspend fun removeBoolean(key: String): Flow<OperationResult<Unit>> = callbackFlow {
         withContext(appDispatchers.io) {
             try {
                 encryptedSecuredPreferences?.edit(commit = true) {
                     remove(key)
-                } ?: fallbackPreferencesDataSource.removeBoolean(key)
+                    trySend(OperationResult.Success(Unit))
+                    close()
+                } ?: fallbackPreferencesDataSource.removeBoolean(key).also {
+                    trySend(OperationResult.Success(Unit))
+                    close()
+                }
             } catch (e: KeyStoreException) {
                 Logger.e(tag, e)
                 fallbackPreferencesDataSource.removeBoolean(key)
+                trySend(OperationResult.Success(Unit))
+                close()
             } catch (e: SecurityException) {
                 Logger.e(tag, e)
                 fallbackPreferencesDataSource.removeBoolean(key)
+                trySend(OperationResult.Success(Unit))
+                close()
             }
         }
+        awaitClose()
     }
 
     override suspend fun removeFloat(key: String) {

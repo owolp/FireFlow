@@ -143,16 +143,28 @@ internal class StandardPreferencesDataSource @Inject constructor(
         awaitClose()
     }
 
-    override suspend fun removeBoolean(key: String) {
+    override suspend fun removeBoolean(key: String): Flow<OperationResult<Unit>> = callbackFlow {
         withContext(appDispatchers.io) {
             try {
                 preferenceDataStore.edit { preferences ->
                     preferences.remove(booleanPreferencesKey(key))
+                    trySend(OperationResult.Success(Unit))
+                    close()
                 }
             } catch (exception: IOException) {
                 Logger.e(fileName, exception)
+                trySend(
+                    OperationResult.Failure(
+                        Error.Fatal(
+                            throwable = exception,
+                            type = Error.Fatal.Type.DISK
+                        )
+                    )
+                )
+                close()
             }
         }
+        awaitClose()
     }
 
     override suspend fun removeFloat(key: String) {
