@@ -194,13 +194,14 @@ internal class SecuredPreferencesDataSource @Inject constructor(
             fallbackPreferencesDataSource.getString(key, defaultValue)
         }.flowOn(appDispatchers.io)
 
-    override suspend fun removeAll() {
+    override suspend fun removeAll(): OperationResult<Unit> =
         withContext(appDispatchers.io) {
             encryptedSecuredPreferences?.edit(commit = true) {
                 clear()
+            }?.run {
+                OperationResult.Success(Unit)
             } ?: fallbackPreferencesDataSource.removeAll()
         }
-    }
 
     override suspend fun removeBoolean(key: String) {
         withContext(appDispatchers.io) {

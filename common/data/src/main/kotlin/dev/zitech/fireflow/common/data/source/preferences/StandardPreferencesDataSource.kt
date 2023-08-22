@@ -117,15 +117,20 @@ internal class StandardPreferencesDataSource @Inject constructor(
                 ?: OperationResult.Failure(Error.PreferenceNotFound)
         }
 
-    override suspend fun removeAll() {
-        withContext(appDispatchers.io) {
-            try {
-                preferenceDataStore.edit { preferences ->
-                    preferences.clear()
-                }
-            } catch (exception: IOException) {
-                Logger.e(fileName, exception)
+    override suspend fun removeAll(): OperationResult<Unit> = withContext(appDispatchers.io) {
+        try {
+            preferenceDataStore.edit { preferences ->
+                preferences.clear()
             }
+            OperationResult.Success(Unit)
+        } catch (exception: IOException) {
+            Logger.e(fileName, exception)
+            OperationResult.Failure(
+                Error.Fatal(
+                    throwable = exception,
+                    type = Error.Fatal.Type.DISK
+                )
+            )
         }
     }
 

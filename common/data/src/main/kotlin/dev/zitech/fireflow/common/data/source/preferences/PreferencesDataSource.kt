@@ -129,8 +129,10 @@ internal interface PreferencesDataSource {
 
     /**
      * Removes all key-value pairs from the preferences.
+     *
+     * @return An [OperationResult] representing the result of the operation.
      */
-    suspend fun removeAll()
+    suspend fun removeAll(): OperationResult<Unit>
 
     /**
      * Removes the boolean value associated with the specified key from the preferences.

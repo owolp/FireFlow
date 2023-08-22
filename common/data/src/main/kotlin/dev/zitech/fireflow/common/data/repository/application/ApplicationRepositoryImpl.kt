@@ -28,6 +28,8 @@ import dev.zitech.fireflow.core.dispatcher.AppDispatchers
 import dev.zitech.fireflow.core.error.Error
 import dev.zitech.fireflow.core.result.OperationResult
 import javax.inject.Inject
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
@@ -44,12 +46,18 @@ internal class ApplicationRepositoryImpl @Inject constructor(
 
     override suspend fun clearApplicationStorage(): OperationResult<Unit> =
         withContext(appDispatchers.io) {
-            standardPreferencesDataSource.removeAll()
-            securedPreferencesDataSource.removeAll()
-            developmentPreferencesDataSource.removeAll()
-            fireFlowDatabase.clearAllTables()
+            val standardResult = async { standardPreferencesDataSource.removeAll() }
+            val securedResult = async { securedPreferencesDataSource.removeAll() }
+            val developmentResult = async { developmentPreferencesDataSource.removeAll() }
 
-            return@withContext OperationResult.Success(Unit)
+            val allResults = listOf(standardResult, securedResult, developmentResult).awaitAll()
+
+            if (allResults.all { it is OperationResult.Success }) {
+                fireFlowDatabase.clearAllTables()
+                OperationResult.Success(Unit)
+            } else {
+                allResults.first { it is OperationResult.Failure }
+            }
         }
 
     override fun getApplicationTheme(): Flow<OperationResult<ApplicationTheme>> =
