@@ -62,7 +62,7 @@ allprojects {
 
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         with(kotlinOptions) {
-            jvmTarget = libs.versions.jvmTarget.get()
+            jvmTarget = getJavaVersion().majorVersion
         }
     }
 }
@@ -114,8 +114,8 @@ fun BaseExtension.baseConfig() {
     }
 
     compileOptions.apply {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = getJavaVersion()
+        targetCompatibility = getJavaVersion()
     }
 
     sourceSets {
@@ -239,3 +239,5 @@ fun BuildType.addStringConstant(constantName: String, constantValue: String) {
     manifestPlaceholders += constantName to constantValue
     buildConfigField("String", constantName, "\"$constantValue\"")
 }
+
+fun getJavaVersion(): JavaVersion = JavaVersion.VERSION_17
