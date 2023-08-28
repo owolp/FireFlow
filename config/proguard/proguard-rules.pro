@@ -58,3 +58,7 @@
 # https://youtrack.jetbrains.com/issue/KTOR-5528
 # https://stackoverflow.com/q/76042330
 -dontwarn org.slf4j.impl.StaticLoggerBinder
+
+# Added because of
+# AGPBI: {"kind":"error","text":"Missing class android.securitydiagnose.HwSecurityDiagnoseManager$StpExtraStatusInfo (referenced from: boolean com.huawei.secure.android.common.detect.b.b())","sources":[{}],"tool":"R8"}
+-ignorewarnings
