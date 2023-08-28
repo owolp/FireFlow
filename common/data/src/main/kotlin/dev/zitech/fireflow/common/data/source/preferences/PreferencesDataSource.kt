@@ -145,9 +145,10 @@ internal interface PreferencesDataSource {
     /**
      * Removes the float value associated with the specified key from the preferences.
      *
-     * @param key The key of the float value to remove.
+     * @param key The key of the float value to be removed.
+     * @return An [OperationResult] representing the result of the operation.
      */
-    suspend fun removeFloat(key: String)
+    suspend fun removeFloat(key: String): OperationResult<Unit>
 
     /**
      * Removes the integer value associated with the specified key from the preferences.

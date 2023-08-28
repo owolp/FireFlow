@@ -227,11 +227,19 @@ internal class SecuredPreferencesDataSource @Inject constructor(
             }
         }
 
-    override suspend fun removeFloat(key: String) {
+    override suspend fun removeFloat(key: String): OperationResult<Unit> =
         withContext(appDispatchers.io) {
             try {
-                encryptedSecuredPreferences?.edit(commit = true) {
-                    remove(key)
+                encryptedSecuredPreferences?.let {
+                    when (val result = getFloat(key).first()) {
+                        is OperationResult.Success -> {
+                            it.edit(commit = true) {
+                                remove(key)
+                            }
+                            OperationResult.Success(Unit)
+                        }
+                        is OperationResult.Failure -> OperationResult.Failure(result.error)
+                    }
                 } ?: fallbackPreferencesDataSource.removeFloat(key)
             } catch (e: KeyStoreException) {
                 Logger.e(tag, e)
@@ -241,7 +249,6 @@ internal class SecuredPreferencesDataSource @Inject constructor(
                 fallbackPreferencesDataSource.removeFloat(key)
             }
         }
-    }
 
     override suspend fun removeInt(key: String) {
         withContext(appDispatchers.io) {

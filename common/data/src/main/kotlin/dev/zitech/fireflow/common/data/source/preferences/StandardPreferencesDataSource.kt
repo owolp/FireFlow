@@ -156,17 +156,26 @@ internal class StandardPreferencesDataSource @Inject constructor(
             is OperationResult.Failure -> OperationResult.Failure(result.error)
         }
 
-    override suspend fun removeFloat(key: String) {
-        withContext(appDispatchers.io) {
-            try {
-                preferenceDataStore.edit { preferences ->
-                    preferences.remove(floatPreferencesKey(key))
+    override suspend fun removeFloat(key: String): OperationResult<Unit> =
+        when (val result = getBoolean(key).first()) {
+            is OperationResult.Success -> {
+                try {
+                    preferenceDataStore.edit { preferences ->
+                        preferences.remove(floatPreferencesKey(key))
+                    }
+                    OperationResult.Success(Unit)
+                } catch (e: IOException) {
+                    Logger.e(fileName, e)
+                    OperationResult.Failure(
+                        Error.Fatal(
+                            throwable = e,
+                            type = Error.Fatal.Type.DISK
+                        )
+                    )
                 }
-            } catch (exception: IOException) {
-                Logger.e(fileName, exception)
             }
+            is OperationResult.Failure -> OperationResult.Failure(result.error)
         }
-    }
 
     override suspend fun removeInt(key: String) {
         withContext(appDispatchers.io) {
