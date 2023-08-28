@@ -19,7 +19,7 @@ room = "2.6.0-beta01"
 [libraries]
 acra-http = "ch.acra:acra-http:5.11.1"
 airbnb-android-lottie-compose = "com.airbnb.android:lottie-compose:6.1.0"
-android-build-gradle = "com.android.tools.build:gradle:8.1.0"
+android-build-gradle = "com.android.tools.build:gradle:8.1.1"
 androidx-activity-compose = "androidx.activity:activity-compose:1.7.2"
 androidx-appcompat = "androidx.appcompat:appcompat:1.6.1"
 androidx-arch-core-testing = "androidx.arch.core:core-testing:2.2.0"
