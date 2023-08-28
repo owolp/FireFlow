@@ -36,6 +36,7 @@ import java.io.IOException
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
@@ -134,17 +135,26 @@ internal class StandardPreferencesDataSource @Inject constructor(
         }
     }
 
-    override suspend fun removeBoolean(key: String) {
-        withContext(appDispatchers.io) {
-            try {
-                preferenceDataStore.edit { preferences ->
-                    preferences.remove(booleanPreferencesKey(key))
+    override suspend fun removeBoolean(key: String): OperationResult<Unit> =
+        when (val result = getBoolean(key).first()) {
+            is OperationResult.Success -> {
+                try {
+                    preferenceDataStore.edit { preferences ->
+                        preferences.remove(booleanPreferencesKey(key))
+                    }
+                    OperationResult.Success(Unit)
+                } catch (e: IOException) {
+                    Logger.e(fileName, e)
+                    OperationResult.Failure(
+                        Error.Fatal(
+                            throwable = e,
+                            type = Error.Fatal.Type.DISK
+                        )
+                    )
                 }
-            } catch (exception: IOException) {
-                Logger.e(fileName, exception)
             }
+            is OperationResult.Failure -> OperationResult.Failure(result.error)
         }
-    }
 
     override suspend fun removeFloat(key: String) {
         withContext(appDispatchers.io) {

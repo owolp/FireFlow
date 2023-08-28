@@ -31,6 +31,7 @@ import java.security.GeneralSecurityException
 import java.security.KeyStoreException
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
@@ -203,11 +204,19 @@ internal class SecuredPreferencesDataSource @Inject constructor(
             } ?: fallbackPreferencesDataSource.removeAll()
         }
 
-    override suspend fun removeBoolean(key: String) {
+    override suspend fun removeBoolean(key: String): OperationResult<Unit> =
         withContext(appDispatchers.io) {
             try {
-                encryptedSecuredPreferences?.edit(commit = true) {
-                    remove(key)
+                encryptedSecuredPreferences?.let {
+                    when (val result = getBoolean(key).first()) {
+                        is OperationResult.Success -> {
+                            it.edit(commit = true) {
+                                remove(key)
+                            }
+                            OperationResult.Success(Unit)
+                        }
+                        is OperationResult.Failure -> OperationResult.Failure(result.error)
+                    }
                 } ?: fallbackPreferencesDataSource.removeBoolean(key)
             } catch (e: KeyStoreException) {
                 Logger.e(tag, e)
@@ -217,7 +226,6 @@ internal class SecuredPreferencesDataSource @Inject constructor(
                 fallbackPreferencesDataSource.removeBoolean(key)
             }
         }
-    }
 
     override suspend fun removeFloat(key: String) {
         withContext(appDispatchers.io) {

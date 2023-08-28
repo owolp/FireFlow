@@ -137,9 +137,10 @@ internal interface PreferencesDataSource {
     /**
      * Removes the boolean value associated with the specified key from the preferences.
      *
-     * @param key The key of the boolean value to remove.
+     * @param key The key of the boolean value to be removed.
+     * @return An [OperationResult] representing the result of the operation.
      */
-    suspend fun removeBoolean(key: String)
+    suspend fun removeBoolean(key: String): OperationResult<Unit>
 
     /**
      * Removes the float value associated with the specified key from the preferences.
