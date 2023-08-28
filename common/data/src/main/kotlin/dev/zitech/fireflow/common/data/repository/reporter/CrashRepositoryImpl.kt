@@ -36,7 +36,7 @@ internal class CrashRepositoryImpl @Inject constructor(
     private val preferencesDataSource: PreferencesDataSource
 ) : CrashRepository {
 
-    override fun getCollectionEnabled(): Flow<OperationResult<Boolean>> =
+    override suspend fun getCollectionEnabled(): Flow<OperationResult<Boolean>> =
         preferencesDataSource.getBoolean(BooleanPreference.CRASH_REPORTER_COLLECTION.key)
             .map { operationResult ->
                 when (operationResult) {

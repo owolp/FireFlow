@@ -30,7 +30,7 @@ interface CrashRepository {
      *
      * @return A [Flow] that emits the boolean value indicating whether crash collection is enabled.
      */
-    fun getCollectionEnabled(): Flow<OperationResult<Boolean>>
+    suspend fun getCollectionEnabled(): Flow<OperationResult<Boolean>>
 
     /**
      * Initializes the crash reporting system.

@@ -60,7 +60,7 @@ internal class ApplicationRepositoryImpl @Inject constructor(
             }
         }
 
-    override fun getApplicationTheme(): Flow<OperationResult<ApplicationTheme>> =
+    override suspend fun getApplicationTheme(): Flow<OperationResult<ApplicationTheme>> =
         standardPreferencesDataSource.getInt(
             IntPreference.APPLICATION_THEME.key
         ).map { operationResult ->

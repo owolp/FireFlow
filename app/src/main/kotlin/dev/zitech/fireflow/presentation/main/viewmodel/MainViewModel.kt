@@ -51,9 +51,11 @@ internal class MainViewModel @Inject constructor(
     private val tag = Logger.tag(this::class.java)
 
     init {
-        applicationLaunchAnalyticsEvent()
-        startMandatoryChecks()
-        observeNetworkConnectivity()
+        viewModelScope.launch {
+            applicationLaunchAnalyticsEvent()
+            startMandatoryChecks()
+            observeNetworkConnectivity()
+        }
     }
 
     private fun observeNetworkConnectivity() {
@@ -90,7 +92,7 @@ internal class MainViewModel @Inject constructor(
         }
     }
 
-    private fun startMandatoryChecks() {
+    private suspend fun startMandatoryChecks() {
         combine(
             loginCheckHandler.loginCheckState,
             getApplicationThemeValueUseCase(),

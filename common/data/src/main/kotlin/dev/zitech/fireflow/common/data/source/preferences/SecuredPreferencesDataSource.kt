@@ -23,7 +23,6 @@ import androidx.core.content.edit
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
 import dev.zitech.fireflow.core.dispatcher.AppDispatchers
-import dev.zitech.fireflow.core.error.Error
 import dev.zitech.fireflow.core.logger.Logger
 import dev.zitech.fireflow.core.result.OperationResult
 import java.io.IOException
@@ -110,13 +109,17 @@ internal class SecuredPreferencesDataSource @Inject constructor(
             fallbackPreferencesDataSource.containsString(key)
         }.flowOn(appDispatchers.io)
 
-    override fun getBoolean(key: String, defaultValue: Boolean): Flow<OperationResult<Boolean>> =
+    override suspend fun getBoolean(
+        key: String,
+        defaultValue: Boolean
+    ): Flow<OperationResult<Boolean>> =
         try {
             encryptedSecuredPreferences?.let {
-                if (it.contains(key)) {
-                    flowOf(OperationResult.Success(it.getBoolean(key, defaultValue)))
-                } else {
-                    flowOf(OperationResult.Failure(Error.PreferenceNotFound))
+                when (val result = containsBoolean(key).first()) {
+                    is OperationResult.Success -> {
+                        flowOf(OperationResult.Success(it.getBoolean(key, defaultValue)))
+                    }
+                    is OperationResult.Failure -> flowOf(OperationResult.Failure(result.error))
                 }
             } ?: fallbackPreferencesDataSource.getBoolean(key)
         } catch (e: KeyStoreException) {
@@ -127,13 +130,14 @@ internal class SecuredPreferencesDataSource @Inject constructor(
             fallbackPreferencesDataSource.getBoolean(key)
         }.flowOn(appDispatchers.io)
 
-    override fun getFloat(key: String, defaultValue: Float): Flow<OperationResult<Float>> =
+    override suspend fun getFloat(key: String, defaultValue: Float): Flow<OperationResult<Float>> =
         try {
             encryptedSecuredPreferences?.let {
-                if (it.contains(key)) {
-                    flowOf(OperationResult.Success(it.getFloat(key, defaultValue)))
-                } else {
-                    flowOf(OperationResult.Failure(Error.PreferenceNotFound))
+                when (val result = containsFloat(key).first()) {
+                    is OperationResult.Success -> {
+                        flowOf(OperationResult.Success(it.getFloat(key, defaultValue)))
+                    }
+                    is OperationResult.Failure -> flowOf(OperationResult.Failure(result.error))
                 }
             } ?: fallbackPreferencesDataSource.getFloat(key)
         } catch (e: KeyStoreException) {
@@ -144,13 +148,14 @@ internal class SecuredPreferencesDataSource @Inject constructor(
             fallbackPreferencesDataSource.getFloat(key, defaultValue)
         }.flowOn(appDispatchers.io)
 
-    override fun getInt(key: String, defaultValue: Int): Flow<OperationResult<Int>> =
+    override suspend fun getInt(key: String, defaultValue: Int): Flow<OperationResult<Int>> =
         try {
             encryptedSecuredPreferences?.let {
-                if (it.contains(key)) {
-                    flowOf(OperationResult.Success(it.getInt(key, defaultValue)))
-                } else {
-                    flowOf(OperationResult.Failure(Error.PreferenceNotFound))
+                when (val result = containsInt(key).first()) {
+                    is OperationResult.Success -> {
+                        flowOf(OperationResult.Success(it.getInt(key, defaultValue)))
+                    }
+                    is OperationResult.Failure -> flowOf(OperationResult.Failure(result.error))
                 }
             } ?: fallbackPreferencesDataSource.getInt(key)
         } catch (e: KeyStoreException) {
@@ -161,13 +166,14 @@ internal class SecuredPreferencesDataSource @Inject constructor(
             fallbackPreferencesDataSource.getInt(key, defaultValue)
         }.flowOn(appDispatchers.io)
 
-    override fun getLong(key: String, defaultValue: Long): Flow<OperationResult<Long>> =
+    override suspend fun getLong(key: String, defaultValue: Long): Flow<OperationResult<Long>> =
         try {
             encryptedSecuredPreferences?.let {
-                if (it.contains(key)) {
-                    flowOf(OperationResult.Success(it.getLong(key, defaultValue)))
-                } else {
-                    flowOf(OperationResult.Failure(Error.PreferenceNotFound))
+                when (val result = containsLong(key).first()) {
+                    is OperationResult.Success -> {
+                        flowOf(OperationResult.Success(it.getLong(key, defaultValue)))
+                    }
+                    is OperationResult.Failure -> flowOf(OperationResult.Failure(result.error))
                 }
             } ?: fallbackPreferencesDataSource.getLong(key)
         } catch (e: KeyStoreException) {
@@ -178,13 +184,17 @@ internal class SecuredPreferencesDataSource @Inject constructor(
             fallbackPreferencesDataSource.getLong(key, defaultValue)
         }.flowOn(appDispatchers.io)
 
-    override fun getString(key: String, defaultValue: String?): Flow<OperationResult<String>> =
+    override suspend fun getString(
+        key: String,
+        defaultValue: String?
+    ): Flow<OperationResult<String>> =
         try {
             encryptedSecuredPreferences?.let {
-                if (it.contains(key)) {
-                    flowOf(OperationResult.Success(it.getString(key, defaultValue)!!))
-                } else {
-                    flowOf(OperationResult.Failure(Error.PreferenceNotFound))
+                when (val result = containsString(key).first()) {
+                    is OperationResult.Success -> {
+                        flowOf(OperationResult.Success(it.getString(key, defaultValue)!!))
+                    }
+                    is OperationResult.Failure -> flowOf(OperationResult.Failure(result.error))
                 }
             } ?: fallbackPreferencesDataSource.getString(key, defaultValue)
         } catch (e: KeyStoreException) {

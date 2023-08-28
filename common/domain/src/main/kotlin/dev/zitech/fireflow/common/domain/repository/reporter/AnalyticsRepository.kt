@@ -31,14 +31,14 @@ interface AnalyticsRepository {
      *
      * @return A [Flow] that emits the boolean value indicating whether personalized ads are allowed.
      */
-    fun getAllowPersonalizedAds(): Flow<OperationResult<Boolean>>
+    suspend fun getAllowPersonalizedAds(): Flow<OperationResult<Boolean>>
 
     /**
      * Retrieves the flag indicating whether data collection is enabled.
      *
      * @return A [Flow] that emits the boolean value indicating whether data collection is enabled.
      */
-    fun getCollectionEnabled(): Flow<OperationResult<Boolean>>
+    suspend fun getCollectionEnabled(): Flow<OperationResult<Boolean>>
 
     /**
      * Logs an analytics event.

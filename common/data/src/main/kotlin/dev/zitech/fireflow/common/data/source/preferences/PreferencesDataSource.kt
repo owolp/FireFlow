@@ -73,7 +73,7 @@ internal interface PreferencesDataSource {
      * @return A flow that emits the boolean value associated with the key, or the default value if the key is not found
      * .
      */
-    fun getBoolean(
+    suspend fun getBoolean(
         key: String,
         defaultValue: Boolean = DEFAULT_VALUE_GET_BOOLEAN
     ): Flow<OperationResult<Boolean>>
@@ -85,7 +85,7 @@ internal interface PreferencesDataSource {
      * @param defaultValue The default value to return if the key is not found.
      * @return A flow that emits the float value associated with the key, or the default value if the key is not found.
      */
-    fun getFloat(
+    suspend fun getFloat(
         key: String,
         defaultValue: Float = DEFAULT_VALUE_GET_FLOAT
     ): Flow<OperationResult<Float>>
@@ -98,7 +98,7 @@ internal interface PreferencesDataSource {
      * @return A flow that emits the integer value associated with the key, or the default value if the key is not found
      * .
      */
-    fun getInt(
+    suspend fun getInt(
         key: String,
         defaultValue: Int = DEFAULT_VALUE_GET_INT
     ): Flow<OperationResult<Int>>
@@ -110,7 +110,7 @@ internal interface PreferencesDataSource {
      * @param defaultValue The default value to return if the key is not found.
      * @return A flow that emits the long value associated with the key, or the default value if the key is not found.
      */
-    fun getLong(
+    suspend fun getLong(
         key: String,
         defaultValue: Long = DEFAULT_VALUE_GET_LONG
     ): Flow<OperationResult<Long>>
@@ -122,7 +122,7 @@ internal interface PreferencesDataSource {
      * @param defaultValue The default value to return if the key is not found.
      * @return A flow that emits the string value associated with the key, or the default value if the key is not found.
      */
-    fun getString(
+    suspend fun getString(
         key: String,
         defaultValue: String? = null
     ): Flow<OperationResult<String>>

@@ -37,6 +37,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
@@ -88,34 +89,65 @@ internal class StandardPreferencesDataSource @Inject constructor(
             )
         }
 
-    override fun getBoolean(key: String, defaultValue: Boolean): Flow<OperationResult<Boolean>> =
-        getDataStorePreferences().map { preferences ->
-            preferences[booleanPreferencesKey(key)]?.let { OperationResult.Success(it) }
-                ?: OperationResult.Failure(Error.PreferenceNotFound)
+    override suspend fun getBoolean(
+        key: String,
+        defaultValue: Boolean
+    ): Flow<OperationResult<Boolean>> =
+        when (val result = containsBoolean(key).first()) {
+            is OperationResult.Success -> {
+                getDataStorePreferences().map { preferences ->
+                    preferences[booleanPreferencesKey(key)]?.let { OperationResult.Success(it) }
+                        ?: OperationResult.Failure(Error.PreferenceNotFound)
+                }
+            }
+            is OperationResult.Failure -> flowOf(OperationResult.Failure(result.error))
         }
 
-    override fun getFloat(key: String, defaultValue: Float): Flow<OperationResult<Float>> =
-        getDataStorePreferences().map { preferences ->
-            preferences[floatPreferencesKey(key)]?.let { OperationResult.Success(it) }
-                ?: OperationResult.Failure(Error.PreferenceNotFound)
+    override suspend fun getFloat(key: String, defaultValue: Float): Flow<OperationResult<Float>> =
+        when (val result = containsFloat(key).first()) {
+            is OperationResult.Success -> {
+                getDataStorePreferences().map { preferences ->
+                    preferences[floatPreferencesKey(key)]?.let { OperationResult.Success(it) }
+                        ?: OperationResult.Failure(Error.PreferenceNotFound)
+                }
+            }
+            is OperationResult.Failure -> flowOf(OperationResult.Failure(result.error))
         }
 
-    override fun getInt(key: String, defaultValue: Int): Flow<OperationResult<Int>> =
-        getDataStorePreferences().map { preferences ->
-            preferences[intPreferencesKey(key)]?.let { OperationResult.Success(it) }
-                ?: OperationResult.Failure(Error.PreferenceNotFound)
+    override suspend fun getInt(key: String, defaultValue: Int): Flow<OperationResult<Int>> =
+        when (val result = containsInt(key).first()) {
+            is OperationResult.Success -> {
+                getDataStorePreferences().map { preferences ->
+                    preferences[intPreferencesKey(key)]?.let { OperationResult.Success(it) }
+                        ?: OperationResult.Failure(Error.PreferenceNotFound)
+                }
+            }
+            is OperationResult.Failure -> flowOf(OperationResult.Failure(result.error))
         }
 
-    override fun getLong(key: String, defaultValue: Long): Flow<OperationResult<Long>> =
-        getDataStorePreferences().map { preferences ->
-            preferences[longPreferencesKey(key)]?.let { OperationResult.Success(it) }
-                ?: OperationResult.Failure(Error.PreferenceNotFound)
+    override suspend fun getLong(key: String, defaultValue: Long): Flow<OperationResult<Long>> =
+        when (val result = containsLong(key).first()) {
+            is OperationResult.Success -> {
+                getDataStorePreferences().map { preferences ->
+                    preferences[longPreferencesKey(key)]?.let { OperationResult.Success(it) }
+                        ?: OperationResult.Failure(Error.PreferenceNotFound)
+                }
+            }
+            is OperationResult.Failure -> flowOf(OperationResult.Failure(result.error))
         }
 
-    override fun getString(key: String, defaultValue: String?): Flow<OperationResult<String>> =
-        getDataStorePreferences().map { preferences ->
-            preferences[stringPreferencesKey(key)]?.let { OperationResult.Success(it) }
-                ?: OperationResult.Failure(Error.PreferenceNotFound)
+    override suspend fun getString(
+        key: String,
+        defaultValue: String?
+    ): Flow<OperationResult<String>> =
+        when (val result = containsString(key).first()) {
+            is OperationResult.Success -> {
+                getDataStorePreferences().map { preferences ->
+                    preferences[stringPreferencesKey(key)]?.let { OperationResult.Success(it) }
+                        ?: OperationResult.Failure(Error.PreferenceNotFound)
+                }
+            }
+            is OperationResult.Failure -> flowOf(OperationResult.Failure(result.error))
         }
 
     override suspend fun removeAll(): OperationResult<Unit> = withContext(appDispatchers.io) {

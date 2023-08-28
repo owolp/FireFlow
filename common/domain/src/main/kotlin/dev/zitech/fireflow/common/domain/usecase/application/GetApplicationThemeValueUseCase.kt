@@ -37,6 +37,6 @@ class GetApplicationThemeValueUseCase @Inject constructor(
      *
      * @return A [Flow] that emits the current application theme.
      */
-    operator fun invoke(): Flow<OperationResult<ApplicationTheme>> =
+    suspend operator fun invoke(): Flow<OperationResult<ApplicationTheme>> =
         applicationRepository.getApplicationTheme()
 }

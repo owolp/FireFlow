@@ -38,7 +38,7 @@ internal class AnalyticsRepositoryImpl @Inject constructor(
     private val preferencesDataSource: PreferencesDataSource
 ) : AnalyticsRepository {
 
-    override fun getAllowPersonalizedAds(): Flow<OperationResult<Boolean>> =
+    override suspend fun getAllowPersonalizedAds(): Flow<OperationResult<Boolean>> =
         preferencesDataSource.getBoolean(BooleanPreference.PERSONALIZED_ADS.key)
             .map { operationResult ->
                 when (operationResult) {
@@ -54,7 +54,7 @@ internal class AnalyticsRepositoryImpl @Inject constructor(
                 }
             }
 
-    override fun getCollectionEnabled(): Flow<OperationResult<Boolean>> =
+    override suspend fun getCollectionEnabled(): Flow<OperationResult<Boolean>> =
         preferencesDataSource.getBoolean(BooleanPreference.ANALYTICS_COLLECTION.key)
             .map { operationResult ->
                 when (operationResult) {
