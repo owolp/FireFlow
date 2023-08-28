@@ -83,10 +83,9 @@ internal class ApplicationRepositoryImpl @Inject constructor(
             }
         }
 
-    override suspend fun setApplicationTheme(applicationTheme: ApplicationTheme) {
+    override suspend fun setApplicationTheme(applicationTheme: ApplicationTheme): OperationResult<Unit> =
         standardPreferencesDataSource.saveInt(
             IntPreference.APPLICATION_THEME.key,
             applicationThemeToIntMapper(applicationTheme)
         )
-    }
 }

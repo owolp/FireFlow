@@ -196,8 +196,9 @@ internal interface PreferencesDataSource {
      *
      * @param key The key of the integer value.
      * @param value The integer value to be saved.
+     * @return An [OperationResult] representing the result of the operation.
      */
-    suspend fun saveInt(key: String, value: Int)
+    suspend fun saveInt(key: String, value: Int): OperationResult<Unit>
 
     /**
      * Saves a long value associated with the specified key to the preferences.

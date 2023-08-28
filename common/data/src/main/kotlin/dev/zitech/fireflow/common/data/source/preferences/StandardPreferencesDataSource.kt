@@ -276,13 +276,23 @@ internal class StandardPreferencesDataSource @Inject constructor(
             }
         }
 
-    override suspend fun saveInt(key: String, value: Int) {
+    override suspend fun saveInt(key: String, value: Int): OperationResult<Unit> =
         withContext(appDispatchers.io) {
-            preferenceDataStore.edit { preferences ->
-                preferences[intPreferencesKey(key)] = value
+            try {
+                preferenceDataStore.edit { preferences ->
+                    preferences[intPreferencesKey(key)] = value
+                }
+                OperationResult.Success(Unit)
+            } catch (e: IOException) {
+                Logger.e(fileName, e)
+                OperationResult.Failure(
+                    Error.Fatal(
+                        throwable = e,
+                        type = Error.Fatal.Type.DISK
+                    )
+                )
             }
         }
-    }
 
     override suspend fun saveLong(key: String, value: Long): OperationResult<Unit> =
         withContext(appDispatchers.io) {

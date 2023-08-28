@@ -355,11 +355,14 @@ internal class SecuredPreferencesDataSource @Inject constructor(
             }
         }
 
-    override suspend fun saveInt(key: String, value: Int) {
+    override suspend fun saveInt(key: String, value: Int): OperationResult<Unit> =
         withContext(appDispatchers.io) {
             try {
-                encryptedSecuredPreferences?.edit(commit = true) {
-                    putInt(key, value)
+                encryptedSecuredPreferences?.let {
+                    it.edit(commit = true) {
+                        putInt(key, value)
+                    }
+                    OperationResult.Success(Unit)
                 } ?: fallbackPreferencesDataSource.saveInt(key, value)
             } catch (e: KeyStoreException) {
                 Logger.e(tag, e)
@@ -369,7 +372,6 @@ internal class SecuredPreferencesDataSource @Inject constructor(
                 fallbackPreferencesDataSource.saveInt(key, value)
             }
         }
-    }
 
     override suspend fun saveLong(key: String, value: Long): OperationResult<Unit> =
         withContext(appDispatchers.io) {
