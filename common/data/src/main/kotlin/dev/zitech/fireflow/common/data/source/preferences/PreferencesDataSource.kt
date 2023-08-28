@@ -171,7 +171,7 @@ internal interface PreferencesDataSource {
      *
      * @param key The key of the string value to remove.
      */
-    suspend fun removeString(key: String)
+    suspend fun removeString(key: String): OperationResult<Unit>
 
     /**
      * Saves a boolean value associated with the specified key to the preferences.
