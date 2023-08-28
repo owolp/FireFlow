@@ -161,9 +161,10 @@ internal interface PreferencesDataSource {
     /**
      * Removes the long value associated with the specified key from the preferences.
      *
-     * @param key The key of the long value to remove.
+     * @param key The key of the long value to be removed.
+     * @return An [OperationResult] representing the result of the operation.
      */
-    suspend fun removeLong(key: String)
+    suspend fun removeLong(key: String): OperationResult<Unit>
 
     /**
      * Removes the string value associated with the specified key from the preferences.

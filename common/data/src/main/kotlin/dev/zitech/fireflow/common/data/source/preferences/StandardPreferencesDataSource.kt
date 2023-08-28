@@ -198,17 +198,26 @@ internal class StandardPreferencesDataSource @Inject constructor(
             is OperationResult.Failure -> OperationResult.Failure(result.error)
         }
 
-    override suspend fun removeLong(key: String) {
-        withContext(appDispatchers.io) {
-            try {
-                preferenceDataStore.edit { preferences ->
-                    preferences.remove(longPreferencesKey(key))
+    override suspend fun removeLong(key: String): OperationResult<Unit> =
+        when (val result = getLong(key).first()) {
+            is OperationResult.Success -> {
+                try {
+                    preferenceDataStore.edit { preferences ->
+                        preferences.remove(longPreferencesKey(key))
+                    }
+                    OperationResult.Success(Unit)
+                } catch (e: IOException) {
+                    Logger.e(fileName, e)
+                    OperationResult.Failure(
+                        Error.Fatal(
+                            throwable = e,
+                            type = Error.Fatal.Type.DISK
+                        )
+                    )
                 }
-            } catch (exception: IOException) {
-                Logger.e(fileName, exception)
             }
+            is OperationResult.Failure -> OperationResult.Failure(result.error)
         }
-    }
 
     override suspend fun removeString(key: String) {
         withContext(appDispatchers.io) {
