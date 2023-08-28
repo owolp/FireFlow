@@ -17,6 +17,7 @@
 
 package dev.zitech.fireflow.common.domain.repository.reporter
 
+import dev.zitech.fireflow.core.result.OperationResult
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -29,12 +30,13 @@ interface PerformanceRepository {
      *
      * @return A [Flow] that emits the boolean value indicating whether performance collection is enabled.
      */
-    fun getCollectionEnabled(): Flow<Boolean>
+    suspend fun getCollectionEnabled(): Flow<OperationResult<Boolean>>
 
     /**
      * Sets the flag indicating whether performance collection is enabled.
      *
-     * @param enabled The boolean value indicating whether performance collection is enabled.
+     * @param enabled The boolean value indicating whether performance collection should be enabled.
+     * @return An [OperationResult] representing the result of the operation.
      */
-    suspend fun setCollectionEnabled(enabled: Boolean)
+    suspend fun setCollectionEnabled(enabled: Boolean): OperationResult<Unit>
 }

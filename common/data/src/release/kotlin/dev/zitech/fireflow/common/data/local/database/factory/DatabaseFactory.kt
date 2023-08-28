@@ -23,6 +23,8 @@ import androidx.room.RoomDatabase
 import dev.zitech.fireflow.common.data.source.preferences.PreferencesDataSource
 import dev.zitech.fireflow.core.concurrency.SingleRunner
 import dev.zitech.fireflow.core.datafactory.DataFactory
+import dev.zitech.fireflow.core.result.getResultOrDefault
+import dev.zitech.fireflow.core.result.getResultOrNull
 import javax.inject.Inject
 import kotlinx.coroutines.flow.first
 import net.sqlcipher.database.SQLiteDatabase
@@ -56,7 +58,9 @@ internal class DatabaseFactory @Inject constructor(
 
         val databaseKey = securedPreferencesDataSource
             .getString(KEY_SECURED_STORAGE_SECURED_DATABASE, "")
-            .first()?.toCharArray()!!
+            .first()
+            .getResultOrNull()
+            ?.toCharArray()!!
 
         roomBuilder.openHelperFactory(
             SupportFactory(
@@ -71,6 +75,7 @@ internal class DatabaseFactory @Inject constructor(
 
     suspend fun isSecuredStorageKeySaved() =
         securedPreferencesDataSource.containsString(KEY_SECURED_STORAGE_SECURED_DATABASE).first()
+            .getResultOrDefault(false)
 
     suspend fun saveSecuredStorageKey() {
         securedPreferencesDataSource.saveString(

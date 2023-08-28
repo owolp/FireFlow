@@ -19,6 +19,8 @@ package dev.zitech.fireflow.common.data.source.featureflag
 
 import dev.zitech.fireflow.common.data.remote.configurator.RemoteConfigurator
 import dev.zitech.fireflow.common.domain.model.featureflag.Feature
+import dev.zitech.fireflow.core.error.Error
+import dev.zitech.fireflow.core.result.OperationResult
 import javax.inject.Inject
 
 internal class RemoteFeatureFlagSource @Inject constructor(
@@ -29,5 +31,6 @@ internal class RemoteFeatureFlagSource @Inject constructor(
 
     override suspend fun hasFeature(feature: Feature): Boolean = false
 
-    override suspend fun isFeatureEnabled(feature: Feature): Boolean = feature.defaultValue
+    override suspend fun isFeatureEnabled(feature: Feature): OperationResult<Boolean> =
+        OperationResult.Failure(Error.BuildTypeUnsupported)
 }

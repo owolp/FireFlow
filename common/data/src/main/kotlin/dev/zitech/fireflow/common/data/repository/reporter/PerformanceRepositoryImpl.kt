@@ -24,8 +24,11 @@ import dev.zitech.fireflow.common.domain.repository.reporter.PerformanceReposito
 import dev.zitech.fireflow.core.applicationconfig.AppConfigProvider
 import dev.zitech.fireflow.core.applicationconfig.BuildFlavor
 import dev.zitech.fireflow.core.applicationconfig.BuildMode
+import dev.zitech.fireflow.core.error.Error
+import dev.zitech.fireflow.core.result.OperationResult
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 internal class PerformanceRepositoryImpl @Inject constructor(
     private val appConfigProvider: AppConfigProvider,
@@ -33,13 +36,24 @@ internal class PerformanceRepositoryImpl @Inject constructor(
     private val preferencesDataSource: PreferencesDataSource
 ) : PerformanceRepository {
 
-    override fun getCollectionEnabled(): Flow<Boolean> =
+    override suspend fun getCollectionEnabled(): Flow<OperationResult<Boolean>> =
         preferencesDataSource.getBoolean(
-            BooleanPreference.PERFORMANCE_COLLECTION.key,
-            BooleanPreference.PERFORMANCE_COLLECTION.defaultValue
-        )
+            BooleanPreference.PERFORMANCE_COLLECTION.key
+        ).map { operationResult ->
+            when (operationResult) {
+                is OperationResult.Success -> operationResult
+                is OperationResult.Failure -> {
+                    when (operationResult.error) {
+                        Error.PreferenceNotFound -> OperationResult.Success(
+                            BooleanPreference.PERFORMANCE_COLLECTION.defaultValue
+                        )
+                        else -> operationResult
+                    }
+                }
+            }
+        }
 
-    override suspend fun setCollectionEnabled(enabled: Boolean) {
+    override suspend fun setCollectionEnabled(enabled: Boolean): OperationResult<Unit> =
         when {
             appConfigProvider.buildMode == BuildMode.RELEASE || appConfigProvider.buildFlavor == BuildFlavor.DEV -> {
                 performanceReporter.setCollectionEnabled(enabled)
@@ -49,8 +63,10 @@ internal class PerformanceRepositoryImpl @Inject constructor(
                 )
             }
             else -> {
-                // When debug on any other flavor, we don't want to have collection enabled
+                // "When debug on any other flavor, we don't want to have collection enabled"
+                OperationResult.Failure(
+                    Error.OperationNotSupported("setCollectionEnabled on not supported flavor")
+                )
             }
         }
-    }
 }

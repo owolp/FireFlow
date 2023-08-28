@@ -29,11 +29,15 @@ import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import dev.zitech.fireflow.core.dispatcher.AppDispatchers
+import dev.zitech.fireflow.core.error.Error
 import dev.zitech.fireflow.core.logger.Logger
+import dev.zitech.fireflow.core.result.OperationResult
 import java.io.IOException
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
@@ -50,167 +54,313 @@ internal class StandardPreferencesDataSource @Inject constructor(
 
     private val preferenceDataStore: DataStore<DataStorePreferences> = context.dataStore
 
-    override fun containsBoolean(key: String): Flow<Boolean> =
+    override fun containsBoolean(key: String): Flow<OperationResult<Boolean>> =
         getDataStorePreferences().map { preferences ->
-            preferences.contains(booleanPreferencesKey(key))
+            OperationResult.Success(
+                preferences.contains(booleanPreferencesKey(key))
+            )
         }
 
-    override fun containsFloat(key: String): Flow<Boolean> =
+    override fun containsFloat(key: String): Flow<OperationResult<Boolean>> =
         getDataStorePreferences().map { preferences ->
-            preferences.contains(floatPreferencesKey(key))
+            OperationResult.Success(
+                preferences.contains(floatPreferencesKey(key))
+            )
         }
 
-    override fun containsInt(key: String): Flow<Boolean> =
+    override fun containsInt(key: String): Flow<OperationResult<Boolean>> =
         getDataStorePreferences().map { preferences ->
-            preferences.contains(intPreferencesKey(key))
+            OperationResult.Success(
+                preferences.contains(intPreferencesKey(key))
+            )
         }
 
-    override fun containsLong(key: String): Flow<Boolean> =
+    override fun containsLong(key: String): Flow<OperationResult<Boolean>> =
         getDataStorePreferences().map { preferences ->
-            preferences.contains(longPreferencesKey(key))
+            OperationResult.Success(
+                preferences.contains(longPreferencesKey(key))
+            )
         }
 
-    override fun containsString(key: String): Flow<Boolean> =
+    override fun containsString(key: String): Flow<OperationResult<Boolean>> =
         getDataStorePreferences().map { preferences ->
-            preferences.contains(stringPreferencesKey(key))
+            OperationResult.Success(
+                preferences.contains(stringPreferencesKey(key))
+            )
         }
 
-    override fun getBoolean(key: String, defaultValue: Boolean): Flow<Boolean> =
-        getDataStorePreferences().map { preferences ->
-            preferences[booleanPreferencesKey(key)] ?: defaultValue
-        }
-
-    override fun getFloat(key: String, defaultValue: Float): Flow<Float> =
-        getDataStorePreferences().map { preferences ->
-            preferences[floatPreferencesKey(key)] ?: defaultValue
-        }
-
-    override fun getInt(key: String, defaultValue: Int): Flow<Int> =
-        getDataStorePreferences().map { preferences ->
-            preferences[intPreferencesKey(key)] ?: defaultValue
-        }
-
-    override fun getLong(key: String, defaultValue: Long): Flow<Long> =
-        getDataStorePreferences().map { preferences ->
-            preferences[longPreferencesKey(key)] ?: defaultValue
-        }
-
-    override fun getString(key: String, defaultValue: String?): Flow<String?> =
-        getDataStorePreferences().map { preferences ->
-            preferences[stringPreferencesKey(key)] ?: defaultValue
-        }
-
-    override suspend fun removeAll() {
-        withContext(appDispatchers.io) {
-            try {
-                preferenceDataStore.edit { preferences ->
-                    preferences.clear()
+    override suspend fun getBoolean(
+        key: String,
+        defaultValue: Boolean
+    ): Flow<OperationResult<Boolean>> =
+        when (val result = containsBoolean(key).first()) {
+            is OperationResult.Success -> {
+                getDataStorePreferences().map { preferences ->
+                    preferences[booleanPreferencesKey(key)]?.let { OperationResult.Success(it) }
+                        ?: OperationResult.Failure(Error.PreferenceNotFound)
                 }
-            } catch (exception: IOException) {
-                Logger.e(fileName, exception)
             }
+            is OperationResult.Failure -> flowOf(OperationResult.Failure(result.error))
         }
-    }
 
-    override suspend fun removeBoolean(key: String) {
-        withContext(appDispatchers.io) {
-            try {
-                preferenceDataStore.edit { preferences ->
-                    preferences.remove(booleanPreferencesKey(key))
+    override suspend fun getFloat(key: String, defaultValue: Float): Flow<OperationResult<Float>> =
+        when (val result = containsFloat(key).first()) {
+            is OperationResult.Success -> {
+                getDataStorePreferences().map { preferences ->
+                    preferences[floatPreferencesKey(key)]?.let { OperationResult.Success(it) }
+                        ?: OperationResult.Failure(Error.PreferenceNotFound)
                 }
-            } catch (exception: IOException) {
-                Logger.e(fileName, exception)
             }
+            is OperationResult.Failure -> flowOf(OperationResult.Failure(result.error))
         }
-    }
 
-    override suspend fun removeFloat(key: String) {
-        withContext(appDispatchers.io) {
-            try {
-                preferenceDataStore.edit { preferences ->
-                    preferences.remove(floatPreferencesKey(key))
+    override suspend fun getInt(key: String, defaultValue: Int): Flow<OperationResult<Int>> =
+        when (val result = containsInt(key).first()) {
+            is OperationResult.Success -> {
+                getDataStorePreferences().map { preferences ->
+                    preferences[intPreferencesKey(key)]?.let { OperationResult.Success(it) }
+                        ?: OperationResult.Failure(Error.PreferenceNotFound)
                 }
-            } catch (exception: IOException) {
-                Logger.e(fileName, exception)
             }
+            is OperationResult.Failure -> flowOf(OperationResult.Failure(result.error))
         }
-    }
 
-    override suspend fun removeInt(key: String) {
-        withContext(appDispatchers.io) {
-            try {
-                preferenceDataStore.edit { preferences ->
-                    preferences.remove(intPreferencesKey(key))
+    override suspend fun getLong(key: String, defaultValue: Long): Flow<OperationResult<Long>> =
+        when (val result = containsLong(key).first()) {
+            is OperationResult.Success -> {
+                getDataStorePreferences().map { preferences ->
+                    preferences[longPreferencesKey(key)]?.let { OperationResult.Success(it) }
+                        ?: OperationResult.Failure(Error.PreferenceNotFound)
                 }
-            } catch (exception: IOException) {
-                Logger.e(fileName, exception)
             }
+            is OperationResult.Failure -> flowOf(OperationResult.Failure(result.error))
         }
-    }
 
-    override suspend fun removeLong(key: String) {
-        withContext(appDispatchers.io) {
-            try {
-                preferenceDataStore.edit { preferences ->
-                    preferences.remove(longPreferencesKey(key))
+    override suspend fun getString(
+        key: String,
+        defaultValue: String?
+    ): Flow<OperationResult<String>> =
+        when (val result = containsString(key).first()) {
+            is OperationResult.Success -> {
+                getDataStorePreferences().map { preferences ->
+                    preferences[stringPreferencesKey(key)]?.let { OperationResult.Success(it) }
+                        ?: OperationResult.Failure(Error.PreferenceNotFound)
                 }
-            } catch (exception: IOException) {
-                Logger.e(fileName, exception)
             }
+            is OperationResult.Failure -> flowOf(OperationResult.Failure(result.error))
         }
-    }
 
-    override suspend fun removeString(key: String) {
-        withContext(appDispatchers.io) {
-            try {
-                preferenceDataStore.edit { preferences ->
-                    preferences.remove(stringPreferencesKey(key))
-                }
-            } catch (exception: IOException) {
-                Logger.e(fileName, exception)
-            }
-        }
-    }
-
-    override suspend fun saveBoolean(key: String, value: Boolean) {
-        withContext(appDispatchers.io) {
+    override suspend fun removeAll(): OperationResult<Unit> = withContext(appDispatchers.io) {
+        try {
             preferenceDataStore.edit { preferences ->
-                preferences[booleanPreferencesKey(key)] = value
+                preferences.clear()
             }
+            OperationResult.Success(Unit)
+        } catch (exception: IOException) {
+            Logger.e(fileName, exception)
+            OperationResult.Failure(
+                Error.Fatal(
+                    throwable = exception,
+                    type = Error.Fatal.Type.DISK
+                )
+            )
         }
     }
 
-    override suspend fun saveFloat(key: String, value: Float) {
-        withContext(appDispatchers.io) {
-            preferenceDataStore.edit { preferences ->
-                preferences[floatPreferencesKey(key)] = value
+    override suspend fun removeBoolean(key: String): OperationResult<Unit> =
+        when (val result = getBoolean(key).first()) {
+            is OperationResult.Success -> {
+                try {
+                    preferenceDataStore.edit { preferences ->
+                        preferences.remove(booleanPreferencesKey(key))
+                    }
+                    OperationResult.Success(Unit)
+                } catch (e: IOException) {
+                    Logger.e(fileName, e)
+                    OperationResult.Failure(
+                        Error.Fatal(
+                            throwable = e,
+                            type = Error.Fatal.Type.DISK
+                        )
+                    )
+                }
             }
+            is OperationResult.Failure -> OperationResult.Failure(result.error)
         }
-    }
 
-    override suspend fun saveInt(key: String, value: Int) {
-        withContext(appDispatchers.io) {
-            preferenceDataStore.edit { preferences ->
-                preferences[intPreferencesKey(key)] = value
+    override suspend fun removeFloat(key: String): OperationResult<Unit> =
+        when (val result = getBoolean(key).first()) {
+            is OperationResult.Success -> {
+                try {
+                    preferenceDataStore.edit { preferences ->
+                        preferences.remove(floatPreferencesKey(key))
+                    }
+                    OperationResult.Success(Unit)
+                } catch (e: IOException) {
+                    Logger.e(fileName, e)
+                    OperationResult.Failure(
+                        Error.Fatal(
+                            throwable = e,
+                            type = Error.Fatal.Type.DISK
+                        )
+                    )
+                }
             }
+            is OperationResult.Failure -> OperationResult.Failure(result.error)
         }
-    }
 
-    override suspend fun saveLong(key: String, value: Long) {
-        withContext(appDispatchers.io) {
-            preferenceDataStore.edit { preferences ->
-                preferences[longPreferencesKey(key)] = value
+    override suspend fun removeInt(key: String): OperationResult<Unit> =
+        when (val result = getInt(key).first()) {
+            is OperationResult.Success -> {
+                try {
+                    preferenceDataStore.edit { preferences ->
+                        preferences.remove(intPreferencesKey(key))
+                    }
+                    OperationResult.Success(Unit)
+                } catch (e: IOException) {
+                    Logger.e(fileName, e)
+                    OperationResult.Failure(
+                        Error.Fatal(
+                            throwable = e,
+                            type = Error.Fatal.Type.DISK
+                        )
+                    )
+                }
             }
+            is OperationResult.Failure -> OperationResult.Failure(result.error)
         }
-    }
 
-    override suspend fun saveString(key: String, value: String) {
+    override suspend fun removeLong(key: String): OperationResult<Unit> =
+        when (val result = getLong(key).first()) {
+            is OperationResult.Success -> {
+                try {
+                    preferenceDataStore.edit { preferences ->
+                        preferences.remove(longPreferencesKey(key))
+                    }
+                    OperationResult.Success(Unit)
+                } catch (e: IOException) {
+                    Logger.e(fileName, e)
+                    OperationResult.Failure(
+                        Error.Fatal(
+                            throwable = e,
+                            type = Error.Fatal.Type.DISK
+                        )
+                    )
+                }
+            }
+            is OperationResult.Failure -> OperationResult.Failure(result.error)
+        }
+
+    override suspend fun removeString(key: String): OperationResult<Unit> =
+        when (val result = getString(key).first()) {
+            is OperationResult.Success -> {
+                try {
+                    preferenceDataStore.edit { preferences ->
+                        preferences.remove(stringPreferencesKey(key))
+                    }
+                    OperationResult.Success(Unit)
+                } catch (e: IOException) {
+                    Logger.e(fileName, e)
+                    OperationResult.Failure(
+                        Error.Fatal(
+                            throwable = e,
+                            type = Error.Fatal.Type.DISK
+                        )
+                    )
+                }
+            }
+            is OperationResult.Failure -> OperationResult.Failure(result.error)
+        }
+
+    override suspend fun saveBoolean(key: String, value: Boolean): OperationResult<Unit> =
         withContext(appDispatchers.io) {
-            preferenceDataStore.edit { preferences ->
-                preferences[stringPreferencesKey(key)] = value
+            try {
+                preferenceDataStore.edit { preferences ->
+                    preferences[booleanPreferencesKey(key)] = value
+                }
+                OperationResult.Success(Unit)
+            } catch (e: IOException) {
+                Logger.e(fileName, e)
+                OperationResult.Failure(
+                    Error.Fatal(
+                        throwable = e,
+                        type = Error.Fatal.Type.DISK
+                    )
+                )
             }
         }
-    }
+
+    override suspend fun saveFloat(key: String, value: Float): OperationResult<Unit> =
+        withContext(appDispatchers.io) {
+            try {
+                preferenceDataStore.edit { preferences ->
+                    preferences[floatPreferencesKey(key)] = value
+                }
+                OperationResult.Success(Unit)
+            } catch (e: IOException) {
+                Logger.e(fileName, e)
+                OperationResult.Failure(
+                    Error.Fatal(
+                        throwable = e,
+                        type = Error.Fatal.Type.DISK
+                    )
+                )
+            }
+        }
+
+    override suspend fun saveInt(key: String, value: Int): OperationResult<Unit> =
+        withContext(appDispatchers.io) {
+            try {
+                preferenceDataStore.edit { preferences ->
+                    preferences[intPreferencesKey(key)] = value
+                }
+                OperationResult.Success(Unit)
+            } catch (e: IOException) {
+                Logger.e(fileName, e)
+                OperationResult.Failure(
+                    Error.Fatal(
+                        throwable = e,
+                        type = Error.Fatal.Type.DISK
+                    )
+                )
+            }
+        }
+
+    override suspend fun saveLong(key: String, value: Long): OperationResult<Unit> =
+        withContext(appDispatchers.io) {
+            try {
+                preferenceDataStore.edit { preferences ->
+                    preferences[longPreferencesKey(key)] = value
+                }
+                OperationResult.Success(Unit)
+            } catch (e: IOException) {
+                Logger.e(fileName, e)
+                OperationResult.Failure(
+                    Error.Fatal(
+                        throwable = e,
+                        type = Error.Fatal.Type.DISK
+                    )
+                )
+            }
+        }
+
+    override suspend fun saveString(key: String, value: String) =
+        withContext(appDispatchers.io) {
+            try {
+                preferenceDataStore.edit { preferences ->
+                    preferences[stringPreferencesKey(key)] = value
+                }
+                OperationResult.Success(Unit)
+            } catch (e: IOException) {
+                Logger.e(fileName, e)
+                OperationResult.Failure(
+                    Error.Fatal(
+                        throwable = e,
+                        type = Error.Fatal.Type.DISK
+                    )
+                )
+            }
+        }
 
     private fun getDataStorePreferences(): Flow<DataStorePreferences> =
         preferenceDataStore.data.catch { exception ->

@@ -158,4 +158,9 @@ sealed class Error(
         "Null user by state",
         R.string.null_user_by_state
     )
+
+    object PreferenceNotFound : Error(
+        "Preference not found",
+        R.string.empty
+    )
 }

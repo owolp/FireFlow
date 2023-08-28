@@ -19,6 +19,7 @@ package dev.zitech.fireflow.common.data.source.featureflag
 
 import dev.zitech.fireflow.common.data.source.preferences.PreferencesDataSource
 import dev.zitech.fireflow.common.domain.model.featureflag.Feature
+import dev.zitech.fireflow.core.result.OperationResult
 import javax.inject.Inject
 import kotlinx.coroutines.flow.first
 
@@ -28,7 +29,7 @@ internal class DevFeatureFlagSource @Inject constructor(
 
     override val priority: Int = PRIORITY_MEDIUM
 
-    suspend fun setFeatureEnabled(feature: Feature, enabled: Boolean): Unit =
+    suspend fun setFeatureEnabled(feature: Feature, enabled: Boolean): OperationResult<Unit> =
         developmentPreferencesDataSource.saveBoolean(
             key = feature.key,
             value = enabled
@@ -36,9 +37,8 @@ internal class DevFeatureFlagSource @Inject constructor(
 
     override suspend fun hasFeature(feature: Feature): Boolean = true
 
-    override suspend fun isFeatureEnabled(feature: Feature): Boolean =
+    override suspend fun isFeatureEnabled(feature: Feature): OperationResult<Boolean> =
         developmentPreferencesDataSource.getBoolean(
-            key = feature.key,
-            defaultValue = feature.defaultValue
+            key = feature.key
         ).first()
 }

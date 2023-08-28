@@ -146,8 +146,8 @@ internal interface RepositoryModule {
             analyticsReporter: AnalyticsReporter,
             @StandardPreferencesDataSource preferencesDataSource: PreferencesDataSource
         ): AnalyticsRepository = AnalyticsRepositoryImpl(
-            appConfigProvider,
             analyticsReporter,
+            appConfigProvider,
             preferencesDataSource
         )
 

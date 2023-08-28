@@ -25,8 +25,11 @@ import dev.zitech.fireflow.common.domain.model.application.ApplicationTheme
 import dev.zitech.fireflow.common.domain.model.preferences.IntPreference
 import dev.zitech.fireflow.common.domain.repository.application.ApplicationRepository
 import dev.zitech.fireflow.core.dispatcher.AppDispatchers
+import dev.zitech.fireflow.core.error.Error
 import dev.zitech.fireflow.core.result.OperationResult
 import javax.inject.Inject
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
@@ -43,24 +46,46 @@ internal class ApplicationRepositoryImpl @Inject constructor(
 
     override suspend fun clearApplicationStorage(): OperationResult<Unit> =
         withContext(appDispatchers.io) {
-            standardPreferencesDataSource.removeAll()
-            securedPreferencesDataSource.removeAll()
-            developmentPreferencesDataSource.removeAll()
-            fireFlowDatabase.clearAllTables()
+            val standardResult = async { standardPreferencesDataSource.removeAll() }
+            val securedResult = async { securedPreferencesDataSource.removeAll() }
+            val developmentResult = async { developmentPreferencesDataSource.removeAll() }
 
-            return@withContext OperationResult.Success(Unit)
+            val allResults = listOf(standardResult, securedResult, developmentResult).awaitAll()
+
+            if (allResults.all { it is OperationResult.Success }) {
+                fireFlowDatabase.clearAllTables()
+                OperationResult.Success(Unit)
+            } else {
+                allResults.first { it is OperationResult.Failure }
+            }
         }
 
-    override fun getApplicationTheme(): Flow<ApplicationTheme> =
+    override suspend fun getApplicationTheme(): Flow<OperationResult<ApplicationTheme>> =
         standardPreferencesDataSource.getInt(
-            IntPreference.APPLICATION_THEME.key,
-            IntPreference.APPLICATION_THEME.defaultValue
-        ).map(intToApplicationThemeMapper::invoke)
+            IntPreference.APPLICATION_THEME.key
+        ).map { operationResult ->
+            when (operationResult) {
+                is OperationResult.Success -> OperationResult.Success(
+                    intToApplicationThemeMapper.invoke(
+                        operationResult.data
+                    )
+                )
+                is OperationResult.Failure -> {
+                    when (operationResult.error) {
+                        Error.PreferenceNotFound -> OperationResult.Success(
+                            intToApplicationThemeMapper.invoke(
+                                IntPreference.APPLICATION_THEME.defaultValue
+                            )
+                        )
+                        else -> OperationResult.Failure(operationResult.error)
+                    }
+                }
+            }
+        }
 
-    override suspend fun setApplicationTheme(applicationTheme: ApplicationTheme) {
+    override suspend fun setApplicationTheme(applicationTheme: ApplicationTheme): OperationResult<Unit> =
         standardPreferencesDataSource.saveInt(
             IntPreference.APPLICATION_THEME.key,
             applicationThemeToIntMapper(applicationTheme)
         )
-    }
 }

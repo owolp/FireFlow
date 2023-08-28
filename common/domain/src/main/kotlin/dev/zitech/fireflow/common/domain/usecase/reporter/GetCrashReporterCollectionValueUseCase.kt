@@ -18,6 +18,7 @@
 package dev.zitech.fireflow.common.domain.usecase.reporter
 
 import dev.zitech.fireflow.common.domain.repository.reporter.CrashRepository
+import dev.zitech.fireflow.core.result.OperationResult
 import javax.inject.Inject
 import kotlinx.coroutines.flow.first
 
@@ -35,6 +36,6 @@ class GetCrashReporterCollectionValueUseCase @Inject constructor(
      *
      * @return The value of the crash reporter collection setting.
      */
-    suspend operator fun invoke(): Boolean =
+    suspend operator fun invoke(): OperationResult<Boolean> =
         crashRepository.getCollectionEnabled().first()
 }

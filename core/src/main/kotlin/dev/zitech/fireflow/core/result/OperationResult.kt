@@ -29,18 +29,18 @@ import dev.zitech.fireflow.core.result.OperationResult.Success
 sealed interface OperationResult<out T : Any> {
 
     /**
-     * Represents a successful result of the operation.
-     *
-     * @property data The data associated with the success result.
-     */
-    data class Success<out T : Any>(val data: T) : OperationResult<T>
-
-    /**
      * Represents a failure result of the operation.
      *
      * @property error The error associated with the failure result.
      */
     data class Failure<T : Any>(val error: Error) : OperationResult<T>
+
+    /**
+     * Represents a successful result of the operation.
+     *
+     * @property data The data associated with the success result.
+     */
+    data class Success<out T : Any>(val data: T) : OperationResult<T>
 }
 
 /**
@@ -83,4 +83,16 @@ inline fun <T : Any, R : Any> OperationResult<T>.mapToWork(
     when (this) {
         is Success -> Success(transform(data))
         is Failure -> Failure(error)
+    }
+
+fun <T : Any> OperationResult<T>.getResultOrNull(): T? =
+    when (this) {
+        is Success -> data
+        is Failure -> null
+    }
+
+fun <T : Any> OperationResult<T>.getResultOrDefault(default: T): T =
+    when (this) {
+        is Success -> data
+        is Failure -> default
     }

@@ -18,6 +18,7 @@
 package dev.zitech.fireflow.common.domain.usecase.reporter
 
 import dev.zitech.fireflow.common.domain.repository.reporter.PerformanceRepository
+import dev.zitech.fireflow.core.result.OperationResult
 import javax.inject.Inject
 import kotlinx.coroutines.flow.first
 
@@ -35,6 +36,6 @@ class GetPerformanceCollectionValueUseCase @Inject constructor(
      *
      * @return The value of the performance collection setting.
      */
-    suspend operator fun invoke(): Boolean =
+    suspend operator fun invoke(): OperationResult<Boolean> =
         performanceRepository.getCollectionEnabled().first()
 }

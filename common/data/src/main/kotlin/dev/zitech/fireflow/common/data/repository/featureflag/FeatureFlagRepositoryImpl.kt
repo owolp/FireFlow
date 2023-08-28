@@ -26,6 +26,7 @@ import dev.zitech.fireflow.common.domain.model.featureflag.ProdFeature
 import dev.zitech.fireflow.common.domain.repository.featureflag.FeatureFlagRepository
 import dev.zitech.fireflow.core.applicationconfig.AppConfigProvider
 import dev.zitech.fireflow.core.applicationconfig.BuildMode
+import dev.zitech.fireflow.core.result.getResultOrDefault
 import java.util.concurrent.CopyOnWriteArrayList
 import javax.inject.Inject
 
@@ -59,7 +60,7 @@ internal class FeatureFlagRepositoryImpl @Inject constructor(
         sources.filter { it.hasFeature(feature) }
             .sortedByDescending(FeatureFlagSource::priority)
             .firstOrNull()
-            ?.isFeatureEnabled(feature)
+            ?.isFeatureEnabled(feature)?.getResultOrDefault(feature.defaultValue)
             ?: feature.defaultValue
 
     override suspend fun setDevFeatureEnabled(feature: Feature, enabled: Boolean) {

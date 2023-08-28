@@ -17,6 +17,7 @@
 
 package dev.zitech.fireflow.common.domain.repository.reporter
 
+import dev.zitech.fireflow.core.result.OperationResult
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -29,7 +30,7 @@ interface CrashRepository {
      *
      * @return A [Flow] that emits the boolean value indicating whether crash collection is enabled.
      */
-    fun getCollectionEnabled(): Flow<Boolean>
+    suspend fun getCollectionEnabled(): Flow<OperationResult<Boolean>>
 
     /**
      * Initializes the crash reporting system.
@@ -54,8 +55,9 @@ interface CrashRepository {
      * Sets the flag indicating whether crash collection is enabled.
      *
      * @param enabled The boolean value indicating whether crash collection is enabled.
+     * @return An [OperationResult] representing the result of the operation.
      */
-    suspend fun setCollectionEnabled(enabled: Boolean)
+    suspend fun setCollectionEnabled(enabled: Boolean): OperationResult<Unit>
 
     /**
      * Sets a custom key-value pair for crash reporting.

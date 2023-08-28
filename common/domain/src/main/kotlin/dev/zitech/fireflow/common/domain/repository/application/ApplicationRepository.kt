@@ -39,12 +39,13 @@ interface ApplicationRepository {
      *
      * @return A flow that emits the current application theme.
      */
-    fun getApplicationTheme(): Flow<ApplicationTheme>
+    suspend fun getApplicationTheme(): Flow<OperationResult<ApplicationTheme>>
 
     /**
      * Sets the application theme.
      *
      * @param applicationTheme The application theme to be set.
+     * @return An [OperationResult] representing the result of the operation.
      */
-    suspend fun setApplicationTheme(applicationTheme: ApplicationTheme)
+    suspend fun setApplicationTheme(applicationTheme: ApplicationTheme): OperationResult<Unit>
 }

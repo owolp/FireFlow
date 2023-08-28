@@ -19,6 +19,7 @@ package dev.zitech.fireflow.common.domain.usecase.application
 
 import dev.zitech.fireflow.common.domain.model.application.ApplicationTheme
 import dev.zitech.fireflow.common.domain.repository.application.ApplicationRepository
+import dev.zitech.fireflow.core.result.OperationResult
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 
@@ -36,6 +37,6 @@ class GetApplicationThemeValueUseCase @Inject constructor(
      *
      * @return A [Flow] that emits the current application theme.
      */
-    operator fun invoke(): Flow<ApplicationTheme> =
+    suspend operator fun invoke(): Flow<OperationResult<ApplicationTheme>> =
         applicationRepository.getApplicationTheme()
 }

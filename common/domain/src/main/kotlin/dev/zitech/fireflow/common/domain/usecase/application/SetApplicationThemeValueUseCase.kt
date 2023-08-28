@@ -19,6 +19,7 @@ package dev.zitech.fireflow.common.domain.usecase.application
 
 import dev.zitech.fireflow.common.domain.model.application.ApplicationTheme
 import dev.zitech.fireflow.common.domain.repository.application.ApplicationRepository
+import dev.zitech.fireflow.core.result.OperationResult
 import javax.inject.Inject
 
 /**
@@ -35,6 +36,6 @@ class SetApplicationThemeValueUseCase @Inject constructor(
      *
      * @param applicationTheme The new application theme to be set.
      */
-    suspend operator fun invoke(applicationTheme: ApplicationTheme) =
+    suspend operator fun invoke(applicationTheme: ApplicationTheme): OperationResult<Unit> =
         applicationRepository.setApplicationTheme(applicationTheme)
 }

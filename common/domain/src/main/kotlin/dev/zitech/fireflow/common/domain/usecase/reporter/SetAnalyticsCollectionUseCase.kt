@@ -20,6 +20,7 @@ package dev.zitech.fireflow.common.domain.usecase.reporter
 import dev.zitech.fireflow.common.domain.model.user.UserLoggedState
 import dev.zitech.fireflow.common.domain.repository.reporter.AnalyticsRepository
 import dev.zitech.fireflow.common.domain.usecase.user.GetUserLoggedStateUseCase
+import dev.zitech.fireflow.core.result.getResultOrDefault
 import javax.inject.Inject
 
 /**
@@ -44,7 +45,9 @@ class SetAnalyticsCollectionUseCase @Inject constructor(
     suspend operator fun invoke(enabled: Boolean? = null) =
         (
             enabled ?: when (getUserLoggedStateUseCase()) {
-                UserLoggedState.LOGGED_IN -> getAnalyticsCollectionValueUseCase()
+                UserLoggedState.LOGGED_IN -> getAnalyticsCollectionValueUseCase().getResultOrDefault(
+                    false
+                )
                 UserLoggedState.LOGGED_OUT -> false
             }
             ).run {
