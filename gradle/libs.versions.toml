@@ -18,7 +18,7 @@ retrofit = "2.9.0"
 room = "2.6.0-alpha01"
 
 [libraries]
-acra-http = "ch.acra:acra-http:5.11.0"
+acra-http = "ch.acra:acra-http:5.11.1"
 airbnb-android-lottie-compose = "com.airbnb.android:lottie-compose:6.1.0"
 android-build-gradle = "com.android.tools.build:gradle:7.4.2"
 androidx-activity-compose = "androidx.activity:activity-compose:1.7.2"
@@ -62,8 +62,8 @@ google-accompanist-placeholder-material = { module = "com.google.accompanist:acc
 google-dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "dagger" }
 google-dagger-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "dagger" }
 google-dagger-hilt-gradle = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "dagger" }
-google-firebase-bom = "com.google.firebase:firebase-bom:32.2.2"
-google-firebase-crashlytics-gradle = "com.google.firebase:firebase-crashlytics-gradle:2.9.8"
+google-firebase-bom = "com.google.firebase:firebase-bom:32.2.3"
+google-firebase-crashlytics-gradle = "com.google.firebase:firebase-crashlytics-gradle:2.9.9"
 google-firebase-performance-gradle = "com.google.firebase:perf-plugin:1.4.2"
 google-material = "com.google.android.material:material:1.9.0"
 google-gms-services = "com.google.gms:google-services:4.3.15"
@@ -73,7 +73,7 @@ huawei-agconnect-apms = "com.huawei.agconnect:agconnect-apms:1.6.2.300"
 huawei-agconnect-core = { module = "com.huawei.agconnect:agconnect-core", version.ref = "agconnect" }
 huawei-agconnect-crash = { module = "com.huawei.agconnect:agconnect-crash", version.ref = "agconnect" }
 huawei-agconnect-remoteconfig = { module = "com.huawei.agconnect:agconnect-remoteconfig", version.ref = "agconnect" }
-huawei-hms-hianalytics = "com.huawei.hms:hianalytics:6.10.0.302"
+huawei-hms-hianalytics = "com.huawei.hms:hianalytics:6.10.0.303"
 mannodermaus-gradle-plugins-android-junit5 = "de.mannodermaus.gradle.plugins:android-junit5:1.9.3.0"
 mannodermaus-junit5-android-test-core = { module = "de.mannodermaus.junit5:android-test-core", version.ref = "androidJunit" }
 mannodermaus-junit5-android-test-runner = { module = "de.mannodermaus.junit5:android-test-runner", version.ref = "androidJunit" }
@@ -84,7 +84,7 @@ jetbrains-kotlin-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-
 jetbrains-kotlin-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
-mockk-mockk = "io.mockk:mockk:1.13.5"
+mockk-mockk = "io.mockk:mockk:1.13.7"
 squareup-moshi-moshi = { module = "com.squareup.moshi:moshi", version.ref = "moshi" }
 squareup-moshi-kotlin-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", version.ref = "moshi" }
 squareup-leakcanary-android = "com.squareup.leakcanary:leakcanary-android:2.12"
