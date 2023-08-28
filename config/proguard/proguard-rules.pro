@@ -45,6 +45,8 @@
 # Flipper
 -keep class com.facebook.jni.** { *; }
 -keep class com.facebook.flipper.** { *; }
+# Missing class com.facebook.proguard.annotations.DoNotStrip (referenced from: void com.facebook.flipper.android.EventBase.initHybrid() and 7 other contexts)\nMissing class org.slf4j.impl.StaticLoggerBinder (referenced from: void org.slf4j.LoggerFactory.bind() and 3 other contexts)","sources":[{}],"tool":"R8
+-dontwarn com.facebook.proguard.annotations.DoNotStrip
 
 # R8: Missing class com.google.errorprone.annotations.Immutable (referenced from: com.google.crypto.tink.KeyTemplate and 4 other contexts)
 -dontwarn com.google.errorprone.annotations.Immutable
@@ -52,3 +54,11 @@
 # SQLCipher
 -keep class net.sqlcipher.** { *; }
 -keep class net.sqlcipher.database.* { *; }
+
+# https://youtrack.jetbrains.com/issue/KTOR-5528
+# https://stackoverflow.com/q/76042330
+-dontwarn org.slf4j.impl.StaticLoggerBinder
+
+# Added because of
+# AGPBI: {"kind":"error","text":"Missing class android.securitydiagnose.HwSecurityDiagnoseManager$StpExtraStatusInfo (referenced from: boolean com.huawei.secure.android.common.detect.b.b())","sources":[{}],"tool":"R8"}
+-ignorewarnings

@@ -18,7 +18,6 @@
 import com.android.build.api.dsl.ApplicationProductFlavor
 import com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
 import com.google.firebase.perf.plugin.FirebasePerfExtension
-import com.huawei.agconnect.apms.plugin.APMSExtension
 
 apply(from = "$rootDir/config/dependencies/compose-dependencies.gradle")
 apply(from = "$rootDir/config/dependencies/di-dependencies.gradle")
@@ -48,9 +47,7 @@ android {
             agcp {
                 mappingUpload = false
                 debug = true
-            }
-            configure<APMSExtension> {
-                instrumentationEnabled = false
+                enableAPMS = false
             }
             configure<FirebasePerfExtension> {
                 setInstrumentationEnabled(false)
@@ -125,15 +122,15 @@ fun disableAgConnectCrashMappingFileUpload() {
     }
 }
 
-fun ApplicationProductFlavor.disableFirebasePerformance() {
-    configure<FirebasePerfExtension> {
-        setInstrumentationEnabled(false)
+fun disableAPMS() {
+    agcp {
+        enableAPMS = false
     }
 }
 
-fun ApplicationProductFlavor.disableAPMS() {
-    configure<APMSExtension> {
-        instrumentationEnabled = false
+fun ApplicationProductFlavor.disableFirebasePerformance() {
+    configure<FirebasePerfExtension> {
+        setInstrumentationEnabled(false)
     }
 }
 

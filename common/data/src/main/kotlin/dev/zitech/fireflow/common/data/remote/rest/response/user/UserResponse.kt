@@ -21,13 +21,13 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-internal data class UserResponse(
+internal class UserResponse(
     @Json(name = "data")
     val data: GetUserDataResponse
 )
 
 @JsonClass(generateAdapter = true)
-internal data class GetUserDataResponse(
+internal class GetUserDataResponse(
     @Json(name = "attributes")
     val attributes: GetUserDataAttributesResponse,
     @Json(name = "id")
@@ -37,7 +37,7 @@ internal data class GetUserDataResponse(
 )
 
 @JsonClass(generateAdapter = true)
-internal data class GetUserDataAttributesResponse(
+internal class GetUserDataAttributesResponse(
     @Json(name = "email")
     val email: String,
     @Json(name = "role")
