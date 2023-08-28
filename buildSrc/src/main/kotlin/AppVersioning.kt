@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Zitech Ltd.
+ * Copyright (C) 2023 Zitech Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,9 +21,9 @@ object AppVersioning {
     private const val MINOR = 0
     private const val PATCH = 1
 
-    const val COMPILE_SDK = 33
+    const val COMPILE_SDK = 34
     const val MIN_SDK = 29
-    const val TARGET_SDK = 33
+    const val TARGET_SDK = 34
 
     private const val LOCAL_BUILD_VERSION_CODE = 424242
 
