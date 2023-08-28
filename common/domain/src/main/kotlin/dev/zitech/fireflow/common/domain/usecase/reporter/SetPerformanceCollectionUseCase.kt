@@ -22,6 +22,7 @@ import dev.zitech.fireflow.common.domain.model.user.UserLoggedState
 import dev.zitech.fireflow.common.domain.repository.reporter.PerformanceRepository
 import dev.zitech.fireflow.common.domain.usecase.configurator.GetBooleanConfigValueUseCase
 import dev.zitech.fireflow.common.domain.usecase.user.GetUserLoggedStateUseCase
+import dev.zitech.fireflow.core.result.OperationResult
 import dev.zitech.fireflow.core.result.getResultOrDefault
 import javax.inject.Inject
 
@@ -46,7 +47,7 @@ class SetPerformanceCollectionUseCase @Inject constructor(
      * @param enabled The new value of the performance collection setting. If null, the value will be determined based
      * on the user's logged-in state and the configuration value.
      */
-    suspend operator fun invoke(enabled: Boolean? = null) =
+    suspend operator fun invoke(enabled: Boolean? = null): OperationResult<Unit> =
         (
             enabled ?: when (getUserLoggedStateUseCase()) {
                 UserLoggedState.LOGGED_IN -> {

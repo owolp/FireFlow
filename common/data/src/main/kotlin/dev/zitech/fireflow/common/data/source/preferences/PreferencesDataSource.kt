@@ -177,9 +177,10 @@ internal interface PreferencesDataSource {
      * Saves a boolean value associated with the specified key to the preferences.
      *
      * @param key The key of the boolean value.
-     * @param value The boolean value to save.
+     * @param value The boolean value to be saved.
+     * @return An [OperationResult] representing the result of the operation.
      */
-    suspend fun saveBoolean(key: String, value: Boolean)
+    suspend fun saveBoolean(key: String, value: Boolean): OperationResult<Unit>
 
     /**
      * Saves a float value associated with the specified key to the preferences.

@@ -29,7 +29,7 @@ internal class DevFeatureFlagSource @Inject constructor(
 
     override val priority: Int = PRIORITY_MEDIUM
 
-    suspend fun setFeatureEnabled(feature: Feature, enabled: Boolean): Unit =
+    suspend fun setFeatureEnabled(feature: Feature, enabled: Boolean): OperationResult<Unit> =
         developmentPreferencesDataSource.saveBoolean(
             key = feature.key,
             value = enabled

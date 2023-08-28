@@ -55,8 +55,9 @@ interface CrashRepository {
      * Sets the flag indicating whether crash collection is enabled.
      *
      * @param enabled The boolean value indicating whether crash collection is enabled.
+     * @return An [OperationResult] representing the result of the operation.
      */
-    suspend fun setCollectionEnabled(enabled: Boolean)
+    suspend fun setCollectionEnabled(enabled: Boolean): OperationResult<Unit>
 
     /**
      * Sets a custom key-value pair for crash reporting.

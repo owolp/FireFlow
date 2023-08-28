@@ -57,7 +57,8 @@ interface AnalyticsRepository {
     /**
      * Sets the flag indicating whether data collection is enabled.
      *
-     * @param enabled The boolean value indicating whether data collection is enabled.
+     * @param enabled The boolean value indicating whether data collection should be enabled.
+     * @return An [OperationResult] representing the result of the operation.
      */
-    suspend fun setCollectionEnabled(enabled: Boolean)
+    suspend fun setCollectionEnabled(enabled: Boolean): OperationResult<Unit>
 }

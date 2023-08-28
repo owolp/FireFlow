@@ -53,7 +53,7 @@ internal class PerformanceRepositoryImpl @Inject constructor(
             }
         }
 
-    override suspend fun setCollectionEnabled(enabled: Boolean) {
+    override suspend fun setCollectionEnabled(enabled: Boolean): OperationResult<Unit> =
         when {
             appConfigProvider.buildMode == BuildMode.RELEASE || appConfigProvider.buildFlavor == BuildFlavor.DEV -> {
                 performanceReporter.setCollectionEnabled(enabled)
@@ -63,8 +63,10 @@ internal class PerformanceRepositoryImpl @Inject constructor(
                 )
             }
             else -> {
-                // When debug on any other flavor, we don't want to have collection enabled
+                // "When debug on any other flavor, we don't want to have collection enabled"
+                OperationResult.Failure(
+                    Error.OperationNotSupported("setCollectionEnabled on not supported flavor")
+                )
             }
         }
-    }
 }

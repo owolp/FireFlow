@@ -240,13 +240,23 @@ internal class StandardPreferencesDataSource @Inject constructor(
             is OperationResult.Failure -> OperationResult.Failure(result.error)
         }
 
-    override suspend fun saveBoolean(key: String, value: Boolean) {
+    override suspend fun saveBoolean(key: String, value: Boolean): OperationResult<Unit> =
         withContext(appDispatchers.io) {
-            preferenceDataStore.edit { preferences ->
-                preferences[booleanPreferencesKey(key)] = value
+            try {
+                preferenceDataStore.edit { preferences ->
+                    preferences[booleanPreferencesKey(key)] = value
+                }
+                OperationResult.Success(Unit)
+            } catch (e: IOException) {
+                Logger.e(fileName, e)
+                OperationResult.Failure(
+                    Error.Fatal(
+                        throwable = e,
+                        type = Error.Fatal.Type.DISK
+                    )
+                )
             }
         }
-    }
 
     override suspend fun saveFloat(key: String, value: Float) {
         withContext(appDispatchers.io) {
