@@ -250,11 +250,19 @@ internal class SecuredPreferencesDataSource @Inject constructor(
             }
         }
 
-    override suspend fun removeInt(key: String) {
+    override suspend fun removeInt(key: String): OperationResult<Unit> =
         withContext(appDispatchers.io) {
             try {
-                encryptedSecuredPreferences?.edit(commit = true) {
-                    remove(key)
+                encryptedSecuredPreferences?.let {
+                    when (val result = getInt(key).first()) {
+                        is OperationResult.Success -> {
+                            it.edit(commit = true) {
+                                remove(key)
+                            }
+                            OperationResult.Success(Unit)
+                        }
+                        is OperationResult.Failure -> OperationResult.Failure(result.error)
+                    }
                 } ?: fallbackPreferencesDataSource.removeInt(key)
             } catch (e: KeyStoreException) {
                 Logger.e(tag, e)
@@ -264,7 +272,6 @@ internal class SecuredPreferencesDataSource @Inject constructor(
                 fallbackPreferencesDataSource.removeInt(key)
             }
         }
-    }
 
     override suspend fun removeLong(key: String) {
         withContext(appDispatchers.io) {

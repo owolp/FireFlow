@@ -153,9 +153,10 @@ internal interface PreferencesDataSource {
     /**
      * Removes the integer value associated with the specified key from the preferences.
      *
-     * @param key The key of the integer value to remove.
+     * @param key The key of the integer value to be removed.
+     * @return An [OperationResult] representing the result of the operation.
      */
-    suspend fun removeInt(key: String)
+    suspend fun removeInt(key: String): OperationResult<Unit>
 
     /**
      * Removes the long value associated with the specified key from the preferences.
