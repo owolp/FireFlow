@@ -186,15 +186,16 @@ internal interface PreferencesDataSource {
      * Saves a float value associated with the specified key to the preferences.
      *
      * @param key The key of the float value.
-     * @param value The float value to save.
+     * @param value The float value to be saved.
+     * @return An [OperationResult] representing the result of the operation.
      */
-    suspend fun saveFloat(key: String, value: Float)
+    suspend fun saveFloat(key: String, value: Float): OperationResult<Unit>
 
     /**
      * Saves an integer value associated with the specified key to the preferences.
      *
      * @param key The key of the integer value.
-     * @param value The integer value to save.
+     * @param value The integer value to be saved.
      */
     suspend fun saveInt(key: String, value: Int)
 
@@ -202,17 +203,19 @@ internal interface PreferencesDataSource {
      * Saves a long value associated with the specified key to the preferences.
      *
      * @param key The key of the long value.
-     * @param value The long value to save.
+     * @param value The long value to be saved.
+     * @return An [OperationResult] representing the result of the operation.
      */
-    suspend fun saveLong(key: String, value: Long)
+    suspend fun saveLong(key: String, value: Long): OperationResult<Unit>
 
     /**
      * Saves a string value associated with the specified key to the preferences.
      *
      * @param key The key of the string value.
-     * @param value The string value to save.
+     * @param value The string value to be saved.
+     * @return An [OperationResult] representing the result of the operation.
      */
-    suspend fun saveString(key: String, value: String)
+    suspend fun saveString(key: String, value: String): OperationResult<Unit>
 
     companion object {
         const val DEFAULT_VALUE_GET_BOOLEAN = false

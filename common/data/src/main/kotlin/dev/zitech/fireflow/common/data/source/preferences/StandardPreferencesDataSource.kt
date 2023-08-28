@@ -258,13 +258,23 @@ internal class StandardPreferencesDataSource @Inject constructor(
             }
         }
 
-    override suspend fun saveFloat(key: String, value: Float) {
+    override suspend fun saveFloat(key: String, value: Float): OperationResult<Unit> =
         withContext(appDispatchers.io) {
-            preferenceDataStore.edit { preferences ->
-                preferences[floatPreferencesKey(key)] = value
+            try {
+                preferenceDataStore.edit { preferences ->
+                    preferences[floatPreferencesKey(key)] = value
+                }
+                OperationResult.Success(Unit)
+            } catch (e: IOException) {
+                Logger.e(fileName, e)
+                OperationResult.Failure(
+                    Error.Fatal(
+                        throwable = e,
+                        type = Error.Fatal.Type.DISK
+                    )
+                )
             }
         }
-    }
 
     override suspend fun saveInt(key: String, value: Int) {
         withContext(appDispatchers.io) {
@@ -274,21 +284,41 @@ internal class StandardPreferencesDataSource @Inject constructor(
         }
     }
 
-    override suspend fun saveLong(key: String, value: Long) {
+    override suspend fun saveLong(key: String, value: Long): OperationResult<Unit> =
         withContext(appDispatchers.io) {
-            preferenceDataStore.edit { preferences ->
-                preferences[longPreferencesKey(key)] = value
+            try {
+                preferenceDataStore.edit { preferences ->
+                    preferences[longPreferencesKey(key)] = value
+                }
+                OperationResult.Success(Unit)
+            } catch (e: IOException) {
+                Logger.e(fileName, e)
+                OperationResult.Failure(
+                    Error.Fatal(
+                        throwable = e,
+                        type = Error.Fatal.Type.DISK
+                    )
+                )
             }
         }
-    }
 
-    override suspend fun saveString(key: String, value: String) {
+    override suspend fun saveString(key: String, value: String) =
         withContext(appDispatchers.io) {
-            preferenceDataStore.edit { preferences ->
-                preferences[stringPreferencesKey(key)] = value
+            try {
+                preferenceDataStore.edit { preferences ->
+                    preferences[stringPreferencesKey(key)] = value
+                }
+                OperationResult.Success(Unit)
+            } catch (e: IOException) {
+                Logger.e(fileName, e)
+                OperationResult.Failure(
+                    Error.Fatal(
+                        throwable = e,
+                        type = Error.Fatal.Type.DISK
+                    )
+                )
             }
         }
-    }
 
     private fun getDataStorePreferences(): Flow<DataStorePreferences> =
         preferenceDataStore.data.catch { exception ->
