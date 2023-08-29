@@ -15,6 +15,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+@file:Suppress("LongMethod", "MatchingDeclarationName", "MagicNumber", "MaxLineLength")
+
 package dev.zitech.fireflow.ds.atoms.placeholder
 
 import androidx.annotation.FloatRange
