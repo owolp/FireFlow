@@ -57,7 +57,7 @@ object FireFlowInputTexts {
             isError = isError,
             textStyle = style,
             shape = FireFlowTheme.shapes.extraLarge,
-            colors = TextFieldDefaults.textFieldColors(
+            colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = FireFlowTheme.colors.background,
                 unfocusedIndicatorColor = FireFlowTheme.colors.background,
                 disabledIndicatorColor = FireFlowTheme.colors.background
@@ -102,7 +102,7 @@ object FireFlowInputTexts {
             isError = isError,
             textStyle = style,
             shape = FireFlowTheme.shapes.extraLarge,
-            colors = TextFieldDefaults.textFieldColors(
+            colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = FireFlowTheme.colors.background,
                 unfocusedIndicatorColor = FireFlowTheme.colors.background,
                 disabledIndicatorColor = FireFlowTheme.colors.background
@@ -147,7 +147,7 @@ object FireFlowInputTexts {
             isError = isError,
             textStyle = style,
             shape = FireFlowTheme.shapes.extraLarge,
-            colors = TextFieldDefaults.textFieldColors(
+            colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = FireFlowTheme.colors.background,
                 unfocusedIndicatorColor = FireFlowTheme.colors.background,
                 disabledIndicatorColor = FireFlowTheme.colors.background
@@ -192,7 +192,7 @@ object FireFlowInputTexts {
             isError = isError,
             textStyle = style,
             shape = FireFlowTheme.shapes.extraLarge,
-            colors = TextFieldDefaults.textFieldColors(
+            colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = FireFlowTheme.colors.background,
                 unfocusedIndicatorColor = FireFlowTheme.colors.background,
                 disabledIndicatorColor = FireFlowTheme.colors.background
@@ -237,7 +237,7 @@ object FireFlowInputTexts {
             isError = isError,
             textStyle = style,
             shape = FireFlowTheme.shapes.extraLarge,
-            colors = TextFieldDefaults.textFieldColors(
+            colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = FireFlowTheme.colors.background,
                 unfocusedIndicatorColor = FireFlowTheme.colors.background,
                 disabledIndicatorColor = FireFlowTheme.colors.background
@@ -282,7 +282,7 @@ object FireFlowInputTexts {
             isError = isError,
             textStyle = style,
             shape = FireFlowTheme.shapes.extraLarge,
-            colors = TextFieldDefaults.textFieldColors(
+            colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = FireFlowTheme.colors.background,
                 unfocusedIndicatorColor = FireFlowTheme.colors.background,
                 disabledIndicatorColor = FireFlowTheme.colors.background
@@ -327,7 +327,7 @@ object FireFlowInputTexts {
             isError = isError,
             textStyle = style,
             shape = FireFlowTheme.shapes.extraLarge,
-            colors = TextFieldDefaults.textFieldColors(
+            colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = FireFlowTheme.colors.background,
                 unfocusedIndicatorColor = FireFlowTheme.colors.background,
                 disabledIndicatorColor = FireFlowTheme.colors.background
@@ -372,7 +372,7 @@ object FireFlowInputTexts {
             isError = isError,
             textStyle = style,
             shape = FireFlowTheme.shapes.extraLarge,
-            colors = TextFieldDefaults.textFieldColors(
+            colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = FireFlowTheme.colors.background,
                 unfocusedIndicatorColor = FireFlowTheme.colors.background,
                 disabledIndicatorColor = FireFlowTheme.colors.background
@@ -417,7 +417,7 @@ object FireFlowInputTexts {
             isError = isError,
             textStyle = style,
             shape = FireFlowTheme.shapes.extraLarge,
-            colors = TextFieldDefaults.textFieldColors(
+            colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = FireFlowTheme.colors.background,
                 unfocusedIndicatorColor = FireFlowTheme.colors.background,
                 disabledIndicatorColor = FireFlowTheme.colors.background
@@ -462,7 +462,7 @@ object FireFlowInputTexts {
             isError = isError,
             textStyle = style,
             shape = FireFlowTheme.shapes.extraLarge,
-            colors = TextFieldDefaults.textFieldColors(
+            colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = FireFlowTheme.colors.background,
                 unfocusedIndicatorColor = FireFlowTheme.colors.background,
                 disabledIndicatorColor = FireFlowTheme.colors.background
@@ -507,7 +507,7 @@ object FireFlowInputTexts {
             isError = isError,
             textStyle = style,
             shape = FireFlowTheme.shapes.extraLarge,
-            colors = TextFieldDefaults.textFieldColors(
+            colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = FireFlowTheme.colors.background,
                 unfocusedIndicatorColor = FireFlowTheme.colors.background,
                 disabledIndicatorColor = FireFlowTheme.colors.background
@@ -552,7 +552,7 @@ object FireFlowInputTexts {
             isError = isError,
             textStyle = style,
             shape = FireFlowTheme.shapes.extraLarge,
-            colors = TextFieldDefaults.textFieldColors(
+            colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = FireFlowTheme.colors.background,
                 unfocusedIndicatorColor = FireFlowTheme.colors.background,
                 disabledIndicatorColor = FireFlowTheme.colors.background
@@ -597,7 +597,7 @@ object FireFlowInputTexts {
             isError = isError,
             textStyle = style,
             shape = FireFlowTheme.shapes.extraLarge,
-            colors = TextFieldDefaults.textFieldColors(
+            colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = FireFlowTheme.colors.background,
                 unfocusedIndicatorColor = FireFlowTheme.colors.background,
                 disabledIndicatorColor = FireFlowTheme.colors.background
@@ -642,7 +642,7 @@ object FireFlowInputTexts {
             isError = isError,
             textStyle = style,
             shape = FireFlowTheme.shapes.extraLarge,
-            colors = TextFieldDefaults.textFieldColors(
+            colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = FireFlowTheme.colors.background,
                 unfocusedIndicatorColor = FireFlowTheme.colors.background,
                 disabledIndicatorColor = FireFlowTheme.colors.background
@@ -687,7 +687,7 @@ object FireFlowInputTexts {
             isError = isError,
             textStyle = style,
             shape = FireFlowTheme.shapes.extraLarge,
-            colors = TextFieldDefaults.textFieldColors(
+            colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = FireFlowTheme.colors.background,
                 unfocusedIndicatorColor = FireFlowTheme.colors.background,
                 disabledIndicatorColor = FireFlowTheme.colors.background
