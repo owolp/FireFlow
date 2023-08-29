@@ -58,6 +58,7 @@ import dev.zitech.fireflow.settings.presentation.settings.viewmodel.ThemeDismiss
 import dev.zitech.fireflow.settings.presentation.settings.viewmodel.ThemePreferenceClicked
 import dev.zitech.fireflow.settings.presentation.settings.viewmodel.ThemeSelected
 
+@Suppress("CyclomaticComplexMethod")
 @Composable
 internal fun SettingsRoute(
     modifier: Modifier = Modifier,

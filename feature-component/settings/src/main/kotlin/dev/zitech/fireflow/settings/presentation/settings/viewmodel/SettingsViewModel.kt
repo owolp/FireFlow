@@ -96,6 +96,7 @@ internal class SettingsViewModel @Inject constructor(
         }
     }
 
+    @Suppress("CyclomaticComplexMethod")
     override fun receiveIntent(intent: SettingsIntent) {
         viewModelScope.launch {
             when (intent) {
