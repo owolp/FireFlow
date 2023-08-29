@@ -51,6 +51,7 @@ internal class AccountsViewModel @Inject constructor(
         observeUsers(getUsersUseCase)
     }
 
+    @Suppress("CyclomaticComplexMethod")
     override fun receiveIntent(intent: AccountsIntent) {
         viewModelScope.launch {
             when (intent) {

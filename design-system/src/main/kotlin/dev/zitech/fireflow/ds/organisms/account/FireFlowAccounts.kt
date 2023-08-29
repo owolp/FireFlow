@@ -39,14 +39,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.placeholder.PlaceholderHighlight
-import com.google.accompanist.placeholder.material.placeholder
-import com.google.accompanist.placeholder.material.shimmer
 import dev.zitech.fireflow.ds.R
 import dev.zitech.fireflow.ds.atoms.button.FireFlowButtons
 import dev.zitech.fireflow.ds.atoms.dropdown.DropDownMenuItem
 import dev.zitech.fireflow.ds.atoms.dropdown.FireFlowMenu
 import dev.zitech.fireflow.ds.atoms.icon.FireFlowIcons
+import dev.zitech.fireflow.ds.atoms.placeholder.PlaceholderHighlight
+import dev.zitech.fireflow.ds.atoms.placeholder.placeholder
+import dev.zitech.fireflow.ds.atoms.placeholder.shimmer
 import dev.zitech.fireflow.ds.atoms.spacer.FireFlowSpacers
 import dev.zitech.fireflow.ds.atoms.text.FireFlowTexts
 import dev.zitech.fireflow.ds.theme.FireFlowTheme
