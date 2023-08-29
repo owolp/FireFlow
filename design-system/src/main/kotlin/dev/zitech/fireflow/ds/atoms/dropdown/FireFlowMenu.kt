@@ -43,7 +43,7 @@ object FireFlowMenu {
             expanded = expanded,
             onDismissRequest = onDismiss
         ) {
-            items.forEachIndexed { index, dropDownItem ->
+            items.forEach { dropDownItem ->
                 DropdownMenuItem(
                     text = {
                         FireFlowTexts.TitleSmall(
