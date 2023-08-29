@@ -76,7 +76,12 @@ android {
             disableFirebaseCrashlyticsMappingFileUpload()
             disableFirebasePerformance()
             agcp {
-                mappingUpload = true
+                // Changed to false, because of
+                //
+                // --E- ERROR:HTTP Exception, code:413, response:Uploading failed because the file
+                // is too large, please upload it manually on the AGC website or contact the
+                // webmaster
+                mappingUpload = false
                 debug = false
                 enableAPMS = true
             }
