@@ -2,7 +2,7 @@
 accompanist = "0.32.0"
 agconnect = "1.9.1.301"
 androidJunit = "1.3.0"
-compose = "1.5.0"
+compose = "1.5.1"
 composeMaterial3 = "1.1.1"
 composeCompiler = "1.5.2"
 coroutines = "1.7.3"
