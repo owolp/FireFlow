@@ -12,7 +12,7 @@ junit = "5.10.0"
 lifecycle = "2.6.1"
 kotlin = "1.9.0"
 moshi = "1.15.0"
-navigation = "2.7.1"
+navigation = "2.7.2"
 retrofit = "2.9.0"
 room = "2.6.0-beta01"
 
