@@ -64,7 +64,7 @@ google-dagger-hilt-gradle = { module = "com.google.dagger:hilt-android-gradle-pl
 google-firebase-bom = "com.google.firebase:firebase-bom:32.3.1"
 google-firebase-crashlytics-gradle = "com.google.firebase:firebase-crashlytics-gradle:2.9.9"
 google-firebase-performance-gradle = "com.google.firebase:perf-plugin:1.4.2"
-google-material = "com.google.android.material:material:1.9.0"
+google-material = "com.google.android.material:material:1.10.0"
 google-gms-services = "com.google.gms:google-services:4.4.0"
 google-truth = "com.google.truth:truth:1.1.5"
 huawei-agconnect-agcp = { module = "com.huawei.agconnect:agcp", version.ref = "agconnect" }
