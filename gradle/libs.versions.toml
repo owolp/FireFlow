@@ -61,7 +61,7 @@ google-accompanist-systemuicontroller = { module = "com.google.accompanist:accom
 google-dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "dagger" }
 google-dagger-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "dagger" }
 google-dagger-hilt-gradle = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "dagger" }
-google-firebase-bom = "com.google.firebase:firebase-bom:32.3.1"
+google-firebase-bom = "com.google.firebase:firebase-bom:32.4.0"
 google-firebase-crashlytics-gradle = "com.google.firebase:firebase-crashlytics-gradle:2.9.9"
 google-firebase-performance-gradle = "com.google.firebase:perf-plugin:1.4.2"
 google-material = "com.google.android.material:material:1.10.0"
