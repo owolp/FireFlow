@@ -10,7 +10,7 @@ dagger = "2.50"
 flipper = "0.247.0"
 junit = "5.10.2"
 lifecycle = "2.7.0"
-kotlin = "1.9.10"
+kotlin = "1.9.22"
 moshi = "1.15.1"
 navigation = "2.7.7"
 retrofit = "2.9.0"
@@ -19,7 +19,7 @@ room = "2.6.1"
 [libraries]
 acra-http = "ch.acra:acra-http:5.11.3"
 airbnb-android-lottie-compose = "com.airbnb.android:lottie-compose:6.3.0"
-android-build-gradle = "com.android.tools.build:gradle:8.1.4"
+android-build-gradle = "com.android.tools.build:gradle:8.2.2"
 androidx-activity-compose = "androidx.activity:activity-compose:1.8.2"
 androidx-appcompat = "androidx.appcompat:appcompat:1.6.1"
 androidx-arch-core-testing = "androidx.arch.core:core-testing:2.2.0"
@@ -68,7 +68,7 @@ google-material = "com.google.android.material:material:1.11.0"
 google-gms-services = "com.google.gms:google-services:4.4.1"
 google-truth = "com.google.truth:truth:1.4.1"
 huawei-agconnect-agcp = { module = "com.huawei.agconnect:agcp", version.ref = "agconnect" }
-huawei-agconnect-apms = "com.huawei.agconnect:agconnect-apms:1.6.3.300"
+huawei-agconnect-apms = "com.huawei.agconnect:agconnect-apms:1.6.2.300"
 huawei-agconnect-core = { module = "com.huawei.agconnect:agconnect-core", version.ref = "agconnect" }
 huawei-agconnect-crash = { module = "com.huawei.agconnect:agconnect-crash", version.ref = "agconnect" }
 huawei-agconnect-remoteconfig = { module = "com.huawei.agconnect:agconnect-remoteconfig", version.ref = "agconnect" }
