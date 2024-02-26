@@ -23,7 +23,7 @@ plugins {
     id("io.gitlab.arturbosch.detekt")
 }
 
-val detektVersion = "1.23.1"
+val detektVersion = "1.23.5"
 
 detekt {
     toolVersion = detektVersion
