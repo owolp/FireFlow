@@ -18,9 +18,10 @@
 package dev.zitech.fireflow.ds.atoms.icon
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.ArrowBack
+import androidx.compose.material.icons.automirrored.outlined.Logout
 import androidx.compose.material.icons.outlined.AdsClick
 import androidx.compose.material.icons.outlined.Analytics
-import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.Brightness6
 import androidx.compose.material.icons.outlined.BugReport
 import androidx.compose.material.icons.outlined.Check
@@ -29,7 +30,6 @@ import androidx.compose.material.icons.outlined.DeleteForever
 import androidx.compose.material.icons.outlined.ExpandMore
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Language
-import androidx.compose.material.icons.outlined.Logout
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.NetworkCheck
 import androidx.compose.material.icons.outlined.PersonAdd
@@ -39,7 +39,7 @@ import androidx.compose.material.icons.outlined.Speed
 object FireFlowIcons {
     val AdsClick = Icons.Outlined.AdsClick
     val Analytics = Icons.Outlined.Analytics
-    val ArrowBack = Icons.Outlined.ArrowBack
+    val ArrowBack = Icons.AutoMirrored.Outlined.ArrowBack
     val Brightness6 = Icons.Outlined.Brightness6
     val BugReport = Icons.Outlined.BugReport
     val Check = Icons.Outlined.Check
@@ -48,7 +48,7 @@ object FireFlowIcons {
     val ExpandMore = Icons.Outlined.ExpandMore
     val Info = Icons.Outlined.Info
     val Language = Icons.Outlined.Language
-    val Logout = Icons.Outlined.Logout
+    val Logout = Icons.AutoMirrored.Outlined.Logout
     val MoreVert = Icons.Outlined.MoreVert
     val NetworkCheck = Icons.Outlined.NetworkCheck
     val PersonAdd = Icons.Outlined.PersonAdd

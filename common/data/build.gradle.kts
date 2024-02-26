@@ -44,7 +44,7 @@ dependencies {
     kapt(libs.squareup.moshi.kotlin.codegen)
     implementation(libs.squareup.retrofit2.retrofit)
     implementation(libs.squareup.retrofit2.converter.moshi)
-    implementation(libs.squareup.okhttp3.bom)
+    implementation(platform(libs.squareup.okhttp3.bom))
     implementation("com.squareup.okhttp3:okhttp")
 
     devImplementation(libs.chuckerteam.chucker)

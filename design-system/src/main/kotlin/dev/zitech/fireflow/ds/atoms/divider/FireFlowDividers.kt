@@ -19,7 +19,7 @@ package dev.zitech.fireflow.ds.atoms.divider
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,7 +38,7 @@ object FireFlowDividers {
         startIndent: Dp = 0.dp,
         endIndent: Dp = 0.dp
     ) {
-        Divider(
+        HorizontalDivider(
             modifier = modifier.padding(
                 start = startIndent,
                 end = endIndent
